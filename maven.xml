@@ -18,6 +18,7 @@
     <postGoal name="clean:clean">
         <delete>
             <fileset dir="${basedir}" includes="junit*.properties"/>
+            <fileset dir="${basedir}" includes="javadoc*"/>
         </delete>
     </postGoal>
 
