@@ -31,7 +31,7 @@
 
         <ant:taskdef resource="clovertasks">
             <classpath>
-                <pathelement path="${basedir}/lib/tools/clover-1.3-rc2.jar"/>
+                <pathelement path="${basedir}/lib/tools/clover-1.3-rc4.jar"/>
             </classpath>
         </ant:taskdef>    
         <ant:typedef resource="clovertypes">

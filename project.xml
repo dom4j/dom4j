@@ -237,7 +237,7 @@
     <dependency>
       <groupId>clover</groupId>
       <artifactId>clover</artifactId>
-      <version>1.3-rc2</version>
+      <version>1.3-rc4</version>
       <properties>
         <classloader>root</classloader>
       </properties>
