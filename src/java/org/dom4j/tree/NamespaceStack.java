@@ -159,6 +159,11 @@ public class NamespaceStack {
         int index = qualifiedName.indexOf(":");
         if (index > 0) {
             prefix = qualifiedName.substring(0, index);
+            if (localName.trim().length() == 0) {
+                localName = qualifiedName.substring(index+1);
+            }
+        } else if (localName.trim().length() == 0) {
+            localName = qualifiedName;
         }
         Namespace namespace = createNamespace( prefix, namespaceURI );
         return pushQName( localName, qualifiedName, namespace, prefix );
@@ -185,10 +190,16 @@ public class NamespaceStack {
         if (index > 0) {
             prefix = qualifiedName.substring(0, index);
             namespace = createNamespace( prefix, namespaceURI );
+            if ( localName.trim().length() == 0) {
+                localName = qualifiedName.substring(index+1);
+            }
         }
         else {
             // attributes with no prefix have no namespace
             namespace = Namespace.NO_NAMESPACE;
+            if ( localName.trim().length() == 0) {
+                localName = qualifiedName;
+            }
         }
         answer = pushQName( localName, qualifiedName, namespace, prefix );
         map.put( qualifiedName, answer );
