@@ -111,11 +111,11 @@
       <version>1.0-FCS-full</version>
     </dependency>
 
-    <dependency>
+<!--    <dependency>
       <id>saxpath</id>
       <version>1.0-FCS</version>
     </dependency>
-
+-->
     <dependency>
       <id>msv</id>
       <version>20020414</version>

@@ -24,7 +24,7 @@
     <depend project="xml-xerces"/>
 
     <depend project="jaxen"/>
-    <depend project="saxpath"/>
+<!--    <depend project="saxpath"/> -->
     <depend project="msv"/>
     <depend project="xsdlib"/>
     <depend project="relaxngDatatype"/>
