@@ -41,10 +41,19 @@ public abstract class Expr
         return null;
     }
 
+    /** @return the type of node which this expression matches
+     * defined in the {@link Node} interface or if no specific
+     * type of node is matched then {@link Pattern#ANY_NODE} is returned.
+      */
     public short getMatchType() {
         return Pattern.ANY_NODE;
     }
 
+    /** @return the name of the node that this expression matches
+     * or null if there is no particular name of node that this 
+     * expression matches. For example the XPath expression "//a"
+     * should return "a"
+     */
     public String getMatchesNodeName() {
         return null;
     }
