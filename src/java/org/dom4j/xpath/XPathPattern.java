@@ -13,9 +13,11 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.InvalidXPathException;
+import org.dom4j.XPathException;
 import org.dom4j.rule.Pattern;
 
 import org.jaxen.BaseXPath;
+import org.jaxen.JaxenException;
 
 import java.io.StringReader;
 
@@ -46,8 +48,13 @@ public class XPathPattern implements Pattern {
     }
 
     public boolean matches( Node node ) {
-        //return xpath != null && xpath.matches( getContext( node ), node );
-        return false;
+        try {
+            return xpath.selectNodes( node ).size() > 0;
+        }
+        catch (JaxenException e) {
+            handleJaxenException(e);
+            return false;
+        }
     }
     
     public String getText() {
@@ -69,35 +76,15 @@ public class XPathPattern implements Pattern {
 
     public String getMatchesNodeName() {
         return null;
-    }
-    
-/*    
-    public double getPriority()  {
-        return ( xpath != null ) 
-            ? xpath.getPriority() : Pattern.DEFAULT_PRIORITY;
-        return Pattern.DEFAULT_PRIORITY
-    }
-    
-    public Pattern[] getUnionPatterns() {
-        return ( xpath != null ) 
-            ? xpath.getUnionPatterns() : null;
-    }
-
-    public short getMatchType() {
-        return ( xpath != null ) 
-            ? xpath.getMatchType() : ANY_NODE;
-    }
-
-    public String getMatchesNodeName() {
-        return ( xpath != null ) 
-            ? xpath.getMatchesNodeName() : null;
-    }
-*/
-    
+    }    
     
     
     public String toString() {
         return "[XPathPattern: text: " + text + " XPath: " + xpath + "]";
+    }
+    
+    protected void handleJaxenException(JaxenException e) throws XPathException {
+        throw new XPathException(text, e);
     }
 }
 
