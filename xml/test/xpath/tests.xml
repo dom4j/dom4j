@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tests>
 
+  <!-- test the use of text() -->
+  <document url="xml/test/test_text.xml">
+    <context select="/">
+      <valueOf select="normalize-space(/message/text())">This should work</valueOf>
+    </context>
+  </document>
+
   <!-- test the use of 'or' -->
   <document url="xml/test/sample.xml">
     <context select="/">

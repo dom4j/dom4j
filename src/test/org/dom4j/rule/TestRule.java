@@ -19,7 +19,9 @@ import java.util.TreeSet;
 import junit.framework.*;
 import junit.textui.TestRunner;
 
+import org.dom4j.CDATA;
 import org.dom4j.Document;
+import org.dom4j.Element;
 import org.dom4j.DocumentFactory;
 import org.dom4j.rule.Pattern;
 
@@ -113,6 +115,13 @@ public class TestRule extends TestCase {
         
         assertTrue( "/ matches document", rule.matches( document ) );
         assertTrue( "/ does not match root element", ! rule.matches( document.getRootElement() ) );
+    }
+    
+    public void testTextMatchesCDATA() {
+        CDATA cdata = factory.createCDATA( "<>&" );
+        Rule rule = createRule( "text()" );
+        
+        assertTrue( "text() matches CDATA", rule.matches( cdata ) );
     }
     
     protected Rule createRule(String expr) {
