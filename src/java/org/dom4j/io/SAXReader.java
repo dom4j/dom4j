@@ -113,6 +113,9 @@ public class SAXReader {
     /** Holds value of property stripWhitespaceText. */
     private boolean stripWhitespaceText = false;
     
+    /** Should we ignore comments */
+    private boolean ignoreComments = false;
+    
     
     //private boolean includeExternalGeneralEntities = false;
     //private boolean includeExternalParameterEntities = false;
@@ -316,6 +319,7 @@ public class SAXReader {
             contentHandler.setIncludeExternalDTDDeclarations( isIncludeExternalDTDDeclarations() );
             contentHandler.setMergeAdjacentText( isMergeAdjacentText() );
             contentHandler.setStripWhitespaceText( isStripWhitespaceText() );
+            contentHandler.setIgnoreComments( isIgnoreComments() );
             xmlReader.setContentHandler(contentHandler);
 
             configureReader(xmlReader, contentHandler);
@@ -444,6 +448,22 @@ public class SAXReader {
         this.stripWhitespaceText = stripWhitespaceText;
     }
     
+    /**
+     * Returns whether we should ignore comments or not.
+     * @return boolean
+     */
+    public boolean isIgnoreComments() {
+        return ignoreComments;
+    }
+
+    /**
+     * Sets whether we should ignore comments or not.
+     * @param ignoreComments whether we should ignore comments or not.
+     */
+    public void setIgnoreComments(boolean ignoreComments) {
+        this.ignoreComments = ignoreComments;
+    }
+
     
     /** @return the <code>DocumentFactory</code> used to create document objects
       */

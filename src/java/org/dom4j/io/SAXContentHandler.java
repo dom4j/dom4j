@@ -122,6 +122,9 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     /** Have we added text to the buffer */
     private boolean textInTextBuffer = false;
 
+    /** Should we ignore comments */
+    private boolean ignoreComments = false;
+    
     /** Buffer used to concatenate text together */
     private StringBuffer textBuffer;
 
@@ -378,16 +381,18 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     }
 
     public void comment(char[] ch, int start, int end) throws SAXException {
-        if ( mergeAdjacentText && textInTextBuffer ) {
-            completeCurrentTextNode();
-        }
-        String text = new String(ch, start, end);
-        if (!insideDTDSection && text.length() > 0) {
-            if ( currentElement != null ) {
-                currentElement.addComment(text);
+        if (!ignoreComments) {
+            if ( mergeAdjacentText && textInTextBuffer ) {
+                completeCurrentTextNode();
             }
-            else {
-                document.addComment(text);
+            String text = new String(ch, start, end);
+            if (!insideDTDSection && text.length() > 0) {
+                if ( currentElement != null ) {
+                    currentElement.addComment(text);
+                }
+                else {
+                    document.addComment(text);
+                }
             }
         }
     }
@@ -665,6 +670,23 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     public void setStripWhitespaceText(boolean stripWhitespaceText) {
         this.stripWhitespaceText = stripWhitespaceText;
     }
+
+    /**
+     * Returns whether we should ignore comments or not.
+     * @return boolean
+     */
+    public boolean isIgnoreComments() {
+        return ignoreComments;
+    }
+
+    /**
+     * Sets whether we should ignore comments or not.
+     * @param ignoreComments whether we should ignore comments or not.
+     */
+    public void setIgnoreComments(boolean ignoreComments) {
+        this.ignoreComments = ignoreComments;
+    }
+
 
     // Implementation methods
     //-------------------------------------------------------------------------
