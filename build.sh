@@ -14,8 +14,9 @@ fi
 
 JAVA=$JAVA_HOME/bin/java
 
+CLASSPATH=$JAVA_HOME/lib/tools.jar
 CLASSPATH=`echo lib/*.jar | tr ' ' ':'`:$CLASSPATH
-CLASSPATH=build/classes/:$CLASSPATH:$JAVA_HOME/lib/tools.jar
+CLASSPATH=build/classes/:$CLASSPATH
 
 
 $JAVA -classpath $CLASSPATH -Dant.home=lib org.apache.tools.ant.Main "$@" -buildfile build.xml
