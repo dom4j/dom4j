@@ -68,11 +68,11 @@ public class TestGetPath extends AbstractTestCase {
             Element element = (Element) elements.get(i);
             testPath( element, path, uniquePath );
             
-            path += "/@name";
-            uniquePath += "/@name";
-            
             Attribute attribute = element.attribute( "name" );
-            testPath( attribute, path, uniquePath );
+            testPath( attribute, path + "/@name", uniquePath + "/@name" );
+            
+            Element child = element.element( "url" );
+            testPath( child, path + "/url", uniquePath + "/url" );
         }
     }
         
@@ -81,8 +81,8 @@ public class TestGetPath extends AbstractTestCase {
     }
     
     protected void testPath(Node node, String path, String uniquePath) {
-        assertEquals( "getPath expression should be what is expected", node.getPath(), path );
-        assertEquals( "getUniquePath expression should be what is expected", node.getUniquePath(), uniquePath );
+        assertEquals( "getPath expression should be what is expected", path, node.getPath() );
+        assertEquals( "getUniquePath expression should be what is expected", uniquePath, node.getUniquePath() );
     }
     
     protected void testBranchPath(Branch branch) {

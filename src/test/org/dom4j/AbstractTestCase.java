@@ -211,11 +211,17 @@ public class AbstractTestCase extends TestCase {
             .addAttribute( "name", "James" )
             .addAttribute( "location", "UK" )
             .addText("James Strachan");
+
+        Element url1 = author1.addElement( "url" )
+            .addText( "http://sourceforge.net/users/jstrachan/" );
         
         Element author2 = root.addElement( "author" )
             .addAttribute( "name", "Bob" )
             .addAttribute( "location", "Canada" )
             .addText("Bob McWhirter");
+        
+        Element url2 = author2.addElement( "url" )
+            .addText( "http://sourceforge.net/users/werken/" );
     }
 
     protected Document createDocument() {
