@@ -7,7 +7,7 @@
 
   <body>
 
-    <release version="1.5.1" date="2004-10-17">
+    <release version="1.5.1" date="2004-10-23">
       <action dev="maartenc" type="fix" due-to="David Karlsen">
         Fixed bug in <code>Document.asXML()</code> which ignored the encoding
         of the document.
