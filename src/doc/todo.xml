@@ -30,6 +30,9 @@
             to compare qualified names rather than local names. This allows simple string based adding and filtering to be done in namespace aware documents.
             For exact fine grained control where comparison is only by local name and namespace URI then the equivalent methods taking a QName should be used.
           </p>
+          <p>
+            Added an EntityResolver property to SAXReader to make it easier to configure a specific EntityResolver.
+          </p>
         </section>
         <section title="0.9 release">
           <section title="Full support for the Jaxen XPath engine">

@@ -87,7 +87,8 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
 
     /** The number of namespaces that are declared in the current scope */
     private int declaredNamespaceIndex;
-    
+
+    /** The entity resolver */
     private EntityResolver entityResolver;
     
     private InputSource inputSource;
