@@ -35,17 +35,21 @@
     <depend project="ant" inherit="runtime"/>
     <depend project="xml-xerces"/>
     <depend project="junit"/>
+    <depend project="xml-apis"/>
     <depend project="xml-xalan2"/>
-    <depend project="tranquilo"/>
     <depend project="xpp"/>
     <depend project="jaxen-from-packaged-dom4j"/>
-    <depend project="xmldb"/>
-    <depend project="msv"/>
+    <depend project="xsdlib"/>
     <depend project="relaxng"/>
     <depend project="stax" ids="api"/>
-    <depend project="xml-fop" inherit="runtime"/>
     <depend project="jtidy"/>
     <depend project="junitperf"/>
+
+    <!-- needed for tests -->
+    <work nested="build/classes"/>
+    <!-- holds resources for tests -->
+    <work nested="."/>
+
     <junitreport nested="build/test-results/xml"/>
     <jar name="build/dom4j.jar" id="dom4j"/>
     <license name="LICENSE.txt"/>
