@@ -1047,20 +1047,20 @@ import org.dom4j.io.DocumentSource;
 public class TemplateGeneratorSample {
 
  public Source styleSheet;
- public Document schema;
- public Transformer transformer;
+ public Source source;
  public DocumentResult result;
+ public Transformer transformer;
 
- public class TemplateGenerator(Document aSchema, Source aStyleSheet) {
+ public class TemplateGenerator(Document aDocument, Source aStyleSheet) {
    this.styleSheet = aStyleSheet;
-   this.schema  = aSchema;
+   this.source = new DocumentSource( aDocument );
    this.result = new DocumentResult();
    this.transformer = TransformerFactory.newTransformer(new StreamSource(this.styleSheet.getSystemId()));
    this.start();
  }
 
  public void start() {
-   this.transformer.transform(this.schema, this.result);
+   this.transformer.transform(this.source, this.result);
  }
 
  public Document getTemplate() {
