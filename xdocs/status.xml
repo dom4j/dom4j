@@ -8,6 +8,7 @@
  
   <body>
       <section name="CVS">
+        <p><code>STAXEventWriter</code> now uses <code>XMLEventConsumer</code> instead of <code>XMLEventWriter</code> (contributed by Christian Niles).</p>
         <p>Fixed bug in <code>SAXReader</code> that caused problems parsing files in OSX (reported by Paul Libbrecht).</p> 
         <p>Fixed bug in <code>XMLWriter</code> that caused whitespace to be added between successive calls of the <code>characters(...)</code> method (reported by Paul Libbrecht).</p>
         <p>Improved performance of <code>NamespaceCache</code> in multithreaded environments (contributed by Brett Finnell).</p>

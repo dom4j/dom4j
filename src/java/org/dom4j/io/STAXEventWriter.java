@@ -14,7 +14,6 @@ import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventFactory;
-import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.DTD;
@@ -23,6 +22,7 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.EntityReference;
 import javax.xml.stream.events.StartDocument;
 import javax.xml.stream.events.StartElement;
+import javax.xml.stream.util.XMLEventConsumer;
 
 import org.dom4j.Attribute;
 import org.dom4j.Branch;
@@ -47,7 +47,7 @@ import org.dom4j.Text;
 public class STAXEventWriter {
     
     /** The event stream to which events are written. */
-    private XMLEventWriter writer;
+    private XMLEventConsumer consumer;
     
     /** The event factory used to construct events. */
     private XMLEventFactory factory = XMLEventFactory.newInstance();
@@ -59,29 +59,29 @@ public class STAXEventWriter {
      * Constructs a <code>STAXEventWriter</code> that writes events to the
      * provided event stream.
      *
-     * @param writer The event stream to which events will be written.
+     * @param consumer The event stream to which events will be written.
      */
-    public STAXEventWriter(XMLEventWriter writer) {
-        this.writer = writer;
+    public STAXEventWriter(XMLEventConsumer consumer) {
+        this.consumer = consumer;
     }
     
     /**
-     * Returns a reference to the underlying stream to which events are
+     * Returns a reference to the underlying event consumer to which events are
      * written.
      *
-     * @return The underlying stream to which events are written.
+     * @return The underlying event consumer to which events are written.
      */
-    public XMLEventWriter getWriter() {
-        return writer;
+    public XMLEventConsumer getConsumer() {
+        return consumer;
     }
     
     /**
-     * Sets the underlying stream to which events are written.
+     * Sets the underlying event consumer to which events are written.
      *
-     * @param writer The stream to which events should be written.
+     * @param consumer The event consumer to which events should be written.
      */
-    public void setWriter(XMLEventWriter writer) {
-        this.writer = writer;
+    public void setConsumer(XMLEventConsumer consumer) {
+        this.consumer = consumer;
     }
     
     /**
@@ -179,9 +179,9 @@ public class STAXEventWriter {
      * @throws XMLStreamException If an error occurs writing to the stream.
      */
     public void writeElement(Element elem) throws XMLStreamException {
-        writer.add(createStartElement(elem));
+        consumer.add(createStartElement(elem));
         writeChildNodes(elem);
-        writer.add(createEndElement(elem));
+        consumer.add(createEndElement(elem));
     }
     
     /**
@@ -226,7 +226,7 @@ public class STAXEventWriter {
      * @throws XMLStreamException If an error occurs writing to the stream.
      */
     public void writeAttribute(Attribute attr) throws XMLStreamException {
-        writer.add(createAttribute(attr));
+        consumer.add(createAttribute(attr));
     }
     
     /**
@@ -251,7 +251,7 @@ public class STAXEventWriter {
      * @throws XMLStreamException If an error occurs writing to the stream.
      */
     public void writeNamespace(Namespace ns) throws XMLStreamException {
-        writer.add(createNamespace(ns));
+        consumer.add(createNamespace(ns));
     }
     
     /**
@@ -275,7 +275,7 @@ public class STAXEventWriter {
      * @throws XMLStreamException If an error occurs writing to the stream.
      */
     public void writeText(Text text) throws XMLStreamException {
-        writer.add(createCharacters(text));
+        consumer.add(createCharacters(text));
     }
     
     /**
@@ -295,7 +295,7 @@ public class STAXEventWriter {
      * @throws XMLStreamException If an error occurs writing to the stream.
      */
     public void writeCDATA(CDATA cdata) throws XMLStreamException {
-        writer.add(createCharacters(cdata));
+        consumer.add(createCharacters(cdata));
     }
     
     /**
@@ -315,7 +315,7 @@ public class STAXEventWriter {
      * @throws XMLStreamException If an error occurs writing to the stream.
      */
     public void writeComment(Comment comment) throws XMLStreamException {
-        writer.add(createComment(comment));
+        consumer.add(createComment(comment));
     }
     
     /**
@@ -336,7 +336,7 @@ public class STAXEventWriter {
      * @throws XMLStreamException If an error occurs writing to the stream.
      */
     public void writeProcessingInstruction(ProcessingInstruction pi) throws XMLStreamException {
-        writer.add(createProcessingInstruction(pi));
+        consumer.add(createProcessingInstruction(pi));
     }
     
     /**
@@ -364,7 +364,7 @@ public class STAXEventWriter {
      * @throws XMLStreamException If an error occurs writing to the stream.
      */
     public void writeEntity(Entity entity) throws XMLStreamException {
-        writer.add(createEntityReference(entity));
+        consumer.add(createEntityReference(entity));
     }
     
     /**
@@ -385,7 +385,7 @@ public class STAXEventWriter {
      * @throws XMLStreamException If an error occurs writing to the stream.
      */
     public void writeDocumentType(DocumentType docType) throws XMLStreamException {
-        writer.add(createDTD(docType));
+        consumer.add(createDTD(docType));
     }
     
     /**
@@ -414,11 +414,11 @@ public class STAXEventWriter {
      * @throws XMLStreamException If an error occurs writing to the stream.
      */
     public void writeDocument(Document doc) throws XMLStreamException {
-        writer.add(createStartDocument(doc));
+        consumer.add(createStartDocument(doc));
         
         writeChildNodes(doc);
         
-        writer.add(createEndDocument(doc));
+        consumer.add(createEndDocument(doc));
     }
     
     /**
