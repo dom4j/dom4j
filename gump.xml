@@ -36,14 +36,17 @@
     <depend project="xml-xerces"/>
     <depend project="junit"/>
     <depend project="xml-xalan2"/>
+    <depend project="tranquilo"/>
     <depend project="xpp"/>
     <depend project="jaxen-from-packaged-dom4j"/>
     <depend project="xmldb"/>
     <depend project="msv"/>
     <depend project="relaxng"/>
     <depend project="stax" ids="api"/>
+    <depend project="xml-fop" inherit="runtime"/>
     <depend project="jtidy"/>
     <depend project="junitperf"/>
+    <junitreport nested="build/test-results/xml"/>
     <jar name="build/dom4j.jar" id="dom4j"/>
     <license name="LICENSE.txt"/>
     <nag from="Maarten Coene &lt;MacBelgium@toughguy.net&gt;" to="dom4j-dev@lists.sourceforge.net" />
