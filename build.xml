@@ -105,9 +105,9 @@
     <mkdir dir="${build.dest}"/>
 
     <!-- copy src files -->
-    <copydir src="${src.dir}"
-             dest="${build.src}"
-             filtering="on"/>
+    <copy todir="${build.src}">
+      <fileset dir="${src.dir}" />
+    </copy>
   </target>
 
   <!-- =================================================================== -->
@@ -150,9 +150,9 @@
     <mkdir dir="${build.dest}"/>
 
     <!-- copy src files -->
-    <copydir src="${samples.dir}"
-             dest="${build.src}"
-             filtering="on"/>
+    <copy todir="${build.src}">
+      <fileset dir="${samples.dir}" />
+    </copy>
   </target>
 
   <!-- =================================================================== -->
@@ -253,13 +253,21 @@
     <mkdir dir="${dist.dir}/docs"/>
     <mkdir dir="${dist.dir}/docs/api"/>
 
-    <copyfile src="${build.dir}/${name}.jar" dest="${dist.dir}/lib/${name}.jar"/>
+    <copy file="${build.dir}/${name}.jar" tofile="${dist.dir}/lib/${name}.jar"/>
 
-    <copydir src="./src" dest="${dist.dir}/src"  defaultexcludes="true"/>
-    <copydir src="./xml" dest="${dist.dir}/xml"  defaultexcludes="true"/>
-    <copydir src="./lib" dest="${dist.dir}/lib" defaultexcludes="true"/>
+    <copy todir="${dist.dir}/src">
+      <fileset dir="./src" />
+    </copy>
+    <copy todir="${dist.dir}/xml">
+      <fileset dir="./xml" />
+    </copy>
+    <copy todir="${dist.dir}/lib">
+      <fileset dir="./lib" />
+    </copy>
 
-    <copydir src="." dest="${dist.dir}" includes="*.txt, *.sh, *.bat" filtering="on"/>
+    <copy todir="${dist.dir}">
+      <fileset dir="." includes="*.txt, *.sh, *.bat, *.xml" />
+    </copy>
 
 <!--
     <chmod perm="+x" file="${dist.dir}/run.sh"/>
