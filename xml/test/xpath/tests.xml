@@ -17,6 +17,16 @@
     </context>
   </document>
 
+  <document url="xml/test/sample.xml">
+    <context select="/products/product[@id='2']">
+      <pattern match=".[@id='2']"/>
+      <pattern match=".[colour='blue']"/>
+      <pattern match="@id='2'"/>
+      <pattern match="colour='blue'"/>
+      <pattern match="name()='product'"/>
+    </context>
+  </document>
+
 
   <!-- test name -->
 

@@ -4,10 +4,11 @@
     <title>Status</title>
     
     <section title="Change History">
-<!--
         <section title="Changes in CVS since last release">
+          <p>Added patch so that patterns such as <code>@id='123'</code> and <code>name()='foo'</code> are now
+            working properly again.
+          </p>
         </section>
--->
         <section title="0.9 release">
           <section title="Full support for the Jaxen XPath engine">
             <p>The XPath engine in dom4j has been migrated to using <a href="http://jaxen.org">Jaxen</a>.
