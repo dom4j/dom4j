@@ -8,6 +8,7 @@
  
   <body>
       <section name="1.5 beta 2">
+        <p>Added flag to <code>OutputFormat</code> that supresses newline after XML declaration.</p>
         <p>Upgraded dependencies to their latest version on ibiblio.</p>
         <p>Added method to <code>DocumentHelper</code> that allows user to specify encoding when parsing an xml <code>String</code>
            (contributed by Todd Wolff).</p>
@@ -696,7 +697,7 @@ List list = element.elements( element.getQName( "x:foo" ) );
             <p>Fixed bug in elementByID() method found by Thomas Nichols that was resulting in
               the element not being found correctly.
             </p>
-            <p>Fixed bug in IndexedElement reported by Kerstin Grünefeld that was causing
+            <p>Fixed bug in IndexedElement reported by Kerstin Grï¿½nefeld that was causing
               a null pointer exception when using XPath on an IndexedElement.
             </p>
             <p>Applied the patch supplied by Mike Skells that fix problems with the
