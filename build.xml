@@ -148,7 +148,6 @@
            optimize="${optimize}"
            deprecation="${deprecation}"
            classpathref="compile.classpath">
-      <compilerarg line="-endorseddirs ./lib/endorsed/" />
     </javac>
   </target>
 
@@ -162,7 +161,6 @@
            optimize="${optimize}"
            deprecation="${deprecation}"
            classpathref="test.classpath">
-      <compilerarg line="-endorseddirs ./lib/endorsed/" />
     </javac>
   </target>
 
@@ -170,13 +168,11 @@
   <!-- Compiles the samples directory                                       -->
   <!-- =================================================================== -->
   <target name="samples" depends="compile,prepare-samples">
-    <javac srcdir="src"
-           includes="samples/**"
+    <javac srcdir="src/samples"
            destdir="${build.dest}"
            debug="${debug}"
            optimize="${optimize}"
            classpathref="samples.classpath">
-      <compilerarg line="-endorseddirs ./lib/endorsed/" />
     </javac>
   </target>
 
@@ -323,25 +319,25 @@
   <!-- Run sample programs                                                 -->
   <!-- =================================================================== -->
   <target name="demo-sax" depends="samples">
-    <java classname="samples.SAXDemo" args="${xml.format.options} xml/web.xml">
+    <java classname="org.dom4j.samples.SAXDemo" args="${xml.format.options} xml/web.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
       </classpath>
     </java>
-    <java classname="samples.SAXDemo" args="${xml.format.options} xml/cdata.xml">
+    <java classname="org.dom4j.samples.SAXDemo" args="${xml.format.options} xml/cdata.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
       </classpath>
     </java>
-    <java classname="samples.SAXDemo" args="${xml.format.options} xml/testPI.xml">
+    <java classname="org.dom4j.samples.SAXDemo" args="${xml.format.options} xml/testPI.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
       </classpath>
     </java>
-    <java classname="samples.SAXDemo" args="${xml.format.options} xml/test/test_schema.xml">
+    <java classname="org.dom4j.samples.SAXDemo" args="${xml.format.options} xml/test/test_schema.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -350,13 +346,13 @@
   </target>
 
   <target name="demo-pull" depends="samples">
-    <java classname="samples.PullParserDemo" args="${xml.format.options} xml/web.xml">
+    <java classname="org.dom4j.samples.PullParserDemo" args="${xml.format.options} xml/web.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
       </classpath>
     </java>
-    <java classname="samples.PullParserDemo" args="${xml.format.options} xml/fibo.xml">
+    <java classname="org.dom4j.samples.PullParserDemo" args="${xml.format.options} xml/fibo.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -365,7 +361,7 @@
   </target>
 
   <target name="demo-sax2" depends="samples">
-    <java classname="samples.SAXDemo" args="${xml.format.options} xml/xhtml/xhtml-basic.xml">
+    <java classname="org.dom4j.samples.SAXDemo" args="${xml.format.options} xml/xhtml/xhtml-basic.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -374,7 +370,7 @@
   </target>
 
   <target name="demo-sax-contents" depends="samples">
-    <java classname="samples.SAXDemo" args="${xml.format.options} xml/contents.xml">
+    <java classname="org.dom4j.samples.SAXDemo" args="${xml.format.options} xml/contents.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -383,20 +379,20 @@
   </target>
 
   <target name="demo-sax-cdata" depends="samples">
-    <java classname="samples.SAXDemo" args="${xml.format.options} xml/cdata.xml">
+    <java classname="org.dom4j.samples.SAXDemo" args="${xml.format.options} xml/cdata.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
       </classpath>
     </java>
-    <java classname="samples.SAXDemo" args="${xml.format.options} xml/cdata.xml">
+    <java classname="org.dom4j.samples.SAXDemo" args="${xml.format.options} xml/cdata.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
       </classpath>
       <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/> 
     </java>
-    <java classname="samples.SAXDemo" args="${xml.format.options} xml/cdata.xml">
+    <java classname="org.dom4j.samples.SAXDemo" args="${xml.format.options} xml/cdata.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -406,7 +402,7 @@
   </target>
 
   <target name="demo-sax-pi" depends="samples">
-    <java classname="samples.SAXDemo" args="${xml.format.options} xml/testPI.xml">
+    <java classname="org.dom4j.samples.SAXDemo" args="${xml.format.options} xml/testPI.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -415,13 +411,13 @@
   </target>
 
   <target name="demo-sax-ns" depends="samples">
-    <java classname="samples.SAXDemo" args="${xml.format.options} xml/namespaces.xml">
+    <java classname="org.dom4j.samples.SAXDemo" args="${xml.format.options} xml/namespaces.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
       </classpath>
     </java>
-    <java classname="samples.SAXDemo" args="${xml.format.options} xml/testNamespaces.xml">
+    <java classname="org.dom4j.samples.SAXDemo" args="${xml.format.options} xml/testNamespaces.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -430,7 +426,7 @@
   </target>
 
   <target name="demo-saxall" depends="demo-sax,demo-sax-contents,demo-sax-cdata,demo-sax-pi,demo-sax-ns">
-    <java classname="samples.SAXDemo" args="${xml.format.options} xml/inline.xml">
+    <java classname="org.dom4j.samples.SAXDemo" args="${xml.format.options} xml/inline.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -439,7 +435,7 @@
   </target>
 
   <target name="demo-dom" depends="samples">
-    <java classname="samples.dom.DOMDemo" args="xml/contents.xml">
+    <java classname="org.dom4j.samples.dom.DOMDemo" args="xml/contents.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -448,7 +444,7 @@
   </target>
 
   <target name="demo-saxdom" depends="samples">
-    <java classname="samples.dom.SAXDOMDemo" args="xml/contents.xml">
+    <java classname="org.dom4j.samples.dom.SAXDOMDemo" args="xml/contents.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -457,7 +453,7 @@
   </target>
 
   <target name="demo-jtidy" depends="samples">
-    <java classname="samples.JTidyDemo" args="${xml.format.options} readme.html">
+    <java classname="org.dom4j.samples.JTidyDemo" args="${xml.format.options} readme.html">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -466,7 +462,7 @@
   </target>
 
   <target name="demo-visitor" depends="samples">
-    <java classname="samples.VisitorDemo" args="xml/cdata.xml">
+    <java classname="org.dom4j.samples.VisitorDemo" args="xml/cdata.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -475,7 +471,7 @@
   </target>
 
   <target name="demo-count" depends="samples">
-    <java classname="samples.CountDemo" args="xml/fibo.xml">
+    <java classname="org.dom4j.samples.CountDemo" args="xml/fibo.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -484,7 +480,7 @@
   </target>
 
   <target name="demo-create" depends="samples">
-    <java classname="samples.CreateXMLDemo">
+    <java classname="org.dom4j.samples.CreateXMLDemo">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -493,7 +489,7 @@
   </target>
 
   <target name="demo-html" depends="samples">
-    <java classname="samples.HTMLWriterDemo" args="xml/xhtml.xml">
+    <java classname="org.dom4j.samples.HTMLWriterDemo" args="xml/xhtml.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -502,14 +498,14 @@
   </target>
 
   <target name="test-performance" depends="samples">
-    <java classname="samples.PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10">
+    <java classname="org.dom4j.samples.PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
       </classpath>
     </java>
 
-    <java classname="samples.PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10">
+    <java classname="org.dom4j.samples.PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -517,7 +513,7 @@
       <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/> 
     </java>
 
-    <java classname="samples.PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10">
+    <java classname="org.dom4j.samples.PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -525,14 +521,14 @@
       <sysproperty key="org.xml.sax.driver" value="xml.aelfred2.SAXDriver"/> 
     </java>
 
-    <java classname="samples.PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory 10">
+    <java classname="org.dom4j.samples.PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory 10">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
       </classpath>
     </java>
 
-    <java classname="samples.PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory 10">
+    <java classname="org.dom4j.samples.PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory 10">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -540,7 +536,7 @@
       <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/> 
     </java>
 
-    <java classname="samples.PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory 10">
+    <java classname="org.dom4j.samples.PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory 10">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -550,13 +546,13 @@
   </target>
 
   <target name="demo-xpath" depends="samples">
-    <java classname="samples.XPathDemo" args="xml/web.xml //servlet/servlet-class">
+    <java classname="org.dom4j.samples.XPathDemo" args="xml/web.xml //servlet/servlet-class">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
       </classpath>
     </java>
-    <java classname="samples.XPathDemo" args="xml/much_ado.xml //ACT/TITLE">
+    <java classname="org.dom4j.samples.XPathDemo" args="xml/much_ado.xml //ACT/TITLE">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -565,7 +561,7 @@
   </target>
 
   <target name="demo-xslt" depends="samples">
-    <java classname="samples.XSLTDemo" args="xml/nitf/sample.xml xml/nitf/ashtml.xsl">
+    <java classname="org.dom4j.samples.XSLTDemo" args="xml/nitf/sample.xml xml/nitf/ashtml.xsl">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -574,7 +570,7 @@
   </target>
 
   <target name="demo-domxslt" depends="samples">
-    <java classname="samples.dom.XSLTNativeDOMDemo" args="xml/nitf/sample.xml xml/nitf/ashtml.xsl">
+    <java classname="org.dom4j.samples.dom.XSLTNativeDOMDemo" args="xml/nitf/sample.xml xml/nitf/ashtml.xsl">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -583,7 +579,7 @@
   </target>
 
   <target name="demo-bigdoc" depends="samples">
-    <java classname="samples.LargeDocumentDemo" args="xml/much_ado.xml /PLAY/ACT">
+    <java classname="org.dom4j.samples.LargeDocumentDemo" args="xml/much_ado.xml /PLAY/ACT">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -592,7 +588,7 @@
   </target>
   
   <target name="demo-bigdoc2" depends="samples">
-    <java classname="samples.LargeDocumentDemo2" args="xml/much_ado.xml">
+    <java classname="org.dom4j.samples.LargeDocumentDemo2" args="xml/much_ado.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -601,7 +597,7 @@
   </target>
 
   <target name="demo-link" depends="samples">
-    <java classname="samples.LinkChecker" args="xml/xhtml/xhtml-basic.xml">
+    <java classname="org.dom4j.samples.LinkChecker" args="xml/xhtml/xhtml-basic.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -610,7 +606,7 @@
   </target>
 
   <target name="demo-bean" depends="samples">
-    <java classname="samples.bean.BeanDemo" args="xml/bean/gui.xml">
+    <java classname="org.dom4j.samples.bean.BeanDemo" args="xml/bean/gui.xml">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -619,7 +615,7 @@
   </target>
 
   <target name="demo-validate" depends="samples">
-    <java classname="samples.validate.XercesDemo" fork="yes">
+    <java classname="org.dom4j.samples.validate.XercesDemo" fork="yes">
       <arg value="xml/schema/invalid.xml"/>
       <classpath>
         <pathelement location="${build.dest}" />
@@ -629,7 +625,7 @@
   </target>
 
   <target name="demo-saxvalidate" depends="samples">
-    <java classname="samples.validate.SAXValidatorDemo" fork="yes">
+    <java classname="org.dom4j.samples.validate.SAXValidatorDemo" fork="yes">
       <arg value="xml/nitf/invalid.xml"/>
       <classpath>
         <pathelement location="${build.dest}" />
@@ -639,7 +635,7 @@
   </target>
 
   <target name="demo-schema" depends="samples">
-    <java classname="samples.VisitorDemo">
+    <java classname="org.dom4j.samples.VisitorDemo">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -650,7 +646,7 @@
   </target>
 
   <target name="demo-table" depends="samples">
-    <java classname="samples.swing.JTableDemo" args="xml/web.xml" fork="yes">
+    <java classname="org.dom4j.samples.swing.JTableDemo" args="xml/web.xml" fork="yes">
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
@@ -659,7 +655,7 @@
   </target>
 
   <target name="demo-tabletool" depends="samples">
-    <java classname="samples.swing.JTableTool" fork="yes">
+    <java classname="org.dom4j.samples.swing.JTableTool" fork="yes">
       <arg line="xml/swing/tableForAtoms.xml"/>
       <arg line="xml/periodic_table.xml"/>
       <classpath>
@@ -671,7 +667,7 @@
 
 
   <target name="demo-swing" depends="samples">
-    <java classname="samples.swing.JTreeDemo" fork="true">
+    <java classname="org.dom4j.samples.swing.JTreeDemo" fork="true">
       <arg line="xml/web.xml"/>
       <classpath>
         <pathelement location="${build.dest}" />
