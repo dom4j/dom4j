@@ -243,7 +243,8 @@
              doctitle="${Name}"
              bottom="Copyright &#169; ${year} MetaStuff Ltd. All Rights Reserved."
              stylesheetfile="${doc.dir}/style/javadoc.css"
-    />
+             link="http://java.sun.com/products/jdk/1.3/docs/api"
+  />
     <javadoc packagenames="${api.packages}"
              sourcepath="${build.src}"
              destdir="${build.apidocs}"
@@ -256,6 +257,7 @@
              doctitle="${Name}"
              bottom="Copyright &#169; ${year} MetaStuff Ltd. All Rights Reserved."
              stylesheetfile="${doc.dir}/style/javadoc.css"
+             link="http://java.sun.com/products/jdk/1.3/docs/api"
     />
   </target>
 
