@@ -17,9 +17,9 @@ package org.dom4j;
   * for more details on the <code>Visitor</code> pattern.</p>
   *
   * <p> This 
-  * <a href="http://rampages.onramp.net/~huston/dp/patterns.html">article</a>
+  * <a href="http://www.patterndepot.com/put/8/JavaPatterns.htm">site</a>
   * has further discussion on design patterns and links to the GOF book.
-  * This <a href="http://rampages.onramp.net/~huston/dp/visitor.html">link</a>
+  * This <a href="http://www.patterndepot.com/put/8/visitor.pdf">link</a>
   * describes the Visitor pattern in detail.
   * </p>
   *
