@@ -10,6 +10,7 @@
 package org.dom4j;
 
 import java.io.StringWriter;
+import java.net.URL;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -17,6 +18,7 @@ import junit.textui.TestRunner;
 
 import org.dom4j.io.HTMLWriter;
 import org.dom4j.io.OutputFormat;
+import org.dom4j.io.SAXReader;
 
 /** Test harness for the HTMLWriter
   *
@@ -125,6 +127,22 @@ public class TestHTMLWriter extends AbstractTestCase {
                 
         String expected = "word-being-cut";
         assertEquals(expected, buffer.toString());
+    }
+    
+    public void testBug619415() throws Exception {
+        URL url = getClass().getResource("/xml/test/dosLineFeeds.xml");
+        SAXReader reader = new SAXReader();
+        Document doc = reader.read(url);
+        
+        StringWriter wr = new StringWriter();
+        HTMLWriter writer = new HTMLWriter(wr, new OutputFormat("", false));
+        writer.write(doc);
+        
+        String result = wr.toString();
+        System.out.println(result);
+        
+        assertTrue(result.indexOf("Mary had a little lamb.") > -1);
+        assertTrue(result.indexOf("Hello, this is a test.") > -1);
     }
     
 }
