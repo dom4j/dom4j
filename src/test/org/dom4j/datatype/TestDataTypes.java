@@ -7,7 +7,7 @@
  * $Id$
  */
 
-package org.dom4j.schema;
+package org.dom4j.datatype;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -26,7 +26,7 @@ import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
-import org.dom4j.schema.SchemaDocumentFactory;
+import org.dom4j.datatype.DatatypeDocumentFactory;
 
 
 /** Test harness to test the various data types supported in the 
@@ -165,7 +165,7 @@ public class TestDataTypes extends AbstractDataTypeTest {
     // Implementation methods
     //-------------------------------------------------------------------------                        
     protected void setUp() throws Exception {
-        DocumentFactory factory = SchemaDocumentFactory.getInstance();
+        DocumentFactory factory = DatatypeDocumentFactory.getInstance();
         SAXReader reader = new SAXReader( factory );
         document = reader.read( "xml/test/schema/test.xml" );
     }

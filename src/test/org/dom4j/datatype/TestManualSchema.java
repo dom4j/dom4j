@@ -7,8 +7,9 @@
  * $Id$
  */
 
-package org.dom4j.schema;
+package org.dom4j.datatype;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,72 +19,49 @@ import junit.textui.TestRunner;
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
+import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.Node;
+import org.dom4j.io.SAXReader;
+import org.dom4j.datatype.DatatypeDocumentFactory;
 
 
-/** Abstract base class useful for implementation inheritence
-  * for testing XML Schema Data Type integration. 
+/** Test harness for the XML Schema Data Type integration. These tests
+  * manually load the schemas
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class AbstractDataTypeTest extends AbstractTestCase {
+public class TestManualSchema extends TestAutoSchema {
 
-    protected boolean VERBOSE = true;
-
+    protected static boolean VERBOSE = true;
     
-    public AbstractDataTypeTest(String name) {
+    public static void main( String[] args ) {
+        TestRunner.run( suite() );
+    }
+    
+    public static Test suite() {
+        return new TestSuite( TestManualSchema.class );
+    }
+    
+    public TestManualSchema(String name) {
         super(name);
     }
 
+    
     // Implementation methods
-    //-------------------------------------------------------------------------
-    protected void testNodes(String xpath, Class type) {
-        List list = document.selectNodes( xpath );
-        
-        log( "Searched path: " + xpath + " found: " + list.size() + " result(s)" );
-        
-        if ( VERBOSE ) {
-            log( "" );
-            log( "xpath: " + xpath );
-            log( "" );
-            log( "results: " + list );
-            log( "" );
-        }
-        
-        assertTrue( "Results are not empty", ! list.isEmpty() );
-        
-        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
-            Node node = (Node) iter.next();
-            if ( node instanceof Element ) {
-                Element element = (Element) node;
-                testDataType( element, element.getData(), type );
-            }
-            else if ( node instanceof Attribute ) {
-                Attribute attribute = (Attribute) node;
-                testDataType( attribute, attribute.getData(), type );
-            }
-            else {
-                assertTrue( "Did not find an attribute or element: " + node, false );
-            }
-        }
+    //-------------------------------------------------------------------------                    
+    protected String getDocumentURI() {
+        return "xml/test/schema/personal.xml";
     }
     
-    protected void testDataType(Node node, Object data, Class type) {
-        assertTrue( "Data object is not null", data != null );
+    protected DocumentFactory loadDocumentFactory() throws Exception {
+        DatatypeDocumentFactory factory = new DatatypeDocumentFactory();
         
-        if ( VERBOSE ) {
-            log( "found: " + data + " type: " + data.getClass().getName() + " required type: " + type.getName() );
-            log( "node: " + node );
-        }
-        
-        assertTrue( 
-            "Data object is of the correct type. Expected: " 
-                + type.getName() 
-                + " and found: " + data.getClass().getName(), 
-            type.isAssignableFrom( data.getClass() ) 
-        );
+        SAXReader reader = new SAXReader();
+        Document schemaDocument = reader.read( "xml/test/schema/personal.xsd" );
+        factory.loadSchema( schemaDocument );
+        return factory;
     }
 }
 

@@ -7,7 +7,7 @@
  * $Id$
  */
 
-package org.dom4j.schema;
+package org.dom4j.datatype;
 
 import com.sun.msv.datatype.xsd.XSDatatype;
 
@@ -23,18 +23,18 @@ import org.dom4j.QName;
 
 import org.xml.sax.Attributes;
 
-/** <p><code>SchemaElementFactory</code> is a factory for a specific Element 
+/** <p><code>DatatypeElementFactory</code> is a factory for a specific Element 
   * in an XML Schema.</p>
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class SchemaElementFactory extends DocumentFactory {
+public class DatatypeElementFactory extends DocumentFactory {
     
     private QName elementQName;
     
     
-    public SchemaElementFactory(QName elementQName) {
+    public DatatypeElementFactory(QName elementQName) {
         this.elementQName = elementQName;
     }
     
@@ -88,7 +88,7 @@ public class SchemaElementFactory extends DocumentFactory {
             return super.createElement( qname );
         }
         else {
-            return new SchemaElement(qname, dataType);
+            return new DatatypeElement(qname, dataType);
         }
     }
 
@@ -98,7 +98,7 @@ public class SchemaElementFactory extends DocumentFactory {
             return super.createAttribute( owner, qname, value );
         }
         else {
-            return new SchemaAttribute( qname, dataType, value );
+            return new DatatypeAttribute( qname, dataType, value );
         }
     }
 }

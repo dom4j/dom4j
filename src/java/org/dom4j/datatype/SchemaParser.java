@@ -7,7 +7,7 @@
  * $Id$
  */
 
-package org.dom4j.schema;
+package org.dom4j.datatype;
 
 import com.sun.msv.datatype.xsd.DatatypeFactory;
 import com.sun.msv.datatype.xsd.TypeIncubator;
@@ -27,12 +27,12 @@ import org.dom4j.util.AttributeHelper;
 import org.relaxng.datatype.DatatypeException;
 import org.relaxng.datatype.ValidationContext;
 
-/** <p><code>SchemaBuilder</code> reads an XML Schema Document.</p>
+/** <p><code>SchemaParser</code> reads an XML Schema Document.</p>
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class SchemaBuilder {
+public class SchemaParser {
     
     private static final Namespace XSD_NAMESPACE = Namespace.get( "xsd", "http://www.w3.org/2001/XMLSchema" );
     
@@ -44,17 +44,17 @@ public class SchemaBuilder {
     private static final QName XSD_RESTRICTION = QName.get( "restriction", XSD_NAMESPACE );
     
     /** Document factory used to register Element specific factories*/
-    private SchemaDocumentFactory documentFactory;
+    private DatatypeDocumentFactory documentFactory;
     
     /** Cache of <code>XSDatatype</code> instances loaded or created during this build */
     private Map dataTypeCache = new HashMap();
     
     
-    public SchemaBuilder() {
-        this.documentFactory = SchemaDocumentFactory.singleton;
+    public SchemaParser() {
+        this.documentFactory = DatatypeDocumentFactory.singleton;
     }
     
-    public SchemaBuilder(SchemaDocumentFactory documentFactory) {
+    public SchemaParser(DatatypeDocumentFactory documentFactory) {
         this.documentFactory = documentFactory;
     }
     
@@ -68,7 +68,7 @@ public class SchemaBuilder {
         if ( root != null ) {
             Iterator iter = root.elementIterator( XSD_ELEMENT );
             while ( iter.hasNext() ) {
-                onSchemaElement( (Element) iter.next() );
+                onDatatypeElement( (Element) iter.next() );
             }
         }
     }
@@ -79,7 +79,7 @@ public class SchemaBuilder {
     
     /** processes an XML Schema &lt;element&gt; tag 
       */
-    protected void onSchemaElement( Element xsdElement ) {
+    protected void onDatatypeElement( Element xsdElement ) {
         String name = xsdElement.attributeValue( "name" );
         String type = xsdElement.attributeValue( "type" );
         QName qname = getQName( name );
@@ -87,8 +87,8 @@ public class SchemaBuilder {
         if ( type != null ) {
             // register type with this element name
         }
-        SchemaElementFactory elementFactory 
-            = getSchemaElementFactory( qname );
+        DatatypeElementFactory elementFactory 
+            = getDatatypeElementFactory( qname );
         
         Element schemaComplexType = xsdElement.element( XSD_COMPLEXTYPE );
         if ( schemaComplexType != null ) {
@@ -97,7 +97,7 @@ public class SchemaBuilder {
         Iterator iter = xsdElement.elementIterator( XSD_ATTRIBUTE );
         if ( iter.hasNext() ) {
             do {
-                onSchemaAttribute( 
+                onDatatypeAttribute( 
                     xsdElement, 
                     elementFactory,
                     (Element) iter.next() 
@@ -109,7 +109,7 @@ public class SchemaBuilder {
     
     /** processes an XML Schema &lt;complexTypegt; tag 
       */
-    protected void onSchemaComplexType( Element schemaComplexType, SchemaElementFactory elementFactory ) {
+    protected void onSchemaComplexType( Element schemaComplexType, DatatypeElementFactory elementFactory ) {
         Iterator iter = schemaComplexType.elementIterator( XSD_ATTRIBUTE );
         while ( iter.hasNext() ) {
             Element xsdAttribute = (Element) iter.next();
@@ -130,9 +130,9 @@ public class SchemaBuilder {
     
     /** processes an XML Schema &lt;attribute&gt; tag 
       */
-    protected void onSchemaAttribute( 
+    protected void onDatatypeAttribute( 
         Element xsdElement, 
-        SchemaElementFactory elementFactory, 
+        DatatypeElementFactory elementFactory, 
         Element xsdAttribute 
     ) {
         String name = xsdAttribute.attributeValue( "name" );
@@ -239,13 +239,13 @@ public class SchemaBuilder {
         }
     }
     
-    /** @return the <code>SchemaElementFactory</code> for the given
+    /** @return the <code>DatatypeElementFactory</code> for the given
       * element QName, creating one if it does not already exist
       */
-    protected SchemaElementFactory getSchemaElementFactory( QName elementQName ) {
-        SchemaElementFactory factory = documentFactory.getElementFactory( elementQName );               
+    protected DatatypeElementFactory getDatatypeElementFactory( QName elementQName ) {
+        DatatypeElementFactory factory = documentFactory.getElementFactory( elementQName );               
         if ( factory == null ) {
-            factory = new SchemaElementFactory( elementQName );
+            factory = new DatatypeElementFactory( elementQName );
             elementQName.setDocumentFactory(factory);
         }
         return factory;

@@ -7,7 +7,7 @@
  * $Id$
  */
 
-package org.dom4j.schema;
+package org.dom4j.datatype;
 
 import java.math.BigInteger;
 import java.util.Calendar;
@@ -25,7 +25,7 @@ import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
-import org.dom4j.schema.SchemaDocumentFactory;
+import org.dom4j.datatype.DatatypeDocumentFactory;
 
 
 /** Test harness for the XML Schema Data Type integration. These tests
@@ -93,7 +93,7 @@ public class TestAutoSchema extends AbstractDataTypeTest {
     }
     
     protected DocumentFactory loadDocumentFactory() throws Exception {
-        return SchemaDocumentFactory.getInstance();
+        return DatatypeDocumentFactory.getInstance();
     }
     
 }

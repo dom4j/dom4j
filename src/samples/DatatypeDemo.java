@@ -11,7 +11,7 @@ import org.dom4j.Document;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
-import org.dom4j.schema.SchemaDocumentFactory;
+import org.dom4j.datatype.DatatypeDocumentFactory;
 
 /** A simple test program to demonstrate using XML Schema Data Types
   *
@@ -29,7 +29,7 @@ public class DatatypeDemo extends AbstractDemo {
     
     protected Document parse( String xmlFile ) throws Exception {
         SAXReader reader = new SAXReader();
-        reader.setDocumentFactory( SchemaDocumentFactory.getInstance() );
+        reader.setDocumentFactory( DatatypeDocumentFactory.getInstance() );
         return reader.read(xmlFile);
     }
     

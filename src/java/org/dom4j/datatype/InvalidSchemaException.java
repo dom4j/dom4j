@@ -7,55 +7,17 @@
  * $Id$
  */
 
-package org.dom4j.schema;
+package org.dom4j.datatype;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import junit.framework.*;
-import junit.textui.TestRunner;
-
-import org.dom4j.AbstractTestCase;
-import org.dom4j.Attribute;
-import org.dom4j.Document;
-import org.dom4j.DocumentFactory;
-import org.dom4j.Element;
-import org.dom4j.Node;
-import org.dom4j.io.SAXReader;
-import org.dom4j.schema.SchemaDocumentFactory;
-
-
-/** Test harness for the XML Schema Data Type integration. These tests
-  * manually load the schemas using prefixes in the XSD file.
+/** <p><code>InvalidSchemaException</code> is thrown when an invalid
+  * XML Schema document is used</p>
   *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class TestManualSchemaPrefix extends TestAutoSchema {
+public class InvalidSchemaException extends IllegalArgumentException {
 
-    public static void main( String[] args ) {
-        TestRunner.run( suite() );
-    }
-    
-    public static Test suite() {
-        return new TestSuite( TestManualSchemaPrefix.class );
-    }
-    
-    public TestManualSchemaPrefix(String name) {
-        super(name);
-    }
-
-    
-    // Implementation methods
-    //-------------------------------------------------------------------------                    
-    protected DocumentFactory loadDocumentFactory() throws Exception {
-        SchemaDocumentFactory factory = new SchemaDocumentFactory();
-        
-        SAXReader reader = new SAXReader();
-        Document schemaDocument = reader.read( "xml/test/schema/personal-prefix.xsd" );
-        factory.loadSchema( schemaDocument );
-        return factory;
+    public InvalidSchemaException(String reason) {
+        super(reason);
     }
 }
 

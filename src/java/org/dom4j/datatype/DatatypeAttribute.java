@@ -7,7 +7,7 @@
  * $Id$
  */
 
-package org.dom4j.schema;
+package org.dom4j.datatype;
 
 import com.sun.msv.datatype.DatabindableDatatype;
 
@@ -19,14 +19,14 @@ import org.dom4j.tree.AbstractAttribute;
 import com.sun.msv.datatype.xsd.XSDatatype;
 import org.relaxng.datatype.ValidationContext;
 
-/** <p><code>SchemaAttribute</code> represents an Attribute which supports the
+/** <p><code>DatatypeAttribute</code> represents an Attribute which supports the
   * <a href="http://www.w3.org/TR/xmlschema-2/">XML Schema Data Types</a>
   * specification.</p>
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class SchemaAttribute extends AbstractAttribute implements ValidationContext {
+public class DatatypeAttribute extends AbstractAttribute implements ValidationContext {
 
     /** The parent <code>Element</code> of the <code>Attribute</code> */
     private Element parent;
@@ -44,7 +44,7 @@ public class SchemaAttribute extends AbstractAttribute implements ValidationCont
     private String text;
 
     
-    public SchemaAttribute(QName qname, XSDatatype datatype) {
+    public DatatypeAttribute(QName qname,XSDatatype datatype) {
         this.qname = qname;
         this.datatype = datatype;
     }
@@ -55,7 +55,7 @@ public class SchemaAttribute extends AbstractAttribute implements ValidationCont
             + " value \"" + getValue() + "\" data: " + getData() + "]";
     }
 
-    public SchemaAttribute(QName qname, XSDatatype datatype, String text) { 
+    public DatatypeAttribute(QName qname,XSDatatype datatype,String text) { 
         this.qname = qname;
         this.datatype = datatype;
         this.text = text;

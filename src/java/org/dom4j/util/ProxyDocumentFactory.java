@@ -34,7 +34,7 @@ import org.xml.sax.Attributes;
   * which is useful for implementation inheritence, allowing the pipelining
   * of various factory implementations. For example an EncodingDocumentFactory 
   * which takes care of encoding strings outside of allowable XML ranges
-  * could be used with a SchemaDocumentFactory which is XML Schema Data Type 
+  * could be used with a DatatypeDocumentFactory which is XML Schema Data Type 
   * aware.</p>
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
