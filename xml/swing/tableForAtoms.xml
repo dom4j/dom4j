@@ -6,4 +6,5 @@
   <column select="ATOMIC_WEIGHT" type="number">Weight</column>
   <column select="ATOMIC_NUMBER" type="number">Number</column>
   <column select="OXIDATION_STATES">Oxidation States</column>
+  <column select="BOILING_POINT" columnNameXPath="/PERIODIC_TABLE/ATOM/BOILING_POINT/@UNITS"/>
 </table>

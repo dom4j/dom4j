@@ -123,6 +123,7 @@
       <jar>Tidy.jar</jar>
     </dependency>
 
+<!--
     <dependency>
       <name>xercesImpl</name>
       <type>required</type>
@@ -136,6 +137,7 @@
       <version>2.0.0</version>
       <jar>xmlParserAPIs-2.0.0.jar</jar>
     </dependency>
+-->    
   </dependencies>
   
   <build>

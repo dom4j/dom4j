@@ -76,6 +76,11 @@ public class XMLTableModel extends AbstractTableModel {
     }
     
     public String getColumnName(int columnIndex) {
+        XPath xpath = definition.getColumnNameXPath(columnIndex);
+        if ( xpath != null ) {
+            System.out.println("Evaluating column xpath: " + xpath + " value: " + xpath.valueOf(source) );
+            return xpath.valueOf( source );
+        }
         return definition.getColumnName(columnIndex);
     }
     

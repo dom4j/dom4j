@@ -64,9 +64,15 @@ public class XMLTableDefinition implements Serializable, VariableContext {
             Element element = (Element) iter.next();
             String expression = element.attributeValue( "select" );
             String name = element.getText();
-            String typeName = element.attributeValue( "type", "string" );            
+            String typeName = element.attributeValue( "type", "string" ); 
+            String columnNameXPath = element.attributeValue( "columnNameXPath" );
             int type = XMLTableColumnDefinition.parseType( typeName );
-            answer.addColumn( name, expression, type );
+            if ( columnNameXPath != null ) {
+                answer.addColumnWithXPathName( columnNameXPath, expression, type );
+            }
+            else {
+                answer.addColumn( name, expression, type );
+            }
         }
         return answer;
     }
@@ -80,12 +86,26 @@ public class XMLTableDefinition implements Serializable, VariableContext {
         return columns.size();
     }
     
+    /**
+     * @return the static column name. This is used if there is no columnNameXPath
+     */
     public String getColumnName(int columnIndex) {
         return getColumn(columnIndex).getName();
     }
-     
+    
+    /**
+     * @return the XPath expression used to evaluate the value of cells in this column
+     */ 
     public XPath getColumnXPath(int columnIndex) {
         return getColumn(columnIndex).getXPath();
+    }
+     
+    /**
+     * @return the XPath expresssion used to create the column name, if there is one
+     * or null if there is no XPath expression to name the column.
+     */
+    public XPath getColumnNameXPath(int columnIndex) {
+        return getColumn(columnIndex).getColumnNameXPath();
     }
      
     public synchronized Object getValueAt(Object row, int columnIndex) {
@@ -107,6 +127,12 @@ public class XMLTableDefinition implements Serializable, VariableContext {
     public void addColumn(String name, String expression, int type) {
         XPath xpath = createColumnXPath( expression );
         addColumn( new XMLTableColumnDefinition( name, xpath, type ) );
+    }
+    
+    public void addColumnWithXPathName(String columnNameXPathExpression, String expression, int type) {
+        XPath columnNameXPath = createColumnXPath( columnNameXPathExpression );
+        XPath xpath = createColumnXPath( expression );
+        addColumn( new XMLTableColumnDefinition( columnNameXPath, xpath, type ) );
     }
     
     public void addStringColumn(String name, String expression) {

@@ -167,12 +167,6 @@
     <!-- create directories -->
     <mkdir dir="${build.src}"/>
     <mkdir dir="${build.dest}"/>
-
-    <!-- copy src files -->
-    <copy todir="${build.src}">
-      <!-- temporarily comment out persistence stuff to stop gump errors -->
-      <fileset dir="${samples.dir}" exclude="org/dom4j/persistence/**"/>
-    </copy>
   </target>
 
   <!-- =================================================================== -->
@@ -203,8 +197,8 @@
   <!-- =================================================================== -->
   <!-- Compiles the samples directory                                       -->
   <!-- =================================================================== -->
-  <target name="samples" depends="prepare-samples,collections">
-    <javac srcdir="${build.src}"
+  <target name="samples" depends="compile,prepare-samples">
+    <javac srcdir="${samples.dir}"
            destdir="${build.dest}"
            debug="${debug}"
            optimize="${optimize}"/>
@@ -740,6 +734,13 @@
 
   <target name="demo-table" depends="samples">
     <java classname="swing.JTableDemo" args="xml/web.xml"/>
+  </target>
+
+  <target name="demo-tabletool" depends="samples">
+    <java classname="swing.JTableTool" fork="yes">
+      <arg line="xml/swing/tableForAtoms.xml"/>
+      <arg line="xml/periodic_table.xml"/>
+    </java>
   </target>
 
 

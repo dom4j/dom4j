@@ -36,6 +36,9 @@ public class XMLTableColumnDefinition implements Serializable {
     
     /** Holds value of property xpath. */
     private XPath xpath;
+    
+    /** Holds the XPath used for the column name */
+    private XPath columnNameXPath;
 
     public static int parseType(String typeName) {
         if ( typeName != null && typeName.length() > 0 ) {
@@ -64,6 +67,13 @@ public class XMLTableColumnDefinition implements Serializable {
     public XMLTableColumnDefinition(String name, XPath xpath, int type) {
         this.name = name;
         this.xpath = xpath;
+        this.type = type;
+    }
+    
+    public XMLTableColumnDefinition(XPath columnNameXPath, XPath xpath, int type) {
+        this.name = name;
+        this.xpath = xpath;
+        this.columnNameXPath = columnNameXPath;
         this.type = type;
     }
     
@@ -137,6 +147,20 @@ public class XMLTableColumnDefinition implements Serializable {
      */
     public void setXPath(XPath xpath) {
         this.xpath = xpath;
+    }
+    
+    /** 
+     * @return the XPath used to create the column name
+     */
+    public XPath getColumnNameXPath() {
+        return columnNameXPath;
+    }
+    
+    /** Setter for property xpath.
+     * @param xpath New value of property xpath.
+     */
+    public void setColumnNameXPath(XPath columnNameXPath) {
+        this.columnNameXPath = columnNameXPath;
     }
     
     // Implementation methods
