@@ -65,7 +65,7 @@ public class XSLTNativeDOMDemo extends XSLTDemo {
         
         System.out.println( "Converting to a W3C Document took: " + (end - start) + " milliseconds" );
         
-        // now lets create the TRaX source and result
+        // now lets create the TrAX source and result
         // objects and do the transformation
         Source source = new DOMSource( domDocument );
         StreamResult result = new StreamResult( System.out );

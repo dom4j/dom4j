@@ -15,7 +15,7 @@
     <section title="Features">
       <ul>
         <li>optimised for the Java platform with full support for Java 2 Collections</li>
-        <li>full support for JAXP, SAX, DOM, TRaX and XSLT</li>
+        <li>full support for JAXP, SAX, DOM, TrAX and XSLT</li>
         <li>fully integrated XPath support for easy navigation of XML documents
         </li>
         <li>event based proccessing mode to support for massive documents or XML streams

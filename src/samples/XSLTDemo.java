@@ -71,7 +71,7 @@ public class XSLTDemo extends SAXDemo {
             new StreamSource( xsl ) 
         );
         
-        // now lets create the TRaX source and result
+        // now lets create the TrAX source and result
         // objects and do the transformation
         Source source = new DocumentSource( document );
         DocumentResult result = new DocumentResult();

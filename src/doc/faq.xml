@@ -86,7 +86,7 @@ String title = document.valueOf( "/head/title" );
     </section>
 
     <section title="How can I use XSLT with dom4j?">
-      <p><i>dom4j</i> integrates with XSLT using the JAXP standard (TRaX) APIs.
+      <p><i>dom4j</i> integrates with XSLT using the JAXP standard (TrAX) APIs.
         A <i>dom4j</i> Document can be used as the source of XML to be styled or 
         the source of the stylesheet. 
         A <i>dom4j</i> Document can also be used as the result of a transformation. 
@@ -125,7 +125,7 @@ DocumentSource source = new DocumentSource( document );
 DocumentResult result = new StreamResult( new FileReader( "output.xml" ) );
 transformer.transform( source, result );
 </pre>
-      <p>For more information on JAXP and (TRaX) try 
+      <p>For more information on JAXP and (TrAX) try 
         <a href="http://java.sun.com/xml/">Sun's JAXP site</a>.
       </p>
     </section>

@@ -77,7 +77,7 @@
             <td>Partial</td>
         </tr>
         <tr>
-            <td>Support for JAXP/TRaX for XSLT integration</td>
+            <td>Support for JAXP/TrAX for XSLT integration</td>
             <td>Yes</td>
             <td>Yes</td>
             <td>Optional</td>

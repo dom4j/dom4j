@@ -207,7 +207,7 @@ matrix-concat( 'thanks ', /root/contributor, ' for working on ', '/@project' )
           <p>There following new features were added:-
           </p>
           <ul>
-            <li>Clean integration with XSLT via JAXP / TRaX API.
+            <li>Clean integration with XSLT via JAXP / TrAX API.
             </li>
             <li>New SAXValidator to allow validation on prebuild Document instances
             </li>
