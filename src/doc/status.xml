@@ -5,7 +5,10 @@
 
     <section title="Change History">
 
+<!--
       <section title="Changes in CVS since last release">
+-->      
+      <section title="1.4 Release">
         <p>Update of Cookbook containing a chapter about rule API.
         </p>
         <p>Patched SAXWriter to not pass in null System or Public IDs which can cause problems in Saxon.

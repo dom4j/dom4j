@@ -13,6 +13,8 @@
 
     <section title="News">
       <ul>
+        <li>The new <a href="status.html">dom4j 1.4</a> release is finally out featuring numerous bug fixes and patches.
+        </li>
         <li>Check out these new <a href="benchmarks/xpath/index.html">Performance Benchmarks</a> comparing dom4j and Jaxen against Xerces and Xalan. 
         </li>
         <li>The new <a href="status.html">dom4j 1.3</a> release is out featuring numerous bug fixes and patches.

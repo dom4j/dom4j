@@ -7,8 +7,8 @@
     <tstamp/>
     <property name="Name" value="dom4j"/>
     <property name="name" value="dom4j"/>
-    <property name="version" value="patched-1.3"/>
-    <property name="current.version" value="1.3"/>
+    <property name="version" value="1.4"/>
+    <property name="current.version" value="1.4"/>
     <property name="year" value="2001"/>
 
     <echo message="----------- ${Name} ${version} [${year}] ------------"/>
@@ -412,7 +412,7 @@
   <!-- Packages the distribution as .zip                                   -->
   <!-- =================================================================== -->
   <target name="dist-zip" depends="dist">
-    <zip zipfile="${dist.target}/${name}-daily.zip" basedir="${dist.jar.dir}"/>
+    <zip zipfile="${dist.target}/${name}-${version}.zip" basedir="${dist.jar.dir}"/>
   </target>
 
   <!-- =================================================================== -->
@@ -420,7 +420,7 @@
   <!-- =================================================================== -->
 <!--
   <target name="dist-jar" depends="dist">
-    <jar jarfile="${dist.target}/${name}-daily.jar" basedir="${dist.jar.dir}"/>
+    <jar jarfile="${dist.target}/${name}-${version}.jar" basedir="${dist.jar.dir}"/>
   </target>
 -->
 
@@ -428,8 +428,8 @@
   <!-- Packages the distribution with .tar.gzip                            -->
   <!-- =================================================================== -->
   <target name="dist-tgz" depends="dist">
-    <tar tarfile="${dist.target}/${name}-daily.tar" basedir="${dist.jar.dir}"/>
-    <gzip zipfile="${dist.target}/${name}-daily.tar.gz" src="${dist.target}/${name}-daily.tar"/>
+    <tar tarfile="${dist.target}/${name}-${version}.tar" basedir="${dist.jar.dir}"/>
+    <gzip zipfile="${dist.target}/${name}-${version}.tar.gz" src="${dist.target}/${name}-${version}.tar"/>
   </target>
 
 
@@ -493,9 +493,9 @@
 
   <target name="distclean" depends="clean">
     <delete dir="${dist.root}"/>
-    <delete file="${name}-daily.tar.gz"/>
-    <delete file="${name}-daily.tar"/>
-    <delete file="${name}-daily.zip"/>
+    <delete file="${name}-${version}.tar.gz"/>
+    <delete file="${name}-${version}.tar"/>
+    <delete file="${name}-${version}.zip"/>
   </target>
 
   <!-- =================================================================== -->
