@@ -101,6 +101,8 @@ public class SAXWriter implements XMLReader {
       */
     public void write(Document document) throws SAXException {
         if (document != null) {       
+            checkForNullHandlers();
+            
             documentLocator(document);
             startDocument();            
             entityResolver(document);
@@ -525,7 +527,12 @@ public class SAXWriter implements XMLReader {
         }
         return namespaces.containsPrefix( namespace.getPrefix() );
     }
-    
+
+    /** Ensures non-null content handlers?
+      */
+    protected void checkForNullHandlers() {
+    }
+
 }
 
 

@@ -18,6 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.Reader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -148,11 +149,14 @@ public class SAXReader {
       * @throws DocumentException if an error occurs during parsing.
       * @throws FileNotFoundException if the file could not be found
       */
-    public Document read(File file) throws DocumentException, FileNotFoundException {
+    public Document read(File file) throws DocumentException, MalformedURLException {
+        return read( file.toURL() );
+/*        
         Document document = read(new BufferedReader(new FileReader(file)));
         //Document document = read(file.getAbsolutePath());
         document.setName( file.getAbsolutePath() );
         return document;
+*/
     }
     
     /** <p>Reads a Document from the given <code>URL</code> using SAX</p>

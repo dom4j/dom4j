@@ -36,6 +36,7 @@ class DocumentInputSource extends InputSource {
 
     public DocumentInputSource(Document document) {
         this.document = document;
+        setSystemId( document.getName() );
     }
 
 
@@ -52,6 +53,7 @@ class DocumentInputSource extends InputSource {
       */
     public void setDocument(Document document) {
         this.document = document;
+        setSystemId( document.getName() );
     }
 
 

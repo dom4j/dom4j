@@ -524,11 +524,11 @@
   </target>
 
   <target name="demo-xslt" depends="samples">
-    <java classname="XSLTDemo" args="xml/nitf_sample.xml xml/nitf_ashtml.xsl"/>
+    <java classname="XSLTDemo" args="xml/nitf/sample.xml xml/nitf/ashtml.xsl"/>
   </target>
 
   <target name="demo-domxslt" depends="samples">
-    <java classname="dom.XSLTNativeDOMDemo" args="xml/nitf_sample.xml xml/nitf_ashtml.xsl"/>
+    <java classname="dom.XSLTNativeDOMDemo" args="xml/nitf/sample.xml xml/nitf/ashtml.xsl"/>
   </target>
 
   <target name="demo-swing" depends="samples">
@@ -545,6 +545,10 @@
 
   <target name="demo-bean" depends="samples">
     <java classname="bean.BeanDemo" args="xml/bean/gui.xml"/>
+  </target>
+
+  <target name="demo-validate" depends="samples">
+    <java classname="ValidateDemo" args="xml/nitf/sample.xml"/>
   </target>
 
 

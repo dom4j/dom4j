@@ -127,9 +127,11 @@ class SAXHelper {
                 e.printStackTrace();
             }
             else {
+/*                
                 System.out.println( 
                     "Info: Could not use JAXP to load a SAXParser. Will use Aelfred instead" 
                 );
+*/
             }
         }
         return null;

@@ -9,22 +9,27 @@
 
 package org.dom4j.io;
 
+import java.io.IOException;
+
 import org.dom4j.Document;
 
+import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
 
-/** <p><code>SAXValidator</code> writes a DOM4J tree to a SAX XMLReader to
-  * validate that it conforms to a DTD or XML Schema.</p>
+/** <p><code>SAXValidator</code> validates an XML document by 
+  * writing the document to a text buffer and parsing it with a validating
+  * SAX parser. 
+  * This could be implemented much more efficiently by validating against the 
+  * dom4j object model directly but at least allows the reuse of existing
+  * SAX based validating parsers.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
 public class SAXValidator {
 
-    /** <code>SAXWriter</code> used to write SAX events to a validating SAX parser */
-    private SAXWriter saxWriter = new SAXWriter();
-    
     /** <code>XMLReader</code> used to parse the SAX events */
     private XMLReader xmlReader;
     
@@ -47,9 +52,15 @@ public class SAXValidator {
       */
     public void validate(Document document) throws SAXException {
         if (document != null) {       
-            configureReader();
-            saxWriter.setXMLReader( xmlReader );
-            saxWriter.write( document );
+            XMLReader xmlReader = getXMLReader();
+            try {
+                xmlReader.parse( new DocumentInputSource( document ) );
+            }
+            catch (IOException e) {
+                throw new RuntimeException( 
+                    "Caught and exception that should never happen: " + e 
+                );
+            }
         }
     }
     
@@ -71,8 +82,9 @@ public class SAXValidator {
       *
       * @param xmlReader is the <code>XMLReader</code> to parse SAX events
       */
-    public void setXMLReader(XMLReader xmlReader) {
+    public void setXMLReader(XMLReader xmlReader) throws SAXException {
         this.xmlReader = xmlReader;
+        configureReader();
     }
 
     
@@ -87,6 +99,11 @@ public class SAXValidator {
     
     /** Configures the XMLReader before use */
     protected void configureReader() throws SAXException {                
+        ContentHandler handler = xmlReader.getContentHandler();
+        if ( handler == null ) {
+            xmlReader.setContentHandler( new DefaultHandler() );
+        }
+        
         // configure validation support
         xmlReader.setFeature(
             "http://xml.org/sax/features/validation", 

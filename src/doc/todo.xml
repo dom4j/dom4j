@@ -24,6 +24,13 @@
         </li>
         <li>Build an XML Schema Data Types aware DocumentFactory
         </li>
+        <li>Build validators using dom4j API such as:-
+          <ul>
+            <li><a href="http://www.w3.org/XML/Schema">XML Schema</a></li>
+            <li><a href="http://xml.ascc.net/xml/resource/schematron/schematron.html">Schematron</a></li>
+            <li><a href="http://www.thaiopensource.com/trex/">TReX</a></li>
+          </ul>
+        </li>
         <li>Implement XSLT engine on top of DOM4J
         </li>
         <li>XML Query implementation on top of DOM4J
