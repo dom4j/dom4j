@@ -80,6 +80,9 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
 
     /** Flag used to indicate that we are inside a CDATA section */
     private boolean insideCDATASection;
+    
+    /** buffer to hold contents of cdata section across multiple characters events */
+    private StringBuffer cdataText;
 
     /** namespaces that are available for use */
     private Map availableNamespaceMap = new HashMap();
@@ -278,7 +281,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
                 if ( mergeAdjacentText && textInTextBuffer ) {
                     completeCurrentTextNode();
                 }
-                currentElement.addCDATA(new String(ch, start, end));
+                cdataText.append(new String(ch, start, end));
             }
             else {
                 if ( mergeAdjacentText ) {
@@ -377,10 +380,12 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
 
     public void startCDATA() throws SAXException {
         insideCDATASection = true;
+        cdataText = new StringBuffer();
     }
 
     public void endCDATA() throws SAXException {
         insideCDATASection = false;
+        currentElement.addCDATA(cdataText.toString());
     }
 
     public void comment(char[] ch, int start, int end) throws SAXException {
