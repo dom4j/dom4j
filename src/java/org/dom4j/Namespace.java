@@ -92,7 +92,10 @@ public class Namespace extends AbstractNode {
         return hashCode;
     }
 
-  
+    /**
+     * Checks whether this Namespace equals the given Namespace. Two Namespaces
+     * are equals if their URI and prefix are equal.
+     */  
     public boolean equals(Object object) {
         if ( this == object ) {
             return true;
