@@ -9,6 +9,13 @@
 
     <release version="1.5-dev" date="in CVS">
       <action dev="maartenc" type="update" due-to="Wonne Keysers">
+        Added method to <code>ElementStack</code> and <code>DispatchHandler</code> to check
+        if a handler is registered for a given path.
+      </action>
+      <action dev="maartenc" type="update" due-to="Wonne Keysers">
+        <code>ElementStack</code> is now a public class.
+      </action>
+      <action dev="maartenc" type="update" due-to="Wonne Keysers">
         <code>SAXContentHandler.endElement(...)</code> can now throw <code>SAXException</code>.
       </action>
       <action dev="maartenc" type="fix" due-to="Aaron Bell">
