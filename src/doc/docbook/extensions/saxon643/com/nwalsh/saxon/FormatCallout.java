@@ -53,9 +53,9 @@ public abstract class FormatCallout {
       // Otherwise, if its parent is an areaset and it has a label, use that
       Element parent = (Element) area.getParentNode();
       if (parent != null
-	  && parent.getLocalName().equalsIgnoreCase("areaset")
-	  && parent.hasAttribute("label")) {
-	label = parent.getAttribute("label");
+      && parent.getLocalName().equalsIgnoreCase("areaset")
+      && parent.hasAttribute("label")) {
+    label = parent.getAttribute("label");
       }
     }
 
@@ -84,7 +84,7 @@ public abstract class FormatCallout {
   }
 
   public void formatTextCallout(Emitter rtfEmitter,
-				Callout callout) {
+                Callout callout) {
     Element area = callout.getArea();
     int num = callout.getCallout();
     String userLabel = areaLabel(area);
@@ -106,6 +106,6 @@ public abstract class FormatCallout {
   }
 
   public abstract void formatCallout(Emitter rtfEmitter,
-				     Callout callout);
+                     Callout callout);
 }
 

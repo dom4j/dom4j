@@ -38,10 +38,10 @@ public class FormatUnicodeCallout extends FormatCallout {
   String unicodeFont = "";
 
   public FormatUnicodeCallout(NamePool nPool,
-			      String font,
-			      int start,
-			      int max,
-			      boolean fo) {
+                  String font,
+                  int start,
+                  int max,
+                  boolean fo) {
     super(nPool, fo);
     unicodeFont = font;
     unicodeMax = max;
@@ -49,7 +49,7 @@ public class FormatUnicodeCallout extends FormatCallout {
   }
 
   public void formatCallout(Emitter rtfEmitter,
-			    Callout callout) {
+                Callout callout) {
     Element area = callout.getArea();
     int num = callout.getCallout();
     String userLabel = areaLabel(area);
@@ -61,35 +61,35 @@ public class FormatUnicodeCallout extends FormatCallout {
 
     try {
       if (userLabel == null && num <= unicodeMax) {
-	int inName = 0;
-	AttributeCollection inAttr = null;
-	int namespaces[] = new int[1];
+    int inName = 0;
+    AttributeCollection inAttr = null;
+    int namespaces[] = new int[1];
 
-	if (!unicodeFont.equals("")) {
-	  if (foStylesheet) {
-	    inName = namePool.allocate("fo", foURI, "inline");
-	    inAttr = new AttributeCollection(namePool);
-	    inAttr.addAttribute("", "", "font-family", "CDATA", unicodeFont);
-	  } else {
-	    inName = namePool.allocate("", "", "font");
-	    inAttr = new AttributeCollection(namePool);
-	    inAttr.addAttribute("", "", "face", "CDATA", unicodeFont);
-	  }
-
-	  startSpan(rtfEmitter);
-	  rtfEmitter.startElement(inName, inAttr, namespaces, 0);
-	}
-
-	char chars[] = new char[1];
-	chars[0] = (char) (unicodeStart + num - 1);
-	rtfEmitter.characters(chars, 0, 1);
-
-	if (!unicodeFont.equals("")) {
-	  rtfEmitter.endElement(inName);
-	  endSpan(rtfEmitter);
-	}
+    if (!unicodeFont.equals("")) {
+      if (foStylesheet) {
+        inName = namePool.allocate("fo", foURI, "inline");
+        inAttr = new AttributeCollection(namePool);
+        inAttr.addAttribute("", "", "font-family", "CDATA", unicodeFont);
       } else {
-	formatTextCallout(rtfEmitter, callout);
+        inName = namePool.allocate("", "", "font");
+        inAttr = new AttributeCollection(namePool);
+        inAttr.addAttribute("", "", "face", "CDATA", unicodeFont);
+      }
+
+      startSpan(rtfEmitter);
+      rtfEmitter.startElement(inName, inAttr, namespaces, 0);
+    }
+
+    char chars[] = new char[1];
+    chars[0] = (char) (unicodeStart + num - 1);
+    rtfEmitter.characters(chars, 0, 1);
+
+    if (!unicodeFont.equals("")) {
+      rtfEmitter.endElement(inName);
+      endSpan(rtfEmitter);
+    }
+      } else {
+    formatTextCallout(rtfEmitter, callout);
       }
     } catch (TransformerException e) {
       System.out.println("Transformer Exception in graphic formatCallout");

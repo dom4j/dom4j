@@ -87,14 +87,14 @@ public class NamespaceSupport
      * to the "xml" prefix.</p>
      */
     public final static String XMLNS =
-	"http://www.w3.org/XML/1998/namespace";
+    "http://www.w3.org/XML/1998/namespace";
 
 
     /**
      * An empty enumeration.
      */
     private final static Enumeration EMPTY_ENUMERATION =
-	new Vector().elements();
+    new Vector().elements();
 
 
     ////////////////////////////////////////////////////////////////////
@@ -107,7 +107,7 @@ public class NamespaceSupport
      */
     public NamespaceSupport ()
     {
-	reset();
+    reset();
     }
 
 
@@ -125,10 +125,10 @@ public class NamespaceSupport
      */
     public void reset ()
     {
-	contexts = new Context[32];
-	contextPos = 0;
-	contexts[contextPos] = currentContext = new Context();
-	currentContext.declarePrefix("xml", XMLNS);
+    contexts = new Context[32];
+    contextPos = 0;
+    contexts[contextPos] = currentContext = new Context();
+    currentContext.declarePrefix("xml", XMLNS);
     }
 
 
@@ -170,29 +170,29 @@ public class NamespaceSupport
      */
     public void pushContext ()
     {
-	int max = contexts.length;
+    int max = contexts.length;
 
-	contexts [contextPos].declsOK = false;
-	contextPos++;
+    contexts [contextPos].declsOK = false;
+    contextPos++;
 
-				// Extend the array if necessary
-	if (contextPos >= max) {
-	    Context newContexts[] = new Context[max*2];
-	    System.arraycopy(contexts, 0, newContexts, 0, max);
-	    max *= 2;
-	    contexts = newContexts;
-	}
+                // Extend the array if necessary
+    if (contextPos >= max) {
+        Context newContexts[] = new Context[max*2];
+        System.arraycopy(contexts, 0, newContexts, 0, max);
+        max *= 2;
+        contexts = newContexts;
+    }
 
-				// Allocate the context if necessary.
-	currentContext = contexts[contextPos];
-	if (currentContext == null) {
-	    contexts[contextPos] = currentContext = new Context();
-	}
+                // Allocate the context if necessary.
+    currentContext = contexts[contextPos];
+    if (currentContext == null) {
+        contexts[contextPos] = currentContext = new Context();
+    }
 
-				// Set the parent, if any.
-	if (contextPos > 0) {
-	    currentContext.setParent(contexts[contextPos - 1]);
-	}
+                // Set the parent, if any.
+    if (contextPos > 0) {
+        currentContext.setParent(contexts[contextPos - 1]);
+    }
     }
 
 
@@ -211,12 +211,12 @@ public class NamespaceSupport
      */
     public void popContext ()
     {
-	contexts[contextPos].clear();
-	contextPos--;
-	if (contextPos < 0) {
-	    throw new EmptyStackException();
-	}
-	currentContext = contexts[contextPos];
+    contexts[contextPos].clear();
+    contextPos--;
+    if (contextPos < 0) {
+        throw new EmptyStackException();
+    }
+    currentContext = contexts[contextPos];
     }
 
 
@@ -255,13 +255,13 @@ public class NamespaceSupport
      * for attribute names, where the default prefix is not allowed.</p>
      *
      * @param prefix The prefix to declare, or the empty string to
-     *	indicate the default element namespace.  This may never have
-     *	the value "xml" or "xmlns".
+     *  indicate the default element namespace.  This may never have
+     *  the value "xml" or "xmlns".
      * @param uri The Namespace URI to associate with the prefix.
      * @return true if the prefix was legal, false otherwise
      * @exception IllegalStateException when a prefix is declared
-     *	after looking up a name in the context, or after pushing
-     *	another context on top of it.
+     *  after looking up a name in the context, or after pushing
+     *  another context on top of it.
      *
      * @see #processName
      * @see #getURI
@@ -269,12 +269,12 @@ public class NamespaceSupport
      */
     public boolean declarePrefix (String prefix, String uri)
     {
-	if (prefix.equals("xml") || prefix.equals("xmlns")) {
-	    return false;
-	} else {
-	    currentContext.declarePrefix(prefix, uri);
-	    return true;
-	}
+    if (prefix.equals("xml") || prefix.equals("xmlns")) {
+        return false;
+    } else {
+        currentContext.declarePrefix(prefix, uri);
+        return true;
+    }
     }
 
 
@@ -318,17 +318,17 @@ public class NamespaceSupport
      * @see #declarePrefix
      * @see java.lang.String#intern */
     public String [] processName (String qName, String parts[],
-				  boolean isAttribute)
+                  boolean isAttribute)
     {
-	String myParts[] = currentContext.processName(qName, isAttribute);
-	if (myParts == null) {
-	    return null;
-	} else {
-	    parts[0] = myParts[0];
-	    parts[1] = myParts[1];
-	    parts[2] = myParts[2];
-	    return parts;
-	}
+    String myParts[] = currentContext.processName(qName, isAttribute);
+    if (myParts == null) {
+        return null;
+    } else {
+        parts[0] = myParts[0];
+        parts[1] = myParts[1];
+        parts[2] = myParts[2];
+        return parts;
+    }
     }
 
 
@@ -346,7 +346,7 @@ public class NamespaceSupport
      */
     public String getURI (String prefix)
     {
-	return currentContext.getURI(prefix);
+    return currentContext.getURI(prefix);
     }
 
 
@@ -365,7 +365,7 @@ public class NamespaceSupport
      */
     public Enumeration getPrefixes ()
     {
-	return currentContext.getPrefixes();
+    return currentContext.getPrefixes();
     }
 
 
@@ -392,7 +392,7 @@ public class NamespaceSupport
      */
     public String getPrefix (String uri)
     {
-	return currentContext.getPrefix(uri);
+    return currentContext.getPrefix(uri);
     }
 
 
@@ -419,15 +419,15 @@ public class NamespaceSupport
      */
     public Enumeration getPrefixes (String uri)
     {
-	Vector prefixes = new Vector();
-	Enumeration allPrefixes = getPrefixes();
-	while (allPrefixes.hasMoreElements()) {
-	    String prefix = (String)allPrefixes.nextElement();
-	    if (uri.equals(getURI(prefix))) {
-		prefixes.addElement(prefix);
-	    }
-	}
-	return prefixes.elements();
+    Vector prefixes = new Vector();
+    Enumeration allPrefixes = getPrefixes();
+    while (allPrefixes.hasMoreElements()) {
+        String prefix = (String)allPrefixes.nextElement();
+        if (uri.equals(getURI(prefix))) {
+        prefixes.addElement(prefix);
+        }
+    }
+    return prefixes.elements();
     }
 
 
@@ -445,7 +445,7 @@ public class NamespaceSupport
      */
     public Enumeration getDeclaredPrefixes ()
     {
-	return currentContext.getDeclaredPrefixes();
+    return currentContext.getDeclaredPrefixes();
     }
 
 
@@ -478,291 +478,291 @@ public class NamespaceSupport
      */
     final class Context {
 
-	/**
-	 * Create the root-level Namespace context.
-	 */
-	Context ()
-	{
-	    copyTables();
-	}
-	
-	
-	/**
-	 * (Re)set the parent of this Namespace context.
-	 * The context must either have been freshly constructed,
-	 * or must have been cleared.
-	 *
-	 * @param context The parent Namespace context object.
-	 */
-	void setParent (Context parent)
-	{
-	    this.parent = parent;
-	    declarations = null;
-	    prefixTable = parent.prefixTable;
-	    uriTable = parent.uriTable;
-	    elementNameTable = parent.elementNameTable;
-	    attributeNameTable = parent.attributeNameTable;
-	    defaultNS = parent.defaultNS;
-	    declSeen = false;
-	    declsOK = true;
-	}
+    /**
+     * Create the root-level Namespace context.
+     */
+    Context ()
+    {
+        copyTables();
+    }
+    
+    
+    /**
+     * (Re)set the parent of this Namespace context.
+     * The context must either have been freshly constructed,
+     * or must have been cleared.
+     *
+     * @param context The parent Namespace context object.
+     */
+    void setParent (Context parent)
+    {
+        this.parent = parent;
+        declarations = null;
+        prefixTable = parent.prefixTable;
+        uriTable = parent.uriTable;
+        elementNameTable = parent.elementNameTable;
+        attributeNameTable = parent.attributeNameTable;
+        defaultNS = parent.defaultNS;
+        declSeen = false;
+        declsOK = true;
+    }
 
-	/**
-	 * Makes associated state become collectible,
-	 * invalidating this context.
-	 * {@link #setParent} must be called before
-	 * this context may be used again.
-	 */
-	void clear ()
-	{
-	    parent = null;
-	    prefixTable = null;
-	    uriTable = null;
-	    elementNameTable = null;
-	    attributeNameTable = null;
-	    defaultNS = null;
-	}
-	
-	
-	/**
-	 * Declare a Namespace prefix for this context.
-	 *
-	 * @param prefix The prefix to declare.
-	 * @param uri The associated Namespace URI.
-	 * @see org.xml.sax.helpers.NamespaceSupport#declarePrefix
-	 */
-	void declarePrefix (String prefix, String uri)
-	{
-				// Lazy processing...
-	    if (!declsOK)
-		throw new IllegalStateException (
-		    "can't declare any more prefixes in this context");
-	    if (!declSeen) {
-		copyTables();
-	    }
-	    if (declarations == null) {
-		declarations = new Vector();
-	    }
-	    
-	    prefix = prefix.intern();
-	    uri = uri.intern();
-	    if ("".equals(prefix)) {
-		if ("".equals(uri)) {
-		    defaultNS = null;
-		} else {
-		    defaultNS = uri;
-		}
-	    } else {
-		prefixTable.put(prefix, uri);
-		uriTable.put(uri, prefix); // may wipe out another prefix
-	    }
-	    declarations.addElement(prefix);
-	}
-
-
-	/**
-	 * Process a raw XML 1.0 name in this context.
-	 *
-	 * @param qName The raw XML 1.0 name.
-	 * @param isAttribute true if this is an attribute name.
-	 * @return An array of three strings containing the
-	 *         URI part (or empty string), the local part,
-	 *         and the raw name, all internalized, or null
-	 *         if there is an undeclared prefix.
-	 * @see org.xml.sax.helpers.NamespaceSupport#processName
-	 */
-	String [] processName (String qName, boolean isAttribute)
-	{
-	    String name[];
-	    Hashtable table;
-	    
-	    			// detect errors in call sequence
-	    declsOK = false;
-
-				// Select the appropriate table.
-	    if (isAttribute) {
-		table = attributeNameTable;
-	    } else {
-		table = elementNameTable;
-	    }
-	    
-				// Start by looking in the cache, and
-				// return immediately if the name
-				// is already known in this content
-	    name = (String[])table.get(qName);
-	    if (name != null) {
-		return name;
-	    }
-	    
-				// We haven't seen this name in this
-				// context before.  Maybe in the parent
-				// context, but we can't assume prefix
-				// bindings are the same.
-	    name = new String[3];
-	    name[2] = qName.intern();
-	    int index = qName.indexOf(':');
-	    
-	    
-				// No prefix.
-	    if (index == -1) {
-		if (isAttribute || defaultNS == null) {
-		    name[0] = "";
-		} else {
-		    name[0] = defaultNS;
-		}
-		name[1] = name[2];
-	    }
-	    
-				// Prefix
-	    else {
-		String prefix = qName.substring(0, index);
-		String local = qName.substring(index+1);
-		String uri;
-		if ("".equals(prefix)) {
-		    uri = defaultNS;
-		} else {
-		    uri = (String)prefixTable.get(prefix);
-		}
-		if (uri == null) {
-		    return null;
-		}
-		name[0] = uri;
-		name[1] = local.intern();
-	    }
-	    
-				// Save in the cache for future use.
-				// (Could be shared with parent context...)
-	    table.put(name[2], name);
-	    return name;
-	}
-	
-
-	/**
-	 * Look up the URI associated with a prefix in this context.
-	 *
-	 * @param prefix The prefix to look up.
-	 * @return The associated Namespace URI, or null if none is
-	 *         declared.	
-	 * @see org.xml.sax.helpers.NamespaceSupport#getURI
-	 */
-	String getURI (String prefix)
-	{
-	    if ("".equals(prefix)) {
-		return defaultNS;
-	    } else if (prefixTable == null) {
-		return null;
-	    } else {
-		return (String)prefixTable.get(prefix);
-	    }
-	}
+    /**
+     * Makes associated state become collectible,
+     * invalidating this context.
+     * {@link #setParent} must be called before
+     * this context may be used again.
+     */
+    void clear ()
+    {
+        parent = null;
+        prefixTable = null;
+        uriTable = null;
+        elementNameTable = null;
+        attributeNameTable = null;
+        defaultNS = null;
+    }
+    
+    
+    /**
+     * Declare a Namespace prefix for this context.
+     *
+     * @param prefix The prefix to declare.
+     * @param uri The associated Namespace URI.
+     * @see org.xml.sax.helpers.NamespaceSupport#declarePrefix
+     */
+    void declarePrefix (String prefix, String uri)
+    {
+                // Lazy processing...
+        if (!declsOK)
+        throw new IllegalStateException (
+            "can't declare any more prefixes in this context");
+        if (!declSeen) {
+        copyTables();
+        }
+        if (declarations == null) {
+        declarations = new Vector();
+        }
+        
+        prefix = prefix.intern();
+        uri = uri.intern();
+        if ("".equals(prefix)) {
+        if ("".equals(uri)) {
+            defaultNS = null;
+        } else {
+            defaultNS = uri;
+        }
+        } else {
+        prefixTable.put(prefix, uri);
+        uriTable.put(uri, prefix); // may wipe out another prefix
+        }
+        declarations.addElement(prefix);
+    }
 
 
-	/**
-	 * Look up one of the prefixes associated with a URI in this context.
-	 *
-	 * <p>Since many prefixes may be mapped to the same URI,
-	 * the return value may be unreliable.</p>
-	 *
-	 * @param uri The URI to look up.
-	 * @return The associated prefix, or null if none is declared.
-	 * @see org.xml.sax.helpers.NamespaceSupport#getPrefix
-	 */
-	String getPrefix (String uri)
-	{
-	    if (uriTable == null) {
-		return null;
-	    } else {
-		return (String)uriTable.get(uri);
-	    }
-	}
-	
-	
-	/**
-	 * Return an enumeration of prefixes declared in this context.
-	 *
-	 * @return An enumeration of prefixes (possibly empty).
-	 * @see org.xml.sax.helpers.NamespaceSupport#getDeclaredPrefixes
-	 */
-	Enumeration getDeclaredPrefixes ()
-	{
-	    if (declarations == null) {
-		return EMPTY_ENUMERATION;
-	    } else {
-		return declarations.elements();
-	    }
-	}
-	
-	
-	/**
-	 * Return an enumeration of all prefixes currently in force.
-	 *
-	 * <p>The default prefix, if in force, is <em>not</em>
-	 * returned, and will have to be checked for separately.</p>
-	 *
-	 * @return An enumeration of prefixes (never empty).
-	 * @see org.xml.sax.helpers.NamespaceSupport#getPrefixes
-	 */
-	Enumeration getPrefixes ()
-	{
-	    if (prefixTable == null) {
-		return EMPTY_ENUMERATION;
-	    } else {
-		return prefixTable.keys();
-	    }
-	}
-	
-	
+    /**
+     * Process a raw XML 1.0 name in this context.
+     *
+     * @param qName The raw XML 1.0 name.
+     * @param isAttribute true if this is an attribute name.
+     * @return An array of three strings containing the
+     *         URI part (or empty string), the local part,
+     *         and the raw name, all internalized, or null
+     *         if there is an undeclared prefix.
+     * @see org.xml.sax.helpers.NamespaceSupport#processName
+     */
+    String [] processName (String qName, boolean isAttribute)
+    {
+        String name[];
+        Hashtable table;
+        
+                    // detect errors in call sequence
+        declsOK = false;
+
+                // Select the appropriate table.
+        if (isAttribute) {
+        table = attributeNameTable;
+        } else {
+        table = elementNameTable;
+        }
+        
+                // Start by looking in the cache, and
+                // return immediately if the name
+                // is already known in this content
+        name = (String[])table.get(qName);
+        if (name != null) {
+        return name;
+        }
+        
+                // We haven't seen this name in this
+                // context before.  Maybe in the parent
+                // context, but we can't assume prefix
+                // bindings are the same.
+        name = new String[3];
+        name[2] = qName.intern();
+        int index = qName.indexOf(':');
+        
+        
+                // No prefix.
+        if (index == -1) {
+        if (isAttribute || defaultNS == null) {
+            name[0] = "";
+        } else {
+            name[0] = defaultNS;
+        }
+        name[1] = name[2];
+        }
+        
+                // Prefix
+        else {
+        String prefix = qName.substring(0, index);
+        String local = qName.substring(index+1);
+        String uri;
+        if ("".equals(prefix)) {
+            uri = defaultNS;
+        } else {
+            uri = (String)prefixTable.get(prefix);
+        }
+        if (uri == null) {
+            return null;
+        }
+        name[0] = uri;
+        name[1] = local.intern();
+        }
+        
+                // Save in the cache for future use.
+                // (Could be shared with parent context...)
+        table.put(name[2], name);
+        return name;
+    }
+    
+
+    /**
+     * Look up the URI associated with a prefix in this context.
+     *
+     * @param prefix The prefix to look up.
+     * @return The associated Namespace URI, or null if none is
+     *         declared.    
+     * @see org.xml.sax.helpers.NamespaceSupport#getURI
+     */
+    String getURI (String prefix)
+    {
+        if ("".equals(prefix)) {
+        return defaultNS;
+        } else if (prefixTable == null) {
+        return null;
+        } else {
+        return (String)prefixTable.get(prefix);
+        }
+    }
+
+
+    /**
+     * Look up one of the prefixes associated with a URI in this context.
+     *
+     * <p>Since many prefixes may be mapped to the same URI,
+     * the return value may be unreliable.</p>
+     *
+     * @param uri The URI to look up.
+     * @return The associated prefix, or null if none is declared.
+     * @see org.xml.sax.helpers.NamespaceSupport#getPrefix
+     */
+    String getPrefix (String uri)
+    {
+        if (uriTable == null) {
+        return null;
+        } else {
+        return (String)uriTable.get(uri);
+        }
+    }
+    
+    
+    /**
+     * Return an enumeration of prefixes declared in this context.
+     *
+     * @return An enumeration of prefixes (possibly empty).
+     * @see org.xml.sax.helpers.NamespaceSupport#getDeclaredPrefixes
+     */
+    Enumeration getDeclaredPrefixes ()
+    {
+        if (declarations == null) {
+        return EMPTY_ENUMERATION;
+        } else {
+        return declarations.elements();
+        }
+    }
+    
+    
+    /**
+     * Return an enumeration of all prefixes currently in force.
+     *
+     * <p>The default prefix, if in force, is <em>not</em>
+     * returned, and will have to be checked for separately.</p>
+     *
+     * @return An enumeration of prefixes (never empty).
+     * @see org.xml.sax.helpers.NamespaceSupport#getPrefixes
+     */
+    Enumeration getPrefixes ()
+    {
+        if (prefixTable == null) {
+        return EMPTY_ENUMERATION;
+        } else {
+        return prefixTable.keys();
+        }
+    }
+    
+    
 
-	////////////////////////////////////////////////////////////////
-	// Internal methods.
-	////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////
+    // Internal methods.
+    ////////////////////////////////////////////////////////////////
 
 
-	/**
-	 * Copy on write for the internal tables in this context.
-	 *
-	 * <p>This class is optimized for the normal case where most
-	 * elements do not contain Namespace declarations.</p>
-	 */	
-	private void copyTables ()
-	{
-	    if (prefixTable != null) {
-		prefixTable = (Hashtable)prefixTable.clone();
-	    } else {
-		prefixTable = new Hashtable();
-	    }
-	    if (uriTable != null) {
-		uriTable = (Hashtable)uriTable.clone();
-	    } else {
-		uriTable = new Hashtable();
-	    }
-	    elementNameTable = new Hashtable();
-	    attributeNameTable = new Hashtable();
-	    declSeen = true;
-	}
+    /**
+     * Copy on write for the internal tables in this context.
+     *
+     * <p>This class is optimized for the normal case where most
+     * elements do not contain Namespace declarations.</p>
+     */ 
+    private void copyTables ()
+    {
+        if (prefixTable != null) {
+        prefixTable = (Hashtable)prefixTable.clone();
+        } else {
+        prefixTable = new Hashtable();
+        }
+        if (uriTable != null) {
+        uriTable = (Hashtable)uriTable.clone();
+        } else {
+        uriTable = new Hashtable();
+        }
+        elementNameTable = new Hashtable();
+        attributeNameTable = new Hashtable();
+        declSeen = true;
+    }
 
-
-
-	////////////////////////////////////////////////////////////////
-	// Protected state.
-	////////////////////////////////////////////////////////////////
-	
-	Hashtable prefixTable;
-	Hashtable uriTable;
-	Hashtable elementNameTable;
-	Hashtable attributeNameTable;
-	String defaultNS = null;
-	boolean declsOK = true;
-	
 
 
-	////////////////////////////////////////////////////////////////
-	// Internal state.
-	////////////////////////////////////////////////////////////////
-	
-	private Vector declarations = null;
-	private boolean declSeen = false;
-	private Context parent = null;
+    ////////////////////////////////////////////////////////////////
+    // Protected state.
+    ////////////////////////////////////////////////////////////////
+    
+    Hashtable prefixTable;
+    Hashtable uriTable;
+    Hashtable elementNameTable;
+    Hashtable attributeNameTable;
+    String defaultNS = null;
+    boolean declsOK = true;
+    
+
+
+    ////////////////////////////////////////////////////////////////
+    // Internal state.
+    ////////////////////////////////////////////////////////////////
+    
+    private Vector declarations = null;
+    private boolean declSeen = false;
+    private Context parent = null;
     }
 }
 

@@ -106,14 +106,14 @@ public class Text extends StyleElement {
 
     try {
       try {
-	fileURL = new URL(href);
+    fileURL = new URL(href);
       } catch (MalformedURLException e1) {
-	try {
-	  fileURL = new URL("file:" + href);
-	} catch (MalformedURLException e2) {
-	  System.out.println("Cannot open " + href);
-	  return;
-	}
+    try {
+      fileURL = new URL("file:" + href);
+    } catch (MalformedURLException e2) {
+      System.out.println("Cannot open " + href);
+      return;
+    }
       }
 
       InputStreamReader isr = new InputStreamReader(fileURL.openStream());
@@ -122,7 +122,7 @@ public class Text extends StyleElement {
       char chars[] = new char[4096];
       int len = 0;
       while ((len = is.read(chars)) > 0) {
-	out.writeContent(chars, 0, len);
+    out.writeContent(chars, 0, len);
       }
       is.close();
     } catch (Exception e) {

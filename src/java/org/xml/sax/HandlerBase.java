@@ -71,9 +71,9 @@ public class HandlerBase
      * @see org.xml.sax.EntityResolver#resolveEntity
      */
     public InputSource resolveEntity (String publicId, String systemId)
-	throws SAXException
+    throws SAXException
     {
-	return null;
+    return null;
     }
     
     
@@ -98,7 +98,7 @@ public class HandlerBase
      */
     public void notationDecl (String name, String publicId, String systemId)
     {
-	// no op
+    // no op
     }
     
     
@@ -117,9 +117,9 @@ public class HandlerBase
      * @see org.xml.sax.DTDHandler#unparsedEntityDecl
      */
     public void unparsedEntityDecl (String name, String publicId,
-				    String systemId, String notationName)
+                    String systemId, String notationName)
     {
-	// no op
+    // no op
     }
     
     
@@ -142,7 +142,7 @@ public class HandlerBase
      */
     public void setDocumentLocator (Locator locator)
     {
-	// no op
+    // no op
     }
     
     
@@ -159,9 +159,9 @@ public class HandlerBase
      * @see org.xml.sax.DocumentHandler#startDocument
      */
     public void startDocument ()
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
     
     
@@ -178,9 +178,9 @@ public class HandlerBase
      * @see org.xml.sax.DocumentHandler#endDocument
      */
     public void endDocument ()
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
     
     
@@ -199,9 +199,9 @@ public class HandlerBase
      * @see org.xml.sax.DocumentHandler#startElement
      */
     public void startElement (String name, AttributeList attributes)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
     
     
@@ -220,9 +220,9 @@ public class HandlerBase
      * @see org.xml.sax.DocumentHandler#endElement
      */
     public void endElement (String name)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
     
     
@@ -243,9 +243,9 @@ public class HandlerBase
      * @see org.xml.sax.DocumentHandler#characters
      */
     public void characters (char ch[], int start, int length)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
     
     
@@ -266,9 +266,9 @@ public class HandlerBase
      * @see org.xml.sax.DocumentHandler#ignorableWhitespace
      */
     public void ignorableWhitespace (char ch[], int start, int length)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
     
     
@@ -288,9 +288,9 @@ public class HandlerBase
      * @see org.xml.sax.DocumentHandler#processingInstruction
      */
     public void processingInstruction (String target, String data)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
     
     
@@ -315,9 +315,9 @@ public class HandlerBase
      * @see org.xml.sax.SAXParseException
      */
     public void warning (SAXParseException e)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
     
     
@@ -336,9 +336,9 @@ public class HandlerBase
      * @see org.xml.sax.SAXParseException
      */
     public void error (SAXParseException e)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
     
     
@@ -360,9 +360,9 @@ public class HandlerBase
      * @see org.xml.sax.SAXParseException
      */
     public void fatalError (SAXParseException e)
-	throws SAXException
+    throws SAXException
     {
-	throw e;
+    throw e;
     }
     
 }

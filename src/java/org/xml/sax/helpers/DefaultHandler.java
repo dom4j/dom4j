@@ -87,9 +87,9 @@ public class DefaultHandler
      * @see org.xml.sax.EntityResolver#resolveEntity
      */
     public InputSource resolveEntity (String publicId, String systemId)
-	throws IOException, SAXException
+    throws IOException, SAXException
     {
-	return null;
+    return null;
     }
     
     
@@ -115,9 +115,9 @@ public class DefaultHandler
      * @see org.xml.sax.DTDHandler#notationDecl
      */
     public void notationDecl (String name, String publicId, String systemId)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
     
     
@@ -138,10 +138,10 @@ public class DefaultHandler
      * @see org.xml.sax.DTDHandler#unparsedEntityDecl
      */
     public void unparsedEntityDecl (String name, String publicId,
-				    String systemId, String notationName)
-	throws SAXException
+                    String systemId, String notationName)
+    throws SAXException
     {
-	// no op
+    // no op
     }
     
     
@@ -164,7 +164,7 @@ public class DefaultHandler
      */
     public void setDocumentLocator (Locator locator)
     {
-	// no op
+    // no op
     }
     
     
@@ -181,9 +181,9 @@ public class DefaultHandler
      * @see org.xml.sax.ContentHandler#startDocument
      */
     public void startDocument ()
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
     
     
@@ -200,9 +200,9 @@ public class DefaultHandler
      * @see org.xml.sax.ContentHandler#endDocument
      */
     public void endDocument ()
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
 
 
@@ -220,9 +220,9 @@ public class DefaultHandler
      * @see org.xml.sax.ContentHandler#startPrefixMapping
      */
     public void startPrefixMapping (String prefix, String uri)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
 
 
@@ -239,9 +239,9 @@ public class DefaultHandler
      * @see org.xml.sax.ContentHandler#endPrefixMapping
      */
     public void endPrefixMapping (String prefix)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
     
     
@@ -269,10 +269,10 @@ public class DefaultHandler
      * @see org.xml.sax.ContentHandler#startElement
      */
     public void startElement (String uri, String localName,
-			      String qName, Attributes attributes)
-	throws SAXException
+                  String qName, Attributes attributes)
+    throws SAXException
     {
-	// no op
+    // no op
     }
     
     
@@ -297,9 +297,9 @@ public class DefaultHandler
      * @see org.xml.sax.ContentHandler#endElement
      */
     public void endElement (String uri, String localName, String qName)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
     
     
@@ -320,9 +320,9 @@ public class DefaultHandler
      * @see org.xml.sax.ContentHandler#characters
      */
     public void characters (char ch[], int start, int length)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
     
     
@@ -343,9 +343,9 @@ public class DefaultHandler
      * @see org.xml.sax.ContentHandler#ignorableWhitespace
      */
     public void ignorableWhitespace (char ch[], int start, int length)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
     
     
@@ -365,9 +365,9 @@ public class DefaultHandler
      * @see org.xml.sax.ContentHandler#processingInstruction
      */
     public void processingInstruction (String target, String data)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
 
 
@@ -385,9 +385,9 @@ public class DefaultHandler
      * @see org.xml.sax.ContentHandler#processingInstruction
      */
     public void skippedEntity (String name)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
     
     
@@ -412,9 +412,9 @@ public class DefaultHandler
      * @see org.xml.sax.SAXParseException
      */
     public void warning (SAXParseException e)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
     
     
@@ -433,9 +433,9 @@ public class DefaultHandler
      * @see org.xml.sax.SAXParseException
      */
     public void error (SAXParseException e)
-	throws SAXException
+    throws SAXException
     {
-	// no op
+    // no op
     }
     
     
@@ -457,9 +457,9 @@ public class DefaultHandler
      * @see org.xml.sax.SAXParseException
      */
     public void fatalError (SAXParseException e)
-	throws SAXException
+    throws SAXException
     {
-	throw e;
+    throw e;
     }
     
 }

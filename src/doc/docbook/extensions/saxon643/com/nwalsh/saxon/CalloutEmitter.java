@@ -94,10 +94,10 @@ public class CalloutEmitter extends CopyEmitter {
    * @param foStylesheet Is this an FO stylesheet?
    */
   public CalloutEmitter(Controller controller,
-			NamePool namePool,
-			int defaultColumn,
-			boolean foStylesheet,
-			FormatCallout fCallout) {
+            NamePool namePool,
+            int defaultColumn,
+            boolean foStylesheet,
+            FormatCallout fCallout) {
     super(controller, namePool);
     elementStack = new Stack();
     firstElement = true;
@@ -146,27 +146,27 @@ public class CalloutEmitter extends CopyEmitter {
     for (int count = 0; count < children.getLength(); count++) {
       Node node = children.item(count);
       if (node.getNodeType() == Node.ELEMENT_NODE) {
-	if (node.getNodeName().equalsIgnoreCase("areaset")) {
-	  coNum++;
-	  NodeList areas = node.getChildNodes();
-	  for (int acount = 0; acount < areas.getLength(); acount++) {
-	    Node area = areas.item(acount);
-	    if (area.getNodeType() == Node.ELEMENT_NODE) {
-	      if (area.getNodeName().equalsIgnoreCase("area")) {
-		addCallout(coNum, area, defaultColumn);
-	      } else {
-		System.out.println("Unexpected element in areaset: "
-				   + area.getNodeName());
-	      }
-	    }
-	  }
-	} else if (node.getNodeName().equalsIgnoreCase("area")) {
-	  coNum++;
-	  addCallout(coNum, node, defaultColumn);
-	} else {
-	  System.out.println("Unexpected element in areaspec: "
-			     + node.getNodeName());
-	}
+    if (node.getNodeName().equalsIgnoreCase("areaset")) {
+      coNum++;
+      NodeList areas = node.getChildNodes();
+      for (int acount = 0; acount < areas.getLength(); acount++) {
+        Node area = areas.item(acount);
+        if (area.getNodeType() == Node.ELEMENT_NODE) {
+          if (area.getNodeName().equalsIgnoreCase("area")) {
+        addCallout(coNum, area, defaultColumn);
+          } else {
+        System.out.println("Unexpected element in areaset: "
+                   + area.getNodeName());
+          }
+        }
+      }
+    } else if (node.getNodeName().equalsIgnoreCase("area")) {
+      coNum++;
+      addCallout(coNum, node, defaultColumn);
+    } else {
+      System.out.println("Unexpected element in areaspec: "
+                 + node.getNodeName());
+    }
       }
     }
 
@@ -192,58 +192,58 @@ public class CalloutEmitter extends CopyEmitter {
     int pos = 0;
     for (int count = start; count < start+len; count++) {
       if (calloutPos < calloutCount
-	  && callout[calloutPos].getLine() == lineNumber
-	  && callout[calloutPos].getColumn() == colNumber) {
-	if (pos > 0) {
-	  rtfEmitter.characters(newChars, 0, pos);
-	  pos = 0;
-	}
+      && callout[calloutPos].getLine() == lineNumber
+      && callout[calloutPos].getColumn() == colNumber) {
+    if (pos > 0) {
+      rtfEmitter.characters(newChars, 0, pos);
+      pos = 0;
+    }
 
-	closeOpenElements(rtfEmitter);
+    closeOpenElements(rtfEmitter);
 
-	while (calloutPos < calloutCount
-	       && callout[calloutPos].getLine() == lineNumber
-	       && callout[calloutPos].getColumn() == colNumber) {
-	  fCallout.formatCallout(rtfEmitter, callout[calloutPos]);
-	  calloutPos++;
-	}
+    while (calloutPos < calloutCount
+           && callout[calloutPos].getLine() == lineNumber
+           && callout[calloutPos].getColumn() == colNumber) {
+      fCallout.formatCallout(rtfEmitter, callout[calloutPos]);
+      calloutPos++;
+    }
 
-	openClosedElements(rtfEmitter);
+    openClosedElements(rtfEmitter);
       }
 
       if (chars[count] == '\n') {
-	// What if we need to pad this line?
-	if (calloutPos < calloutCount
-	    && callout[calloutPos].getLine() == lineNumber
-	    && callout[calloutPos].getColumn() > colNumber) {
+    // What if we need to pad this line?
+    if (calloutPos < calloutCount
+        && callout[calloutPos].getLine() == lineNumber
+        && callout[calloutPos].getColumn() > colNumber) {
 
-	  if (pos > 0) {
-	    rtfEmitter.characters(newChars, 0, pos);
-	    pos = 0;
-	  }
+      if (pos > 0) {
+        rtfEmitter.characters(newChars, 0, pos);
+        pos = 0;
+      }
 
-	  closeOpenElements(rtfEmitter);
+      closeOpenElements(rtfEmitter);
 
-	  while (calloutPos < calloutCount
-		 && callout[calloutPos].getLine() == lineNumber
-		 && callout[calloutPos].getColumn() > colNumber) {
-	    formatPad(callout[calloutPos].getColumn() - colNumber);
-	    colNumber = callout[calloutPos].getColumn();
-	    while (calloutPos < calloutCount
-		   && callout[calloutPos].getLine() == lineNumber
-		   && callout[calloutPos].getColumn() == colNumber) {
-	      fCallout.formatCallout(rtfEmitter, callout[calloutPos]);
-	      calloutPos++;
-	    }
-	  }
+      while (calloutPos < calloutCount
+         && callout[calloutPos].getLine() == lineNumber
+         && callout[calloutPos].getColumn() > colNumber) {
+        formatPad(callout[calloutPos].getColumn() - colNumber);
+        colNumber = callout[calloutPos].getColumn();
+        while (calloutPos < calloutCount
+           && callout[calloutPos].getLine() == lineNumber
+           && callout[calloutPos].getColumn() == colNumber) {
+          fCallout.formatCallout(rtfEmitter, callout[calloutPos]);
+          calloutPos++;
+        }
+      }
 
-	  openClosedElements(rtfEmitter);
-	}
+      openClosedElements(rtfEmitter);
+    }
 
-	lineNumber++;
-	colNumber = 1;
+    lineNumber++;
+    colNumber = 1;
       } else {
-	colNumber++;
+    colNumber++;
       }
       newChars[pos++] = chars[count];
     }
@@ -291,8 +291,8 @@ public class CalloutEmitter extends CopyEmitter {
    * @param defaultColumn The default column for callouts.
    */
   protected void addCallout (int coNum,
-			     Node node,
-			     int defaultColumn) {
+                 Node node,
+                 int defaultColumn) {
 
     Element area  = (Element) node;
     String units  = null;
@@ -307,8 +307,8 @@ public class CalloutEmitter extends CopyEmitter {
     }
 
     if (units != null
-	&& !units.equalsIgnoreCase("linecolumn")
-	&& !units.equalsIgnoreCase("linerange")) {
+    && !units.equalsIgnoreCase("linecolumn")
+    && !units.equalsIgnoreCase("linerange")) {
       System.out.println("Only linecolumn and linerange units are supported");
       return;
     }
@@ -326,19 +326,19 @@ public class CalloutEmitter extends CopyEmitter {
     while (st.hasMoreTokens()) {
       tokenCount++;
       if (tokenCount > 2) {
-	System.out.println("Unparseable coordinates");
-	return;
+    System.out.println("Unparseable coordinates");
+    return;
       }
       try {
-	String token = st.nextToken();
-	int coord = Integer.parseInt(token);
-	c2 = coord;
-	if (tokenCount == 1) {
-	  c1 = coord;
-	}
+    String token = st.nextToken();
+    int coord = Integer.parseInt(token);
+    c2 = coord;
+    if (tokenCount == 1) {
+      c1 = coord;
+    }
       } catch (NumberFormatException e) {
-	System.out.println("Unparseable coordinate");
-	return;
+    System.out.println("Unparseable coordinate");
+    return;
       }
     }
 
@@ -346,7 +346,7 @@ public class CalloutEmitter extends CopyEmitter {
     if (calloutCount == callout.length) {
       Callout bigger[] = new Callout[calloutCount+10];
       for (int count = 0; count < callout.length; count++) {
-	bigger[count] = callout[count];
+    bigger[count] = callout[count];
       }
       callout = bigger;
     }
@@ -354,13 +354,13 @@ public class CalloutEmitter extends CopyEmitter {
     // Ok, add the callout
     if (tokenCount == 2) {
       if (units != null && units.equalsIgnoreCase("linerange")) {
-	for (int count = c1; count <= c2; count++) {
-	  callout[calloutCount++] = new Callout(coNum, area,
-						count, defaultColumn);
-	}
+    for (int count = c1; count <= c2; count++) {
+      callout[calloutCount++] = new Callout(coNum, area,
+                        count, defaultColumn);
+    }
       } else {
-	// assume linecolumn
-	callout[calloutCount++] = new Callout(coNum, area, c1, c2);
+    // assume linecolumn
+    callout[calloutCount++] = new Callout(coNum, area, c1, c2);
       }
     } else {
       // if there's only one number, assume it's the line
@@ -383,14 +383,14 @@ public class CalloutEmitter extends CopyEmitter {
 
   /** Process start element events. */
   public void startElement(int nameCode,
-			   org.xml.sax.Attributes attributes,
-			   int[] namespaces,
-			   int nscount)
+               org.xml.sax.Attributes attributes,
+               int[] namespaces,
+               int nscount)
     throws TransformerException {
 
     if (!skipThisElement(nameCode)) {
       StartElementInfo sei = new StartElementInfo(nameCode, attributes,
-						  namespaces, nscount);
+                          namespaces, nscount);
       elementStack.push(sei);
     }
 
@@ -426,12 +426,12 @@ public class CalloutEmitter extends CopyEmitter {
       int xhtmlDivFingerprint = namePool.getFingerprint(xhURI, "div");
 
       if ((foStylesheet && thisFingerprint == foBlockFingerprint)
-	  || (!foStylesheet && (thisFingerprint == htmlPreFingerprint
-				|| thisFingerprint == htmlDivFingerprint
-				|| thisFingerprint == xhtmlPreFingerprint
-				|| thisFingerprint == xhtmlDivFingerprint))) {
-	// Don't push the outer-most wrapping div, pre, or fo:block
-	return true;
+      || (!foStylesheet && (thisFingerprint == htmlPreFingerprint
+                || thisFingerprint == htmlDivFingerprint
+                || thisFingerprint == xhtmlPreFingerprint
+                || thisFingerprint == xhtmlDivFingerprint))) {
+    // Don't push the outer-most wrapping div, pre, or fo:block
+    return true;
       }
     }
 
@@ -458,34 +458,34 @@ public class CalloutEmitter extends CopyEmitter {
       AttributeCollection newAttr = new AttributeCollection(namePool);
 
       for (int acount = 0; acount < attr.getLength(); acount++) {
-	String localName = attr.getLocalName(acount);
-	int nameCode = attr.getNameCode(acount);
-	String type = attr.getType(acount);
-	String value = attr.getValue(acount);
-	String uri = attr.getURI(acount);
-	String prefix = "";
+    String localName = attr.getLocalName(acount);
+    int nameCode = attr.getNameCode(acount);
+    String type = attr.getType(acount);
+    String value = attr.getValue(acount);
+    String uri = attr.getURI(acount);
+    String prefix = "";
 
-	if (localName.indexOf(':') > 0) {
-	  prefix = localName.substring(0, localName.indexOf(':'));
-	  localName = localName.substring(localName.indexOf(':')+1);
-	}
+    if (localName.indexOf(':') > 0) {
+      prefix = localName.substring(0, localName.indexOf(':'));
+      localName = localName.substring(localName.indexOf(':')+1);
+    }
 
-	if (uri.equals("")
-	    && ((foStylesheet
-		 && localName.equals("id"))
-		|| (!foStylesheet
-		    && (localName.equals("id")
-			|| localName.equals("name"))))) {
-	  // skip this attribute
-	} else {
-	  newAttr.addAttribute(prefix, uri, localName, type, value);
-	}
+    if (uri.equals("")
+        && ((foStylesheet
+         && localName.equals("id"))
+        || (!foStylesheet
+            && (localName.equals("id")
+            || localName.equals("name"))))) {
+      // skip this attribute
+    } else {
+      newAttr.addAttribute(prefix, uri, localName, type, value);
+    }
       }
 
       rtfEmitter.startElement(elem.getNameCode(),
-			      newAttr,
-			      elem.getNamespaces(),
-			      elem.getNSCount());
+                  newAttr,
+                  elem.getNamespaces(),
+                  elem.getNSCount());
 
       elementStack.push(elem);
     }
@@ -506,9 +506,9 @@ public class CalloutEmitter extends CopyEmitter {
     int _nscount;
 
     public StartElementInfo(int nameCode,
-			    org.xml.sax.Attributes attributes,
-			    int[] namespaces,
-			    int nscount) {
+                org.xml.sax.Attributes attributes,
+                int[] namespaces,
+                int nscount) {
       _nameCode = nameCode;
       _attributes = attributes;
       _namespaces = namespaces;

@@ -49,8 +49,8 @@ public class ColumnUpdateEmitter extends CopyEmitter {
 
   /** Construct a new ColumnUpdateEmitter. */
   public ColumnUpdateEmitter(Controller controller,
-			     NamePool namePool,
-			     String width[]) {
+                 NamePool namePool,
+                 String width[]) {
     super(controller, namePool);
     numColumns = 0;
     this.width = width;
@@ -59,8 +59,8 @@ public class ColumnUpdateEmitter extends CopyEmitter {
 
   /** Examine for column info. */
   public void startElement(int nameCode,
-		    org.xml.sax.Attributes attributes,
-		    int[] namespaces, int nscount)
+            org.xml.sax.Attributes attributes,
+            int[] namespaces, int nscount)
     throws TransformerException {
 
     int thisFingerprint = namePool.getFingerprint(nameCode);
@@ -72,9 +72,9 @@ public class ColumnUpdateEmitter extends CopyEmitter {
       int widthFingerprint = namePool.getFingerprint("", "width");
 
       if (attr.getValueByFingerprint(widthFingerprint) == null) {
-	attr.addAttribute(widthFingerprint, "CDATA", width[numColumns++]);
+    attr.addAttribute(widthFingerprint, "CDATA", width[numColumns++]);
       } else {
-	attr.setAttribute(widthFingerprint, "CDATA", width[numColumns++]);
+    attr.setAttribute(widthFingerprint, "CDATA", width[numColumns++]);
       }
       attributes = attr;
     } else if (thisFingerprint == foColFingerprint) {
@@ -82,9 +82,9 @@ public class ColumnUpdateEmitter extends CopyEmitter {
       int widthFingerprint = namePool.getFingerprint("", "column-width");
 
       if (attr.getValueByFingerprint(widthFingerprint) == null) {
-	attr.addAttribute(widthFingerprint, "CDATA", width[numColumns++]);
+    attr.addAttribute(widthFingerprint, "CDATA", width[numColumns++]);
       } else {
-	attr.setAttribute(widthFingerprint, "CDATA", width[numColumns++]);
+    attr.setAttribute(widthFingerprint, "CDATA", width[numColumns++]);
       }
       attributes = attr;
     }

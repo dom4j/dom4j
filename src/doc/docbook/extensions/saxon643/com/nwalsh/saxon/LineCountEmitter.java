@@ -68,7 +68,7 @@ public class LineCountEmitter extends com.icl.saxon.output.Emitter {
 
     for (int count = start; count < start+len; count++) {
       if (chars[count] == '\n') {
-	numLines++;
+    numLines++;
       }
     }
   }
@@ -93,7 +93,7 @@ public class LineCountEmitter extends com.icl.saxon.output.Emitter {
 
   /** Discarded. */
   public void processingInstruction(java.lang.String name,
-				    java.lang.String data)
+                    java.lang.String data)
     throws javax.xml.transform.TransformerException {
     // nop
   }
@@ -133,8 +133,8 @@ public class LineCountEmitter extends com.icl.saxon.output.Emitter {
 
   /** Discarded. */
   public void startElement(int nameCode,
-		    org.xml.sax.Attributes attributes,
-		    int[] namespaces, int nscount)
+            org.xml.sax.Attributes attributes,
+            int[] namespaces, int nscount)
     throws javax.xml.transform.TransformerException {
     // nop
   }

@@ -26,19 +26,19 @@ public class DefaultText extends FlyweightText {
     /** @param text is the Text text
       */
     public DefaultText(String text) {
-	super(text);
+    super(text);
     }
 
     /** @param parent is the parent element
       * @param text is the Text text
       */
     public DefaultText(Element parent,String text) {
-	super(text);
+    super(text);
         this.parent = parent;
     }
 
     public void setText(String text) {
-	this.text = text;
+    this.text = text;
     }
     
     public Element getParent() {

@@ -73,7 +73,7 @@ public class DefaultAttribute extends FlyweightAttribute {
     }
 
     public void setValue(String value) {
-	this.value = value;
+    this.value = value;
     }
     
     public Element getParent() {

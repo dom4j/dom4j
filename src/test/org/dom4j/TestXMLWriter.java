@@ -136,12 +136,12 @@ public class TestXMLWriter extends AbstractTestCase {
     /** This test harness was supplied by Lari Hotari */
     public void testContentHandler() throws Exception {
         StringWriter out = new StringWriter();
-	OutputFormat format = OutputFormat.createPrettyPrint();
-	format.setEncoding("iso-8859-1");
-	XMLWriter writer = new XMLWriter(out, format);
+    OutputFormat format = OutputFormat.createPrettyPrint();
+    format.setEncoding("iso-8859-1");
+    XMLWriter writer = new XMLWriter(out, format);
         generateXML(writer);
-	writer.close();
-	String text = out.toString();
+    writer.close();
+    String text = out.toString();
 
         if ( VERBOSE ) {
             log( "Created XML" );
@@ -215,16 +215,16 @@ public class TestXMLWriter extends AbstractTestCase {
     }
     
     protected void generateXML(ContentHandler handler) throws SAXException {
-	handler.startDocument();
-	AttributesImpl attrs = new AttributesImpl();
-	attrs.clear();
-	attrs.addAttribute("","","name","CDATA", "arvojoo");
-	handler.startElement("","","processes",attrs);
-	String text="jeejee";
-	char textch[] = text.toCharArray();
-	handler.characters(textch,0,textch.length);
-	handler.endElement("","","processes" );
-	handler.endDocument();
+    handler.startDocument();
+    AttributesImpl attrs = new AttributesImpl();
+    attrs.clear();
+    attrs.addAttribute("","","name","CDATA", "arvojoo");
+    handler.startElement("","","processes",attrs);
+    String text="jeejee";
+    char textch[] = text.toCharArray();
+    handler.characters(textch,0,textch.length);
+    handler.endElement("","","processes" );
+    handler.endDocument();
     }
 }
 

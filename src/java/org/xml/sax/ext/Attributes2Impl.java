@@ -30,7 +30,7 @@ import org.xml.sax.helpers.AttributesImpl;
  */
 public class Attributes2Impl extends AttributesImpl implements Attributes2
 {
-    private boolean	flags [];
+    private boolean flags [];
 
 
     /**
@@ -52,7 +52,7 @@ public class Attributes2Impl extends AttributesImpl implements Attributes2
      */
     public Attributes2Impl (Attributes atts)
     {
-	super (atts);
+    super (atts);
     }
 
 
@@ -71,10 +71,10 @@ public class Attributes2Impl extends AttributesImpl implements Attributes2
      */
     public boolean isSpecified (int index)
     {
-	if (index < 0 || index >= getLength ())
-	    throw new ArrayIndexOutOfBoundsException (
-		"No attribute at index: " + index);
-	return flags [index];
+    if (index < 0 || index >= getLength ())
+        throw new ArrayIndexOutOfBoundsException (
+        "No attribute at index: " + index);
+    return flags [index];
     }
 
 
@@ -90,13 +90,13 @@ public class Attributes2Impl extends AttributesImpl implements Attributes2
      */
     public boolean isSpecified (String uri, String localName)
     {
-	int index = getIndex (uri, localName);
+    int index = getIndex (uri, localName);
 
-	if (index < 0)
-	    throw new IllegalArgumentException (
-		"No such attribute: local=" + localName
-		+ ", namespace=" + uri);
-	return flags [index];
+    if (index < 0)
+        throw new IllegalArgumentException (
+        "No such attribute: local=" + localName
+        + ", namespace=" + uri);
+    return flags [index];
     }
 
 
@@ -110,12 +110,12 @@ public class Attributes2Impl extends AttributesImpl implements Attributes2
      */
     public boolean isSpecified (String qName)
     {
-	int index = getIndex (qName);
+    int index = getIndex (qName);
 
-	if (index < 0)
-	    throw new IllegalArgumentException (
-		"No such attribute: " + qName);
-	return flags [index];
+    if (index < 0)
+        throw new IllegalArgumentException (
+        "No such attribute: " + qName);
+    return flags [index];
     }
 
 
@@ -133,19 +133,19 @@ public class Attributes2Impl extends AttributesImpl implements Attributes2
      */
     public void setAttributes (Attributes atts)
     {
-	int length = atts.getLength ();
+    int length = atts.getLength ();
 
-	super.setAttributes (atts);
-	flags = new boolean [length];
+    super.setAttributes (atts);
+    flags = new boolean [length];
 
-	if (atts instanceof Attributes2) {
-	    Attributes2	a2 = (Attributes2) atts;
-	    for (int i = 0; i < length; i++)
-		flags [i] = a2.isSpecified (i);
-	} else {
-	    for (int i = 0; i < length; i++)
-		flags [i] = true;
-	}
+    if (atts instanceof Attributes2) {
+        Attributes2 a2 = (Attributes2) atts;
+        for (int i = 0; i < length; i++)
+        flags [i] = a2.isSpecified (i);
+    } else {
+        for (int i = 0; i < length; i++)
+        flags [i] = true;
+    }
 
     }
 
@@ -158,31 +158,31 @@ public class Attributes2Impl extends AttributesImpl implements Attributes2
      * @see AttributesImpl#addAttribute
      */
     public void addAttribute (String uri, String localName, String qName,
-			      String type, String value)
+                  String type, String value)
     {
-	super.addAttribute (uri, localName, qName, type, value);
+    super.addAttribute (uri, localName, qName, type, value);
 
-	int length = getLength ();
+    int length = getLength ();
 
-	if (length < flags.length) {
-	    boolean	newFlags [] = new boolean [length];
-	    System.arraycopy (flags, 0, newFlags, 0, flags.length);
-	    flags = newFlags;
-	}
+    if (length < flags.length) {
+        boolean newFlags [] = new boolean [length];
+        System.arraycopy (flags, 0, newFlags, 0, flags.length);
+        flags = newFlags;
+    }
 
-	flags [length - 1] = true;
+    flags [length - 1] = true;
     }
 
 
     // javadoc entirely from superclass
     public void removeAttribute (int index)
     {
-	int origMax = getLength () - 1;
+    int origMax = getLength () - 1;
 
-	super.removeAttribute (index);
-	if (index != origMax)
-	    System.arraycopy (flags, index + 1, flags, index,
-		    origMax - index);
+    super.removeAttribute (index);
+    if (index != origMax)
+        System.arraycopy (flags, index + 1, flags, index,
+            origMax - index);
     }
 
 
@@ -199,9 +199,9 @@ public class Attributes2Impl extends AttributesImpl implements Attributes2
      */
     public void setSpecified (int index, boolean value)
     {
-	if (index < 0 || index >= getLength ())
-	    throw new ArrayIndexOutOfBoundsException (
-		"No attribute at index: " + index);
-	flags [index] = value;
+    if (index < 0 || index >= getLength ())
+        throw new ArrayIndexOutOfBoundsException (
+        "No attribute at index: " + index);
+    flags [index] = value;
     }
 }

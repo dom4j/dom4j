@@ -61,10 +61,10 @@ public class NodeComparator implements Comparator {
      * @param o1 the first object to be compared.
      * @param o2 the second object to be compared.
      * @return a negative integer, zero, or a positive integer as the
-     * 	       first argument is less than, equal to, or greater than the
-     * 	       second. 
+     *         first argument is less than, equal to, or greater than the
+     *         second. 
      * @throws ClassCastException if the arguments' types prevent them from
-     * 	       being compared by this Comparator.
+     *         being compared by this Comparator.
      */
     public int compare(Object o1, Object o2) {
         if ( o1 == o2 ) {

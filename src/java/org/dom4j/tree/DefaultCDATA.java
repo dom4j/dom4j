@@ -26,19 +26,19 @@ public class DefaultCDATA extends FlyweightCDATA {
     /** @param text is the CDATA text
       */
     public DefaultCDATA(String text) {
-	super(text);
+    super(text);
     }
 
     /** @param parent is the parent element
       * @param text is the CDATA text
       */
     public DefaultCDATA(Element parent,String text) {
-	super(text);
+    super(text);
         this.parent = parent;
     }
 
     public void setText(String text) {
-	this.text = text;
+    this.text = text;
     }
     
     public Element getParent() {

@@ -29,10 +29,10 @@ public class PerfW3C
     {
         Document doc;
         System.err.println("W3C createDocument:");
-		
+        
         int numrec; 
-		long start = 0;
-		long end = 0;
+        long start = 0;
+        long end = 0;
  
         numrec=1000;
         System.out.println("\n1000 Elements ---------------------------------");
@@ -47,7 +47,7 @@ public class PerfW3C
         PerfW3C.xpathNodes(doc,"/*/*/Attr1x500",1);
         PerfW3C.xpathNodes(doc,"/*/*/Attr1x999",1);
         PerfW3C.xpathNodes(doc,"/*/Item",1);
-		
+        
 
         numrec=100;
         System.out.println("\n100 Elements ----------------------------------");
@@ -89,8 +89,8 @@ public class PerfW3C
     public static Document createDocument(int iNumRecs,int iNumFlds, int pp) {
         
     double start = System.currentTimeMillis();
-	Document document = null;
-	for (int kk = 0 ; kk < pp ; kk++) {
+    Document document = null;
+    for (int kk = 0 ; kk < pp ; kk++) {
         document = new DocumentImpl();
         
         Element root = document.createElement("ItemResultSet");     // Create Root Element
@@ -113,9 +113,9 @@ public class PerfW3C
                 Record.appendChild(field);
                
             }
-	}
-	}
-	
+    }
+    }
+    
         double end = System.currentTimeMillis();
 
         System.err.println("Creation time  		  :" + (end-start)/pp);
@@ -162,20 +162,20 @@ public class PerfW3C
 
     public static Document parse(int iNumRecs, int kk) {
 
-	    File file = new File("dom4j_" + iNumRecs + ".xml");
-	    double start = System.currentTimeMillis();
-		Document document = null;
-		
-			for (int pp = 0 ; pp < kk; pp++) {
-				try {
-				SAXReader SAXrd = new SAXReader();
-				SAXrd.read(file);		
-				} catch(Exception e) {
-					e.printStackTrace();
-				}
-			}
-	
-	    double end = System.currentTimeMillis();
+        File file = new File("dom4j_" + iNumRecs + ".xml");
+        double start = System.currentTimeMillis();
+        Document document = null;
+        
+            for (int pp = 0 ; pp < kk; pp++) {
+                try {
+                SAXReader SAXrd = new SAXReader();
+                SAXrd.read(file);       
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+    
+        double end = System.currentTimeMillis();
 
         //   System.err.println("DOM4J createDocument:" + "Num Rec. = " + iNumRecs + " Num. Fld.=" + iNumFlds);
         System.err.println("Parsing time for 			:"  + iNumRecs + "  " + (end-start)/kk);
@@ -188,18 +188,18 @@ public class PerfW3C
 
     public static void transform(Document xmlDoc,String xslFile,int kk)
     {
-		int ii = 1;
+        int ii = 1;
         try
         {
             TransformerFactory factory = TransformerFactory.newInstance();
             Transformer transformer = factory.newTransformer(new StreamSource( xslFile ) );
 
             long start = System.currentTimeMillis();
-			for (ii=0; ii<kk; ii++) {
+            for (ii=0; ii<kk; ii++) {
             DOMSource source = new DOMSource(xmlDoc);
             DOMResult result = new DOMResult();
             transformer.transform( source, result );
-			}
+            }
             long end = System.currentTimeMillis();
 
             System.err.println("W3C transform  time :"  + (end-start)/ii );
@@ -216,7 +216,7 @@ public class PerfW3C
     {
 
         long start = System.currentTimeMillis();
-	
+    
         for(int ii=0;ii<pp;ii++)
         {
 
@@ -227,7 +227,7 @@ public class PerfW3C
               if((node!=null) & (ii==0))
               {
                   String val = node.getNodeName();
-	              //System.out.println(val);
+                  //System.out.println(val);
               }
           }
           catch(Exception e )
@@ -248,7 +248,7 @@ public class PerfW3C
     {
 
         long start = System.currentTimeMillis();
-	
+    
         for(int ii=0;ii<pp;ii++)
         {
 
@@ -257,11 +257,11 @@ public class PerfW3C
 
               NodeList nodeList   = XPathAPI.selectNodeList(document, xpathExp);
               if ((nodeList != null) && (nodeList.getLength()>0)) {
-	              Node node = nodeList.item(0);
-	              if ((node != null) & (ii==0)) {
-	              	String val = node.getNodeName();
-	              	//System.out.println(val);
-	              }
+                  Node node = nodeList.item(0);
+                  if ((node != null) & (ii==0)) {
+                    String val = node.getNodeName();
+                    //System.out.println(val);
+                  }
               }
           }
           catch(Exception e )

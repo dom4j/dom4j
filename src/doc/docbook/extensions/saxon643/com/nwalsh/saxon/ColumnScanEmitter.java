@@ -87,7 +87,7 @@ public class ColumnScanEmitter extends com.icl.saxon.output.Emitter {
 
   /** Discarded. */
   public void processingInstruction(java.lang.String name,
-				    java.lang.String data)
+                    java.lang.String data)
     throws TransformerException {
     // nop
   }
@@ -127,8 +127,8 @@ public class ColumnScanEmitter extends com.icl.saxon.output.Emitter {
 
   /** Examine for column info. */
   public void startElement(int nameCode,
-		    org.xml.sax.Attributes attributes,
-		    int[] namespaces, int nscount)
+            org.xml.sax.Attributes attributes,
+            int[] namespaces, int nscount)
     throws TransformerException {
 
     int thisFingerprint = namePool.getFingerprint(nameCode);
@@ -136,27 +136,27 @@ public class ColumnScanEmitter extends com.icl.saxon.output.Emitter {
     int foColFingerprint = namePool.getFingerprint(foURI, "table-column");
 
     if (thisFingerprint == colFingerprint
-	|| thisFingerprint == foColFingerprint) {
+    || thisFingerprint == foColFingerprint) {
       if (numColumns >= width.length) {
-	String newWidth[] = new String[width.length+10];
-	for (int count = 0; count < width.length; count++) {
-	  newWidth[count] = width[count];
-	}
-	width = newWidth;
+    String newWidth[] = new String[width.length+10];
+    for (int count = 0; count < width.length; count++) {
+      newWidth[count] = width[count];
+    }
+    width = newWidth;
       }
 
       if (thisFingerprint == colFingerprint) {
-	if (attributes.getValue("width") == null) {
-	  width[numColumns++] = "1*";
-	} else {
-	  width[numColumns++] = attributes.getValue("width");
-	}
+    if (attributes.getValue("width") == null) {
+      width[numColumns++] = "1*";
+    } else {
+      width[numColumns++] = attributes.getValue("width");
+    }
       } else {
-	if (attributes.getValue("column-width") == null) {
-	  width[numColumns++] = "1*";
-	} else {
-	  width[numColumns++] = attributes.getValue("column-width");
-	}
+    if (attributes.getValue("column-width") == null) {
+      width[numColumns++] = "1*";
+    } else {
+      width[numColumns++] = attributes.getValue("column-width");
+    }
       }
     }
   }

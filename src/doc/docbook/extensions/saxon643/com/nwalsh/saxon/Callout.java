@@ -46,25 +46,25 @@ public class Callout implements Comparable {
     Callout c = (Callout) o;
 
     if (line == c.getLine()) {
-	if (col > c.getColumn()) {
-	  return 1;
-	} else if (col < c.getColumn()) {
-	  return -1;
-	} else {
-	  if (callout < c.getCallout()) {
-	    return -1;
-	  } else if (callout > c.getCallout()) {
-	    return 1;
-	  } else {
-	    return 0;
-	  }
-	}
+    if (col > c.getColumn()) {
+      return 1;
+    } else if (col < c.getColumn()) {
+      return -1;
     } else {
-	if (line > c.getLine()) {
-	  return 1;
-	} else {
-	  return -1;
-	}
+      if (callout < c.getCallout()) {
+        return -1;
+      } else if (callout > c.getCallout()) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    } else {
+    if (line > c.getLine()) {
+      return 1;
+    } else {
+      return -1;
+    }
     }
   }
 

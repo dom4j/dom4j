@@ -55,13 +55,13 @@ public class SAXParseException extends SAXException {
      * @see org.xml.sax.Locator
      */
     public SAXParseException (String message, Locator locator) {
-	super(message);
-	if (locator != null) {
-	    init(locator.getPublicId(), locator.getSystemId(),
-		 locator.getLineNumber(), locator.getColumnNumber());
-	} else {
-	    init(null, null, -1, -1);
-	}
+    super(message);
+    if (locator != null) {
+        init(locator.getPublicId(), locator.getSystemId(),
+         locator.getLineNumber(), locator.getColumnNumber());
+    } else {
+        init(null, null, -1, -1);
+    }
     }
     
     
@@ -81,14 +81,14 @@ public class SAXParseException extends SAXException {
      * @see org.xml.sax.Locator
      */
     public SAXParseException (String message, Locator locator,
-			      Exception e) {
-	super(message, e);
-	if (locator != null) {
-	    init(locator.getPublicId(), locator.getSystemId(),
-		 locator.getLineNumber(), locator.getColumnNumber());
-	} else {
-	    init(null, null, -1, -1);
-	}
+                  Exception e) {
+    super(message, e);
+    if (locator != null) {
+        init(locator.getPublicId(), locator.getSystemId(),
+         locator.getLineNumber(), locator.getColumnNumber());
+    } else {
+        init(null, null, -1, -1);
+    }
     }
     
     
@@ -114,10 +114,10 @@ public class SAXParseException extends SAXException {
      *                     cause the error or warning.
      */
     public SAXParseException (String message, String publicId, String systemId,
-			      int lineNumber, int columnNumber)
+                  int lineNumber, int columnNumber)
     {
-	super(message);
-	init(publicId, systemId, lineNumber, columnNumber);
+    super(message);
+    init(publicId, systemId, lineNumber, columnNumber);
     }
     
     
@@ -146,10 +146,10 @@ public class SAXParseException extends SAXException {
      * @param e Another exception to embed in this one.
      */
     public SAXParseException (String message, String publicId, String systemId,
-			      int lineNumber, int columnNumber, Exception e)
+                  int lineNumber, int columnNumber, Exception e)
     {
-	super(message, e);
-	init(publicId, systemId, lineNumber, columnNumber);
+    super(message, e);
+    init(publicId, systemId, lineNumber, columnNumber);
     }
 
 
@@ -164,12 +164,12 @@ public class SAXParseException extends SAXException {
      * @param columnNumber The column number of the error, or -1.
      */
     private void init (String publicId, String systemId,
-		       int lineNumber, int columnNumber)
+               int lineNumber, int columnNumber)
     {
-	this.publicId = publicId;
-	this.systemId = systemId;
-	this.lineNumber = lineNumber;
-	this.columnNumber = columnNumber;
+    this.publicId = publicId;
+    this.systemId = systemId;
+    this.lineNumber = lineNumber;
+    this.columnNumber = columnNumber;
     }
     
     
@@ -182,7 +182,7 @@ public class SAXParseException extends SAXException {
      */
     public String getPublicId ()
     {
-	return this.publicId;
+    return this.publicId;
     }
     
     
@@ -198,7 +198,7 @@ public class SAXParseException extends SAXException {
      */
     public String getSystemId ()
     {
-	return this.systemId;
+    return this.systemId;
     }
     
     
@@ -213,7 +213,7 @@ public class SAXParseException extends SAXException {
      */
     public int getLineNumber ()
     {
-	return this.lineNumber;
+    return this.lineNumber;
     }
     
     
@@ -228,7 +228,7 @@ public class SAXParseException extends SAXException {
      */
     public int getColumnNumber ()
     {
-	return this.columnNumber;
+    return this.columnNumber;
     }
     
     

@@ -78,9 +78,9 @@ public interface DTDHandler {
      * @see org.xml.sax.Attributes
      */
     public abstract void notationDecl (String name,
-				       String publicId,
-				       String systemId)
-	throws SAXException;
+                       String publicId,
+                       String systemId)
+    throws SAXException;
     
     
     /**
@@ -107,10 +107,10 @@ public interface DTDHandler {
      * @see org.xml.sax.Attributes
      */
     public abstract void unparsedEntityDecl (String name,
-					     String publicId,
-					     String systemId,
-					     String notationName)
-	throws SAXException;
+                         String publicId,
+                         String systemId,
+                         String notationName)
+    throws SAXException;
     
 }
 

@@ -101,7 +101,7 @@ public class CopyEmitter extends com.icl.saxon.output.Emitter {
 
   /** Copy processing instructions. */
   public void processingInstruction(java.lang.String name,
-				    java.lang.String data)
+                    java.lang.String data)
     throws TransformerException {
     rtfEmitter.processingInstruction(name, data);
   }
@@ -141,9 +141,9 @@ public class CopyEmitter extends com.icl.saxon.output.Emitter {
 
   /** Copy start element events. */
   public void startElement(int nameCode,
-			   org.xml.sax.Attributes attributes,
-			   int[] namespaces,
-			   int nscount)
+               org.xml.sax.Attributes attributes,
+               int[] namespaces,
+               int nscount)
     throws TransformerException {
     rtfEmitter.startElement(nameCode, attributes, namespaces, nscount);
   }

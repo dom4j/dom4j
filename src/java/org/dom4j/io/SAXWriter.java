@@ -418,7 +418,7 @@ public class SAXWriter implements XMLReader {
                     write( (Comment) object );
                 }
                 else {
-                    throw new SAXException( "Invalid Node in DOM4J content: " + object );
+                    throw new SAXException( "Invalid Node in DOM4J content: " + object + " of type: " + object.getClass() );
                 }
             }
             else if ( object instanceof String ) { 

@@ -29,11 +29,11 @@ import org.w3c.dom.NodeList;
 public class DOMCDATA extends DefaultCDATA implements org.w3c.dom.CDATASection {
 
     public DOMCDATA(String text) {
-	super(text);
+    super(text);
     }
 
     public DOMCDATA(Element parent,String text) {
-	super(parent, text);
+    super(parent, text);
     }
 
 

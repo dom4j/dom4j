@@ -29,14 +29,14 @@ public class PerfDOM4JAttr
         try
         {
             int numrec=1;
-	       
+           
             numrec=10000;
             System.out.println("\n1000 Elements -------------------");
             doc = PerfDOM4JAttr.createDocument(numrec,20,1);
             PerfDOM4JAttr.createW3CDOM(doc);
             PerfDOM4JAttr.write(doc,"DOM4JAttr_" + numrec + ".xml");
             PerfDOM4JAttr.parse(numrec,1);
-			//PerfDOM4JAttr.transform(doc,"item.xslt",1);
+            //PerfDOM4JAttr.transform(doc,"item.xslt",1);
             PerfDOM4JAttr.xpath(doc,"/ItemResultSet/Item[@guid=\"1\"]",3);
             PerfDOM4JAttr.xpath(doc,"/ItemResultSet/Item[@guid=\"500\"]",3);
             PerfDOM4JAttr.xpath(doc,"/ItemResultSet/Item[@guid=\"999\"]",3);
@@ -81,7 +81,7 @@ public class PerfDOM4JAttr
             PerfDOM4JAttr.createW3CDOM(doc);
             PerfDOM4JAttr.write(doc,"DOM4JAttr_" + numrec + ".xml");
             PerfDOM4JAttr.parse(numrec,100);
-			PerfDOM4JAttr.transform(doc,"item.xslt",10);
+            PerfDOM4JAttr.transform(doc,"item.xslt",10);
             PerfDOM4JAttr.xpath(doc,"/ItemResultSet/Item[@guid=\"1\"]",100);
             PerfDOM4JAttr.xpath(doc,"/ItemResultSet/Item[@guid=\"5\"]",100);
             PerfDOM4JAttr.xpath(doc,"/ItemResultSet/Item[@guid=\"9\"]",100);
@@ -89,7 +89,7 @@ public class PerfDOM4JAttr
             PerfDOM4JAttr.xpathNodes(doc,"/ItemResultSet/Item[@guid=\"5\"]",100);
             PerfDOM4JAttr.xpathNodes(doc,"/ItemResultSet/Item[@guid=\"9\"]",100);
             PerfDOM4JAttr.xpathNodes(doc,"/*/Item",100);
-			            
+                        
             numrec=1;
             System.out.println("\n1 Element -----------------------");
             doc = PerfDOM4JAttr.createDocument(numrec,20,100);
@@ -110,11 +110,11 @@ public class PerfDOM4JAttr
     public static Document createDocument(int iNumRecs,int iNumFlds, int pp) {
 
     double start = System.currentTimeMillis();
-	Document document = null;
-	for (int kk = 0 ; kk < pp ; kk++) {
+    Document document = null;
+    for (int kk = 0 ; kk < pp ; kk++) {
         document = DocumentHelper.createDocument();
 
-		
+        
         Element root = document.addElement( "ItemResultSet" );
         for (int ii=0;ii<iNumRecs;ii++)
         {
@@ -139,18 +139,18 @@ public class PerfDOM4JAttr
 
     public static Document parse(int iNumRecs,int kk) {
 
-	    File file = new File("DOM4JAttr_" + iNumRecs + ".xml");
-	    double start = System.currentTimeMillis();
-		Document document = null;
-			for (int pp= 0 ; pp < kk ; pp++) {
-				try {
-				SAXReader SAXrd = new SAXReader();
-				SAXrd.read(file);		
-				} catch(Exception e) {
-					e.printStackTrace();
-				}
-			}
-	    double end = System.currentTimeMillis();
+        File file = new File("DOM4JAttr_" + iNumRecs + ".xml");
+        double start = System.currentTimeMillis();
+        Document document = null;
+            for (int pp= 0 ; pp < kk ; pp++) {
+                try {
+                SAXReader SAXrd = new SAXReader();
+                SAXrd.read(file);       
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        double end = System.currentTimeMillis();
 
          System.err.println("Parsing time for 		:" + 1.000*(end-start)/kk);
 
@@ -214,7 +214,7 @@ public class PerfDOM4JAttr
         {
             TransformerFactory factory = TransformerFactory.newInstance();
             Transformer transformer = factory.newTransformer(new StreamSource( xslFile ) );
-			
+            
             long start = System.currentTimeMillis();
             for ( ii =0; ii<kk; ii++) {
             Source source = new DocumentSource( xmlDoc );
@@ -222,9 +222,9 @@ public class PerfDOM4JAttr
             transformer.transform( source, result );
 
             // output the transformed document
-	        }
+            }
             long end = System.currentTimeMillis();
-			
+            
             System.err.println("DOM4JAttr transform  time 		:"  + (end-start)/ii );
         } catch (Exception e)
         {
@@ -241,11 +241,11 @@ public class PerfDOM4JAttr
         XPath xpath = document.createXPath( xpathExp );
         for(int ii=0;ii<kk;ii++)
         {
-        	Node node = xpath.selectSingleNode( document );
-	 
+            Node node = xpath.selectSingleNode( document );
+     
           if ((node != null) & (ii==0)) {
-          	String val = node.getStringValue();
-	        //System.out.println("xpath OK:"+val);
+            String val = node.getStringValue();
+            //System.out.println("xpath OK:"+val);
           }
         }
 
@@ -258,7 +258,7 @@ public class PerfDOM4JAttr
 
         long start = System.currentTimeMillis();
         XPath xpath = document.createXPath( xpathExp );
-	
+    
         for(int ii=0;ii<kk;ii++)
         {
 
@@ -267,11 +267,11 @@ public class PerfDOM4JAttr
 
               List nodeList = xpath.selectNodes(document);
               if ((nodeList != null) && (nodeList.size()>0)) {
-	              Node node = (Node)nodeList.get(0);
-	              if ((node != null) & (ii==0)){
-	              	String val = node.getStringValue();
-	              	//System.out.println("xpathNodes OK:"+val);
-	              }
+                  Node node = (Node)nodeList.get(0);
+                  if ((node != null) & (ii==0)){
+                    String val = node.getStringValue();
+                    //System.out.println("xpathNodes OK:"+val);
+                  }
               }
           }
           catch(Exception e )

@@ -125,21 +125,21 @@ public class Table {
 
     if (lench[pos] == '+' || lench[pos] == '-') {
       if (lench[pos] == '-') {
-	sign = -1;
+    sign = -1;
       }
       pos++;
     }
 
     while (!done) {
       if (pos >= lench.length) {
-	done = true;
+    done = true;
       } else {
-	if ((lench[pos] > '9' || lench[pos] < '0') && lench[pos] != '.') {
-	  done = true;
-	  units = length.substring(pos);
-	} else {
-	  digits += lench[pos++];
-	}
+    if ((lench[pos] > '9' || lench[pos] < '0') && lench[pos] != '.') {
+      done = true;
+      units = length.substring(pos);
+    } else {
+      digits += lench[pos++];
+    }
       }
     }
 
@@ -155,10 +155,10 @@ public class Table {
     if (!units.equals("")) {
       f = (Float) unitHash.get(units);
       if (f == null) {
-	System.out.println(units + " is not a known unit; 1 used instead.");
-	factor = 1;
+    System.out.println(units + " is not a known unit; 1 used instead.");
+    factor = 1;
       } else {
-	factor = f.floatValue();
+    factor = f.floatValue();
       }
     } else {
       factor = 1;
@@ -293,7 +293,7 @@ public class Table {
    *
    */
   public static NodeSetValue adjustColumnWidths (Context context,
-						 NodeSetValue rtf_ns) {
+                         NodeSetValue rtf_ns) {
 
     FragmentValue rtf = (FragmentValue) rtf_ns;
 
@@ -316,39 +316,39 @@ public class Table {
       float absParts[] = new float[numColumns];
 
       for (int count = 0; count < numColumns; count++) {
-	String width = widths[count];
+    String width = widths[count];
 
-	int pos = width.indexOf("*");
-	if (pos >= 0) {
-	  String relPart = width.substring(0, pos);
-	  String absPart = width.substring(pos+1);
+    int pos = width.indexOf("*");
+    if (pos >= 0) {
+      String relPart = width.substring(0, pos);
+      String absPart = width.substring(pos+1);
 
-	  try {
-	    float rel = Float.parseFloat(relPart);
-	    relTotal += rel;
-	    relParts[count] = rel;
-	  } catch (NumberFormatException e) {
-	    System.out.println(relPart + " is not a valid relative unit.");
-	  }
+      try {
+        float rel = Float.parseFloat(relPart);
+        relTotal += rel;
+        relParts[count] = rel;
+      } catch (NumberFormatException e) {
+        System.out.println(relPart + " is not a valid relative unit.");
+      }
 
-	  int pixels = 0;
-	  if (absPart != null && !absPart.equals("")) {
-	    pixels = convertLength(absPart);
-	  }
+      int pixels = 0;
+      if (absPart != null && !absPart.equals("")) {
+        pixels = convertLength(absPart);
+      }
 
-	  absTotal += pixels;
-	  absParts[count] = pixels;
-	} else {
-	  relParts[count] = 0;
+      absTotal += pixels;
+      absParts[count] = pixels;
+    } else {
+      relParts[count] = 0;
 
-	  int pixels = 0;
-	  if (width != null && !width.equals("")) {
-	    pixels = convertLength(width);
-	  }
+      int pixels = 0;
+      if (width != null && !width.equals("")) {
+        pixels = convertLength(width);
+      }
 
-	  absTotal += pixels;
-	  absParts[count] = pixels;
-	}
+      absTotal += pixels;
+      absParts[count] = pixels;
+    }
       }
 
       // Ok, now we have the relative widths and absolute widths in
@@ -364,65 +364,65 @@ public class Table {
       //     percentages.
 
       if (relTotal == 0) {
-	for (int count = 0; count < numColumns; count++) {
-	  Float f = new Float(absParts[count]);
-	  if (foStylesheet) {
-	    int pixels = f.intValue();
-	    float inches = (float) pixels / pixelsPerInch;
-	    widths[count] = inches + "in";
-	  } else {
-	    widths[count] = Integer.toString(f.intValue());
-	  }
-	}
-      } else if (absTotal == 0) {
-	for (int count = 0; count < numColumns; count++) {
-	  float rel = relParts[count] / relTotal * 100;
-	  Float f = new Float(rel);
-	  widths[count] = Integer.toString(f.intValue()) + "%";
-	}
+    for (int count = 0; count < numColumns; count++) {
+      Float f = new Float(absParts[count]);
+      if (foStylesheet) {
+        int pixels = f.intValue();
+        float inches = (float) pixels / pixelsPerInch;
+        widths[count] = inches + "in";
       } else {
-	int pixelWidth = nominalWidth;
+        widths[count] = Integer.toString(f.intValue());
+      }
+    }
+      } else if (absTotal == 0) {
+    for (int count = 0; count < numColumns; count++) {
+      float rel = relParts[count] / relTotal * 100;
+      Float f = new Float(rel);
+      widths[count] = Integer.toString(f.intValue()) + "%";
+    }
+      } else {
+    int pixelWidth = nominalWidth;
 
-	if (tableWidth.indexOf("%") <= 0) {
-	  pixelWidth = convertLength(tableWidth);
-	}
+    if (tableWidth.indexOf("%") <= 0) {
+      pixelWidth = convertLength(tableWidth);
+    }
 
-	if (pixelWidth <= absTotal) {
-	  System.out.println("Table is wider than table width.");
-	} else {
-	  pixelWidth -= absTotal;
-	}
+    if (pixelWidth <= absTotal) {
+      System.out.println("Table is wider than table width.");
+    } else {
+      pixelWidth -= absTotal;
+    }
 
-	absTotal = 0;
-	for (int count = 0; count < numColumns; count++) {
-	  float rel = relParts[count] / relTotal * pixelWidth;
-	  relParts[count] = rel + absParts[count];
-	  absTotal += rel + absParts[count];
-	}
+    absTotal = 0;
+    for (int count = 0; count < numColumns; count++) {
+      float rel = relParts[count] / relTotal * pixelWidth;
+      relParts[count] = rel + absParts[count];
+      absTotal += rel + absParts[count];
+    }
 
-	if (tableWidth.indexOf("%") <= 0) {
-	  for (int count = 0; count < numColumns; count++) {
-	    Float f = new Float(relParts[count]);
-	    if (foStylesheet) {
-	      int pixels = f.intValue();
-	      float inches = (float) pixels / pixelsPerInch;
-	      widths[count] = inches + "in";
-	    } else {
-	      widths[count] = Integer.toString(f.intValue());
-	    }
-	  }
-	} else {
-	  for (int count = 0; count < numColumns; count++) {
-	    float rel = relParts[count] / absTotal * 100;
-	    Float f = new Float(rel);
-	    widths[count] = Integer.toString(f.intValue()) + "%";
-	  }
-	}
+    if (tableWidth.indexOf("%") <= 0) {
+      for (int count = 0; count < numColumns; count++) {
+        Float f = new Float(relParts[count]);
+        if (foStylesheet) {
+          int pixels = f.intValue();
+          float inches = (float) pixels / pixelsPerInch;
+          widths[count] = inches + "in";
+        } else {
+          widths[count] = Integer.toString(f.intValue());
+        }
+      }
+    } else {
+      for (int count = 0; count < numColumns; count++) {
+        float rel = relParts[count] / absTotal * 100;
+        Float f = new Float(rel);
+        widths[count] = Integer.toString(f.intValue()) + "%";
+      }
+    }
       }
 
       ColumnUpdateEmitter cuEmitter = new ColumnUpdateEmitter(controller,
-							      namePool,
-							      widths);
+                                  namePool,
+                                  widths);
 
       rtf.replay(cuEmitter);
       return cuEmitter.getResultTreeFragment();

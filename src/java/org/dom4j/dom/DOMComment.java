@@ -28,11 +28,11 @@ import org.w3c.dom.NodeList;
 public class DOMComment extends DefaultComment implements org.w3c.dom.Comment {
 
     public DOMComment(String text) {
-	super(text);
+    super(text);
     }
 
     public DOMComment(Element parent,String text) {
-	super(parent, text);
+    super(parent, text);
     }
 
 

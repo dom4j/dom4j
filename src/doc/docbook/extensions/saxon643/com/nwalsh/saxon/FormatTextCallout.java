@@ -37,7 +37,7 @@ public class FormatTextCallout extends FormatCallout {
   }
 
   public void formatCallout(Emitter rtfEmitter,
-			    Callout callout) {
+                Callout callout) {
     formatTextCallout(rtfEmitter, callout);
   }
 }

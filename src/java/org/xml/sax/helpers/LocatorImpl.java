@@ -76,10 +76,10 @@ public class LocatorImpl implements Locator
      */
     public LocatorImpl (Locator locator)
     {
-	setPublicId(locator.getPublicId());
-	setSystemId(locator.getSystemId());
-	setLineNumber(locator.getLineNumber());
-	setColumnNumber(locator.getColumnNumber());
+    setPublicId(locator.getPublicId());
+    setSystemId(locator.getSystemId());
+    setLineNumber(locator.getLineNumber());
+    setColumnNumber(locator.getColumnNumber());
     }
     
     
@@ -99,7 +99,7 @@ public class LocatorImpl implements Locator
      */
     public String getPublicId ()
     {
-	return publicId;
+    return publicId;
     }
     
     
@@ -113,7 +113,7 @@ public class LocatorImpl implements Locator
      */
     public String getSystemId ()
     {
-	return systemId;
+    return systemId;
     }
     
     
@@ -126,7 +126,7 @@ public class LocatorImpl implements Locator
      */
     public int getLineNumber ()
     {
-	return lineNumber;
+    return lineNumber;
     }
     
     
@@ -139,7 +139,7 @@ public class LocatorImpl implements Locator
      */
     public int getColumnNumber ()
     {
-	return columnNumber;
+    return columnNumber;
     }
     
     
@@ -158,7 +158,7 @@ public class LocatorImpl implements Locator
      */
     public void setPublicId (String publicId)
     {
-	this.publicId = publicId;
+    this.publicId = publicId;
     }
     
     
@@ -171,7 +171,7 @@ public class LocatorImpl implements Locator
      */
     public void setSystemId (String systemId)
     {
-	this.systemId = systemId;
+    this.systemId = systemId;
     }
     
     
@@ -183,7 +183,7 @@ public class LocatorImpl implements Locator
      */
     public void setLineNumber (int lineNumber)
     {
-	this.lineNumber = lineNumber;
+    this.lineNumber = lineNumber;
     }
     
     
@@ -195,7 +195,7 @@ public class LocatorImpl implements Locator
      */
     public void setColumnNumber (int columnNumber)
     {
-	this.columnNumber = columnNumber;
+    this.columnNumber = columnNumber;
     }
     
     

@@ -52,9 +52,9 @@ public class TextFactory implements ExtensionElementFactory {
   public Class getExtensionClass(String localname) {
     if (localname.equals("insertfile")) {
       try {
-	return Class.forName("com.nwalsh.saxon.Text");
+    return Class.forName("com.nwalsh.saxon.Text");
       } catch (ClassNotFoundException e) {
-	return null;
+    return null;
       }
     }
     return null;

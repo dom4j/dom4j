@@ -68,7 +68,7 @@ public interface Parser
      * @see org.xml.sax.SAXParseException
      */
     public abstract void setLocale (Locale locale)
-	throws SAXException;
+    throws SAXException;
     
     
     /**
@@ -176,7 +176,7 @@ public interface Parser
      * @see #setErrorHandler
      */
     public abstract void parse (InputSource source)
-	throws SAXException, IOException;
+    throws SAXException, IOException;
     
     
     /**
@@ -202,7 +202,7 @@ public interface Parser
      * @see #parse(org.xml.sax.InputSource)
      */
     public abstract void parse (String systemId)
-	throws SAXException, IOException;
+    throws SAXException, IOException;
     
 }
 

@@ -34,7 +34,7 @@ public interface Branch extends Node {
       * @return the <code>Node</code> at the specified position.
       * 
       * @throws IndexOutOfBoundsException if the index is out of range (index
-      * 		  &lt; 0 || index &gt;= {@link #nodeCount}).
+      *           &lt; 0 || index &gt;= {@link #nodeCount}).
       */    
     public Node node(int index);
     

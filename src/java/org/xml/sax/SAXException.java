@@ -42,8 +42,8 @@ public class SAXException extends Exception {
      */
     public SAXException ()
     {
-	super();
-	this.exception = null;
+    super();
+    this.exception = null;
     }
     
     
@@ -53,8 +53,8 @@ public class SAXException extends Exception {
      * @param message The error or warning message.
      */
     public SAXException (String message) {
-	super(message);
-	this.exception = null;
+    super(message);
+    this.exception = null;
     }
     
     
@@ -69,8 +69,8 @@ public class SAXException extends Exception {
      */
     public SAXException (Exception e)
     {
-	super();
-	this.exception = e;
+    super();
+    this.exception = e;
     }
     
     
@@ -85,8 +85,8 @@ public class SAXException extends Exception {
      */
     public SAXException (String message, Exception e)
     {
-	super(message);
-	this.exception = e;
+    super(message);
+    this.exception = e;
     }
     
     
@@ -101,13 +101,13 @@ public class SAXException extends Exception {
      */
     public String getMessage ()
     {
-	String message = super.getMessage();
-	
-	if (message == null && exception != null) {
-	    return exception.getMessage();
-	} else {
-	    return message;
-	}
+    String message = super.getMessage();
+    
+    if (message == null && exception != null) {
+        return exception.getMessage();
+    } else {
+        return message;
+    }
     }
     
     
@@ -118,7 +118,7 @@ public class SAXException extends Exception {
      */
     public Exception getException ()
     {
-	return exception;
+    return exception;
     }
 
 
@@ -129,11 +129,11 @@ public class SAXException extends Exception {
      */
     public String toString ()
     {
-	if (exception != null) {
-	    return exception.toString();
-	} else {
-	    return super.toString();
-	}
+    if (exception != null) {
+        return exception.toString();
+    } else {
+        return super.toString();
+    }
     }
     
     

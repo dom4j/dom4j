@@ -99,7 +99,7 @@ public interface ContentHandler
      * @see #endDocument
      */
     public void startDocument ()
-	throws SAXException;
+    throws SAXException;
 
 
     /**
@@ -116,7 +116,7 @@ public interface ContentHandler
      * @see #startDocument
      */
     public void endDocument()
-	throws SAXException;
+    throws SAXException;
 
 
     /**
@@ -149,8 +149,8 @@ public interface ContentHandler
      * "xml" prefix, since it is predeclared and immutable.</p>
      *
      * @param prefix The Namespace prefix being declared.
-     *	An empty string is used for the default element namespace,
-     *	which has no prefix.
+     *  An empty string is used for the default element namespace,
+     *  which has no prefix.
      * @param uri The Namespace URI the prefix is mapped to.
      * @exception org.xml.sax.SAXException The client may throw
      *            an exception during processing.
@@ -158,7 +158,7 @@ public interface ContentHandler
      * @see #startElement
      */
     public void startPrefixMapping (String prefix, String uri)
-	throws SAXException;
+    throws SAXException;
 
 
     /**
@@ -171,14 +171,14 @@ public interface ContentHandler
      * guaranteed.</p>
      *
      * @param prefix The prefix that was being mapped.
-     *	This is the empty string when a default mapping scope ends.
+     *  This is the empty string when a default mapping scope ends.
      * @exception org.xml.sax.SAXException The client may throw
      *            an exception during processing.
      * @see #startPrefixMapping
      * @see #endElement
      */
     public void endPrefixMapping (String prefix)
-	throws SAXException;
+    throws SAXException;
 
 
     /**
@@ -244,8 +244,8 @@ public interface ContentHandler
      * @see org.xml.sax.Attributes
      */
     public void startElement (String uri, String localName,
-			      String qName, Attributes atts)
-	throws SAXException;
+                  String qName, Attributes atts)
+    throws SAXException;
 
 
     /**
@@ -270,8 +270,8 @@ public interface ContentHandler
      *            wrapping another exception.
      */
     public void endElement (String uri, String localName,
-			    String qName)
-	throws SAXException;
+                String qName)
+    throws SAXException;
 
 
     /**
@@ -318,7 +318,7 @@ public interface ContentHandler
      * @see org.xml.sax.Locator
      */
     public void characters (char ch[], int start, int length)
-	throws SAXException;
+    throws SAXException;
 
 
     /**
@@ -346,7 +346,7 @@ public interface ContentHandler
      * @see #characters
      */
     public void ignorableWhitespace (char ch[], int start, int length)
-	throws SAXException;
+    throws SAXException;
 
 
     /**
@@ -372,7 +372,7 @@ public interface ContentHandler
      *            wrapping another exception.
      */
     public void processingInstruction (String target, String data)
-	throws SAXException;
+    throws SAXException;
 
 
     /**
@@ -401,7 +401,7 @@ public interface ContentHandler
      *            wrapping another exception.
      */
     public void skippedEntity (String name)
-	throws SAXException;
+    throws SAXException;
 }
 
 // end of ContentHandler.java

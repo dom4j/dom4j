@@ -84,11 +84,11 @@ public class NumberLinesEmitter extends CopyEmitter {
    * @param foStylesheet Is this an FO stylesheet?
    */
   public NumberLinesEmitter(Controller controller,
-			    NamePool namePool,
-			    int modulus,
-			    int width,
-			    String separator,
-			    boolean foStylesheet) {
+                NamePool namePool,
+                int modulus,
+                int width,
+                String separator,
+                boolean foStylesheet) {
     super(controller,namePool);
     elementStack = new Stack();
     firstElement = true;
@@ -116,71 +116,71 @@ public class NumberLinesEmitter extends CopyEmitter {
     int pos = 0;
     for (int count = start; count < start+len; count++) {
       if (chars[count] == '\n') {
-	// This is the tricky bit; if we find a newline, make sure
-	// it doesn't occur inside any markup.
+    // This is the tricky bit; if we find a newline, make sure
+    // it doesn't occur inside any markup.
 
-	if (pos > 0) {
-	  // Output any characters that preceded this newline
-	  rtfEmitter.characters(newChars, 0, pos);
-	  pos = 0;
-	}
+    if (pos > 0) {
+      // Output any characters that preceded this newline
+      rtfEmitter.characters(newChars, 0, pos);
+      pos = 0;
+    }
 
-	// Close all the open elements...
-	Stack tempStack = new Stack();
-	while (!elementStack.empty()) {
-	  StartElementInfo elem = (StartElementInfo) elementStack.pop();
-	  rtfEmitter.endElement(elem.getNameCode());
-	  tempStack.push(elem);
-	}
+    // Close all the open elements...
+    Stack tempStack = new Stack();
+    while (!elementStack.empty()) {
+      StartElementInfo elem = (StartElementInfo) elementStack.pop();
+      rtfEmitter.endElement(elem.getNameCode());
+      tempStack.push(elem);
+    }
 
-	// Copy the newline to the output
-	newChars[pos++] = chars[count];
-	rtfEmitter.characters(newChars, 0, pos);
-	pos = 0;
+    // Copy the newline to the output
+    newChars[pos++] = chars[count];
+    rtfEmitter.characters(newChars, 0, pos);
+    pos = 0;
 
-	// Add the line number
-	formatLineNumber(++lineNumber);
+    // Add the line number
+    formatLineNumber(++lineNumber);
 
-	// Now "reopen" the elements that we closed...
-	while (!tempStack.empty()) {
-	  StartElementInfo elem = (StartElementInfo) tempStack.pop();
-	  AttributeCollection attr = (AttributeCollection)elem.getAttributes();
-	  AttributeCollection newAttr = new AttributeCollection(namePool);
+    // Now "reopen" the elements that we closed...
+    while (!tempStack.empty()) {
+      StartElementInfo elem = (StartElementInfo) tempStack.pop();
+      AttributeCollection attr = (AttributeCollection)elem.getAttributes();
+      AttributeCollection newAttr = new AttributeCollection(namePool);
 
-	  for (int acount = 0; acount < attr.getLength(); acount++) {
-	    String localName = attr.getLocalName(acount);
-	    int nameCode = attr.getNameCode(acount);
-	    String type = attr.getType(acount);
-	    String value = attr.getValue(acount);
-	    String uri = attr.getURI(acount);
-	    String prefix = "";
+      for (int acount = 0; acount < attr.getLength(); acount++) {
+        String localName = attr.getLocalName(acount);
+        int nameCode = attr.getNameCode(acount);
+        String type = attr.getType(acount);
+        String value = attr.getValue(acount);
+        String uri = attr.getURI(acount);
+        String prefix = "";
 
-	    if (localName.indexOf(':') > 0) {
-	      prefix = localName.substring(0, localName.indexOf(':'));
-	      localName = localName.substring(localName.indexOf(':')+1);
-	    }
+        if (localName.indexOf(':') > 0) {
+          prefix = localName.substring(0, localName.indexOf(':'));
+          localName = localName.substring(localName.indexOf(':')+1);
+        }
 
-	    if (uri.equals("")
-		&& ((foStylesheet
-		     && localName.equals("id"))
-		    || (!foStylesheet
-			&& (localName.equals("id")
-			    || localName.equals("name"))))) {
-	      // skip this attribute
-	    } else {
-	      newAttr.addAttribute(prefix, uri, localName, type, value);
-	    }
-	  }
+        if (uri.equals("")
+        && ((foStylesheet
+             && localName.equals("id"))
+            || (!foStylesheet
+            && (localName.equals("id")
+                || localName.equals("name"))))) {
+          // skip this attribute
+        } else {
+          newAttr.addAttribute(prefix, uri, localName, type, value);
+        }
+      }
 
-	  rtfEmitter.startElement(elem.getNameCode(),
-			   newAttr,
-			   elem.getNamespaces(),
-			   elem.getNSCount());
+      rtfEmitter.startElement(elem.getNameCode(),
+               newAttr,
+               elem.getNamespaces(),
+               elem.getNSCount());
 
-	  elementStack.push(elem);
-	}
+      elementStack.push(elem);
+    }
       } else {
-	newChars[pos++] = chars[count];
+    newChars[pos++] = chars[count];
       }
     }
 
@@ -202,7 +202,7 @@ public class NumberLinesEmitter extends CopyEmitter {
 
     String lno = "";
     if (lineNumber == 1
-	|| (modulus >= 1 && (lineNumber % modulus == 0))) {
+    || (modulus >= 1 && (lineNumber % modulus == 0))) {
       lno = "" + lineNumber;
     }
 
@@ -234,14 +234,14 @@ public class NumberLinesEmitter extends CopyEmitter {
 
   /** Process start element events. */
   public void startElement(int nameCode,
-			   org.xml.sax.Attributes attributes,
-			   int[] namespaces,
-			   int nscount)
+               org.xml.sax.Attributes attributes,
+               int[] namespaces,
+               int nscount)
     throws TransformerException {
 
     if (!skipThisElement(nameCode)) {
       StartElementInfo sei = new StartElementInfo(nameCode, attributes,
-						  namespaces, nscount);
+                          namespaces, nscount);
       elementStack.push(sei);
     }
 
@@ -277,12 +277,12 @@ public class NumberLinesEmitter extends CopyEmitter {
       int xhtmlDivFingerprint = namePool.getFingerprint(xhURI, "div");
 
       if ((foStylesheet && thisFingerprint == foBlockFingerprint)
-	  || (!foStylesheet && (thisFingerprint == htmlPreFingerprint
-				|| thisFingerprint == htmlDivFingerprint
-				|| thisFingerprint == xhtmlPreFingerprint
-				|| thisFingerprint == xhtmlDivFingerprint))) {
-	// Don't push the outer-most wrapping div, pre, or fo:block
-	return true;
+      || (!foStylesheet && (thisFingerprint == htmlPreFingerprint
+                || thisFingerprint == htmlDivFingerprint
+                || thisFingerprint == xhtmlPreFingerprint
+                || thisFingerprint == xhtmlDivFingerprint))) {
+    // Don't push the outer-most wrapping div, pre, or fo:block
+    return true;
       }
     }
 
@@ -304,9 +304,9 @@ public class NumberLinesEmitter extends CopyEmitter {
     int _nscount;
 
     public StartElementInfo(int nameCode,
-			    org.xml.sax.Attributes attributes,
-			    int[] namespaces,
-			    int nscount) {
+                org.xml.sax.Attributes attributes,
+                int[] namespaces,
+                int nscount) {
       _nameCode = nameCode;
       _attributes = attributes;
       _namespaces = namespaces;

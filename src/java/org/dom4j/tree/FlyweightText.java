@@ -31,11 +31,11 @@ public class FlyweightText extends AbstractText implements Text {
     /** @param text is the Text text
       */
     public FlyweightText(String text) {
-	this.text = text;
+    this.text = text;
     }
 
     public String getText() {
-	return text;
+    return text;
     }
     
     protected Node createXPathResult(Element parent) {

@@ -83,8 +83,8 @@ public interface LexicalHandler
      * @see #startEntity
      */
     public abstract void startDTD (String name, String publicId,
-				   String systemId)
-	throws SAXException;
+                   String systemId)
+    throws SAXException;
 
 
     /**
@@ -98,7 +98,7 @@ public interface LexicalHandler
      * @see #startDTD
      */
     public abstract void endDTD ()
-	throws SAXException;
+    throws SAXException;
 
 
     /**
@@ -151,7 +151,7 @@ public interface LexicalHandler
      * @see org.xml.sax.ext.DeclHandler#externalEntityDecl 
      */
     public abstract void startEntity (String name)
-	throws SAXException;
+    throws SAXException;
 
 
     /**
@@ -162,7 +162,7 @@ public interface LexicalHandler
      * @see #startEntity
      */
     public abstract void endEntity (String name)
-	throws SAXException;
+    throws SAXException;
 
 
     /**
@@ -177,7 +177,7 @@ public interface LexicalHandler
      * @see #endCDATA
      */
     public abstract void startCDATA ()
-	throws SAXException;
+    throws SAXException;
 
 
     /**
@@ -187,7 +187,7 @@ public interface LexicalHandler
      * @see #startCDATA
      */
     public abstract void endCDATA ()
-	throws SAXException;
+    throws SAXException;
 
 
     /**
@@ -205,7 +205,7 @@ public interface LexicalHandler
      * @exception SAXException The application may raise an exception.
      */
     public abstract void comment (char ch[], int start, int length)
-	throws SAXException;
+    throws SAXException;
 
 }
 

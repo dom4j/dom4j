@@ -31,11 +31,11 @@ public class FlyweightCDATA extends AbstractCDATA implements CDATA {
     /** @param text is the CDATA text
       */
     public FlyweightCDATA(String text) {
-	this.text = text;
+    this.text = text;
     }
 
     public String getText() {
-	return text;
+    return text;
     }
     
     protected Node createXPathResult(Element parent) {

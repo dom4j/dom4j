@@ -28,11 +28,11 @@ import org.w3c.dom.NodeList;
 public class DOMText extends DefaultText implements org.w3c.dom.Text {
 
     public DOMText(String text) {
-	super(text);
+    super(text);
     }
 
     public DOMText(Element parent, String text) {
-	super(parent, text);
+    super(parent, text);
     }
 
 

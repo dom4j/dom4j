@@ -42,74 +42,74 @@ public class DefaultHandler extends org.xml.sax.helpers.DefaultHandler
 //    /** <b>SAX1</b> called at the beginning of an element */
 //    public void startElement (String name, AttributeList attrs)
 //    throws SAXException
-//	{}
+//  {}
 //
 //    /** <b>SAX1</b> called at the end of an element */
 //    public void endElement (String name)
 //    throws SAXException
-//	{}
+//  {}
 
     // SAX2 LexicalHandler
 
     /** <b>SAX2</b>:  called before parsing CDATA characters */
     public void startCDATA ()
     throws SAXException
-	{}
+    {}
 
     /** <b>SAX2</b>:  called after parsing CDATA characters */
     public void endCDATA ()
     throws SAXException
-	{}
+    {}
 
     /** <b>SAX2</b>:  called when the doctype is partially parsed */
     public void startDTD (String root, String pubid, String sysid)
     throws SAXException
-	{}
+    {}
 
     /** <b>SAX2</b>:  called after the doctype is parsed */
     public void endDTD ()
     throws SAXException
-	{}
+    {}
 
     /**
      * <b>SAX2</b>:  called before parsing a general entity in content
      */
     public void startEntity (String name)
     throws SAXException
-	{}
+    {}
 
     /**
      * <b>SAX2</b>:  called after parsing a general entity in content
      */
     public void endEntity (String name)
     throws SAXException
-	{}
+    {}
 
     /** <b>SAX2</b>:  called when comments are parsed */
     public void comment (char buf [], int off, int len)
     throws SAXException
-	{ }
+    { }
 
     // SAX2 DeclHandler
 
     /** <b>SAX2</b>:  called on attribute declarations */
     public void attributeDecl (String element, String name,
-	    String type, String defaultType, String defaltValue)
+        String type, String defaultType, String defaltValue)
     throws SAXException
-	{}
+    {}
 
     /** <b>SAX2</b>:  called on element declarations */
     public void elementDecl (String name, String model)
     throws SAXException
-	{}
+    {}
 
     /** <b>SAX2</b>:  called on external entity declarations */
     public void externalEntityDecl (String name, String pubid, String sysid)
     throws SAXException
-	{}
+    {}
 
     /** <b>SAX2</b>:  called on internal entity declarations */
     public void internalEntityDecl (String name, String value)
     throws SAXException
-	{}
+    {}
 }

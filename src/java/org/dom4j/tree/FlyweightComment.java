@@ -31,11 +31,11 @@ public class FlyweightComment extends AbstractComment implements Comment {
     /** @param text is the Comment text
       */
     public FlyweightComment(String text) {
-	this.text = text;
+    this.text = text;
     }
 
     public String getText() {
-	return text;
+    return text;
     }
     
     protected Node createXPathResult(Element parent) {

@@ -43,7 +43,7 @@ public interface Locator2 extends Locator
      * different rules about which characters are legal in XML names.
      *
      * @return Identifier for the XML version being used to interpret
-     *	the entity's text.
+     *  the entity's text.
      */
     public String getXMLVersion ();
 
@@ -70,8 +70,8 @@ public interface Locator2 extends Locator
      * and comparisons should be case-insensitive.
      *
      * @return Name of the character encoding being used to interpret
-     *	the entity's text, or null if this was not provided for a
-     *	character stream passed through an InputSource.
+     *  the entity's text, or null if this was not provided for a
+     *  character stream passed through an InputSource.
      */
     public String getEncoding ();
 }
