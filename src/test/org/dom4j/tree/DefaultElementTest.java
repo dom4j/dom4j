@@ -29,6 +29,17 @@ public class DefaultElementTest extends AbstractTestCase {
 
     // Test case(s)
     // -------------------------------------------------------------------------
+    public void testGetStringValue() throws Exception {
+        Document doc = getDocument("xml/test/test_text.xml");
+        Element message = doc.getRootElement();
+        
+        String text = message.getStringValue();
+        assertEquals("String value incorrect", "This should work", text.trim());
+        
+        String xpathText = (String) doc.selectObject("normalize-space(/message)");
+        assertEquals("xpath value incorrect", "This should work", xpathText);
+    }
+    
     public void testBug894878() {
         Element foo = DocumentFactory.getInstance().createElement("foo");
         foo.addText("bla").addAttribute("foo", "bar");

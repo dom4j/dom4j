@@ -2,13 +2,12 @@
 <tests>
 
   <!-- test the use of text() -->
-<!--
   <document url="xml/test/test_text.xml">
     <context select="/">
-      <valueOf select="normalize-space(/message/text())">This should work</valueOf>
+      <valueOf select="normalize-space(/message)">This should work</valueOf>
     </context>
   </document>
--->
+
   <!-- test cases for the use of = with nodesets -->
   <document url="xml/web.xml">
     <context select="/">
