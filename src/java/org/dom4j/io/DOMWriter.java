@@ -34,6 +34,7 @@ public class DOMWriter {
     private static boolean loggedWarning = false;
     private static final String[] DEFAULT_DOM_DOCUMENT_CLASSES = {
         "org.apache.xerces.dom.DocumentImpl", // Xerces
+        "gnu.xml.dom.DomDocument", // GNU JAXP
         "org.apache.crimson.tree.XmlDocument", // Crimson
         "com.sun.xml.tree.XmlDocument", // Sun's Project X
         "oracle.xml.parser.v2.XMLDocument", // Oracle V2
