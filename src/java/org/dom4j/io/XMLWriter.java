@@ -833,6 +833,52 @@ public class XMLWriter implements Cloneable {
     }
     
     
+    /**
+     * <p>
+     * Print out the given object which should be a String, a Node or a List
+     * of Nodes
+     * </p>
+     *
+     * @param object is the object to output.
+     * @param out <code>Writer</code> to write to.
+     **/
+    public void write(Object object, Writer out)
+        throws IOException
+    {
+        if (object instanceof Node) {
+            write((Node) object, out);
+        }
+        else if (object instanceof String) {
+            write((String) object, out);
+        }
+        else if (object instanceof List) {
+            List list = (List) object;
+            for ( int i = 0, size = list.size(); i < size; i++ ) {
+                write( list.get(i), out );
+            }
+        }
+        else if (object != null) {
+            write( object.toString(), out);
+        }
+    }
+    
+    /**
+     * <p>
+     * Print out the given object which should be a String, a Node or a List
+     * of Nodes
+     * </p>
+     *
+     * @param object is the object to output.
+     * @param out <code>Writer</code> to write to.
+     **/
+    public void write(Object object, OutputStream out)
+        throws IOException
+    {
+        Writer writer = makeWriter(out);
+        write(object, writer);
+        writer.flush();         // Flush the output to the underlying stream
+    }
+    
     
     // output as string
     
