@@ -7,7 +7,7 @@
     <tstamp/>
     <property name="Name" value="DOM4J"/>
     <property name="name" value="dom4j"/>
-    <property name="version" value="coming-soon-0.3"/>
+    <property name="version" value="0.3"/>
     <property name="year" value="2001"/>
 
     <echo message="----------- ${Name} ${version} [${year}] ------------"/>
@@ -290,8 +290,8 @@
       <fileset dir="${doc.dir}/style" includes="images/**"/>
     </copy>
 
-    <replace  file="${build.doc}/index.html" token="$$VERSION$$" value="${version}"/>
-    <replace  file="${build.doc}/download.html" token="$$VERSION$$" value="${version}"/>
+    <replace file="${build.doc}/index.html" token="$$VERSION$$" value="${version}"/>
+    <replace file="${build.doc}/download.html" token="$$VERSION$$" value="${version}"/>
   </target>
 
 

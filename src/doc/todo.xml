@@ -35,7 +35,7 @@
     </section>
 
     <section title="Change History">
-        <section title="(coming soon) 0.3 release">
+        <section title="0.3 release">
           <p>The <code>org.dom4j.io.OutputFormat</code> class now has a new helper
             method to make it easier to create pretty print formatting objects.
             The new method is <code>OutputFormat.createPrettyPrint()</code>.
