@@ -24,8 +24,8 @@
         <a href="faq.html">FAQ</a> or the online 
         <a href="apidocs/index.html">JavaDoc</a>.</p>
         
-      <p>The nightly build of version $VERSION$ is now 
-        <a href="download.html">available for download</a>.</p>
+      <p>You can download the current $VERSION$ release 
+        or a nightly build via the <a href="download.html">download page</a>.</p>
 
       <p>Contributors are welcome to join this project. 
         Once you've browsed the <a href="faq.html">FAQ</a> you could try
