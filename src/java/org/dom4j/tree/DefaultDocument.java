@@ -9,6 +9,8 @@
 
 package org.dom4j.tree;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,6 +19,8 @@ import org.dom4j.Document;
 import org.dom4j.DocumentType;
 import org.dom4j.Element;
 import org.dom4j.IllegalAddNodeException;
+import org.dom4j.Node;
+import org.dom4j.ProcessingInstruction;
 import org.dom4j.XPathEngine;
 import org.dom4j.XPathHelper;
 
@@ -28,14 +32,17 @@ import org.dom4j.XPathHelper;
   */
 public class DefaultDocument extends AbstractDocument {
 
+    protected static final List EMPTY_LIST = Collections.EMPTY_LIST;
+    protected static final Iterator EMPTY_ITERATOR = EMPTY_LIST.iterator();
+    
     /** The name of the document */
     private String name;
 
-    /** The <code>ContentModel</code> for this elemenet */
-    private ContentModel contentModel;
-    
     /** The root element of this document */
     private Element rootElement;
+    
+    /** Store the contents of the document as a lazily created <code>List</code> */
+    private List contents;
     
     /** The document type for this document */
     private DocumentType docType;
@@ -107,32 +114,158 @@ public class DefaultDocument extends AbstractDocument {
     }
     
     
-       
-    /** Allows derived classes to override the content model */
-    protected ContentModel getContentModel() {
-        if ( contentModel == null ) {
-            contentModel = createContentModel();
+    public List getProcessingInstructions() {
+        List source = contents;
+        if ( source == null ) {
+            return EMPTY_LIST;
         }
-        return contentModel;
+        List answer = createResultList();
+        int size = source.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = source.get(i);
+            if ( object instanceof ProcessingInstruction ) {
+                answer.add( object );
+            }
+        }
+        return answer;
     }
     
-    /** Allow derived classes to set the <code>ContentModel</code>
-      */
-    protected void setContentModel(ContentModel contentModel) {
-        this.contentModel = contentModel;
-    }
-
-
-    /** A Factory Method pattern which lazily creates 
-      * a ContentModel implementation 
-      */
-    protected ContentModel createContentModel() {
-        return new DefaultContentModel();
+    public List getProcessingInstructions(String target) {
+        List source = contents;
+        if ( source == null ) {
+            return EMPTY_LIST;
+        }
+        List answer = createResultList();
+        int size = source.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = source.get(i);
+            if ( object instanceof ProcessingInstruction ) {
+                ProcessingInstruction pi = (ProcessingInstruction) object;
+                if ( target.equals( pi.getName() ) ) {                  
+                    answer.add( pi );
+                }
+            }
+        }
+        return answer;
     }
     
+    public ProcessingInstruction getProcessingInstruction(String target) {
+        List source = contents;
+        if ( source != null ) {
+            int size = source.size();
+            for ( int i = 0; i < size; i++ ) {
+                Object object = source.get(i);
+                if ( object instanceof ProcessingInstruction ) {
+                    ProcessingInstruction pi = (ProcessingInstruction) object;
+                    if ( target.equals( pi.getName() ) ) {                  
+                        return pi;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
+    public boolean removeProcessingInstruction(String target) {
+        List source = contents;
+        if ( source != null ) {
+            for ( Iterator iter = source.iterator(); iter.hasNext(); ) {
+                Object object = iter.next();
+                if ( object instanceof ProcessingInstruction ) {
+                    ProcessingInstruction pi = (ProcessingInstruction) object;
+                    if ( target.equals( pi.getName() ) ) {                  
+                        iter.remove();
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
+    public List getContent() {
+        if (contents == null) {
+            contents = createContentList();
+        }
+        return contents;
+    }
+    
+    public void setContent(List contents) {
+        this.contents = contents;
+    }
+    
+    public void clearContent() {
+        contents = null;
+    }
+    
+    
+    public Node getNode(int index) {
+        if (contents != null) {
+            Object object = contents.get(index);
+            if (object instanceof Node) {
+                return (Node) object;
+            }
+            if (object instanceof String) {
+                return new DefaultText((String) object);
+            }
+        }
+        return null;
+    }
+    
+    public int getNodeCount() {
+        return ( contents == null ) ? 0 : contents.size();
+    }
+    
+    public Iterator nodeIterator() {
+        if (contents != null) {
+            return contents.iterator();
+        }
+        return EMPTY_ITERATOR;
+    }
+
+    
+    protected void addNode(Node node) {
+        if (node.getDocument() != null) {
+            // XXX: could clone here
+            String message = "The Node already has an existing document of \"" 
+                + node.getDocument().getName() + "\"";
+            throw new IllegalAddNodeException(this, node, message);
+        }
+        if (contents == null) {
+            contents = createContentList();
+        }
+        contents.add(node);
+        childAdded(node);
+    }
+
+    protected boolean removeNode(Node node) {
+        if (contents != null && contents.remove(node)) {
+            childRemoved(node);
+            return true;
+        }
+        return false;
+    }
+
     protected void rootElementAdded(Element element) {
         this.rootElement = element;
         element.setDocument(this);
+    }
+    
+    
+    /** A Factory Method pattern which lazily creates 
+      * a List implementation used to store content
+      */
+    protected List createContentList() {
+        return new ArrayList();
+    }
+    
+    /** A Factory Method pattern which lazily creates 
+      * a List implementation used to store results of 
+      * a filtered content query such as 
+      * {@link #getProcessingInstructions}
+      */
+    protected List createResultList() {
+        return new ArrayList();
     }
     
 }

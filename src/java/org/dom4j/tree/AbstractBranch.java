@@ -20,13 +20,17 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.dom4j.Branch;
+import org.dom4j.CDATA;
+import org.dom4j.CharacterData;
 import org.dom4j.Comment;
 import org.dom4j.ContentFactory;
 import org.dom4j.Element;
+import org.dom4j.Entity;
 import org.dom4j.IllegalAddNodeException;
 import org.dom4j.Node;
 import org.dom4j.Namespace;
 import org.dom4j.ProcessingInstruction;
+import org.dom4j.Text;
 import org.dom4j.io.XMLWriter;
 
 /** <p><code>AbstractBranch</code> is an abstract base class for 
@@ -46,96 +50,126 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     
     public AbstractBranch() { 
     }
- 
-    // Content Model methods
+
     
     public String getText() {
-        return getContentModel().getText();
+        List content = getContent();
+        if (content != null) {
+            int size = content.size();
+            if (size >= 1) {
+                Object first = content.get(0);
+                if (first != null) {
+                    // If we hold only a String, return it directly
+                    if (size == 1) {
+                        if ( first instanceof String) {
+                            return (String) first;
+                        }
+                        else if ( first instanceof CharacterData ) {
+                            CharacterData text = (CharacterData) first;
+                            return text.getText();
+                        }
+                        else {
+                            return "";
+                        }
+                    }
+                    
+                    // Else build String up
+                    StringBuffer textContent = new StringBuffer();
+                    boolean hasText = false;
+                    for ( Iterator i = content.iterator(); i.hasNext(); ) {
+                        Object obj = i.next();
+                        if (obj instanceof String) {
+                            textContent.append((String)obj);
+                        } else if (obj instanceof CharacterData) {
+                            textContent.append(((CharacterData)obj).getText());
+                        }
+                    }
+                    return textContent.toString();
+                }
+            }
+        }
+        return "";
     }
 
     public String getTextTrim() {
-        return getContentModel().getTextTrim();
+        String text = getText();
+
+        StringBuffer textContent = new StringBuffer();
+        StringTokenizer tokenizer = new StringTokenizer(text);
+        while (tokenizer.hasMoreTokens()) {
+            String str = tokenizer.nextToken();
+            textContent.append(str);
+            if (tokenizer.hasMoreTokens()) {
+                textContent.append(" ");  // separator
+            }
+        }
+
+        return textContent.toString();
     }
 
-    public List getProcessingInstructions() {
-        return getContentModel().getProcessingInstructions();
-    }
-    
-    public List getProcessingInstructions(String target) {
-        return getContentModel().getProcessingInstructions(target);
-    }
-    
-    public ProcessingInstruction getProcessingInstruction(String target) {
-        return getContentModel().getProcessingInstruction(target);
+    public boolean hasMixedContent() {
+        List content = getContent();
+        if (content == null || content.isEmpty() || content.size() < 2) {
+            return false;
+        }
+
+        Class prevClass = null;
+        for ( Iterator iter = content.iterator(); iter.hasNext(); ) {
+            Object object = iter.next();
+            Class newClass = object.getClass();
+            if (newClass != prevClass) {
+               if (prevClass != null) {
+                  return true;
+               }
+               prevClass = newClass;
+            }
+        }
+        return false;
     }
     
     public void setProcessingInstructions(List listOfPIs) {
-        getContentModel().setProcessingInstructions(listOfPIs);
-    }
-    
-    public boolean removeProcessingInstruction(String target) {
-        return getContentModel().removeProcessingInstruction(target);
-    }
-       
-    public List getContent() {
-        return getContentModel().getContent();
-    }
-    
-    public void setContent(List content) {
-        getContentModel().setContent(content);
-    }
-    
-    public void clearContent() {
-        getContentModel().clearContent();
-    }
-    
-    public Node getNode(int index) {
-        return getContentModel().getNode(index);
-    }
-    
-    public int getNodeCount() {
-        return getContentModel().getNodeCount();
-    }
-    
-    public Iterator nodeIterator() {
-        return getContentModel().nodeIterator();
+        for ( Iterator iter = listOfPIs.iterator(); iter.hasNext(); ) {
+            ProcessingInstruction pi = (ProcessingInstruction) iter.next();
+            addNode(pi);
+        }
     }
     
     public Comment addComment(String comment) {
-        Comment node = getContentModel().addComment(getContentFactory(), comment);
-        childAdded(node);
+        Comment node = getContentFactory().createComment( comment );
+        add( node );
         return node;
     }
     
     public Element addElement(String name) {
-        Element node = getContentModel().addElement(getContentFactory(), name);
-        childAdded(node);
+        Element node = getContentFactory().createElement( name );
+        add( node );
         return node;
     }
     
     public Element addElement(String name, String prefix, String uri) {
-        Element node = getContentModel().addElement(getContentFactory(), name, prefix, uri);
-        childAdded(node);
+        Element node = getContentFactory().createElement( name, prefix, uri );
+        add( node );
         return node;
     }
     
     public Element addElement(String name, Namespace namespace) {
-        Element node = getContentModel().addElement(getContentFactory(), name, namespace);
-        childAdded(node);
+        Element node = getContentFactory().createElement( name, namespace );
+        add( node );
         return node;
     }
     
     public ProcessingInstruction addProcessingInstruction(String target, String data) {
-        ProcessingInstruction node = getContentModel().addProcessingInstruction(getContentFactory(), target, data);
-        childAdded(node);
+        ProcessingInstruction node = getContentFactory().createProcessingInstruction( target, data );
+        add( node );
         return node;
     }
     
     public ProcessingInstruction addProcessingInstruction(String target, Map data) {
-        ProcessingInstruction node = getContentModel().addProcessingInstruction(getContentFactory(), target, data);
-        childAdded(node);
+        ProcessingInstruction node = getContentFactory().createProcessingInstruction( target, data );
+        add( node );
         return node;
     }
+    
     
 
     // typesafe versions using node classes
@@ -168,31 +202,16 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     
     // Implementation methods
     
-    protected void addNode(Node node) {
-        if (node.getParent() != null) {
-            // XXX: could clone here
-            String message = "The Node already has an existing parent of \"" 
-                + node.getParent().getQualifiedName() + "\"";
-            throw new IllegalAddNodeException(this, node, message);
-        }
-        getContentModel().addNode(node);
-        childAdded(node);
-    }
-
-    protected boolean removeNode(Node node) {
-        boolean answer = getContentModel().removeNode(node);
-        if (answer) {
-            childRemoved(node);
-        }
-        return answer;
-    }
-    
-    
     /** Allows derived classes to override the factory behaviour */
     protected ContentFactory getContentFactory() {
         return CONTENT_FACTORY;
     }
 
+    protected abstract void addNode(Node node);
+    
+    protected abstract boolean removeNode(Node node);
+    
+    
     /** Called when a new child node has been added to me
       * to allow any parent relationships to be created or
       * events to be fired.
@@ -204,9 +223,6 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
       * events to be fired.
       */
     protected abstract void childRemoved(Node node);
-    
-    /** Allows derived classes to override the content model */
-    protected abstract ContentModel getContentModel();
     
 }
 

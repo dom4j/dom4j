@@ -29,8 +29,19 @@ public class TestParent extends AbstractTestCase {
 
     // Test case(s)
     //-------------------------------------------------------------------------                    
-    public void testParentRelationship() throws Exception {        
+    public void testDocument() throws Exception {        
         testParentRelationship( document.getRootElement() );
+    }
+        
+    public void testFragment() throws Exception {        
+        
+        ContentFactory factory = new ContentFactory();
+        Element root = factory.createElement( "root" );
+        Element first = root.addElement( "child" );
+        Element second = root.addElement( "child" );
+        
+        testXPathNode( root, first );
+        testXPathNode( root, second );
     }
         
     // JUnit stuff
@@ -63,13 +74,17 @@ public class TestParent extends AbstractTestCase {
     
     protected void testXPathNode( Element parent, Node node ) {
         if ( node.supportsParent() ) {
-            assert( "getParent() returns parent", node.getParent() == parent );
+            log( "Node: " + node );
+            log( "Parent: " + parent );
+            log( "getParent(): " + node.getParent() );
+            
+            assert( "getParent() returns parent for: " + node, node.getParent() == parent );
         }
         else {
             // lets create an XPath node
             Node xpathNode = node.asXPathNode( parent );
-            assert( "XPath Node supports parent", xpathNode.supportsParent() );
-            assert( "getParent() returns parent", xpathNode.getParent() == parent );
+            assert( "XPath Node supports parent for: " + xpathNode, xpathNode.supportsParent() );
+            assert( "getParent() returns parent for: " + xpathNode, xpathNode.getParent() == parent );
         }
     }    
 }

@@ -357,7 +357,7 @@ public interface Element extends Branch {
       *
       * @param element is the element whose attributes will be added to me.
       */
-    public void addAttributes(Element element);
+    public void appendAttributes(Element element);
     
     /** Appends the content of the given element to me.
       * This method behaves like the {@link Collection#addAll(java.util.Collection)} 
@@ -365,7 +365,7 @@ public interface Element extends Branch {
       *
       * @param element is the element whose content will be added to me.
       */
-    public void addContent(Element element);
+    public void appendContent(Element element);
     
     /** Appends the additional namespace declarations of the given element to me.
       * This method behaves like the {@link Collection#addAll(java.util.Collection)} 
@@ -373,7 +373,7 @@ public interface Element extends Branch {
       *
       * @param element is the element whose additional namespaces will be added to me.
       */
-    public void addAddtionalNamespaces(Element element);
+    public void appendAddtionalNamespaces(Element element);
 
     // creates a copy
     public Element createCopy();

@@ -7,79 +7,69 @@
  * $Id$
  */
 
-package org.dom4j.tree;
 
-import java.util.Collections;
+import java.io.FileWriter;
+import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
-import org.dom4j.Attribute;
-import org.dom4j.ContentFactory;
-import org.dom4j.Namespace;
+import org.dom4j.Document;
+import org.dom4j.DocumentFactory;
+import org.dom4j.Element;
+import org.dom4j.io.XMLWriter;
 
-/** <p><code>AbstractAttributeModel</code> is an abstract base class for 
-  * tree implementors to use for implementation inheritence.</p>
+/** A sample program to demonstrate creating some XML output using DOM4J.
+  * This sample generates an XML document representing the state of the current JVM
+  * displaying the current system properties.
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public abstract class AbstractAttributeModel implements AttributeModel {
+public class CreateXMLDemo extends AbstractDemo {
     
-    public Iterator attributeIterator() {
-        return getAttributes().iterator();
+    public CreateXMLDemo() {
     }
     
-    public Attribute getAttribute(String name) {
-        return getAttribute(name, Namespace.NO_NAMESPACE);
-    }
-    
-    public boolean removeAttribute(String name) {
-        return removeAttribute(name, Namespace.NO_NAMESPACE);
-    }
-    
-
-    public String getAttributeValue(String name) {
-        return getAttributeValue(name, Namespace.NO_NAMESPACE);
-    }
-    
-    public String getAttributeValue(String name, Namespace ns) {
-        Attribute attrib = getAttribute(name, ns);
-        if (attrib == null) {
-            return null;
-        } 
-        else {
-            return attrib.getValue();
-        }
-    }
-
-    public void setAttributeValue(ContentFactory factory, String name, String value) {
-        Attribute attribute = getAttribute(name);
-        if (attribute == null ) {
-            add(factory.createAttribute(name, value));
-        }
-        else if (attribute.isReadOnly()) {
-            remove(attribute);
-            add(factory.createAttribute(name, value));
+    public void run(String[] args) throws Exception {    
+        Document document = createDocument();
+        XMLWriter writer = new XMLWriter( "  ", true );
+        
+        if ( args.length < 1 ) {
+            writer.output( document, System.out );
         }
         else {
-            attribute.setValue(value);
+            String fileName = args[0];
+            println( "Writing file: " + fileName );
+            FileWriter out = new FileWriter( args[0] );
+            writer.output( document, out );
+            out.close();
         }
     }
-
-    public void setAttributeValue(ContentFactory factory, String name, String value, Namespace namespace) {
-        Attribute attribute = getAttribute(name, namespace);
-        if (attribute == null ) {
-            add(factory.createAttribute(name, value, namespace));
+    
+    protected Document createDocument() throws Exception {
+        Document document = DocumentFactory.create();
+        Element root = document.addElement( "system" );
+        
+        Properties properties = System.getProperties();
+        for ( Enumeration enum = properties.propertyNames(); enum.hasMoreElements(); ) {
+            String name = (String) enum.nextElement();
+            String value = properties.getProperty( name );
+            Element element = root.addElement( "property" );
+            element.setAttributeValue( "name", name );
+            element.addText( value );
         }
-        else if (attribute.isReadOnly()) {
-            remove(attribute);
-            add(factory.createAttribute(name, value, namespace));
-        }
-        else {
-            attribute.setValue(value);
-        }
+        return document;
     }
+    
+    
+    /** The program entry point.
+      *
+      * @param args the command line arguments
+      */
+    public static void main(String[] args) {
+        run( new CreateXMLDemo(), args );
+    }    
 }
 
 

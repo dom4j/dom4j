@@ -12,15 +12,17 @@ package org.dom4j.tree;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.dom4j.Attribute;
 import org.dom4j.CDATA;
+import org.dom4j.CharacterData;
 import org.dom4j.Comment;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -39,6 +41,9 @@ import org.dom4j.Text;
   */
 public class DefaultElement extends AbstractElement {
 
+    protected static final List EMPTY_LIST = Collections.EMPTY_LIST;
+    protected static final Iterator EMPTY_ITERATOR = EMPTY_LIST.iterator();
+    
     /** The parent of this node */
     private Element parent;
 
@@ -48,12 +53,17 @@ public class DefaultElement extends AbstractElement {
     /** The <code>NameModel</code> for this element */
     private NameModel nameModel;
     
-    /** The <code>ContentModel</code> for this element */
-    private ContentModel contentModel;
+    /** Store the contents of the element as a lazily created <code>List</code> */
+    private List contents;
     
-    /** The <code>AttributeModel</code> for this element */
-    private AttributeModel attributeModel;
+    /** Cache the first Text node to delay creating the content list for 
+      * elements with no other content other than a single text node */
+    private Node firstNode;
+    
+    /** Lazily constructes list of attributes */
+    private List attributes;
 
+    
     
     public DefaultElement() { 
         this.nameModel = NameModel.EMPTY_NAME;
@@ -115,46 +125,582 @@ public class DefaultElement extends AbstractElement {
     }
     
     
-    /** Allows derived classes to override the content model */
-    protected ContentModel getContentModel() {
-        if ( contentModel == null ) {
-            contentModel = createContentModel();
+    public String getText() {
+        if ( contents == null ) {
+            if ( firstNode != null ) {
+                if ( firstNode instanceof CharacterData ) {
+                    return firstNode.getText();
+                }
+            }
+            return "";
         }
-        return contentModel;
+        else {
+            return super.getText();
+        }
     }
     
-    /** Allow derived classes to set the <code>ContentModel</code>
-      */
-    protected void setContentModel(ContentModel contentModel) {
-        this.contentModel = contentModel;
-    }
-
-    protected AttributeModel getAttributeModel() {
-        if ( attributeModel == null ) {
-            attributeModel = createAttributeModel();
+    public Namespace getNamespaceForPrefix(String prefix) {
+        if ( prefix == null || prefix.length() <= 0 ) {
+            return Namespace.NO_NAMESPACE;
         }
-        return attributeModel;
+        else if ( prefix.equals( getNamespacePrefix() ) ) {
+            return getNamespace();
+        }
+        else if ( prefix.equals( "xml" ) ) {
+            return Namespace.XML_NAMESPACE;
+        }
+        else {
+            List source = contents;
+            if ( source != null ) {
+                int size = source.size();
+                for ( int i = 0; i < size; i++ ) {
+                    Object object = source.get(i);
+                    if ( object instanceof Namespace ) {
+                        Namespace namespace = (Namespace) object;
+                        if ( prefix.equals( namespace.getPrefix() ) ) {
+                            return namespace;
+                        }
+                    }
+                }
+            }
+            else 
+            if ( firstNode instanceof Namespace ) {
+                Namespace namespace = (Namespace) firstNode;
+                if ( prefix.equals( namespace.getPrefix() ) ) {
+                    return namespace;
+                }
+            }
+            Element parent = getParent();
+            if ( parent != null ) {
+                return parent.getNamespaceForPrefix(prefix);
+            }
+        }
+        return null;
+    }
+   
+    public Namespace getNamespaceForURI(String uri) {
+        if ( uri == null || uri.length() <= 0 ) {
+            return Namespace.NO_NAMESPACE;
+        }
+        else if ( uri.equals( getNamespaceURI() ) ) {
+            return getNamespace();
+        }
+        else {
+            List source = contents;
+            if ( source != null ) {
+                int size = source.size();
+                for ( int i = 0; i < size; i++ ) {
+                    Object object = source.get(i);
+                    if ( object instanceof Namespace ) {
+                        Namespace namespace = (Namespace) object;
+                        if ( uri.equals( namespace.getURI() ) ) {
+                            return namespace;
+                        }
+                    }
+                }
+            }
+            else 
+            if ( firstNode instanceof Namespace ) {
+                Namespace namespace = (Namespace) firstNode;
+                if ( uri.equals( namespace.getURI() ) ) {
+                    return namespace;
+                }
+            }
+            Element parent = getParent();
+            if ( parent != null ) {
+                return parent.getNamespaceForURI(uri);
+            }
+            return null;
+        }
+    }
+    
+    public List getAdditionalNamespaces() {
+        List source = contents;
+        if ( source == null ) {
+            if ( firstNode instanceof Namespace ) {
+                List answer = createResultList();
+                Namespace namespace = (Namespace) firstNode;
+                return createSingleResultList( namespace );
+            }
+            else {
+                return EMPTY_LIST;
+            }
+        }
+        List answer = createResultList();
+        int size = source.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = source.get(i);
+            if ( object instanceof Namespace ) {
+                Namespace namespace = (Namespace) object;
+                answer.add( namespace );
+            }
+        }
+        return answer;
+    }
+    
+    public List getAdditionalNamespaces(String defaultNamespaceURI) {
+        List source = contents;
+        if ( source == null ) {
+            if ( firstNode instanceof Namespace ) {
+                List answer = createResultList();
+                Namespace namespace = (Namespace) firstNode;
+                if ( ! defaultNamespaceURI.equals( namespace.getURI() ) ) {
+                    return createSingleResultList( namespace );
+                }
+            }
+            else {
+                return EMPTY_LIST;
+            }
+        }
+        List answer = createResultList();
+        int size = source.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = source.get(i);
+            if ( object instanceof Namespace ) {
+                Namespace namespace = (Namespace) object;
+                if ( ! defaultNamespaceURI.equals( namespace.getURI() ) ) {
+                    answer.add( namespace );
+                }
+            }
+        }
+        return answer;
+    }
+    
+    
+    // Processing instruction API
+    
+    public List getProcessingInstructions() {
+        List source = contents;
+        if ( source == null ) {
+            if ( firstNode instanceof ProcessingInstruction ) {
+                return createSingleResultList( firstNode );
+            }
+            return EMPTY_LIST;
+        }
+        List answer = createResultList();
+        int size = source.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = source.get(i);
+            if ( object instanceof ProcessingInstruction ) {
+                answer.add( object );
+            }
+        }
+        return answer;
+    }
+    
+    public List getProcessingInstructions(String target) {
+        List source = contents;
+        if ( source == null ) {
+            if ( firstNode instanceof ProcessingInstruction ) {
+                ProcessingInstruction pi = (ProcessingInstruction) firstNode;
+                if ( target.equals( pi.getName() ) ) {                  
+                    return createSingleResultList( pi );
+                }
+            }
+            return EMPTY_LIST;
+        }
+        List answer = createResultList();
+        int size = source.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = source.get(i);
+            if ( object instanceof ProcessingInstruction ) {
+                ProcessingInstruction pi = (ProcessingInstruction) object;
+                if ( target.equals( pi.getName() ) ) {                  
+                    answer.add( pi );
+                }
+            }
+        }
+        return answer;
+    }
+    
+    public ProcessingInstruction getProcessingInstruction(String target) {
+        List source = contents;
+        if ( source == null ) {
+            if ( firstNode instanceof ProcessingInstruction ) {
+                ProcessingInstruction pi = (ProcessingInstruction) firstNode;
+                if ( target.equals( pi.getName() ) ) {                  
+                    return pi;
+                }
+            }
+        }
+        else {
+            int size = source.size();
+            for ( int i = 0; i < size; i++ ) {
+                Object object = source.get(i);
+                if ( object instanceof ProcessingInstruction ) {
+                    ProcessingInstruction pi = (ProcessingInstruction) object;
+                    if ( target.equals( pi.getName() ) ) {                  
+                        return pi;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
+    public boolean removeProcessingInstruction(String target) {
+        List source = contents;
+        if ( source == null ) {
+            if ( firstNode instanceof ProcessingInstruction ) {
+                ProcessingInstruction pi = (ProcessingInstruction) firstNode;
+                if ( target.equals( pi.getName() ) ) {                  
+                    firstNode = null;
+                    return true;
+                }
+            }
+        }
+        else {
+            for ( Iterator iter = source.iterator(); iter.hasNext(); ) {
+                Object object = iter.next();
+                if ( object instanceof ProcessingInstruction ) {
+                    ProcessingInstruction pi = (ProcessingInstruction) object;
+                    if ( target.equals( pi.getName() ) ) {                  
+                        iter.remove();
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
+    public Element getElementByID(String elementID) {
+        List source = contents;
+        if ( source == null ) {
+            if ( firstNode instanceof Element ) {
+                Element element = (Element) firstNode;
+                String id = getElementID(element);
+                if ( id != null && id.equals( elementID ) ) {
+                    return element;
+                }
+            }
+        }
+        else {
+            int size = source.size();
+            for ( int i = 0; i < size; i++ ) {
+                Object object = source.get(i);
+                if ( object instanceof Element ) {
+                    Element element = (Element) object;
+                    String id = getElementID(element);
+                    if ( id != null && id.equals( elementID ) ) {
+                        return element;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
+    public Element getElement(String name, Namespace namespace) {
+        List source = contents;
+        if ( source == null ) {
+            if ( firstNode instanceof Element ) {
+                Element element = (Element) firstNode;
+                String uri = namespace.getURI();
+                if ( name.equals( element.getName() )
+                    && uri.equals( element.getNamespaceURI() ) ) {
+                    return element;
+                }
+            }
+        }
+        else {
+            String uri = namespace.getURI();
+            int size = source.size();
+            for ( int i = 0; i < size; i++ ) {
+                Object object = source.get(i);
+                if ( object instanceof Element ) {
+                    Element element = (Element) object;
+                    if ( name.equals( element.getName() )
+                        && uri.equals( element.getNamespaceURI() ) ) {
+                        return element;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
+    public List getElements(String name, Namespace namespace) {
+        List source = contents;
+        if ( source == null ) {
+            if ( firstNode instanceof Element ) {
+                Element element = (Element) firstNode;
+                String uri = namespace.getURI();
+                if ( name.equals( element.getName() )
+                    && uri.equals( element.getNamespaceURI() ) ) {
+                    return createSingleResultList( element );
+                }
+            }
+            return EMPTY_LIST;
+        }
+        List answer = createResultList();
+        String uri = namespace.getURI();
+        int size = source.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = source.get(i);
+            if ( object instanceof Element ) {
+                Element element = (Element) object;
+                if ( name.equals( element.getName() )
+                    && uri.equals( element.getNamespaceURI() ) ) {
+                    answer.add( element );
+                }
+            }
+        }
+        return answer;
+    }
+    
+    public List getElements() {
+        List source = contents;
+        if ( source == null ) {
+            if ( firstNode instanceof Element ) {
+                Element element = (Element) firstNode;
+                return createSingleResultList( element );
+            }
+            return EMPTY_LIST;
+        }
+        List answer = createResultList();
+        int size = source.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = source.get(i);
+            if ( object instanceof Element ) {
+                answer.add( object );
+            }
+        }
+        return answer;
+    }
+    
+    public Iterator elementIterator() {
+        List source = contents;
+        if ( source == null ) {
+            if ( firstNode instanceof Element ) {
+                Element element = (Element) firstNode;
+                return createSingleIterator( element );
+            }
+            return EMPTY_ITERATOR;
+        }
+        else {
+            return new ElementIterator(source.iterator());
+        }
+    }
+        
+    public Iterator elementIterator(String name, Namespace namespace) {
+        List source = contents;
+        if ( source == null ) {
+            if ( firstNode instanceof Element ) {
+                Element element = (Element) firstNode;
+                String uri = namespace.getURI();
+                if ( name.equals( element.getName() )
+                    && uri.equals( element.getNamespaceURI() ) ) {
+                    return createSingleIterator( element );
+                }
+            }
+            return EMPTY_ITERATOR;
+        }
+        else {
+            return new ElementNameIterator(source.iterator(), name, namespace);
+        }
+    }
+    
+    public List getContent() {
+        if (contents == null) {
+            contents = createContentList();
+            if ( firstNode != null ) {
+                contents.add( firstNode );
+            }
+        }
+        return contents;
+    }
+    
+    public void setContent(List contents) {
+        this.contents = contents;
+    }
+    
+    public void clearContent() {
+        contents = null;
+        firstNode = null;
+    }
+    
+    
+    // node navigation API - return content as nodes
+    // such as Text etc.
+    public Node getNode(int index) {
+        if (contents == null) {
+            return firstNode;
+        }
+        Object object = contents.get(index);
+        if (object instanceof Node) {
+            return (Node) object;
+        }
+        if (object instanceof String) {
+            return new DefaultText((String) object);
+        }
+        return null;
+    }
+    
+    public int getNodeCount() {
+        if ( contents == null ) {
+            return ( firstNode != null ) ? 1 : 0;
+        }
+        return contents.size();
+    }
+    
+    public Iterator nodeIterator() {
+        if ( contents == null ) {
+            if ( firstNode != null ) {
+                return createSingleIterator( firstNode );
+            }
+        }
+        else {
+            if (contents != null) {
+                return contents.iterator();
+            }
+        }
+        return EMPTY_ITERATOR;
     }
 
-    /** Allow derived classes to set the <code>AttributeModel</code>
-      */
-    protected void setAttributeModel(AttributeModel attributeModel) {
-        this.attributeModel = attributeModel;
+    
+    public List getAttributes() {
+        if ( attributes == null ) {
+            attributes = createAttributeList();
+        }
+        return attributes;
+    }
+    
+    public void setAttributes(List attributes) {
+        this.attributes = attributes;
+    }
+    
+    public Attribute getAttribute(String name, Namespace namespace) {
+        if ( attributes != null ) {
+            String uri = namespace.getURI();
+            int size = attributes.size();
+            for ( int i = 0; i < size; i++ ) {
+                Attribute attribute = (Attribute) attributes.get(i);
+                if ( name.equals( attribute.getName() )
+                    && uri.equals( attribute.getNamespaceURI() ) ) {
+                    childRemoved(attribute);
+                    return attribute;
+                }
+            }
+        }
+        return null;
     }
 
+    public boolean removeAttribute(String name, Namespace namespace) {
+        if ( attributes != null ) {
+            String uri = namespace.getURI();
+            for ( Iterator iter = attributes.iterator(); iter.hasNext(); ) {
+                Attribute attribute = (Attribute) iter.next();
+                if ( name.equals( attribute.getName() )
+                    && uri.equals( attribute.getNamespaceURI() ) ) {
+                    iter.remove();
+                    childRemoved(attribute);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public boolean remove(Attribute attribute) {
+        if ( attributes == null ) {
+            return false;
+        }
+        boolean answer = attributes.remove(attribute);
+        if ( answer ) {
+            childRemoved(attribute);
+        }
+        return answer;
+    }
+    
 
     /** A Factory Method pattern which lazily creates 
-      * a ContentModel implementation 
+      * a List implementation used to store attributes
       */
-    protected ContentModel createContentModel() {
-        return new DefaultContentModel();
+    protected List createAttributeList() {
+        return new ArrayList();
+    }
+    
+    
+    protected void addNode(Node node) {
+        if (node.getParent() != null) {
+            // XXX: could clone here
+            String message = "The Node already has an existing parent of \"" 
+                + node.getParent().getQualifiedName() + "\"";
+            throw new IllegalAddNodeException(this, node, message);
+        }
+        if (contents == null) {
+            if ( firstNode == null ) {
+                firstNode = node;
+            }
+            else {
+                contents = createContentList();
+                contents.add( firstNode );
+                contents.add( node );
+            }
+        }
+        else {
+            contents.add(node);
+        }        
+        childAdded(node);
+    }
+
+    protected boolean removeNode(Node node) {
+        boolean answer = false;
+        if (contents == null) {
+            if ( firstNode == node ) {
+                firstNode = null;
+                answer = true;
+            }
+        }
+        else {
+            answer = contents.remove(node);
+        }
+        if (answer) {
+            childRemoved(node);
+        }
+        return answer;
+    }
+
+    // Implementation methods
+    
+    
+    /** A Factory Method pattern which lazily creates 
+      * a List implementation used to store content
+      */
+    protected List createContentList() {
+        return new ArrayList();
     }
     
     /** A Factory Method pattern which lazily creates 
-      * an AttributeModel implementation 
+      * a List implementation used to store results of 
+      * a filtered content query such as 
+      * {@link #getProcessingInstructions} or
+      * {@link #getElements}
       */
-    protected AttributeModel createAttributeModel() {
-        return new DefaultAttributeModel();
+    protected List createResultList() {
+        return new ArrayList();
+    }
+    
+    /** A Factory Method pattern which lazily creates 
+      * a List implementation which contains a single result
+      */
+    protected List createSingleResultList( Object result ) {
+        ArrayList list = new ArrayList(1);
+        list.add( result );
+        return list;
+    }
+
+    protected Iterator createSingleIterator( Object result ) {
+        return new SingleIterator( result );
+    }
+    
+    /** @return the ID of the given <code>Element</code>
+      */
+    protected String getElementID(Element element) {
+        // XXX: there will be other ways of finding the ID
+        // XXX: should probably have an IDResolver or something
+        return element.getAttributeValue( "id" );
     }
 }
 

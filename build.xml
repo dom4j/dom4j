@@ -256,6 +256,7 @@
     <copyfile src="${build.dir}/${name}.jar" dest="${dist.dir}/lib/${name}.jar"/>
 
     <copydir src="./src" dest="${dist.dir}/src"  defaultexcludes="true"/>
+    <copydir src="./xml" dest="${dist.dir}/xml"  defaultexcludes="true"/>
     <copydir src="./lib" dest="${dist.dir}/lib" defaultexcludes="true"/>
 
     <copydir src="." dest="${dist.dir}" includes="*.txt, *.sh, *.bat" filtering="on"/>
@@ -304,7 +305,7 @@
     </copy>
 
     <copy todir="${web.dist}" overwrite="yes">
-      <fileset dir="${dist.root}" includes="*.jar, *.zip, *.tar, *.gz"/>
+      <fileset dir="${dist.root}" includes="*.jar, *.zip, *.gz"/>
     </copy>
 
 <!--
@@ -414,6 +415,10 @@
 
   <target name="demo-count" depends="samples">
     <java classname="CountDemo" args="xml/fibo.xml"/>
+  </target>
+
+  <target name="demo-create" depends="samples">
+    <java classname="CreateXMLDemo"/>
   </target>
 
   <target name="demo-html" depends="samples">

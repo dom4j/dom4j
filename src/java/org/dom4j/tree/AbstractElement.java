@@ -62,49 +62,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     public void setNamespace(Namespace namespace) {
         throw new UnsupportedOperationException("The name and namespace of this Element cannot be changed" );
     }
-    
-    public Namespace getNamespaceForPrefix(String prefix) {
-        if ( prefix == null || prefix.length() <= 0 ) {
-            return Namespace.NO_NAMESPACE;
-        }
-        else if ( prefix.equals( getNamespacePrefix() ) ) {
-            return getNamespace();
-        }
-        else if ( prefix.equals( "xml" ) ) {
-            return Namespace.XML_NAMESPACE;
-        }
-        else {
-            Namespace answer = getContentModel().getNamespaceForPrefix(prefix);
-            if ( answer == null ) {
-                Element parent = getParent();
-                if ( parent != null ) {
-                    answer = parent.getNamespaceForPrefix(prefix);
-                }
-            }
-            return answer;
-        }
-    }
-
-    public Namespace getNamespaceForURI(String uri) {
-        if ( uri == null || uri.length() <= 0 ) {
-            return Namespace.NO_NAMESPACE;
-        }
-        else if ( uri.equals( getNamespaceURI() ) ) {
-            return getNamespace();
-        }
-        else {
-            Namespace answer = getContentModel().getNamespaceForURI(uri);
-            if ( answer == null ) {
-                Element parent = getParent();
-                if ( parent != null ) {
-                    answer = parent.getNamespaceForURI(uri);
-                }
-            }
-            return answer;
-        }
-    }
-
-    
+        
     public String asXML() {
         try {
             StringWriter out = new StringWriter();
@@ -205,50 +163,61 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     
     
     
-    // AttributeModel methods
+    // Attribute methods
         
-    public List getAttributes() {
-        return getAttributeModel().getAttributes();
-    }
-    
-    public void setAttributes(List attributes) {
-        getAttributeModel().setAttributes(attributes);
-    }
-
     public Iterator attributeIterator() {
-        return getAttributeModel().attributeIterator();
+        return getAttributes().iterator();
     }
     
     public Attribute getAttribute(String name) {
-        return getAttributeModel().getAttribute(name);
+        return getAttribute(name, Namespace.NO_NAMESPACE);
     }
     
-    public Attribute getAttribute(String name, Namespace namespace) {
-        return getAttributeModel().getAttribute(name, namespace);
+    public boolean removeAttribute(String name) {
+        return removeAttribute(name, Namespace.NO_NAMESPACE);
     }
+    
 
     public String getAttributeValue(String name) {
-        return getAttributeModel().getAttributeValue(name);
+        return getAttributeValue(name, Namespace.NO_NAMESPACE);
     }
-
-    public String getAttributeValue(String name, Namespace namespace) {
-        return getAttributeModel().getAttributeValue(name, namespace);
+    
+    public String getAttributeValue(String name, Namespace ns) {
+        Attribute attrib = getAttribute(name, ns);
+        if (attrib == null) {
+            return null;
+        } 
+        else {
+            return attrib.getValue();
+        }
     }
 
     public void setAttributeValue(String name, String value) {
-        getAttributeModel().setAttributeValue(getContentFactory(), name, value);
-    }
-    
-    public void setAttributeValue(String name, String value, Namespace namespace) {
-        getAttributeModel().setAttributeValue(getContentFactory(), name, value, namespace);
+        Attribute attribute = getAttribute(name);
+        if (attribute == null ) {
+            add(getContentFactory().createAttribute(name, value));
+        }
+        else if (attribute.isReadOnly()) {
+            remove(attribute);
+            add(getContentFactory().createAttribute(name, value));
+        }
+        else {
+            attribute.setValue(value);
+        }
     }
 
-    public boolean removeAttribute(String name) {
-        return getAttributeModel().removeAttribute(name);
-    }
-    
-    public boolean removeAttribute(String name, Namespace namespace) {
-        return getAttributeModel().removeAttribute(name, namespace);
+    public void setAttributeValue(String name, String value, Namespace namespace) {
+        Attribute attribute = getAttribute(name, namespace);
+        if (attribute == null ) {
+            add(getContentFactory().createAttribute(name, value, namespace));
+        }
+        else if (attribute.isReadOnly()) {
+            remove(attribute);
+            add(getContentFactory().createAttribute(name, value, namespace));
+        }
+        else {
+            attribute.setValue(value);
+        }
     }
     
     public void add(Attribute attribute) {
@@ -259,100 +228,43 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
             
             throw new IllegalAddNodeException( this, attribute, message );
         }        
-        getAttributeModel().add(attribute);
+        getAttributes().add(attribute);
         childAdded(attribute);
     }
     
-    public boolean remove(Attribute attribute) {
-        return getAttributeModel().remove(attribute);
-    }
-
-    /** Allows derived classes to override the attribute model */
-    protected abstract AttributeModel getAttributeModel();
-
 
     
     // Content Model methods
     
-    public List getAdditionalNamespaces() {
-        return getContentModel().getAdditionalNamespaces( getNamespaceURI() );
-    }
-
-    public boolean hasMixedContent() {
-        return getContentModel().hasMixedContent();
-    }
-
-    public Element getElementByID(String elementID) {
-        return getContentModel().getElementByID(elementID);
-    }
-    
-    public Element getElement(String name) {
-        return getContentModel().getElement(name);
-    }
-    
-    public Element getElement(String name, Namespace namespace) {
-        return getContentModel().getElement(name, namespace);
-    }
-    
-    public List getElements() {
-        return getContentModel().getElements();
-    }
-    
-    public List getElements(String name) {
-        return getContentModel().getElements(name);
-    }
-    
-    public List getElements(String name, Namespace namespace) {
-        return getContentModel().getElements(name, namespace);
-    }
-
-    public Iterator elementIterator() {
-        return getContentModel().elementIterator();
-    }
-    
-    public Iterator elementIterator(String name) {
-        return getContentModel().elementIterator(name);
-    }
-    
-    public Iterator elementIterator(String name, Namespace namespace) {
-        return getContentModel().elementIterator(name, namespace);
-    }
-    
-
-    
     
     public CDATA addCDATA(String cdata) {
-        CDATA node = getContentModel().addCDATA(getContentFactory(), cdata);
-        childAdded(node);
+        CDATA node = getContentFactory().createCDATA(cdata);
+        add(node);
         return node;
     }
     
     public Text addText(String text) {
-        Text node = getContentModel().addText(getContentFactory(), text);
-        childAdded(node);
+        Text node = getContentFactory().createText(text);
+        add(node);
         return node;
     }
     
     public Entity addEntity(String name) {
-        Entity node = getContentModel().addEntity(getContentFactory(), name);
-        childAdded(node);
+        Entity node = getContentFactory().createEntity(name);
+        add(node);
         return node;
     }
     
     public Entity addEntity(String name, String text) {
-        Entity node = getContentModel().addEntity(getContentFactory(), name, text);
-        childAdded(node);
+        Entity node = getContentFactory().createEntity(name, text);
+        add(node);
         return node;
     }
     
     public Namespace addAdditionalNamespace(String prefix, String uri) {
-        Namespace node = getContentModel().addAdditionalNamespace(getContentFactory(), prefix, uri);
-        childAdded(node);
+        Namespace node = getContentFactory().createNamespace(prefix, uri);
+        add(node);
         return node;
-    }
-
-    public void setText(String text) {
-        getContentModel().setText(getContentFactory(), text);
     }
 
 
@@ -389,6 +301,23 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     
     // Helper methods
     
+    public void setText(String text) {
+        clearContent();
+        addText(text);
+    }
+
+    public Element getElement(String name) {
+        return getElement(name, Namespace.NO_NAMESPACE);
+    }
+    
+    public List getElements(String name) {
+        return getElements(name, Namespace.NO_NAMESPACE);
+    }
+    
+    public Iterator elementIterator(String name) {
+        return elementIterator(name, Namespace.NO_NAMESPACE);
+    }
+        
     public String getAttributeValue(String name, String defaultValue) {
         String answer = getAttributeValue(name);
         return (answer != null) ? answer : defaultValue;
@@ -423,7 +352,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
 
     // add to me content from another element
     // analagous to the addAll(collection) methods in Java 2 collections
-    public void addAttributes(Element element) {
+    public void appendAttributes(Element element) {
         for (Iterator i = getAttributes().iterator(); i.hasNext(); ) {
             Attribute attribute = (Attribute) i.next();
             if ( attribute.supportsParent() ) {
@@ -441,7 +370,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         }
     }
         
-    public void addContent(Element element) {
+    public void appendContent(Element element) {
         for (Iterator iter = element.getContent().iterator(); iter.hasNext(); ) {
             Object object = iter.next();
             if (object instanceof String) {
@@ -460,7 +389,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         }
     }
         
-    public void addAddtionalNamespaces(Element element) {
+    public void appendAddtionalNamespaces(Element element) {
         for (Iterator i = element.getAdditionalNamespaces().iterator(); i.hasNext(); ) {
             Namespace namespace = (Namespace) i.next();
             add( namespace );
@@ -479,35 +408,36 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
       */
     public Object clone() {
         Element clone = createElement(getName(), getNamespace());
-        clone.addAttributes(this);
-        clone.addContent(this);
-        clone.addAddtionalNamespaces(this);
+        clone.appendAttributes(this);
+        clone.appendContent(this);
+        clone.appendAddtionalNamespaces(this);
         return clone;
     }
 
     public Element createCopy() {
         Element clone = createElement(getName(), getNamespace());
-        clone.addAttributes(this);
-        clone.addContent(this);
-        clone.addAddtionalNamespaces(this);
+        clone.appendAttributes(this);
+        clone.appendContent(this);
+        clone.appendAddtionalNamespaces(this);
         return clone;
     }
     
     public Element createCopy(String name) {
         Element clone = createElement(name);
-        clone.addAttributes(this);
-        clone.addContent(this);
-        clone.addAddtionalNamespaces(this);
+        clone.appendAttributes(this);
+        clone.appendContent(this);
+        clone.appendAddtionalNamespaces(this);
         return clone;
     }
     
     public Element createCopy(String name, Namespace namespace) {
         Element clone = createElement(name, namespace);
-        clone.addAttributes(this);
-        clone.addContent(this);
-        clone.addAddtionalNamespaces(this);
+        clone.appendAttributes(this);
+        clone.appendContent(this);
+        clone.appendAddtionalNamespaces(this);
         return clone;
     }
+
     
     protected Element createElement(String name) {
         return getContentFactory().createElement(name);
@@ -531,6 +461,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     protected void childRemoved(Node node) {
         if ( node != null ) {
             node.setParent(null);
+            node.setDocument(null);
         }
     }
 
