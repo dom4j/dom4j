@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tests>
 
+  <!-- test predicates -->
+
+  <document url="xml/web.xml">
+    <context select="/">
+      <test select="/web-app/servlet/servlet-name[.='file']" count="1"/>
+      <test select="/web-app/servlet/servlet-name[text()='file']" count="1"/>
+    </context>
+  </document>
+
   <!-- test `s -->
   <!-- patterns are used in XSLT <xsl:template match="pattern"/> tags -->
   <document url="xml/web.xml">
@@ -294,18 +303,18 @@
     <context select="/">
       <test select="namespace::*" count="0" debug="off"/>
       <test select="/namespace::*" count="0" debug="off"/>
-      <test select="/Template/Application1/namespace::*" count="2" debug="off"/>
-      <test select="/Template/Application2/namespace::*" count="2" debug="off"/>
-      <test select="/Template/Application2/namespace::*" count="2" debug="off"/>
-      <test select="//namespace::*" count="4" debug="off"/>
+      <test select="/Template/Application1/namespace::*" count="3" debug="off"/>
+      <test select="/Template/Application2/namespace::*" count="3" debug="off"/>
+      <test select="/Template/Application2/namespace::*" count="3" debug="off"/>
+      <test select="//namespace::*" count="25" debug="off"/>
     </context>
     <context select="/Template/Application1">
-      <test select="namespace::*" count="2" debug="off"/>
+      <test select="namespace::*" count="3" debug="off"/>
       <test select="/namespace::*" count="0" debug="off"/>
-      <test select="/Template/Application1/namespace::*" count="2" debug="off"/>
-      <test select="/Template/Application2/namespace::*" count="2" debug="off"/>
-      <test select="/Template/Application2/namespace::*" count="2" debug="off"/>
-      <test select="//namespace::*" count="4" debug="off"/>
+      <test select="/Template/Application1/namespace::*" count="3" debug="off"/>
+      <test select="/Template/Application2/namespace::*" count="3" debug="off"/>
+      <test select="/Template/Application2/namespace::*" count="3" debug="off"/>
+      <test select="//namespace::*" count="25" debug="off"/>
     </context>
   </document>
  </tests>

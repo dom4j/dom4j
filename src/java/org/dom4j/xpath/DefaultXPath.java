@@ -138,7 +138,18 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter {
     
     public Node selectSingleNode(Object context) {
         try {
-            return (Node) xpath.selectSingleNode( context );
+            Object answer = xpath.selectSingleNode( context );
+            if ( answer instanceof Node ) {
+                return (Node) answer;
+            }
+            if ( answer == null ) {
+                return null;
+            }
+            throw new XPathException( 
+                "The result of the XPath expression is not a Node. It was: " 
+                + answer + " of type: " + answer.getClass().getName() 
+                + ". You might want to use a different method such as selectObject() to evaluate this XPath expression" 
+            );
         }
         catch (JaxenException e) {
             handleJaxenException(e);
