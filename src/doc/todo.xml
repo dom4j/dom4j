@@ -90,6 +90,12 @@ matrix-concat( 'thanks ', /root/contributor, ' for working on ', '/@project' )
 "thanks James Pereira for working on dom4j"
 "thanks Bob McWhirter for working on dom4j"
 </pre>
+
+      <p>Finally, a couple of small issues with the build process have been fixed.
+      The dom4j.jar no longer contains any SAX or DOM classes (they are all in dom4j-full.jar)
+      And the Antlr grammar files for the XPath parser are now corrrectly 
+      included in the binary  distribution.
+      </p>
         </section>
  
         <section title="0.2 release">
