@@ -182,8 +182,8 @@
   <!-- Creates the class package                                           -->
   <!-- =================================================================== -->
   <target name="package" depends="compile">
-    <fixcrlf srcdir="." includes="**/*.bat" cr="add"/>
-    <fixcrlf srcdir="." includes="**/*.sh" cr="remove"/>
+    <fixcrlf srcdir="." includes="*.bat" cr="add"/>
+    <fixcrlf srcdir="." includes="*.sh" cr="remove"/>
     <jar jarfile="${build.dir}/${name}.jar"
          basedir="${build.dest}"
          includes="org/**"/>
@@ -257,10 +257,11 @@
     <mkdir dir="${dist.dir}/docs"/>
     <mkdir dir="${dist.dir}/docs/api"/>
 
-    <copy file="${build.dir}/${name}.jar" tofile="${dist.dir}/lib/${name}.jar"/>
+    <copy file="${build.dir}/${name}.jar" tofile="${dist.dir}/${name}.jar"/>
+    <copy file="${build.dir}/${name}-all.jar" tofile="${dist.dir}/${name}-all.jar"/>
 
     <copy todir="${dist.dir}/src">
-      <fileset dir="./src" />
+      <fileset dir="./src" includes="**/*.java,**/*.xml,**/*.css,**/*.gif"/>
     </copy>
     <copy todir="${dist.dir}/xml">
       <fileset dir="./xml" />
@@ -270,7 +271,7 @@
     </copy>
 
     <copy todir="${dist.dir}">
-      <fileset dir="." includes="*.txt, *.sh, *.bat, *.xml" />
+      <fileset dir="." includes="build.sh, build.bat, cp.bat, run.bat, runnojit.bat, *.xml" />
     </copy>
 
 <!--
