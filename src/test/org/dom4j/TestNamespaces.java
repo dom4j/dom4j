@@ -60,12 +60,14 @@ public class TestNamespaces extends AbstractTestCase {
 
         Element root = doc2.getRootElement();
         assertNamespace( root.getNamespace(), "", "http://www.w3.org/2001/XMLSchema" );
+        assertEquals( "xmlns=\"http://www.w3.org/2001/XMLSchema\"", root.getNamespace().asXML());
 
         List additionalNS = root.additionalNamespaces();
         assertTrue( "at least one additional namespace", additionalNS != null && additionalNS.size() > 0 );
 
         Namespace ns = (Namespace) additionalNS.get(0);
         assertNamespace( ns, "t", "http://www.w3.org/namespace/" );
+        assertEquals( "xmlns:t=\"http://www.w3.org/namespace/\"", ns.asXML());
 
         Node node = root.node(0);
         assertTrue( "First node is a namespace", node instanceof Namespace );
@@ -121,7 +123,6 @@ public class TestNamespaces extends AbstractTestCase {
         Namespace ns2 = element.getNamespaceForPrefix( "t" );
 
         assertNamespace( ns2, "t", "http://www.w3.org/namespace/" );
-
         assertTrue( "Same namespace instance returned", ns == ns2 );
 
         log( "found: " + ns.asXML() );
@@ -141,17 +142,11 @@ public class TestNamespaces extends AbstractTestCase {
 
         for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
             Element element = (Element) iter.next();
-
             Namespace ns = element.getNamespaceForPrefix( "" );
-
             assertNamespace( ns, "", "dummyNamespace" );
-
             ns = element.getNamespaceForPrefix( null );
-
             assertNamespace( ns, "", "dummyNamespace" );
-
             log( "found: " + ns.asXML() );
-
         }
     }
 
