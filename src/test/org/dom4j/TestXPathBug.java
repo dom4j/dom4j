@@ -90,6 +90,16 @@ public class TestXPathBug extends AbstractTestCase {
             }
         }
     }
+    
+    /** A bug found by Stefan which results in 
+     * IndexOutOfBoundsException for empty results
+     */
+    public void testStefan() throws Exception {
+        String text = "<foo>hello</foo>";
+        Document document = DocumentHelper.parseText( text );
+        XPath xpath = DocumentHelper.createXPath( "/x" );
+        Object value = xpath.evaluate( document );
+    }
 }
 
 

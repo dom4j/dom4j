@@ -111,7 +111,7 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
         try {
             setNSContext(context);
             List answer = xpath.selectNodes( context );
-            if ( answer != null && answer.size() == 0 ) {
+            if ( answer != null && answer.size() == 1 ) {
                 return answer.get(0);
             }
             return answer;
