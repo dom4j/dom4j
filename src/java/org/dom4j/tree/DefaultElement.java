@@ -9,20 +9,55 @@
 
 package org.dom4j.tree;
 
+import java.io.IOException;
+
+import java.io.StringWriter;
+
+import java.io.PrintWriter;
+
 import java.util.ArrayList;
+
+import java.util.Collections;
+
+import java.util.HashMap;
+
 import java.util.Iterator;
+
 import java.util.List;
 
+import java.util.Map;
+
+import java.util.StringTokenizer;
+
 import org.dom4j.Attribute;
+
 import org.dom4j.Branch;
+
+import org.dom4j.CDATA;
+
+import org.dom4j.CharacterData;
+
+import org.dom4j.Comment;
+
 import org.dom4j.Document;
+
 import org.dom4j.DocumentFactory;
+
 import org.dom4j.Element;
+
+import org.dom4j.Entity;
+
 import org.dom4j.IllegalAddException;
-import org.dom4j.Namespace;
+
 import org.dom4j.Node;
-import org.dom4j.ProcessingInstruction;
+
+import org.dom4j.Namespace;
+
 import org.dom4j.QName;
+
+import org.dom4j.ProcessingInstruction;
+
+import org.dom4j.Text;
 
 /** <p><code>DefaultElement</code> is the default DOM4J default implementation
   * of an XML element.</p>
@@ -155,8 +190,8 @@ public class DefaultElement extends AbstractElement {
     }
 
     public String getText() {
-
-        if (content instanceof List) {
+        final Object contentShadow = content;
+        if (contentShadow instanceof List) {
 
             return super.getText();
 
@@ -164,9 +199,9 @@ public class DefaultElement extends AbstractElement {
 
         else {
 
-            if (content != null) {
+            if (contentShadow != null) {
 
-                return getContentAsText(content);
+                return getContentAsText(contentShadow);
 
             }
 
@@ -181,10 +216,11 @@ public class DefaultElement extends AbstractElement {
     }
 
     public String getStringValue() {
+        final Object contentShadow = content;
 
-        if (content instanceof List) {
+        if (contentShadow instanceof List) {
 
-            List list = (List) content;
+            List list = (List) contentShadow;
 
             int size = list.size();
 
@@ -236,9 +272,9 @@ public class DefaultElement extends AbstractElement {
 
         else {
 
-            if (content != null) {
+            if (contentShadow != null) {
 
-                return getContentAsStringValue(content);
+                return getContentAsStringValue(contentShadow);
 
             }
 
@@ -289,10 +325,11 @@ public class DefaultElement extends AbstractElement {
         }
 
         else {
+        final Object contentShadow = content;
 
-            if (content instanceof List) {
+            if (contentShadow instanceof List) {
 
-                List list = (List) content;
+                List list = (List) contentShadow;
 
                 int size = list.size();
 
@@ -316,9 +353,9 @@ public class DefaultElement extends AbstractElement {
 
             }
 
-            else if (content instanceof Namespace) {
+            else if (contentShadow instanceof Namespace) {
 
-                Namespace namespace = (Namespace) content;
+                Namespace namespace = (Namespace) contentShadow;
 
                 if (prefix.equals(namespace.getPrefix())) {
 
@@ -369,10 +406,11 @@ public class DefaultElement extends AbstractElement {
         }
 
         else {
+        final Object contentShadow = content;
 
-            if (content instanceof List) {
+            if (contentShadow instanceof List) {
 
-                List list = (List) content;
+                List list = (List) contentShadow;
 
                 int size = list.size();
 
@@ -396,9 +434,9 @@ public class DefaultElement extends AbstractElement {
 
             }
 
-            else if (content instanceof Namespace) {
+            else if (contentShadow instanceof Namespace) {
 
-                Namespace namespace = (Namespace) content;
+                Namespace namespace = (Namespace) contentShadow;
 
                 if (uri.equals(namespace.getURI())) {
 
@@ -432,9 +470,10 @@ public class DefaultElement extends AbstractElement {
 
         }
 
-        if (content instanceof List) {
+        final Object contentShadow = content;
+        if (contentShadow instanceof List) {
 
-            List list = (List) content;
+            List list = (List) contentShadow;
 
             int size = list.size();
 
@@ -454,9 +493,9 @@ public class DefaultElement extends AbstractElement {
 
         else {
 
-            if (content instanceof Namespace) {
+            if (contentShadow instanceof Namespace) {
 
-                answer.addLocal(content);
+                answer.addLocal(contentShadow);
 
             }
 
@@ -467,10 +506,11 @@ public class DefaultElement extends AbstractElement {
     }
 
     public List additionalNamespaces() {
+        final Object contentShadow = content;
 
-        if (content instanceof List) {
+        if (contentShadow instanceof List) {
 
-            List list = (List) content;
+            List list = (List) contentShadow;
 
             int size = list.size();
 
@@ -496,9 +536,9 @@ public class DefaultElement extends AbstractElement {
 
         else {
 
-            if (content instanceof Namespace) {
+            if (contentShadow instanceof Namespace) {
 
-                Namespace namespace = (Namespace) content;
+                Namespace namespace = (Namespace) contentShadow;
 
                 return createSingleResultList(namespace);
 
@@ -516,9 +556,10 @@ public class DefaultElement extends AbstractElement {
 
     public List additionalNamespaces(String defaultNamespaceURI) {
 
-        if (content instanceof List) {
+        final Object contentShadow = content;
+        if (contentShadow instanceof List) {
 
-            List list = (List) content;
+            List list = (List) contentShadow;
 
             BackedList answer = createResultList();
 
@@ -548,9 +589,9 @@ public class DefaultElement extends AbstractElement {
 
         else {
 
-            if (content instanceof Namespace) {
+            if (contentShadow instanceof Namespace) {
 
-                Namespace namespace = (Namespace) content;
+                Namespace namespace = (Namespace) contentShadow;
 
                 if (!defaultNamespaceURI.equals(namespace.getURI())) {
 
@@ -570,9 +611,10 @@ public class DefaultElement extends AbstractElement {
 
     public List processingInstructions() {
 
-        if (content instanceof List) {
+        final Object contentShadow = content;
+        if (contentShadow instanceof List) {
 
-            List list = (List) content;
+            List list = (List) contentShadow;
 
             BackedList answer = createResultList();
 
@@ -596,9 +638,9 @@ public class DefaultElement extends AbstractElement {
 
         else {
 
-            if (content instanceof ProcessingInstruction) {
+            if (contentShadow instanceof ProcessingInstruction) {
 
-                return createSingleResultList(content);
+                return createSingleResultList(contentShadow);
 
             }
 
@@ -610,9 +652,10 @@ public class DefaultElement extends AbstractElement {
 
     public List processingInstructions(String target) {
 
-        if (content instanceof List) {
+        final Object contentShadow = content;
+        if (contentShadow instanceof List) {
 
-            List list = (List) content;
+            List list = (List) contentShadow;
 
             BackedList answer = createResultList();
 
@@ -642,9 +685,9 @@ public class DefaultElement extends AbstractElement {
 
         else {
 
-            if (content instanceof ProcessingInstruction) {
+            if (contentShadow instanceof ProcessingInstruction) {
 
-                ProcessingInstruction pi = (ProcessingInstruction) content;
+                ProcessingInstruction pi = (ProcessingInstruction) contentShadow;
 
                 if (target.equals(pi.getName())) {
 
@@ -661,10 +704,11 @@ public class DefaultElement extends AbstractElement {
     }
 
     public ProcessingInstruction processingInstruction(String target) {
+        final Object contentShadow = content;
 
-        if (content instanceof List) {
+        if (contentShadow instanceof List) {
 
-            List list = (List) content;
+            List list = (List) contentShadow;
 
             int size = list.size();
 
@@ -690,9 +734,9 @@ public class DefaultElement extends AbstractElement {
 
         else {
 
-            if (content instanceof ProcessingInstruction) {
+            if (contentShadow instanceof ProcessingInstruction) {
 
-                ProcessingInstruction pi = (ProcessingInstruction) content;
+                ProcessingInstruction pi = (ProcessingInstruction) contentShadow;
 
                 if (target.equals(pi.getName())) {
 
@@ -709,10 +753,11 @@ public class DefaultElement extends AbstractElement {
     }
 
     public boolean removeProcessingInstruction(String target) {
+        final Object contentShadow = content;
 
-        if (content instanceof List) {
+        if (contentShadow instanceof List) {
 
-            List list = (List) content;
+            List list = (List) contentShadow;
 
             for (Iterator iter = list.iterator(); iter.hasNext();) {
 
@@ -738,13 +783,13 @@ public class DefaultElement extends AbstractElement {
 
         else {
 
-            if (content instanceof ProcessingInstruction) {
+            if (contentShadow instanceof ProcessingInstruction) {
 
-                ProcessingInstruction pi = (ProcessingInstruction) content;
+                ProcessingInstruction pi = (ProcessingInstruction) contentShadow;
 
                 if (target.equals(pi.getName())) {
 
-                    content = null;
+                    this.content = null;
 
                     return true;
 
@@ -759,10 +804,11 @@ public class DefaultElement extends AbstractElement {
     }
 
     public Element element(String name) {
+        final Object contentShadow = content;
 
-        if (content instanceof List) {
+        if (contentShadow instanceof List) {
 
-            List list = (List) content;
+            List list = (List) contentShadow;
 
             int size = list.size();
 
@@ -788,9 +834,9 @@ public class DefaultElement extends AbstractElement {
 
         else {
 
-            if (content instanceof Element) {
+            if (contentShadow instanceof Element) {
 
-                Element element = (Element) content;
+                Element element = (Element) contentShadow;
 
                 if (name.equals(element.getName())) {
 
@@ -807,10 +853,11 @@ public class DefaultElement extends AbstractElement {
     }
 
     public Element element(QName qName) {
+        final Object contentShadow = content;
 
-        if (content instanceof List) {
+        if (contentShadow instanceof List) {
 
-            List list = (List) content;
+            List list = (List) contentShadow;
 
             int size = list.size();
 
@@ -836,9 +883,9 @@ public class DefaultElement extends AbstractElement {
 
         else {
 
-            if (content instanceof Element) {
+            if (contentShadow instanceof Element) {
 
-                Element element = (Element) content;
+                Element element = (Element) contentShadow;
 
                 if (qName.equals(element.getQName())) {
 
@@ -861,10 +908,11 @@ public class DefaultElement extends AbstractElement {
     }
 
     public List elements() {
+        final Object contentShadow = content;
 
-        if (content instanceof List) {
+        if (contentShadow instanceof List) {
 
-            List list = (List) content;
+            List list = (List) contentShadow;
 
             BackedList answer = createResultList();
 
@@ -888,9 +936,9 @@ public class DefaultElement extends AbstractElement {
 
         else {
 
-            if (content instanceof Element) {
+            if (contentShadow instanceof Element) {
 
-                Element element = (Element) content;
+                Element element = (Element) contentShadow;
 
                 return createSingleResultList(element);
 
@@ -903,10 +951,11 @@ public class DefaultElement extends AbstractElement {
     }
 
     public List elements(String name) {
+        final Object contentShadow = content;
 
-        if (content instanceof List) {
+        if (contentShadow instanceof List) {
 
-            List list = (List) content;
+            List list = (List) contentShadow;
 
             BackedList answer = createResultList();
 
@@ -936,9 +985,9 @@ public class DefaultElement extends AbstractElement {
 
         else {
 
-            if (content instanceof Element) {
+            if (contentShadow instanceof Element) {
 
-                Element element = (Element) content;
+                Element element = (Element) contentShadow;
 
                 if (name.equals(element.getName())) {
 
@@ -955,10 +1004,11 @@ public class DefaultElement extends AbstractElement {
     }
 
     public List elements(QName qName) {
+        final Object contentShadow = content;
 
-        if (content instanceof List) {
+        if (contentShadow instanceof List) {
 
-            List list = (List) content;
+            List list = (List) contentShadow;
 
             BackedList answer = createResultList();
 
@@ -988,9 +1038,9 @@ public class DefaultElement extends AbstractElement {
 
         else {
 
-            if (content instanceof Element) {
+            if (contentShadow instanceof Element) {
 
-                Element element = (Element) content;
+                Element element = (Element) contentShadow;
 
                 if (qName.equals(element.getQName())) {
 
@@ -1013,10 +1063,11 @@ public class DefaultElement extends AbstractElement {
     }
 
     public Iterator elementIterator() {
+        final Object contentShadow = content;
 
-        if (content instanceof List) {
+        if (contentShadow instanceof List) {
 
-            List list = (List) content;
+            List list = (List) contentShadow;
 
             return new ElementIterator(list.iterator());
 
@@ -1024,9 +1075,9 @@ public class DefaultElement extends AbstractElement {
 
         else {
 
-            if (content instanceof Element) {
+            if (contentShadow instanceof Element) {
 
-                Element element = (Element) content;
+                Element element = (Element) contentShadow;
 
                 return createSingleIterator(element);
 
@@ -1039,10 +1090,11 @@ public class DefaultElement extends AbstractElement {
     }
 
     public Iterator elementIterator(String name) {
+        final Object contentShadow = content;
 
-        if (content instanceof List) {
+        if (contentShadow instanceof List) {
 
-            List list = (List) content;
+            List list = (List) contentShadow;
 
             return new ElementNameIterator(list.iterator(), name);
 
@@ -1050,9 +1102,9 @@ public class DefaultElement extends AbstractElement {
 
         else {
 
-            if (content instanceof Element) {
+            if (contentShadow instanceof Element) {
 
-                Element element = (Element) content;
+                Element element = (Element) contentShadow;
 
                 if (name.equals(element.getName())) {
 
@@ -1069,10 +1121,11 @@ public class DefaultElement extends AbstractElement {
     }
 
     public Iterator elementIterator(QName qName) {
+        final Object contentShadow = content;
 
-        if (content instanceof List) {
+        if (contentShadow instanceof List) {
 
-            List list = (List) content;
+            List list = (List) contentShadow;
 
             return new ElementQNameIterator(list.iterator(), qName);
 
@@ -1080,9 +1133,9 @@ public class DefaultElement extends AbstractElement {
 
         else {
 
-            if (content instanceof Element) {
+            if (contentShadow instanceof Element) {
 
-                Element element = (Element) content;
+                Element element = (Element) contentShadow;
 
                 if (qName.equals(element.getQName())) {
 
@@ -1174,9 +1227,9 @@ public class DefaultElement extends AbstractElement {
 
             contentRemoved();
 
-        }
+            content = null;
 
-        content = null;
+        }
 
     }
 
@@ -1184,11 +1237,12 @@ public class DefaultElement extends AbstractElement {
 
         if (index >= 0) {
 
-            Object node = content;
+            final Object contentShadow = content;
+            Object node ;
 
-            if (content instanceof List) {
+            if (contentShadow instanceof List) {
 
-                List list = (List) content;
+                List list = (List) contentShadow;
 
                 if (index >= list.size()) {
 
@@ -1198,6 +1252,8 @@ public class DefaultElement extends AbstractElement {
 
                 node = list.get(index);
 
+            } else {
+                node = (index == 0) ? contentShadow : null;
             }
 
             if (node != null) {
@@ -1223,10 +1279,11 @@ public class DefaultElement extends AbstractElement {
     }
 
     public int indexOf(Node node) {
+        final Object contentShadow = content;
 
-        if (content instanceof List) {
+        if (contentShadow instanceof List) {
 
-            List list = (List) content;
+            List list = (List) contentShadow;
 
             return list.indexOf(node);
 
@@ -1234,17 +1291,18 @@ public class DefaultElement extends AbstractElement {
 
         else {
 
-            return (content != null && content.equals(node)) ? 0 : -1;
+            return (contentShadow != null && contentShadow.equals(node)) ? 0 : -1;
 
         }
 
     }
 
     public int nodeCount() {
+        final Object contentShadow = content;
 
-        if (content instanceof List) {
+        if (contentShadow instanceof List) {
 
-            List list = (List) content;
+            List list = (List) contentShadow;
 
             return list.size();
 
@@ -1252,17 +1310,18 @@ public class DefaultElement extends AbstractElement {
 
         else {
 
-            return (content != null) ? 1 : 0;
+            return (contentShadow != null) ? 1 : 0;
 
         }
 
     }
 
     public Iterator nodeIterator() {
+        final Object contentShadow = content;
 
-        if (content instanceof List) {
+        if (contentShadow instanceof List) {
 
-            List list = (List) content;
+            List list = (List) contentShadow;
 
             return list.iterator();
 
@@ -1270,9 +1329,9 @@ public class DefaultElement extends AbstractElement {
 
         else {
 
-            if (content != null) {
+            if (contentShadow != null) {
 
-                return createSingleIterator(content);
+                return createSingleIterator(contentShadow);
 
             }
 
@@ -1294,29 +1353,28 @@ public class DefaultElement extends AbstractElement {
 
     public void setAttributes(List attributes) {
 
-        this.attributes = attributes;
-
         if (attributes instanceof ContentListFacade) {
 
-            this.attributes = ((ContentListFacade) attributes).getBackingList();
+            attributes = ((ContentListFacade) attributes).getBackingList();
 
         }
+        this.attributes = attributes;
 
     }
 
     public Iterator attributeIterator() {
+        final Object attributesShadow = this.attributes;
+        if (attributesShadow instanceof List) {
 
-        if (attributes instanceof List) {
-
-            List list = (List) attributes;
+            List list = (List) attributesShadow;
 
             return list.iterator();
 
         }
 
-        else if (attributes != null) {
+        else if (attributesShadow != null) {
 
-            return createSingleIterator(attributes);
+            return createSingleIterator(attributesShadow);
 
         }
 
@@ -1329,18 +1387,18 @@ public class DefaultElement extends AbstractElement {
     }
 
     public Attribute attribute(int index) {
+        final Object attributesShadow = this.attributes;
+        if (attributesShadow instanceof List) {
 
-        if (attributes instanceof List) {
-
-            List list = (List) attributes;
+            List list = (List) attributesShadow;
 
             return (Attribute) list.get(index);
 
         }
 
-        else if (attributes != null && index == 0) {
+        else if (attributesShadow != null && index == 0) {
 
-            return (Attribute) attributes;
+            return (Attribute) attributesShadow;
 
         }
 
@@ -1353,10 +1411,11 @@ public class DefaultElement extends AbstractElement {
     }
 
     public int attributeCount() {
+        final Object attributesShadow = this.attributes;
 
-        if (attributes instanceof List) {
+        if (attributesShadow instanceof List) {
 
-            List list = (List) attributes;
+            List list = (List) attributesShadow;
 
             return list.size();
 
@@ -1364,17 +1423,18 @@ public class DefaultElement extends AbstractElement {
 
         else {
 
-            return (attributes != null) ? 1 : 0;
+            return (attributesShadow != null) ? 1 : 0;
 
         }
 
     }
 
     public Attribute attribute(String name) {
+        final Object attributesShadow = this.attributes;
 
-        if (attributes instanceof List) {
+        if (attributesShadow instanceof List) {
 
-            List list = (List) attributes;
+            List list = (List) attributesShadow;
 
             int size = list.size();
 
@@ -1392,9 +1452,9 @@ public class DefaultElement extends AbstractElement {
 
         }
 
-        else if (attributes != null) {
+        else if (attributesShadow != null) {
 
-            Attribute attribute = (Attribute) attributes;
+            Attribute attribute = (Attribute) attributesShadow;
 
             if (name.equals(attribute.getName())) {
 
@@ -1409,10 +1469,11 @@ public class DefaultElement extends AbstractElement {
     }
 
     public Attribute attribute(QName qName) {
+        final Object attributesShadow = this.attributes;
 
-        if (attributes instanceof List) {
+        if (attributesShadow instanceof List) {
 
-            List list = (List) attributes;
+            List list = (List) attributesShadow;
 
             int size = list.size();
 
@@ -1430,9 +1491,9 @@ public class DefaultElement extends AbstractElement {
 
         }
 
-        else if (attributes != null) {
+        else if (attributesShadow != null) {
 
-            Attribute attribute = (Attribute) attributes;
+            Attribute attribute = (Attribute) attributesShadow;
 
             if (qName.equals(attribute.getQName())) {
 
@@ -1506,10 +1567,11 @@ public class DefaultElement extends AbstractElement {
     public boolean remove(Attribute attribute) {
 
         boolean answer = false;
+        final Object attributesShadow = this.attributes;
 
-        if (attributes instanceof List) {
+        if (attributesShadow instanceof List) {
 
-            List list = (List) attributes;
+            List list = (List) attributesShadow;
 
             answer = list.remove(attribute);
 
@@ -1531,11 +1593,11 @@ public class DefaultElement extends AbstractElement {
 
         }
 
-        else if (attributes != null) {
+        else if (attributesShadow != null) {
 
-            if (attribute.equals(attributes)) {
+            if (attribute.equals(attributesShadow)) {
 
-                attributes = null;
+                this.attributes = null;
 
                 answer = true;
 
@@ -1545,7 +1607,7 @@ public class DefaultElement extends AbstractElement {
 
                 // we may have a copy of the attribute
 
-                Attribute other = (Attribute) attributes;
+                Attribute other = (Attribute) attributesShadow;
 
                 if (attribute.getQName().equals(other.getQName())) {
 
@@ -1574,18 +1636,19 @@ public class DefaultElement extends AbstractElement {
     //-------------------------------------------------------------------------    
 
     protected void addNewNode(Node node) {
+        final Object contentShadow = content;
 
-        if (content == null) {
+        if (contentShadow == null) {
 
-            content = node;
+            this.content = node;
 
         }
 
         else {
 
-            if (content instanceof List) {
+            if (contentShadow instanceof List) {
 
-                List list = (List) content;
+                List list = (List) contentShadow;
 
                 list.add(node);
 
@@ -1595,11 +1658,11 @@ public class DefaultElement extends AbstractElement {
 
                 List list = createContentList();
 
-                list.add(content);
+                list.add(contentShadow);
 
                 list.add(node);
 
-                content = list;
+                this.content = list;
 
             }
 
@@ -1612,20 +1675,21 @@ public class DefaultElement extends AbstractElement {
     protected boolean removeNode(Node node) {
 
         boolean answer = false;
+        final Object contentShadow = content;
 
-        if (content != null) {
+        if (contentShadow != null) {
 
-            if (content == node) {
+            if (contentShadow == node) {
 
-                content = null;
+                this.content = null;
 
                 answer = true;
 
             }
 
-            else if (content instanceof List) {
+            else if (contentShadow instanceof List) {
 
-                List list = (List) content;
+                List list = (List) contentShadow;
 
                 answer = list.remove(node);
 
@@ -1644,10 +1708,11 @@ public class DefaultElement extends AbstractElement {
     }
 
     protected List contentList() {
+        final Object contentShadow = content;
 
-        if (content instanceof List) {
+        if (contentShadow instanceof List) {
 
-            return (List) content;
+            return (List) contentShadow;
 
         }
 
@@ -1655,13 +1720,13 @@ public class DefaultElement extends AbstractElement {
 
             List list = createContentList();
 
-            if (content != null) {
+            if (contentShadow != null) {
 
-                list.add(content);
+                list.add(contentShadow);
 
             }
 
-            content = list;
+            this.content = list;
 
             return list;
 
@@ -1670,20 +1735,21 @@ public class DefaultElement extends AbstractElement {
     }
 
     protected List attributeList() {
+        final Object attributesShadow = this.attributes;
+        
+        if (attributesShadow instanceof List) {
 
-        if (attributes instanceof List) {
-
-            return (List) attributes;
+            return (List) attributesShadow;
 
         }
 
-        else if (attributes != null) {
+        else if (attributesShadow != null) {
 
             List list = createAttributeList();
 
-            list.add(attributes);
+            list.add(attributesShadow);
 
-            attributes = list;
+            this.attributes = list;
 
             return list;
 
@@ -1693,7 +1759,7 @@ public class DefaultElement extends AbstractElement {
 
             List list = createAttributeList();
 
-            attributes = list;
+            this.attributes = list;
 
             return list;
 
@@ -1702,20 +1768,20 @@ public class DefaultElement extends AbstractElement {
     }
 
     protected List attributeList(int size) {
+        final Object attributesShadow = this.attributes;
+        if (attributesShadow instanceof List) {
 
-        if (attributes instanceof List) {
-
-            return (List) attributes;
+            return (List) attributesShadow;
 
         }
 
-        else if (attributes != null) {
+        else if (attributesShadow != null) {
 
             List list = createAttributeList(size);
 
-            list.add(attributes);
+            list.add(attributesShadow);
 
-            attributes = list;
+            this.attributes = list;
 
             return list;
 
@@ -1725,7 +1791,7 @@ public class DefaultElement extends AbstractElement {
 
             List list = createAttributeList(size);
 
-            attributes = list;
+            this.attributes = list;
 
             return list;
 
