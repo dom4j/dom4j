@@ -1,10 +1,11 @@
 
 package org.dom4j.xpath;
 
-import org.dom4j.xpath.function.Function;
-
 import org.dom4j.Namespace;
 import org.dom4j.QName;
+import org.dom4j.VariableContext;
+
+import org.dom4j.xpath.function.Function;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -19,8 +20,8 @@ import java.util.Iterator;
  *
  *  @author bob mcwhirter (bob @ werken.com)
  */
-public class ContextSupport
-{
+public class ContextSupport {
+    
     static final ContextSupport     BASIC_CONTEXT_SUPPORT = new ContextSupport();
 
     private NamespaceContext  _nsContext        = null;
@@ -29,8 +30,7 @@ public class ContextSupport
 
     /** Construct a semantically empty ContextSupport
      */
-    public ContextSupport()
-    {
+    public ContextSupport() {
         // intentionally left blank
     }
 
@@ -40,10 +40,11 @@ public class ContextSupport
      *  @param functionContext The FunctionContext implementation
      *  @param variableContext The VariableContext implementation
      */
-    public ContextSupport(NamespaceContext nsContext,
-                          FunctionContext functionContext,
-                          VariableContext variableContext)
-    {
+    public ContextSupport(
+        NamespaceContext nsContext,
+        FunctionContext functionContext,
+        VariableContext variableContext
+    ) {
         _nsContext = nsContext;
         _functionContext = functionContext;
         _variableContext = variableContext;
@@ -53,8 +54,7 @@ public class ContextSupport
      *
      *  @param nsContext The NamespaceContext implementation
      */
-    public void setNamespaceContext(NamespaceContext nsContext)
-    {
+    public void setNamespaceContext(NamespaceContext nsContext) {
         _nsContext = nsContext;
     }
 
@@ -62,17 +62,21 @@ public class ContextSupport
      *
      *  @param functionContext The FunctionContext implementation
      */
-    public void setFunctionContext(FunctionContext functionContext)
-    {
+    public void setFunctionContext(FunctionContext functionContext) {
         _functionContext = functionContext;
     }
 
+    /** @return the current variable context
+      */
+    public VariableContext getVariableContext() {
+        return _variableContext;
+    }
+    
     /** Set the VariableContext implementation
      *
      *  @param variableContext The FunctionContext implementation
      */
-    public void setVariableContext(VariableContext variableContext)
-    {
+    public void setVariableContext(VariableContext variableContext) {
         _variableContext = variableContext;
     }
 
@@ -88,28 +92,22 @@ public class ContextSupport
      *
      *  @see #setNamespaceContext
      */
-    public String translateNamespacePrefix(String prefix)
-    {
-        if (_nsContext == null)
-        {
+    public String translateNamespacePrefix(String prefix) {
+        if (_nsContext == null) {
             return null;
         }
         return _nsContext.translateNamespacePrefix(prefix);
     }
     
-    public QName getQName( String prefix, String localName ) 
-    {
+    public QName getQName( String prefix, String localName ) {
         return QName.get( localName, getNamespaceByPrefix( prefix ) );
     }
     
-    public Namespace getNamespaceByPrefix(String prefix)
-    {
-        if ( _nsContext == null )
-        {
+    public Namespace getNamespaceByPrefix(String prefix) {
+        if ( _nsContext == null ) {
             System.err.println("SHORT_CIRCUIT: NO_NAMESPACE");
             return Namespace.NO_NAMESPACE;
         }
-
         return _nsContext.getNamespaceByPrefix( prefix );
     }
     
@@ -128,8 +126,7 @@ public class ContextSupport
      *
      *  @see #setFunctionContext
      */
-    public Function getFunction(String name)
-    {
+    public Function getFunction(String name) {
         return _functionContext.getFunction(name);
     }
 
@@ -146,13 +143,10 @@ public class ContextSupport
      *
      *  @see #setVariableContext
      */
-    public Object getVariableValue(String name)
-    {
-        if ( _variableContext == null )
-        {
+    public Object getVariableValue(String name) {
+        if ( _variableContext == null ) {
             return null;
         }
-
         return _variableContext.getVariableValue(name);
     }
 }

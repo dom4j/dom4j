@@ -26,7 +26,17 @@ public interface XPath extends NodeFilter {
       * @return the textual format of the XPath expression.
       */
     public String getText();
-        
+
+    
+    /** @return the current variable context
+      */
+    public VariableContext getVariableContext();
+    
+    /** Sets the variable context to be used when evaluating XPath
+      * expressions
+      */
+    public void setVariableContext(VariableContext variableContext);
+    
     /** <p><code>matches</code> returns true if the given node matches 
       * the XPath expression.</p>
       *

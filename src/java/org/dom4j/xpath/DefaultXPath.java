@@ -1,17 +1,18 @@
 package org.dom4j.xpath;
 
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.Node;
+import org.dom4j.VariableContext;
 import org.dom4j.XPath;
-import org.dom4j.rule.Pattern;
 
-import org.dom4j.xpath.parser.XPathLexer;
-import org.dom4j.xpath.parser.XPathRecognizer;
+import org.dom4j.rule.Pattern;
 
 import org.dom4j.xpath.impl.Context;
 import org.dom4j.xpath.impl.Expr;
 
-import org.dom4j.Document;
-import org.dom4j.Element;
-import org.dom4j.Node;
+import org.dom4j.xpath.parser.XPathLexer;
+import org.dom4j.xpath.parser.XPathRecognizer;
 
 import org.antlr.CharBuffer;
 import org.antlr.*;
@@ -60,8 +61,9 @@ import java.util.Map;
  */
 public class DefaultXPath implements org.dom4j.XPath {
 
-    private String      _xpath = "";
-    private Expr        _expr  = null;
+    private String _xpath = "";
+    private Expr _expr;
+    private ContextSupport _contextSupport = new ContextSupport();
 
     /** Construct an XPath
      */
@@ -85,6 +87,22 @@ public class DefaultXPath implements org.dom4j.XPath {
         return _xpath;
     }
 
+    public VariableContext getVariableContext() {
+        return _contextSupport.getVariableContext();
+    }
+    
+    public void setVariableContext(VariableContext variableContext) {
+        _contextSupport.setVariableContext( variableContext );
+    }
+    
+    public ContextSupport getContextSupport() {
+        return _contextSupport;
+    }
+    
+    public void setContextSupport(ContextSupport contextSupport) {
+        _contextSupport = contextSupport;
+    }
+    
     /** <p><code>selectNodes</code> performs this XPath expression
       * on the given {@link Node} or {@link List} of {@link Node}s 
       * instances appending all the results together into a single list.</p>
@@ -161,10 +179,10 @@ public class DefaultXPath implements org.dom4j.XPath {
       */
     public String valueOf(Object context) {
         if ( context instanceof Node )  {
-            return valueOf( ContextSupport.BASIC_CONTEXT_SUPPORT, (Node) context );
+            return valueOf( (Node) context );
         }
         else if ( context instanceof List ) {
-            return valueOf( ContextSupport.BASIC_CONTEXT_SUPPORT, (List) context );
+            return valueOf( (List) context );
         }
         return "";
     }
@@ -209,6 +227,7 @@ public class DefaultXPath implements org.dom4j.XPath {
     public boolean matches( Node node ) {
         Context context = new Context();
         context.setNodeSet( node );
+        context.setVariableContext( _variableContext );
         return _expr.matches( context, node );
     }
     
@@ -302,42 +321,25 @@ public class DefaultXPath implements org.dom4j.XPath {
     
 
     public List applyTo(Node node) {
-        return applyTo( 
-            ContextSupport.BASIC_CONTEXT_SUPPORT, node 
+        return asList( 
+            _expr.evaluate( new Context( node, _contextSupport ) ) 
         );
     }
 
     public List applyTo(List nodes) {
-        return applyTo( 
-            ContextSupport.BASIC_CONTEXT_SUPPORT, nodes 
+        return asList( 
+            _expr.evaluate( new Context( nodes, _contextSupport ) ) 
         );
     }
     
-    public List applyTo( ContextSupport contextSupport, Node node ) {
-        return asList( 
-            _expr.evaluate( new Context( node, contextSupport ) ) 
-        );
-    }
-
-    /** Apply this XPath to a list of nodes
-     *
-     * @param contextSupport Walk-assisting state
-     * @param nodes Root NodeSet context
-     */
-    public List applyTo( ContextSupport contextSupport, List nodes ) {
-        return asList( 
-            _expr.evaluate( new Context( nodes, contextSupport ) ) 
-        );
-    }
-  
     /** Perform the string() function on the return values of an XPath
      */
-    public String valueOf(ContextSupport contextSupport, Node node) {
-        return _expr.valueOf( new Context( node, contextSupport ) );
+    public String valueOf(Node node) {
+        return _expr.valueOf( new Context( node, _contextSupport ) );
     }
 
-    public String valueOf(ContextSupport contextSupport, List nodes) {
-        return _expr.valueOf( new Context( nodes, contextSupport ) );
+    public String valueOf(List nodes) {
+        return _expr.valueOf( new Context( nodes, _contextSupport ) );
     }
 
     
