@@ -103,6 +103,10 @@ public class DefaultNamespace extends Namespace {
     public boolean supportsParent() {
         return true;
     }
+    
+    public boolean isReadOnly() {
+        return false;
+    }
 }
 
 /*
