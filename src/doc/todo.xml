@@ -5,6 +5,17 @@
     
     <section title="Change History">
         <section title="Changes in CVS since last release">
+          <section title="Integration with saxpath">
+            <p>The <a href="http://saxpath.org">saxpath</a> project is a Simple API for XPath. Its analagous to
+             SAX in that the API abstracts away the details of parsing and provides a simple event based callback
+             interface. 
+             </p>
+            <p>Originally dom4j was using a parser generated via the <a href="http://antlr.org">Antlr</a> tool
+              which resulted in a considerably larger code base. 
+              Now dom4j uses saxpath for its XPath parsing which results in faster XPath persing 
+              and a much smaller code base. The dom4j.jar is now 109Kb smaller!
+             </p>
+         </section>
           <section title="Patches and bug fixes">
             <p>Fixed bug found by Tobias Rademacher that XML Schema Data Type support
             wasn't working correctly when the XSD document used a namespace prefix.
