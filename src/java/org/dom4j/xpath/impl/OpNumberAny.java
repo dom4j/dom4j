@@ -47,7 +47,7 @@ class OpNumberAny extends Operator {
             );
         }
         else {
-            System.out.println( "#### I can't handle operator: " + op );
+            //System.out.println( "#### I can't handle operator: " + op );
         }
         return null;
     }
