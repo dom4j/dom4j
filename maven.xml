@@ -13,6 +13,21 @@
         </path>
     </goal>
 
+    <postGoal name="dist:prepare-bin-filesystem">
+        <ant:copy todir="${maven.dist.bin.assembly.dir}/src">
+            <fileset dir="src"/>
+        </ant:copy>
+        <ant:copy todir="${maven.dist.bin.assembly.dir}/lib">
+            <fileset dir="lib"/>
+        </ant:copy>
+    </postGoal>
+
+    <postGoal name="dist:prepare-src-filesystem">
+        <ant:copy todir="${maven.dist.src.assembly.dir}/lib">
+            <fileset dir="lib"/>
+        </ant:copy>
+    </postGoal>
+
     <preGoal name="test:test">
         <ant:property name="test.dest"
             value="${pom.getPluginContext('maven-test-plugin').getVariable('maven.test.dest')}"/>
