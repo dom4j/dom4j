@@ -200,7 +200,7 @@
   </xsl:template>
 
   <xsl:template match="/">
-    <xsl:variable name="project" select="document('style/project.xml')/project"/>
+    <xsl:variable name="project" select="document('project.xml')/project"/>
     <html lang="en">
     <head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
