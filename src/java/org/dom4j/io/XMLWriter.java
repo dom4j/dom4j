@@ -780,8 +780,10 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                         lastTextNode = (Text) node;
                     }
                     else {
-                        buffer = new StringBuffer( lastTextNode.getText() );
-                        buffer.append( ((Text) node).getText() );
+                        if (buffer == null) {
+                            buffer = new StringBuffer( lastTextNode.getText() );
+                        }
+                      buffer.append( ((Text) node).getText() );
                     }
                 }
                 else {
