@@ -45,11 +45,9 @@ public class TestNumber extends AbstractTestCase {
         "count(ancestor::author)",
         "count(descendant::*)",
         "count(descendant::author)+1",
-/*        
         "2 + number(1) * 2",
         "10 + count(descendant::author) * 5",
         "10 + (count(descendant::author) * 5)",
-*/
     };
     
     
