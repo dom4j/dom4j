@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE xsa PUBLIC "-//LM Garshol//DTD XML Software Autoupdate 1.0//EN//XML" 
+                     "http://www.garshol.priv.no/download/xsa/xsa.dtd">
+
+<xsa>
+  <vendor>
+    <name>MetaStuff Ltd.</name>
+    <email>info@dom4j.org</email>
+    <url>http://dom4j.org</url>
+  </vendor>
+
+  <product id="dom4j">
+    <name>dom4j</name>
+    <version>0.2</version>
+    <last-release>20010412</last-release>
+    <info-url>http://dom4j.org/</info-url>
+    <changes>
+    </changes>
+  </product>
+</xsa>
