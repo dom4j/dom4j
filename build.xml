@@ -62,7 +62,15 @@
     <property name="jaxen.src" value="../jaxen/jaxen/src/java/main"/>
 
     <!-- Activate support for fop in Ant (tradem) / Must be in classpath -->
-    <taskdef name="fop" classname="org.apache.fop.tools.anttasks.Fop"/>
+    <path id="fop.classpath">
+      <fileset dir="${lib.dir}">
+        <include name="**/*.jar"/>
+      </fileset>
+    </path>
+
+    <taskdef name="fop" classname="org.apache.fop.tools.anttasks.Fop">
+      <classpath refid="fop.classpath"/>
+    </taskdef>
   </target>
 
   <!-- =================================================================== -->
@@ -340,7 +348,7 @@
             includes="**/*.xml"
       />
       <fop fofile="${build.doc}/cookbook/cookbook.fo"
-           outfile="${build.doc}/cookbook/cookbook.pfd"
+           outfile="${build.doc}/cookbook/cookbook.pdf"
       />
       <fop fofile="${build.doc}/cookbook/cookbook.fo"
            format="application/postscript"
