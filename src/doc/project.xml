@@ -5,18 +5,25 @@
 
 
   <links>
-    <div align="center">
-    <font size="2">
-    <a href="index.html">DOM4J</a> 
-    | <a href="goals.html">Goals</a> 
-    | <a href="faq.html">FAQ</a> 
-    | <a href="apidocs/index.html">JavaDoc</a> 
-    | <a href="download.html">Download</a>
-    | <a href="guide.html">Guide</a> 
-    | <a href="todo.html">Status</a> 
-    | <a href="http://sourceforge.net/projects/dom4j/">Project Page</a>
-    </font>
-    </div>
+    <table width="100%">
+      <tr>
+        <td align="left" valign="center">
+          <a href="index.html"><img src="style/images/logo.gif" border="0" alt="dom4j"/></a>
+        </td>
+        <td><br /></td>
+        <td align="right" valign="center">
+          <font size="2">
+            <a href="goals.html">Goals</a> 
+            | <a href="faq.html">FAQ</a> 
+            | <a href="apidocs/index.html">JavaDoc</a> 
+            | <a href="download.html">Download</a>
+            | <a href="guide.html">Guide</a> 
+            | <a href="todo.html">Status</a> 
+            | <a href="http://sourceforge.net/projects/dom4j/">Project Page</a>
+          </font>
+        </td>
+      </tr>
+    </table>
   </links>
 
   <notice>

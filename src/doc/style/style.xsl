@@ -83,7 +83,7 @@
   <xsl:template match="ul/li">
     <tr>
       <td align="left" valign="top">
-        <img src="style/images/ball.gif" alt="*"/>
+        <img src="style/images/blueball.gif" alt="*"/>
      </td>
       <td align="left" valign="top"><xsl:apply-templates/></td>
     </tr>

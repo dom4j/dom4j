@@ -111,6 +111,9 @@ public interface Element extends Branch {
     
     public String getTextTrim();
 
+    
+    // Content API
+    
     // always returns nodes which support
     // the parent relationship including Text, Namespace etc.
     public Node getXPathNode(int index);
