@@ -22,6 +22,8 @@ import junit.textui.TestRunner;
   */
 public class TestContent extends AbstractTestCase {
 
+    protected DocumentFactory factory = new DocumentFactory();
+    
     public static void main( String[] args ) {
         TestRunner.run( suite() );
     }
@@ -103,6 +105,33 @@ public class TestContent extends AbstractTestCase {
         }
         
         assertTrue( "Iteration completed", iterated );
+    }
+        
+    public void testOrderOfPI() throws Exception {
+        Document document = factory.createDocument();        
+        document.addProcessingInstruction( "xml-stylesheet", "type=\"text/xsl\" href=\"...\"" );
+        document.addElement( "root" );
+        
+        List list = document.content();
+        Object pi = list.get(0);
+        Object root = list.get(1);
+        
+        assertTrue( "First element is a PI", pi instanceof ProcessingInstruction );
+        assertTrue( "Second element is an element", root instanceof Element );
+        
+        document = DocumentHelper.parseText(
+            "<?xml version=\"1.0\" ?>\n"
+            + "<?xml-stylesheet type=\"text/xsl\" href=\"foo\" ?>\n"
+            + "<root/>" 
+        );
+        
+        list = document.content();
+        pi = list.get(0);
+        root = list.get(1);
+        
+        assertTrue( "First element is a PI", pi instanceof ProcessingInstruction );
+        assertTrue( "Second element is an element", root instanceof Element );
+        
     }
         
     // Implementation methods
