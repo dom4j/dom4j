@@ -7,37 +7,37 @@
  * $Id$
  */
 
-package org.dom4j;
+package org.dom4j.xpath;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.*;
 import junit.textui.TestRunner;
 
-/** A test harness to test XPath expression evaluation in DOM4J
+import org.dom4j.AbstractTestCase;
+import org.dom4j.Namespace;
+import org.dom4j.XPath;
+import org.dom4j.XPathHelper;
+import org.dom4j.io.SAXReader;
+
+/** Test harness for the namespace axis 
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class TestXPath extends AbstractTestCase {
+public class TestNamespace extends AbstractTestCase {
 
     protected static boolean VERBOSE = true;
     
     protected static String[] paths = {
-        "root",
-        "text()",
-        "//author",
-        "//author[@location='UK']",
-        "//author/text()",
-        "//*[.='James Strachan']",
-        "//@location",
-        "//attribute::*",
-        "//namespace::*"
+        "namespace::*",
+        "/Template/Application1/namespace::*"
     };
     
     
-    public TestXPath(String name) {
+    public TestNamespace(String name) {
         super(name);
     }
 
@@ -57,19 +57,38 @@ public class TestXPath extends AbstractTestCase {
     }
     
     public static Test suite() {
-        return new TestSuite( TestXPath.class );
+        return new TestSuite( TestNamespace.class );
     }
     
-    protected void testXPath(String xpath) {
+    protected void testXPath(String xpathText) {
+        XPath xpath = XPathHelper.createXPath(xpathText);
         List list = document.selectNodes(xpath);
         
-        System.out.println( "Searched path: " + xpath + " found: " + list.size() + " result(s)" );
+        log( "Searched path: " + xpathText + " found: " + list.size() + " result(s)" );
         
         if ( VERBOSE ) {
-            System.out.println( list );
+            log( "xpath: " + xpath );
+            log( "results: " + list );
+        }
+        
+        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
+            Object object = iter.next();
+            
+            log( "Found Result: " + object );
+            
+            assert( "Results should be Namespace objects", object instanceof Namespace );
+            
+            Namespace namespace = (Namespace) object;
+            
+            assert( "Results should support the parent relationship", namespace.supportsParent() );
+            assert( "Results should contain reference to the parent element", namespace.getParent() != null );
+            assert( "Results should contain reference to the owning document", namespace.getDocument() != null );
         }
     }
-
+    
+    protected void setUp() throws Exception {
+        document = new SAXReader().read( new File( "xml/testNamespaces.xml" ) );
+    }
 }
 
 

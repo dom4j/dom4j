@@ -75,6 +75,14 @@ public interface Element extends Branch {
       */
     public List getAdditionalNamespaces();
     
+   /** <p>Returns all the namespaces declared by this element. 
+      * If no namespaces are declared for this element then 
+      * {@link Collections.EMPTY_LIST} will be returned.
+      *
+      * @return a list of namespaces declared for this element.
+      */
+    public List getDeclaredNamespaces();
+    
     /** <p>Returns the namespace prefix of this element if one exists 
       * otherwise an empty <code>String</code> is returned.</p>
       *

@@ -198,6 +198,29 @@ public class DefaultElement extends AbstractElement {
         }
     }
     
+    public List getDeclaredNamespaces() {
+        List answer = createResultList();
+        if ( getNamespaceURI().length() > 0 ) {
+            answer.add( getNamespace() );
+        }
+        List source = contents;
+        if ( source == null ) {
+            if ( firstNode instanceof Namespace ) {
+                answer.add( firstNode );
+            }
+        }
+        else {
+            int size = source.size();
+            for ( int i = 0; i < size; i++ ) {
+                Object object = source.get(i);
+                if ( object instanceof Namespace ) {
+                    answer.add( object );
+                }
+            }
+        }
+        return answer;
+    }
+    
     public List getAdditionalNamespaces() {
         List source = contents;
         if ( source == null ) {
