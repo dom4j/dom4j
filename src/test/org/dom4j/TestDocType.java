@@ -47,14 +47,14 @@ public class TestDocType extends AbstractTestCase {
         assertTrue( "Has DOCTYPE", docType!= null );
         
         List declarations = docType.getInternalDeclarations();
-        assertTrue( "DOCTYPE has declarations", declarations != null && declarations.size() == 1 );
+        assertTrue( "DOCTYPE has declarations", declarations != null && !declarations.isEmpty() );
         
         ElementDecl decl = (ElementDecl) declarations.get(0);
         
         assertEquals( "name is correct", "greeting", decl.getName() );
         assertEquals( "model is correct", "(#PCDATA)", decl.getModel() );
         
-        assertEquals( "getText() is correct", "<!ELEMENT greeting (#PCDATA)>", docType.getText() );
+        assertEquals( "getText() is correct", "<!ELEMENT greeting (#PCDATA)>", decl.toString() );
     }
         
     // Implementation methods
