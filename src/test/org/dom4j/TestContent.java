@@ -83,7 +83,7 @@ public class TestContent extends AbstractTestCase {
         Element root = document.getRootElement();
         assert( "Has root element", root != null );
         
-        int count = root.getXPathNodeCount();
+        int count = root.getNodeCount();
         assert( "Root has correct node count", count == 2 );
         
         boolean iterated = false;

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document url="http://www.dom4j.org/guide.xml">
   <body>
-    <title>User Guide</title>
+    <title>Quick Start Guide</title>
     
     <section title="Parsing XML">
-      <p>It is likely that you need to parse an XML document of some kind.
-        The following code demonstrates how to achieve this in DOM4J
+      <p>One of the first things you'll probably want to do is to parse an 
+        XML document of some kind. This is easy to do in DOM4J.
+        The following code demonstrates how to this.
       </p>
 <pre>
 import java.net.URL;
@@ -25,7 +26,7 @@ public class Foo {
 </pre>
     </section>
 
-    <section title="Using Iterators">
+    <section title="Navigating Iterators">
       <p>A document can be navigated using a variety of methods that return
         standard Java Iterators. For example
       </p>
@@ -55,9 +56,10 @@ public class Foo {
 </pre>
     </section>
 
-    <section title="Using XPath Navigation">
+    <section title="Powerful Navigation with XPath">
       <p>In <b>DOM4J</b> XPath expressions can be evaluated on the Document 
-        or any Node in the tree. 
+        or on any Node in the tree (such as Attribute, Element or 
+        ProcessingInstruction).
         This allows complex navigation throughout the document with a single 
         line of code. For example.
       </p>

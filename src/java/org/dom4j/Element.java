@@ -129,7 +129,10 @@ public interface Element extends Branch {
       * @return the textual content of this Element. Child elements are not navigated.
       */
     public String getText();    
-    
+   
+    /** @return the trimmed text value where whitespace is trimmed and
+      * normalised into single spaces
+      */
     public String getTextTrim();
 
     
@@ -145,21 +148,28 @@ public interface Element extends Branch {
       * together.
       */
     public String getString();    
-    
-    // Content API
-    
-    // always returns nodes which support
-    // the parent relationship including Text, Namespace etc.
-    public Node getXPathNode(int index);
-    public int getXPathNodeCount();
-    
 
+    
     
     // Attributes API
     
-    
+
+    /** <p>Returns the {@link Attribute} instances this element contains as 
+      * a backed {@link List} so that the attributes may be modified directly 
+      * using the {@link List} interface.
+      * The <code>List</code> is backed by the <code>Element</code> so that
+      * changes to the list are reflected in the element and vice versa.</p>
+      *
+      * @return the attributes that this element contains as a <code>List</code>
+      */    
     public List getAttributes();
+    
+    /** @returns an iterator over the attributes of this element
+      */
     public Iterator attributeIterator();
+    
+    /** Sets the attributes that this element contains
+      */
     public void setAttributes(List attributes);
 
     /** @return the attribute for the given local name in any namespace.
@@ -168,9 +178,16 @@ public interface Element extends Branch {
       */
     public Attribute getAttribute(String name);
     
-    /** @return the attribute for the given local name and namespace.
+    /** @param qName is the fully qualified name
+      * @return the attribute for the given fully qualified name.
       */
     public Attribute getAttribute(String name, Namespace ns);
+    
+    /** @param qName is the fully qualified name
+      * @return the attribute for the given fully qualified name or null if 
+      * it could not be found.
+      */
+    public Attribute getAttribute(QName qname);
 
     /** <p>This returns the attribute value for the attribute with the 
       * given name and any namespace or null if there is no such 
@@ -203,6 +220,28 @@ public interface Element extends Branch {
       * not exist or the empty string
       */
     public String getAttributeValue(String name, Namespace namespace);
+
+    /** <p>This returns the attribute value for the attribute with the 
+      * given fully qualified name or null if there is no such 
+      * attribute or the empty string if the attribute value is empty.</p>
+      *
+      * @param qName is the fully qualified name
+      * @return the value of the attribute, null if the attribute does 
+      * not exist or the empty string
+      */
+    public String getAttributeValue(QName qName);
+
+    /** <p>This returns the attribute value for the attribute with the 
+      * given fully qualified name or the default value if 
+      * there is no such attribute value.</p>
+      *
+      * @param qName is the fully qualified name
+      * @param defaultValue is the default value to be returned if the 
+      *    attribute has no value defined.
+      * @return the value of the attribute or the defaultValue if the 
+      *    attribute has no value defined.
+      */
+    public String getAttributeValue(QName qName, String defaultValue);
 
     /** <p>This returns the attribute value for the attribute with the 
       * given name and within the given namespace or the default value if 
@@ -242,6 +281,13 @@ public interface Element extends Branch {
       */
     public Attribute removeAttribute(String name);
     
+    /** <p>Removes the attribute with the given fully qualified name.</p>
+      *
+      * @param qName is the fully qualified name to search for
+      * @return the attribute that was removed or null if none was removed
+      */
+    public Attribute removeAttribute(QName qName);
+    
     /** <p>Removes the attribute with the given name and namespace.</p>
       *
       * @param name is the name of the attribute to be removed
@@ -251,6 +297,18 @@ public interface Element extends Branch {
     public Attribute removeAttribute(String name, Namespace namespace);
     
 
+    
+    
+    // Content API
+    
+    /** Returns a node at the given index suitable for an XPath result set.
+      * This means the resulting Node will either be null or it will support 
+      * the parent relationship.
+      *
+      * @return the Node for the given index which will support the parent 
+      * relationship or null if there is not a node at the given index.
+      */
+    public Node getXPathNode(int index);
     
     
     /** <p>Returns true if this <code>Element</code> has mixed content.
@@ -277,6 +335,13 @@ public interface Element extends Branch {
       */
     public Element getElement(String name, Namespace namespace);
 
+    /** Returns the first element for the given fully qualified name.
+      * 
+      * @param qName is the fully qualified name to search for
+      * @return the first element with the given fully qualified name
+      */
+    public Element getElement(QName qname);
+
     /** <p>Returns the elements contained in this element. 
       * If this element does not contain any elements then this method returns
       * an empty list.
@@ -300,6 +365,19 @@ public interface Element extends Branch {
       */
     public List getElements(String name);
     
+    /** <p>Returns the elements contained in this element with the given 
+      * fully qualified name.
+      * If no elements are found then this method returns an empty list.
+      *
+      * The list is backed by the element such that changes to the list will
+      * be reflected in the element though the reverse is not the case.</p>
+      *
+      * @param qName is the fully qualified name to search for
+      * @return a list of all the elements in this element for the 
+      * given fully qualified name.
+      */
+    public List getElements(QName qName);
+    
     /** <p>Returns the elements contained in this element with the given name
       * and namespace.
       * If no elements are found then this method returns an empty list.
@@ -310,8 +388,12 @@ public interface Element extends Branch {
       * @return a list of all the elements in this element for the 
       * given name and namespace.
       */
-    public List getElements(String name, Namespace namespace);
+    //public List getElements(String name, Namespace namespace);
 
+    /** Returns an iterator over all this elements child elements.
+      *
+      * @return an iterator over the contained elements
+      */
     public Iterator elementIterator();
     
     /** Returns an iterator over the elements contained in this element
@@ -322,13 +404,30 @@ public interface Element extends Branch {
       */
     public Iterator elementIterator(String name);
     
+    /** Returns an iterator over the elements contained in this element
+      * which match the given fully qualified name.
+      *
+      * @param qName is the fully qualified name to search for
+      * @return an iterator over the contained elements matching the given 
+      * fully qualified name
+      */
+    public Iterator elementIterator(QName qname);
+    
+    /** Returns an iterator over the elements contained in this element
+      * which match the given local name and namespace.
+      *
+      * @return an iterator over the contained elements matching the given 
+      * local name and namespace
+      */
     public Iterator elementIterator(String name, Namespace namespace);
     
     
     // helper methods
     public String getElementText(String name);
+    public String getElementText(QName qname);
     public String getElementText(String name, Namespace namespace);
     public String getElementTextTrim(String name);
+    public String getElementTextTrim(QName qname);
     public String getElementTextTrim(String name, Namespace namespace);
     
 
@@ -472,7 +571,7 @@ public interface Element extends Branch {
     // creates a copy
     public Element createCopy();
     public Element createCopy(String name);
-    public Element createCopy(String name, Namespace namespace);
+    public Element createCopy(QName qName);
     
 }
 

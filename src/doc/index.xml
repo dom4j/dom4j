@@ -18,14 +18,40 @@
 
     </header>
 
-    <section title="Overview">
-      <p>The nightly build of version $VERSION$ is now <a href="download.html">available for download</a>.</p>
+    <section title="Getting Started">
+      <p>For a quick overview of DOM4J and how to use it try the reading the
+        <a href="guide.html">Quick Start Guide</a> or browsing the
+        <a href="faq.html">FAQ</a> or the online 
+        <a href="apidocs/index.html">JavaDoc</a>.</p>
+        
+      <p>The nightly build of version $VERSION$ is now 
+        <a href="download.html">available for download</a>.</p>
 
-      <p>Contributors are welcome to join this project. Please join us on the <a href="http://sourceforge.net/projects/dom4j/">project page</a>.</p>
+      <p>Contributors are welcome to join this project. 
+        Once you've browsed the <a href="faq.html">FAQ</a> you could try
+        sending an email to one of the mailing lists below or check out the
+        <a href="http://sourceforge.net/projects/dom4j/">project page</a>.</p>
+
     </section>
 
+    <section title="Mailing Lists">
+      <p>For DOM4J users there is an email list at
+        <a href="http://lists.sourceforge.net/lists/listinfo/dom4j-user">
+          dom4j-user
+        </a> 
+        where you can share ideas and experiences, ask for help, 
+        give us feedback or discuss your requirements.
+      </p>
 
-
+      <p>For geeks and advanced techies there is an email list at 
+        <a href="http://lists.sourceforge.net/lists/listinfo/dom4j-dev">
+          dom4j-dev
+        </a> 
+        where you can make requests for new features or changes to the API, 
+        discuss alternate implementation strategies, submit patches or just
+        talk about any relevant topic of the day.
+      </p>        
+    </section>
 
   </body>
 </document>

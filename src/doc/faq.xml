@@ -19,6 +19,20 @@
       </p>
     </section>
 
+    <section title="What do I need to add to my CLASSPATH?">
+      <p>The dom4j-all.jar contains everything you need to use DOM4J so that is 
+        the only JAR you'll need to add to your CLASSPATH.
+        No other JAR is necessary! DOM4J comes complete with a default 
+        SAX parser so its ready to run straight out of the box.</p>
+
+      <p>DOM4J can use your existing XML parser and/or DOM implementation 
+        (such as <a href="http://xml.apache.org/crimson/">Crimson</a> or 
+        <a href="http://xml.apache.org/xerces-j/">Xerces</a> if you want it to. DOM4J can also use
+        <a href="http://java.sun.com/xml/">JAXP</a> to configure which SAX Parser to use - just add the 
+        jaxp.jar to your CLASSPATH and away you go.
+      </p>
+    </section>
+
     <section title="How does DOM4J relate to DOM?">
       <p>DOM is a quite large language independent API.
         DOM4J is a simpler, lightweight API which is optimised for the Java 
@@ -31,8 +45,9 @@
     </section>
 
     <section title="How does DOM4J work with DOM and SAX?">
-      <p>You can create DOM4J documents from SAX events or existing DOM trees
-        or you can output DOM4J documents to SAX events, DOM trees or XML text.
+      <p>You can create DOM4J documents from XML text, SAX events or existing 
+        DOM trees or you can write DOM4J documents as SAX events, DOM trees 
+        or XML text.
       </p>
     </section>
 
@@ -60,7 +75,7 @@
     </ROW>
 </ROWSET>]]>     
       </pre>
-      <p>In the above we can process each &lt;ROW&gt; at a time, there is no 
+      <p>We can process each &lt;ROW&gt; at a time, there is no 
         need to keep all of them in memory at once. 
         DOM4J provides a <i>Pruning Mode</i> for this purpose. 
         We can register an event handler for a simple path expression and our
@@ -72,10 +87,10 @@
 SAXReader reader = new SAXReader();
 reader.setPruningMode( "/ROWSET/ROW", 
     new ElementHandler() {
-        public void handle(Element element) {
+        public void handle(Element row) {
             // process a ROW element
-            Element rowSet = element.getParent();
-            Document document = element.getDocument();
+            Element rowSet = row.getParent();
+            Document document = row.getDocument();
             ...
         }
     }
@@ -85,7 +100,8 @@ Document document = reader.read(url);
 
 // The document will now be complete but all the ROW elements
 // will have been pruned.
-// We may want to do some final processing now...
+// We may want to do some final processing now
+...
       </pre>
     </section>
 
@@ -117,9 +133,16 @@ protected void foo(Document doc) {
 
     <section title="What features are optional in DOM4J?">
       <p>In <b>DOM4J</b> being able to navigate up a tree towards the parent
-        and to be able to change a tree are optional features.
-        There are some helper methods to determine if optional features are implemented. 
-        Here is some example code to demonstrate these features.
+        and to be able to change a tree are optional features. 
+        These features are optional so that an implementation
+        can create memory efficient read only document models which
+        conserve memory by sharing imutable objects (such as interning 
+        Atttributes).
+      </p>
+        
+      <p>There are some helper methods to determine if optional features are 
+        implemented. 
+        Here is some example code demonstrating their use.
       </p>
       <pre>
 protected void foo(Node node) {

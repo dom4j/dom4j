@@ -86,8 +86,13 @@ public interface Branch extends Node {
       * @return a backed list of the processing instructions
       */
     public List getProcessingInstructions(String target);
-    
+
+    /** @return the processing instruction for the given target
+      */
     public ProcessingInstruction getProcessingInstruction(String target);    
+    
+    /** Sets all the processing instructions for this branch
+      */
     public void setProcessingInstructions(List listOfPIs);
     
     
@@ -135,10 +140,24 @@ public interface Branch extends Node {
       */    
     public Element addElement(String name, Namespace namespace);
     
-    public ProcessingInstruction addProcessingInstruction(String target, String data);
+    /** Adds a processing instruction for the given target
+      *
+      * @param target is the target of the processing instruction
+      * @text is the textual data (key/value pairs) of the processing instruction
+      */
+    public ProcessingInstruction addProcessingInstruction(String target, String text);
     
+    /** Adds a processing instruction for the given target
+      *
+      * @param target is the target of the processing instruction
+      * @data is a Map of the key / value pairs of the processing instruction
+      */
     public ProcessingInstruction addProcessingInstruction(String target, Map data);
 
+    /** Removes the processing instruction for the given target if it exists
+      *
+      * @return true if a processing instruction was removed else false
+      */
     public boolean removeProcessingInstruction(String target);
 
     

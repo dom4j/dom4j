@@ -461,27 +461,23 @@ public class DefaultElement extends AbstractElement {
         return null;
     }
     
-    public Element getElement(String name, Namespace namespace) {
+    public Element getElement(QName qName) {
         List source = contents;
         if ( source == null ) {
             if ( firstNode instanceof Element ) {
                 Element element = (Element) firstNode;
-                String uri = namespace.getURI();
-                if ( name.equals( element.getName() )
-                    && uri.equals( element.getNamespaceURI() ) ) {
+                if ( qName.equals( element.getQName() ) ) {
                     return element;
                 }
             }
         }
         else {
-            String uri = namespace.getURI();
             int size = source.size();
             for ( int i = 0; i < size; i++ ) {
                 Object object = source.get(i);
                 if ( object instanceof Element ) {
                     Element element = (Element) object;
-                    if ( name.equals( element.getName() )
-                        && uri.equals( element.getNamespaceURI() ) ) {
+                    if ( qName.equals( element.getQName() ) ) {
                         return element;
                     }
                 }
@@ -489,31 +485,28 @@ public class DefaultElement extends AbstractElement {
         }
         return null;
     }
+
+    public Element getElement(String name, Namespace namespace) {
+        return getElement( QName.get( name, namespace ) );
+    }
     
-    public List getElements(String name, Namespace namespace) {
+    
+    
+    public List getElements() {
         List source = contents;
         if ( source == null ) {
             if ( firstNode instanceof Element ) {
                 Element element = (Element) firstNode;
-                String uri = namespace.getURI();
-                if ( name.equals( element.getName() )
-                    && uri.equals( element.getNamespaceURI() ) ) {
-                    return createSingleResultList( element );
-                }
+                return createSingleResultList( element );
             }
             return createEmptyList();
         }
         BackedList answer = createResultList();
-        String uri = namespace.getURI();
         int size = source.size();
         for ( int i = 0; i < size; i++ ) {
             Object object = source.get(i);
             if ( object instanceof Element ) {
-                Element element = (Element) object;
-                if ( name.equals( element.getName() )
-                    && uri.equals( element.getNamespaceURI() ) ) {
-                    answer.addLocal( element );
-                }
+                answer.addLocal( object );
             }
         }
         return answer;
@@ -544,12 +537,14 @@ public class DefaultElement extends AbstractElement {
         return answer;
     }
     
-    public List getElements() {
+    public List getElements(QName qName) {
         List source = contents;
         if ( source == null ) {
             if ( firstNode instanceof Element ) {
                 Element element = (Element) firstNode;
-                return createSingleResultList( element );
+                if ( qName.equals( element.getQName() ) ) {
+                    return createSingleResultList( element );
+                }
             }
             return createEmptyList();
         }
@@ -558,10 +553,17 @@ public class DefaultElement extends AbstractElement {
         for ( int i = 0; i < size; i++ ) {
             Object object = source.get(i);
             if ( object instanceof Element ) {
-                answer.addLocal( object );
+                Element element = (Element) object;
+                if ( qName.equals( element.getQName() ) ) {
+                    answer.addLocal( element );
+                }
             }
         }
         return answer;
+    }
+    
+    public List getElements(String name, Namespace namespace) {
+        return getElements( QName.get(name, namespace ) );
     }
     
     public Iterator elementIterator() {
@@ -594,22 +596,24 @@ public class DefaultElement extends AbstractElement {
         }
     }
     
-    public Iterator elementIterator(String name, Namespace namespace) {
+    public Iterator elementIterator(QName qName) {
         List source = contents;
         if ( source == null ) {
             if ( firstNode instanceof Element ) {
                 Element element = (Element) firstNode;
-                String uri = namespace.getURI();
-                if ( name.equals( element.getName() )
-                    && uri.equals( element.getNamespaceURI() ) ) {
+                if ( qName.equals( element.getQName() ) ) {
                     return createSingleIterator( element );
                 }
             }
             return EMPTY_ITERATOR;
         }
         else {
-            return new ElementNameIterator(source.iterator(), name, namespace);
+            return new ElementQNameIterator(source.iterator(), qName);
         }
+    }
+    
+    public Iterator elementIterator(String name, Namespace namespace) {
+        return elementIterator( QName.get( name, namespace ) );
     }
     
     public void setContent(List contents) {
@@ -684,20 +688,22 @@ public class DefaultElement extends AbstractElement {
         return null;
     }
 
-    public Attribute getAttribute(String name, Namespace namespace) {
+    public Attribute getAttribute(QName qName) {
         if ( attributes != null ) {
-            String uri = namespace.getURI();
             int size = attributes.size();
             for ( int i = 0; i < size; i++ ) {
                 Attribute attribute = (Attribute) attributes.get(i);
-                if ( name.equals( attribute.getName() )
-                    && uri.equals( attribute.getNamespaceURI() ) ) {
+                if ( qName.equals( attribute.getQName() ) ) {
                     childRemoved(attribute);
                     return attribute;
                 }
             }
         }
         return null;
+    }
+
+    public Attribute getAttribute(String name, Namespace namespace) {
+        return getAttribute( QName.get( name, namespace ) );
     }
 
     public Attribute removeAttribute(String name) {
@@ -714,13 +720,11 @@ public class DefaultElement extends AbstractElement {
         return null;
     }
     
-    public Attribute removeAttribute(String name, Namespace namespace) {
+    public Attribute removeAttribute(QName qName) {
         if ( attributes != null ) {
-            String uri = namespace.getURI();
             for ( Iterator iter = attributes.iterator(); iter.hasNext(); ) {
                 Attribute attribute = (Attribute) iter.next();
-                if ( name.equals( attribute.getName() )
-                    && uri.equals( attribute.getNamespaceURI() ) ) {
+                if ( qName.equals( attribute.getQName() ) ) {
                     iter.remove();
                     childRemoved(attribute);
                     return attribute;
@@ -728,6 +732,10 @@ public class DefaultElement extends AbstractElement {
             }
         }
         return null;
+    }
+    
+    public Attribute removeAttribute(String name, Namespace namespace) {
+        return removeAttribute( QName.get( name, namespace ) );
     }
     
     public boolean remove(Attribute attribute) {

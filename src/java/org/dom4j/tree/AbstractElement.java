@@ -31,6 +31,7 @@ import org.dom4j.IllegalAddException;
 import org.dom4j.Node;
 import org.dom4j.Namespace;
 import org.dom4j.ProcessingInstruction;
+import org.dom4j.QName;
 import org.dom4j.Text;
 import org.dom4j.Visitor;
 
@@ -123,19 +124,6 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     }
     
 
-    public Node getXPathNode(int index) {
-        Node answer = getNode(index);
-        if (answer != null && !answer.supportsParent()) {
-            return answer.asXPathNode(this);
-        }
-        return answer;
-    }
-    
-    public int getXPathNodeCount() {
-        return getNodeCount();
-    }
-
-    
     // QName methods
     
     public Namespace getNamespace() {
@@ -178,8 +166,8 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         }
     }
     
-    public String getAttributeValue(String name, Namespace ns) {
-        Attribute attrib = getAttribute(name, ns);
+    public String getAttributeValue(QName qName) {
+        Attribute attrib = getAttribute(qName);
         if (attrib == null) {
             return null;
         } 
@@ -187,12 +175,21 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
             return attrib.getValue();
         }
     }
+    
+    public String getAttributeValue(String name, Namespace ns) {
+        return getAttributeValue( QName.get( name, ns ) );
+    }
 
     public String getAttributeValue(String name, String defaultValue) {
         String answer = getAttributeValue(name);
         return (answer != null) ? answer : defaultValue;
     }
 
+    public String getAttributeValue(QName qName, String defaultValue) {
+        String answer = getAttributeValue(qName);
+        return (answer != null) ? answer : defaultValue;
+    }
+    
     public String getAttributeValue(String name, Namespace namespace, String defaultValue) {
         String answer = getAttributeValue(name, namespace);
         return (answer != null) ? answer : defaultValue;
@@ -212,18 +209,22 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         }
     }
 
-    public void setAttributeValue(String name, String value, Namespace namespace) {
-        Attribute attribute = getAttribute(name, namespace);
+    public void setAttributeValue(QName qName, String value) {
+        Attribute attribute = getAttribute(qName);
         if (attribute == null ) {
-            add(getDocumentFactory().createAttribute(name, value, namespace));
+            add(getDocumentFactory().createAttribute(qName, value));
         }
         else if (attribute.isReadOnly()) {
             remove(attribute);
-            add(getDocumentFactory().createAttribute(name, value, namespace));
+            add(getDocumentFactory().createAttribute(qName, value));
         }
         else {
             attribute.setValue(value);
         }
+    }
+    
+    public void setAttributeValue(String name, String value, Namespace namespace) {
+        setAttributeValue( QName.get( name, namespace ), value );
     }
     
     public void add(Attribute attribute) {
@@ -242,6 +243,14 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     
     // Content Model methods
     
+    public Node getXPathNode(int index) {
+        Node answer = getNode(index);
+        if (answer != null && !answer.supportsParent()) {
+            return answer.asXPathNode(this);
+        }
+        return answer;
+    }
+       
     
     public void addCDATA(String cdata) {
         CDATA node = getDocumentFactory().createCDATA(cdata);
@@ -411,6 +420,11 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         return (element != null) ? element.getText() : null;
     }
         
+    public String getElementText(QName qName) {
+        Element element = getElement(qName);
+        return (element != null) ? element.getText() : null;
+    }
+        
     public String getElementText(String name, Namespace namespace) {
         Element element = getElement(name);
         return (element != null) ? element.getText() : null;
@@ -422,6 +436,11 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         return (element != null) ? element.getTextTrim() : null;
     }
     
+    public String getElementTextTrim(QName qName) {
+        Element element = getElement(qName);
+        return (element != null) ? element.getTextTrim() : null;
+    }
+        
     public String getElementTextTrim(String name, Namespace namespace) {
         Element element = getElement(name, namespace);
         return (element != null) ? element.getTextTrim() : null;
@@ -485,7 +504,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
       * @return the clone of this element
       */
     public Object clone() {
-        Element clone = createElement(getName(), getNamespace());
+        Element clone = createElement(getQName());
         clone.appendAttributes(this);
         clone.appendContent(this);
         clone.appendAddtionalNamespaces(this);
@@ -493,7 +512,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     }
 
     public Element createCopy() {
-        Element clone = createElement(getName(), getNamespace());
+        Element clone = createElement(getQName());
         clone.appendAttributes(this);
         clone.appendContent(this);
         clone.appendAddtionalNamespaces(this);
@@ -508,20 +527,24 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         return clone;
     }
     
-    public Element createCopy(String name, Namespace namespace) {
-        Element clone = createElement(name, namespace);
+    public Element createCopy(QName qName) {
+        Element clone = createElement(qName);
         clone.appendAttributes(this);
         clone.appendContent(this);
         clone.appendAddtionalNamespaces(this);
         return clone;
+    }
+    
+    public Element createCopy(String name, Namespace namespace) {
+        return createCopy( QName.get( name, namespace ) );
     }
 
     protected Element createElement(String name) {
         return getDocumentFactory().createElement(name);
     }
     
-    protected Element createElement(String name, Namespace namespace) {
-        return getDocumentFactory().createElement(name, namespace);
+    protected Element createElement(QName qName) {
+        return getDocumentFactory().createElement(qName);
     }
     
     

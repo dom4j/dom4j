@@ -33,6 +33,8 @@ public class TestNamespace extends AbstractTestCase {
         "xsl", "http://www.w3.org/1999/XSL/Transform" 
     );
     
+    protected static QName XSL_TEMPLATE = QName.get( "template", XSL_NAMESPACE );
+    
     
     public TestNamespace(String name) {
         super(name);
@@ -56,7 +58,8 @@ public class TestNamespace extends AbstractTestCase {
     public void testGetElement() throws Exception {
         Element root = getRootElement();
         
-        Element firstTemplate = root.getElement( "template", XSL_NAMESPACE );
+        
+        Element firstTemplate = root.getElement( XSL_TEMPLATE );
         assert( "Root element contains at least one <xsl:template/> element", firstTemplate != null );
         
         log( "Found element: " + firstTemplate );
@@ -65,7 +68,7 @@ public class TestNamespace extends AbstractTestCase {
     public void testGetElements() throws Exception {
         Element root = getRootElement();
         
-        List list = root.getElements( "template", XSL_NAMESPACE );
+        List list = root.getElements( XSL_TEMPLATE );
         assert( "Root element contains at least one <xsl:template/> element", list.size() > 0 );
         
         log( "Found elements: " + list );
@@ -73,7 +76,7 @@ public class TestNamespace extends AbstractTestCase {
         
     public void testElementIterator() throws Exception {
         Element root = getRootElement();
-        Iterator iter = root.elementIterator( "template", XSL_NAMESPACE );
+        Iterator iter = root.elementIterator( XSL_TEMPLATE );
         assert( "Root element contains at least one <xsl:template/> element", iter.hasNext() );
 
         do {
