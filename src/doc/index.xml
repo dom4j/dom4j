@@ -11,6 +11,15 @@
       </p>
     </header>
 
+    <section title="News">
+      <ul>
+        <li>Toby's <a href="cookbook/cookbook.html">cookbook</a> is now online!
+        </li>
+        <li>Updated the quick start <a href="guide.html">guide</a>
+        </li>
+      </ul>
+    </section>
+
     <section title="Features">
       <ul>
         <li>designed for the Java platform with full support for the
@@ -55,7 +64,7 @@
       <p>We really like XPath and if you are working with XML we highly recommend
         you try to experiment with XPath. If you need help learning XPath
         try the excellent
-        <a href="http://www.zvon.org/xxl/XPathTutorial/General/examples.html">zvon tutorial</a> 
+        <a href="http://www.zvon.org/xxl/XPathTutorial/General/examples.html">Zvon tutorial</a> 
         .</p>
 
       <p>Contributors are welcome to join this project. 
