@@ -38,6 +38,14 @@ public class TestFilter extends AbstractTestCase {
     };
     
     
+    public static void main( String[] args ) {
+        TestRunner.run( suite() );
+    }
+    
+    public static Test suite() {
+        return new TestSuite( TestFilter.class );
+    }
+    
     public TestFilter(String name) {
         super(name);
     }
@@ -51,16 +59,8 @@ public class TestFilter extends AbstractTestCase {
         }
     }
         
-    // JUnit stuff
+    // Implementation methods
     //-------------------------------------------------------------------------                    
-    public static void main( String[] args ) {
-        TestRunner.run( suite() );
-    }
-    
-    public static Test suite() {
-        return new TestSuite( TestFilter.class );
-    }
-    
     protected void testXPath(String xpathExpression) {
         NodeFilter nodeFilter = DocumentHelper.createXPathFilter( xpathExpression );
         assert( "No NodeFilter object was created", nodeFilter != null );

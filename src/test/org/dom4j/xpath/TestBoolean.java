@@ -41,6 +41,14 @@ public class TestBoolean extends AbstractTestCase {
     };
     
     
+    public static void main( String[] args ) {
+        TestRunner.run( suite() );
+    }
+    
+    public static Test suite() {
+        return new TestSuite( TestBoolean.class );
+    }
+    
     public TestBoolean(String name) {
         super(name);
     }
@@ -54,16 +62,8 @@ public class TestBoolean extends AbstractTestCase {
         }
     }
         
-    // JUnit stuff
+    // Implementation methods
     //-------------------------------------------------------------------------                    
-    public static void main( String[] args ) {
-        TestRunner.run( suite() );
-    }
-    
-    public static Test suite() {
-        return new TestSuite( TestBoolean.class );
-    }
-    
     protected void testXPath(String xpathExpression) {
         XPath xpath = DocumentHelper.createXPath( xpathExpression );
         assert( "No xpath object was created", xpath != null );

@@ -38,6 +38,14 @@ public class TestNamespace extends AbstractTestCase {
     };
     
     
+    public static void main( String[] args ) {
+        TestRunner.run( suite() );
+    }
+    
+    public static Test suite() {
+        return new TestSuite( TestNamespace.class );
+    }
+    
     public TestNamespace(String name) {
         super(name);
     }
@@ -51,16 +59,8 @@ public class TestNamespace extends AbstractTestCase {
         }
     }
         
-    // JUnit stuff
+    // Implementation methods
     //-------------------------------------------------------------------------                    
-    public static void main( String[] args ) {
-        TestRunner.run( suite() );
-    }
-    
-    public static Test suite() {
-        return new TestSuite( TestNamespace.class );
-    }
-    
     protected void testXPath(String xpathText) {
         XPath xpath = DocumentHelper.createXPath(xpathText);
         List list = xpath.selectNodes( document );

@@ -23,6 +23,14 @@ import junit.textui.TestRunner;
   */
 public class TestParent extends AbstractTestCase {
     
+    public static void main( String[] args ) {
+        TestRunner.run( suite() );
+    }
+    
+    public static Test suite() {
+        return new TestSuite( TestParent.class );
+    }
+    
     public TestParent(String name) {
         super(name);
     }
@@ -44,16 +52,6 @@ public class TestParent extends AbstractTestCase {
         testXPathNode( root, second );
     }
         
-    // JUnit stuff
-    //-------------------------------------------------------------------------                    
-    public static void main( String[] args ) {
-        TestRunner.run( suite() );
-    }
-    
-    public static Test suite() {
-        return new TestSuite( TestParent.class );
-    }
-    
     // Implementation methods
     //-------------------------------------------------------------------------                    
     protected void testParentRelationship( Element parent, List content ) {

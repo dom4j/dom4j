@@ -9,7 +9,6 @@
 
 package org.dom4j.xpath;
 
-import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,25 +16,21 @@ import junit.framework.*;
 import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
-import org.dom4j.Attribute;
-import org.dom4j.DocumentHelper;
-import org.dom4j.XPath;
-import org.dom4j.io.SAXReader;
+import org.dom4j.Node;
 
-/** Test harness for the attribute axis 
+/** Test harness for numeric XPath expressions
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class TestAttribute extends AbstractTestCase {
+public class TestNumber extends AbstractTestCase {
 
-    protected static boolean VERBOSE = false;
+    protected static boolean VERBOSE = true;
     
     protected static String[] paths = {
-        "attribute::*",
-        "/root/author/attribute::*",
-        "//attribute::*",
-        "@name"
+        "count(//author)",
+        "count(//author/attribute::*)",
+        "sum(count(//author),count(//author/attribute::*))"
     };
     
     
@@ -44,10 +39,10 @@ public class TestAttribute extends AbstractTestCase {
     }
     
     public static Test suite() {
-        return new TestSuite( TestAttribute.class );
+        return new TestSuite( TestNumber.class );
     }
     
-    public TestAttribute(String name) {
+    public TestNumber(String name) {
         super(name);
     }
 
@@ -56,36 +51,16 @@ public class TestAttribute extends AbstractTestCase {
     public void testXPaths() throws Exception {        
         int size = paths.length;
         for ( int i = 0; i < size; i++ ) {
-            testXPath( paths[i] );
+            testXPath( document, paths[i] );
         }
     }
         
     // Implementation methods
     //-------------------------------------------------------------------------                    
-    protected void testXPath(String xpathText) {
-        XPath xpath = DocumentHelper.createXPath(xpathText);
-        List list = xpath.selectNodes( document );
-        
-        log( "Searched path: " + xpathText + " found: " + list.size() + " result(s)" );
-        
-        if ( VERBOSE ) {
-            log( "xpath: " + xpath );
-            log( "results: " + list );
-        }
-        
-        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
-            Object object = iter.next();
-            
-            log( "Found Result: " + object );
-            
-            assert( "Results should be Attribute objects", object instanceof Attribute );
-            
-            Attribute attribute = (Attribute) object;
-            
-            assert( "Results should support the parent relationship", attribute.supportsParent() );
-            assert( "Results should contain reference to the parent element", attribute.getParent() != null );
-            assert( "Results should contain reference to the owning document", attribute.getDocument() != null );
-        }
+    protected void testXPath(Node node, String xpath) {
+        Number number = node.numberValueOf( xpath );
+
+        log( "Searched path: " + xpath + " found: " + number );        
     }
 }
 

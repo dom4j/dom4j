@@ -22,6 +22,14 @@ import junit.textui.TestRunner;
   */
 public class TestContent extends AbstractTestCase {
 
+    public static void main( String[] args ) {
+        TestRunner.run( suite() );
+    }
+    
+    public static Test suite() {
+        return new TestSuite( TestContent.class );
+    }
+    
     public TestContent(String name) {
         super(name);
     }
@@ -97,16 +105,6 @@ public class TestContent extends AbstractTestCase {
         assert( "Iteration completed", iterated );
     }
         
-    // JUnit stuff
-    //-------------------------------------------------------------------------                    
-    public static void main( String[] args ) {
-        TestRunner.run( suite() );
-    }
-    
-    public static Test suite() {
-        return new TestSuite( TestContent.class );
-    }
-    
     // Implementation methods
     //-------------------------------------------------------------------------                    
     protected void testGetAttributes(Element author) throws Exception {

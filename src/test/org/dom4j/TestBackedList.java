@@ -24,6 +24,14 @@ import org.dom4j.io.XMLWriter;
   */
 public class TestBackedList extends AbstractTestCase {
 
+    public static void main( String[] args ) {
+        TestRunner.run( suite() );
+    }
+    
+    public static Test suite() {
+        return new TestSuite( TestBackedList.class );
+    }
+    
     public TestBackedList(String name) {
         super(name);
     }
@@ -37,16 +45,8 @@ public class TestBackedList extends AbstractTestCase {
         mutate(element);
     }
         
-    // JUnit stuff
+    // Implementation methods
     //-------------------------------------------------------------------------                    
-    public static void main( String[] args ) {
-        TestRunner.run( suite() );
-    }
-    
-    public static Test suite() {
-        return new TestSuite( TestBackedList.class );
-    }
-    
     protected void mutate(Element element) throws Exception {
         DocumentFactory factory = DocumentFactory.getInstance();
         

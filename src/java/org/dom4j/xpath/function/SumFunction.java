@@ -20,38 +20,34 @@ import java.util.Iterator;
    
    @author bob mcwhirter (bob @ werken.com)
 */
-public class SumFunction implements Function
-{
+public class SumFunction implements Function {
 
-  public Object call(Context context,
-                     List args)
-  {
-    if (args.size() == 1)
-    {
-      return evaluate(args.get(1));
+    public Object call(Context context, List args) {
+        return evaluate( args );
+/*
+
+        if (args.size() == 1) {
+            return evaluate(args.get(0));
+        }
+
+        // FIXME: Toss exception
+        return null;
+*/
     }
 
-    // FIXME: Toss exception
-    return null;
-  }
-
-  public static Double evaluate(Object obj)
-  {
-
-    double sum = 0;
-
-    if (obj instanceof List)
-    {
-      Iterator nodeIter = ((List)obj).iterator();
-
-      while (nodeIter.hasNext())
-      {
-        sum += NumberFunction.evaluate(nodeIter.next()).doubleValue();
-      }
+    public static Double evaluate(Object obj) {
+        double sum = 0;
+        if (obj instanceof List) {
+            Iterator nodeIter = ((List)obj).iterator();
+            while (nodeIter.hasNext()) {
+                sum += NumberFunction.evaluate(nodeIter.next()).doubleValue();
+            }
+        }
+        else {
+            sum += NumberFunction.evaluate(obj).doubleValue();
+        }
+        return new Double(sum);
     }
-
-    return new Double(sum);
-  }
 }
 
 

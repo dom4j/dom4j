@@ -45,6 +45,14 @@ public class TestXPath extends AbstractTestCase {
     };
     
     
+    public static void main( String[] args ) {
+        TestRunner.run( suite() );
+    }
+    
+    public static Test suite() {
+        return new TestSuite( TestXPath.class );
+    }
+    
     public TestXPath(String name) {
         super(name);
     }
@@ -58,16 +66,8 @@ public class TestXPath extends AbstractTestCase {
         }
     }
         
-    // JUnit stuff
+    // Implementation methods
     //-------------------------------------------------------------------------                    
-    public static void main( String[] args ) {
-        TestRunner.run( suite() );
-    }
-    
-    public static Test suite() {
-        return new TestSuite( TestXPath.class );
-    }
-    
     protected void testXPath(String xpathExpression) {
         XPath xpath = DocumentHelper.createXPath(xpathExpression);
         

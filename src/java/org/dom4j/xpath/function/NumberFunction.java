@@ -19,37 +19,26 @@ import java.util.List;
    
    @author bob mcwhirter (bob @ werken.com)
 */
-public class NumberFunction implements Function
-{
+public class NumberFunction implements Function {
 
-  public Object call(Context context,
-                     List args)
-  {
-    if (args.size() == 1)
-    {
-      return evaluate(args.get(1));
+    public Object call(Context context, List args) {
+        if (args.size() == 1) {
+            return evaluate(args.get(0));
+        }
+        // FIXME: Toss exception
+        return null;
     }
 
-    // FIXME: Toss exception
-    return null;
-  }
-
-  public static Double evaluate(Object obj)
-  {
-
-    Double result = null;
-
-    if (obj instanceof Double)
-    {
-      result = (Double) obj;
+    public static Double evaluate(Object obj) {
+        if (obj instanceof Double) {
+            return (Double) obj;
+        }
+        else {
+            String text = StringFunction.evaluate(obj);
+            System.out.println( "converting: " + text + " into a number" );
+            return Double.valueOf( text );
+        }
     }
-    else
-    {
-      result = Double.valueOf( StringFunction.evaluate(obj) );
-    }
-
-    return result;
-  }
 }
 
 

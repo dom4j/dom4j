@@ -33,6 +33,14 @@ public class TestText extends AbstractTestCase {
     };
     
     
+    public static void main( String[] args ) {
+        TestRunner.run( suite() );
+    }
+    
+    public static Test suite() {
+        return new TestSuite( TestText.class );
+    }
+    
     public TestText(String name) {
         super(name);
     }
@@ -46,16 +54,8 @@ public class TestText extends AbstractTestCase {
         }
     }
         
-    // JUnit stuff
+    // Implementation methods
     //-------------------------------------------------------------------------                    
-    public static void main( String[] args ) {
-        TestRunner.run( suite() );
-    }
-    
-    public static Test suite() {
-        return new TestSuite( TestText.class );
-    }
-    
     protected void testXPath(String xpath) {
         List list = document.selectNodes(xpath);
         
