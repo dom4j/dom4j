@@ -29,9 +29,9 @@ public class TestStylesheet2 extends TestStylesheet {
 
     protected String[] templates = {
         "/",
-        "*",
         "title",
         "para",
+        "*",
     };
     
     // JUnit stuff

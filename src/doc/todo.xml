@@ -59,6 +59,10 @@ List list = element.elements( element.getQName( "x:foo" ) );
             Patched the behaviour of Node.matches(String xpathExpression) so that it uses
             XPath filters now rather than XSLT patterns.
           </p>
+          <p>
+            Patched bug in XRule implementation in org.dom4j.rule that was causing ordering problems
+            when using stylesheets - the Rule precendence order was not being correctly used.
+          </p>
         </section>
         <section title="0.9 release">
           <section title="Full support for the Jaxen XPath engine">

@@ -63,6 +63,13 @@ public class Rule implements Comparable {
         this.pattern = pattern;
     }
 
+    public boolean equals(Object that) {
+        if ( that instanceof Rule ) {
+            return compareTo( (Rule) that ) == 0;
+        }
+        return false;
+    }
+    
     public int compareTo(Object that) {
         if ( that instanceof Rule ) {
             return compareTo((Rule) that);

@@ -9,7 +9,9 @@
 
 package org.dom4j.rule;
 
-import java.util.TreeSet;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 import org.dom4j.Node;
 
@@ -24,8 +26,8 @@ import org.dom4j.Node;
   */
 public class RuleSet {
 
-    /** A sorted set of Rule objects */
-    private TreeSet ruleTree = new TreeSet();
+    /** An unordered list of Rule objects */
+    private ArrayList rules = new ArrayList();
     
     /** A lazily evaluated and cached array of rules sorted */
     private Rule[] ruleArray;
@@ -34,7 +36,7 @@ public class RuleSet {
     }
     
     public String toString() {
-        return super.toString() + " [RuleSet: " + ruleTree + " ]";
+        return super.toString() + " [RuleSet: " + rules + " ]";
     }
     
     
@@ -57,19 +59,19 @@ public class RuleSet {
     }
     
     public void addRule(Rule rule) {
-        ruleTree.add( rule );
+        rules.add( rule );
         ruleArray = null;
     }
     
     public void removeRule(Rule rule) {
-        ruleTree.remove( rule );
+        rules.remove( rule );
         ruleArray = null;
     }
     
     /** Adds all the rules to this RuleSet from the given other rule set. 
       */
     public void addAll(RuleSet that) {
-        ruleTree.addAll( that.ruleTree );
+        rules.addAll( that.rules );
         ruleArray = null;
     }
     
@@ -80,8 +82,10 @@ public class RuleSet {
       */
     protected Rule[] getRuleArray() {
         if ( ruleArray == null ) {
-            ruleArray = new Rule[ ruleTree.size() ];
-            ruleTree.toArray( ruleArray );
+            Collections.sort( rules );
+            int size = rules.size();
+            ruleArray = new Rule[ size ];
+            rules.toArray( ruleArray );
         }
         return ruleArray;
     }
