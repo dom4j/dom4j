@@ -40,7 +40,7 @@
     <property name="dist.dir" value="${dist.root}/${name}-${version}"/>
     <property name="dist.target" value="${dist.root}"/>
 
-    <property name="web.htdocs" value="./build/htdocs"/>
+    <property name="web.htdocs" value="../htdocs"/>
     <property name="web.dist" value="${web.htdocs}/dist"/>
     <property name="web.ftp" value="./build/ftp"/>
 
@@ -365,9 +365,9 @@
 <!--
     <jar jarfile="${build.dir}/${name}-website.jar"
          basedir="${web.htdocs}"/>
--->
     <tar tarfile="${build.dir}/${name}-website.tar" basedir="${web.htdocs}"/>
     <gzip zipfile="${build.dir}/${name}-website.tar.gz" src="${build.dir}/${name}-website.tar"/>
+-->
   </target>
 
 
