@@ -21,6 +21,7 @@ import org.dom4j.tree.DefaultEntity;
 import org.dom4j.tree.DefaultNamespace;
 import org.dom4j.tree.DefaultProcessingInstruction;
 import org.dom4j.tree.DefaultText;
+import org.dom4j.tree.XPathEntity;
 
 /** <p><code>DocumentFactory</code> is a collection of factory methods to allow
   * easy custom building of DOM4J trees. The default tree that is built uses
@@ -221,7 +222,8 @@ public class DocumentFactory {
     
     
     public Entity createEntity(String name) {
-        return new DefaultEntity(name);
+        // allow this entity to be modified in place
+        return new XPathEntity(name);
     }
     
     public Entity createEntity(String name, String text) {
