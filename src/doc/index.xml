@@ -13,6 +13,9 @@
 
     <section title="News">
       <ul>
+        <li>Interesting <a href="http://www.xml.com/pub/a/2001/11/14/dom-sax.html?page=2">article</a>
+          outlining the social dominance of DOM and SAX and the importance of XPath. 
+        </li>
         <li>The new <a href="todo.html">dom4j 1.1</a> release is out featuring support for DTD declarations and
           numerous bug fixes and patches.
         </li>
