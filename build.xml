@@ -60,6 +60,9 @@
 
     <!-- Gump support -->
     <property name="jaxen.src" value="../jaxen/jaxen/src/java/main"/>
+
+    <!-- Activate support for fop in Ant (tradem) / Must be in classpath -->
+    <taskdef name="fop" classname="org.apache.fop.tools.anttasks.Fop"/>
   </target>
 
   <!-- =================================================================== -->
@@ -303,21 +306,34 @@
   </target>
 
   <target name="doc-cookbook" depends="prepare">
+    <copy todir="${build.doc}/cookbook" overwrite="yes">
+      <fileset dir="${doc.dir}/cookbook" includes="*.css"/>
+    </copy>
     <mkdir dir="${build.doc}/cookbook"/>
-<!-- cannot get the DocBook stylesheets to work with Xalan  -->
-<!-- so lets call Saxon explicitly -->
-    <java classname="com.icl.saxon.StyleSheet" classpath="${lib.dir}/tool/saxon.jar" fork="true">
-      <arg value="-o"/>
-      <arg value="${build.doc}/cookbook/cookbook.html"/>
-      <arg value="-w0"/>
-      <arg value="${doc.dir}/cookbook/cookbook.xml"/>
-      <arg value="${doc.dir}/docbook/html/docbook.xsl"/>
-    </java>
-<!--
-    <style basedir="${doc.dir}/cookbook" 
-        destdir="${build.doc}/cookbook" style="docbook/html/docbook.xsl"
-        includes="**/*.xml"/>
--->
+    <style basedir="${doc.dir}/cookbook"
+           destdir="${build.doc}/cookbook"
+           style="src/doc/docbook/html/docbook.xsl"
+           classpath="${lib.dir}/jaxp.jar:${lib.dir}/tools/saxon.jar"
+           processor="trax"
+           includes="**/*.xml"
+     >
+      <param name="html.stylesheet" expression="cookbook.css"/>
+     </style>
+     <style basedir="${doc.dir}/cookbook"
+            destdir="${build.doc}/cookbook"
+            extension=".fo"
+            style="src/doc/docbook/fo/docbook.xsl"
+            classpath="${lib.dir}/jaxp.jar:${lib.dir}/tools/saxon.jar"
+            processor="trax"
+            includes="**/*.xml"
+      />
+      <fop fofile="${build.doc}/cookbook/cookbook.fo"
+           outfile="${build.doc}/cookbook/cookbook.pfd"
+      />
+      <fop fofile="${build.doc}/cookbook/cookbook.fo"
+           format="application/postscript"
+           outfile="${build.doc}/cookbook/cookbook.ps"
+      />
   </target>
 
 
