@@ -63,6 +63,18 @@ class XPathRecognizer extends Parser;
                         }
 			return new UnionExpr(lhs, rhs);
 		}
+
+                RecognitionException recognitionException;
+
+                public void reportError(RecognitionException ex)
+                {
+                        this.recognitionException = ex;
+                }
+
+                public RecognitionException getRecognitionException()
+                {
+                        return recognitionException;
+                }
 	}
 
 xpath returns [Expr expr]
@@ -93,7 +105,7 @@ absolute_location_path returns [LocationPath path]
 				path.addStep( new NodeTypeStep("descendant-or-self", "node") );
 			}
 		)
-		(	(AT|STAR|IDENTIFIER)=>
+		(	(AT|STAR|DOT|IDENTIFIER)=>
 			path=i_relative_location_path[path]
 			|
 		)

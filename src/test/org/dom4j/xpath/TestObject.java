@@ -29,7 +29,7 @@ public class TestObject extends AbstractTestCase {
     protected static boolean VERBOSE = true;
     
     protected static String[] paths = {
-        "/.name()",
+        "name(/.)",
         "name()"
     };
     

@@ -11,6 +11,12 @@
             The bug was hidden by a further bug in the JUnit test case that was not correctly
             testing this case. Both these bugs are now fixed.
             </p>
+            <p>Fixed bug found by Piero de Salvia that some invalid XPath expressions were not correctly
+            throwing exceptions. Now any attempt to use any invalid XPath expressions should result
+            in an 
+              <a href="apidocs/org/dom4j/InvalidXPathException.html">InvalidXPathException</a>
+            being thrown.
+            </p>
           </section>
         </section>
         <section title="0.6 release">

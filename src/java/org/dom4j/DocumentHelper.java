@@ -100,8 +100,9 @@ public class DocumentHelper {
       *
       * @param xpathExpression is the XPath expression to create
       * @return a new <code>XPath</code> instance
+      * @throws InvalidXPathException if the XPath expression is invalid
       */
-    public static XPath createXPath(String xpathExpression) {
+    public static XPath createXPath(String xpathExpression) throws InvalidXPathException {
         return DocumentFactory.getInstance().createXPath(xpathExpression);
     }
     
@@ -112,8 +113,9 @@ public class DocumentHelper {
       * @param xpathExpression is the XPath expression to create
       * @param variableContext is the variable context to use when evaluating the XPath
       * @return a new <code>XPath</code> instance
+      * @throws InvalidXPathException if the XPath expression is invalid
       */
-    public static XPath createXPath(String xpathExpression, VariableContext variableContext) {
+    public static XPath createXPath(String xpathExpression, VariableContext variableContext) throws InvalidXPathException {
         return DocumentFactory.getInstance().createXPath(xpathExpression, variableContext);
     }
     

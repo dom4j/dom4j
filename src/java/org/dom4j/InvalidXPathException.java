@@ -7,71 +7,21 @@
  * $Id$
  */
 
-package org.dom4j.xpath;
+package org.dom4j;
 
-import java.io.File;
-import java.util.Iterator;
-import java.util.List;
-
-import junit.framework.*;
-import junit.textui.TestRunner;
-
-import org.dom4j.AbstractTestCase;
-import org.dom4j.Branch;
-import org.dom4j.Element;
-import org.dom4j.Node;
-import org.dom4j.XPath;
-
-/** Tests bad XPath expressions
+/** <p><code>InvalidXPathException</code> is thrown when an invalid
+  * XPath expression is used to traverse an XML document</p>
   *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class TestBadPath extends AbstractTestCase {
+public class InvalidXPathException extends IllegalArgumentException {
 
-    String[] paths = {
-        "+",
-        "/foo/bar/"
-    };
-    
-    public static void main( String[] args ) {
-        TestRunner.run( suite() );
+    public InvalidXPathException(String xpath) {
+        super( "Invalid XPath expression: " + xpath );
     }
     
-    public static Test suite() {
-        return new TestSuite( TestBadPath.class );
-    }
-    
-    public TestBadPath(String name) {
-        super(name);
-    }
-
-    // Test case(s)
-    //-------------------------------------------------------------------------                    
-    public void testBadPaths() throws Exception {
-        for ( int i = 0, size = paths.length; i < size; i++ ) {
-            String path = paths[i];
-            testBadPath( path );
-        }
-    }
-    
-    protected void testBadPath(String path) throws Exception {
-        try {
-            document.selectObject( path );
-            
-            fail( "Should have thrown exception for: " + path );
-        }
-        catch (Exception e) {
-            log( "Successfully caught: " + e );
-        }
-        try {
-            XPath xpath = document.createXPath( path );
-            
-            fail( "Should have thrown exception for: " + path );
-        }
-        catch (Exception e) {
-            log( "Successfully caught: " + e );
-        }
+    public InvalidXPathException(String xpath, String reason) {
+        super( "Invalid XPath expression: " + xpath + " " + reason );
     }
 }
 

@@ -349,8 +349,9 @@ public interface Node extends Cloneable {
       *
       * @param xpathExpression is the XPath expression to be evaluated
       * @return an XPath object represeting the given expression
+      * @throws InvalidXPathException if the XPath expression is invalid
       */
-    public XPath createXPath(String xpathExpression);
+    public XPath createXPath(String xpathExpression) throws InvalidXPathException;
 
     /** <p><code>asXPathResult</code> returns a version of this node which is
       * capable of being an XPath result. 

@@ -38,8 +38,8 @@ public abstract class UnAbbrStep extends Step {
     public static final short AXIS_FOLLOWING_SIBLING = 9;
     public static final short AXIS_NAMESPACE = 10;
     public static final short AXIS_PARENT = 11;
-    public static final short AXIS_PRECEEDING = 12;
-    public static final short AXIS_PRECEEDING_SIBLING = 13;
+    public static final short AXIS_PRECEDING = 12;
+    public static final short AXIS_PRECEDING_SIBLING = 13;
     
     private String _axis;
     private short _axisCode;
@@ -82,11 +82,11 @@ public abstract class UnAbbrStep extends Step {
         else if ( "parent".equals(axis) ) {
             _axisCode = AXIS_PARENT;
         }
-        else if ( "preceeding".equals(axis) ) {
-            _axisCode = AXIS_PRECEEDING;
+        else if ( "preceding".equals(axis) ) {
+            _axisCode = AXIS_PRECEDING;
         }
-        else if ( "preceeding-sibling".equals(axis) ) {
-            _axisCode = AXIS_PRECEEDING_SIBLING;
+        else if ( "preceding-sibling".equals(axis) ) {
+            _axisCode = AXIS_PRECEDING_SIBLING;
         }
     }
     
@@ -170,10 +170,10 @@ public abstract class UnAbbrStep extends Step {
                 case AXIS_PARENT:
                     results = applyToParent( each, support );
                     break;
-                case AXIS_PRECEEDING:
+                case AXIS_PRECEDING:
                     results = applyToPreceeding( each, support );
                     break;
-                case AXIS_PRECEEDING_SIBLING:
+                case AXIS_PRECEDING_SIBLING:
                     results = applyToPreceedingSibling( each, support );
                     break;
             }
@@ -404,8 +404,8 @@ public abstract class UnAbbrStep extends Step {
             case AXIS_FOLLOWING_SIBLING:
             case AXIS_NAMESPACE:
             case AXIS_PARENT:
-            case AXIS_PRECEEDING:
-            case AXIS_PRECEEDING_SIBLING:
+            case AXIS_PRECEDING:
+            case AXIS_PRECEDING_SIBLING:
             case AXIS_ANCESTOR:
             case AXIS_ANCESTOR_OR_SELF:
                 // not implemented yet

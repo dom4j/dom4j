@@ -158,8 +158,9 @@ public class DocumentFactory implements Serializable {
       *
       * @param xpathExpression is the XPath expression to create
       * @return a new <code>XPath</code> instance
+      * @throws InvalidXPathException if the XPath expression is invalid
       */
-    public XPath createXPath(String xpathExpression) {
+    public XPath createXPath(String xpathExpression) throws InvalidXPathException {
         return new DefaultXPath( xpathExpression );
     }
 
@@ -169,6 +170,7 @@ public class DocumentFactory implements Serializable {
       * @param xpathExpression is the XPath expression to create
       * @param variableContext is the variable context to use when evaluating the XPath
       * @return a new <code>XPath</code> instance
+      * @throws InvalidXPathException if the XPath expression is invalid
       */
     public XPath createXPath(String xpathExpression, VariableContext variableContext) {
         XPath xpath = createXPath( xpathExpression );
