@@ -89,6 +89,11 @@
   
   <developers>
     <developer>
+      <name>Curt Arnold</name>
+      <id>carnold</id>
+      <email>carnold@users.sourceforge.net</email>
+    </developer>
+    <developer>
       <name>David Lucas</name>
       <id>ddlucas</id>
       <email>ddlucas@users.sourceforge.net</email>
