@@ -11,16 +11,22 @@
         <li>generate-id()</li>
         <li>format-number()</li>
       </ul>
+      <p>The optional DOM implementation is not yet at full DOM compliance</p>
     </section>
 
-    <section title="Future developments">
+    <section title="To Do List">
       <ul>
-        <li>Implement XSLT engine on top of DOM4J
+        <li>Better documentation and user guides
         </li>
-        <li>Implement optional implementation of DOM4J model which also
-            implements the W3C DOM API
+        <li>Do detailed performance tests against the other XML object models
         </li>
         <li>Clean integration with XSLT / JAXP / TRaX interfaces
+        </li>
+        <li>Ensure that the optional DOM implementation passes the DOM compliance tests
+        </li>
+        <li>Build an XML Schema Data Types aware DocumentFactory
+        </li>
+        <li>Implement XSLT engine on top of DOM4J
         </li>
         <li>XML Query implementation on top of DOM4J
         </li>
@@ -28,10 +34,18 @@
     </section>
 
     <section title="Change History">
-        <section title="0.2 release">
+        <section title="(soon to be released) 0.2 release">
           <p>There following new features were added:-
           </p>
           <ul>
+            <li>API modified to avoid clashes with WC3 DOM such that a dual 
+                implementation of dom4j and DOM is now possible. An early alpha
+                release of a DOM implementation of dom4j is available.
+            </li>
+            <li>XMLWriter and HTMLWriter rewritten so that they work at either 
+                the SAX level or the dom4j level. 
+                API much improved and more like Reader and Writer in the JDK.
+            </li>
             <li>New sorting method added to Node for easier selections of nodes
               which are sorted via an XPath expression. The following
               code sorts all CUSTOMER elements by their name attributes and 
@@ -61,15 +75,6 @@ List customers
             support and integrated XPath
           </p>
         </section>
-    </section>
-
-    <section title="Design Decisions">
-      <ul>
-        <li>Should the Element store String objects to represent Text nodes 
-          (for efficiency) or should we stay with the clean polymorphic design
-          of using a Node implementation for all element content?
-        </li>
-      </ul>
     </section>
 
   </body>
