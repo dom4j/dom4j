@@ -13,6 +13,9 @@ Development Tasks
 * Implement a Saxon adapter so that the SAxon XSLT engine can work
   natively on top of dom4j.
 
+* implement a Locator Element that maintains the column & line number that 
+  errors may occur on for better debugging.
+
 * implement a proper lazy tree parsing mechanism using the XPP pull parser.
 
 * support for setExpandEntities(true) to expand entities, so that

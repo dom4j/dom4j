@@ -73,6 +73,7 @@
   <document url="xml/web.xml">
     <context select="/">
       <pattern match="/"/>
+      <test select="web-app/servlet" count="2"/>
     </context>
     <context select="//servlet[1]">
       <pattern match="*"/>
@@ -313,6 +314,12 @@
       <valueOf select="/foo:a/alias:x/alias:y">Hey3</valueOf>
       <valueOf select="/foo:a/foo:x/foo:y">Hey3</valueOf>
       <valueOf select="/*[local-name()='a' and namespace-uri()='fooNamespace']/*[local-name()='x' and namespace-uri()='fooNamespace']/*[local-name()='y' and namespace-uri()='fooNamespace']">Hey3</valueOf>
+    </context>
+    <context select="/foo:a/b">
+      <valueOf select="/foo:a/b/c">Hello</valueOf>
+      <valueOf select="/foo:a/foo:d/foo:e">Hey</valueOf>
+      <valueOf select="/foo:a/alias:x/alias:y">Hey3</valueOf>
+      <valueOf select="/foo:a/foo:x/foo:y">Hey3</valueOf>
     </context>
   </document>
 
