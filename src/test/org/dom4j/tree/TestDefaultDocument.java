@@ -8,12 +8,14 @@
 
 package org.dom4j.tree;
 
+import java.io.ByteArrayInputStream;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.IllegalAddException;
 
@@ -49,5 +51,15 @@ public class TestDefaultDocument extends AbstractTestCase {
             String msg = e.getMessage();
             assertTrue(msg.indexOf(root.toString()) != -1);
         }
+    }
+    
+    public void testBug799656() throws Exception {
+        Document document = DocumentFactory.getInstance().createDocument();
+        Element el = document.addElement("root");
+        el.setText("text with an \u00FC in it");  // u00FC is umlaut
+        
+        System.out.println(document.asXML());
+        
+        DocumentHelper.parseText(document.asXML());
     }
 }
