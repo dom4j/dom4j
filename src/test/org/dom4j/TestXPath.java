@@ -22,7 +22,7 @@ import junit.textui.TestRunner;
   */
 public class TestXPath extends AbstractTestCase {
 
-    protected static boolean VERBOSE = true;
+    protected static boolean VERBOSE = false;
     
     protected static String[] paths = {
         "root",
@@ -37,7 +37,8 @@ public class TestXPath extends AbstractTestCase {
         "normalize-space(/root)",
         "normalize-space(/root/author)",
         "normalize-space(' a  b  c  d ')",
-        "root|author"
+        "root|author",
+        "//root|//author"
     };
     
     
@@ -64,14 +65,18 @@ public class TestXPath extends AbstractTestCase {
         return new TestSuite( TestXPath.class );
     }
     
-    protected void testXPath(String xpath) {
+    protected void testXPath(String xpathExpression) {
+        XPath xpath = XPathHelper.createXPath(xpathExpression);
+        
         List list = document.selectNodes(xpath);
         
-        System.out.println( "Searched path: " + xpath + " found: " + list.size() + " result(s)" );
+        log( "Searched path: " + xpathExpression + " found: " + list.size() + " result(s)" );
         
         if ( VERBOSE ) {
-            System.out.println( list );
+            log( "XPath:   " + xpath );
         }
+        
+        log( "Results: "+ list );
     }
 
 }

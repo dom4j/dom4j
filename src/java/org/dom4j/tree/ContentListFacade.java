@@ -51,7 +51,7 @@ public class ContentListFacade extends AbstractList {
     }
     
     public boolean add(Object object) {
-        branch.addNode( asNode( object ) );
+        branch.childAdded( asNode( object ) );
         return branchContent.add(object);
     }
     
@@ -66,14 +66,14 @@ public class ContentListFacade extends AbstractList {
     }
     
     public boolean remove(Object object) {
-        branch.removeNode( asNode( object ) );
+        branch.childRemoved( asNode( object ) );
         return branchContent.remove(object);
     }
 
     public Object remove(int index) {
         Object object = branchContent.remove(index);
         if ( object != null ) {
-            branch.removeNode( asNode( object ) );
+            branch.childRemoved( asNode( object ) );
         }
         return object;
     }
