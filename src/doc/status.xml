@@ -12,6 +12,8 @@
         <p>Applied patch to bug found by Soumanjoy Das that creating a new DOMDocument then calling createElement() would generate
           a ClassCastException.
         </p>
+        <p>Applied patch supplied by James Dodd that fixes a MIME encoding issue in the embedded Aelfred parser
+        </p>
         <p>Applied patch to fix bug found by David Frankson. Adding attributes with null values causes problems in XSLT engines
             so now adding a null valued attribute is equivalent to removing the attribute. So null attribute values are silently ignored.
             e.g.

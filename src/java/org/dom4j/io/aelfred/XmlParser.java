@@ -3611,7 +3611,7 @@ loop:
 		    encoding = null;	// autodetect
 		else {
 		    temp = encoding.indexOf ('=', temp + 7);
-		    encoding = encoding.substring (temp);
+		    encoding = encoding.substring (temp + 1);
 		    if ((temp = encoding.indexOf (';')) > 0)
 			encoding = encoding.substring (0, temp);
 
