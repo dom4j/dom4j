@@ -125,8 +125,8 @@ public class SchemaParser {
             XSDatatype dataType = dataTypeForXsdAttribute( xsdAttribute );
             if ( dataType != null ) {
                 // register the XSDatatype for the given Attribute
-                //elementFactory.setChildElementXSDatatype( qname, dataType );
-                elementFactory.setAttributeXSDatatype( qname, dataType );
+                elementFactory.setChildElementXSDatatype( qname, dataType );
+                //elementFactory.setAttributeXSDatatype( qname, dataType );
             }
             else {
                 String type = xsdAttribute.attributeValue( "type" );

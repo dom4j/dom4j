@@ -86,14 +86,19 @@ public class DatatypeElementFactory extends DocumentFactory {
     public Element createElement(QName qname) {
         //the element may have its own element factory!
         //use factory from the qname for datatype
-        DatatypeElementFactory factory=(DatatypeElementFactory)qname.getDocumentFactory();
-        XSDatatype dataType = factory.getChildElementXSDatatype( qname );
-        if ( dataType == null ) {
-            return super.createElement( qname );
-        }
-        else {
+        XSDatatype dataType = getChildElementXSDatatype( qname );
+        if ( dataType != null ) {
             return new DatatypeElement(qname, dataType);
         }
+        DocumentFactory documentFactory = qname.getDocumentFactory();
+        if ( documentFactory instanceof DatatypeElementFactory ) {
+            DatatypeElementFactory factory = (DatatypeElementFactory) documentFactory;
+            dataType = factory.getChildElementXSDatatype( qname );
+            if ( dataType != null ) {
+                return new DatatypeElement(qname, dataType);
+            }
+        }
+        return super.createElement( qname );
     }
     
     public Attribute createAttribute(Element owner, QName qname, String value) {
