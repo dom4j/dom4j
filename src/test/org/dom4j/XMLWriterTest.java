@@ -290,6 +290,32 @@ public class XMLWriterTest extends AbstractTestCase {
         assertEquals(expected, xml);
     }
 
+    public void testPadding2() throws Exception {
+        Document doc = DocumentFactory.getInstance().createDocument();
+        Element root = doc.addElement("root");
+        root.addText("prefix");
+        root.addElement("b");
+        root.addText("suffix");
+
+        OutputFormat format = new OutputFormat("", false);
+        format.setOmitEncoding(true);
+        format.setSuppressDeclaration(true);
+        format.setExpandEmptyElements(true);
+        format.setPadText(true);
+        format.setTrimText(true);
+
+        StringWriter buffer = new StringWriter();
+        XMLWriter writer = new XMLWriter(buffer, format);
+        writer.write(doc);
+
+        String xml = buffer.toString();
+
+        System.out.println("xml: " + xml);
+
+        String expected = "<root>prefix<b></b>suffix</root>";
+        assertEquals(expected, xml);
+    }
+
     /*
      * This must be tested manually to see if the layout is correct.
      */
