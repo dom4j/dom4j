@@ -893,6 +893,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
                     }
                     else {
                         previousText = text;
+                        i++;
                     }
                 }
             }

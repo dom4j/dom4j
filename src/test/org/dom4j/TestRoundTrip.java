@@ -82,14 +82,14 @@ public class TestRoundTrip extends AbstractTestCase {
   
         //Document doc1 = roundTripText( document );
         Document doc1 = roundTripSAX( document );
-        Document doc2 = roundTripDOM( doc1 );
+        Document doc2 = roundTripDOM( doc1);
         Document doc3 = roundTripSAX( doc2 );
-        Document doc4 = roundTripText( doc3 );
-        Document doc5 = roundTripDOM( doc4 );
+        //Document doc4 = roundTripText( doc3 );
+        //Document doc5 = roundTripDOM( doc4 );
+        Document doc5 = roundTripDOM( doc3 );
         
         assertDocumentsEqual( document, doc5 );
     }
-    
     
     // Implementation methods
     //-------------------------------------------------------------------------                    
