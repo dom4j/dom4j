@@ -71,11 +71,45 @@ public class InternalEntityDecl {
         }
 
         buffer.append(" \"");
-        buffer.append(value);
+        buffer.append(escapeEntityValue(value));
         buffer.append("\">");
         
         return buffer.toString();
     }
+    
+    private String escapeEntityValue(String text) {
+        StringBuffer result = new StringBuffer();
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            switch (c) {
+                case '<':
+                    result.append("&#38;#60;");
+                    break;
+                case '>':
+                    result.append("&#62;");
+                    break;
+                case '&':
+                    result.append("&#38;#38;");
+                    break;
+                case '\'':
+                    result.append("&#39;");
+                    break;
+                case '\"':
+                    result.append("&#34;");
+                    break;
+                default:
+                    if (c < 32) {
+                        result.append("&#" + (int) c + ";");
+                    } else {
+                        result.append(c);
+                    }
+                    break;
+            }
+        }
+        
+        return result.toString();
+    }
+    
 }
 
 

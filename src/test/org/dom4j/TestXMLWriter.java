@@ -11,6 +11,7 @@ package org.dom4j;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.StringReader;
 import java.io.StringWriter;
 
 import junit.framework.Test;
@@ -316,6 +317,35 @@ public class TestXMLWriter extends AbstractTestCase {
         doc2.normalize();       // merges adjacant Text nodes
         System.out.println(doc2.getRootElement().getText());
         assertNodesEqual(document, doc2);
+    }
+    
+    public void testWriteEntities() throws Exception {
+        String xml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n" +
+                     "<!DOCTYPE xml [<!ENTITY copy \"&#169;\"> " +
+                                    "<!ENTITY trade \"&#8482;\"> " +
+                                    "<!ENTITY deg \"&#x00b0;\"> " +
+                                    "<!ENTITY gt \"&#62;\"> " +
+                                    "<!ENTITY sup2 \"&#x00b2;\"> " +
+                                    "<!ENTITY frac14 \"&#x00bc;\"> " +
+                                    "<!ENTITY quot \"&#34;\"> " +
+                                    "<!ENTITY frac12 \"&#x00bd;\"> " +
+                                    "<!ENTITY euro \"&#x20ac;\"> " +
+                                    "<!ENTITY Omega \"&#937;\"> ]>\n" +
+                     "<root />";
+        
+        SAXReader reader = new SAXReader("org.apache.xerces.parsers.SAXParser");
+        reader.setIncludeInternalDTDDeclarations(true);
+        
+        Document doc = reader.read(new StringReader(xml));
+        StringWriter wr = new StringWriter();
+        XMLWriter writer = new XMLWriter(wr);
+        writer.write(doc);
+        
+        String xml2 = wr.toString();
+        System.out.println(xml2);
+        Document doc2 = DocumentHelper.parseText(xml2);
+        
+        assertNodesEqual(doc, doc2);
     }
     
     protected org.dom4j.Document parseDocument(String file) throws Exception {
