@@ -225,9 +225,7 @@ public class DefaultXPath implements org.dom4j.XPath {
     }
     
     public boolean matches( Node node ) {
-        Context context = new Context();
-        context.setNodeSet( node );
-        context.setVariableContext( _variableContext );
+        Context context = new Context( node, _contextSupport );
         return _expr.matches( context, node );
     }
     
