@@ -332,7 +332,7 @@
     <copy file="${build.dir}/${name}-full.jar" tofile="${dist.dir}/${name}-full.jar"/>
 
     <copy todir="${dist.dir}/src">
-      <fileset dir="./src" includes="**/*.java,**/*.xml,**/*.xsl,**/*.properties,**/*.mf,**/*.css,**/*.gif,**/*.g"/>
+      <fileset dir="./src" includes="conf/*,**/*.java,**/*.xml,**/*.xsl,**/*.properties,**/*.mf,**/*.css,**/*.gif,**/*.g"/>
     </copy>
     <copy todir="${dist.dir}/xml">
       <fileset dir="./xml" />

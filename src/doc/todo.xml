@@ -7,6 +7,10 @@
       <section title="Changes in CVS since last release">
 
         <section title="Patches">
+        <p>Fixed problem found by David Hooker with Ant build file for the 
+        binary and source distribution that was not including the manifest file
+        in the distribution. 
+        </p>
         <p>Applied patch submitted by Lari Hotari that was causing the XMLWriter to fail when used as a 
         SAX XMLFilter or ContentHandler to turn SAX events into XML text. Thanks Lari!
         </p>
