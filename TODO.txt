@@ -63,9 +63,6 @@ mechansism
 Documentation
 =============
 
-* document the org.dom4j.rule package which allows declarative rule processing
-  of XML documents using Java code.
-
 * make cookbook fit for dom4j 1.2
 
 * adding UML diagramms into cookbook
@@ -75,7 +72,7 @@ Documentation
 
 * add the test-suite html output created by junit-report to project page.
 
-* improve FOP output for source code samples
+* improve FOp output for source code samples
 
 Test completed
 ==============
