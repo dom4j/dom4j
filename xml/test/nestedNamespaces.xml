@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<foo:pizza xmlns:foo="fooNamespace">
+
+  <bar:cheese xmlns:bar="barNamespace">
+
+    <!-- alias namespace -->
+    <xyz:pepper xmlns:xyz="fooNamespace">works</xyz:pepper>
+
+  </bar:cheese>
+    
+</foo:pizza>
