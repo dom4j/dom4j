@@ -1,28 +1,37 @@
 <?xml version="1.0"?>
 <document url="http://www.dom4j.org/index.xml">
   <body>
-    <title>DOM4J The Flexible XML Framework for Java</title>
+    <title>dom4j: the flexible XML framework for Java</title>
 
     <header>
-      <p><b>DOM4J</b> is an open and easy to use, interface-based Java API 
-      for navigating and manipulating XML documents.</p>
-
-      <p><b>DOM4J</b> combines the best of DOM, SAX, XPath and the 
+      <p><i>dom4j</i> is an easy to use, open source Java library
+      for working with XML.
+      <i>dom4j</i> combines the best of DOM, SAX, XPath and the 
       Java 2 platform to provide a flexible and powerful framework integrating 
-      XML and Java.</p>
-
-      <p><b>DOM4J</b> extends the Java 2 Collections framework to handle XML 
-      documents allowing flexible plug and play implementations and has fully 
-      integrated XPath navigation support from anywhere in the model.
+      XML and Java.
       </p>
-
     </header>
 
+    <section title="Features">
+      <ul>
+        <li>optimised for the Java platform with full support for Java 2 Collections</li>
+        <li>full support for JAXP, SAX, DOM, TRaX and XSLT</li>
+        <li>fully integrated XPath support for easy navigation of XML documents
+        </li>
+        <li>event based proccessing mode to support for massive documents or XML streams
+        </li>
+        <li>based on Java interfaces for flexible plug and play implementations.
+        </li>
+      </ul>
+    </section>
+
     <section title="Getting Started">
-      <p>For a quick overview of DOM4J and how to use it try the reading the
+      <p>For a quick overview of <i>dom4j</i> and how to use it try the reading the
         <a href="guide.html">Quick Start Guide</a> or browsing the
         <a href="faq.html">FAQ</a> or the online 
-        <a href="apidocs/index.html">JavaDoc</a>.</p>
+        <a href="apidocs/index.html">JavaDoc</a>.
+        To see how <i>dom4j</i> compares to other XML object models you could try
+        reading our <a href="compare.html">comparison</a></p>
         
       <p>You can download the current $VERSION$ release 
         or a nightly build via the <a href="download.html">download page</a>.</p>
@@ -35,7 +44,7 @@
     </section>
 
     <section title="Mailing Lists">
-      <p>For DOM4J users there is an email list at
+      <p>For <i>dom4j</i> users there is an email list at
         <a href="http://lists.sourceforge.net/lists/listinfo/dom4j-user">
           dom4j-user
         </a> 

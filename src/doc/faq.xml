@@ -29,7 +29,7 @@
         (such as <a href="http://xml.apache.org/crimson/">Crimson</a> or 
         <a href="http://xml.apache.org/xerces-j/">Xerces</a> if you want it to. DOM4J can also use
         <a href="http://java.sun.com/xml/">JAXP</a> to configure which SAX Parser to use - just add the 
-        jaxp.jar to your CLASSPATH and away you go.
+        jaxp.jar to your CLASSPATH and whichever SAX parser you wish away you go.
       </p>
     </section>
 
@@ -85,6 +85,53 @@ String title = document.valueOf( "/head/title" );
       </p>
     </section>
 
+    <section title="How can I use XSLT with DOM4J?">
+      <p>DOM4J integrates with XSLT using the JAXP standard (TRaX) APIs.
+        A DOM4J Document can be used as the source of XML to be styled or 
+        the source of the stylesheet. 
+        A DOM4J Document can also be used as the result of a transformation. 
+      </p>
+      <p>First you'll need to use JAXP to load a Transformer.
+      </p>
+<pre>
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamSource;
+import org.dom4j.Document;
+import org.dom4j.DocumentResult;
+import org.dom4j.DocumentSource;
+...
+
+TransformerFactory factory 
+  = TransformerFactory.newInstance();
+
+Transformer transformer 
+  = factory.newTransformer( new StreamSource( "foo.xsl" ) );
+</pre>
+      <p>Now that you have a transformer its easy to style a Document into 
+      a new Document.
+      </p>
+<pre>
+DocumentSource source = new DocumentSource( document );
+DocumentResult result = new DocumentResult();
+transformer.transform( source, result );
+
+Document transformedDoc = result.getDocument();
+</pre>
+      <p>If you want to transform a Document into XML text you can use JAXP as follows:-
+      </p>
+<pre>
+DocumentSource source = new DocumentSource( document );
+DocumentResult result = new StreamResult( new FileReader( "output.xml" ) );
+transformer.transform( source, result );
+</pre>
+      <p>For more information on JAXP and (TRaX) try 
+        <a href="http://java.sun.com/xml/">Sun's JAXP site</a>.
+      </p>
+    </section>
+
+
+    
     <section title="How does DOM4J handle very large XML documents?">
       <p>DOM4J provides an event based model for processing XML documents.
         Using this event based model allows developers to prune the XML tree
