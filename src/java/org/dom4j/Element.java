@@ -1,5 +1,6 @@
 package org.dom4j;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -187,6 +188,8 @@ public interface Element extends Branch {
     public String getElementTextTrim(String name, Namespace namespace);
     
 
+    // builder methods 
+    
     public CDATA addCDATA(String cdata);
     public Text addText(String text);    
     public Entity addEntity(String name);
@@ -194,23 +197,100 @@ public interface Element extends Branch {
     public Namespace addAdditionalNamespace(String prefix, String uri);
 
     // typesafe versions using node classes
+    
+    
+    /** Adds the given <code>Attribute</code> to this element.
+      * If the given node already has a parent defined then an
+      * <code>InvalidAddNodeException</code> will be thrown.
+      *
+      * @param attribute is the attribute to be added
+      */
     public void add(Attribute attribute);
+    
+    
+    /** Adds the given <code>CDATA</code> to this element.
+      * If the given node already has a parent defined then an
+      * <code>InvalidAddNodeException</code> will be thrown.
+      *
+      * @param cdata is the CDATA to be added
+      */
     public void add(CDATA cdata);
+    
+    /** Adds the given <code>Entity</code> to this element.
+      * If the given node already has a parent defined then an
+      * <code>InvalidAddNodeException</code> will be thrown.
+      *
+      * @param entity is the entity to be added
+      */
     public void add(Entity entity);
+    
+    /** Adds the given <code>Text</code> to this element.
+      * If the given node already has a parent defined then an
+      * <code>InvalidAddNodeException</code> will be thrown.
+      *
+      * @param text is the text to be added
+      */
     public void add(Text text);
+    
+    /** Adds the given <code>Namespace</code> to this element.
+      * If the given node already has a parent defined then an
+      * <code>InvalidAddNodeException</code> will be thrown.
+      *
+      * @param namespace is the namespace to be added
+      */
     public void add(Namespace namespace);
         
+    /** Removes the given <code>Attribute</code> from this element.
+      *
+      * @param attribute is the attribute to be removed
+      * @return true if the attribute was removed
+      */
     public boolean remove(Attribute attribute);
+    
+    /** Removes the given <code>CDATA</code> from this element.
+      *
+      * @param cdata is the CDATA to be removed
+      * @return true if the cdata was removed
+      */
     public boolean remove(CDATA cdata);
+    
+    /** Removes the given <code>Entity</code> from this element.
+      *
+      * @param entity is the entity to be removed
+      * @return true if the entity was removed
+      */
     public boolean remove(Entity entity);
+    
+    /** Removes the given <code>Namespace</code> from this element.
+      *
+      * @param namespace is the namespace to be removed
+      * @return true if the namespace was removed
+      */
     public boolean remove(Namespace namespace);
     
     
-    
-    // add to me content from another element
-    // analagous to the addAll(collection) methods in Java 2 collections
+    /** Appends the attributes of the given element to me.
+      * This method behaves like the {@link Collection#addAll(java.util.Collection)} 
+      * method.
+      *
+      * @param element is the element whose attributes will be added to me.
+      */
     public void addAttributes(Element element);
+    
+    /** Appends the content of the given element to me.
+      * This method behaves like the {@link Collection#addAll(java.util.Collection)} 
+      * method.
+      *
+      * @param element is the element whose content will be added to me.
+      */
     public void addContent(Element element);
+    
+    /** Appends the additional namespace declarations of the given element to me.
+      * This method behaves like the {@link Collection#addAll(java.util.Collection)} 
+      * method.
+      *
+      * @param element is the element whose additional namespaces will be added to me.
+      */
     public void addAddtionalNamespaces(Element element);
 
     // creates a copy
