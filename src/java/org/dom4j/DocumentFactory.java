@@ -28,6 +28,8 @@ import org.dom4j.tree.DefaultText;
 import org.dom4j.xpath.DefaultXPath;
 import org.dom4j.xpath.XPathPattern;
 
+import org.jaxen.VariableContext;
+
 import org.xml.sax.Attributes;
 
 /** <p><code>DocumentFactory</code> is a collection of factory methods to allow

@@ -14,14 +14,16 @@ import org.dom4j.Element;
 import org.dom4j.InvalidXPathException;
 import org.dom4j.Node;
 import org.dom4j.NodeFilter;
-import org.dom4j.VariableContext;
 import org.dom4j.XPath;
 import org.dom4j.XPathException;
 
 import org.dom4j.rule.Pattern;
 
 import org.jaxen.BaseXPath;
+import org.jaxen.FunctionContext;
 import org.jaxen.JaxenException;
+import org.jaxen.NamespaceContext;
+import org.jaxen.VariableContext;
 
 import org.saxpath.XPathReader;
 import org.saxpath.SAXPathException;
@@ -73,27 +75,28 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter {
         return text;
     }
 
-    public VariableContext getVariableContext() {
-        Object object = xpath.getVariableContext();
-        if ( object instanceof VariableContext) {
-            return (VariableContext) object;
-        }
-        return null;
+    public FunctionContext getFunctionContext() {
+        return xpath.getFunctionContext();
     }
     
-    public void setVariableContext(final VariableContext variableContext) {
-        if ( variableContext instanceof org.jaxen.VariableContext ) {
-            xpath.setVariableContext( (org.jaxen.VariableContext) variableContext );
-        }
-        else {
-            xpath.setVariableContext( 
-                new org.jaxen.VariableContext() {
-                    public Object getVariableValue(String prefix, String localName) {
-                        return variableContext.getVariableValue( prefix, localName );
-                    }
-                }
-            );
-        }
+    public void setFunctionContext(FunctionContext functionContext) {
+        xpath.setFunctionContext(functionContext);
+    }
+    
+    public NamespaceContext getNamespaceContext() {
+        return xpath.getNamespaceContext();
+    }
+    
+    public void setNamespaceContext(NamespaceContext namespaceContext) {
+        xpath.setNamespaceContext(namespaceContext);
+    }
+    
+    public VariableContext getVariableContext() {
+        return xpath.getVariableContext();
+    }
+    
+    public void setVariableContext(VariableContext variableContext) {
+        xpath.setVariableContext(variableContext);
     }
     
     public Object selectObject(Object context) {

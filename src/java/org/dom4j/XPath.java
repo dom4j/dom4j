@@ -12,6 +12,10 @@ package org.dom4j;
 import java.util.Comparator;
 import java.util.List;
 
+import org.jaxen.FunctionContext;
+import org.jaxen.NamespaceContext;
+import org.jaxen.VariableContext;
+
 /** <p><code>XPath</code> represents an XPath expression after 
   * it has been parsed from a String.</p>
   *
@@ -27,15 +31,6 @@ public interface XPath extends NodeFilter {
       */
     public String getText();
 
-    
-    /** @return the current variable context
-      */
-    public VariableContext getVariableContext();
-    
-    /** Sets the variable context to be used when evaluating XPath
-      * expressions
-      */
-    public void setVariableContext(VariableContext variableContext);
     
     /** <p><code>matches</code> returns true if the given node matches 
       * the XPath expression.</p>
@@ -146,6 +141,35 @@ public interface XPath extends NodeFilter {
       *     comparisions) will be removed from the List
       */
     public void sort( List list, boolean distinct );
+    
+    
+    /** @return the current function context
+      */
+    public FunctionContext getFunctionContext();
+    
+    /** Sets the function context to be used when evaluating XPath
+      * expressions
+      */
+    public void setFunctionContext(FunctionContext functionContext);
+    
+    /** @return the current namespace context
+      */
+    public NamespaceContext getNamespaceContext();
+    
+    /** Sets the namespace context to be used when evaluating XPath
+      * expressions
+      */
+    public void setNamespaceContext(NamespaceContext namespaceContext);
+    
+    /** @return the current variable context
+      */
+    public VariableContext getVariableContext();
+    
+    /** Sets the variable context to be used when evaluating XPath
+      * expressions
+      */
+    public void setVariableContext(VariableContext variableContext);
+    
 }
 
 

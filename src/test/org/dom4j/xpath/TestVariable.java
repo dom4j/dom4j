@@ -17,11 +17,12 @@ import junit.framework.*;
 import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
-import org.dom4j.DefaultVariableContext;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Node;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
+
+import org.jaxen.SimpleVariableContext;
 
 /** Test harness for the valueOf() function
   *
@@ -42,7 +43,7 @@ public class TestVariable extends AbstractTestCase {
 */
     };
     
-    private DefaultVariableContext variableContext = new DefaultVariableContext();
+    private SimpleVariableContext variableContext = new SimpleVariableContext();
     private Node rootNode;
     private Node authorNode;
 
@@ -94,8 +95,8 @@ public class TestVariable extends AbstractTestCase {
         rootNode = document.selectSingleNode( "/root" );
         authorNode = document.selectSingleNode( "/root/author[1]" );
         
-        variableContext.setVariableValue( "root", rootNode );
-        variableContext.setVariableValue( "author", authorNode );
+        variableContext.setVariableValue( "", "root", rootNode );
+        variableContext.setVariableValue( "", "author", authorNode );
     }
 }
 

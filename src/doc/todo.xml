@@ -68,6 +68,20 @@ List list = element.elements( element.getQName( "x:foo" ) );
             no namespace. An attribute does not inherit the default namespace - the only way to put an attribute
             into a namespace is via a namespace prefix.
           </p>
+          <p>
+            Added full support for <a href="http://jaxen.org">Jaxen</a> function, namespace and variable context interfaces.
+            This allows the XPath engine to be fully customized. e.g.
+<pre>
+XPath xpath = document.createXPath( "//foo[@code='123']" );
+
+// customize function, namespace and variable contexts
+xpath.setFunctionContext( myFunctionContext );
+xpath.setNamespaceContext( myNamespaceContext );
+xpath.setVariableContext( myVariableContext );
+
+List nodes = xpath.selectNodes( document );
+</pre>
+          </p>
         </section>
         <section title="0.9 release">
           <section title="Full support for the Jaxen XPath engine">

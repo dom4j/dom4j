@@ -12,11 +12,13 @@ package org.dom4j;
 /** <p><code>VariableContext</code> represents the current variable context
   * which is used by an {@link XPath} instance to resolve variable values.</p>
   *
-  *  @author bob mcwhirter (bob @ werken.com)
+  * @author bob mcwhirter (bob @ werken.com)
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+  *
+  * @deprecated Please use the org.jaxen.VariableContext interface instead
   */
 
-public interface VariableContext {
+public interface VariableContext extends org.jaxen.VariableContext {
 
     /** Resolve a variable binding
       *
