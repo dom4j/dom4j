@@ -193,9 +193,8 @@ public class SAXReader {
       * @param file is the <code>File</code> to read from.
       * @return the newly created Document instance
       * @throws DocumentException if an error occurs during parsing.
-      * @throws MalformedURLException if a URL could not be made for the given File
       */
-    public Document read(File file) throws DocumentException, MalformedURLException {
+    public Document read(File file) throws DocumentException {
         try {
             /*
              * We cannot convert the file to an URL because if the filename
@@ -205,9 +204,14 @@ public class SAXReader {
              * http://myhost.com/index)
              * Thanks to Christian Oetterli
              */
-            return read( new InputSource(new FileInputStream(file)) );
+            InputSource source = new InputSource(new FileInputStream(file));
+            String systemId = file.getAbsolutePath();
+            if (systemId != null) {
+                source.setSystemId("file:/" + systemId.replace('\\', '/'));
+            }
+            return read(source);
         } catch (FileNotFoundException e) {
-            throw new MalformedURLException(e.getMessage());
+            throw new DocumentException(e.getMessage(), e);
         }
     }
 
