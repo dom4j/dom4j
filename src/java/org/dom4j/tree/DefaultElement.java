@@ -133,6 +133,10 @@ public class DefaultElement extends AbstractElement {
                     Element element = (Element) firstNode;
                     return element.getString();
                 }
+                else if (firstNode instanceof Entity ) {
+                    Entity entity = (Entity) firstNode;
+                    return entity.getString();
+                }
             }
             return "";
         }
@@ -147,6 +151,10 @@ public class DefaultElement extends AbstractElement {
                 else if ( node instanceof Text ) { 
                     Text text = (Text) node;
                     string = text.getText();
+                }
+                else if (firstNode instanceof Entity ) {
+                    Entity entity = (Entity) firstNode;
+                    string = entity.getString();
                 }
                 else if ( node instanceof Element ) { 
                     Element element = (Element) node;

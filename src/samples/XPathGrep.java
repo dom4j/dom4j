@@ -74,19 +74,19 @@ public class XPathGrep extends AbstractDemo {
             println( "About to evalute: " + xpath );
             println( "Results:" );
         }
+        
         List list = xpath.selectNodes( document );
+        
+        if ( verbose ) {
+            println( ": " + list );
+        }
         
         XMLWriter writer = createXMLWriter();
         
         for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
             Object object = iter.next();
-            if ( object instanceof Node ) {
-                writer.write( (Node) object, System.out  );
-            }
-            else {
-                writer.write( object.toString(), System.out );
-            }
-        }
+            writer.write( object, System.out  );
+        }        
     }
     
     /** @return the given file or url as a URL

@@ -32,6 +32,10 @@ public abstract class AbstractEntity extends AbstractNode implements Entity {
         return super.toString() + " [Entity: &" + getName() + ";]";
     }
 
+    public String getString() {
+        return "&" + getName() + ";";
+    }
+    
     public String asXML() {
         return "&" + getName() + ";";
     }

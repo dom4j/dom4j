@@ -124,7 +124,9 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     }
     
     public String toString() {
-        return super.toString() + " [Element: <" + getQualifiedName() + "/>]";
+        return super.toString() + " [Element: <" + getQualifiedName() 
+            + " attributes: " + getAttributeList()
+            + " content: " + getContentList() + " />]";
     }
     
 
