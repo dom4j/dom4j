@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!DOCTYPE broked [
+<!ELEMENT junk (#PCDATA)>
+<!ELEMENT broked (junk*)>
+<!ENTITY LmInclude SYSTEM "junk.xml">
+]>
+<broked>
+&LmInclude;
+</broked>
