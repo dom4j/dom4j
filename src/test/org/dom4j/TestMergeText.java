@@ -69,7 +69,6 @@ public class TestMergeText extends AbstractTestCase {
                     if (n instanceof Text && (prev != null && prev instanceof Text)) {
                         fail("Node: " + n + " is text and so is its "
                             + "preceding sibling: " + prev);
-                        assertTrue(false);
                     }
                     else if (n instanceof Element) {
                         checkNoAdjacent((Element)n);
