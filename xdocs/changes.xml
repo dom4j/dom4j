@@ -7,7 +7,7 @@
 
   <body>
 
-    <release version="1.5-dev" date="in CVS">
+    <release version="1.5" date="2004-09-03">
       <action dev="maartenc" type="fix" due-to="Dion Gillard">
         Fixed bug in <code>XMLWriter.characters(...)</code> where the escapeText
         property of the writer was ignored.
