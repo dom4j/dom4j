@@ -85,7 +85,6 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         "http://xml.org/sax/handlers/LexicalHandler"
     };
 
-    private static final boolean ESCAPE_TEXT = true;
     private static final boolean SUPPORT_PAD_TEXT = false;
 
     protected static final OutputFormat DEFAULT_FORMAT = new OutputFormat();
@@ -103,16 +102,8 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     /** The format used by this writer */
     private OutputFormat format;
 
-    //Laramie Crocker 4/8/2002 10:38AM
-    /** Lets subclasses get at the current format object, so they can call setTrimText, setNewLines, etc.
-      * Put in to support the HTMLWriter, in the way
-      *  that it pushes the current newline/trim state onto a stack and overrides
-      *  the state within preformatted tags.
-      */
-    protected OutputFormat getOutputFormat(){
-        return format;
-    }
-
+    /** whether we should escape text */
+    private boolean escapeText = true;
     /** The initial number of indentations (so you can print a whole
         document indented, if you like) **/
     private int indentLevel = 0;
@@ -177,6 +168,26 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         this.autoFlush = true;
     }
 
+    /**
+     * @return true if text thats output should be escaped.
+     * This is enabled by default. It could be disabled if
+     * the output format is textual, like in XSLT where we can have
+     * xml, html or text output.
+     */
+    public boolean isEscapeText() {
+        return escapeText;
+    }
+    
+    /**
+     * Sets whether text output should be escaped or not.
+     * This is enabled by default. It could be disabled if
+     * the output format is textual, like in XSLT where we can have
+     * xml, html or text output.
+     */
+    public void setEscapeText(boolean escapeText) {
+        this.escapeText = escapeText;
+    }
+    
 
     /** Set the initial indentation level.  This can be used to output
       * a document (or, more likely, an element) starting at a given
@@ -839,7 +850,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     protected void writeString(String text) throws IOException {
         if ( text != null && text.length() > 0 ) {
-            if ( ESCAPE_TEXT ) {
+            if ( escapeText ) {
                 text = escapeElementEntities(text);
             }
 
@@ -1249,6 +1260,16 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     protected String getPadText() {
         return null;
+    }
+
+    //Laramie Crocker 4/8/2002 10:38AM
+    /** Lets subclasses get at the current format object, so they can call setTrimText, setNewLines, etc.
+      * Put in to support the HTMLWriter, in the way
+      *  that it pushes the current newline/trim state onto a stack and overrides
+      *  the state within preformatted tags.
+      */
+    protected OutputFormat getOutputFormat() {
+        return format;
     }
 }
 
