@@ -775,7 +775,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
     
     protected void writeString(String text) throws IOException {
-        if ( text.length() > 0 ) {
+        if ( text != null && text.length() > 0 ) {
             if ( ESCAPE_TEXT ) {
                 text = escapeElementEntities(text);
             }
