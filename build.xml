@@ -7,9 +7,9 @@
     <tstamp/>
     <property name="Name" value="dom4j"/>
     <property name="name" value="dom4j"/>
-    <property name="version" value="patched-1.3"/>
-    <property name="current.version" value="1.3"/>
-    <property name="year" value="2002"/>
+    <property name="version" value="patched-1.1"/>
+    <property name="current.version" value="1.1"/>
+    <property name="year" value="2001"/>
 
     <echo message="----------- ${Name} ${version} [${year}] ------------"/>
 
@@ -48,9 +48,6 @@
 
     <property name="xml.format.options" value="-indentSize 2 -trimText -newlines"/>
 
-    <!-- Whether to halt the junit task on any single failure.  On by default. -->
-    <property name="HALTFAIL" value="on"/>
-
     <filter token="year" value="${year}"/>
     <filter token="version" value="${version}"/>
     <filter token="date" value="${TODAY}"/>
@@ -65,18 +62,7 @@
     <property name="jaxen.src" value="../jaxen/jaxen/src/java/main"/>
 
     <!-- Activate support for fop in Ant (tradem) / Must be in classpath -->
-    <path id="fop.classpath">
-      <fileset dir="${lib.dir}/fop">
-        <include name="**/*.jar"/>
-      </fileset>
-      <fileset dir="${lib.dir}">
-        <include name="**/*.jar"/>
-      </fileset>
-    </path>
-
-    <taskdef name="fop" classname="org.apache.fop.tools.anttasks.Fop">
-      <classpath refid="fop.classpath"/>
-    </taskdef>
+    <taskdef name="fop" classname="org.apache.fop.tools.anttasks.Fop"/>
   </target>
 
   <!-- =================================================================== -->
@@ -94,6 +80,7 @@
     <echo message="   package  --> generates the dom4j.jar file"/>
     <echo message="   compile  --> compiles the source code"/>
     <echo message="   doc      --> generates the website documentation"/>
+    <echo message="   cookbook --> generates the cookbook documentation"/>
     <echo message="   api      --> generates the API documentation"/>
     <echo message="   javadoc  --> generates the full JavaDoc documentation"/>
     <echo message="   clean    --> cleans up the directory"/>
@@ -122,7 +109,8 @@
 
     <!-- copy src files -->
     <copy todir="${build.src}">
-      <fileset dir="${src.dir}" excludes="org/dom4j/persistence/**"/>
+      <!--fileset dir="${src.dir}" excludes="org/dom4j/persistence/**"/-->
+      <fileset dir="${src.dir}"/>
     </copy>
   </target>
 
@@ -299,7 +287,6 @@
   <!-- Build the documentation -->
   <target name="doc" depends="prepare">
     <mkdir    dir="${doc.dir}/images"/>
-    <mkdir    dir="${doc.dir}/benchmarks"/>
     <mkdir    dir="${build.doc}"/>
     <style basedir="${doc.dir}"
            destdir="${build.doc}"
@@ -307,7 +294,7 @@
            classpath="${lib.dir}/jaxp.jar:${lib.dir}/tools/saxon.jar"
            processor="trax"
            includes="**/*.xml"
-           excludes="style/**,project.xml,cookbook/**,docbook/**,benchmarks/**"
+           excludes="style/**,project.xml,cookbook/**,docbook/**"
     />
     <!-- **** comment out by tradem on 02-02-08  ****
 
@@ -315,8 +302,8 @@
               includes="**/*.xml" excludes="style/**,project.xml,cookbook/**,docbook/**"/>
 
     -->
-    <copy todir="${build.doc}" overwrite="yes">
-      <fileset dir="${doc.dir}" includes="license.txt,document.dtd,benchmarks/**"/>
+    <copy todir="${build.doc}" overwrite="yes"> 
+      <fileset dir="${doc.dir}" includes="license.txt,document.dtd"/>
     </copy>
     <copy todir="${build.doc}/images" overwrite="yes">
       <fileset dir="${doc.dir}/images"/>
@@ -346,6 +333,9 @@
      >
       <param name="html.stylesheet" expression="cookbook.css"/>
      </style>
+    <copy todir="${build.doc}" overwrite="yes">
+      <fileset dir="${doc.dir}/cookbook" includes="images/**"/>
+    </copy>    
      <style basedir="${doc.dir}/cookbook"
             destdir="${build.doc}/cookbook"
             extension=".fo"
@@ -355,7 +345,7 @@
             includes="**/*.xml"
       />
       <fop fofile="${build.doc}/cookbook/cookbook.fo"
-           outfile="${build.doc}/cookbook/cookbook.pdf"
+           outfile="${build.doc}/cookbook/cookbook.pfd"
       />
       <fop fofile="${build.doc}/cookbook/cookbook.fo"
            format="application/postscript"
@@ -454,7 +444,7 @@
     <copy todir="${web.dist}" file="${build.dir}/${name}.jar"/>
 
     <copy todir="${web.htdocs}" overwrite="yes">
-      <fileset dir="${build.doc}" includes="**/*.html, **/*.css, **/*.pdf, **/*.ps, **/*.fo, benchmarks/**/*.*"/>
+      <fileset dir="${build.doc}" includes="**/*.html, **/*.css"/>
     </copy>
 
     <copy todir="${web.dist}" overwrite="yes">
@@ -497,9 +487,8 @@
   <!-- Unit Testing Targets                                                -->
   <!-- =================================================================== -->
   <target name="test" depends="compile-test">
-    <delete failonerror="false" dir="${build.dir}/test-results"/>
     <mkdir dir="${build.dir}/test-results/xml"/>
-    <junit printsummary="yes" haltonfailure="${HALTFAIL}">
+    <junit printsummary="yes" haltonfailure="no">
       <formatter type="xml"/>
 
       <classpath>
@@ -516,22 +505,7 @@
     </junit>
   </target>
 
-  <!-- Run the the tests, halt if some fail, suitable for nightly build. Won't make HTML report. -->
-  <target name="test-report">
-    <property name="HALTFAIL" value="on"/>
-    <antcall target="test-report-inner">
-    </antcall>
-  </target>
-
-  <!-- Run the all the tests, even if some fail, so that the report is complete. -->
-  <target name="test-report-errors">
-    <property name="HALTFAIL" value="off"/>
-    <antcall target="test-report-inner">
-    </antcall>
-  </target>
-
-  <!-- Don't call this target.  Call test-report or test-report-errors instead. -->
-  <target name="test-report-inner" depends="test">
+  <target name="test-report" depends="test">
     <mkdir dir="${build.dir}/test-results"/>
     <junitreport todir="${build.dir}/test-results">
       <fileset dir="${build.dir}/test-results/xml">
@@ -553,6 +527,8 @@
     <java classname="org.dom4j.datatype.TestManualSchema"/>
     <java classname="org.dom4j.datatype.TestDataTypes"/>
     <java classname="org.dom4j.datatype.TestAutoSchema"/>
+<!--
+-->
   </target>
 
   <target name="test-detach" depends="compile-test">
@@ -612,10 +588,10 @@
   <target name="demo-sax-cdata" depends="samples">
     <java classname="SAXDemo" args="${xml.format.options} xml/cdata.xml"/>
     <java classname="SAXDemo" args="${xml.format.options} xml/cdata.xml">
-      <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/>
+      <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/> 
     </java>
     <java classname="SAXDemo" args="${xml.format.options} xml/cdata.xml">
-      <sysproperty key="org.xml.sax.driver" value="xml.aelfred2.SAXDriver"/>
+      <sysproperty key="org.xml.sax.driver" value="xml.aelfred2.SAXDriver"/> 
     </java>
   </target>
 
@@ -664,22 +640,22 @@
     <java classname="PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10"/>
 
     <java classname="PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10">
-      <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/>
+      <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/> 
     </java>
 
     <java classname="PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10">
-      <sysproperty key="org.xml.sax.driver" value="xml.aelfred2.SAXDriver"/>
+      <sysproperty key="org.xml.sax.driver" value="xml.aelfred2.SAXDriver"/> 
     </java>
 
 
     <java classname="PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory 10"/>
 
     <java classname="PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory 10">
-      <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/>
+      <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/> 
     </java>
 
     <java classname="PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory 10">
-      <sysproperty key="org.xml.sax.driver" value="xml.aelfred2.SAXDriver"/>
+      <sysproperty key="org.xml.sax.driver" value="xml.aelfred2.SAXDriver"/> 
     </java>
   </target>
 
@@ -704,7 +680,7 @@
   <target name="demo-bigdoc" depends="samples">
     <java classname="LargeDocumentDemo" args="xml/much_ado.xml /PLAY/ACT"/>
   </target>
-
+  
   <target name="demo-bigdoc2" depends="samples">
     <java classname="LargeDocumentDemo2" args="xml/much_ado.xml"/>
   </target>
@@ -734,28 +710,6 @@
        <pathelement location="lib/tool/xerces.jar"/>
        <pathelement path="${build.dest}"/>
      </classpath>
-    </java>
-  </target>
-
-  <target name="demo-jarv2" depends="samples">
-    <java classname="validate.JARVDemo2" fork="yes">
-      <arg value="xml/relaxng/address.xml"/>
-      <arg value="xml/relaxng/address.rng"/>
-    </java>
-    <java classname="validate.JARVDemo2" fork="yes">
-      <arg value="xml/relaxng/bad_address.xml"/>
-      <arg value="xml/relaxng/address.rng"/>
-    </java>
-  </target>
-
-  <target name="demo-jarv" depends="samples">
-    <java classname="validate.JARVDemo" fork="yes">
-      <arg value="xml/relaxng/address.xml"/>
-      <arg value="xml/relaxng/address.rng"/>
-    </java>
-    <java classname="validate.JARVDemo" fork="yes">
-      <arg value="xml/relaxng/bad_address.xml"/>
-      <arg value="xml/relaxng/address.rng"/>
     </java>
   </target>
 
