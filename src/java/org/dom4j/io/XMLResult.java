@@ -54,7 +54,6 @@ public class XMLResult extends SAXResult {
     
     public XMLResult(XMLWriter xmlWriter) {
         super(xmlWriter);
-        setXMLWriter( xmlWriter );
         this.xmlWriter = xmlWriter;
         setLexicalHandler( xmlWriter );
     }
