@@ -10,8 +10,10 @@
 package org.dom4j.io;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.dom4j.Attribute;
 import org.dom4j.Branch;
@@ -28,10 +30,16 @@ import org.dom4j.Text;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
+import org.xml.sax.DTDHandler;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
+import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
+import org.xml.sax.XMLFilter;
+import org.xml.sax.XMLReader;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.LocatorImpl;
@@ -41,20 +49,31 @@ import org.xml.sax.helpers.LocatorImpl;
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class SAXWriter {
+public class SAXWriter implements XMLReader {
 
     /** <code>ContentHandler</code> to which SAX events are raised */
     private ContentHandler contentHandler;
     
+    /** code>DTDHandler</code> fired when a document has a DTD */
+    private DTDHandler dtdHandler;
+    
     /** code>EntityResolver</code> fired when a document has a DTD */
     private EntityResolver entityResolver;
 
+    private ErrorHandler errorHandler;
+    
     /** code>LexicalHandler</code> fired on Entity and CDATA sections */
     private LexicalHandler lexicalHandler;
 
     /** code>AttributesImpl</code> used when generating the Attributes */
     private AttributesImpl attributes = new AttributesImpl();
     
+    /** Stores the features */
+    private Map features = new HashMap();
+    
+    /** Stores the properties */
+    private Map properties = new HashMap();
+
     
     
     public SAXWriter() {
@@ -75,60 +94,6 @@ public class SAXWriter {
     }
 
     
-    
-    // Properties
-    
-    /** @return the <code>ContentHandler</code> called when SAX events 
-      * are raised
-      */
-    public ContentHandler getContentHandler() throws SAXException {
-        return contentHandler;
-    }
-
-    /** Sets the <code>ContentHandler</code> called when SAX events 
-      * are raised
-      *
-      * @param contentHandler is the <code>ContentHandler</code> called when SAX events 
-      * are raised
-      */
-    public void setContentHandler(ContentHandler contentHandler) {
-        this.contentHandler = contentHandler;
-    }
-
-
-    /** @return the <code>EntityResolver</code> used when a Document contains 
-      * a DTD
-      */
-    public EntityResolver getEntityResolver() {
-        return entityResolver;
-    }
-
-    /** Sets the <code>EntityResolver</code> .
-      *
-      * @param entityResolver is the <code>EntityResolver</code> 
-      */
-    public void setEntityResolver(EntityResolver entityResolver) {
-        entityResolver = entityResolver;
-    }
-
-    /** @return the <code>LexicalHandler</code> used when a Document contains 
-      * a DTD
-      */
-    public LexicalHandler getLexicalHandler() {
-        return lexicalHandler;
-    }
-
-    /** Sets the <code>LexicalHandler</code> .
-      *
-      * @param entityResolver is the <code>LexicalHandler</code> 
-      */
-    public void setLexicalHandler(LexicalHandler lexicalHandler) {
-        lexicalHandler = lexicalHandler;
-    }
-
-    
-    
-
     /** Generates SAX events for the given Document and all its content
       *
       * @param document is the Document to parse
@@ -227,8 +192,149 @@ public class SAXWriter {
     }
     
 
+
+    
+    // XMLReader methods
+    //-------------------------------------------------------------------------                
+
+    /** @return the <code>ContentHandler</code> called when SAX events 
+      * are raised
+      */
+    public ContentHandler getContentHandler() {
+        return contentHandler;
+    }
+
+    /** Sets the <code>ContentHandler</code> called when SAX events 
+      * are raised
+      *
+      * @param contentHandler is the <code>ContentHandler</code> called when SAX events 
+      * are raised
+      */
+    public void setContentHandler(ContentHandler contentHandler) {
+        this.contentHandler = contentHandler;
+    }
+
+
+    /** @return the <code>DTDHandler</code> 
+      */
+    public DTDHandler getDTDHandler() {
+        return dtdHandler;
+    }
+
+    /** Sets the <code>DTDHandler</code>.
+      */
+    public void setDTDHandler(DTDHandler dtdHandler) {
+        this.dtdHandler = dtdHandler;
+    }
+
+    /** @return the <code>ErrorHandler</code> 
+      */
+    public ErrorHandler getErrorHandler() {
+        return errorHandler;
+    }
+
+    /** Sets the <code>ErrorHandler</code>.
+      */
+    public void setErrorHandler(ErrorHandler errorHandler) {
+        this.errorHandler = errorHandler;
+    }
+
+    /** @return the <code>EntityResolver</code> used when a Document contains 
+      * a DTD
+      */
+    public EntityResolver getEntityResolver() {
+        return entityResolver;
+    }
+
+    /** Sets the <code>EntityResolver</code> .
+      *
+      * @param entityResolver is the <code>EntityResolver</code> 
+      */
+    public void setEntityResolver(EntityResolver entityResolver) {
+        this.entityResolver = entityResolver;
+    }
+
+    /** @return the <code>LexicalHandler</code> used when a Document contains 
+      * a DTD
+      */
+    public LexicalHandler getLexicalHandler() {
+        return lexicalHandler;
+    }
+
+    /** Sets the <code>LexicalHandler</code> .
+      *
+      * @param entityResolver is the <code>LexicalHandler</code> 
+      */
+    public void setLexicalHandler(LexicalHandler lexicalHandler) {
+        this.lexicalHandler = lexicalHandler;
+    }
+
+    /** Looks up the value of a feature.
+      */
+    public boolean getFeature(String name) 
+            throws SAXNotRecognizedException, SAXNotSupportedException {
+        Boolean answer = (Boolean) features.get(name);
+        return answer != null && answer.booleanValue();
+    }
+
+    /** This implementation does actually use any features but just
+      * stores them for later retrieval
+      */
+    public void setFeature(String name, boolean value)
+            throws SAXNotRecognizedException, SAXNotSupportedException {
+        features.put(name, (value) ? Boolean.TRUE : Boolean.FALSE );
+    }
+
+    /** Gets the given property
+      */
+    public Object getProperty(String name) throws SAXNotRecognizedException {
+        return properties.get(name);
+    }
+
+    
+    /** Sets the given property
+      */
+    public void setProperty(String name, Object value) 
+            throws SAXNotRecognizedException, SAXNotSupportedException {
+        properties.put(name, value);
+    }
+
+    
+
+    
+    /** This method is not supported. 
+      */
+    public void parse(String systemId) throws SAXNotSupportedException {
+        throw new SAXNotSupportedException(
+            "This XMLReader can only accept <dom4j> InputSource objects"
+        );
+    }
+
+    
+    /** Parses an XML document. 
+      * This method can only accept DocumentInputSource inputs
+      * otherwise a {@link SAXNotSupportedException} exception is thrown.
+      *
+      * @throws SAXNotSupportedException 
+      *      if the input source is not wrapping a dom4j document
+      */
+    public void parse(InputSource input) throws SAXException {
+        if (input instanceof DocumentInputSource) {
+            DocumentInputSource documentInput = (DocumentInputSource) input;
+            Document document = documentInput.getDocument();
+            write( document );
+        }
+        else {
+            throw new SAXNotSupportedException(
+                "This XMLReader can only accept <dom4j> InputSource objects"
+            );
+        }
+    }
+
+    
     
     // Implementation methods    
+    //-------------------------------------------------------------------------                
     
     protected void writeContent( Branch branch, NamespaceStack namespaces ) throws SAXException {
         for ( Iterator iter = branch.nodeIterator(); iter.hasNext(); ) {
