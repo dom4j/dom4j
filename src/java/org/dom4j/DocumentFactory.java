@@ -170,6 +170,22 @@ public class DocumentFactory {
       *
       * @param xpathFilterExpression is the XPath filter expression 
       * to create
+      * @param variableContext is the variable context to use when evaluating the XPath
+      * @return a new <code>NodeFilter</code> instance
+      */
+    public NodeFilter createXPathFilter(String xpathFilterExpression, VariableContext variableContext) {
+        DefaultXPath answer = new DefaultXPath( ".[" + xpathFilterExpression + "]" );        
+        answer.setVariableContext( variableContext );
+        return answer;
+    }
+    
+    /** <p><code>createXPathFilter</code> parses a NodeFilter
+      * from the given XPath filter expression.
+      * XPath filter expressions occur within XPath expressions such as
+      * <code>self::node()[ filterExpression ]</code></p>
+      *
+      * @param xpathFilterExpression is the XPath filter expression 
+      * to create
       * @return a new <code>NodeFilter</code> instance
       */
     public NodeFilter createXPathFilter(String xpathFilterExpression) {
