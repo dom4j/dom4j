@@ -13,6 +13,9 @@
 
     <section title="News">
       <ul>
+        <li>The <a href="http://jakarta.apache.org/velocity/index.html">Velocity</a> projects new 
+          <a ref="http://jakarta.apache.org/velocity/dvsl/index.html">DVSL</a> technology uses dom4j.
+        </li>
         <li>Interesting <a href="http://www.xml.com/pub/a/2001/11/14/dom-sax.html?page=2">article</a>
           outlining the social dominance of DOM and SAX and the importance of XPath. 
         </li>
