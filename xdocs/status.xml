@@ -8,9 +8,23 @@
  
   <body>
 
-      <section name="Changes in CVS since last release">
+      <section name="1.5 beta 1">
+        <p>Use latest implementation of the Aelfred parser.</p>
+        <p>Fixed some problems with internal/external DTD declarations (reported by Bryan Thompson).</p>
+        <p>Upgraded to Jaxen 1.1 beta 2.</p>
+        <p>Ignore attribute order when comparing Elements in <code>NodeComparator</code>.</p>
+        <p>Fixed bug in XMLWriter where namespace declarations were duplicated.</p>
+        <p>Fixed bug in parsing a Processing Instruction (reported by Vladimir Kralik).</p>
+        <p>Added support for Stylesheet modes.</p>
+        <p>Don't escape &quot; and &apos; characters in attribute values if it's not necessary (contributed by Christian Niles).</p>
+        <p>Fixed some <code>DOMNodeHelper</code> issues (reported by Henner Kollmann).</p>
+        <p>Fixed some datatype issues (reported by Thomas Draier).</p>
+        <p>Fixed an bug where the EntityResolver was not set on the XMLReader.</p>
+        <p>Fixed multithreaded access on <code>DefaultElement</code>.</p>
+        <p>Fixed problem parsing XML Files (reported by Geoffrey Vlassaks).</p>
+        <p>Added xml:space attribute support based on XML Specification 1.0.</p>
       	<p>Maven build of dom4j is now nearly complete. Maven is now used for the website generation.</p>
-        <p>Fixed some bugs in BackedList</p>
+        <p>Fixed some bugs in BackedList (contributed by Alessandro Vernet).</p>
       </section>
       
       <section name="1.4 Release">
