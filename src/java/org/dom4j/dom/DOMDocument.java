@@ -1,9 +1,9 @@
 /*
  * Copyright 2001 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -18,7 +18,7 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
-/** <p><code>DOMDocument</code> implements an XML document which 
+/** <p><code>DOMDocument</code> implements an XML document which
   * supports the W3C DOM API.</p>
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
@@ -28,33 +28,33 @@ public class DOMDocument extends DefaultDocument implements org.w3c.dom.Document
 
     /** The <code>DocumentFactory</code> instance used by default */
     private static final DOMDocumentFactory DOCUMENT_FACTORY = (DOMDocumentFactory) DOMDocumentFactory.getInstance();
-    
 
-    public DOMDocument() { 
+
+    public DOMDocument() {
         init();
     }
 
-    public DOMDocument(String name) { 
+    public DOMDocument(String name) {
         super(name);
         init();
     }
 
-    public DOMDocument(DOMElement rootElement) { 
+    public DOMDocument(DOMElement rootElement) {
         super(rootElement);
         init();
     }
 
-    public DOMDocument(DOMDocumentType docType) { 
+    public DOMDocument(DOMDocumentType docType) {
         super(docType);
         init();
     }
 
-    public DOMDocument(DOMElement rootElement, DOMDocumentType docType) { 
+    public DOMDocument(DOMElement rootElement, DOMDocumentType docType) {
         super(rootElement, docType);
         init();
     }
 
-    public DOMDocument(String name, DOMElement rootElement, DOMDocumentType docType) { 
+    public DOMDocument(String name, DOMElement rootElement, DOMDocumentType docType) {
         super(name, rootElement, docType);
         init();
     }
@@ -62,13 +62,13 @@ public class DOMDocument extends DefaultDocument implements org.w3c.dom.Document
     private void init() {
         setDocumentFactory(DOCUMENT_FACTORY);
     }
-    
+
     // org.w3c.dom.Node interface
-    //-------------------------------------------------------------------------        
+    //-------------------------------------------------------------------------
     public boolean supports(String feature, String version) {
         return DOMNodeHelper.supports(this, feature, version);
     }
-        
+
     public String getNamespaceURI() {
         return DOMNodeHelper.getNamespaceURI(this);
     }
@@ -76,7 +76,7 @@ public class DOMDocument extends DefaultDocument implements org.w3c.dom.Document
     public String getPrefix() {
         return DOMNodeHelper.getPrefix(this);
     }
-    
+
     public void setPrefix(String prefix) throws DOMException {
         DOMNodeHelper.setPrefix(this, prefix);
     }
@@ -86,28 +86,27 @@ public class DOMDocument extends DefaultDocument implements org.w3c.dom.Document
     }
 
     public String getNodeName() {
-        return getName();
+        return "#document";
     }
-    
-    //already part of API  
+
+    //already part of API
     //
     //public short getNodeType();
-    
 
-    
+
+
     public String getNodeValue() throws DOMException {
-        return DOMNodeHelper.getNodeValue(this);
+        return null;
     }
-    
+
     public void setNodeValue(String nodeValue) throws DOMException {
-        DOMNodeHelper.setNodeValue(this, nodeValue);
     }
-        
+
 
     public org.w3c.dom.Node getParentNode() {
         return DOMNodeHelper.getParentNode(this);
     }
-    
+
     public NodeList getChildNodes() {
         return DOMNodeHelper.createNodeList( content() );
     }
@@ -129,24 +128,26 @@ public class DOMDocument extends DefaultDocument implements org.w3c.dom.Document
     }
 
     public NamedNodeMap getAttributes() {
-        return DOMNodeHelper.getAttributes(this);
+        return null;
     }
-    
+
     public org.w3c.dom.Document getOwnerDocument() {
-        return DOMNodeHelper.getOwnerDocument(this);
+        return null;
     }
 
     public org.w3c.dom.Node insertBefore(
-        org.w3c.dom.Node newChild, 
+        org.w3c.dom.Node newChild,
         org.w3c.dom.Node refChild
     ) throws DOMException {
+        checkNewChildNode(newChild);
         return DOMNodeHelper.insertBefore(this, newChild, refChild);
     }
 
     public org.w3c.dom.Node replaceChild(
-        org.w3c.dom.Node newChild, 
+        org.w3c.dom.Node newChild,
         org.w3c.dom.Node oldChild
     ) throws DOMException {
+        checkNewChildNode(newChild);
         return DOMNodeHelper.replaceChild(this, newChild, oldChild);
     }
 
@@ -155,8 +156,21 @@ public class DOMDocument extends DefaultDocument implements org.w3c.dom.Document
     }
 
     public org.w3c.dom.Node appendChild(org.w3c.dom.Node newChild) throws DOMException {
+        checkNewChildNode(newChild);
         return DOMNodeHelper.appendChild(this, newChild);
     }
+
+    private void checkNewChildNode(org.w3c.dom.Node newChild) throws DOMException {
+        final int nodeType = newChild.getNodeType();
+        if (!(nodeType == org.w3c.dom.Node.ELEMENT_NODE ||
+              nodeType == org.w3c.dom.Node.COMMENT_NODE ||
+              nodeType == org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE ||
+              nodeType == org.w3c.dom.Node.DOCUMENT_TYPE_NODE)) {
+            throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
+               "Specified node cannot be a child of document");
+        }
+    }
+    
 
     public boolean hasChildNodes() {
         return nodeCount() > 0;
@@ -173,16 +187,16 @@ public class DOMDocument extends DefaultDocument implements org.w3c.dom.Document
     public boolean hasAttributes() {
         return DOMNodeHelper.hasAttributes(this);
     }
-    
-    
+
+
     // org.w3c.dom.Document interface
-    //-------------------------------------------------------------------------            
+    //-------------------------------------------------------------------------
     public NodeList getElementsByTagName(String name) {
         ArrayList list = new ArrayList();
         DOMNodeHelper.appendElementsByTagName( list, this, name );
         return DOMNodeHelper.createNodeList( list );
     }
-    
+
     public NodeList getElementsByTagNameNS(
         String namespaceURI, String localName
     ) {
@@ -191,7 +205,7 @@ public class DOMDocument extends DefaultDocument implements org.w3c.dom.Document
         return DOMNodeHelper.createNodeList( list );
     }
 
-    
+
     public org.w3c.dom.DocumentType getDoctype() {
         return DOMNodeHelper.asDOMDocumentType( getDocType() );
     }
@@ -199,7 +213,7 @@ public class DOMDocument extends DefaultDocument implements org.w3c.dom.Document
     public org.w3c.dom.DOMImplementation getImplementation() {
         if (getDocumentFactory() instanceof org.w3c.dom.DOMImplementation) {
             return (org.w3c.dom.DOMImplementation) getDocumentFactory();
-        } 
+        }
         else {
             return DOCUMENT_FACTORY;
         }
@@ -239,9 +253,9 @@ public class DOMDocument extends DefaultDocument implements org.w3c.dom.Document
 
     public org.w3c.dom.Attr createAttribute(String name) throws DOMException {
         QName qname = getDocumentFactory().createQName(name);
-        return (org.w3c.dom.Attr) getDocumentFactory().createAttribute(null, qname, null);
+        return (org.w3c.dom.Attr) getDocumentFactory().createAttribute(null, qname, "");
     }
-    
+
     public org.w3c.dom.EntityReference createEntityReference(String name) throws DOMException {
         return (org.w3c.dom.EntityReference) ((DOMDocumentFactory) getDocumentFactory()).createEntity(name);
     }
@@ -271,19 +285,19 @@ public class DOMDocument extends DefaultDocument implements org.w3c.dom.Document
     public org.w3c.dom.Element getElementById(String elementId) {
         return DOMNodeHelper.asDOMElement( elementByID( elementId ) );
     }
-    
-    
-    
+
+
+
     // Implementation methods
-    //-------------------------------------------------------------------------            
+    //-------------------------------------------------------------------------
     protected DocumentFactory getDocumentFactory() {
         if (super.getDocumentFactory() == null) {
             return DOCUMENT_FACTORY;
-        } 
+        }
         else {
             return super.getDocumentFactory();
         }
-    }        
+    }
 }
 
 

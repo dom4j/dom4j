@@ -1,9 +1,9 @@
 /*
  * Copyright 2001 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -16,7 +16,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
-/** <p><code>DOMText</code> implements a Text node which 
+/** <p><code>DOMText</code> implements a Text node which
   * supports the W3C DOM API.</p>
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
@@ -33,13 +33,13 @@ public class DOMComment extends DefaultComment implements org.w3c.dom.Comment {
     }
 
 
-    
+
     // org.w3c.dom.Node interface
-    //-------------------------------------------------------------------------        
+    //-------------------------------------------------------------------------
     public boolean supports(String feature, String version) {
         return DOMNodeHelper.supports(this, feature, version);
     }
-        
+
     public String getNamespaceURI() {
         return DOMNodeHelper.getNamespaceURI(this);
     }
@@ -47,7 +47,7 @@ public class DOMComment extends DefaultComment implements org.w3c.dom.Comment {
     public String getPrefix() {
         return DOMNodeHelper.getPrefix(this);
     }
-    
+
     public void setPrefix(String prefix) throws DOMException {
         DOMNodeHelper.setPrefix(this, prefix);
     }
@@ -57,28 +57,28 @@ public class DOMComment extends DefaultComment implements org.w3c.dom.Comment {
     }
 
     public String getNodeName() {
-        return getName();
+        return "#comment";
     }
-    
-    //already part of API  
+
+    //already part of API
     //
     //public short getNodeType();
-    
 
-    
+
+
     public String getNodeValue() throws DOMException {
         return DOMNodeHelper.getNodeValue(this);
     }
-    
+
     public void setNodeValue(String nodeValue) throws DOMException {
         DOMNodeHelper.setNodeValue(this, nodeValue);
     }
-        
+
 
     public org.w3c.dom.Node getParentNode() {
         return DOMNodeHelper.getParentNode(this);
     }
-    
+
     public NodeList getChildNodes() {
         return DOMNodeHelper.getChildNodes(this);
     }
@@ -100,7 +100,7 @@ public class DOMComment extends DefaultComment implements org.w3c.dom.Comment {
     }
 
     public NamedNodeMap getAttributes() {
-        return DOMNodeHelper.getAttributes(this);
+        return null;
     }
 
     public Document getOwnerDocument() {
@@ -108,16 +108,18 @@ public class DOMComment extends DefaultComment implements org.w3c.dom.Comment {
     }
 
     public org.w3c.dom.Node insertBefore(
-        org.w3c.dom.Node newChild, 
+        org.w3c.dom.Node newChild,
         org.w3c.dom.Node refChild
     ) throws DOMException {
+        checkNewChildNode(newChild);
         return DOMNodeHelper.insertBefore(this, newChild, refChild);
     }
 
     public org.w3c.dom.Node replaceChild(
-        org.w3c.dom.Node newChild, 
+        org.w3c.dom.Node newChild,
         org.w3c.dom.Node oldChild
     ) throws DOMException {
+        checkNewChildNode(newChild);
         return DOMNodeHelper.replaceChild(this, newChild, oldChild);
     }
 
@@ -126,9 +128,16 @@ public class DOMComment extends DefaultComment implements org.w3c.dom.Comment {
     }
 
     public org.w3c.dom.Node appendChild(org.w3c.dom.Node newChild) throws DOMException {
+        checkNewChildNode(newChild);
         return DOMNodeHelper.appendChild(this, newChild);
     }
 
+    private final void checkNewChildNode(org.w3c.dom.Node newChild) throws DOMException {
+        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
+            "Comment nodes cannot have children");
+    }
+    
+    
     public boolean hasChildNodes() {
         return DOMNodeHelper.hasChildNodes(this);
     }
@@ -148,13 +157,13 @@ public class DOMComment extends DefaultComment implements org.w3c.dom.Comment {
     public boolean hasAttributes() {
         return DOMNodeHelper.hasAttributes(this);
     }
-    
+
     // org.w3c.dom.CharacterData interface
-    //-------------------------------------------------------------------------        
+    //-------------------------------------------------------------------------
     public String getData() throws DOMException {
         return DOMNodeHelper.getData(this);
     }
-    
+
     public void setData(String data) throws DOMException {
         DOMNodeHelper.setData(this, data);
     }
@@ -179,8 +188,8 @@ public class DOMComment extends DefaultComment implements org.w3c.dom.Comment {
         DOMNodeHelper.deleteData(this, offset, count);
     }
 
-    public void replaceData( 
-        int offset, int count, String arg 
+    public void replaceData(
+        int offset, int count, String arg
     ) throws DOMException {
         DOMNodeHelper.replaceData(this, offset, count, arg);
     }

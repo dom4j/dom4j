@@ -1,9 +1,9 @@
 /*
  * Copyright 2001 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -15,7 +15,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
-/** <p><code>DOMDocumentType</code> implements a DocumentType node which 
+/** <p><code>DOMDocumentType</code> implements a DocumentType node which
   * supports the W3C DOM API.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
@@ -23,7 +23,7 @@ import org.w3c.dom.NodeList;
   */
 public class DOMDocumentType extends DefaultDocumentType implements org.w3c.dom.DocumentType {
 
-    public DOMDocumentType() { 
+    public DOMDocumentType() {
     }
 
     public DOMDocumentType(String elementName, String systemID) {
@@ -33,14 +33,14 @@ public class DOMDocumentType extends DefaultDocumentType implements org.w3c.dom.
     public DOMDocumentType(String elementName, String publicID, String systemID) {
         super( elementName, publicID, systemID );
     }
-    
-    
+
+
     // org.w3c.dom.Node interface
-    //-------------------------------------------------------------------------        
+    //-------------------------------------------------------------------------
     public boolean supports(String feature, String version) {
         return DOMNodeHelper.supports(this, feature, version);
     }
-        
+
     public String getNamespaceURI() {
         return DOMNodeHelper.getNamespaceURI(this);
     }
@@ -48,7 +48,7 @@ public class DOMDocumentType extends DefaultDocumentType implements org.w3c.dom.
     public String getPrefix() {
         return DOMNodeHelper.getPrefix(this);
     }
-    
+
     public void setPrefix(String prefix) throws DOMException {
         DOMNodeHelper.setPrefix(this, prefix);
     }
@@ -60,26 +60,25 @@ public class DOMDocumentType extends DefaultDocumentType implements org.w3c.dom.
     public String getNodeName() {
         return getName();
     }
-    
-    //already part of API  
+
+    //already part of API
     //
     //public short getNodeType();
-    
 
-    
+
+
     public String getNodeValue() throws DOMException {
-        return DOMNodeHelper.getNodeValue(this);
+        return null;
     }
-    
+
     public void setNodeValue(String nodeValue) throws DOMException {
-        DOMNodeHelper.setNodeValue(this, nodeValue);
     }
-        
+
 
     public org.w3c.dom.Node getParentNode() {
         return DOMNodeHelper.getParentNode(this);
     }
-    
+
     public NodeList getChildNodes() {
         return DOMNodeHelper.getChildNodes(this);
     }
@@ -101,7 +100,7 @@ public class DOMDocumentType extends DefaultDocumentType implements org.w3c.dom.
     }
 
     public NamedNodeMap getAttributes() {
-        return DOMNodeHelper.getAttributes(this);
+        return null;
     }
 
     public Document getOwnerDocument() {
@@ -109,16 +108,18 @@ public class DOMDocumentType extends DefaultDocumentType implements org.w3c.dom.
     }
 
     public org.w3c.dom.Node insertBefore(
-        org.w3c.dom.Node newChild, 
+        org.w3c.dom.Node newChild,
         org.w3c.dom.Node refChild
     ) throws DOMException {
+        checkNewChildNode(newChild);
         return DOMNodeHelper.insertBefore(this, newChild, refChild);
     }
 
     public org.w3c.dom.Node replaceChild(
-        org.w3c.dom.Node newChild, 
+        org.w3c.dom.Node newChild,
         org.w3c.dom.Node oldChild
     ) throws DOMException {
+        checkNewChildNode(newChild);
         return DOMNodeHelper.replaceChild(this, newChild, oldChild);
     }
 
@@ -127,8 +128,15 @@ public class DOMDocumentType extends DefaultDocumentType implements org.w3c.dom.
     }
 
     public org.w3c.dom.Node appendChild(org.w3c.dom.Node newChild) throws DOMException {
+        checkNewChildNode(newChild);
         return DOMNodeHelper.appendChild(this, newChild);
     }
+    
+    private void checkNewChildNode(org.w3c.dom.Node newChild) throws DOMException {
+        throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
+            "DocumentType nodes cannot have children");
+    }
+    
 
     public boolean hasChildNodes() {
         return DOMNodeHelper.hasChildNodes(this);
@@ -149,9 +157,9 @@ public class DOMDocumentType extends DefaultDocumentType implements org.w3c.dom.
     public boolean hasAttributes() {
         return DOMNodeHelper.hasAttributes(this);
     }
-    
+
     // org.w3c.dom.DocumentType interface
-    //-------------------------------------------------------------------------            
+    //-------------------------------------------------------------------------
     public NamedNodeMap getEntities() {
         return null;
     }

@@ -1,9 +1,9 @@
 /*
  * Copyright 2001 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -17,33 +17,33 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
-/** <p><code>DOMAttribute</code> implements a doubly linked attribute which 
+/** <p><code>DOMAttribute</code> implements a doubly linked attribute which
   * supports the W3C DOM API.</p>
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class DOMAttribute extends DefaultAttribute implements org.w3c.dom.Attr {
-    
-    public DOMAttribute(QName qname) { 
+
+    public DOMAttribute(QName qname) {
         super(qname);
     }
-    
-    public DOMAttribute(QName qname, String value) { 
+
+    public DOMAttribute(QName qname, String value) {
         super(qname, value);
     }
-    
-    public DOMAttribute(Element parent, QName qname, String value) { 
+
+    public DOMAttribute(Element parent, QName qname, String value) {
         super(parent, qname, value);
     }
 
-    
+
     // org.w3c.dom.Node interface
-    //-------------------------------------------------------------------------        
+    //-------------------------------------------------------------------------
     public boolean supports(String feature, String version) {
         return DOMNodeHelper.supports(this, feature, version);
     }
-        
+
     public String getNamespaceURI() {
         return getQName().getNamespaceURI();
     }
@@ -51,7 +51,7 @@ public class DOMAttribute extends DefaultAttribute implements org.w3c.dom.Attr {
     public String getPrefix() {
         return getQName().getNamespacePrefix();
     }
-    
+
     public void setPrefix(String prefix) throws DOMException {
         DOMNodeHelper.setPrefix(this, prefix);
     }
@@ -63,29 +63,29 @@ public class DOMAttribute extends DefaultAttribute implements org.w3c.dom.Attr {
     public String getNodeName() {
         return getName();
     }
-    
-    //already part of API  
+
+    //already part of API
     //
     //public short getNodeType();
-    
 
-    
+
+
     public String getNodeValue() throws DOMException {
         return DOMNodeHelper.getNodeValue(this);
     }
-    
+
     public void setNodeValue(String nodeValue) throws DOMException {
         DOMNodeHelper.setNodeValue(this, nodeValue);
     }
-        
-    
+
+
     public org.w3c.dom.Node getParentNode() {
-        // Per http://www.w3.org/TR/DOM-Level-2-Core/core.html#ID-637646024 
-        // and the NIST conformance tests, Attr.getParentNode() should always 
+        // Per http://www.w3.org/TR/DOM-Level-2-Core/core.html#ID-637646024
+        // and the NIST conformance tests, Attr.getParentNode() should always
         // return null
         return null;
     }
-    
+
     public NodeList getChildNodes() {
         return DOMNodeHelper.getChildNodes(this);
     }
@@ -107,7 +107,7 @@ public class DOMAttribute extends DefaultAttribute implements org.w3c.dom.Attr {
     }
 
     public NamedNodeMap getAttributes() {
-        return DOMNodeHelper.getAttributes(this);
+        return null;
     }
 
     public Document getOwnerDocument() {
@@ -115,16 +115,18 @@ public class DOMAttribute extends DefaultAttribute implements org.w3c.dom.Attr {
     }
 
     public org.w3c.dom.Node insertBefore(
-        org.w3c.dom.Node newChild, 
+        org.w3c.dom.Node newChild,
         org.w3c.dom.Node refChild
     ) throws DOMException {
+        checkNewChildNode(newChild);
         return DOMNodeHelper.insertBefore(this, newChild, refChild);
     }
 
     public org.w3c.dom.Node replaceChild(
-        org.w3c.dom.Node newChild, 
+        org.w3c.dom.Node newChild,
         org.w3c.dom.Node oldChild
     ) throws DOMException {
+        checkNewChildNode(newChild);
         return DOMNodeHelper.replaceChild(this, newChild, oldChild);
     }
 
@@ -133,8 +135,19 @@ public class DOMAttribute extends DefaultAttribute implements org.w3c.dom.Attr {
     }
 
     public org.w3c.dom.Node appendChild(org.w3c.dom.Node newChild) throws DOMException {
+        checkNewChildNode(newChild);
         return DOMNodeHelper.appendChild(this, newChild);
     }
+    
+    private void checkNewChildNode(org.w3c.dom.Node newChild) throws DOMException {
+        final int nodeType = newChild.getNodeType();
+        if (!(nodeType == org.w3c.dom.Node.TEXT_NODE ||
+              nodeType == org.w3c.dom.Node.ENTITY_REFERENCE_NODE)) {
+            throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
+               "Specified node cannot be a child of attribute");
+        }
+    }
+    
 
     public boolean hasChildNodes() {
         return DOMNodeHelper.hasChildNodes(this);
@@ -155,25 +168,25 @@ public class DOMAttribute extends DefaultAttribute implements org.w3c.dom.Attr {
     public boolean hasAttributes() {
         return DOMNodeHelper.hasAttributes(this);
     }
-    
-    
+
+
     // org.w3c.dom.Attr interface
-    //-------------------------------------------------------------------------            
-    
+    //-------------------------------------------------------------------------
+
     //public String getName();
 
     public boolean getSpecified() {
-        return false;
+        return true;
     }
 
     //public String getValue();
-    
+
     //public void setValue(String value) throws DOMException;
 
     public org.w3c.dom.Element getOwnerElement() {
         return DOMNodeHelper.asDOMElement( getParent() );
     }
-    
+
 }
 
 

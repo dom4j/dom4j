@@ -1,9 +1,9 @@
 /*
  * Copyright 2001 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -20,9 +20,10 @@ import org.dom4j.tree.DefaultElement;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-/** <p><code>DOMAttribute</code> implements an XML element which 
+/** <p><code>DOMElement</code> implements an XML element which
   * supports the W3C DOM API.</p>
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
@@ -32,32 +33,32 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
 
     /** The <code>DocumentFactory</code> instance used by default */
     private static final DocumentFactory DOCUMENT_FACTORY = DOMDocumentFactory.getInstance();
-    
 
-    public DOMElement(String name) { 
+
+    public DOMElement(String name) {
         super(name);
     }
 
-    public DOMElement(QName qname) { 
+    public DOMElement(QName qname) {
         super(qname);
     }
 
-    public DOMElement(QName qname, int attributeCount) { 
+    public DOMElement(QName qname, int attributeCount) {
         super(qname, attributeCount);
     }
-    
-    public DOMElement(String name, Namespace namespace) { 
+
+    public DOMElement(String name, Namespace namespace) {
         super(name, namespace);
     }
 
-    
-    
+
+
     // org.w3c.dom.Node interface
-    //-------------------------------------------------------------------------        
+    //-------------------------------------------------------------------------
     public boolean supports(String feature, String version) {
         return DOMNodeHelper.supports(this, feature, version);
     }
-        
+
     public String getNamespaceURI() {
         return getQName().getNamespaceURI();
     }
@@ -65,7 +66,7 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     public String getPrefix() {
         return getQName().getNamespacePrefix();
     }
-    
+
     public void setPrefix(String prefix) throws DOMException {
         DOMNodeHelper.setPrefix(this, prefix);
     }
@@ -77,26 +78,25 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     public String getNodeName() {
         return getName();
     }
-    
-    //already part of API  
+
+    //already part of API
     //
     //public short getNodeType();
-    
 
-    
+
+
     public String getNodeValue() throws DOMException {
-        return DOMNodeHelper.getNodeValue(this);
+        return null;
     }
-    
+
     public void setNodeValue(String nodeValue) throws DOMException {
-        DOMNodeHelper.setNodeValue(this, nodeValue);
     }
-        
+
 
     public org.w3c.dom.Node getParentNode() {
         return DOMNodeHelper.getParentNode(this);
     }
-    
+
     public NodeList getChildNodes() {
         return DOMNodeHelper.createNodeList( content() );
     }
@@ -120,22 +120,24 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     public NamedNodeMap getAttributes() {
         return new DOMAttributeNodeMap( this );
     }
-    
+
     public Document getOwnerDocument() {
         return DOMNodeHelper.getOwnerDocument(this);
     }
 
     public org.w3c.dom.Node insertBefore(
-        org.w3c.dom.Node newChild, 
+        org.w3c.dom.Node newChild,
         org.w3c.dom.Node refChild
     ) throws DOMException {
+        checkNewChildNode(newChild);
         return DOMNodeHelper.insertBefore(this, newChild, refChild);
     }
 
     public org.w3c.dom.Node replaceChild(
-        org.w3c.dom.Node newChild, 
+        org.w3c.dom.Node newChild,
         org.w3c.dom.Node oldChild
     ) throws DOMException {
+        checkNewChildNode(newChild);
         return DOMNodeHelper.replaceChild(this, newChild, oldChild);
     }
 
@@ -144,7 +146,21 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     }
 
     public org.w3c.dom.Node appendChild(org.w3c.dom.Node newChild) throws DOMException {
+        checkNewChildNode(newChild);
         return DOMNodeHelper.appendChild(this, newChild);
+    }
+    
+    private void checkNewChildNode(org.w3c.dom.Node newChild) throws DOMException {
+        final int nodeType = newChild.getNodeType();
+        if (!(nodeType == Node.ELEMENT_NODE ||
+              nodeType == Node.TEXT_NODE ||
+              nodeType == Node.COMMENT_NODE ||
+              nodeType == Node.PROCESSING_INSTRUCTION_NODE ||
+              nodeType == Node.CDATA_SECTION_NODE ||
+              nodeType == Node.ENTITY_REFERENCE_NODE)) {
+            throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
+               "Specified node cannot be a child of element");
+        }
     }
 
     public boolean hasChildNodes() {
@@ -162,10 +178,10 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     public boolean hasAttributes() {
         return DOMNodeHelper.hasAttributes(this);
     }
-    
-    
+
+
     // org.w3c.dom.Element interface
-    //-------------------------------------------------------------------------            
+    //-------------------------------------------------------------------------
     public String getTagName() {
         return getName();
     }
@@ -191,15 +207,23 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     }
 
     public org.w3c.dom.Attr setAttributeNode(org.w3c.dom.Attr newAttr) throws DOMException {
+        if (this.isReadOnly()) {
+           throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
+              "No modification allowed");
+        }
         Attribute attribute = attribute(newAttr);
-        if ( attribute != null ) {
-            attribute.setValue( newAttr.getValue() );
+        if (attribute != newAttr) {
+          if (newAttr.getOwnerElement() != null) {
+                throw new DOMException(DOMException.INUSE_ATTRIBUTE_ERR,
+                   "Attribute is already in use");
+          }
+          Attribute newAttribute = createAttribute(newAttr);
+          if (attribute != null) {
+            attribute.detach();
+          }
+          add(newAttribute);
         }
-        else {
-            attribute = createAttribute( newAttr );
-            add( attribute );
-        }
-        return DOMNodeHelper.asDOMAttr( attribute );
+        return DOMNodeHelper.asDOMAttr(attribute);
     }
 
     public org.w3c.dom.Attr removeAttributeNode(org.w3c.dom.Attr oldAttr) throws DOMException {
@@ -209,9 +233,9 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
             return DOMNodeHelper.asDOMAttr( attribute );
         }
         else {
-            throw new DOMException( 
-                DOMException.NOT_FOUND_ERR, 
-                "No such attribute" 
+            throw new DOMException(
+                DOMException.NOT_FOUND_ERR,
+                "No such attribute"
             );
         }
     }
@@ -228,8 +252,8 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     }
 
     public void setAttributeNS(
-        String namespaceURI, 
-        String qualifiedName, 
+        String namespaceURI,
+        String qualifiedName,
         String value
     ) throws DOMException {
         Attribute attribute = attribute( namespaceURI, qualifiedName );
@@ -243,7 +267,7 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     }
 
     public void removeAttributeNS(
-        String namespaceURI, 
+        String namespaceURI,
         String localName
     ) throws DOMException {
         Attribute attribute = attribute( namespaceURI, localName );
@@ -261,8 +285,8 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     }
 
     public org.w3c.dom.Attr setAttributeNodeNS(org.w3c.dom.Attr newAttr) throws DOMException {
-        Attribute attribute = attribute( 
-            newAttr.getNamespaceURI(), newAttr.getLocalName() 
+        Attribute attribute = attribute(
+            newAttr.getNamespaceURI(), newAttr.getLocalName()
         );
         if ( attribute != null ) {
             attribute.setValue( newAttr.getValue() );
@@ -279,7 +303,7 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
         DOMNodeHelper.appendElementsByTagName( list, this, name );
         return DOMNodeHelper.createNodeList( list );
     }
-    
+
     public NodeList getElementsByTagNameNS(
         String namespaceURI, String localName
     ) {
@@ -296,20 +320,20 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
         return attribute(namespaceURI, localName) != null;
     }
 
-    
+
     // Implementation methods
-    //-------------------------------------------------------------------------            
+    //-------------------------------------------------------------------------
     protected DocumentFactory getDocumentFactory() {
         DocumentFactory factory = getQName().getDocumentFactory();
         return ( factory != null ) ? factory : DOCUMENT_FACTORY;
     }
-    
+
     protected Attribute attribute(org.w3c.dom.Attr attr) {
-        return attribute( 
-            DOCUMENT_FACTORY.createQName( 
-                attr.getLocalName(), 
-                attr.getPrefix(), 
-                attr.getNamespaceURI() 
+        return attribute(
+            DOCUMENT_FACTORY.createQName(
+                attr.getLocalName(),
+                attr.getPrefix(),
+                attr.getNamespaceURI()
             )
         );
     }
@@ -320,7 +344,9 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
         for ( int i = 0; i < size; i++ ) {
             Attribute attribute = (Attribute) attributes.get(i);
             if ( localName.equals( attribute.getName() ) &&
-                namespaceURI.equals( attribute.getNamespaceURI() ) ) {
+                (((namespaceURI == null || namespaceURI.length() == 0) && 
+                      (attribute.getNamespaceURI() == null || attribute.getNamespaceURI().length() == 0)) ||
+                (namespaceURI != null && namespaceURI.equals(attribute.getNamespaceURI()))))  {
                 return attribute;
             }
         }
@@ -342,7 +368,7 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
         }
         return new DOMAttribute( qname, newAttr.getValue() );
     }
-    
+
     protected QName getQName( String namespaceURI, String qualifiedName ) {
         int index = qualifiedName.indexOf( ':' );
         String prefix = "";

@@ -49,10 +49,11 @@ public class DOMAttributeNodeMap implements org.w3c.dom.NamedNodeMap {
 
     public Node removeNamedItem(String name) throws DOMException {
         org.w3c.dom.Attr attr = element.getAttributeNode(name);
-        if ( attr != null ) {
-            return element.removeAttributeNode( attr );
+        if ( attr == null ) {
+            throw new DOMException(DOMException.NOT_FOUND_ERR,
+            	"No attribute named " + name);
         }
-        return attr;
+        return element.removeAttributeNode( attr );
     }
 
     public Node item(int index) {

@@ -115,6 +115,9 @@ public class DOMDocumentFactory extends DocumentFactory implements org.w3c.dom.D
     // org.w3c.dom.DOMImplementation interface
 
     public boolean hasFeature(String feature, String version) {
+        if ("XML".equalsIgnoreCase(feature) || "Core".equalsIgnoreCase(feature)) {
+          return (version == null || version.length() == 0 || "1.0".equals(version) || "2.0".equals(version));
+        }
         return false;
     }
 
@@ -136,7 +139,7 @@ public class DOMDocumentFactory extends DocumentFactory implements org.w3c.dom.D
         } else {
             document = new DOMDocument();
         }
-        
+
         document.addElement( createQName( qualifiedName, namespaceURI ) );
         return document;
    }
