@@ -7,54 +7,101 @@
  * $Id$
  */
 
+package jaxp;
+
+import SAXDemo;
+
+import java.io.Reader;
+import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.Writer;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.dom4j.Document;
 import org.dom4j.io.DocumentResult;
 import org.dom4j.io.DocumentSource;
+import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLResult;
 import org.dom4j.io.XMLWriter;
 
-/** A sample program which uses JAXP to write a dom4j Document to a Stream.
+/** A program demonstrating a round trip from XML to dom4j to text to dom4j 
+  * again using JAXP to convert the XML.
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class JAXPWriterDemo extends SAXDemo {
-    
-    protected String xsl;
-    
+public class RoundTripDemo extends SAXDemo {
     
     public static void main(String[] args) {
-        run( new JAXPWriterDemo(), args );
+        run( new RoundTripDemo(), args );
     }    
     
-    public JAXPWriterDemo() {
+    public RoundTripDemo() {
+    }
+
+    protected void outputDocument(Document document, Writer out) {
+        try {
+            TransformerFactory factory = TransformerFactory.newInstance();
+        
+            Transformer transformer = factory.newTransformer();
+
+            StreamResult result = new StreamResult(out);
+            DocumentSource source = new DocumentSource(document);
+        
+            transformer.transform(source, result);
+        } 
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+    }
+
+    protected Document parseDocument(Reader in) {
+        try {
+            TransformerFactory factory = TransformerFactory.newInstance();
+        
+            Transformer transformer = factory.newTransformer();
+            
+            DocumentResult result = new DocumentResult();
+            StreamSource source = new StreamSource(in);
+        
+            transformer.transform(source, result);
+            
+            return result.getDocument();
+        } 
+        catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        
     }
     
-    /** Outputs the document using JAXP */
-    protected void process(Document document) throws Exception {
-        // load the transformer
-        TransformerFactory factory = TransformerFactory.newInstance();
-        Transformer transformer = factory.newTransformer();
         
-        // now lets create the TrAX source and result
-        // objects and do the transformation
-        Source source = new DocumentSource( document );
-        StringWriter buffer = new StringWriter();
-        StreamResult result = new StreamResult( buffer );
-        transformer.transform( source, result );
+    /** Outputs the document to a buffer, parse it back again then output it */
+    protected void process(Document document) throws Exception {
+    
+        System.out.println( "about to output: " + document );
 
-        String text = buffer.toString();
-        System.out.println( "The document is:- " );
-        System.out.println( text );
-    }
+        StringWriter out = new StringWriter();        
+        outputDocument(document, out);
+        
+        Document doc2 = parseDocument(new StringReader(out.toString()));
+
+        System.out.println( "parsed back again: " + doc2 );
+
+        System.out.println("Writing it out...");
+        
+        XMLWriter writer = new XMLWriter(System.out);
+        writer.write(doc2);
+        
+    }    
 }
 
 

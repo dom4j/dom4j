@@ -7,83 +7,79 @@
  * $Id$
  */
 
-import java.io.*;
-import javax.xml.transform.*;
-import javax.xml.transform.stream.*;
-import org.dom4j.*;
-import org.dom4j.io.*;
+package org.dom4j.io;
 
-/** A simple program demonstrating a round trip from XML to dom4j to text to dom4j again
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+
+import javax.xml.transform.Result;
+import javax.xml.transform.sax.SAXResult;
+
+import org.xml.sax.ContentHandler;
+import org.xml.sax.ext.LexicalHandler;
+
+/** <p><code>XMLResult</code> implements a JAXP {@link Result}
+  * for an output stream with support for pretty printing
+  * and control over how the XML is formatted.</p>
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class JAXPRoundTripDemo extends SAXDemo {
+public class XMLResult extends SAXResult {
+
+    private XMLWriter xmlWriter;
+
     
-    public static void main(String[] args) {
-        run( new JAXPRoundTripDemo(), args );
-    }    
-    
-    public JAXPRoundTripDemo() {
-    }
-
-    protected void outputDocument(Document document, Writer out) {
-        try {
-            TransformerFactory factory = TransformerFactory.newInstance();
-        
-            Transformer transformer = factory.newTransformer();
-
-            StreamResult result = new StreamResult(out);
-            DocumentSource source = new DocumentSource(document);
-        
-            transformer.transform(source, result);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        
-    }
-
-    protected Document parseDocument(Reader in) {
-        try {
-            TransformerFactory factory = TransformerFactory.newInstance();
-        
-            Transformer transformer = factory.newTransformer();
-            
-            DocumentResult result = new DocumentResult();
-            StreamSource source = new StreamSource(in);
-        
-            transformer.transform(source, result);
-            
-            return result.getDocument();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        
+    public XMLResult() {
+        this( new XMLWriter() );
     }
     
-        
-    /** Outputs the document to a buffer, parse it back again then output it */
-    protected void process(Document document) throws Exception {
+    public XMLResult(Writer writer) {
+        this( new XMLWriter( writer ) );
+    }
     
-        System.out.println( "about to output: " + document );
+    public XMLResult(Writer writer, OutputFormat format) {
+        this( new XMLWriter( writer, format ) );
+    }
+    
+    public XMLResult(OutputStream out) throws UnsupportedEncodingException {
+        this( new XMLWriter( out ) );
+    }
+    
+    public XMLResult(OutputStream out, OutputFormat format) throws UnsupportedEncodingException {
+        this( new XMLWriter( out, format ) );
+    }
+    
+    public XMLResult(XMLWriter xmlWriter) {
+        super(xmlWriter);
+        setXMLWriter( xmlWriter );
+        this.xmlWriter = xmlWriter;
+        setLexicalHandler( xmlWriter );
+    }
 
-        StringWriter out = new StringWriter();        
-        outputDocument(document, out);
-        
-
-
-        Document doc2 = parseDocument(new StringReader(out.toString()));
-
-        System.out.println( "parsed back again: " + doc2 );
-
-        System.out.println("Writing it out...");
-        
-        XMLWriter writer = new XMLWriter(System.out);
-        writer.write(doc2);
-        
-    }    
+    public XMLWriter getXMLWriter() {
+        return xmlWriter;
+    }
+    
+    public void setXMLWriter(XMLWriter xmlWriter) {
+        this.xmlWriter = xmlWriter;
+        setHandler( xmlWriter );
+        setLexicalHandler( xmlWriter );
+    }
+    
+    public ContentHandler getHandler() {
+        return xmlWriter;
+    }
+    
+    public LexicalHandler getLexicalHandler() {
+        return xmlWriter;
+    }
 }
+
+
+
 
 
 

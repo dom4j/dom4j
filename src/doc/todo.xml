@@ -26,6 +26,19 @@
               well as adding additional XPath functions such as those defined in XSLT and XPointer.
             </p>
           </section>
+          <section title="New features">
+            <p>New class org.dom4j.io.XMLResult which is-a JAXP Result which uses the same
+                org.dom4j.io.OutputFormat object to provide its formatting options 
+                to allow XML output from JAXP (such as via XSLT) to be pretty printed.
+            </p>
+            <p>XMLWriter now implements the SAX XMLFilter interface so that it can
+              be added to a SAX parsing filter chain to output the XML being parsed in a simple way.
+            </p>
+            <p>Added setProperty() and setFeature() methods to SAXReader to allow
+              the easy configuration of custom parser properties via SAXReader, such
+              as being able to specify the location of schema or DTD resources.
+            </p>
+          </section>
           <section title="Patches and bug fixes">
             <p>Fixed bug in getNamespaceForPrefix() where if the prefix is null or ""
                and there is a default namespace defined, this method was returning 
@@ -50,10 +63,6 @@
             <p>Patched bug that was also found by Jonathan Doughty for the non-standard
                behaviour of the FilterIterator. Also added Jonathan's JUnit test case
                to the distribution so that this problem should not come back. 
-            </p>
-            <p>Added setProperty() and setFeature() methods to SAXReader to allow
-              the easy configuration of custom parser properties via SAXReader, such
-              as being able to specify the location of schema or DTD resources.
             </p>
             <p>Fixed bug that when round tripping into JAXP and back again, sometimes
               additional namespace attributes were appearing.

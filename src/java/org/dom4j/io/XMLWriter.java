@@ -47,7 +47,9 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.DTDHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 import org.xml.sax.ext.LexicalHandler;
+import org.xml.sax.helpers.XMLFilterImpl;
 
 /**<p><code>XMLWriter</code> takes a DOM4J tree and formats it to a
   * stream as XML.  
@@ -72,7 +74,7 @@ import org.xml.sax.ext.LexicalHandler;
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class XMLWriter implements ContentHandler, LexicalHandler {
+public class XMLWriter extends XMLFilterImpl implements ContentHandler, LexicalHandler {
 
     private static final boolean ESCAPE_TEXT = true;
     private static final boolean SUPPORT_PAD_TEXT = false;
@@ -157,8 +159,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
     public void setIndentLevel(int indentLevel) {
         this.indentLevel = indentLevel;
     }
-    
-    
+
     /** Flushes the underlying Writer */
     public void flush() throws IOException {
         writer.flush();
@@ -323,19 +324,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
       * @param comment <code>Comment</code> to output.
       */
     public void write(Comment comment) throws IOException {        
-        if (format.isNewlines()) {
-            if ( lastOutputNodeType != Node.COMMENT_NODE ) {
-                println();
-            }
-            indent();
-        }
-        writer.write( "<!--" );
-        writer.write( comment.getText() );
-        writer.write( "-->" );
-        
-        writePrintln();
-
-        lastOutputNodeType = Node.COMMENT_NODE;
+        writeComment( comment.getText() );
     }
     
     /** Writes the given {@link DocumentType}.
@@ -344,28 +333,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
       */
     public void write(DocumentType docType) throws IOException {
         if (docType != null) {
-            String publicID = docType.getPublicID();
-            String systemID = docType.getSystemID();
-            boolean hasPublic = false;
-
-            writer.write("<!DOCTYPE ");
-            writer.write(docType.getElementName());
-            if ((publicID != null) && (!publicID.equals(""))) {
-                writer.write(" PUBLIC \"");
-                writer.write(publicID);
-                writer.write("\"");
-                hasPublic = true;
-            }
-            if ((systemID != null) && (!systemID.equals(""))) {
-                if (!hasPublic) {
-                    writer.write(" SYSTEM");
-                }
-                writer.write(" \"");
-                writer.write(systemID);
-                writer.write("\"");
-            }
-            writer.write(">");
-            writePrintln();
+            writeDocType( docType.getElementName(), docType.getPublicID(), docType.getSystemID() );
         }
     }
 
@@ -375,11 +343,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
       * @param entity <code>Entity</code> to output.
       */
     public void write(Entity entity) throws IOException {
-        writer.write( "&" );
-        writer.write( entity.getName() );
-        writer.write( ";" );
-        
-        lastOutputNodeType = Node.ENTITY_REFERENCE_NODE;
+        writeEntityRef( entity.getName() );
     }
     
 
@@ -445,12 +409,13 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
                     if (tokenizer.hasMoreTokens()) {
                         writer.write(" ");
                     }
+                    lastOutputNodeType = Node.TEXT_NODE;
                 }
             } 
             else {                    
+                lastOutputNodeType = Node.TEXT_NODE;
                 writer.write(text);
             }            
-            lastOutputNodeType = Node.TEXT_NODE;
         }
     }
 
@@ -553,39 +518,74 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
     }
 
     
+    // XMLFilterImpl methods
+    //-------------------------------------------------------------------------
+    public void setParent(XMLReader parent) {
+        super.setParent(parent);
+        
+        // set the lexical handler
+        try {
+            setProperty(
+                "http://xml.org/sax/handlers/LexicalHandler", 
+                this
+            );
+        }
+        catch (Exception e) {
+            System.out.println( "Caught: " + e );
+        }
+        try {
+            // try alternate property just in case
+            setProperty(
+                "http://xml.org/sax/properties/lexical-handler", 
+                this
+            );
+        }
+        catch (Exception e) {
+            System.out.println( "Caught: " + e );
+        }
+    }
+    
     // ContentHandler interface
     //-------------------------------------------------------------------------
     public void setDocumentLocator(Locator locator) {
+        super.setDocumentLocator(locator);
     }
     
     public void startDocument() throws SAXException {
         try {
             writeDeclaration();
+            super.startDocument();
         }
         catch (IOException e) {
             handleException(e);
         }
     }
     
-    
     public void endDocument() throws SAXException {
+        super.endDocument();
     }
     
     public void startPrefixMapping(String prefix, String uri) throws SAXException {
+        super.startPrefixMapping(prefix, uri);
     }
     
     public void endPrefixMapping(String prefix) throws SAXException {
+        super.endPrefixMapping(prefix);
     }
+    
     
     public void startElement(String namespaceURI, String localName, String qName, Attributes attributes) throws SAXException {
         try {
+            writePrintln();
             indent();
             writer.write("<");
             writer.write(qName);
             write( attributes );
             writer.write(">");
-            writePrintln();
             ++indentLevel;
+            lastOutputNodeType = Node.ELEMENT_NODE;
+            
+            super.startElement( namespaceURI, localName, qName, attributes );
         }
         catch (IOException e) {
             handleException(e);
@@ -595,7 +595,11 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
     public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
         try {
             --indentLevel;
-            indent();
+            if ( lastOutputNodeType == Node.ELEMENT_NODE ) {
+                writePrintln();
+                indent();
+            }
+            
             // XXXX: need to determine this using a stack and checking for
             // content / children
             boolean hadContent = true;
@@ -605,7 +609,9 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
             else {
                 writeEmptyElementClose(qName);
             }
-            writePrintln();
+            lastOutputNodeType = Node.ELEMENT_NODE;
+    
+            super.endElement( namespaceURI, localName, qName );
         }
         catch (IOException e) {
             handleException(e);
@@ -614,7 +620,9 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
     
     public void characters(char[] ch, int start, int length) throws SAXException {
         try {
-            writer.write(ch, start, length);
+            write( new String( ch, start, length ) );
+            
+            super.characters(ch, start, length);
         }
         catch (IOException e) {
             handleException(e);
@@ -622,15 +630,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
     }
 
     public void ignorableWhitespace(char[] ch, int start, int length) throws SAXException {
-        try {
-            writer.write(ch, start, length);
-        }
-        catch (IOException e) {
-            handleException(e);
-        }
-    }
-    
-    public void skippedEntity(String name) throws SAXException {
+        super.ignorableWhitespace(ch, start, length);
     }
     
     public void processingInstruction(String target, String data) throws SAXException {
@@ -642,6 +642,9 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
             writer.write(data);
             writer.write("?>");
             writePrintln();
+            lastOutputNodeType = Node.PROCESSING_INSTRUCTION_NODE;
+            
+            super.processingInstruction(target, data);
         }
         catch (IOException e) {
             handleException(e);
@@ -653,20 +656,28 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
     // DTDHandler interface
     //-------------------------------------------------------------------------
     public void notationDecl(String name, String publicID, String systemID) throws SAXException {
-        write(name, publicID, systemID);
+        try {
+            writeDocType(name, publicID, systemID);
+
+            super.notationDecl(name, publicID, systemID);
+        }
+        catch (IOException e) {
+            handleException(e);
+        }
     }
     
-    public void unparsedEntityDecl(String name, String publicID, String systemID, String notationName) throws SAXException {
+    public void unparsedEntityDecl(String name, String publicID, String systemID, String notationName) throws SAXException {        
+        super.unparsedEntityDecl(name, publicID, systemID, notationName);
     }
     
 
     // LexicalHandler interface
     //-------------------------------------------------------------------------
     public void startDTD(String name, String publicID, String systemID) throws SAXException {
-        write(name, publicID, systemID);
+        //writeDocType(name, publicID, systemID);
     }
     
-    public void endDTD() throws SAXException {
+    public void endDTD() throws SAXException {        
     }
     
     public void startCDATA() throws SAXException {
@@ -689,23 +700,19 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
     
     public void startEntity(String name) throws SAXException {
         try {
-            writer.write( "&" );
-            writer.write( name );
-            writer.write( ";" );
+            writeEntityRef(name);
         }
         catch (IOException e) {
             handleException(e);
         }
     }
     
-    public void endEntity(String name) throws SAXException {
+    public void endEntity(String name) throws SAXException {            
     }
     
     public void comment(char[] ch, int start, int length) throws SAXException {
         try {
-            writer.write( "<!--" );
-            writer.write(ch, start, length);
-            writer.write( "-->" );
+            writeComment( new String(ch, start, length) );
         }
         catch (IOException e) {
             handleException(e);
@@ -716,6 +723,53 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
     
     // Implementation methods
     //-------------------------------------------------------------------------
+    
+    protected void writeDocType(String name, String publicID, String systemID) throws IOException {
+        boolean hasPublic = false;
+
+        writer.write("<!DOCTYPE ");
+        writer.write(name);
+        if ((publicID != null) && (!publicID.equals(""))) {
+            writer.write(" PUBLIC \"");
+            writer.write(publicID);
+            writer.write("\"");
+            hasPublic = true;
+        }
+        if ((systemID != null) && (!systemID.equals(""))) {
+            if (!hasPublic) {
+                writer.write(" SYSTEM");
+            }
+            writer.write(" \"");
+            writer.write(systemID);
+            writer.write("\"");
+        }
+        writer.write(">");
+        writePrintln();
+    }
+
+    protected void writeEntityRef(String name) throws IOException {
+        writer.write( "&" );
+        writer.write( name );
+        writer.write( ";" );
+        
+        lastOutputNodeType = Node.ENTITY_REFERENCE_NODE;
+    }
+    
+    protected void writeComment(String text) throws IOException {        
+        if (format.isNewlines()) {
+            if ( lastOutputNodeType != Node.COMMENT_NODE ) {
+                println();
+            }
+            indent();
+        }
+        writer.write( "<!--" );
+        writer.write( text );
+        writer.write( "-->" );
+        
+        writePrintln();
+
+        lastOutputNodeType = Node.COMMENT_NODE;
+    }
     
     /** Writes the attributes of the given element
       *
@@ -822,33 +876,6 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         }        
     }    
 
-    protected void write(String name, String publicID, String systemID) throws SAXException {
-        try {
-            boolean hasPublic = false;
-            writer.write("<!DOCTYPE ");
-            writer.write(name);
-            if ((publicID != null) && (!publicID.equals(""))) {
-                writer.write(" PUBLIC \"");
-                writer.write(publicID);
-                writer.write("\"");
-                hasPublic = true;
-            }
-            if ((systemID != null) && (!systemID.equals(""))) {
-                if (!hasPublic) {
-                    writer.write(" SYSTEM");
-                }
-                writer.write(" \"");
-                writer.write(systemID);
-                writer.write("\"");
-            }
-            writer.write(">");
-            writePrintln();
-        }
-        catch (IOException e) {
-            handleException(e);
-        }
-    }
-    
     protected void writeClose(String qualifiedName) throws IOException {
         writer.write("</");
         writer.write(qualifiedName);
