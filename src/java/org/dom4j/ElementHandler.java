@@ -19,14 +19,22 @@ package org.dom4j;
   * @version $Revision$
   */
 public interface ElementHandler {
-
- 
-    /** Called by an event based processor to process the element
-      * in some way.
+    
+    /** Called by an event based processor when an elements openning
+      * tag is encountered.
       *
-      * @param element is the element to process
+      * @param elementPath is the current <code>ElementPath</code> 
+      * to process
       */
-    public void handle(Element element);
+    public void onStart(ElementPath elementPath);
+    
+    /** Called by an event based processor when an elements closing
+      * tag is encountered.
+      *
+      * @param elementPath is the current <code>ElementPath</code>
+      * to process
+      */
+    public void onEnd(ElementPath elementPath);
 
 }
 
