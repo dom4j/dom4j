@@ -7,85 +7,65 @@
  * $Id$
  */
 
-import java.net.URL;
+package org.dom4j.io;
 
 import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
+import javax.xml.transform.sax.SAXResult;
 
 import org.dom4j.Document;
-import org.dom4j.io.DocumentResult;
-import org.dom4j.io.DocumentSource;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.SAXReader;
-import org.dom4j.io.TransformerReader;
-import org.dom4j.io.XMLWriter;
+import org.dom4j.Node;
 
-import org.xml.sax.InputSource;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.ext.LexicalHandler;
 
-
-/** A simple test program to demonstrate using SAX to create a DOM4J tree
+/** <p><code>DocumentResult</code> implements a JAXP {@link Result}
+  * for a {@link Document}.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class XSLTDemo extends SAXDemo {
-    
-    private URL xsl;
-    
-    
-    public static void main(String[] args) {
-        run( new XSLTDemo(), args );
-    }    
-    
-    public XSLTDemo() {
-    }
-    
-    public void run(String[] args) throws Exception {    
-        if ( args.length < 2) {
-            printUsage();
-            return;
-        }
-        
-        int idx = format.parseOptions( args, 0 );
-        if ( args.length - idx < 2 ) {
-            printUsage();
-            return;
-        }
-        else {
-            writer = createXMLWriter();
-            
-            Document document = parse( args[idx++] );
-            
-            xsl = getURL( args[idx++] );
-            
-            process(document);
-        }
-    }
-    
-    protected void printUsage() {
-        printUsage( "<XML URL> <XSLT URL>" );
-    }
-    
-    
-    /** Perform XSLT on the stylesheet */
-    protected void process(Document document) throws Exception {
-        // load the transformer
-        TransformerReader transformerReader = new TransformerReader();
-        Transformer transformer = transformerReader.read( xsl );
-        
-        // now lets create the TRaX source and result
-        // objects and do the transformation
-        Source source = new DocumentSource( document );
-        DocumentResult result = new DocumentResult();
-        transformer.transform( source, result );
+public class DocumentResult extends SAXResult {
 
-        // output the transformed document
-        Document transformedDoc = result.getDocument();
-        writer.write( transformedDoc );
+    private SAXContentHandler contentHandler;
+
+    
+    public DocumentResult() {
+        this( new SAXContentHandler() );
+    }
+    
+    public DocumentResult(SAXContentHandler contentHandler) {
+        this.contentHandler = contentHandler;
+        super.setHandler( this.contentHandler );
+        super.setLexicalHandler( this.contentHandler );
     }
 
+    /** @return the Document created by the transformation 
+      */
+    public Document getDocument() {
+        return contentHandler.getDocument();
+    }
+
+
+    // Overloaded methods
+    //-------------------------------------------------------------------------                
+    
+    public void setHandler(ContentHandler handler) { 
+        if ( handler instanceof SAXContentHandler ) {
+            this.contentHandler = (SAXContentHandler) handler;
+            super.setHandler( this.contentHandler );
+        }
+    }
+
+    public void setLexicalHandler(LexicalHandler handler) { 
+        if ( handler instanceof SAXContentHandler ) {
+            this.contentHandler = (SAXContentHandler) handler;
+            super.setLexicalHandler( this.contentHandler );
+        }
+    }
 }
+
+
+
 
 
 

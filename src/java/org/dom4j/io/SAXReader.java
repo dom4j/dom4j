@@ -139,7 +139,135 @@ public class SAXReader {
         this.validating = validating;
     }
 
+    
+    
+        
+    /** <p>Reads a Document from the given <code>File</code></p>
+      *
+      * @param file is the <code>File</code> to read from.
+      * @return the newly created Document instance
+      * @throws DocumentException if an error occurs during parsing.
+      * @throws FileNotFoundException if the file could not be found
+      */
+    public Document read(File file) throws DocumentException, FileNotFoundException {
+        Document document = read(new BufferedReader(new FileReader(file)));
+        //Document document = read(file.getAbsolutePath());
+        document.setName( file.getAbsolutePath() );
+        return document;
+    }
+    
+    /** <p>Reads a Document from the given <code>URL</code> using SAX</p>
+      *
+      * @param url <code>URL</code> to read from.
+      * @return the newly created Document instance
+      * @throws DocumentException if an error occurs during parsing.
+      */
+    public Document read(URL url) throws DocumentException {
+        String systemID = url.toExternalForm();
+        Document document = read(new InputSource(systemID));
+        document.setName( url.toString() );
+        return document;
+    }
+    
+    /** <p>Reads a Document from the given URI using SAX</p>
+      *
+      * @param systemId is the URI for the input
+      * @return the newly created Document instance
+      * @throws DocumentException if an error occurs during parsing.
+      */
+    public Document read(String systemId) throws DocumentException {
+        return read(new InputSource(systemId));
+    }
+
+    /** <p>Reads a Document from the given stream using SAX</p>
+      *
+      * @param in <code>InputStream</code> to read from.
+      * @return the newly created Document instance
+      * @throws DocumentException if an error occurs during parsing.
+      */
+    public Document read(InputStream in) throws DocumentException {
+        return read(new InputSource(in));
+    }
+
+    /** <p>Reads a Document from the given <code>Reader</code> using SAX</p>
+      *
+      * @param reader is the reader for the input
+      * @return the newly created Document instance
+      * @throws DocumentException if an error occurs during parsing.
+      */
+    public Document read(Reader reader) throws DocumentException {
+        return read(new InputSource(reader));
+    }
+
+    /** <p>Reads a Document from the given stream using SAX</p>
+      *
+      * @param in <code>InputStream</code> to read from.
+      * @param systemId is the URI for the input
+      * @return the newly created Document instance
+      * @throws DocumentException if an error occurs during parsing.
+      */
+    public Document read(InputStream in, String systemId) throws DocumentException {
+        InputSource source = new InputSource(in);
+        source.setSystemId(systemId);
+        return read(source);
+    }
+
+    /** <p>Reads a Document from the given <code>Reader</code> using SAX</p>
+      *
+      * @param reader is the reader for the input
+      * @param systemId is the URI for the input
+      * @return the newly created Document instance
+      * @throws DocumentException if an error occurs during parsing.
+      */
+    public Document read(Reader reader, String SystemId) throws DocumentException {
+        InputSource source = new InputSource(reader);
+        source.setSystemId(SystemId);
+        return read(source);
+    }
+    
+    /** <p>Reads a Document from the given <code>InputSource</code> using SAX</p>
+      *
+      * @param in <code>InputSource</code> to read from.
+      * @param systemId is the URI for the input
+      * @return the newly created Document instance
+      * @throws DocumentException if an error occurs during parsing.
+      */
+    public Document read(InputSource in) throws DocumentException {
+        try {
+            XMLReader reader = getXMLReader();
+
+            SAXContentHandler contentHandler = createContentHandler();
+            reader.setContentHandler(contentHandler);
+
+            configureReader(reader, contentHandler);
+        
+            reader.parse(in);
+            return contentHandler.getDocument();
+        } 
+        catch (Exception e) {
+            if (e instanceof SAXParseException) {
+                SAXParseException parseException = (SAXParseException) e;
+                String systemId = parseException.getSystemId();
+                if ( systemId == null ) {
+                    systemId = "";
+                }
+                String message = "Error on line " 
+                    + parseException.getLineNumber()
+                    + " of document "  + systemId
+                    + " : " + parseException.getMessage();
+                
+                throw new DocumentException(message, e);
+            }
+            else {
+                throw new DocumentException(e.getMessage(), e);
+            }
+        }
+    }
+    
+
+    
     // Properties
+    //-------------------------------------------------------------------------                
     
     /** @return the validation mode, true if validating will be done 
       * otherwise false.
@@ -281,137 +409,10 @@ public class SAXReader {
         this.pruningPath = pruningPath;
         this.pruningElementHandler = pruningElementHandler;
     }
-    
-
-    
-    // read methods
-    
-        
-    /** <p>Reads a Document from the given <code>File</code></p>
-      *
-      * @param file is the <code>File</code> to read from.
-      * @return the newly created Document instance
-      * @throws DocumentException if an error occurs during parsing.
-      * @throws FileNotFoundException if the file could not be found
-      */
-    public Document read(File file) throws DocumentException, FileNotFoundException {
-        Document document = read(new BufferedReader(new FileReader(file)));
-        //Document document = read(file.getAbsolutePath());
-        document.setName( file.getAbsolutePath() );
-        return document;
-    }
-    
-    /** <p>Reads a Document from the given <code>URL</code> using SAX</p>
-      *
-      * @param url <code>URL</code> to read from.
-      * @return the newly created Document instance
-      * @throws DocumentException if an error occurs during parsing.
-      */
-    public Document read(URL url) throws DocumentException {
-        String systemID = url.toExternalForm();
-        Document document = read(new InputSource(systemID));
-        document.setName( url.toString() );
-        return document;
-    }
-    
-    /** <p>Reads a Document from the given URI using SAX</p>
-      *
-      * @param systemId is the URI for the input
-      * @return the newly created Document instance
-      * @throws DocumentException if an error occurs during parsing.
-      */
-    public Document read(String systemId) throws DocumentException {
-        return read(new InputSource(systemId));
-    }
-
-    /** <p>Reads a Document from the given stream using SAX</p>
-      *
-      * @param in <code>InputStream</code> to read from.
-      * @return the newly created Document instance
-      * @throws DocumentException if an error occurs during parsing.
-      */
-    public Document read(InputStream in) throws DocumentException {
-        return read(new InputSource(in));
-    }
-
-    /** <p>Reads a Document from the given <code>Reader</code> using SAX</p>
-      *
-      * @param reader is the reader for the input
-      * @return the newly created Document instance
-      * @throws DocumentException if an error occurs during parsing.
-      */
-    public Document read(Reader reader) throws DocumentException {
-        return read(new InputSource(reader));
-    }
-
-    /** <p>Reads a Document from the given stream using SAX</p>
-      *
-      * @param in <code>InputStream</code> to read from.
-      * @param systemId is the URI for the input
-      * @return the newly created Document instance
-      * @throws DocumentException if an error occurs during parsing.
-      */
-    public Document read(InputStream in, String systemId) throws DocumentException {
-        InputSource source = new InputSource(in);
-        source.setSystemId(systemId);
-        return read(source);
-    }
-
-    /** <p>Reads a Document from the given <code>Reader</code> using SAX</p>
-      *
-      * @param reader is the reader for the input
-      * @param systemId is the URI for the input
-      * @return the newly created Document instance
-      * @throws DocumentException if an error occurs during parsing.
-      */
-    public Document read(Reader reader, String SystemId) throws DocumentException {
-        InputSource source = new InputSource(reader);
-        source.setSystemId(SystemId);
-        return read(source);
-    }
-    
-    /** <p>Reads a Document from the given <code>InputSource</code> using SAX</p>
-      *
-      * @param in <code>InputSource</code> to read from.
-      * @param systemId is the URI for the input
-      * @return the newly created Document instance
-      * @throws DocumentException if an error occurs during parsing.
-      */
-    public Document read(InputSource in) throws DocumentException {
-        try {
-            XMLReader reader = getXMLReader();
-
-            SAXContentHandler contentHandler = createContentHandler();
-            reader.setContentHandler(contentHandler);
-
-            configureReader(reader, contentHandler);
-        
-            reader.parse(in);
-            return contentHandler.getDocument();
-        } 
-        catch (Exception e) {
-            if (e instanceof SAXParseException) {
-                SAXParseException parseException = (SAXParseException) e;
-                String systemId = parseException.getSystemId();
-                if ( systemId == null ) {
-                    systemId = "";
-                }
-                String message = "Error on line " 
-                    + parseException.getLineNumber()
-                    + " of document "  + systemId
-                    + " : " + parseException.getMessage();
-                
-                throw new DocumentException(message, e);
-            }
-            else {
-                throw new DocumentException(e.getMessage(), e);
-            }
-        }
-    }
-    
 
     
     // Implementation methods    
+    //-------------------------------------------------------------------------                
     
     protected void configureReader(XMLReader reader, DefaultHandler contentHandler) throws DocumentException {                
         // configure lexical handling
