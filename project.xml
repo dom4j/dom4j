@@ -209,6 +209,12 @@
       <version>4aug2000r7-dev</version>
     </dependency>
 
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
+      <version>2.6.2</version>
+    </dependency>
+
     <!-- clover dependencies -->
     <dependency>
       <groupId>clover</groupId>
@@ -236,7 +242,7 @@
     <!-- Unit test classes -->
     <unitTest>
       <includes>
-        <include>**/Test*.java</include>
+        <include>**/TestSch*.java</include>
       </includes>
     </unitTest>
     
