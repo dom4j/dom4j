@@ -9,6 +9,7 @@
 
 package org.dom4j.tree;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.util.Map;
 
@@ -58,17 +59,24 @@ public class NamespaceCache {
     }
 
 
-    /** @return the name model for the given name and namepsace
+    /** @return the namespace for the given prefix and uri
       */
     public Namespace get(String prefix, String uri) {
         Map cache = getURICache(uri);
-        Namespace answer = (Namespace) cache.get(prefix);
+        WeakReference ref = (WeakReference) cache.get(prefix);
+        Namespace answer = null;
+        if (ref != null) {
+        	answer = (Namespace) ref.get();
+        }
         if (answer == null) {
             synchronized (cache) {
-                answer = (Namespace) cache.get(prefix);
+                ref = (WeakReference) cache.get(prefix);
+                if (ref != null) {
+                	answer = (Namespace) ref.get();
+                }
                 if (answer == null) {
                     answer = createNamespace(prefix, uri);
-                    cache.put(prefix, answer);
+                    cache.put(prefix, new WeakReference(answer));
                 }
             }
         }
@@ -79,13 +87,20 @@ public class NamespaceCache {
     /** @return the name model for the given name and namepsace
       */
     public Namespace get(String uri) {
-        Namespace answer = (Namespace) noPrefixCache.get(uri);
+        WeakReference ref = (WeakReference) noPrefixCache.get(uri);
+        Namespace answer = null;
+        if (ref != null) {
+        	answer = (Namespace) ref.get();
+        }
         if (answer == null) {
             synchronized (noPrefixCache) {
-                answer = (Namespace) noPrefixCache.get(uri);
+            	ref = (WeakReference) noPrefixCache.get(uri);
+                if (ref != null) {
+                	answer = (Namespace) ref.get();
+                }
                 if (answer == null) {
                     answer = createNamespace("", uri);
-                    noPrefixCache.put(uri, answer);
+                    noPrefixCache.put(uri, new WeakReference(answer));
                 }
             }
         }
