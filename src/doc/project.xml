@@ -16,11 +16,11 @@
         <td><br /></td>
         <td align="right" valign="center">
           <font size="2">
-            <a href="goals.html">Goals</a> 
-            | <a href="faq.html">FAQ</a> 
-            | <a href="guide.html">Guide</a> 
+            <a href="faq.html">FAQ</a> 
+            | <a href="guide.html">Quick Start</a> 
             | <a href="apidocs/index.html">JavaDoc</a> 
             | <a href="download.html">Download</a>
+            | <a href="goals.html">Goals</a> 
             | <a href="todo.html">Status</a> 
             | <a href="http://sourceforge.net/projects/dom4j/">Project Page</a>
           </font>
