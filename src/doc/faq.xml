@@ -44,6 +44,41 @@
       </p>
     </section>
 
+    <section title="How does DOM4J relate to JDOM?">
+      <p>DOM4J is a different project and different API to JDOM
+        though they have similar goals. They both attempt to make it easier
+        to use XML on the Java platform. 
+        They differ in their design, API and implementation.
+      </p>
+      <p>DOM4J is based on Java interfaces so that plug and play 
+        document object model implementations are allowed and encouraged
+        such as small, read only, quick to create implementations or 
+        bigger, highly indexed fast to naviagte implementations or 
+        implementations which read themselves lazily from a database or 
+        Java Beans etc.
+      </p>
+      <p>DOM4J will soon provide a configuration option to
+        support the W3C DOM API natively to avoid unnecessary tree duplication
+        when using DOM4J with XSLT engines etc.
+      </p>
+      <p>DOM4J uses polymorphism extensively such that all document object types 
+        implement the Node interface. 
+        Also both the Element and Document interfaces extend the Branch 
+        interface so that both Elements and Documents can be used 
+        polymorphically.
+      </p>
+
+      <p>DOM4J is fully integrated with XPath support throughout the API 
+        so doing XPath expressions is as easy as
+      </p>
+<pre>
+SAXReader reader = new SAXReader();
+Document document = reader.read( url );
+Links links = document.selectNodes( "//a[@href]" );
+String title = document.valueOf( "/head/title" );
+</pre>
+    </section>
+
     <section title="How does DOM4J work with DOM and SAX?">
       <p>You can create DOM4J documents from XML text, SAX events or existing 
         DOM trees or you can write DOM4J documents as SAX events, DOM trees 
@@ -130,6 +165,17 @@ protected void foo(Document doc) {
 }
       </pre>
     </section>
+
+
+    <section title="Can I sort the List returned by Node.selectNodes()?">
+      <p>Yes. The selectNodes() is a really useful feature to allow nodes to be
+        selected from any object in the DOM4J object model. There is a simple API
+        to allow the results of a selectNodes to be sorted.
+      </p>
+      <pre>
+      </pre>
+    </section>
+
 
     <section title="What features are optional in DOM4J?">
       <p>In <b>DOM4J</b> being able to navigate up a tree towards the parent
