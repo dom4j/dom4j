@@ -25,12 +25,16 @@
                        refid="test.extra.classpath"/>
     </preGoal>
 
-    <preGoal name="site:deploy">
+    <preGoal name="site">
         <attainGoal name="docbook:transform"/>
     </preGoal>
 
     <preGoal name="xdoc:jelly-transform">
         <attainGoal name="faq"/>
-    </preGoal>  
+    </preGoal>
+
+    <postGoal name="xdoc:register-reports">
+        <attainGoal name="maven-checkstyle-plugin:deregister"/>  
+    </postGoal>
 
 </project>
