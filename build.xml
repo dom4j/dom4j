@@ -159,7 +159,7 @@
   <!-- =================================================================== -->
   <!-- Compiles the samples directory                                       -->
   <!-- =================================================================== -->
-  <target name="samples" depends="compile,prepare-samples">
+  <target name="samples" depends="compile,prepare-samples,prepare-jaxb">
     <javac srcdir="src/samples"
            destdir="${build.dest}"
            debug="${debug}"
@@ -364,7 +364,7 @@
     </copy>
   </target>
 	
-  <target name="demo-jaxb" depends="prepare-jaxb, samples">	  	
+  <target name="demo-jaxb" depends="samples">	  	
     <java classname="org.dom4j.samples.jaxb.JAXBDemo" >
       <classpath>
         <path refid="classpath.jaxb" />
