@@ -9,11 +9,13 @@
 
 package org.dom4j.dom;
 
+import org.dom4j.CharacterData;
 import org.dom4j.Document;
 import org.dom4j.Node;
 import org.dom4j.Element;
 import org.dom4j.QName;
 import org.dom4j.Namespace;
+import org.dom4j.Text;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
@@ -37,6 +39,22 @@ public class DOMNodeHelper {
             return 0;
         }
     };
+    
+    
+    // Node API
+    //-------------------------------------------------------------------------        
+
+    public static String getNamespaceURI(Node node) {
+        return null;
+    }
+
+    public static String getPrefix(Node node) {
+        return null;
+    }
+    
+    public static String getLocalName(Node node) {
+        return null;
+    }
     
     public static void setPrefix(Node node, String prefix) throws DOMException {
         notSupported();
@@ -149,12 +167,143 @@ public class DOMNodeHelper {
     public static boolean hasAttributes(Node node) {
         return false;
     }
+
+
+    // CharacterData API
+    //-------------------------------------------------------------------------        
     
-    /** Called when a method has not been implemented yet 
-      */
-    public static void notSupported() {
-        throw new UnsupportedOperationException("Not supported yet");
+    public static String getData(CharacterData charData) throws DOMException {
+        return charData.getText();
     }
+    
+    public static void setData(CharacterData charData, String data) throws DOMException {
+        charData.setText(data);
+    }
+
+    public static int getLength(CharacterData charData) {
+        String text = charData.getText();
+        return ( text != null ) ? text.length() : 0;
+    }
+
+    public static String substringData(
+        CharacterData charData, int offset, int count
+    ) throws DOMException {
+        String text = charData.getText();
+        int length = ( text != null ) ? text.length() : 0;
+        if ( offset < 0 || offset >= length ) {
+            throw new DOMException( 
+                DOMException.INDEX_SIZE_ERR, 
+                "No text at offset: " + offset
+            );
+        }
+        return text.substring( offset, offset + count );
+    }
+
+    public static void appendData(
+        CharacterData charData, String arg
+    ) throws DOMException {
+        if ( charData.isReadOnly() ) {
+            throw new DOMException( 
+                DOMException.NO_MODIFICATION_ALLOWED_ERR,
+                "CharacterData node is read only: " + charData 
+            );
+        }
+        else {
+            String text = charData.getText();
+            if ( text == null ) {
+                charData.setText( text );
+            }
+            else {
+                charData.setText( text + arg );
+            }
+        }
+    }
+
+    public static void insertData(CharacterData charData, int offset, String arg) throws DOMException {
+        if ( charData.isReadOnly() ) {
+            throw new DOMException( 
+                DOMException.NO_MODIFICATION_ALLOWED_ERR,
+                "CharacterData node is read only: " + charData 
+            );
+        }
+        else {
+            String text = charData.getText();
+            if ( text == null ) {
+                charData.setText( arg );
+            }
+            else {
+                int length = text.length();
+                if ( offset < 0 || offset >= length ) {
+                    throw new DOMException( 
+                        DOMException.INDEX_SIZE_ERR, 
+                        "No text at offset: " + offset
+                    );
+                }
+                else {
+                    StringBuffer buffer = new StringBuffer( text );
+                    buffer.insert( offset, arg );
+                    charData.setText( buffer.toString() );
+                }
+            }
+        }
+    }
+
+    public static void deleteData(CharacterData charData, int offset, int count) throws DOMException {
+        if ( charData.isReadOnly() ) {
+            throw new DOMException( 
+                DOMException.NO_MODIFICATION_ALLOWED_ERR,
+                "CharacterData node is read only: " + charData 
+            );
+        }
+        else {
+            String text = charData.getText();
+            if ( text != null ) {
+                int length = text.length();
+                if ( offset < 0 || offset >= length ) {
+                    throw new DOMException( 
+                        DOMException.INDEX_SIZE_ERR, 
+                        "No text at offset: " + offset
+                    );
+                }
+                else {
+                    StringBuffer buffer = new StringBuffer( text );
+                    buffer.delete( offset, offset + count );
+                    charData.setText( buffer.toString() );
+                }
+            }
+        }
+    }
+
+    public static void replaceData(
+        CharacterData charData, int offset, int count, String arg
+    ) throws DOMException {
+        if ( charData.isReadOnly() ) {
+            throw new DOMException( 
+                DOMException.NO_MODIFICATION_ALLOWED_ERR,
+                "CharacterData node is read only: " + charData 
+            );
+        }
+        else {
+            String text = charData.getText();
+            if ( text != null ) {
+                int length = text.length();
+                if ( offset < 0 || offset >= length ) {
+                    throw new DOMException( 
+                        DOMException.INDEX_SIZE_ERR, 
+                        "No text at offset: " + offset
+                    );
+                }
+                else {
+                    StringBuffer buffer = new StringBuffer( text );
+                    buffer.replace( offset, offset + count, arg );
+                    charData.setText( buffer.toString() );
+                }
+            }
+        }
+    }
+
+    // Helper methods
+    //-------------------------------------------------------------------------        
     
     public static org.w3c.dom.Node asDOMNode(Node node) {
         if ( node instanceof org.w3c.dom.Node ) {
@@ -177,7 +326,24 @@ public class DOMNodeHelper {
             return null;
         }
     }
+    
+    public static org.w3c.dom.Text asDOMText(CharacterData text) {
+        if ( text instanceof org.w3c.dom.Text ) {
+            return (org.w3c.dom.Text) text;
+        }
+        else {
+            // Use DOMWriter?
+            notSupported();
+            return null;
+        }
+    }
 
+    /** Called when a method has not been implemented yet 
+      */
+    public static void notSupported() {
+        throw new DOMException( DOMException.NOT_SUPPORTED_ERR, "Not supported yet");
+    }
+    
 }
 
 
