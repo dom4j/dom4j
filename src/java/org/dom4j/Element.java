@@ -32,7 +32,7 @@ public interface Element extends Branch {
 
  
     /** @return true if this element is the root element of a document
-      * and this element supports upward navigation else false.
+      * and this element supports the parent relationship else false.
       */
     public boolean isRootElement();
 
@@ -121,6 +121,9 @@ public interface Element extends Branch {
     
     // Text API
     
+    /** Returns the textual format of this Element.
+      */
+    public String getText();    
     public String getTextTrim();
 
     
