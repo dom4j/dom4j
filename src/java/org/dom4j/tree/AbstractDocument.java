@@ -137,24 +137,21 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
     }
     
     public Element addElement(String name) {
-        checkAddElementAllowed();
-        Element node = super.addElement(name);
-        rootElementAdded(node);
-        return node;
+        Element element = getDocumentFactory().createElement(name);
+        add(element);
+        return element;
     }
     
     public Element addElement(String qualifiedName, String namespaceURI) {
-        checkAddElementAllowed();
-        Element node = super.addElement(qualifiedName, namespaceURI);
-        rootElementAdded(node);
-        return node;
+        Element element = getDocumentFactory().createElement(qualifiedName, namespaceURI);
+        add(element);
+        return element;
     }
     
     public Element addElement(QName qName) {
-        checkAddElementAllowed();
-        Element node = super.addElement(qName);
-        rootElementAdded(node);
-        return node;
+        Element element = getDocumentFactory().createElement(qName);
+        add(element);
+        return element;
     }
 
     public void setRootElement(Element rootElement) {
@@ -166,7 +163,7 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
     }
 
     public void add(Element element) {
-        checkAddElementAllowed();
+        checkAddElementAllowed(element);
         super.add(element);
         rootElementAdded(element);
     }
@@ -200,12 +197,12 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
         }
     }     
 
-    protected void checkAddElementAllowed() {
+    protected void checkAddElementAllowed(Element element) {
         Element root = getRootElement();
         if ( root != null ) {
             throw new IllegalAddException(  
                 this, 
-                root, 
+                element, 
                 "Cannot add another element to this Document as it already has "
                 + " a root element of: " + root.getQualifiedName()
             );
