@@ -164,14 +164,14 @@ public interface XPath extends NodeFilter {
     public boolean booleanValueOf(Object context);
 
     /** <p><code>sort</code> sorts the given List of Nodes
-      * using this XPath expression as a {@link Comparator}.</p>
+      * using this XPath expression as a {@link java.util.Comparator}.</p>
       *
       * @param list is the list of Nodes to sort
       */
     public void sort( List list );
     
     /** <p><code>sort</code> sorts the given List of Nodes
-      * using this XPath expression as a {@link Comparator} 
+      * using this XPath expression as a {@link java.util.Comparator} 
       * and optionally removing duplicates.</p>
       *
       * @param list is the list of Nodes to sort

@@ -269,9 +269,6 @@ public class DOMWriter {
         domCurrent.appendChild(domPI);
     }
     
-    /** @return the new local namespace set which may be different from the input
-      * set if a new namespace is added to the set
-      */
     protected void writeNamespace( 
         org.w3c.dom.Element domElement, 
         Namespace namespace

@@ -30,13 +30,13 @@ public interface Visitor {
 
     /** <p>Visits the given <code>Document</code></p>
       *
-      * @param node is the <code>Document</code> node to visit.
+      * @param document is the <code>Document</code> node to visit.
       */
     public void visit(Document document);
 
     /** <p>Visits the given <code>DocumentType</code></p>
       *
-      * @param node is the <code>DocumentType</code> node to visit.
+      * @param documentType is the <code>DocumentType</code> node to visit.
       */
     public void visit(DocumentType documentType);
 
@@ -72,7 +72,7 @@ public interface Visitor {
 
     /** <p>Visits the given <code>Namespace</code></p>
       *
-      * @param node is the <code>Namespace</code> node to visit.
+      * @param namespace is the <code>Namespace</code> node to visit.
       */
     public void visit(Namespace namespace);
 

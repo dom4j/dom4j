@@ -162,8 +162,8 @@ public class SAXReader {
       * An alternative to calling this method is to correctly configure an
       * XMLReader object instance and call the {@link #setXMLReader(XMLReader)} method
       *
-      * @name is the SAX property name
-      * @value is the value of the SAX property
+      * @param name is the SAX property name
+      * @param value is the value of the SAX property
       * @throws SAXException if the XMLReader could not be created or
       * the property could not be changed.
       */
@@ -179,8 +179,8 @@ public class SAXReader {
       * An alternative to calling this method is to correctly configure an
       * XMLReader object instance and call the {@link #setXMLReader(XMLReader)} method
       *
-      * @name is the SAX feature name
-      * @value is the value of the SAX feature
+      * @param name is the SAX feature name
+      * @param value is the value of the SAX feature
       * @throws SAXException if the XMLReader could not be created or
       * the feature could not be changed.
       */
@@ -296,16 +296,15 @@ public class SAXReader {
       * @return the newly created Document instance
       * @throws DocumentException if an error occurs during parsing.
       */
-    public Document read(Reader reader, String SystemId) throws DocumentException {
+    public Document read(Reader reader, String systemId) throws DocumentException {
         InputSource source = new InputSource(reader);
-        source.setSystemId(SystemId);
+        source.setSystemId(systemId);
         return read(source);
     }
 
     /** <p>Reads a Document from the given <code>InputSource</code> using SAX</p>
       *
       * @param in <code>InputSource</code> to read from.
-      * @param systemId is the URI for the input
       * @return the newly created Document instance
       * @throws DocumentException if an error occurs during parsing.
       */
@@ -405,7 +404,7 @@ public class SAXReader {
     /** Sets whether DTD external declarations should be expanded into the DocumentType
       * object or not.
       *
-      * @param includeInternalDTDDeclarations whether or not DTD declarations should be expanded
+      * @param includeExternalDTDDeclarations whether or not DTD declarations should be expanded
       * and included into the DocumentType object.
       */
     public void setIncludeExternalDTDDeclarations(boolean includeExternalDTDDeclarations) {

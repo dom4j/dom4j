@@ -42,7 +42,6 @@ public class RuleSet {
     /** Performs an XSLT processing model match for the rule
       * which matches the given Node the best.
       *
-      * @param mode is the mode associated with the rule if any
       * @param node is the DOM4J Node to match against
       * @return the matching Rule or no rule if none matched
       */

@@ -21,7 +21,7 @@ public interface DocumentType extends Node {
     /** This method is the equivalent to the {@link #getName} 
       * method. It is added for clarity.
       *
-      * @returns the root element name for the document type.
+      * @return the root element name for the document type.
       */
     public String getElementName();
     

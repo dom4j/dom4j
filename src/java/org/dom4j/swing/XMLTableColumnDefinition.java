@@ -155,8 +155,8 @@ public class XMLTableColumnDefinition implements Serializable {
         return columnNameXPath;
     }
     
-    /** Setter for property xpath.
-     * @param xpath New value of property xpath.
+    /** Setter for property columnNameXPath.
+     * @param columnNameXPath New value of property xpath.
      */
     public void setColumnNameXPath(XPath columnNameXPath) {
         this.columnNameXPath = columnNameXPath;

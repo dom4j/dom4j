@@ -177,7 +177,7 @@ public class DocumentHelper {
     }
     
     /** <p><code>sort</code> sorts the given List of Nodes
-      * using an XPath expression as a {@link Comparator}.
+      * using an XPath expression as a {@link java.util.Comparator}.
       *
       * @param list is the list of Nodes to sort
       * @param xpathExpression is the XPath expression used for comparison
@@ -188,7 +188,7 @@ public class DocumentHelper {
     }
     
     /** <p><code>sort</code> sorts the given List of Nodes
-      * using an XPath expression as a {@link Comparator}
+      * using an XPath expression as a {@link java.util.Comparator}
       * and optionally removing duplicates.</p>
       *
       * @param list is the list of Nodes to sort
@@ -238,7 +238,7 @@ public class DocumentHelper {
       * &lt;c&gt; element is returned.
       *
       * @param source is the Element or Document to start navigating from
-      * @param is a simple path expression, seperated by '/' which denotes
+      * @param path is a simple path expression, seperated by '/' which denotes
       * the path from the source to the resulting element such as a/b/c
       *
       * @return the first Element on the given path which either already

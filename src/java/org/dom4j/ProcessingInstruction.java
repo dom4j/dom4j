@@ -24,7 +24,7 @@ public interface ProcessingInstruction extends Node {
     /** This method is the equivalent to the {@link #getName} 
       * method. It is added for clarity.
       *
-      * @returns the target of this PI
+      * @return the target of this PI
       */
     public String getTarget();
     

@@ -18,7 +18,7 @@ import javax.xml.transform.sax.SAXResult;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
 
-/** <p><code>XMLResult</code> implements a JAXP {@link Result}
+/** <p><code>XMLResult</code> implements a JAXP {@link SAXResult}
   * for an output stream with support for pretty printing
   * and control over how the XML is formatted.</p>
   *

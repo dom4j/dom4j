@@ -82,10 +82,10 @@ public interface Branch extends Node {
     public void setContent(List content);    
     
     /** Appends the content of the given branch to this branch instance.
-      * This method behaves like the {@link Collection#addAll(java.util.Collection)} 
+      * This method behaves like the {@link java.util.Collection#addAll(java.util.Collection)} 
       * method.
       *
-      * @param element is the element whose content will be added to me.
+      * @param branch is the branch whose content will be added to me.
       */
     public void appendContent(Branch branch);
     
@@ -247,7 +247,7 @@ public interface Branch extends Node {
      * <code>CDATASections</code>, the normalize operation alone may not be 
      * sufficient, since XPointers do not differentiate between 
      * <code>Text</code> nodes and <code>CDATASection</code> nodes.
-     * @version DOM Level 2
+     * @since DOM Level 2
      */
     public void normalize();
 }

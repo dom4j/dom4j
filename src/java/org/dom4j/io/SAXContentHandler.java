@@ -510,15 +510,15 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
      * @see #internalEntityDecl
      * @see org.xml.sax.DTDHandler#unparsedEntityDecl
      */
-    public void externalEntityDecl(String name, String publicID, String systemID) throws SAXException {
+    public void externalEntityDecl(String name, String publicId, String systemId) throws SAXException {
         if ( internalDTDsubset ) {
             if ( includeInternalDTDDeclarations ) {
-                addDTDDeclaration( new ExternalEntityDecl( name, publicID, systemID ) );
+                addDTDDeclaration( new ExternalEntityDecl( name, publicId, systemId ) );
             }
         }
         else {
             if ( includeExternalDTDDeclarations ) {
-                addExternalDTDDeclaration( new ExternalEntityDecl( name, publicID, systemID ) );
+                addExternalDTDDeclaration( new ExternalEntityDecl( name, publicId, systemId ) );
             }
         }
     }
@@ -572,7 +572,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
      * @param publicId The entity's public identifier, or null if none
      *       was given.
      * @param systemId The entity's system identifier.
-     * @param notation name The name of the associated notation.
+     * @param notationName The name of the associated notation.
      * @see #notationDecl
      * @see org.xml.sax.AttributeList
      */

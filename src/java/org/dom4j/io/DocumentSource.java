@@ -17,12 +17,13 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLFilter;
 import org.xml.sax.XMLReader;
 
-/** <p><code>DocumentSource</code> implements a JAXP {@link Source}
-  * for a {@link Document}.</p>
-  *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
-  * @version $Revision$
-  */
+/** 
+ * <p><code>DocumentSource</code> implements a JAXP {@link SAXSource}
+ * for a {@link Document}.</p>
+ *
+ * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+ * @version $Revision$
+ */
 public class DocumentSource extends SAXSource {
     
     /** If {@link javax.xml.transform.TransformerFactory#getFeature}
@@ -35,14 +36,14 @@ public class DocumentSource extends SAXSource {
     private XMLReader xmlReader = new SAXWriter();
 
     
-    /** Creates a JAXP {@link Source} for the given 
+    /** Creates a JAXP {@link SAXSource} for the given 
       * {@link Node}.
       */
     public DocumentSource(Node node) {
         setDocument(node.getDocument());
     }
 
-    /** Creates a JAXP {@link Source} for the given 
+    /** Creates a JAXP {@link SAXSource} for the given 
       * {@link Document}.
       */
     public DocumentSource(Document document) {
@@ -53,7 +54,7 @@ public class DocumentSource extends SAXSource {
     // Properties
     //-------------------------------------------------------------------------                
 
-    /** @return the document which is being used as the JAXP {@link Source}
+    /** @return the document which is being used as the JAXP {@link SAXSource}
       */
     public Document getDocument() {
         DocumentInputSource documentInputSource 
@@ -61,7 +62,7 @@ public class DocumentSource extends SAXSource {
         return documentInputSource.getDocument();
     }
 
-    /** Sets the document used as the JAXP {@link Source}
+    /** Sets the document used as the JAXP {@link SAXSource}
       */
     public void setDocument(Document document) {
         super.setInputSource( new DocumentInputSource(document) );
@@ -71,7 +72,7 @@ public class DocumentSource extends SAXSource {
     // Overloaded methods
     //-------------------------------------------------------------------------                
 
-    /** @return the XMLReader to be used for the JAXP {@link Source}.
+    /** @return the XMLReader to be used for the JAXP {@link SAXSource}.
      */
     public XMLReader getXMLReader() {
         return xmlReader;
@@ -92,7 +93,7 @@ public class DocumentSource extends SAXSource {
         }
     }
 
-    /** Sets the XMLReader used for the JAXP {@link Source}.
+    /** Sets the XMLReader used for the JAXP {@link SAXSource}.
       */
     public void setXMLReader(XMLReader reader)
             throws UnsupportedOperationException {

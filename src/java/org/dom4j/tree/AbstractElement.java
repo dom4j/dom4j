@@ -1635,7 +1635,7 @@ public abstract class AbstractElement
      * <code>CDATASections</code>, the normalize operation alone may not be 
      * sufficient, since XPointers do not differentiate between 
      * <code>Text</code> nodes and <code>CDATASection</code> nodes.
-     * @version DOM Level 2
+     * @since DOM Level 2
      */
 
     public void normalize() {

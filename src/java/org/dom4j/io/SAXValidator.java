@@ -51,7 +51,7 @@ public class SAXValidator {
       * validating SAX Parser.
       *
       * @param document is the Document to validate
-      * @throw SAXException if a validation error occurs
+      * @throws SAXException if a validation error occurs
       */
     public void validate(Document document) throws SAXException {
         if (document != null) {       

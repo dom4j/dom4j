@@ -18,7 +18,7 @@ import org.dom4j.IllegalAddException;
 import org.dom4j.Node;
 
 /** <p><code>BackedList</code> represents a list of content
-  * of a {@link Branch}. Changes to the list will
+  * of a {@link org.dom4j.Branch}. Changes to the list will
   * be reflected in the branch, though changes to the branch will not 
   * be reflected in this list.</p>
   *

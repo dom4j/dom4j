@@ -47,7 +47,7 @@ import org.xml.sax.helpers.XMLFilterImpl;
 /**<p><code>XMLWriter</code> takes a DOM4J tree and formats it to a
   * stream as XML.
   * It can also take SAX events too so can be used by SAX clients as this object
-  * implements the {@link ContentHandler} and {@link LexicalHandler} interfaces.
+  * implements the {@link org.xml.sax.ContentHandler} and {@link LexicalHandler} interfaces.
   * as well. This formatter performs typical document
   * formatting.  The XML declaration and processing instructions are
   * always on their own lines. An {@link OutputFormat} object can be
@@ -1278,8 +1278,6 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
      * <p>
      * This will print a new line only if the newlines flag was set to true
      * </p>
-     *
-     * @param out <code>Writer</code> to write to
      */
     protected void writePrintln() throws IOException  {
         if (format.isNewlines()) {

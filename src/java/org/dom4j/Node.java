@@ -436,7 +436,7 @@ public interface Node extends Cloneable {
     /** <p><code>clone</code> will return a deep clone or if this node is
       * read-only then clone will return the same instance.
       *
-      * @@return a deep clone of myself or myself if I am read only.
+      * @return a deep clone of myself or myself if I am read only.
       */
     public Object clone();
 }

@@ -15,16 +15,16 @@ import org.dom4j.Document;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
 
-/** <p><code>DocumentResult</code> implements a JAXP {@link Result}
-  * for a {@link Document}.</p>
-  *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
-  * @version $Revision$
-  */
+/**
+ * <p><code>DocumentResult</code> implements a JAXP {@link SAXResult} 
+ * for a {@link Document}.</p>
+ *
+ * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+ * @version $Revision$
+ */
 public class DocumentResult extends SAXResult {
 
     private SAXContentHandler contentHandler;
-
     
     public DocumentResult() {
         this( new SAXContentHandler() );
