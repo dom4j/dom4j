@@ -71,7 +71,8 @@
         Fixed bug in <code>SAXReader</code> that caused problems parsing files in OSX.
       </action>
       <action dev="maartenc" type="fix" due-to="Paul Libbrecht">
-        Fixed bug in <code>XMLWriter</code> that caused whitespace to be added between successive calls of the <code>characters(...)</code> method.
+        Fixed bug in <code>XMLWriter</code> that caused whitespace to be added between successive 
+        calls of the <code>characters(...)</code> method. This is used particularly frequent in Apache Jelly.
       </action>
       <action dev="maartenc" type="update" due-to="Brett Finnell">
         Improved performance of <code>NamespaceCache</code> in multithreaded environments.
