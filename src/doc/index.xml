@@ -78,17 +78,26 @@
       <p>To see how <i>dom4j</i> compares to other XML object models you could try
         reading our <a href="compare.html">comparison</a></p>
         
-      <p>We really like XPath and if you are working with XML we highly recommend
-        you try to experiment with XPath. If you need help learning XPath
-        try the excellent
-        <a href="http://www.zvon.org/xxl/XPathTutorial/General/examples.html">Zvon tutorial</a> 
-        .</p>
-
       <p>Contributors are welcome to join this project. 
         Once you've browsed the <a href="faq.html">FAQ</a> you could try
         sending an email to one of the mailing lists below or check out the
         <a href="http://sourceforge.net/projects/dom4j/">project page</a>.</p>
+    </section>
 
+    <section title="Useful Links">
+      <p>We really like XPath and if you are working with XML we highly recommend
+        you try to experiment with it. If you need help learning XPath
+        try the excellent
+        <a href="http://www.zvon.org/xxl/XPathTutorial/General/examples.html">Zvon tutorial</a> 
+        .</p>
+
+      <p>Alternatively you could try Elliotte Rusty Harold's great 
+        <a href="http://www.oreilly.com/catalog/xmlnut/chapter/ch09.html">XML in a nutshell</a> 
+        .</p>
+
+      <p>Finally you could try reading the 
+        <a href="http://www.w3.org/TR/xpath">XPath spec</a>.
+      </p>
     </section>
 
     <section title="Mailing Lists">
