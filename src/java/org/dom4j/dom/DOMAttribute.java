@@ -75,9 +75,12 @@ public class DOMAttribute extends DefaultAttribute implements org.w3c.dom.Attr {
         DOMNodeHelper.setNodeValue(this, nodeValue);
     }
         
-
+    
     public org.w3c.dom.Node getParentNode() {
-        return DOMNodeHelper.getParentNode(this);
+        // Per http://www.w3.org/TR/DOM-Level-2-Core/core.html#ID-637646024 
+        // and the NIST conformance tests, Attr.getParentNode() should always 
+        // return null
+        return null;
     }
     
     public NodeList getChildNodes() {
