@@ -9,13 +9,20 @@
 
 package org.dom4j;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
+import java.net.URL;
 
 import junit.framework.*;
 import junit.textui.TestRunner;
+
+import org.w3c.tidy.Tidy;
 
 import org.dom4j.io.DOMReader;
 import org.dom4j.io.DOMWriter;
@@ -63,7 +70,7 @@ public class TestRoundTrip extends AbstractTestCase {
         roundTripDOM( document );
     }
     
-    public void testFullRoundTrip() throws Exception {
+    public void testFullRoundTrip() throws Exception {        
         Document doc2 = roundTripDOM( document );
         Document doc3 = roundTripSAX( doc2 );
         Document doc4 = roundTripText( doc3 );
@@ -71,6 +78,19 @@ public class TestRoundTrip extends AbstractTestCase {
         assertDocumentsEqual( document, doc4 );
     }
 
+    public void testJTidyRoundTrip() throws Exception {
+        Document document = loadHTML( "readme.html" );
+  
+        //Document doc1 = roundTripText( document );
+        Document doc1 = roundTripSAX( document );
+        Document doc2 = roundTripDOM( doc1 );
+        Document doc3 = roundTripSAX( doc2 );
+        Document doc4 = roundTripText( doc3 );
+        Document doc5 = roundTripDOM( doc4 );
+        
+        assertDocumentsEqual( document, doc5 );
+    }
+    
     
     // Implementation methods
     //-------------------------------------------------------------------------                    
@@ -79,6 +99,24 @@ public class TestRoundTrip extends AbstractTestCase {
         document = reader.read( xmlFile );
     }
     
+    protected Document loadHTML( String xmlFile ) throws Exception {
+        InputStream in = openStream( xmlFile );
+        Tidy tidy = new Tidy();
+        tidy.setXHTML(true);
+        tidy.setDocType("omit");
+        org.w3c.dom.Document domDocument = tidy.parseDOM( in, null );
+        
+        DOMReader domReader = new DOMReader();
+        return domReader.read( domDocument );
+    }
+    
+    protected InputStream openStream(String xmlFile) throws Exception {
+        File file = new File( xmlFile );
+        if ( file.exists() ) {
+            return new BufferedInputStream( new FileInputStream( file ) );
+        }
+        return new URL( xmlFile ).openStream();
+    }
     
     protected Document roundTripDOM(Document document) throws Exception {
         // now lets make a DOM object
@@ -121,8 +159,10 @@ public class TestRoundTrip extends AbstractTestCase {
         
         xmlWriter.write( document );
         
-        // now lets read it back 
-        StringReader in = new StringReader( out.toString() );
+        // now lets read it back
+        String xml = out.toString();
+        
+        StringReader in = new StringReader( xml );
         SAXReader reader = new SAXReader();
         Document newDocument = reader.read(in);
         

@@ -6,9 +6,9 @@
     <header>
       <p><i>dom4j</i> is an easy to use, open source Java library
       for working with XML.
-      <i>dom4j</i> combines the best of DOM, SAX, XPath and the 
-      Java 2 platform to provide a flexible and powerful framework integrating 
-      XML and Java.
+      <i>dom4j</i> is an easy to use, open source library for working with XML, XPath and
+      XSLT on the Java platform using the Java Collections Framework and will full
+      integration with DOM, SAX and JAXP.
       </p>
     </header>
 

@@ -120,6 +120,12 @@ class NamespaceStack {
     }
     
     public QName getQName( String namespaceURI, String localName, String qualifiedName ) {
+        if ( localName == null ) {
+            localName = qualifiedName;
+        }
+        else if ( qualifiedName == null ) {
+            qualifiedName = localName;
+        }
         QName qName = (QName) qNameMap.get( qualifiedName );
         if ( qName == null ) {
             String prefix = "";
@@ -145,7 +151,9 @@ class NamespaceStack {
             push( namespace );
         }
         else {
-            System.out.println( "Warning: duplicate namespace prefix ignored: " + prefix );
+            if ( prefix != null && prefix.length() > 0 ) {
+                System.out.println( "Warning: duplicate namespace prefix ignored: " + prefix );
+            }
         }
     }
     

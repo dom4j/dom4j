@@ -398,11 +398,15 @@ public class SAXWriter implements XMLReader {
     protected void documentLocator(Document document) throws SAXException {
         LocatorImpl locator = new LocatorImpl();
         
+        String publicID = null;
+        String systemID = null;
         DocumentType docType = document.getDocType();
         if (docType != null) {
-            locator.setPublicId( docType.getPublicID() );
-            locator.setSystemId( docType.getSystemID() );
+            publicID = docType.getPublicID();
+            systemID = docType.getSystemID();
         }
+        locator.setPublicId(publicID);
+        locator.setSystemId(systemID);
         locator.setLineNumber(-1);
         locator.setColumnNumber(-1);
         

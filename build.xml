@@ -527,6 +527,10 @@
     <java classname="dom.SAXDOMDemo" args="xml/contents.xml"/>
   </target>
 
+  <target name="demo-jtidy" depends="samples">
+    <java classname="JTidyDemo" args="${xml.format.options} readme.html"/>
+  </target>
+
   <target name="demo-visitor" depends="samples">
     <java classname="VisitorDemo" args="xml/cdata.xml"/>
   </target>
