@@ -1,2 +1,2 @@
-set CP=%CD%\%1;%CP%
+set CP=%1;%CP%
 
