@@ -55,6 +55,10 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
         return this;
     }
     
+    public String getXMLEncoding() {
+        return null;
+    }
+
     public String getStringValue() {
         Element root = getRootElement();
         return ( root != null ) ? root.getStringValue() : "";
@@ -181,9 +185,6 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
     public Node asXPathResult(Element parent) {
         return this;
     }
-    
-    
-    
     
     protected void childAdded(Node node) {
         if (node != null ) {

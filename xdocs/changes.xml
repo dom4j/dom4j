@@ -7,6 +7,13 @@
 
   <body>
 
+    <release version="1.5-dev" date="in CVS">
+      <action dev="maartenc" type="add">
+        Added <code>getXMLEncoding()</code> method to <code>org.dom4j.Document</code>
+        which returns the encoding of the document.
+      </action>
+    </release>
+
     <release version="1.5-rc1" date="2004-07-04">
       <action dev="maartenc" type="remove">
         Removed the <code>DocumentHelper.parseText(String xml, String encoding)</code>

@@ -9,6 +9,7 @@
 
 package org.dom4j.io;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.HashMap;
@@ -44,10 +45,12 @@ import org.xml.sax.Attributes;
 import org.xml.sax.DTDHandler;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
+import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.ext.DeclHandler;
+import org.xml.sax.ext.Locator2;
 import org.xml.sax.helpers.DefaultHandler;
 
 /** <p><code>SAXContentHandler</code> builds a dom4j tree via SAX events.</p>
@@ -71,6 +74,9 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
 
     /** the <code>ElementHandler</code> called as the elements are complete */
     private ElementHandler elementHandler;
+    
+    /** the Locator */
+    private Locator locator;
 
     /** The name of the current entity */
     private String entity;
@@ -167,6 +173,10 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     // ContentHandler interface
     //-------------------------------------------------------------------------
 
+    public void setDocumentLocator(Locator locator) {
+        this.locator = locator;
+    }
+    
     public void processingInstruction(String target, String data) throws SAXException {
         if ( mergeAdjacentText && textInTextBuffer ) {
             completeCurrentTextNode();
@@ -175,7 +185,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
             currentElement.addProcessingInstruction(target, data);
         }
         else {
-            document.addProcessingInstruction(target, data);
+            getDocument().addProcessingInstruction(target, data);
         }
     }
 
@@ -189,7 +199,8 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     }
 
     public void startDocument() throws SAXException {
-        document = createDocument();
+        //document = createDocument();
+        document = null;
         currentElement = null;
 
         elementStack.clear();
@@ -226,7 +237,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
 
         Branch branch = currentElement;
         if ( branch == null ) {
-            branch = document;
+            branch = getDocument();
         }
         Element element = branch.addElement(qName);
 
@@ -319,26 +330,24 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     //-------------------------------------------------------------------------
 
     public void startDTD(String name, String publicId, String systemId) throws SAXException {
-        if (document != null) {
-            document.addDocType(name, publicId, systemId);
-        }
+        getDocument().addDocType(name, publicId, systemId);
         insideDTDSection = true;
         internalDTDsubset = true;
     }
 
     public void endDTD() throws SAXException {
         insideDTDSection = false;
-        if ( document != null ) {
-            DocumentType docType = document.getDocType();
-            if ( docType != null ) {
-                if ( internalDTDDeclarations != null ) {
-                    docType.setInternalDeclarations( internalDTDDeclarations );
-                }
-                if ( externalDTDDeclarations != null ) {
-                    docType.setExternalDeclarations( externalDTDDeclarations );
-                }
+
+        DocumentType docType = getDocument().getDocType();
+        if ( docType != null ) {
+            if ( internalDTDDeclarations != null ) {
+                docType.setInternalDeclarations( internalDTDDeclarations );
+            }
+            if ( externalDTDDeclarations != null ) {
+                docType.setExternalDeclarations( externalDTDDeclarations );
             }
         }
+
         internalDTDDeclarations = null;
         externalDTDDeclarations = null;
     }
@@ -393,7 +402,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
                     currentElement.addComment(text);
                 }
                 else {
-                    document.addComment(text);
+                    getDocument().addComment(text);
                 }
             }
         }
@@ -719,15 +728,40 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     /** @return the current document
       */
     protected Document createDocument() {
-        Document document = documentFactory.createDocument();
+        String encoding = getEncoding();
+        Document document = documentFactory.createDocument(encoding);
 
         // set the EntityResolver
         document.setEntityResolver(entityResolver);
-        if ( inputSource != null ) {
-            document.setName( inputSource.getSystemId() );
+        if (inputSource != null) {
+            document.setName(inputSource.getSystemId());
         }
 
         return document;
+    }
+    
+    private String getEncoding() {
+        if (locator == null) {
+            return null;
+        }
+        
+        // try to use the Locator2 interface
+        if (locator instanceof Locator2) {
+            return ((Locator2) locator).getEncoding();
+        }
+        
+        // use reflection as fallback plan
+        try {
+            Method m = locator.getClass().getMethod("getEncoding", new Class[]{});
+            if (m != null) {
+                return (String) m.invoke(locator, null);
+            }
+        } catch (Exception e) {
+            // do nothing
+        }
+        
+        // couldn't determine encoding, returning null...
+        return null;
     }
 
     /** a Strategy Method to determine if a given entity name is ignorable

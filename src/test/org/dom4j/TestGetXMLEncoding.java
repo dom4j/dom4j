@@ -7,85 +7,83 @@
  * $Id$
  */
 
-package org.dom4j.tree;
+package org.dom4j;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
+import java.net.URL;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
-import org.dom4j.AbstractTestCase;
-import org.dom4j.Document;
-import org.dom4j.DocumentFactory;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.IllegalAddException;
-import org.dom4j.io.OutputFormat;
+
 import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
 import org.xml.sax.InputSource;
 
-/** A test harness to test the addAttribute() methods on attributes
+/** 
   *
-  * @author <a href="mailto:maartenc@users.sourceforge.net">Maarten Coene</a>
+  * @author Maarten Coene
+  * @version $Revision$
   */
-public class TestDefaultDocument extends AbstractTestCase {
-
+public class TestGetXMLEncoding extends AbstractTestCase {
+    
+    DocumentFactory factory = new DocumentFactory();
+    
     public static void main( String[] args ) {
         TestRunner.run( suite() );
     }
     
     public static Test suite() {
-        return new TestSuite( TestDefaultDocument.class );
+        return new TestSuite( TestGetXMLEncoding.class );
     }
     
-    public TestDefaultDocument(String name) {
+    public TestGetXMLEncoding(String name) {
         super(name);
     }
 
     // Test case(s)
-    //-------------------------------------------------------------------------
-    public void testDoubleRootElement() {
-        Document document = DocumentFactory.getInstance().createDocument();
-        document.addElement("root");
+    //-------------------------------------------------------------------------                    
+    public void testXMLEncodingFromString() throws Exception {
+        String xmlEnc = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root/>";
+       
+        SAXReader reader = new SAXReader("org.apache.xerces.parsers.SAXParser");
+        InputSource source = new InputSource(new ByteArrayInputStream(xmlEnc.getBytes("UTF-8")));
+        Document doc = reader.read(source);
+        assertEquals("UTF-8", doc.getXMLEncoding());
         
-        Element root = DocumentFactory.getInstance().createElement("anotherRoot");
+        doc = reader.read(new StringReader(xmlEnc));
+        assertNull(doc.getXMLEncoding());
+    }
+    
+    public void testXMLEncodingFromURL() throws Exception {
+    	URL url1 = getClass().getResource("/xml/test/encode.xml");
+    	URL url2 = getClass().getResource("/xml/russArticle.xml");
+    	
+        SAXReader reader = new SAXReader("org.apache.xerces.parsers.SAXParser");
+        
+    	Document doc = reader.read(url1);
+    	assertEquals("UTF-8", doc.getXMLEncoding());
+    	
+    	doc = reader.read(url2);
+    	assertEquals("koi8-r", doc.getXMLEncoding());
+    }
+
+    public void testXMLEncodingFromStringWithHelper() throws Exception {
+        String xmlEnc = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root/>";
+        String xmlNoEnc = "<root/>";
+
+    	String defaultParser = System.getProperty("javax.xml.parsers.SAXParserFactory");
         try {
-            document.add(root);
-            fail();
-        } catch (IllegalAddException e) {
-            String msg = e.getMessage();
-            assertTrue(msg.indexOf(root.toString()) != -1);
+        	System.setProperty("javax.xml.parsers.SAXParserFactory", "org.apache.xerces.jaxp.SAXParserFactoryImpl");
+
+        	Document doc = DocumentHelper.parseText(xmlEnc);
+        	assertEquals("UTF-8", doc.getXMLEncoding());
+        
+        	doc = DocumentHelper.parseText(xmlNoEnc);
+        	assertNull(doc.getXMLEncoding());
+        } finally {
+        	System.setProperty("javax.xml.parsers.SAXParserFactory", defaultParser);
         }
-    }
-    
-    public void testBug799656() throws Exception {
-        Document document = DocumentFactory.getInstance().createDocument();
-        Element el = document.addElement("root");
-        el.setText("text with an \u00FC in it");  // u00FC is umlaut
-        
-        System.out.println(document.asXML());
-        
-        DocumentHelper.parseText(document.asXML());
-    }
-    
-    public void testEncoding() throws Exception {
-        Document document = DocumentFactory.getInstance().createDocument();
-        Element el = document.addElement("root");
-        el.setText("text with an \u00FC in it");  // u00FC is umlaut
-        
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        OutputFormat of = OutputFormat.createPrettyPrint();
-        of.setEncoding("koi8-r");
-        XMLWriter writer = new XMLWriter(out, of);
-        writer.write(document);
-        
-        String result = out.toString();
-        
-        System.out.println(result);
-        
-        DocumentHelper.parseText(result);
     }
     
 }

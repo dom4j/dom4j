@@ -710,6 +710,13 @@ public class SAXReader {
             includeExternalParameterEntities
         );
 */
+        // use Locator2 if possible
+        SAXHelper.setParserFeature(
+            reader,
+            "http://xml.org/sax/features/use-locator2",
+            true
+        );
+        
         try {
             // configure validation support
             reader.setFeature(

@@ -92,6 +92,20 @@ public class DocumentFactory implements Serializable {
         answer.setDocumentFactory( this );
         return answer;
     }
+    
+    /**
+     * @since 1.5
+     */
+    public Document createDocument(String encoding) {
+        // to keep the DocumentFactory backwards compatible, we have to do this
+        // in this not so nice way, since subclasses only need to extend the
+        // createDocument() method.
+        Document answer = createDocument();
+        if (answer instanceof DefaultDocument) {
+            ((DefaultDocument) answer).setXMLEncoding(encoding);
+        }
+        return answer;
+    }
 
     public Document createDocument(Element rootElement) {
         Document answer = createDocument();

@@ -65,8 +65,6 @@ public interface Document extends Branch {
       */
     public Document addDocType(String name, String publicId, String systemId);    
 
-    
-
     /** @return the DocumentType property 
       */
     public DocumentType getDocType();
@@ -86,6 +84,24 @@ public interface Document extends Branch {
       */
     public void setEntityResolver(EntityResolver entityResolver);
     
+    /**
+     * Return the encoding of this document, as part of the XML declaration
+     * This is <code>null</code> when unspecified or when it is not known (such
+     * as when the Document was created in memory) or when the implementation 
+     * does not support this operation.
+     * <p>
+     * The way this encoding is retrieved also depends on the way the XML
+     * source is parsed. For instance, if the SAXReader is used and if the
+     * underlying XMLReader implementation support the
+     * <code>org.xml.sax.ext.Locator2</code> interface, the result returned
+     * by this method is specified by the <code>getEncoding()</code>
+     * method of that interface. 
+     *
+     * @return  The encoding of this document, as stated in the XML declaration,
+     *          or <code>null</code> if unknown.
+     * @since   1.5
+     */
+    public String getXMLEncoding();
 }
 
 

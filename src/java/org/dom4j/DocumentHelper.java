@@ -9,9 +9,7 @@
 
 package org.dom4j;
 
-import java.io.ByteArrayInputStream;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -19,6 +17,7 @@ import java.util.StringTokenizer;
 import org.dom4j.io.SAXReader;
 import org.dom4j.rule.Pattern;
 import org.jaxen.VariableContext;
+import org.xml.sax.InputSource;
 
 /** <p><code>DocumentHelper</code> is a collection of helper methods 
   * for using DOM4J.</p>
@@ -210,7 +209,33 @@ public class DocumentHelper {
       */
     public static Document parseText(String text) throws DocumentException {
         SAXReader reader = new SAXReader();
-        return reader.read(new StringReader(text));
+        String encoding = getEncoding(text);
+        
+        InputSource source = new InputSource(new StringReader(text));
+        source.setEncoding(encoding);
+        return reader.read(source);
+    }
+    
+    private static String getEncoding(String text) {
+    	String result = null;
+    	
+    	String xml = text.trim();
+    	if (xml.startsWith("<?xml")) {
+    		int end = xml.indexOf("?>");
+    		String sub = xml.substring(0, end);
+			StringTokenizer tokens = new StringTokenizer(sub, " =\"\'");
+			while (tokens.hasMoreTokens()) {
+				String token = tokens.nextToken();
+				if ("encoding".equals(token)) {
+					if (tokens.hasMoreTokens()) {
+						result = tokens.nextToken();
+					}
+					break;
+				}
+			}
+    	}
+    	
+    	return result;
     }
 
     /** <p>makeElement</p> a helper method which navigates from the
