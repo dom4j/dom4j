@@ -64,7 +64,7 @@ public class TestAttribute extends AbstractTestCase {
     
     protected void testXPath(String xpathText) {
         XPath xpath = XPathHelper.createXPath(xpathText);
-        List list = document.selectNodes(xpath);
+        List list = xpath.selectNodes( document );
         
         log( "Searched path: " + xpathText + " found: " + list.size() + " result(s)" );
         

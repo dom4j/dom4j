@@ -192,16 +192,6 @@ public interface Node extends Cloneable {
       */
     public List selectNodes(String xpathExpression);
     
-    /** <p><code>selectNodes</code> evaluates an XPath expression and returns 
-      * the result as a <code>List</code> of <code>Node</code> instances or 
-      * <code>String</code> instances depending on the XPath expression.</p>
-      *
-      * @param xpath is the XPath expression to be evaluated
-      * @return the list of <code>Node</code> or <code>String</code> instances 
-      * depending on the XPath expression
-      */
-    public List selectNodes(XPath xpath);
-    
     /** <p><code>selectSingleNode</code> evaluates an XPath expression
       * and returns the result as a single <code>Node</code> instance.</p>
       *
@@ -209,14 +199,6 @@ public interface Node extends Cloneable {
       * @return the <code>Node<code> matching the XPath expression
       */
     public Node selectSingleNode(String xpathExpression);
-
-    /** <p><code>selectSingleNode</code> evaluates an XPath expression
-      * and returns the result as a single <code>Node</code> instance.</p>
-      *
-      * @param xpath is the XPath expression to be evaluated
-      * @return the <code>Node<code> matching the XPath expression
-      */
-    public Node selectSingleNode(XPath xpath);
 
     /** <p><code>valueOf</code> evaluates an XPath expression
       * and returns the textual representation of the results using the 
@@ -227,14 +209,14 @@ public interface Node extends Cloneable {
       */
     public String valueOf(String xpathExpression);
 
-    /** <p><code>valueOf</code> evaluates an XPath expression
-      * and returns the textual representation of the results using the 
-      * XPath string() function.</p>
+    /** <p><code>createXPath</code> creates an XPath object for
+      * the given xpathExpression.
+      * The XPath object allows the variable context to be specified.</p>
       *
-      * @param xpath is the XPath expression to be evaluated
-      * @return the string representation of the results of the XPath expression
+      * @param xpathExpression is the XPath expression to be evaluated
+      * @return an XPath object represeting the given expression
       */
-    public String valueOf(XPath xpath);
+    public XPath createXPath(String xpathExpression);
 
     /** <p><code>asXPathNode</code> returns an XPath compatable version
       * of iteself. If it supports the parent relationship it will return 

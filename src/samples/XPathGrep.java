@@ -69,7 +69,7 @@ public class XPathGrep extends AbstractDemo {
         Document document = reader.read( url );
         
         // perform XPath
-        List list = document.selectNodes( xpath );
+        List list = xpath.selectNodes( document );
         
         XMLWriter writer = createXMLWriter();
         

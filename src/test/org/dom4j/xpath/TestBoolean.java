@@ -78,7 +78,7 @@ public class TestBoolean extends AbstractTestCase {
     }
         
     protected void testXPath(Node node, XPath xpath) {
-        List list = node.selectNodes(xpath);
+        List list = xpath.selectNodes( node );
         
         log( "Searched path: " + xpath + " found: " + list.size() + " result(s)" );
         

@@ -105,6 +105,25 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
 
     // XPath methods
     
+    public List selectNodes(String xpathExpression) {
+        XPath xpath = createXPath(xpathExpression);
+        return xpath.selectNodes(this);
+    }
+    
+    public Node selectSingleNode(String xpathExpression) {
+        XPath xpath = createXPath(xpathExpression);
+        return xpath.selectSingleNode(this);
+    }
+    
+    public String valueOf(String xpathExpression) {
+        XPath xpath = createXPath(xpathExpression);
+        return xpath.valueOf(this);
+    }
+    
+    public XPath createXPath(String xpathExpression) {
+        return getXPathEngine().createXPath(xpathExpression);
+    }
+    
     public XPathEngine getXPathEngine() {
         XPathEngine answer = null;
         Document document = getDocument();
@@ -115,36 +134,6 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
             answer = XPathHelper.getInstance();
         }
         return answer;
-    }
-    
-    public List selectNodes(XPath xpath) {
-        return getXPathEngine().selectNodes(this, xpath);
-    }
-    
-    public List selectNodes(String xpathExpression) {
-        XPathEngine engine = getXPathEngine();
-        XPath xpath = engine.createXPath(xpathExpression);
-        return engine.selectNodes(this, xpath);
-    }
-    
-    public Node selectSingleNode(XPath xpath) {
-        return getXPathEngine().selectSingleNode(this, xpath);
-    }
-    
-    public Node selectSingleNode(String xpathExpression) {
-        XPathEngine engine = getXPathEngine();
-        XPath xpath = engine.createXPath(xpathExpression);
-        return engine.selectSingleNode(this, xpath);
-    }
-    
-    public String valueOf(XPath xpath) {
-        return getXPathEngine().valueOf(this, xpath);
-    }
-    
-    public String valueOf(String xpathExpression) {
-        XPathEngine engine = getXPathEngine();
-        XPath xpath = engine.createXPath(xpathExpression);
-        return engine.valueOf(this, xpath);
     }
     
     public Node asXPathNode(Element parent) {

@@ -68,7 +68,7 @@ public class TestXPath extends AbstractTestCase {
     protected void testXPath(String xpathExpression) {
         XPath xpath = XPathHelper.createXPath(xpathExpression);
         
-        List list = document.selectNodes(xpath);
+        List list = xpath.selectNodes( document );
         
         log( "Searched path: " + xpathExpression + " found: " + list.size() + " result(s)" );
         

@@ -124,16 +124,9 @@ public class XPathHelper {
       * @param nodes is the list of nodes on which to evalute the XPath
       * @return the results of all the XPath evaluations as a single list
       */
-    public static List selectNodes(XPath xpath, List nodes) {
-        ArrayList answer = new ArrayList();
-        for ( Iterator iter = nodes.iterator(); iter.hasNext(); ) {
-            Object object = iter.next();
-            if ( object instanceof Node ) {
-                Node node = (Node) object;
-                answer.addAll( node.selectNodes( xpath ) );
-            }
-        }
-        return answer;
+    public static List selectNodes(String xpathFilterExpression, List nodes) {
+        XPath xpath = createXPath( xpathFilterExpression );
+        return xpath.selectNodes( nodes );
     }
     
     /** <p><code>selectNodes</code> performs the given XPath
@@ -142,13 +135,38 @@ public class XPathHelper {
       *
       * @param xpathFilterExpression is the XPath filter expression 
       * to evaluate
-      * @param nodes is the list of nodes on which to evalute the XPath
+      * @param node is the Node on which to evalute the XPath
       * @return the results of all the XPath evaluations as a single list
       */
-    public static List selectNodes(String xpathFilterExpression, List nodes) {
-        return selectNodes( createXPath(xpathFilterExpression), nodes );
+    public static List selectNodes(String xpathFilterExpression, Node node) {
+        XPath xpath = createXPath( xpathFilterExpression );
+        return xpath.selectNodes( node );
     }
     
+    /** <p><code>sort</code> sorts the given List of Nodes
+      * using an XPath expression as a {@link Comparator}.
+      *
+      * @param list is the list of Nodes to sort
+      * @param xpathExpression is the XPath expression used for comparison
+      */
+    public void sort( List list, String xpathExpression ) {
+        XPath xpath = createXPath( xpathExpression );
+        xpath.sort( list );
+    }
+    
+    /** <p><code>sort</code> sorts the given List of Nodes
+      * using an XPath expression as a {@link Comparator}
+      * and optionally removing duplicates.</p>
+      *
+      * @param list is the list of Nodes to sort
+      * @param xpathExpression is the XPath expression used for comparison
+      * @param distinct if true then duplicate values (using the sortXPath for 
+      *     comparisions) will be removed from the List
+      */
+    public void sort( List list, String xpathExpression, boolean distinct ) {
+        XPath xpath = createXPath( xpathExpression );
+        xpath.sort( list, distinct );
+    }
     
 }
 

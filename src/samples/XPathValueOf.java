@@ -68,8 +68,7 @@ public class XPathValueOf extends AbstractDemo {
         SAXReader reader = new SAXReader();
         Document document = reader.read( url );
         
-        // perform XPath
-        String value = document.valueOf( xpath );
+        String value = xpath.valueOf( document );
         
         println( value );
     }
