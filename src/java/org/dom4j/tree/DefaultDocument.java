@@ -70,38 +70,6 @@ public class DefaultDocument extends AbstractDocument {
         return rootElement;
     }
     
-    public void setRootElement(Element rootElement) {
-        clearContent();
-        this.rootElement = rootElement;
-        super.add(rootElement);
-        rootElement.setDocument(this);
-    }
-
-    public void add(Element element) {
-        Element root = getRootElement();
-        if ( root != null ) {
-            throw new IllegalAddNodeException(  
-                this, 
-                element, 
-                "Cannot add another element to this Document as it already has "
-                + " a root element of: " + root.getQualifiedName()
-            );
-        }
-        super.add(element);
-        this.rootElement = element;
-        element.setDocument(this);
-    }
-    
-    public boolean remove(Element element) {
-        boolean answer = super.remove(element);        
-        Element root = getRootElement();
-        if ( root != null && answer ) {
-            setRootElement(null);
-        }
-        element.setDocument(null);
-        return answer;
-    }
-    
     public DocumentType getDocType() {
         return docType;
     }
@@ -151,6 +119,11 @@ public class DefaultDocument extends AbstractDocument {
       */
     protected ContentModel createContentModel() {
         return new DefaultContentModel();
+    }
+    
+    protected void rootElementAdded(Element element) {
+        this.rootElement = element;
+        element.setDocument(this);
     }
     
 }

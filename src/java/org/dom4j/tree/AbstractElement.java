@@ -232,7 +232,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
             throw new IllegalAddNodeException( this, attribute, message );
         }        
         getAttributeModel().add(attribute);
-        attribute.setParent(this);
+        childAdded(attribute);
     }
     
     public boolean remove(Attribute attribute) {
@@ -274,42 +274,42 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     public List getElements(String name, Namespace namespace) {
         return getContentModel().getElements(name, namespace);
     }
+
+
     
-    public void addCDATA(String cdata) {
-        getContentModel().addCDATA(getContentFactory(), cdata);
+    
+    public CDATA addCDATA(String cdata) {
+        CDATA node = getContentModel().addCDATA(getContentFactory(), cdata);
+        childAdded(node);
+        return node;
     }
     
-    public void addText(String text) {
-        getContentModel().addText(getContentFactory(), text);
+    public Text addText(String text) {
+        Text node = getContentModel().addText(getContentFactory(), text);
+        childAdded(node);
+        return node;
     }
     
-    public void addEntity(String name, String text) {
-        getContentModel().addEntity(getContentFactory(), name, text);
+    public Entity addEntity(String name) {
+        Entity node = getContentModel().addEntity(getContentFactory(), name);
+        childAdded(node);
+        return node;
     }
     
-    public void addAdditionalNamespace(String prefix, String uri) {
-        getContentModel().addAdditionalNamespace(getContentFactory(), prefix, uri);
+    public Entity addEntity(String name, String text) {
+        Entity node = getContentModel().addEntity(getContentFactory(), name, text);
+        childAdded(node);
+        return node;
+    }
+    
+    public Namespace addAdditionalNamespace(String prefix, String uri) {
+        Namespace node = getContentModel().addAdditionalNamespace(getContentFactory(), prefix, uri);
+        childAdded(node);
+        return node;
     }
 
     public void setText(String text) {
         getContentModel().setText(getContentFactory(), text);
-    }
-
-
-    public void addCDATA(ContentFactory factory, String cdata) {
-        addNode(createCDATA(cdata));
-    }
-    
-    public void addText(ContentFactory factory, String text) {
-        addNode(createText(text));
-    }
-    
-    public void addEntity(ContentFactory factory, String name, String text) {
-        addNode(createEntity(name, text));
-    }
-    
-    public void addAdditionalNamespace(ContentFactory factory, String prefix, String uri) {
-        addNode(createNamespace(prefix, uri));
     }
 
 
@@ -341,38 +341,6 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     public boolean remove(Namespace namespace) {
         return removeNode(namespace);
     }
-    
-    
-    
-    
-    
-    // Factory methods - delegate to the ContentFactory
-    
-    public Attribute createAttribute(String name, String value) {
-        return getContentFactory().createAttribute(name, value);
-    }
-    
-    public Attribute createAttribute(String name, String value, Namespace namespace) {
-        return getContentFactory().createAttribute(name, value);
-    }
-
-    public CDATA createCDATA(String text) {
-        return getContentFactory().createCDATA(text);
-    }
-    
-    public Text createText(String text) {
-        return getContentFactory().createText(text);
-    }
-    
-    
-    public Entity createEntity(String name) {
-        return getContentFactory().createEntity(name);
-    }
-    
-    public Entity createEntity(String name, String text) {
-        return getContentFactory().createEntity(name, text);
-    }
-    
     
     
     
@@ -488,12 +456,30 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         return clone;
     }
     
-    
-    protected void addNode(Node node) {
-        super.addNode(node);
-        node.setParent(this);
+    protected Element createElement(String name) {
+        return getContentFactory().createElement(name);
     }
+    
+    protected Element createElement(String name, Namespace namespace) {
+        return getContentFactory().createElement(name, namespace);
+    }
+    
+    
 
+    /** Called when a new child node is added to
+      * create any parent relationships
+      */
+    protected void childAdded(Node node) {
+        if (node != null ) {
+            node.setParent(this);
+        }
+    }
+    
+    protected void childRemoved(Node node) {
+        if ( node != null ) {
+            node.setParent(null);
+        }
+    }
     
     /** Allows derived classes to override the attribute model */
     protected abstract AttributeModel getAttributeModel();

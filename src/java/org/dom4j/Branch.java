@@ -30,14 +30,12 @@ public interface Branch extends Node {
     public void setProcessingInstructions(List listOfPIs);
     
     
-    // add API which avoids explicit use of node classes
-    // so that implementations may avoid the use of seperate Node classes
-
-    public void addComment(String comment);
-    public void addElement(String name);
-    public void addElement(String name, Namespace namespace);
-    public void addProcessingInstruction(String target, String data);
-    public void addProcessingInstruction(String target, Map data);
+    public Comment addComment(String comment);
+    public Element addElement(String name);
+    public Element addElement(String name, String prefix, String uri);
+    public Element addElement(String name, Namespace namespace);
+    public ProcessingInstruction addProcessingInstruction(String target, String data);
+    public ProcessingInstruction addProcessingInstruction(String target, Map data);
 
     public boolean removeProcessingInstruction(String target);
 
@@ -49,14 +47,4 @@ public interface Branch extends Node {
     public boolean remove(Comment comment);
     public boolean remove(Element element);
     public boolean remove(ProcessingInstruction pi);
-    
-    
-    public Comment createComment(String text);
-    public Element createElement(String name);
-    public Element createElement(String name, String prefix, String uri);
-    public Element createElement(String name, Namespace namespace);
-    public Namespace createNamespace(String prefix, String uri);
-    public ProcessingInstruction createProcessingInstruction(String target, String data);
-    public ProcessingInstruction createProcessingInstruction(String target, Map data);
-    
 }

@@ -84,36 +84,40 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
         return getContentModel().getNodeCount();
     }
     
-    public void addComment(String comment) {
-        getContentModel().addComment(getContentFactory(), comment);
+    public Comment addComment(String comment) {
+        Comment node = getContentModel().addComment(getContentFactory(), comment);
+        childAdded(node);
+        return node;
     }
     
-    public void addElement(String name) {
-        getContentModel().addElement(getContentFactory(), name);
+    public Element addElement(String name) {
+        Element node = getContentModel().addElement(getContentFactory(), name);
+        childAdded(node);
+        return node;
     }
     
-    public void addElement(String name, Namespace namespace) {
-        getContentModel().addElement(getContentFactory(), name, namespace);
+    public Element addElement(String name, String prefix, String uri) {
+        Element node = getContentModel().addElement(getContentFactory(), name, prefix, uri);
+        childAdded(node);
+        return node;
     }
     
-    public void addProcessingInstruction(String target, String data) {
-        getContentModel().addProcessingInstruction(getContentFactory(), target, data);
+    public Element addElement(String name, Namespace namespace) {
+        Element node = getContentModel().addElement(getContentFactory(), name, namespace);
+        childAdded(node);
+        return node;
     }
     
-    public void addProcessingInstruction(String target, Map data) {
-        getContentModel().addProcessingInstruction(getContentFactory(), target, data);
+    public ProcessingInstruction addProcessingInstruction(String target, String data) {
+        ProcessingInstruction node = getContentModel().addProcessingInstruction(getContentFactory(), target, data);
+        childAdded(node);
+        return node;
     }
     
-    public void addComment(ContentFactory factory, String comment) {
-        addNode(createComment(comment));
-    }
-    
-    public void addElement(ContentFactory factory, String name) {
-        addNode(createElement(name));
-    }
-    
-    public void addElement(ContentFactory factory, String name, Namespace namespace) {
-        addNode(createElement(name, namespace));
+    public ProcessingInstruction addProcessingInstruction(String target, Map data) {
+        ProcessingInstruction node = getContentModel().addProcessingInstruction(getContentFactory(), target, data);
+        childAdded(node);
+        return node;
     }
     
 
@@ -145,43 +149,6 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     
     
     
-    
-    // Factory methods - delegate to the ContentFactory
-    
-    public Comment createComment(String text) {
-        return getContentFactory().createComment(text);
-    }
-    
-    public Element createElement(String name) {
-        return getContentFactory().createElement(name);
-    }
-    
-    public Element createElement(String name, String prefix, String uri) {
-        return getContentFactory().createElement(name, prefix, uri);
-    }
-    
-    public Element createElement(String name, Namespace namespace) {
-        return getContentFactory().createElement(name, namespace);
-    }
-    
-    public Namespace createNamespace(String prefix, String uri) {
-        return getContentFactory().createNamespace(prefix, uri);
-    }
-    
-    
-    public ProcessingInstruction createProcessingInstruction(String target, String data) {
-        return getContentFactory().createProcessingInstruction(target, data);
-    }
-    
-    public ProcessingInstruction createProcessingInstruction(String target, Map data) {
-        return getContentFactory().createProcessingInstruction(target, data);
-    }
-    
-    
-    
-    
-    
-    
     // Implementation methods
     
     protected void addNode(Node node) {
@@ -192,12 +159,13 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
             throw new IllegalAddNodeException(this, node, message);
         }
         getContentModel().addNode(node);
+        childAdded(node);
     }
 
     protected boolean removeNode(Node node) {
         boolean answer = getContentModel().removeNode(node);
         if (answer) {
-            node.setParent(null);
+            childRemoved(node);
         }
         return answer;
     }
@@ -210,4 +178,17 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
 
     /** Allows derived classes to override the content model */
     protected abstract ContentModel getContentModel();
+    
+    /** Called when a new child node has been added to me
+      * to allow any parent relationships to be created or
+      * events to be fired.
+      */
+    protected abstract void childAdded(Node node);
+    
+    /** Called when a child node has been removed 
+      * to allow any parent relationships to be deleted or
+      * events to be fired.
+      */
+    protected abstract void childRemoved(Node node);
+    
 }

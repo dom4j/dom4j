@@ -12,7 +12,9 @@ import org.dom4j.Comment;
 import org.dom4j.Document;
 import org.dom4j.DocumentType;
 import org.dom4j.Element;
+import org.dom4j.IllegalAddNodeException;
 import org.dom4j.Node;
+import org.dom4j.Namespace;
 import org.dom4j.ProcessingInstruction;
 import org.dom4j.Text;
 import org.dom4j.TreeVisitor;
@@ -82,4 +84,77 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
         return super.toString() + " [Document: name " + getName() + "]";
     }
        
+    public Element addElement(String name) {
+        checkAddElementAllowed();
+        Element node = super.addElement(name);
+        rootElementAdded(node);
+        return node;
+    }
+    
+    public Element addElement(String name, String prefix, String uri) {
+        checkAddElementAllowed();
+        Element node = super.addElement(name, prefix, uri);
+        rootElementAdded(node);
+        return node;
+    }
+    
+    public Element addElement(String name, Namespace namespace) {
+        checkAddElementAllowed();
+        Element node = super.addElement(name, namespace);
+        rootElementAdded(node);
+        return node;
+    }
+
+    public void setRootElement(Element rootElement) {
+        clearContent();
+        super.add(rootElement);
+        rootElementAdded(rootElement);
+    }
+
+    public void add(Element element) {
+        checkAddElementAllowed();
+        super.add(element);
+        rootElementAdded(element);
+    }
+    
+    public boolean remove(Element element) {
+        boolean answer = super.remove(element);        
+        Element root = getRootElement();
+        if ( root != null && answer ) {
+            setRootElement(null);
+        }
+        element.setDocument(null);
+        return answer;
+    }
+    
+    
+    
+    
+    protected void childAdded(Node node) {
+        if (node != null ) {
+            node.setDocument(this);
+        }
+    }
+    
+    protected void childRemoved(Node node) {
+        if ( node != null ) {
+            node.setDocument(null);
+        }
+    }     
+
+    protected void checkAddElementAllowed() {
+        Element root = getRootElement();
+        if ( root != null ) {
+            throw new IllegalAddNodeException(  
+                this, 
+                root, 
+                "Cannot add another element to this Document as it already has "
+                + " a root element of: " + root.getQualifiedName()
+            );
+        }
+    }
+
+    /** Called to set the root element variable */
+    protected abstract void rootElementAdded(Element rootElement);
+    
 }

@@ -162,20 +162,6 @@ public interface Element extends Branch {
     
 
     
-    // Processing instruction API
-    
-    public List getProcessingInstructions();
-    public List getProcessingInstructions(String target);
-    public ProcessingInstruction getProcessingInstruction(String target);    
-    public void setProcessingInstructions(List listOfPIs);
-    
-    public void addProcessingInstruction(String target, String data);
-    public void addProcessingInstruction(String target, Map data);
-    public boolean removeProcessingInstruction(String target);
-    
-
-    
-    
     
     /** <p>Returns true if this <code>Element</code> has mixed content.
       * Mixed content means that an element contains both textual data and
@@ -201,16 +187,11 @@ public interface Element extends Branch {
     public String getElementTextTrim(String name, Namespace namespace);
     
 
-    // add API which avoids explicit use of node classes
-    // so that implementations may avoid the use of seperate classes
-
-    // character data nodes    
-    public void addCDATA(String cdata);
-    public void addText(String text);
-    
-    public void addEntity(String name, String text);
-    public void addAdditionalNamespace(String prefix, String uri);
-
+    public CDATA addCDATA(String cdata);
+    public Text addText(String text);    
+    public Entity addEntity(String name);
+    public Entity addEntity(String name, String text);
+    public Namespace addAdditionalNamespace(String prefix, String uri);
 
     // typesafe versions using node classes
     public void add(Attribute attribute);
@@ -236,18 +217,4 @@ public interface Element extends Branch {
     public Element createCopy();
     public Element createCopy(String name);
     public Element createCopy(String name, Namespace namespace);
-    
-    // factory methods    
-    // pretty much add all the constructors here.
-    
-    public Attribute createAttribute(String name, String value);
-    public Attribute createAttribute(String name, String value, Namespace namespace);
-
-    // character data nodes
-    public CDATA createCDATA(String text);
-    public Text createText(String text);
-
-    public Entity createEntity(String name);
-    public Entity createEntity(String name, String text);
-    
 }

@@ -92,17 +92,19 @@ public interface ContentModel {
     
     // add API which avoids explicit use of node classes
 
-    public void addCDATA(ContentFactory factory, String cdata);
-    public void addComment(ContentFactory factory, String comment);
-    public void addText(ContentFactory factory, String text);
+    public CDATA addCDATA(ContentFactory factory, String cdata);
+    public Comment addComment(ContentFactory factory, String comment);
+    public Text addText(ContentFactory factory, String text);
     
-    public void addElement(ContentFactory factory, String name);
-    public void addElement(ContentFactory factory, String name, Namespace namespace);
+    public Element addElement(ContentFactory factory, String name);
+    public Element addElement(ContentFactory factory, String name, String prefix, String uri);
+    public Element addElement(ContentFactory factory, String name, Namespace namespace);
     
-    public void addEntity(ContentFactory factory, String name, String text);
-    public void addAdditionalNamespace(ContentFactory factory, String prefix, String uri);
-    public void addProcessingInstruction(ContentFactory factory, String target, String data);
-    public void addProcessingInstruction(ContentFactory factory, String target, Map data);
+    public Entity addEntity(ContentFactory factory, String name);
+    public Entity addEntity(ContentFactory factory, String name, String text);
+    public Namespace addAdditionalNamespace(ContentFactory factory, String prefix, String uri);
+    public ProcessingInstruction addProcessingInstruction(ContentFactory factory, String target, String data);
+    public ProcessingInstruction addProcessingInstruction(ContentFactory factory, String target, Map data);
 
     public void setText(ContentFactory factory, String text);
     

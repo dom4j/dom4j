@@ -117,39 +117,69 @@ public abstract class AbstractContentModel implements ContentModel {
         return getElements(name, Namespace.NO_NAMESPACE);
     }
         
-    public void addCDATA(ContentFactory factory, String cdata) {
-        addNode( factory.createCDATA( cdata ) );
+    public CDATA addCDATA(ContentFactory factory, String cdata) {
+        CDATA node = factory.createCDATA( cdata );
+        addNode( node );
+        return node;
     }
     
-    public void addComment(ContentFactory factory, String comment) {
-        addNode( factory.createComment( comment ) );
+    public Comment addComment(ContentFactory factory, String comment) {
+        Comment node = factory.createComment( comment );
+        addNode( node );
+        return node;
     }
     
-    public void addText(ContentFactory factory, String text) {
-        addNode( factory.createText( text ) );
+    public Text addText(ContentFactory factory, String text) {
+        Text node = factory.createText( text );
+        addNode( node );
+        return node;
     }
     
-    public void addElement(ContentFactory factory, String name) {
-        addNode( factory.createElement( name ) );
+    public Element addElement(ContentFactory factory, String name) {
+        Element node = factory.createElement( name );
+        addNode( node );
+        return node;
     }
     
-    public void addElement(ContentFactory factory, String name, Namespace namespace) {
-        addNode( factory.createElement( name, namespace ) );
+    public Element addElement(ContentFactory factory, String name, String prefix, String uri) {
+        Element node = factory.createElement( name, prefix, uri );
+        addNode( node );
+        return node;
     }
     
-    public void addEntity(ContentFactory factory, String name, String text) {
-        addNode( factory.createEntity( name, text ) );
+    public Element addElement(ContentFactory factory, String name, Namespace namespace) {
+        Element node = factory.createElement( name, namespace );
+        addNode( node );
+        return node;
     }
     
-    public void addAdditionalNamespace(ContentFactory factory, String prefix, String uri) {
-        addNode( factory.createNamespace( prefix, uri ) );
+    public Entity addEntity(ContentFactory factory, String name) {
+        Entity node = factory.createEntity( name );
+        addNode( node );
+        return node;
     }
     
-    public void addProcessingInstruction(ContentFactory factory, String target, String data) {
-        addNode( factory.createProcessingInstruction( target, data ) );
+    public Entity addEntity(ContentFactory factory, String name, String text) {
+        Entity node = factory.createEntity( name, text );
+        addNode( node );
+        return node;
     }
     
-    public void addProcessingInstruction(ContentFactory factory, String target, Map data) {
-        addNode( factory.createProcessingInstruction( target, data ) );
+    public Namespace addAdditionalNamespace(ContentFactory factory, String prefix, String uri) {
+        Namespace node = factory.createNamespace( prefix, uri );
+        addNode( node );
+        return node;
+    }
+    
+    public ProcessingInstruction addProcessingInstruction(ContentFactory factory, String target, String data) {
+        ProcessingInstruction node = factory.createProcessingInstruction( target, data );
+        addNode( node );
+        return node;
+    }
+    
+    public ProcessingInstruction addProcessingInstruction(ContentFactory factory, String target, Map data) {
+        ProcessingInstruction node = factory.createProcessingInstruction( target, data );
+        addNode( node );
+        return node;
     }
 }

@@ -185,8 +185,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
         // Ignore DTD references
         if (! insideDTDSection && ! getIgnoreEntityNames().contains(name)) {
             Element element = peekElement();
-            entity = element.createEntity(name);
-            element.add(entity);
+            entity = element.addEntity(name);
         }
     }
 
@@ -248,13 +247,6 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
       * if there is one.
       */
     protected void pushElement(Element element) {
-        Element parent = peekElement();
-        if ( parent == null ) {
-            setRootElement(element);
-        }
-        else {
-            parent.add(element);
-        }
         stack.add(element);
     }
     
@@ -323,14 +315,14 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     protected Element createElement(String localName, Namespace namespace) {
         Element parent = peekElement();
         return (parent != null)
-            ? parent.createElement(localName, namespace)
-            : getDocument().createElement(localName, namespace);
+            ? parent.addElement(localName, namespace)
+            : getDocument().addElement(localName, namespace);
     }
     
     protected Element createElement(String localName) {
         Element parent = peekElement();
         return (parent != null)
-            ? parent.createElement(localName)
-            : getDocument().createElement(localName);
+            ? parent.addElement(localName)
+            : getDocument().addElement(localName);
     }
 }

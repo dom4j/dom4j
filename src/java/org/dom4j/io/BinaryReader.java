@@ -115,12 +115,11 @@ public class BinaryReader extends TreeReader implements BinaryConstants {
         String name = readString(in);
         String prefix = readString(in);
         String uri = readString(in);
-        Element element = branch.createElement(name, prefix, uri);
+        Element element = branch.addElement(name, prefix, uri);
         int attributeCount = readAttributeCount(in);
         for (int i = 0; i < attributeCount; i++ ) {
             readAttribute(element, in);
         }
-        branch.add(element);
         readBranchContents(element, in);
     }
     
