@@ -40,6 +40,21 @@ public interface XPath extends NodeFilter {
       */
     public boolean matches(Node node);
 
+    /** <p><code>evaluate</code> evaluates an XPath expression and returns 
+      * the result as an {@link Object}. The object returned can
+      * either be a {@link List} of {@link Node} instances, a {@link Node} 
+      * instance, a {@link String} or a {@link Number} instance depending on 
+      * the XPath expression. 
+      *
+      * @param context is either a node or a list of nodes on which to 
+      *    evalute the XPath
+      * @return the value of the XPath expression as a
+      * {@link List} of {@link Node} instances, a {@link Node} 
+      * instance, a {@link String} or a {@link Number} instance depending on 
+      * the XPath expression. 
+      */
+    public Object evaluate(Object context);
+
     /** <p><code>selectObject</code> evaluates an XPath expression and returns 
       * the result as an {@link Object}. The object returned can
       * either be a {@link List} of {@link Node} instances, a {@link Node} 
@@ -52,6 +67,8 @@ public interface XPath extends NodeFilter {
       * {@link List} of {@link Node} instances, a {@link Node} 
       * instance, a {@link String} or a {@link Number} instance depending on 
       * the XPath expression. 
+      *
+      * @deprecated please use evaluate(Object) instead.
       */
     public Object selectObject(Object context);
 

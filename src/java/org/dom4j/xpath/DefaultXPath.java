@@ -106,7 +106,7 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter {
         xpath.setVariableContext(variableContext);
     }
     
-    public Object selectObject(Object context) {
+    public Object evaluate(Object context) {
         try {
             setNSContext(context);
             List answer = xpath.selectNodes( context );
@@ -121,6 +121,10 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter {
         }
     }
 
+    public Object selectObject(Object context) {
+        return evaluate(context);        
+    }
+    
     public List selectNodes(Object context) {
         try {
             setNSContext(context);

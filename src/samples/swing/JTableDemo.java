@@ -7,69 +7,61 @@
  * $Id$
  */
 
-package org.dom4j.xpath;
+package swing;
 
-import java.util.Iterator;
-import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
-import junit.framework.*;
-import junit.textui.TestRunner;
+import org.dom4j.Document;
+import org.dom4j.io.SAXReader;
+import org.dom4j.swing.XMLTableDefinition;
+import org.dom4j.swing.XMLTableModel;
 
-import org.dom4j.AbstractTestCase;
-import org.dom4j.Node;
-import org.dom4j.XPath;
 
-/** Test harness for numeric XPath expressions
+/** A sample program to build a JTable GUI from a dom4j Document
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class TestObject extends AbstractTestCase {
-
-    protected static boolean VERBOSE = true;
+public class JTableDemo {
     
-    protected static String[] paths = {
-        "name(/.)",
-        "name()"
-    };
-    
-    
-    public static void main( String[] args ) {
-        TestRunner.run( suite() );
-    }
-    
-    public static Test suite() {
-        return new TestSuite( TestObject.class );
-    }
-    
-    public TestObject(String name) {
-        super(name);
+    public static void main(String[] args) throws Exception {
+        JTableDemo sample = new JTableDemo();
+        sample.run(args);
     }
 
-    // Test case(s)
-    //-------------------------------------------------------------------------                    
-    public void testXPaths() throws Exception {        
-        Node element = document.selectSingleNode( "//author" );
-        int size = paths.length;
-        for ( int i = 0; i < size; i++ ) {
-            testXPath( document, paths[i] );
-            testXPath( element, paths[i] );
+    public void run(String[] args) throws Exception {
+        if ( args.length <= 0 ) {
+            System.out.println( "This program displays a web.xml document in a Swing JTable" );
+            System.out.println( "Usage: <webXmlFileName>" );
+            return;
         }
-    }
         
-    // Implementation methods
-    //-------------------------------------------------------------------------                    
-    protected void testXPath(Node node, String xpathText) {
-        XPath xpath = node.createXPath( xpathText );
-        Object object = xpath.evaluate( node );
-
-        log( "Searched path: " + xpath + " found: " + object );
-
-        if ( VERBOSE ) {
-            log( "    xpath: " + xpath );        
-            log( "    for: " + node );        
-        }
+        // parse document
+        SAXReader reader = new SAXReader();
+        Document document = reader.read( args[0] );
+    
+        // build table model
+        XMLTableDefinition definition = new XMLTableDefinition();
+        definition.setRowExpression( "/web-app/servlet" );
+        definition.addStringColumn( "Name", "servlet-name" );
+        definition.addStringColumn( "Class", "servlet-class" );
+        definition.addStringColumn( "Mapping", "../servlet-mapping[servlet-name=$Name]" );
+        
+        XMLTableModel model = new XMLTableModel( definition, document );
+        
+        // make the widgets
+        JTable table = new JTable( model );
+        
+        JFrame frame = new JFrame( "JTableDemo: " + document.getName() );
+        frame.setSize(300, 300);
+        frame.setLocation(100, 100);
+        frame.getContentPane().add( new JScrollPane( table ) );
+        frame.validate();
+        frame.setVisible(true);
     }
+
 }
 
 

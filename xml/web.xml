@@ -16,12 +16,8 @@
     </init-param>
   </servlet>
   <servlet-mapping>
-    <servlet-name>
-      mv
-    </servlet-name>
-    <url-pattern>
-      *.wm
-    </url-pattern>
+    <servlet-name>snoop</servlet-name>
+    <url-pattern>/foo/snoop</url-pattern>
   </servlet-mapping>
 
   <distributed/>

@@ -519,6 +519,10 @@
     <java classname="org.dom4j.datatype.TestSetData"/>
   </target>
 
+  <target name="test-table" depends="compile-test">
+    <java classname="org.dom4j.swing.TestTableModel"/>
+  </target>
+
   <!-- =================================================================== -->
   <!-- Helper targets                                                      -->
   <!-- =================================================================== -->
@@ -682,6 +686,10 @@
       <sysproperty key="org.dom4j.factory" value="org.dom4j.datatype.DatatypeDocumentFactory"/>
       <arg line="xml/schema/personal-schema.xml"/>
     </java>
+  </target>
+
+  <target name="demo-table" depends="samples">
+    <java classname="swing.JTableDemo" args="xml/web.xml"/>
   </target>
 
 

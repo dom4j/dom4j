@@ -7,6 +7,34 @@
 
       <section title="Changes in CVS since last release">
         <section title="New features">
+        <p>Added a new Swing TableModel for displaying XML data in a Swing user interface. It uses
+          an XPath based model to define the rows and column values.
+          A table definition can be specified using a simple XML format and then loaded in a small amount of code.
+          e.g. here's an example of a table that will list the servlets used in a web.xml document
+        </p>
+<pre>
+&lt;table select="/web-app/servlet"&gt;
+  &lt;column select="servlet-name"&gt;Name&lt;/column&gt;
+  &lt;column select="servlet-class"&gt;Class&lt;/column&gt;
+  &lt;column select="../servlet-mapping[servlet-name=$Name]/url-pattern"&gt;Mapping&lt;/column&gt;
+&lt;/table&gt;
+</pre>
+          <p>
+          Notice the use of the $Name XPath variable to access other cells on the row.
+          Here's the pseudo code to display a table for an XML document.
+          </p>
+<pre>
+Document tableDefinition = ...;
+Document source = ...;
+TableModel tableModel = new XMLTableModel( tableDefinition, source );
+JTable table = new JTable( tableModel );
+</pre>
+        <p>
+          There is a sample program in samples/swing/JTableTool which will display any table definition
+          for a given source XML document. There is an example table definition for the periodic table
+          in xml/swing/tableForAtoms.xml.
+        </p>
+        <br />
         <p>Added a new helper method to make it easier to create namespace contexts for doing
           namespace aware XPath expressions. The new setNamespaceURIs(Map) method on XPath makes it easier
           to pass in the prefixes and URIs you wish to use in an XPath expression. Here's an example of it in action
@@ -19,6 +47,8 @@ XPath xpath = document.createXPath( "/SOAP-ENV:Envelope/SOAP-ENV:Body/m:BabelFis
 xpath.setNamespaceURIs( uris );        
 Node element = xpath.selectSingleNode( document );
 </pre>
+        <br />
+
         <p>There is a new <i>mergeAdjacentText</i> option available on SAXReader 
         to concatenate adjacent text nodes into a single Text node. 
         </p>

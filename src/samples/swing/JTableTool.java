@@ -7,69 +7,64 @@
  * $Id$
  */
 
-package org.dom4j.xpath;
+package swing;
 
-import java.util.Iterator;
-import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
-import junit.framework.*;
-import junit.textui.TestRunner;
+import org.dom4j.Document;
+import org.dom4j.io.SAXReader;
+import org.dom4j.swing.XMLTableDefinition;
+import org.dom4j.swing.XMLTableModel;
 
-import org.dom4j.AbstractTestCase;
-import org.dom4j.Node;
-import org.dom4j.XPath;
 
-/** Test harness for numeric XPath expressions
+/** Displays an XML document in a JTable JTable GUI from a dom4j Document.
+  * The definition of the table is given using an XML descriptor document
+  * such as in xml/swing/.
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class TestObject extends AbstractTestCase {
-
-    protected static boolean VERBOSE = true;
+public class JTableTool {
     
-    protected static String[] paths = {
-        "name(/.)",
-        "name()"
-    };
-    
-    
-    public static void main( String[] args ) {
-        TestRunner.run( suite() );
-    }
-    
-    public static Test suite() {
-        return new TestSuite( TestObject.class );
-    }
-    
-    public TestObject(String name) {
-        super(name);
+    public static void main(String[] args) throws Exception {
+        JTableTool sample = new JTableTool();
+        sample.run(args);
     }
 
-    // Test case(s)
-    //-------------------------------------------------------------------------                    
-    public void testXPaths() throws Exception {        
-        Node element = document.selectSingleNode( "//author" );
-        int size = paths.length;
-        for ( int i = 0; i < size; i++ ) {
-            testXPath( document, paths[i] );
-            testXPath( element, paths[i] );
+    public void run(String[] args) throws Exception {
+        if ( args.length <= 1 ) {
+            System.out.println( "Usage: <tableXMLDescription> <xmlFileName>" );
+            System.out.println():
+            System.out.println( "This program displays a document in a Swing JTable given a table description" );
+            System.out.println():
+            System.out.println( "For example running this program as follows will display the servlets of a web.xml" );
+            System.out.println( "    java swing.JTableTool xml/swing/tableForWeb.xml xml/web.xml" );
+            System.out.println( "This example will display the periodic table in a JTable" );
+            System.out.println( "    java swing.JTableTool xml/swing/tableForAtoms.xml xml/periodic_table.xml" );
+            return;
         }
-    }
         
-    // Implementation methods
-    //-------------------------------------------------------------------------                    
-    protected void testXPath(Node node, String xpathText) {
-        XPath xpath = node.createXPath( xpathText );
-        Object object = xpath.evaluate( node );
-
-        log( "Searched path: " + xpath + " found: " + object );
-
-        if ( VERBOSE ) {
-            log( "    xpath: " + xpath );        
-            log( "    for: " + node );        
-        }
+        // parse document
+        SAXReader reader = new SAXReader();
+        Document definition = reader.read( args[0] );
+        Document document = reader.read( args[1] );
+    
+        // build table model
+        XMLTableModel model = new XMLTableModel( definition, document );
+        
+        // make the widgets
+        JTable table = new JTable( model );
+        
+        JFrame frame = new JFrame( "JTableTool: " + document.getName() );
+        frame.setSize(300, 300);
+        frame.setLocation(100, 100);
+        frame.getContentPane().add( new JScrollPane( table ) );
+        frame.validate();
+        frame.setVisible(true);
     }
+
 }
 
 
