@@ -8,6 +8,11 @@
   <body>
 
     <release version="1.5 dev" date="in CVS">
+      <action dev="maartenc" type="fix" due-to="Aaron Bell">
+        Added the namespace-prefix of attributes to the paths returned by
+        <code>Attribute.getPath(Element context)</code> and 
+        <code>Attribute.getUniquePath(Element context)</code>.
+      </action>
       <action dev="maartenc" type="fix" due-to="Marc Pellmann">
         <code>Element.declaredNamespaces()</code> now only returns the namespaces that are
         declared on that element. <code>Element.additionalNamespaces()</code>

@@ -20,9 +20,11 @@ import org.dom4j.AbstractTestCase;
 import org.dom4j.Attribute;
 import org.dom4j.Branch;
 import org.dom4j.Document;
+import org.dom4j.DocumentFactory;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Node;
+import org.dom4j.QName;
 import org.dom4j.io.SAXReader;
 
 /** Test harness for the GetPath() method
@@ -105,6 +107,18 @@ public class TestGetPath extends AbstractTestCase {
         
         String relativePath = b.getPath(b);
         assertSame(b, b.selectSingleNode(relativePath));
+    }
+    
+    public void testBug569927() {
+        Document doc = DocumentHelper.createDocument();
+        QName elName = DocumentFactory.getInstance().createQName("a", "ns", "uri://my-uri");
+        Element a = doc.addElement(elName);
+        QName attName = DocumentFactory.getInstance().createQName("att", "ns", "uri://my-uri");
+        a = a.addAttribute(attName, "test");
+        Attribute att = a.attribute(attName);
+        
+        assertSame(att, doc.selectSingleNode(att.getPath()));
+        assertSame(att, doc.selectSingleNode(att.getUniquePath()));
     }
         
     protected void testPath(Node node, String value) {

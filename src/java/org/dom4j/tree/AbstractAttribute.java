@@ -98,17 +98,45 @@ public abstract class AbstractAttribute extends AbstractNode implements Attribut
     }
     
     public String getPath(Element context) {
+        StringBuffer result = new StringBuffer();
+
         Element parent = getParent();
-        return ( parent != null && parent != context ) 
-            ? parent.getPath( context ) + "/@" + getName() 
-            : "@" + getName();
+        if ((parent != null) && (parent != context)) {
+            result.append(parent.getPath(context));
+            result.append("/");
+        }
+        result.append("@");
+        
+        String uri = getNamespaceURI();
+        String prefix = getNamespacePrefix();
+        if (uri == null || uri.length() == 0 || prefix == null || prefix.length() == 0) {
+            result.append(getName());
+        } else {
+            result.append(getQualifiedName());
+        }
+
+        return result.toString();
     }
     
     public String getUniquePath(Element context) {
+        StringBuffer result = new StringBuffer();
+
         Element parent = getParent();
-        return ( parent != null && parent != context ) 
-            ? parent.getUniquePath( context ) + "/@" + getName() 
-            : "@" + getName();
+        if ((parent != null) && (parent != context)) {
+            result.append(parent.getUniquePath(context));
+            result.append("/");
+        }
+        result.append("@");
+        
+        String uri = getNamespaceURI();
+        String prefix = getNamespacePrefix();
+        if (uri == null || uri.length() == 0 || prefix == null || prefix.length() == 0) {
+            result.append(getName());
+        } else {
+            result.append(getQualifiedName());
+        }
+
+        return result.toString();
     }
 
     protected Node createXPathResult(Element parent) {
