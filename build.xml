@@ -65,17 +65,6 @@
     <property name="build.javadocs" value="./build/doc/javadoc"/>
     <property name="build.generated.src" value="./build/generated"/>
 
-    <property name="xpath.parser.dir" value="${build.src}/org/dom4j/xpath/parser"/>
-
-    <property name="dist.root" value="./dist"/>
-    <property name="dist.dir" value="${dist.root}/tmp/${name}-${version}"/>
-    <property name="dist.jar.dir" value="${dist.root}/tmp"/>
-    <property name="dist.target" value="${dist.root}"/>
-
-    <property name="web.htdocs" value="../htdocs"/>
-    <property name="web.dist" value="${web.htdocs}/dist"/>
-    <property name="web.ftp" value="./build/ftp"/>
-
     <property name="xml.format.options" value="-indentSize 2 -trimText -newlines"/>
 
     <filter token="year" value="${year}"/>
@@ -270,14 +259,6 @@
   <!-- =================================================================== -->
   <target name="clean" depends="init">
     <delete dir="${build.dir}"/>
-    <delete dir="${dist.root}"/>
-  </target>
-
-  <target name="distclean" depends="clean">
-    <delete dir="${dist.root}"/>
-    <delete file="${name}-${version}.tar.gz"/>
-    <delete file="${name}-${version}.tar"/>
-    <delete file="${name}-${version}.zip"/>
   </target>
 
   <!-- =================================================================== -->
