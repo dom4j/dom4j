@@ -7,8 +7,44 @@
       <section title="Changes in CVS since last release">
         <section title="New features">
         <p>Added a new package, org.dom4j.dtd which contains some DTD declaration classes which are added to the DocumentType interfaces
-        List of declarations. This is useful for finding out details of the attribute or element delcarations inside in internal DTD subset of
-        a document. It also means that XML documents which use internal DTD subsets can now be properly round tripped.
+        List of declarations. This is useful for finding out details of the attribute or element delcarations inside either the 
+        internal or external DTD subset of a document. 
+        </p>
+
+        <p>To expand internal or external DTD subsets when parsing with SAXReader use the 2 properties on SAXReader (and SAXContentHandler). 
+        </p>
+
+<pre>
+SAXReader reader = new SAXReader();
+reader.setIncludeInternalDTDDeclarations( true );
+reader.setIncludeExternalDTDDeclarations( true );
+Document doc = reader.read( "foo.xml" );
+
+DocumentType docType = doc.getDocType();
+List internalDecls = docType.getInternalDeclarations();
+List externalDecls = docType.getExternalDeclarations();
+</pre>
+
+        <p>This new feature means that XML documents which use internal DTD subsets, external DTDs or a mixture of internal and external
+        DTD subsets can now be properly round tripped.
+        </p>
+
+        <p>Note that there appears to be a bug in Crimson 1.1.3 which does not properly differentiate between internal or external DTD 
+        subsets. Refer to the <a href="http://dom4j.org/javadoc/org/xml/sax/ext/LexicalHandler.html#startDTD(java.lang.String,java.lang.String,java.lang.String)">startDTD()</a>
+        method of <a href="http://dom4j.org/javadoc/org/xml/sax/ext/LexicalHandler.html">LexicalHandler</a>
+        for details of how startEntity/endEntity is meant to demark external DTD subsets.
+        </p>
+
+        <p>
+        Its our intention to expand internal DTD subsets by default (so that documents can be properly round tripped by default)
+        but require external DTD subsets to be explicitly enabled via the property on the SAXReader (or SAXContentHandler). 
+        This bug in Crimson causes all DTD declarations to appear as internal DTD subsets, which both is a performance overhead
+        and breaks round tripping of documents which just use external DTD declarations. So until this matter is resolved
+        both internal and external declarations are not expanded by default.
+        </p>
+
+        <p>
+        Note that the code works perfectly against Xerces.
         </p>
         </section>
 
