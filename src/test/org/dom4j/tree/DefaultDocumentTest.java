@@ -73,10 +73,32 @@ public class DefaultDocumentTest extends AbstractTestCase {
         assertTrue(xml2.indexOf("ISO-8859-1") != -1);
     }
 
+    public void testBug1156909() throws Exception {
+        Document doc = DocumentHelper.parseText("<?xml version='1.0' "
+                + "encoding='ISO-8859-1'?><root/>");
+
+        assertEquals("XMLEncoding not correct", "ISO-8859-1", doc
+                .getXMLEncoding());
+    }
+
+    public void testAsXMLWithEncodingAndContent() throws Exception {
+        DefaultDocument document = new DefaultDocument();
+        document.setXMLEncoding("UTF-16");
+        Element root = document.addElement("root");
+        root.setText("text with an \u00FC in it"); // u00FC is umlaut
+
+        String xml = document.asXML();
+        assertTrue(xml.indexOf("UTF-16") != -1);
+        assertTrue(xml.indexOf('\u00FC') != -1);
+    }
+
     public void testEncoding() throws Exception {
-        Document document = DocumentFactory.getInstance().createDocument();
+        Document document = DocumentFactory.getInstance().createDocument(
+                "koi8-r");
         Element el = document.addElement("root");
         el.setText("text with an \u00FC in it"); // u00FC is umlaut
+
+        System.out.println(document.asXML());
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         OutputFormat of = OutputFormat.createPrettyPrint();
@@ -85,11 +107,12 @@ public class DefaultDocumentTest extends AbstractTestCase {
         XMLWriter writer = new XMLWriter(out, of);
         writer.write(document);
 
-        String result = out.toString();
-
+        String result = out.toString("koi8-r");
         System.out.println(result);
 
-        DocumentHelper.parseText(result);
+        Document doc2 = DocumentHelper.parseText(result);
+        // System.out.println(doc2.asXML());
+
     }
 }
 
