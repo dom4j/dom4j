@@ -337,11 +337,13 @@
     <java classname="HTMLWriterDemo" args="xml/xhtml.xml"/>
   </target>
 
-  <target name="test-performance" depends="samples">
+  <target name="test-performance" depends="demo-compile">
     <java classname="PerformanceTest" args="xml/periodic_table.xml xml.aelfred2.SAXDriver 10"/>
     <java classname="PerformanceTest" args="xml/periodic_table.xml org.apache.xerces.parsers.SAXParser 10"/>
+    <java classname="PerformanceTest2" args="${build.dir}/xml/periodic_table.xb 10"/>
     <java classname="PerformanceTest" args="xml/much_ado.xml xml.aelfred2.SAXDriver 10"/>
     <java classname="PerformanceTest" args="xml/much_ado.xml org.apache.xerces.parsers.SAXParser 10"/>
+    <java classname="PerformanceTest2" args="${build.dir}/xml/much_ado.xb 10"/>
   </target>
 
 
@@ -354,11 +356,13 @@
   <target name="demo-compile" depends="samples">
     <mkdir dir="${build.dir}/xml"/>
     <java classname="Compile" args="xml/much_ado.xml ${build.dir}/xml/much_ado.xb"/>
+    <java classname="Compile" args="xml/periodic_table.xml ${build.dir}/xml/periodic_table.xb"/>
   </target>
 
   <target name="demo-decompile" depends="samples">
     <mkdir dir="${build.dir}/xml"/>
     <java classname="Decompile" args="${build.dir}/xml/much_ado.xb ${build.dir}/xml/much_ado.xml"/>
+    <java classname="Decompile" args="${build.dir}/xml/periodic_table.xb ${build.dir}/xml/periodic_tablexml"/>
   </target>
 
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import org.dom4j.Document;
 import org.dom4j.TreeException;
 import org.dom4j.io.SAXReader;
+import org.dom4j.io.TreeReader;
 
 /** Perform some DOM4J parsing peformance test cases.
   * 
@@ -13,13 +14,13 @@ import org.dom4j.io.SAXReader;
 public class PerformanceTest extends SAXDemo {
     
     /** Whether the performance of each run is printed */
-    private static boolean VERBOSE = false;
+    protected static boolean VERBOSE = false;
     
     /** Default number of loops */
-    private static final int DEFAULT_LOOP_COUNT = 10;
+    protected static final int DEFAULT_LOOP_COUNT = 10;
     
     /** Number of loops to perform */
-    private int loopCount = DEFAULT_LOOP_COUNT;
+    protected int loopCount = DEFAULT_LOOP_COUNT;
     
     
     
@@ -56,15 +57,14 @@ public class PerformanceTest extends SAXDemo {
       * a number of times and outputs the timing results
       *
       * @param url is the <code>URL</code> to read 
-      * @param xmlReaderClassName is the classname of the SAX 
-      *  <code>XMLReader</code> to use for the parsing
       */
-    protected void parse( URL url, String xmlReaderClassName ) throws Exception {
-        SAXReader reader = new SAXReader( xmlReaderClassName );
+    protected void parse( URL url ) throws Exception {
+        TreeReader reader = createTreeReader();
                     
         println( "Parsing url:      " + url );
         println( "Looping:          " + loopCount + " time(s)" );        
-        println( "Using SAX parser: " + xmlReaderClassName );
+        printParser();
+        println( "DocumentFactory:  " + reader.getDocumentFactory() );
         
         if ( loopCount <= 0 ) {
             return;
@@ -125,10 +125,10 @@ public class PerformanceTest extends SAXDemo {
     /** Parses the XML document at the given URL and times how long it takes.
       *
       * @param url is the <code>URL</code> to read 
-      * @param reader is the <code>SAXReader</code> to use for the parsing
+      * @param reader is the <code>TreeReader</code> to use for the parsing
       * @return the time taken in milliseconds
       */
-    protected long timeParse(URL url, SAXReader reader) 
+    protected long timeParse(URL url, TreeReader reader) 
         throws IOException, TreeException {
 
         // Build the DOM4J Document
@@ -140,4 +140,11 @@ public class PerformanceTest extends SAXDemo {
         return end - start;
     }
 
+    protected void printParser() {
+        println( "Using SAX parser: " + xmlReaderClassName );
+    }
+    
+    protected TreeReader createTreeReader() throws Exception {
+        return new SAXReader( xmlReaderClassName );
+    }
 }
