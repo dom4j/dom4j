@@ -361,9 +361,11 @@
   <target name="release" depends="clean,dist-zip,dist-tgz,dist-jar">
     <mkdir dir="${web.htdocs}"/>
     <mkdir dir="${web.dist}"/>
+<!--
     <copy todir="${web.htdocs}" overwrite="yes" filtering="yes">
       <fileset dir="${build.doc}" excludes="*.gif"/>
     </copy>
+-->
 
     <copy todir="${web.dist}" overwrite="yes">
       <fileset dir="${dist.root}" includes="*.jar, *.zip, *.gz"/>
