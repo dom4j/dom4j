@@ -358,11 +358,14 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
       * and attributes
       */
     protected void addDeclaredNamespaces(Element element) {        
+        Namespace elementNamespace = element.getNamespace();
         for ( int size = namespaceStack.size(); declaredNamespaceIndex < size; declaredNamespaceIndex++ ) {
             Namespace namespace = namespaceStack.getNamespace(declaredNamespaceIndex);
-            String prefix = namespace.getPrefix();
-            if ( prefix != null && prefix.length() > 0 ) {
-                element.add( namespace );
+            if ( namespace != elementNamespace ) {
+                String prefix = namespace.getPrefix();
+                if ( prefix != null && prefix.length() > 0 ) {
+                    element.add( namespace );
+                }
             }
         }
     }
