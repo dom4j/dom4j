@@ -508,6 +508,7 @@
       <classpath>
         <pathelement location="${build.dest}" />
         <pathelement path="${java.class.path}" />
+        <pathelement path="." />
       </classpath>
 
       <batchtest fork="yes" todir="${build.dir}/test-results/xml">
