@@ -92,7 +92,7 @@ public class ExternalEntityDecl {
             buffer.append(publicID);
             buffer.append("\" ");
             if (systemID != null) {
-                buffer.append(" \"");
+                buffer.append("\"");
                 buffer.append(systemID);
                 buffer.append("\" ");
             }
