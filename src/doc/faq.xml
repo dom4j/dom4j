@@ -460,6 +460,54 @@ java -Dorg.dom4j.verbose=true MyApp
     </section>
 
 
+    <section title="What XML parser does dom4j use?">
+      <p>dom4j works with any SAX parser via JAXP. So putting 
+        a recent distribution of crimson.jar or xerces.jar on 
+        the CLASSPATH will allow Crimson or Xerces's parser to be used.
+      </p>
+      <p>If no SAX parser is on the classpath via JAXP or the SAX
+        org.xml.sax.driver system property then the embedded Aelfred 
+        distribution will be used instead. Note that the embedded
+        Aelfred distribution is a non validating parser, though it is quite fast
+      </p>
+    </section>
+
+    <section title="How can I validate my document?">
+      <p>If a recent version of crimson.jar or xerces.jar is on the CLASSPATH 
+      then dom4j will use that as the SAX parser via JAXP. 
+      If none of these are on the CLASSPATH then a bundled version of Aelfred is used, 
+      which does not validate.
+      </p>
+
+      <p>So to perform DTD validation when parsing put crimson.jar or xerces.jar on 
+        the CLASSPATH. If you wish to validate against an XML Schema then try xerces.jar.
+        Then use the following code.</p>
+
+<pre>
+// turn validation on
+SAXReader reader = new SAXReader(true);
+Document document = reader.read( "foo.xml" );
+</pre>
+
+      <p>An alternative approach is to use Sun's MSV library for validation, 
+      which allows you to use DTD, XML Schema, Relax NG, Relax or TREX as the 
+      schema languages. 
+      There's an example in the daily build at dom4j/src/samples/validate/JARVDemo.java
+      </p>
+
+      <p>If you are validating an existing dom4j document then we recommend 
+      you try MSV as it avoids turning the document into text and then parsing 
+      it again - MSV can work purely off of SAX events generated from the dom4j document.
+      </p>
+
+      <p>Using this approach your code will actually be based on the 
+        <a href="http://iso-relax.sourceforge.net/JARV/">JARV</a> API 
+        which allows alternative validation mechanisms to
+        be plugged into your code.
+      </p>
+    </section>
+
+
     <section title="How do I import dom4j into VAJ?">
 
     <p>VisualAge for Java checks all dependencies in a JAR and displays

@@ -11,6 +11,7 @@ import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.dom4j.Document;
@@ -73,7 +74,7 @@ public class XSLTDemo extends SAXDemo {
         
         // now lets create the TrAX source and result
         // objects and do the transformation
-        Source source = new DocumentSource( document );
+        Source source = new DocumentSource( document );        
         DocumentResult result = new DocumentResult();
         transformer.transform( source, result );
 
