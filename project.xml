@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <version>2</version>
+  <name>dom4j</name>
+  <id>dom4j</id>
+  <currentVersion>1.0-dev</currentVersion>
+  <organization>
+	  <name>MetaStuff Ltd.</name>
+	  <url>http://dom4j.org</url>
+  </organization>
+  <inceptionYear>2002</inceptionYear>
+  <package>org.dom4j</package>
+  <shortDescription>dom4j : XML framework for Java</shortDescription>
+  <gumpRepositoryId>jakarta</gumpRepositoryId>
+  <description>dom4j: the flexible XML framework for Java</description>
+  <url>http://dom4j.org</url>
+  <cvsWebUrl>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/dom4j/dom4j/</cvsWebUrl>
+  <cvsModule>dom4j/dom4j</cvsModule>
+  <issueTrackingUrl>http://sourceforge.net/tracker/?group_id=16035</issueTrackingUrl>
+  <siteAddress>dom4j.org</siteAddress>
+  <siteDirectory>/home/d/do/dom4j/htdocs</siteDirectory>
+  
+  <mailingLists>
+  
+    <mailingList>
+      <name>dom4j developer list</name>
+      <subscribe>dom4j-dev-subscribe@lists.sourceforge.net</subscribe>
+      <unsubscribe>dom4j-dev-unsubscribe@lists.sourceforge.net</unsubscribe>
+      <archive>http://www.mail-archive.com/dom4j-dev%40lists.sourceforge.net/</archive>
+    </mailingList>
+  
+    <mailingList>
+      <name>dom4j user list</name>
+      <subscribe>dom4j-user-subscribe@lists.sourceforge.net</subscribe>
+      <unsubscribe>dom4j-user-unsubscribe@lists.sourceforge.net</unsubscribe>
+      <archive>http://www.mail-archive.com/dom4j-user%40lists.sourceforge.net/</archive>
+    </mailingList>
+    
+  </mailingLists>
+
+  
+  <developers>
+    <developer>
+      <name>James Strachan</name>
+      <id>jstrachan</id>
+      <email>jstrachan@apache.org</email>
+      <organization>SpiritSoft, Inc.</organization>
+    </developer>
+  </developers>
+  
+  <dependencies>
+    
+    <dependency>
+      <name>xmlParseAPIs</name>
+      <type>required</type>
+      <version>2.0.0</version>
+      <jar>xmlParserAPIs-2.0.0.jar</jar>
+    </dependency>
+
+  </dependencies>
+  
+  <build>
+    <sourceDirectories>
+      <sourceDirectory>src/java</sourceDirectory>
+    </sourceDirectories>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+    <aspectSourceDirectories></aspectSourceDirectories>
+    <unitTestPatterns>
+      <unitTestPattern>include = **/*Test*.java</unitTestPattern>
+    </unitTestPatterns>
+
+    <jarResources>
+   	  <jarResource>include = **/*.properties</jarResource>
+    </jarResources>
+
+    <jars></jars>
+    <nagEmailAddress>dom4j-dev@</nagEmailAddress>
+  </build>
+</project>

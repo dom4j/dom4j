@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="dom4j">
+
+  <title>dom4j</title>
+  
+  <organizationLogo href="/images/logo.gif">dom4j</organizationLogo>
+
+  <body>
+    <menu name="dom4j">
+      <item name="Home"                    href="/index.html"/>
+      <item name="FAQ"                     href="/faq.html"/>
+      <item name="Quick start"             href="/guide.html"/>
+      <item name="Cookbook"                href="/cookbook/cookbook.html"/>
+      <item name="Comparison"              href="/compare.html"/>
+      <item name="Goals"              	   href="/goals.html"/>
+      <item name="Download"                href="/download.html"/>
+      <item name="License"                  href="/license.html"/>
+    </menu>
+  </body>
+</project>
