@@ -193,6 +193,25 @@ public class SAXWriter implements XMLReader {
         write( element, new NamespaceStack() );
     }
     
+
+    /** <p>Writes the opening tag of an {@link Element},
+      * including its {@link Attribute}s
+      * but without its content.</p>
+      *
+      * @param element <code>Element</code> to output.
+      */
+    public void writeOpen(Element element) throws SAXException {
+        startElement(element, null);
+    }
+
+    /** <p>Writes the closing tag of an {@link Element}</p>
+      *
+      * @param element <code>Element</code> to output.
+      */
+    public void writeClose(Element element) throws SAXException {
+        endElement(element);
+    }
+    
     /** Generates SAX events for the given text
       *
       * @param text is the text to send to the SAX ContentHandler
