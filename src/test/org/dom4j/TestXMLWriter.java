@@ -83,6 +83,34 @@ public class TestXMLWriter extends AbstractTestCase {
         assertTrue( "Generated document has a root element", doc2.getRootElement() != null );
         assertEquals( "Generated document has corrent named root element", doc2.getRootElement().getName(), "project" );
     }
+    
+    public void testNamespaceBug() throws Exception {        
+        Document doc = DocumentHelper.createDocument();
+        
+        Element root = doc.addElement("root","ns1");
+        Element child1 = root.addElement("joe","ns2");
+        child1.addElement("zot","ns1");
+        
+        StringWriter out = new StringWriter();
+        XMLWriter writer = new XMLWriter(
+            out,
+            OutputFormat.createPrettyPrint() 
+        );
+        writer.write(doc);
+        String text = out.toString();
+        
+        //System.out.println( "Generated:" + text );
+        
+        Document doc2 = DocumentHelper.parseText( text );
+        root = doc2.getRootElement();
+        assertEquals( "root has correct namespace", "ns1", root.getNamespaceURI() );
+        
+        Element joe = (Element) root.elementIterator().next();
+        assertEquals( "joe has correct namespace", "ns2", joe.getNamespaceURI() );
+        
+        Element zot = (Element) joe.elementIterator().next();
+        assertEquals( "zot has correct namespace", "ns1", zot.getNamespaceURI() );
+    }
 }
 
 

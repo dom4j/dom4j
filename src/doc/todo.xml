@@ -7,6 +7,15 @@
       <section title="Changes in CVS since last release">
 
         <section title="Patches">
+        <p>Fixed bug found by Kohsuke Kawaguchi that there was a problem in XMLWriter during its serialization of
+        a document which redeclared the default namespace prefix. It turned out to be a bug in
+        org.dom4j.tree.NamespaceStack where redeclarations of namespace prefixes were not being handled properly
+        during serialization. The test cases in org.dom4j.TestXMLWriter and org.dom4j.TestNamespaces have been improved
+        to test these features more rigorously.
+        </p>
+        <p>Fixed bug found by Toby
+        that was causing a security exception in applets when using a DocumentFactory.
+        </p>
         <p>Implemented the suggestion by Kesav Kumar, that the detach() method now returns the node (this) so that moving 
         nodes from one part of a document to any another can now be one line of code. Here's an example of it in use.
         </p>
