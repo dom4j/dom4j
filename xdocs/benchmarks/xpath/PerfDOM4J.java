@@ -18,7 +18,6 @@ import org.dom4j.io.DocumentSource;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
-import sun.security.krb5.internal.crypto.e;
 
 public class PerfDOM4J
 {

@@ -17,7 +17,6 @@ import java.util.Iterator;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
-import org.dom4j.io.XMLWriter;
 import org.dom4j.jaxb.JAXBModifier;
 import org.dom4j.jaxb.JAXBReader;
 import org.dom4j.jaxb.JAXBWriter;

@@ -10,7 +10,6 @@
 package org.dom4j.samples.jaxb;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import javax.xml.bind.Element;
 
