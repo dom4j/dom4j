@@ -46,6 +46,8 @@
    <attribute name="salary" type="integer"/>
   </complexType>
   <attribute name="age" type="integer"/>
+  <attribute name="x" type="int"/>
+  <attribute name="d" type="dateTime"/>
  </element>
 
  <element name="name">

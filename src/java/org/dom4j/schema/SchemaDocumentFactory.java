@@ -34,7 +34,8 @@ import org.xml.sax.Attributes;
   */
 public class SchemaDocumentFactory extends DocumentFactory {
 
-    // I don't think interning of QNames is necessary
+    
+    // XXXX: I don't think interning of QNames is necessary
     private static final boolean DO_INTERN_QNAME = false;
     
     
@@ -55,6 +56,10 @@ public class SchemaDocumentFactory extends DocumentFactory {
     private SAXReader xmlSchemaReader = new SAXReader();
 
     
+    /** If schemas are automatically loaded when parsing instance documents */
+    private boolean autoLoadSchema = false;
+    
+    
     /** <p>Access to the singleton instance of this factory.</p>
       *
       * @return the default singleon instance
@@ -66,7 +71,17 @@ public class SchemaDocumentFactory extends DocumentFactory {
     public SchemaDocumentFactory() {
         schemaBuilder = new SchemaBuilder(this);
     }
+
     
+    /** Loads the given XML Schema document into this factory so
+      * schema-aware Document, Elements and Attributes will be created
+      * by this factory.
+      *
+      * @param schemaDocument is an XML Schema Document instance.
+      */
+    public void loadSchema(Document schemaDocument) {
+        schemaBuilder.build( schemaDocument );
+    }
     
     /** Registers the given <code>SchemaElementFactory</code> for the given 
       * &lt;element&gt; schema element
@@ -91,7 +106,7 @@ public class SchemaDocumentFactory extends DocumentFactory {
     }
     
     public Attribute createAttribute(QName qname, String value) {
-        if ( qname.equals( XSI_NO_SCHEMA_LOCATION ) ) {
+        if ( autoLoadSchema && qname.equals( XSI_NO_SCHEMA_LOCATION ) ) {
             loadSchema( value );
         }
         return super.createAttribute( qname, value );
@@ -106,7 +121,7 @@ public class SchemaDocumentFactory extends DocumentFactory {
             // XXXX: massive hack!            
             schemaInstanceURI = "xml/schema/" + schemaInstanceURI;
             Document schemaDocument = xmlSchemaReader.read( schemaInstanceURI );
-            schemaBuilder.build( schemaDocument );
+            loadSchema( schemaDocument );
         }
         catch (Exception e) {
             System.out.println( "Failed to load schema: " + schemaInstanceURI );
