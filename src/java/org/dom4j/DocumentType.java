@@ -9,6 +9,8 @@
 
 package org.dom4j;
 
+import java.util.List;
+
 /** <p><code>DocumentType</code> defines an XML DOCTYPE declaration.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
@@ -34,6 +36,11 @@ public interface DocumentType extends Node {
     public String getSystemID();
     public void setSystemID(String systemID);
 
+    /** Returns a list of declaration objects, defined in the {@link org.dom4j.dtd} package */    
+    public List getDeclarations();
+    
+    /** Sets the list of declaration objects, defined in the {@link org.dom4j.dtd} package */    
+    public void setDeclarations(List declarations);
 }
 
 
