@@ -136,18 +136,16 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
 
 
     public SAXContentHandler() {
-        this( DocumentFactory.getInstance() );
+        this(DocumentFactory.getInstance());
     }
 
     public SAXContentHandler(DocumentFactory documentFactory) {
-        this.documentFactory = documentFactory;
-        this.namespaceStack = new NamespaceStack(documentFactory);
+        this(documentFactory, null);
     }
 
     public SAXContentHandler(DocumentFactory documentFactory, ElementHandler elementHandler) {
-        this.documentFactory = documentFactory;
-        this.elementHandler = elementHandler;
-        this.namespaceStack = new NamespaceStack(documentFactory);
+        this(documentFactory, elementHandler, null);
+        this.elementStack = createElementStack();
     }
 
     public SAXContentHandler(DocumentFactory documentFactory, ElementHandler elementHandler, ElementStack elementStack) {
@@ -191,15 +189,13 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     }
 
     public void startDocument() throws SAXException {
+        System.out.println("start document ...");
+        
         document = createDocument();
         currentElement = null;
 
-        if ( elementStack == null ) {
-            elementStack = createElementStack();
-        }
-        else {
-            elementStack.clear();
-        }
+        elementStack.clear();
+
         if ( (elementHandler != null) &&
              (elementHandler instanceof DispatchHandler) ) {
             elementStack.setDispatchHandler((DispatchHandler)elementHandler);

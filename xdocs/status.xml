@@ -8,6 +8,8 @@
  
   <body>
       <section name="CVS">
+        <p>Fixed a bug in <code>SAXContentHandler</code> which caused a <code>NullPointerException</code> in some 
+           situations.</p>
         <p>Fixed bug which prevented an element's namespace prefix from being registered for use in xpath expressions (contributed by Todd Wolff).</p>
         <p>Fixed bug in <code>XMLWriter</code> that caused duplication of the default namespace declaration (reported by Todd Wolff).</p>
         <p>Added a bunch of patches to make the dom4j DOM classes more DOM compliant (contributed by Curt Arnold).</p>
