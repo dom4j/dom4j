@@ -1283,7 +1283,9 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                 }
                 writer.write("?>");
             }
-            println();
+            if (format.isNewLineAfterDeclaration()) {
+                println();    
+            }
         }
     }
 
