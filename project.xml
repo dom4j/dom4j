@@ -14,7 +14,40 @@
   <logo>http://dom4j.org/images/logo.gif</logo>
   
   <inceptionYear>2002</inceptionYear>
+ 
   <package>org.dom4j</package>
+   <packageGroups>
+    <packageGroup>
+      <title>Core Developer API</title>
+      <packages>org.dom4j,org.dom4j.io</packages>
+    </packageGroup>
+    <packageGroup>
+      <title>Utility classes</title>
+      <packages>org.dom4j.util</packages>
+    </packageGroup>
+    <packageGroup>
+      <title>XRule engine for declarative XSLT style processing</title>
+      <packages>org.dom4j.rule,org.dom4j.rule.*</packages>
+    </packageGroup>
+    <packageGroup>
+      <title>Alternative dom4j implementations</title>
+      <packages>org.dom4j.datatype,org.dom4j.dom,org.dom4j.bean</packages>
+    </packageGroup>
+    <packageGroup>
+      <title>Swing helper classes</title>
+      <packages>org.dom4j.swing</packages>
+    </packageGroup>
+    <packageGroup>
+      <title>Bundled Aelfred Parser</title>
+      <packages>org.dom4j.io.aelfred</packages>
+    </packageGroup>
+    <packageGroup>
+      <title>Implementation classes</title>
+      <packages>org.dom4j.tree,org.dom4j.dtd,org.dom4j.xpp,org.dom4j.xpath</packages>
+    </packageGroup>
+  </packageGroups>
+  
+  
   <shortDescription>dom4j : XML framework for Java</shortDescription>
   <gumpRepositoryId>dom4j</gumpRepositoryId>
 
