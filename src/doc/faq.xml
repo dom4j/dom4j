@@ -17,6 +17,8 @@
         restrictive licenses around, you can use <i>dom4j</i> to create new products
         without them having to be open source.
       </p>
+      <p>You can find a copy of the license <a href="license.html">here</a>.
+      </p>
     </section>
 
     <section title="What do I need to add to my CLASSPATH?">
