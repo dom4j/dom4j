@@ -7,7 +7,7 @@
  * $Id$
  */
 
-package org.dom4j.tree;
+package org.dom4j.util;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -33,6 +33,10 @@ import org.dom4j.Namespace;
 import org.dom4j.QName;
 import org.dom4j.ProcessingInstruction;
 import org.dom4j.Text;
+import org.dom4j.tree.BackedList;
+import org.dom4j.tree.DefaultElement;
+
+import org.xml.sax.Attributes;
 
 /** <p><code>IndexedElement</code> is an implementation of {@link Element}
   * which maintains an index of the attributes and elements it contains to
@@ -58,6 +62,10 @@ public class IndexedElement extends DefaultElement {
         super(qname);
     }
 
+    public IndexedElement(QName qname, Attributes attributes) { 
+        super(qname, attributes);
+    }
+    
     public Attribute getAttribute(String name) {
         return (Attribute) getAttributeIndex().get(name);
     }
