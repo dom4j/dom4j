@@ -184,34 +184,32 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     // polymorphic node methods    
 
     public void add(Node node) {
-        if ( node instanceof Element ) {
-            add((Element) node);
-        }
-        else if ( node instanceof Comment ) {
-            add((Comment) node);
-        }
-        else if ( node instanceof ProcessingInstruction ) {
-            add((ProcessingInstruction) node);
-        }
-        else {
-            invalidNodeTypeAddException(node);
+        switch ( node.getNodeType() ) {
+            case ELEMENT_NODE:
+                add((Element) node);
+                break;
+            case COMMENT_NODE:
+                add((Comment) node);
+                break;
+            case PROCESSING_INSTRUCTION_NODE:
+                add((ProcessingInstruction) node);
+                break;
+            default:
+                invalidNodeTypeAddException(node);
         }
     }
     
     public boolean remove(Node node) {
-        if ( node instanceof Element ) {
-            return remove((Element) node);
-        }
-        else
-        if ( node instanceof Comment ) {
-            return remove((Comment) node);
-        }
-        else
-        if ( node instanceof ProcessingInstruction ) {
-            return remove((ProcessingInstruction) node);
-        }
-        else {
-            return false;
+        switch ( node.getNodeType() ) {
+            case ELEMENT_NODE:
+                return remove((Element) node);
+            case COMMENT_NODE:
+                return remove((Comment) node);
+            case PROCESSING_INSTRUCTION_NODE:
+                return remove((ProcessingInstruction) node);
+            default:
+                invalidNodeTypeAddException(node);
+                return false;
         }
     }
     

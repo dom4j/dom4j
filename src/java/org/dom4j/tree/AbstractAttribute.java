@@ -23,7 +23,11 @@ import org.dom4j.Visitor;
   */
 public abstract class AbstractAttribute extends AbstractNode implements Attribute {
 
+    public short getNodeType() {
+        return ATTRIBUTE_NODE;
+    }
 
+    
     public void setNamespace(Namespace namespace) {
         throw new UnsupportedOperationException("This Attribute is read only and cannot be changed" );
     }

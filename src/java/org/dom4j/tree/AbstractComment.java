@@ -22,6 +22,11 @@ public abstract class AbstractComment extends AbstractCharacterData implements C
 
     public AbstractComment() {
     }
+
+    public short getNodeType() {
+        return COMMENT_NODE;
+    }
+
     
     public String toString() {
         return super.toString() + " [Comment: \"" + getText() + "\"]";

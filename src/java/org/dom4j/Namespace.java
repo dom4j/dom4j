@@ -60,6 +60,10 @@ public class Namespace extends AbstractNode {
     }
 
     
+    public short getNodeType() {
+        return NAMESPACE_NODE;
+    }
+
     /** @return the hash code based on the qualified name and the URI of the 
       * namespace.
       */

@@ -45,7 +45,11 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
 
     public AbstractElement() { 
     }
- 
+
+    public short getNodeType() {
+        return ELEMENT_NODE;
+    }
+    
     public boolean isRootElement() {
         Document document = getDocument();
         if ( document != null ) {
@@ -270,62 +274,66 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
 
     // polymorphic node methods    
     public void add(Node node) {
-        if ( node instanceof Element ) {
-            add((Element) node);
-        }
-        else if ( node instanceof CharacterData ) {
-            if ( node instanceof Text ) {
+        switch ( node.getNodeType() ) {
+            case ELEMENT_NODE:
+                add((Element) node);
+                break;
+            case ATTRIBUTE_NODE:
+                add((Attribute) node);
+                break;
+            case TEXT_NODE:
                 add((Text) node);
-            }
-            else if ( node instanceof CDATA ) {
+                break;
+            case CDATA_SECTION_NODE:
                 add((CDATA) node);
-            }
-            else if ( node instanceof Comment ) {
+                break;
+            case ENTITY_REFERENCE_NODE:
+                add((Entity) node);
+                break;
+            case PROCESSING_INSTRUCTION_NODE:
+                add((ProcessingInstruction) node);
+                break;
+            case COMMENT_NODE:
                 add((Comment) node);
-            }
-            else {
+                break;
+/*                
+            case DOCUMENT_TYPE_NODE:
+                add((DocumentType) node);
+                break;
+*/
+            case NAMESPACE_NODE:
+                add((Namespace) node);
+                break;
+            default:
                 invalidNodeTypeAddException(node);
-            }
-        }
-        else if ( node instanceof Entity ) {
-            add((Entity) node);
-        }
-        else if ( node instanceof Namespace ) {
-            add((Namespace) node);
-        }
-        else if ( node instanceof ProcessingInstruction ) {
-            add((ProcessingInstruction) node);
-        }
-        else {
-            invalidNodeTypeAddException(node);
         }
     }
     
     public boolean remove(Node node) {
-        if ( node instanceof Element ) {
-            return remove((Element) node);
-        }
-        else if ( node instanceof CharacterData ) {
-            if ( node instanceof Text ) {
+        switch ( node.getNodeType() ) {
+            case ELEMENT_NODE:
+                return remove((Element) node);
+            case ATTRIBUTE_NODE:
+                return remove((Attribute) node);
+            case TEXT_NODE:
                 return remove((Text) node);
-            }
-            else if ( node instanceof CDATA ) {
+            case CDATA_SECTION_NODE:
                 return remove((CDATA) node);
-            }
-            else if ( node instanceof Comment ) {
+            case ENTITY_REFERENCE_NODE:
+                return remove((Entity) node);
+            case PROCESSING_INSTRUCTION_NODE:
+                return remove((ProcessingInstruction) node);
+            case COMMENT_NODE:
                 return remove((Comment) node);
-            }
+/*                
+            case DOCUMENT_TYPE_NODE:
+                return remove((DocumentType) node);
+*/
+            case NAMESPACE_NODE:
+                return remove((Namespace) node);
+            default:
+                return false;
         }
-        else if ( node instanceof Entity ) {
-            return remove((Entity) node);
-        }
-        else if ( node instanceof Namespace ) {
-            return remove((Namespace) node);
-        }
-        else if ( node instanceof ProcessingInstruction ) {
-            return remove((ProcessingInstruction) node);
-        }
-        return false;
     }
     
     // typesafe versions using node classes
@@ -426,7 +434,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
                 setAttributeValue(attribute.getQName(), attribute.getValue());
             }
             else {
-                element.add(attribute);
+                add(attribute);
             }
         }
     }
@@ -435,17 +443,11 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         for (Iterator iter = element.nodeIterator(); iter.hasNext(); ) {
             Object object = iter.next();
             if (object instanceof String) {
-                element.addText((String) object);
-            } else if (object instanceof Text) {
-                add((Text)((Text) object).clone());
-            } else if (object instanceof Comment) {
-                add((Comment)((Comment) object).clone());
-            } else if (object instanceof Entity) {
-                add((Entity)((Entity) object).clone());
-            } else if (object instanceof Element) {
-                add((Element)((Element) object).clone());
-            } else if (object instanceof CDATA) {
-                add((CDATA)((CDATA) object).clone());
+                addText((String) object);
+            } 
+            else if (object instanceof Node) {
+                Node node = (Node) object;
+                add( (Node) node.clone() );
             }
         }
     }

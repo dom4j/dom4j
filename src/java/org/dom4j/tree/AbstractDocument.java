@@ -40,6 +40,11 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
     public AbstractDocument() { 
     }
  
+    public short getNodeType() {
+        return DOCUMENT_NODE;
+    }
+
+    
     public String asXML() {
         try {
             StringWriter out = new StringWriter();

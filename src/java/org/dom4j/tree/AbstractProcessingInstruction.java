@@ -28,6 +28,10 @@ public abstract class AbstractProcessingInstruction extends AbstractNode impleme
     public AbstractProcessingInstruction() {
     }
     
+    public short getNodeType() {
+        return PROCESSING_INSTRUCTION_NODE;
+    }
+
     public String toString() {
         return super.toString() + " [ProcessingInstruction: &" + getName() + ";]";
     }

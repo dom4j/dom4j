@@ -24,6 +24,10 @@ public abstract class AbstractEntity extends AbstractNode implements Entity {
     public AbstractEntity() {
     }
     
+    public short getNodeType() {
+        return ENTITY_REFERENCE_NODE;
+    }
+
     public String toString() {
         return super.toString() + " [Entity: &" + getName() + ";]";
     }

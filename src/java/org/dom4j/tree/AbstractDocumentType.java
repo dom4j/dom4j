@@ -28,6 +28,10 @@ public abstract class AbstractDocumentType extends AbstractNode implements Docum
     public AbstractDocumentType() {
     }
     
+    public short getNodeType() {
+        return DOCUMENT_TYPE_NODE;
+    }
+
     public String toString() {
         return super.toString() + " [DocumentType: " + asXML() + "]";
     }

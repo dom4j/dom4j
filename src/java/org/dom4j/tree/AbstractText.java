@@ -23,6 +23,10 @@ public abstract class AbstractText extends AbstractCharacterData implements Text
     public AbstractText() {
     }
     
+    public short getNodeType() {
+        return TEXT_NODE;
+    }
+
     public String toString() {
         return super.toString() + " [Text: \"" + getText() + "\"]";
     }
