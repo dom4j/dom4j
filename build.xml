@@ -7,7 +7,7 @@
     <tstamp/>
     <property name="Name" value="dom4j"/>
     <property name="name" value="dom4j"/>
-    <property name="version" value="0.5"/>
+    <property name="version" value="patched-0.5"/>
     <property name="current.version" value="0.5"/>
     <property name="year" value="2001"/>
 
@@ -190,7 +190,8 @@
     <javac srcdir="${test.dir}"
            destdir="${build.dest}"
            debug="${debug}"
-           optimize="${optimize}"/>
+           optimize="${optimize}"
+           deprecation="${deprecation}"/>
     <copy  todir="${build.dest}">
       <fileset dir="${test.dir}" includes="**/*.properties"/>
     </copy>

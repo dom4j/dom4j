@@ -6,6 +6,9 @@
     <section title="Change History">
         <section title="Patches in CVS since release">
           <section title="Patches and bug fixes">
+            <p>Fixed bug in elementByID() method found by Thomas Nichols that was resulting in
+              the element not being found correctly.
+            </p>
             <p>Fixed bug in IndexedElement reported by Kerstin Grünefeld that was causing
               a null pointer exception when using XPath on an IndexedElement.
             </p>

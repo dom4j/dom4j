@@ -9,84 +9,66 @@
 
 package org.dom4j;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamSource;
 
 import junit.framework.*;
 import junit.textui.TestRunner;
 
-import org.dom4j.io.DocumentResult;
-import org.dom4j.io.DocumentSource;
 import org.dom4j.io.SAXReader;
 
-/** Tests that XSLT works correctly
+
+/** Tests the elementByID() method
   *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class TestXSLT extends AbstractTestCase {
+public class TestElementByID extends AbstractTestCase {
 
+    /** Input XML file to read */
+    protected static String INPUT_XML_FILE = "xml/test/elementByID.xml";
+    
     public static void main( String[] args ) {
         TestRunner.run( suite() );
     }
     
     public static Test suite() {
-        return new TestSuite( TestXSLT.class );
+        return new TestSuite( TestElementByID.class );
     }
     
-    public TestXSLT(String name) {
+    public TestElementByID(String name) {
         super(name);
     }
 
+   
     // Test case(s)
     //-------------------------------------------------------------------------                    
-    public void testTransform() throws Exception {   
-        Document transformedDoc = transform( "xml/nitf/ashtml.xsl" );
+    public void testElementByID() throws Exception {        
+        String id = "message";        
         
-        //log( transformedDoc.asXML() );
+        // test XPath
+        Element element = (Element) document.selectSingleNode( "//*[@ID='" + id + "']" );
+        assertTrue( "Found element by ID: " + id, element != null );        
+        assertEquals( "ID is equal", id, element.attributeValue( "ID" ) );
         
-        assertTrue( "Transformed Document is not null", transformedDoc != null );
+        // test with elementByID
+        element = document.elementByID( id );
         
-        List h1List = transformedDoc.selectNodes( "/html//h1" );
+        assertTrue( "Found element by ID: " + id, element != null );        
+        assertEquals( "ID is equal", id, element.attributeValue( "ID" ) );
         
-        assertTrue( "At least one <h1>", h1List.size() > 0 );
+        log( "Found element: " + element.getText() );
         
-        List pList = transformedDoc.selectNodes( "//p" );
+        element = document.elementByID( "DoesNotExist" );
         
-        assertTrue( "At least one <p>", pList.size() > 0 );
+        assertTrue( "Found no element", element == null );
     }
     
-    // Implementation methods
-    //-------------------------------------------------------------------------                    
     protected void setUp() throws Exception {
         SAXReader reader = new SAXReader();
-        document = reader.read( "xml/nitf/sample.xml" );
+        document = reader.read( new File( INPUT_XML_FILE ) );
     }
-        
-    protected Document transform(String xsl) throws Exception {   
-        assertTrue( "Document is not null", document != null );
-               
-        // load the transformer
-        TransformerFactory factory = TransformerFactory.newInstance();
-        Transformer transformer = factory.newTransformer( 
-            new StreamSource( xsl ) 
-        );
-        
-        // now lets create the TrAX source and result
-        // objects and do the transformation
-        Source source = new DocumentSource( document );
-        DocumentResult result = new DocumentResult();
-        transformer.transform( source, result );
-
-        return result.getDocument();
-    }
-        
 }
 
 

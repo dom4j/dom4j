@@ -241,7 +241,10 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
                     return element;
                 }
                 else {
-                    return element.elementByID( elementID );
+                    element = element.elementByID( elementID );
+                    if ( element != null ) {
+                        return element;
+                    }
                 }
             }
         }

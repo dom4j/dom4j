@@ -74,7 +74,7 @@ public class TestIndexedElement extends AbstractTestCase {
         }
         log( "..........................................." );
         
-        assert( "Found some results", list.size() > 0 );
+        assertTrue( "Found some results", list.size() > 0 );
     }
             
 

@@ -65,7 +65,7 @@ public class TestXMLWriter extends AbstractTestCase {
             log( "]. Done" );
         }
         
-        assert( "Output text is bigger than 10 characters", text.length() > 10 );
+        assertTrue( "Output text is bigger than 10 characters", text.length() > 10 );
     }        
     
     public void testWriterBug() throws Exception {        
@@ -80,7 +80,7 @@ public class TestXMLWriter extends AbstractTestCase {
         SAXReader reader = new SAXReader();
         Document doc2 = reader.read( in );
         
-        assert( "Generated document has a root element", doc2.getRootElement() != null );
+        assertTrue( "Generated document has a root element", doc2.getRootElement() != null );
         assertEquals( "Generated document has corrent named root element", doc2.getRootElement().getName(), "project" );
     }
 }

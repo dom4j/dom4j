@@ -175,8 +175,8 @@ public class TestRoundTrip extends AbstractTestCase {
     }
     
     protected void assertDocumentsEqual(Document doc1, Document doc2) throws Exception {
-        assert( "Doc1 not null", doc1 != null );
-        assert( "Doc2 not null", doc2 != null );
+        assertTrue( "Doc1 not null", doc1 != null );
+        assertTrue( "Doc2 not null", doc2 != null );
  
         doc1.normalize();
         doc2.normalize();
@@ -184,7 +184,7 @@ public class TestRoundTrip extends AbstractTestCase {
         assertNodesEqual(doc1, doc2);
         
         NodeComparator comparator = new NodeComparator();
-        assert( "Documents are equal", comparator.compare( doc1, doc2 ) == 0 );
+        assertTrue( "Documents are equal", comparator.compare( doc1, doc2 ) == 0 );
     }
 
     
@@ -245,10 +245,10 @@ public class TestRoundTrip extends AbstractTestCase {
     protected void assertNodesEqual( DocumentType o1, DocumentType o2 ) {
         if ( o1 != o2 ) {
             if ( o1 == null ) {
-                assert( "Missing DocType: " + o2, false );
+                assertTrue( "Missing DocType: " + o2, false );
             }
             else if ( o2 == null ) {
-                assert( "Missing DocType: " + o1, false );
+                assertTrue( "Missing DocType: " + o1, false );
             }
             else {
                 assertEquals( "DocType name equal", o1.getName(), o2.getName() );
@@ -299,7 +299,7 @@ public class TestRoundTrip extends AbstractTestCase {
     protected void assertNodesEqual( Node n1, Node n2 ) {
         int nodeType1 = n1.getNodeType();
         int nodeType2 = n2.getNodeType();
-        assert( "Nodes are of same type: ", nodeType1 == nodeType2 );
+        assertTrue( "Nodes are of same type: ", nodeType1 == nodeType2 );
         
         switch (nodeType1) {
             case Node.ELEMENT_NODE:
@@ -333,7 +333,7 @@ public class TestRoundTrip extends AbstractTestCase {
                 assertNodesEqual((Namespace) n1, (Namespace) n2);
                 break;
             default:
-                assert( "Invalid node types. node1: " + n1 + " and node2: " + n2, false );
+                assertTrue( "Invalid node types. node1: " + n1 + " and node2: " + n2, false );
         }
     }
     
