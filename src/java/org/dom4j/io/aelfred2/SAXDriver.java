@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 1999-2001 David Brownell
+ * SAXDriver.java
+ * Copyright (C) 1999,2000,2001 The Free Software Foundation
  * 
  * This file is part of GNU JAXP, a library.
  *

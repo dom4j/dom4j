@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 1999-2001 David Brownell
+ * XmlParser.java
+ * Copyright (C) 1999,2000,2001 The Free Software Foundation
  * 
  * This file is part of GNU JAXP, a library.
  *
@@ -582,9 +583,12 @@ final class XmlParser
 	parseEq ();
 	checkLegalVersion (version = readLiteral (flags));
 	if (!version.equals ("1.0")){
-	    if(version.equals ("1.1"))
+	    if(version.equals ("1.1")){
+	    	handler.warn ("expected XML version 1.0, not: " + version);
 	    	xmlVersion = XML_11;
-	    handler.warn ("expected XML version 1.0, not: " + version);
+	    }else {
+	    	error("illegal XML version", version, "1.0 or 1.1");
+	    }
 	}
 	else
 	    xmlVersion = XML_10;
@@ -645,8 +649,16 @@ final class XmlParser
 	    String version;
 	    parseEq ();
 	    checkLegalVersion (version = readLiteral (flags));
-	    if (!version.equals ("1.0"))
+	    
+	    if (version.equals ("1.1")){
+	    	if (xmlVersion == XML_10){
+	    	   error ("external subset has later version number.", "1.0", version);    
+	    	}
 		handler.warn ("expected XML version 1.0, not: " + version);
+		xmlVersion = XML_11;
+             }else if(!version.equals ("1.0")) {
+		 error("illegal XML version", version, "1.0 or 1.1");
+	     }
 	    requireWhitespace ();
 	}
 
@@ -2255,9 +2267,11 @@ loop:
 		    columnAugment++;
 		    break;
 		default:
-		    if (c < 0x0020 || c > 0xFFFD)
-			error ("illegal XML character U+"
-				+ Integer.toHexString (c));
+			if ((c < 0x0020 || c > 0xFFFD)
+			   || ((c >= 0x007f) && (c <= 0x009f) && (c != 0x0085) 
+			       && xmlVersion == XML_11)) 
+				error ("illegal XML character U+"
+					+ Integer.toHexString (c));
 		    // that's not a whitespace char
 		    pureWhite = false;
 		    columnAugment++;
@@ -3586,7 +3600,7 @@ loop:
 	}
 
 	char c = readBuffer [readBufferPos++];
-
+       
 	if (c == '\n') {
 	    line++;
 	    column = 0;
@@ -4627,10 +4641,10 @@ loop:
 		    if ((c == 0x0085 || c == 0x000a) && sawCR)
 		       	continue;
 		    
-		    // Sec 2.1
+		    // Sec 2.11
 		    // [3] the single character #x85
-		    // [4] the single character #x2028
-		    if((c == 0x0085 || c == 0x2028) && xmlVersion == XML_11)
+		    
+		    if(c == 0x0085  && xmlVersion == XML_11)
 		    	readBuffer[j++] = '\r';
 		} else if ((b1 & 0xf0) == 0xe0) {
 		    // 3-byte sequence:
@@ -4639,6 +4653,13 @@ loop:
 		    c = (char) (((b1 & 0x0f) << 12) |
 				   (getNextUtf8Byte (i++, count) << 6) |
 				   getNextUtf8Byte (i++, count));
+                    //sec 2.11
+		    //[4] the single character #x2028
+		    if(c == 0x2028 && xmlVersion == XML_11){
+		       	readBuffer[j++] = '\r';
+		       	sawCR = true;
+		       	continue;
+		    }
 		    if (c < 0x0800 || (c >= 0xd800 && c <= 0xdfff))
 			encodingError ("Illegal three byte UTF-8 sequence",
 				c, 0);
