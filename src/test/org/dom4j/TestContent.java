@@ -31,6 +31,9 @@ public class TestContent extends AbstractTestCase {
         
         assert( "Author1 is James", author1.getAttributeValue( "name" ).equals( "James" ) );
         assert( "Author2 is Bob", author2.getAttributeValue( "name" ).equals( "Bob" ) );
+        
+        testGetAttributes(author1);
+        testGetAttributes(author2);
     }
         
     public void testGetContents() throws Exception {
@@ -94,4 +97,20 @@ public class TestContent extends AbstractTestCase {
     public static Test suite() {
         return new TestSuite( TestContent.class );
     }
+    
+    // Implementation methods
+    //-------------------------------------------------------------------------                    
+    protected void testGetAttributes(Element author) throws Exception {
+        
+        String definedName = "name";
+        String undefinedName = "undefined-attribute-name";
+        String defaultValue = "** Default Value **";
+        
+        String value = author.getAttributeValue( definedName, defaultValue );
+        assert( "Defined value doesn't return specified default value", value != defaultValue );
+        
+        value = author.getAttributeValue( undefinedName, defaultValue );        
+        assert( "Undefined value returns specified default value", value == defaultValue );
+    }
+    
 }
