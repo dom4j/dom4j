@@ -60,7 +60,21 @@ public class InternalEntityDecl {
     }
     
     public String toString() {
-        return "<!ENTITY " + name + " \"" + value + "\">";
+        StringBuffer buffer = new StringBuffer( "<!ENTITY " );
+        
+        if (name.startsWith("%")) {
+            buffer.append("% ");
+            buffer.append(name.substring(1));
+        } 
+        else {
+            buffer.append(name);
+        }
+
+        buffer.append(" \"");
+        buffer.append(value);
+        buffer.append("\">");
+        
+        return buffer.toString();
     }
 }
 

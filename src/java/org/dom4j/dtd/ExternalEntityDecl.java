@@ -78,7 +78,15 @@ public class ExternalEntityDecl {
 
     public String toString() {
         StringBuffer buffer = new StringBuffer( "<!ENTITY " );
-        buffer.append( name );
+        
+        if (name.startsWith("%")) {
+            buffer.append("% ");
+            buffer.append(name.substring(1));
+        } 
+        else {
+            buffer.append(name);
+        }
+        
         if (publicID != null) {
             buffer.append(" PUBLIC \"");
             buffer.append(publicID);
