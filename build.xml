@@ -186,6 +186,16 @@
     <jar jarfile="${build.dir}/${name}.jar"
          basedir="${build.dest}"
          includes="org/**"/>
+
+     <!-- add dependent JARs -->
+    <unjar src="${lib.dir}/sax2.jar" dest="${build.dest}"/>
+    <unjar src="${lib.dir}/sax2-ext.jar" dest="${build.dest}"/>
+    <unjar src="${lib.dir}/werken.xpath.jar" dest="${build.dest}"/>
+    <unjar src="${lib.dir}/antlr-runtime.jar" dest="${build.dest}"/>
+
+    <jar jarfile="${build.dir}/${name}-all.jar"
+         basedir="${build.dest}"
+         includes="**"/>
   </target>
 
   <!-- =================================================================== -->
