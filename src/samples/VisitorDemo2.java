@@ -40,7 +40,7 @@ public class VisitorDemo2 extends VisitorDemo {
             ? args[1] : null;
             
         xmlReaderClassName = (args.length > 2) 
-            ? args[2] : DEFAULT_XMLREADER_CLASSNAME;
+            ? args[2] : null;
         
         parse( xmlFile );
     }

@@ -14,10 +14,7 @@ import org.dom4j.io.XMLWriter;
   */
 public class SAXDemo extends AbstractDemo {
     
-    protected static final String DEFAULT_XMLREADER_CLASSNAME = "xml.aelfred2.SAXDriver";
-    //protected static final String DEFAULT_XMLREADER_CLASSNAME = "org.apache.xerces.parsers.SAXParser";
-    
-    protected String xmlReaderClassName = DEFAULT_XMLREADER_CLASSNAME;
+    protected String xmlReaderClassName;
     
     public SAXDemo() {
     }
@@ -30,7 +27,7 @@ public class SAXDemo extends AbstractDemo {
 
         String xmlFile = args[0];
         xmlReaderClassName = (args.length > 1) 
-            ? args[1] : DEFAULT_XMLREADER_CLASSNAME;
+            ? args[1] : null;
 
         parse( xmlFile );
     }

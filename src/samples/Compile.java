@@ -36,7 +36,7 @@ public class Compile extends SAXDemo {
         String xmlFile = args[0];
         outputFileName = args[1];
         String xmlReaderClassName = (args.length > 2) 
-            ? args[2] : DEFAULT_XMLREADER_CLASSNAME;
+            ? args[2] : null;
 
         println( "Compiling text XML file: " + xmlFile + " into binary file: " + outputFileName );
         

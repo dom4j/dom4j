@@ -35,7 +35,7 @@ public class XPathDemo extends SAXDemo {
         String xmlFile = args[0];
         xpath = args[1];
         xmlReaderClassName = (args.length > 2) 
-            ? args[2] : DEFAULT_XMLREADER_CLASSNAME;
+            ? args[2] : null;
         
         parse( xmlFile );
     }

@@ -12,7 +12,7 @@ import org.dom4j.Node;
 public class DefaultNamespace extends AbstractNamespace {
 
     /** Cache of Namespace instances */
-    protected static NamespaceCache cache = new NamespaceCache();
+    protected static final NamespaceCache cache = new NamespaceCache();
     
     /** The prefix mapped to this namespace */
     private String prefix;

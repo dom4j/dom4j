@@ -15,6 +15,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
 import org.dom4j.ElementHandler;
 import org.dom4j.TreeException;
+import org.dom4j.io.aelfred.SAXDriver;
 
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ErrorHandler;
@@ -73,11 +74,15 @@ public class SAXReader extends TreeReader {
     }
 
     public SAXReader(String xmlReaderClassName) throws SAXException {
-        this.xmlReader = XMLReaderFactory.createXMLReader(xmlReaderClassName);
+        if (xmlReaderClassName != null) {
+            this.xmlReader = XMLReaderFactory.createXMLReader(xmlReaderClassName);
+        }
     }
     
     public SAXReader(String xmlReaderClassName, boolean validating) throws SAXException {
-        this.xmlReader = XMLReaderFactory.createXMLReader(xmlReaderClassName);
+        if (xmlReaderClassName != null) {
+            this.xmlReader = XMLReaderFactory.createXMLReader(xmlReaderClassName);
+        }
         this.validating = validating;
     }
 
@@ -221,8 +226,8 @@ public class SAXReader extends TreeReader {
       * @throws FileNotFoundException if the file could not be found
       */
     public Document read(File file) throws TreeException, FileNotFoundException {
-        //Document document = read(new BufferedReader(new FileReader(file)));
-        Document document = read(file.getAbsolutePath());
+        Document document = read(new BufferedReader(new FileReader(file)));
+        //Document document = read(file.getAbsolutePath());
         document.setName( file.getAbsolutePath() );
         return document;
     }
@@ -433,6 +438,10 @@ public class SAXReader extends TreeReader {
       * creating and configuring XMLReader objects
       */
     protected XMLReader createXMLReader() throws SAXException {
+        String className = System.getProperty( "org.xml.sax.driver" );
+        if (className == null || className.trim().length() <= 0) {
+            return new SAXDriver();
+        }
         return XMLReaderFactory.createXMLReader();
     }
 

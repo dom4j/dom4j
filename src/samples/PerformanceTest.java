@@ -51,7 +51,7 @@ public class PerformanceTest extends SAXDemo {
             ? args[1] : null;
             
         xmlReaderClassName = (args.length > 2) 
-            ? args[2] : DEFAULT_XMLREADER_CLASSNAME;
+            ? args[2] : null;
         
         loopCount = DEFAULT_LOOP_COUNT;
         if (args.length > 3) {

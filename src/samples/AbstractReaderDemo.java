@@ -38,9 +38,9 @@ public class AbstractReaderDemo extends SAXDemo {
         
         documentFactoryClassName = (args.length > 1) 
             ? args[1] : null;
-            
+
         xmlReaderClassName = (args.length > 2) 
-            ? args[2] : DEFAULT_XMLREADER_CLASSNAME;
+            ? args[2] : null;
         
         parse( xmlFile );
     }
