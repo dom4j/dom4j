@@ -7,7 +7,7 @@
  * $Id$
  */
 
-package org.dom4j;
+package org.dom4j.xpath;
 
 import java.util.Iterator;
 import java.util.List;
@@ -15,27 +15,32 @@ import java.util.List;
 import junit.framework.*;
 import junit.textui.TestRunner;
 
-/** A test harness to test XPath expression evaluation in DOM4J
+import org.dom4j.AbstractTestCase;
+import org.dom4j.Node;
+import org.dom4j.XPath;
+import org.dom4j.XPathEngine;
+import org.dom4j.XPathHelper;
+
+/** Test harness for the boolean expressions
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class TestXPath extends AbstractTestCase {
+public class TestBoolean extends AbstractTestCase {
 
+    protected static XPathEngine xpathEngine = XPathHelper.getDefaultXPathEngine();
+    
     protected static boolean VERBOSE = true;
     
     protected static String[] paths = {
-        "root",
-        "text()",
-        "//author",
-        "//author[@location='UK']",
-        "//author/text()",
-        "//*[.='James Strachan']",
-        "//@location"
+        ".[name()='author']",
+        ".[.='James Strachan']",
+        "name()='author'",
+        ".='James Strachan'"
     };
     
     
-    public TestXPath(String name) {
+    public TestBoolean(String name) {
         super(name);
     }
 
@@ -55,19 +60,31 @@ public class TestXPath extends AbstractTestCase {
     }
     
     public static Test suite() {
-        return new TestSuite( TestXPath.class );
+        return new TestSuite( TestBoolean.class );
     }
     
-    protected void testXPath(String xpath) {
-        List list = document.selectNodes(xpath);
+    protected void testXPath(String xpathExpression) {
+        XPath xpath = xpathEngine.createXPath( xpathExpression );
+        assert( "No xpath object was created", xpath != null );
         
-        System.out.println( "Searched path: " + xpath + " found: " + list.size() + " result(s)" );
+        log( "Evaluating xpath: " + xpath );
+        
+        List list = document.selectNodes("//author");
+        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
+            Node node = (Node) iter.next();
+            testXPath(node, xpath);
+        }
+    }
+        
+    protected void testXPath(Node node, XPath xpath) {
+        List list = node.selectNodes(xpath);
+        
+        log( "Searched path: " + xpath + " found: " + list.size() + " result(s)" );
         
         if ( VERBOSE ) {
             System.out.println( list );
         }
     }
-
 }
 
 

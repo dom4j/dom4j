@@ -51,7 +51,7 @@
 
     <!-- External packages -->
     <property name="metastuff.util.dir" value="../util"/>
-    <property name="werken.dir" value="../werken.xpath"/>
+    <property name="werken.dir" value="../werken.xpath-dom4j"/>
 
   </target>
 
@@ -358,6 +358,10 @@
         </fileset>
       </batchtest>
     </junit>
+  </target>
+
+  <target name="test-xpath" depends="compile-test">
+    <java classname="org.dom4j.TestXPath"/>
   </target>
 
   <!-- =================================================================== -->

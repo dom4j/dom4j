@@ -135,6 +135,10 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
         element.setDocument(null);
         return answer;
     }
+        
+    public Node asXPathNode(Element parent) {
+        return this;
+    }
     
     
     
