@@ -962,6 +962,8 @@ List customers
 
     <section title="To Do List">
       <ul>
+        <li>The internal subset does not pass through DOMReader and DOMWriter. This needs patching!
+        </li>
         <li>Better documentation and user guides
         </li>
         <li>A lazy parser; implement a special Element implementation (or probably a special List)
@@ -1048,12 +1050,3 @@ while ( iter2.hasNext() ) {
 
   </body>
 </document>
-
-
-
-
-
-
-
-
-
