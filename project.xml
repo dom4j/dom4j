@@ -71,6 +71,13 @@
   <mailingLists>
   
     <mailingList>
+      <name>dom4j user list</name>
+      <subscribe>dom4j-user-subscribe@lists.sourceforge.net</subscribe>
+      <unsubscribe>dom4j-user-unsubscribe@lists.sourceforge.net</unsubscribe>
+      <archive>http://www.mail-archive.com/dom4j-user%40lists.sourceforge.net/</archive>
+    </mailingList>
+
+    <mailingList>
       <name>dom4j developer list</name>
       <subscribe>dom4j-dev-subscribe@lists.sourceforge.net</subscribe>
       <unsubscribe>dom4j-dev-unsubscribe@lists.sourceforge.net</unsubscribe>
@@ -78,10 +85,10 @@
     </mailingList>
   
     <mailingList>
-      <name>dom4j user list</name>
-      <subscribe>dom4j-user-subscribe@lists.sourceforge.net</subscribe>
-      <unsubscribe>dom4j-user-unsubscribe@lists.sourceforge.net</unsubscribe>
-      <archive>http://www.mail-archive.com/dom4j-user%40lists.sourceforge.net/</archive>
+      <name>dom4j commits list</name>
+      <subscribe>dom4j-commits-subscribe@lists.sourceforge.net</subscribe>
+      <unsubscribe>dom4j-commits-unsubscribe@lists.sourceforge.net</unsubscribe>
+      <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=34847</archive>
     </mailingList>
     
   </mailingLists>
