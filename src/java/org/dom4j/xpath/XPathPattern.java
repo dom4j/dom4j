@@ -31,7 +31,6 @@ import org.saxpath.SAXPathException;
 import java.io.StringReader;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -74,7 +73,9 @@ public class XPathPattern implements org.dom4j.rule.Pattern {
 
     public boolean matches( Node node ) {
         try {
-            context.setNodeSet( Collections.singletonList( node ) );
+            ArrayList list = new ArrayList(1);
+            list.add( node );
+            context.setNodeSet( list );
             return pattern.matches( node, context );
         }
         catch (JaxenException e) {
