@@ -144,7 +144,7 @@ public class Foo {
         
         Element author2 = root.addElement( "author" )
             .addAttribute( "name", "Bob" )
-            .addAttribute( "location", "Canada" )
+            .addAttribute( "location", "US" )
             .addText( "Bob McWhirter" );
 
         return document;

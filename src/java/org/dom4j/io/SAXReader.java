@@ -216,17 +216,7 @@ public class SAXReader {
       * @throws DocumentException if an error occurs during parsing.
       * @throws MalformedURLException if a URL could not be made for the given File
       */
-    public Document read(String systemId) throws DocumentException, MalformedURLException {
-        /*
-        if ( systemId.indexOf( ':' ) >= 0 ) {
-            // lets assume its a URL
-            return read(new InputSource(systemId));
-        }
-        else {
-            // lets assume that we are given a file name
-            return read( new File(systemId) );
-        }
-         */
+    public Document read(String systemId) throws DocumentException {
         return read(new InputSource(systemId));        
     }
 
