@@ -7,47 +7,71 @@
  * $Id$
  */
 
-package org.dom4j;
+package org.dom4j.rule;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.TreeSet;
 
-import junit.framework.*;
-import junit.textui.TestRunner;
+import org.dom4j.Node;
 
-/** An abstract base class for some DOM4J test cases
+/** <p><code>RuleSet</code> manages a set of rules which are sorted
+  * in order of relevance according to the XSLT defined conflict
+  * resolution policy. This makes finding the correct rule for 
+  * a DOM4J Node using the XSLT processing model efficient as the
+  * rules can be evaluated in order of priority.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class AbstractTestCase extends TestCase {
+public class RuleSet {
 
-    protected Document document;
+    /** A sorted set of Rule objects */
+    private TreeSet ruleTree = new TreeSet();
     
+    /** A lazily evaluated and cached array of rules sorted */
+    private Rule[] ruleArray;
     
-    public AbstractTestCase(String name) {
-        super(name);
+    public RuleSet() {
     }
-
-    public void log(String text) {
-        System.out.println(text);
+    
+    /** Performs an XSLT processing model match for the rule
+      * which matches the given Node the best.
+      *
+      * @param mode is the mode associated with the rule if any
+      * @param node is the DOM4J Node to match against
+      * @return the matching Rule or no rule if none matched
+      */
+    public Rule getMatchingRule( Node node ) {
+        Rule[] rules = getRuleArray();
+        for ( int i = rules.length - 1; i >= 0; i-- ) {
+            Rule rule = rules[i];
+            if ( rule.matches( node ) ) {
+                return rule;
+            }
+        }
+        return null;
     }
-
-    // Implementation methods
-    //-------------------------------------------------------------------------                    
-    protected void setUp() throws Exception {
-        document = DocumentFactory.newDocument();
-        
-        Element root = document.addElement( "root" );
-        Element author1 = root.addElement( "author" );
-        author1.setAttributeValue( "name", "James" );
-        author1.setAttributeValue( "location", "UK" );
-        author1.addText("James Strachan");
-        
-        Element author2 = root.addElement( "author" );
-        author2.setAttributeValue( "name", "Bob" );
-        author2.setAttributeValue( "location", "Canada" );
-        author2.addText("Bob McWhirter");
+    
+    public void addRule(Rule rule) {
+        ruleTree.add( rule );
+        ruleArray = null;
+    }
+    
+    public void removeRule(Rule rule) {
+        ruleTree.remove( rule );
+        ruleArray = null;
+    }
+    
+    /** Returns an array of sorted rules.
+      *
+      * @return the rules as a sorted array in ascending precendence
+      * so that the rules at the end of the array should be used first
+      */
+    protected Rule[] getRuleArray() {
+        if ( ruleArray == null ) {
+            ruleArray = new Rule[ ruleTree.size() ];
+            ruleTree.toArray( ruleArray );
+        }
+        return ruleArray;
     }
 
 }

@@ -23,13 +23,18 @@
     <property name="test.dir" value="./src/test"/>
     <property name="lib.dir" value="./lib"/>
     <property name="packages" value="org.dom4j.*"/>
+    <property name="api.packages" value="org.dom4j,org.dom4j.io,org.dom4j.rule"/>
 
     <property name="build.dir" value="./build"/>
     <property name="build.src" value="./build/src"/>
     <property name="build.dest" value="./build/classes"/>
     <property name="build.doc" value="./build/doc"/>
-    <property name="build.javadocs" value="./build/doc/apidocs"/>
+    <property name="build.tmp" value="./build/tmp"/>
+    <property name="build.apidocs" value="./build/doc/apidocs"/>
+    <property name="build.javadocs" value="./build/doc/javadoc"/>
     <property name="build.generated.src" value="./build/generated"/>
+
+    <property name="xpath.parser.dir" value="${build.src}/org/dom4j/xpath/parser"/>
 
     <property name="dist.root" value="./dist"/>
     <property name="dist.dir" value="${dist.root}/${name}-${version}"/>
@@ -48,11 +53,6 @@
     <!-- JDK1.1 collections -->
     <property name="coll.import" value="com.sun.java.util.collections"/>
     <available classname="${coll.import}.Collection" property="coll.present"/>
-
-    <!-- External packages -->
-    <property name="metastuff.util.dir" value="../util"/>
-    <property name="dom4j-xpath.dir" value="../dom4j-xpath"/>
-
   </target>
 
   <!-- =================================================================== -->
@@ -100,13 +100,35 @@
     </copy>
   </target>
 
+  <target name="prepare-grammars" depends="prepare-src">
+    <java fork="yes"
+          classname="org.antlr.Tool">
+        <classpath>
+            <pathelement path="${java.class.path}"/>
+        </classpath>
+        <arg value="-o"/> 
+        <arg value="${xpath.parser.dir}"/>
+        <arg value="${xpath.parser.dir}/xpath.g"/>
+    </java>
+
+    <java fork="yes"
+          classname="org.antlr.Tool">
+        <classpath>
+            <pathelement path="${java.class.path}"/>
+        </classpath> 
+        <arg value="-o"/> 
+        <arg value="${xpath.parser.dir}"/>
+        <arg value="${xpath.parser.dir}/xpath_lexer.g"/>
+    </java>
+  </target>
+
   <!-- =================================================================== -->
   <!-- Does replacement on files for dealing with collections.             -->
   <!-- XXX The efficiency could be improved here; all replacements should  -->
   <!-- XXX happen during one read/write phase and only for files that have -->
   <!-- XXX changed.                                                        -->
   <!-- =================================================================== -->
-  <target name="collections" if="coll.present" depends="prepare-src">
+  <target name="collections" if="coll.present" depends="prepare-grammars">
     <replace dir="${build.src}" includes="**"
              token="java.util.Collection" value="${coll.import}.Collection"/>
     <replace dir="${build.src}" includes="**"
@@ -148,7 +170,7 @@
   <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
-  <target name="compile" depends="prepare-src,collections">
+  <target name="compile" depends="collections">
     <javac srcdir="${build.src}"
            destdir="${build.dest}"
            debug="${debug}"
@@ -190,26 +212,43 @@
          includes="org/**"/>
 
      <!-- add dependent JARs -->
-    <unjar src="${lib.dir}/sax2.jar" dest="${build.dest}"/>
-    <unjar src="${lib.dir}/sax2-ext.jar" dest="${build.dest}"/>
-    <unjar src="${lib.dir}/antlr-runtime.jar" dest="${build.dest}"/>
-    <unjar src="${lib.dir}/dom4j-xpath.jar" dest="${build.dest}"/>
-    <delete dir="${build.dest}/META-INF"/>
+    <mkdir dir="${build.tmp}"/>
+    <unjar src="${lib.dir}/sax2.jar" dest="${build.tmp}"/>
+    <unjar src="${lib.dir}/sax2-ext.jar" dest="${build.tmp}"/>
+    <unjar src="${lib.dir}/antlr-runtime.jar" dest="${build.tmp}"/>
+    <delete dir="${build.tmp}/META-INF"/>
+    <copy todir="${build.tmp}">
+      <fileset dir="${build.dest}"/>
+    </copy>
 
     <jar jarfile="${build.dir}/${name}-all.jar"
-         basedir="${build.dest}"
+         basedir="${build.tmp}"
          includes="**"/>
-    <delete dir="${build.dest}/org"/>
+    <delete dir="${build.tmp}"/>
   </target>
 
   <!-- =================================================================== -->
   <!-- Creates the API documentation                                       -->
   <!-- =================================================================== -->
   <target name="javadoc" depends="prepare-src,collections">
+    <mkdir dir="${build.apidocs}"/>
     <mkdir dir="${build.javadocs}"/>
     <javadoc packagenames="${packages}"
              sourcepath="${build.src}"
              destdir="${build.javadocs}"
+             author="true"
+             version="true"
+             use="true"
+             splitindex="true"
+             noindex="false"
+             windowtitle="${Name} Full JavaDoc"
+             doctitle="${Name}"
+             bottom="Copyright &#169; ${year} MetaStuff Ltd. All Rights Reserved."
+             stylesheetfile="${doc.dir}/style/javadoc.css"
+    />
+    <javadoc packagenames="${api.packages}"
+             sourcepath="${build.src}"
+             destdir="${build.apidocs}"
              author="true"
              version="true"
              use="true"
@@ -255,7 +294,7 @@
     <mkdir dir="${dist.dir}/lib"/>
     <mkdir dir="${dist.dir}/src"/>
     <mkdir dir="${dist.dir}/docs"/>
-    <mkdir dir="${dist.dir}/docs/api"/>
+    <mkdir dir="${dist.dir}/docs/apidocs"/>
 
     <copy file="${build.dir}/${name}.jar" tofile="${dist.dir}/${name}.jar"/>
     <copy file="${build.dir}/${name}-all.jar" tofile="${dist.dir}/${name}-all.jar"/>
@@ -490,19 +529,6 @@
 
 
   <target name="demo-all" depends="demo-sax,demo-visitor,demo-count,demo-xpath,demo-html"/>
-
-
-  <!-- =================================================================== -->
-  <!-- Copy build JAR to external projects                                 -->
-  <!-- =================================================================== -->
-  <target name="metastuff" depends="package">
-    <copy file="${build.dir}/${name}.jar" todir="${metastuff.util.dir}/lib" overwrite="yes"/>
-  </target>
-
-  <target name="dom4j-xpath" depends="package">
-    <copy file="${build.dir}/${name}.jar" todir="${dom4j-xpath.dir}/lib" overwrite="yes"/>
-  </target>
-
 </project>
 
 <!-- End of file -->

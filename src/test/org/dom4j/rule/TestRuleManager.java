@@ -7,49 +7,88 @@
  * $Id$
  */
 
-package org.dom4j;
+package org.dom4j.rule;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.*;
 import junit.textui.TestRunner;
 
-/** An abstract base class for some DOM4J test cases
+import org.dom4j.*;
+
+/** A test harness to test the use of RuleManager
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class AbstractTestCase extends TestCase {
+public class TestRuleManager extends AbstractTestCase {
 
-    protected Document document;
+    protected String[] templates = {
+        "/",
+        "root",
+        "author",
+        "@name",
+        "root/author",
+        "author[@location='UK']",
+        "root/author[@location='UK']",
+        "root//author[@location='UK']",
+        "text()"
+    };
     
+    protected Stylesheet stylesheet = new Stylesheet();
     
-    public AbstractTestCase(String name) {
+    // JUnit stuff
+    //-------------------------------------------------------------------------                    
+    public static void main( String[] args ) {
+        TestRunner.run( suite() );
+    }
+    
+    public static Test suite() {
+        return new TestSuite( TestRuleManager.class );
+    }
+    
+    public TestRuleManager(String name) {
         super(name);
     }
 
-    public void log(String text) {
-        System.out.println(text);
+    // Test case(s)
+    //-------------------------------------------------------------------------                    
+    public void testRules() throws Exception {
+        for ( int i = 0, size = templates.length; i < size; i++ ) {
+            addTemplate( templates[i] );
+        }
+        
+        log( "Running stylesheet" );
+        
+        stylesheet.run( document );
+        
+        log( "Finished" );
     }
-
+        
+        
     // Implementation methods
     //-------------------------------------------------------------------------                    
-    protected void setUp() throws Exception {
-        document = DocumentFactory.newDocument();
+    protected void addTemplate( final String match ) {
+        log( "Adding template match: " + match );
         
-        Element root = document.addElement( "root" );
-        Element author1 = root.addElement( "author" );
-        author1.setAttributeValue( "name", "James" );
-        author1.setAttributeValue( "location", "UK" );
-        author1.addText("James Strachan");
+        Pattern pattern = XPathHelper.createPattern( match );
         
-        Element author2 = root.addElement( "author" );
-        author2.setAttributeValue( "name", "Bob" );
-        author2.setAttributeValue( "location", "Canada" );
-        author2.addText("Bob McWhirter");
+        log( "Pattern: " + pattern );
+        log( "........................................" );
+        
+        Action action = new Action() {
+            public void run(Node node) {
+                log( "Matched pattern: " + match );
+                log( "Node: " + node.asXML() );
+                log( "........................................" );
+            }
+        };
+        Rule rule = new Rule( pattern, action );
+        stylesheet.addRule( rule );
     }
-
+    
 }
 
 

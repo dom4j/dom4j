@@ -18,7 +18,8 @@
           <font size="2">
             <a href="faq.html">FAQ</a> 
             | <a href="guide.html">Quick Start</a> 
-            | <a href="apidocs/index.html">JavaDoc</a> 
+            | <a href="apidocs/index.html">API</a> 
+            | <a href="javadoc/index.html">Full JavaDoc</a> 
             | <a href="download.html">Download</a>
             | <a href="goals.html">Goals</a> 
             | <a href="todo.html">Status</a> 

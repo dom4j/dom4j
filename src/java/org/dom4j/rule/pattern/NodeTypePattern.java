@@ -7,47 +7,65 @@
  * $Id$
  */
 
-package org.dom4j;
+package org.dom4j.rule.pattern;
 
-import java.util.Iterator;
-import java.util.List;
+import org.dom4j.Node;
+import org.dom4j.rule.Pattern;
 
-import junit.framework.*;
-import junit.textui.TestRunner;
 
-/** An abstract base class for some DOM4J test cases
+/** <p><code>NodeTypePattern</code> implements a Pattern which matches
+  * any node of the given node type.
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class AbstractTestCase extends TestCase {
+public class NodeTypePattern implements Pattern {
+    
+    /** A pattern which matches any Attribute node  */
+    public static final NodeTypePattern ANY_ATTRIBUTE
+        = new NodeTypePattern( Node.ATTRIBUTE_NODE );
+    
+    /** A pattern which matches any Comment  node  */
+    public static final NodeTypePattern ANY_COMMENT
+        = new NodeTypePattern( Node.COMMENT_NODE );
+    
+    /** A pattern which matches any Element node  */
+    public static final NodeTypePattern ANY_ELEMENT 
+        = new NodeTypePattern( Node.ELEMENT_NODE );
+    
+    /** A pattern which matches any ProcessingInstruction node  */
+    public static final NodeTypePattern ANY_PROCESSING_INSTRUCTION
+        = new NodeTypePattern( Node.PROCESSING_INSTRUCTION_NODE );
+    
+    /** A pattern which matches any Text node  */
+    public static final NodeTypePattern ANY_TEXT 
+        = new NodeTypePattern( Node.TEXT_NODE );
+    
+    private short nodeType;
 
-    protected Document document;
     
-    
-    public AbstractTestCase(String name) {
-        super(name);
+    public NodeTypePattern(short nodeType) {
+        this.nodeType = nodeType;
     }
 
-    public void log(String text) {
-        System.out.println(text);
+    public boolean matches( Node node ) {
+        return node.getNodeType() == nodeType;
+    }
+    
+    public double getPriority()  {
+        return Pattern.DEFAULT_PRIORITY;
+    }
+    
+    public Pattern[] getUnionPatterns() {
+        return null;
     }
 
-    // Implementation methods
-    //-------------------------------------------------------------------------                    
-    protected void setUp() throws Exception {
-        document = DocumentFactory.newDocument();
-        
-        Element root = document.addElement( "root" );
-        Element author1 = root.addElement( "author" );
-        author1.setAttributeValue( "name", "James" );
-        author1.setAttributeValue( "location", "UK" );
-        author1.addText("James Strachan");
-        
-        Element author2 = root.addElement( "author" );
-        author2.setAttributeValue( "name", "Bob" );
-        author2.setAttributeValue( "location", "Canada" );
-        author2.addText("Bob McWhirter");
+    public short getMatchType() {
+        return nodeType;
+    }
+
+    public String getMatchesNodeName() {
+        return null;
     }
 
 }

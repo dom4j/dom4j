@@ -7,47 +7,53 @@
  * $Id$
  */
 
-package org.dom4j;
+package org.dom4j.rule.pattern;
 
-import java.util.Iterator;
-import java.util.List;
+import org.dom4j.Node;
+import org.dom4j.NodeFilter;
+import org.dom4j.rule.Pattern;
 
-import junit.framework.*;
-import junit.textui.TestRunner;
 
-/** An abstract base class for some DOM4J test cases
+/** <p><code>DefaultPattern</code> a default implementation of Pattern
+  * which can take any XPath implementation or NodeFilter for defining the pattern.
+  * <b>WARNING</b> this implementation causes a worst case, brute force XSLT 
+  * rule evaluation to be performed. 
+  * Wherever possible the methods 
+  *  {@link #getPriority}, 
+  *  {@link #getMatchType} and
+  *  {@link #getMatchesNodeName}
+  * should be overloaded to allow more rule filtering to occur.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class AbstractTestCase extends TestCase {
+public class DefaultPattern implements Pattern {
+    
+    private NodeFilter filter;
 
-    protected Document document;
     
-    
-    public AbstractTestCase(String name) {
-        super(name);
+    public DefaultPattern(NodeFilter filter) {
+        this.filter = filter;
     }
 
-    public void log(String text) {
-        System.out.println(text);
+    public boolean matches( Node node ) {
+        return filter.matches( node );
+    }
+    
+    public double getPriority()  {
+        return Pattern.DEFAULT_PRIORITY;
+    }
+    
+    public Pattern[] getUnionPatterns() {
+        return null;
     }
 
-    // Implementation methods
-    //-------------------------------------------------------------------------                    
-    protected void setUp() throws Exception {
-        document = DocumentFactory.newDocument();
-        
-        Element root = document.addElement( "root" );
-        Element author1 = root.addElement( "author" );
-        author1.setAttributeValue( "name", "James" );
-        author1.setAttributeValue( "location", "UK" );
-        author1.addText("James Strachan");
-        
-        Element author2 = root.addElement( "author" );
-        author2.setAttributeValue( "name", "Bob" );
-        author2.setAttributeValue( "location", "Canada" );
-        author2.addText("Bob McWhirter");
+    public short getMatchType() {
+        return ANY_NODE;
+    }
+
+    public String getMatchesNodeName() {
+        return null;
     }
 
 }
