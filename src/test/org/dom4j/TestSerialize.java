@@ -59,7 +59,7 @@ public class TestSerialize extends AbstractTestCase {
         Object doc2 = in.readObject();
         in.close();
         
-        assert( "Read back document after serialization", doc2 != null && doc2 instanceof Document );
+        assertTrue( "Read back document after serialization", doc2 != null && doc2 instanceof Document );
         
         assertDocumentsEqual( document, (Document) doc2 );
     }            
