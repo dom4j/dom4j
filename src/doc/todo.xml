@@ -543,7 +543,7 @@ public class Foo {
             <p>This release contains an alpha release of XML Schema Data Type
             support.  
             The main class in question is the XML Schema Data Type aware
-            <a href="apidocs/org/dom4j/schema/SchemaDocumentFactory.html">SchemaDocumentFactory</a>            
+            <a href="apidocs/org/dom4j/datatype/DatatypeDocumentFactory.html">DatatypeDocumentFactory</a>            
             which will create an XML Schema Data Type aware XML object model.
             </p>
             <p>
