@@ -139,6 +139,16 @@ public interface Document extends Branch {
      * @since 1.5
      */
     String getXMLEncoding();
+
+    /**
+     * Sets the encoding of this document as it will appear in the XML
+     * declaration part of the document.
+     * 
+     * @param encoding the encoding of the document
+     * 
+     * @since 1.6
+     */
+    void setXMLEncoding(String encoding);
 }
 
 /*
