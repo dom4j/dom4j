@@ -7,7 +7,7 @@
 
   <body>
 
-    <release version="1.5 dev" date="in CVS">
+    <release version="1.5-dev" date="in CVS">
       <action dev="maartenc" type="fix" due-to="Aaron Bell">
         Added the namespace-prefix of attributes to the paths returned by
         <code>Attribute.getPath(Element context)</code> and 
@@ -28,7 +28,7 @@
         relative path "." is now returned.
       </action>
       <action dev="maartenc" type="add" due-to="Thomas Diesler">
-        Added method to <code>Element</code> to retrieve all <code>Namespaces</code> for a given URI..
+        Added method to <code>Element</code> to retrieve all <code>Namespaces</code> for a given URI.
       </action>
       <action dev="maartenc" type="fix" due-to="Thomas Diesler">
         Fixed bug in <code>DOMReader</code> causing namespace declarations to get lost in some situations.
@@ -40,7 +40,7 @@
         Fixed bug in <code>BeanElement</code> which prevented proper execution of the bean samples.
       </action>
       <action dev="maartenc" type="update" due-to="Christian Niles">
-        <code>STAXEventWriter</code> now uses <code>XMLEventConsumer</code> instead of <code>XMLEventWriter</code>
+        <code>STAXEventWriter</code> now uses <code>XMLEventConsumer</code> instead of <code>XMLEventWriter</code>.
       </action>
       <action dev="maartenc" type="fix" due-to="Paul Libbrecht">
         Fixed bug in <code>SAXReader</code> that caused problems parsing files in OSX.
@@ -53,7 +53,7 @@
       </action>
     </release>
 
-    <release version="1.5 beta 2" date="2004-05-12">
+    <release version="1.5-beta-2" date="2004-05-12">
       <action dev="wolfftw" type="add">
         Added flag to <code>OutputFormat</code> that supresses newline after XML declaration.
       </action>
@@ -95,7 +95,7 @@
       </action>
     </release>
 
-    <release version="1.5 beta 1" date="2004-03-25">
+    <release version="1.5-beta-1" date="2004-03-25">
       <action dev="maartenc" type="fix">
         Fixed encoding bug in <code>Document.asXML()</code> and <code>DocumentHelper.parseText()</code>.
       </action>
