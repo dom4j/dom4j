@@ -42,6 +42,19 @@ public class TestDOMWriter extends AbstractTestCase {
         wr.write((org.dom4j.Document) result);
     }
     
+    public void testBug905745() throws Exception {
+        org.dom4j.Document doc = parseDocument("xml/namespaces.xml");
+        DOMWriter writer = new DOMWriter();
+        org.w3c.dom.Document result = writer.write(doc);
+        
+        NamedNodeMap atts = result.getDocumentElement().getAttributes();
+        org.w3c.dom.Node versionAttr = atts.getNamedItem("version");
+        assertNotNull(versionAttr);
+        assertNotNull(versionAttr.getLocalName());
+        assertEquals("version", versionAttr.getLocalName());
+        assertEquals("version", versionAttr.getNodeName());
+    }
+    
     protected org.dom4j.Document parseDocument(String file) throws Exception {
         SAXReader reader = new SAXReader();
         return reader.read( file );
