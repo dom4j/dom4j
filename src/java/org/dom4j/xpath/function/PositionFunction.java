@@ -1,9 +1,9 @@
 /*
  * Copyright 2001 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -15,31 +15,27 @@ import org.dom4j.xpath.impl.Context;
 import java.util.List;
 
 /**
-   <p><b>4.1</b> <code><i>number</i> position()</code> 
-   
-   @author bob mcwhirter (bob @ werken.com)
-*/
-public class PositionFunction implements Function
-{
-
-  public Object call(Context context,
-                     List args)
-  {
-    System.err.println("*******************************");
-    System.err.println("position(" + context + ", " + args + ")");
-    if (args.size() == 0)
+ * <p><b>4.1</b> <code><i>number</i> position()</code>
+ *
+ * @author bob mcwhirter (bob @ werken.com)
+ */
+public class PositionFunction implements Function {
+    
+    public Object call(Context context, List args)
     {
-      return evaluate( context );
+        //System.err.println("*******************************");
+        //System.err.println("position(" + context + ", " + args + ")");
+        if (args.size() == 0) {
+            return evaluate( context );
+        }
+        
+        // FIXME: Toss exception
+        return null;
     }
-
-    // FIXME: Toss exception
-    return null;
-  }
-
-  public static Double evaluate(Context context)
-  {
-    return new Double( context.getPosition() );
-  }
+    
+    public static Double evaluate(Context context) {
+        return new Double( context.getPosition() );
+    }
 }
 
 
