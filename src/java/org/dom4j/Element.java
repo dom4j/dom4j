@@ -164,15 +164,30 @@ public interface Element extends Branch {
       */    
     public List getAttributes();
     
-    /** @returns an iterator over the attributes of this element
-      */
-    public Iterator attributeIterator();
-    
     /** Sets the attributes that this element contains
       */
     public void setAttributes(List attributes);
 
-    /** @return the attribute for the given local name in any namespace.
+    /** @return the number of attributes this element contains
+      */
+    public int getAttributeCount();
+    
+    /** @returns an iterator over the attributes of this element
+      */
+    public Iterator attributeIterator();
+    
+    /** Returns the attribute at the specified indexGets the 
+      *
+      * @return the attribute at the specified index where 
+      * index >= 0 and index < number of attributes or throws
+      * an IndexOutOfBoundsException if the index is not within the 
+      * allowable range
+      */
+    public Attribute getAttribute(int index);
+            
+    /** Returns the attribute with the given name
+      *
+      * @return the attribute for the given local name in any namespace.
       * If there are more than one attributes with the given local name 
       * in different namespaces then the first one is returned.
       */

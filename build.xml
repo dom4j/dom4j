@@ -51,7 +51,7 @@
 
     <!-- External packages -->
     <property name="metastuff.util.dir" value="../util"/>
-    <property name="werken.dir" value="../werken.xpath-dom4j"/>
+    <property name="dom4j-xpath.dir" value="../dom4j-xpath"/>
 
   </target>
 
@@ -192,15 +192,14 @@
      <!-- add dependent JARs -->
     <unjar src="${lib.dir}/sax2.jar" dest="${build.dest}"/>
     <unjar src="${lib.dir}/sax2-ext.jar" dest="${build.dest}"/>
-    <unjar src="${lib.dir}/werken.xpath.jar" dest="${build.dest}"/>
+    <unjar src="${lib.dir}/antlr-runtime.jar" dest="${build.dest}"/>
+    <unjar src="${lib.dir}/dom4j-xpath.jar" dest="${build.dest}"/>
     <delete dir="${build.dest}/META-INF"/>
 
     <jar jarfile="${build.dir}/${name}-all.jar"
          basedir="${build.dest}"
          includes="**"/>
-    <delete dir="${build.dest}/com"/>
-    <delete dir="${build.dest}/org/antlr"/>
-    <delete dir="${build.dest}/org/xml"/>
+    <delete dir="${build.dest}/org"/>
   </target>
 
   <!-- =================================================================== -->
@@ -500,8 +499,8 @@
     <copy file="${build.dir}/${name}.jar" todir="${metastuff.util.dir}/lib" overwrite="yes"/>
   </target>
 
-  <target name="werken" depends="package">
-    <copy file="${build.dir}/${name}.jar" todir="${werken.dir}/lib" overwrite="yes"/>
+  <target name="dom4j-xpath" depends="package">
+    <copy file="${build.dir}/${name}.jar" todir="${dom4j-xpath.dir}/lib" overwrite="yes"/>
   </target>
 
 </project>

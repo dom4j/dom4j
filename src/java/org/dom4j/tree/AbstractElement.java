@@ -160,6 +160,14 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         return getAttributeList().iterator();
     }
     
+    public Attribute getAttribute(int index) {
+        return (Attribute) getAttributeList().get(index);
+    }
+            
+    public int getAttributeCount() {
+        return getAttributeList().size();
+    }
+    
     public String getAttributeValue(String name) {
         Attribute attrib = getAttribute(name);
         if (attrib == null) {

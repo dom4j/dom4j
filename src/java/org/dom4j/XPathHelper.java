@@ -55,7 +55,7 @@ public class XPathHelper {
     public static XPathEngine createXPathEngine() {
         String className = System.getProperty( 
             "org.dom4j.xpath.driver", 
-            "com.werken.xpath.DOM4JXPathEngine" 
+            "org.dom4j.xpath.DefaultXPathEngine" 
         );
         return createXPathEngine( className );
     }
