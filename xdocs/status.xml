@@ -8,6 +8,8 @@
  
   <body>
       <section name="CVS">
+        <p>Fixed bug in <code>XMLWriter</code> that caused duplication of the default namespace declaration (reported by Todd Wolff).</p>
+        <p>Added a bunch of patches to make the dom4j DOM classes more DOM compliant (contributed by Curt Arnold).</p>
         <p>Fixed bug in <code>DispatchHandler</code> which made the handler not reusable (reported by Ricardo Leon).</p>
         <p>Fixed bug in <code>SAXContentHandler</code> that caused incorrect CDATA section parsing (contributed by Todd Wolff).</p>
         <p>Fixed bug in <code>SAXContentHandler</code> that caused incorrect entity handling.</p>
@@ -16,7 +18,7 @@
       </section>
 
       <section name="1.5 beta 1">
-        <p>Fixed encoding bug in Document.asXML() and DocumentHelper.parseText().</p>
+        <p>Fixed encoding bug in <code>Document.asXML()</code> and <code>DocumentHelper.parseText()</code>.</p>
         <p>Fixed bug in SAXReader that caused problems resolving relative URIs when parsing java.io.File Objects (reported by Kohsuke Kawaguchi).</p>
         <p>The iterators returned by the Element.elementIterator(...) methods now support remove().</p>
         <p>DOMWriter writes now DOM Level 2 attributes and elements (reported by Geert Dendoncker and Joury Gokel).</p>
