@@ -19,13 +19,13 @@
         -->
 
         <li>The DOM4J JAR<br/>
-            <a href="../../dist/dom4j-$VERSION$.jar">dom4j-$VERSION$.jar</a>
+            <a href="../../dist/dom4j-daily.jar">dom4j-daily.jar</a>
             <br/>&#xA0;</li>
         <li>The DOM4J ZIP<br/>
-            <a href="../../dist/dom4j-$VERSION$.zip">dom4j-$VERSION$.zip</a>
+            <a href="../../dist/dom4j-daily.zip">dom4j-daily.zip</a>
             <br/>&#xA0;</li>
         <li>The DOM4J tarball<br/>
-            <a href="../../dist/dom4j-$VERSION$.tar.gz">dom4j-$VERSION$.tar.gz</a>
+            <a href="../../dist/dom4j-daily.tar.gz">dom4j-daily.tar.gz</a>
             <br/>&#xA0;</li>
       </ul>
     </section>

@@ -12,6 +12,8 @@ import java.net.URL;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamSource;
 
 import org.dom4j.Document;
 import org.dom4j.io.DocumentResult;
@@ -71,8 +73,10 @@ public class XSLTDemo extends SAXDemo {
     /** Perform XSLT on the stylesheet */
     protected void process(Document document) throws Exception {
         // load the transformer
-        TransformerReader transformerReader = new TransformerReader();
-        Transformer transformer = transformerReader.read( xsl );
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Transformer transformer = factory.newTransformer( 
+            new StreamSource( xsl.toString() ) 
+        );
         
         // now lets create the TRaX source and result
         // objects and do the transformation

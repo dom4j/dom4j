@@ -300,7 +300,7 @@
     <mkdir dir="${dist.dir}/docs/apidocs"/>
 
     <copy file="${build.dir}/${name}.jar" tofile="${dist.dir}/${name}.jar"/>
-    <copy file="${build.dir}/${name}-all.jar" tofile="${dist.dir}/${name}-all.jar"/>
+    <copy file="${build.dir}/${name}-all.jar" tofile="${dist.dir}/${name}-full.jar"/>
 
     <copy todir="${dist.dir}/src">
       <fileset dir="./src" includes="**/*.java,**/*.xml,**/*.xsl,**/*.properties,**/*.mf,**/*.css,**/*.gif"/>
@@ -330,22 +330,22 @@
   <!-- Packages the distribution as .zip                                   -->
   <!-- =================================================================== -->
   <target name="dist-zip" depends="dist">
-    <zip zipfile="${dist.target}/${name}-${version}.zip" basedir="${dist.dir}"/>
+    <zip zipfile="${dist.target}/${name}-daily.zip" basedir="${dist.dir}"/>
   </target>
 
   <!-- =================================================================== -->
   <!-- Packages the distribution as .jar                                   -->
   <!-- =================================================================== -->
   <target name="dist-jar" depends="dist">
-    <jar jarfile="${dist.target}/${name}-${version}.jar" basedir="${dist.dir}"/>
+    <jar jarfile="${dist.target}/${name}-daily.jar" basedir="${dist.dir}"/>
   </target>
 
   <!-- =================================================================== -->
   <!-- Packages the distribution with .tar.gzip                            -->
   <!-- =================================================================== -->
   <target name="dist-tgz" depends="dist">
-    <tar tarfile="${dist.target}/${name}-${version}.tar" basedir="${dist.dir}"/>
-    <gzip zipfile="${dist.target}/${name}-${version}.tar.gz" src="${dist.target}/${name}-${version}.tar"/>
+    <tar tarfile="${dist.target}/${name}-daily.tar" basedir="${dist.dir}"/>
+    <gzip zipfile="${dist.target}/${name}-daily.tar.gz" src="${dist.target}/${name}-daily.tar"/>
   </target>
 
 
@@ -390,9 +390,9 @@
 
   <target name="distclean" depends="clean">
     <delete dir="${dist.root}"/>
-    <delete file="${name}-${version}.tar.gz"/>
-    <delete file="${name}-${version}.tar"/>
-    <delete file="${name}-${version}.zip"/>
+    <delete file="${name}-daily.tar.gz"/>
+    <delete file="${name}-daily.tar"/>
+    <delete file="${name}-daily.zip"/>
   </target>
 
   <!-- =================================================================== -->

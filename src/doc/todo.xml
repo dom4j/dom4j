@@ -20,8 +20,6 @@
         </li>
         <li>Do detailed performance tests against the other XML object models
         </li>
-        <li>Clean integration with XSLT / JAXP / TRaX interfaces
-        </li>
         <li>Ensure that the optional DOM implementation passes the DOM compliance tests
         </li>
         <li>Build an XML Schema Data Types aware DocumentFactory
@@ -38,6 +36,8 @@
           <p>There following new features were added:-
           </p>
           <ul>
+            <li>Clean integration with XSLT via JAXP / TRaX API.
+            </li>
             <li>API modified to avoid clashes with WC3 DOM such that a dual 
                 implementation of dom4j and DOM is now possible. An early alpha
                 release of a DOM implementation of dom4j is available.

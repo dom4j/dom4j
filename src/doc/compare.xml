@@ -70,6 +70,13 @@
             <td>Partial</td>
         </tr>
         <tr>
+            <td>Support for JAXP/TRaX for XSLT integration</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        <tr>
             <td>Event based processing support</td>
             <td>Possible</td>
             <td>Yes</td>

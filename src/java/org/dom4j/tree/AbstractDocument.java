@@ -49,6 +49,9 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
         return ".";
     }
     
+    public Document getDocument() {
+        return this;
+    }
     
     public String asXML() {
         try {
