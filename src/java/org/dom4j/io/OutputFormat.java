@@ -24,7 +24,7 @@ public class OutputFormat implements Cloneable {
     private boolean suppressDeclaration = false;
 
     /** The encoding format */
-    private String encoding = "UTF8";
+    private String encoding = "UTF-8";
 
     /** Whether or not to output the encoding in the XML declaration - default is <code>false</code> */
     private boolean omitEncoding = false;
@@ -39,7 +39,7 @@ public class OutputFormat implements Cloneable {
     private boolean newlines = false;
 
     /** New line separator */
-    private String lineSeparator = "\r\n";
+    private String lineSeparator = "\n";
 
     /** should we preserve whitespace or not in text nodes? */
     private boolean trimText = false;

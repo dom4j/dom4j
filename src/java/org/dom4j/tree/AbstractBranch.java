@@ -44,7 +44,7 @@ import org.xml.sax.Attributes;
 public abstract class AbstractBranch extends AbstractNode implements Branch {
 
     /** The output format used by default */
-    protected static final OutputFormat outputFormat = new OutputFormat( "  ", false );
+    protected static final OutputFormat outputFormat = new OutputFormat();
 
     
     public AbstractBranch() { 

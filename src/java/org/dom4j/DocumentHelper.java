@@ -9,11 +9,15 @@
 
 package org.dom4j;
 
+import java.io.StringReader;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import org.dom4j.io.SAXReader;
 import org.dom4j.rule.Pattern;
+
+import org.xml.sax.SAXException;
 
 /** <p><code>DocumentHelper</code> is a collection of helper methods 
   * for using DOM4J.</p>
@@ -179,7 +183,7 @@ public class DocumentHelper {
       * @param list is the list of Nodes to sort
       * @param xpathExpression is the XPath expression used for comparison
       */
-    public void sort( List list, String xpathExpression ) {
+    public static void sort( List list, String xpathExpression ) {
         XPath xpath = createXPath( xpathExpression );
         xpath.sort( list );
     }
@@ -193,10 +197,23 @@ public class DocumentHelper {
       * @param distinct if true then duplicate values (using the sortXPath for 
       *     comparisions) will be removed from the List
       */
-    public void sort( List list, String xpathExpression, boolean distinct ) {
+    public static void sort( List list, String xpathExpression, boolean distinct ) {
         XPath xpath = createXPath( xpathExpression );
         xpath.sort( list, distinct );
     }
+    
+    /** <p><code>parseText</code> parses the given text as an XML document
+      * and returns the newly created Document.
+      *
+      * @param text is the XML text to be parsed
+      * @return a newly parsed Document
+      * @throws SAXException if the document could not be parsed
+      */
+    public static Document parseText(String text) throws DocumentException {
+        SAXReader reader = new SAXReader();
+        return reader.read( new StringReader( text ) );
+    }
+      
 }
 
 

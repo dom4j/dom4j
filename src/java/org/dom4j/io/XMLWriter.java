@@ -95,6 +95,9 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
 
     /** buffer used when escaping strings */
     private StringBuffer buffer = new StringBuffer();
+
+    /** Whether a flush should occur after writing a document */
+    private boolean autoFlush;
     
 
     public XMLWriter(Writer writer) {
@@ -108,31 +111,37 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
     
     public XMLWriter() {
         this.format = DEFAULT_FORMAT;
-        this.writer = new OutputStreamWriter( System.out );
+        this.writer = new BufferedWriter( new OutputStreamWriter( System.out ) );
+        this.autoFlush = true;
     }
 
     public XMLWriter(OutputStream out) throws UnsupportedEncodingException {
         this.format = DEFAULT_FORMAT;
         this.writer = createWriter(out, format.getEncoding());
+        this.autoFlush = true;
     }
     
     public XMLWriter(OutputStream out, OutputFormat format) throws UnsupportedEncodingException {
         this.format = format;
         this.writer = createWriter(out, format.getEncoding());
+        this.autoFlush = true;
     }
     
     public XMLWriter(OutputFormat format) throws UnsupportedEncodingException {
         this.format = format;
         this.writer = createWriter( System.out, format.getEncoding() );
+        this.autoFlush = true;
     }
 
     
     public void setWriter(Writer writer) {
         this.writer = writer;
+        this.autoFlush = false;
     }
     
     public void setOutputStream(OutputStream out) throws UnsupportedEncodingException {
         this.writer = createWriter(out, format.getEncoding());
+        this.autoFlush = true;
     }
     
 
@@ -207,7 +216,10 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
             write( node );
         }
         writePrintln();
-        //flush();
+        
+        if ( autoFlush ) {
+            flush();
+        }
     }
 
     /** <p>Writes the <code>{@link Element}</code>, including
