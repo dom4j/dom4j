@@ -8,6 +8,10 @@
   <body>
 
     <release version="1.6-dev" date="in CVS">
+      <action dev="maartenc" type="fix" due-to="Pieter Valcke">
+        Fixed a problem in <code>AbstractDocument.asXML()</code> when an encoding was
+        specified on the <code>Document</code>.
+      </action>
       <action dev="maartenc" type="fix">
         The <code>DefaultNamespace.isReadOnly()</code> method now returns <code>false</code>.
         This fixes issues with cloning this <code>Node</code>.
