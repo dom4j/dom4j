@@ -9,15 +9,17 @@
 
 package org.dom4j.datatype;
 
+import java.io.StringReader;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Map;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
-
-import java.util.Date;
-import java.util.Map;
-
-import java.io.StringReader;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -65,7 +67,7 @@ public class TestDatatype2 extends TestCase {
         Element elem=root.element("floatElement");
         Object elemData=elem.getData();
         validateData("testFloatElement",elemData,new Float(1.23));
-        System.out.println("retrieved attribute:"+elemData);
+        System.out.println("retrieved element:"+elemData);
     }
     
     public void testDateElement() throws Exception {
@@ -73,9 +75,9 @@ public class TestDatatype2 extends TestCase {
         Element root=doc.getRootElement();
         Element elem=root.element("dateElement");
         //Not working for now
-        //Object elemData=elem.getData();
-        //validateData("testFloatElement",elemData,new Float(1.23));
-        //System.out.println("retrieved attribute:"+elemData);
+        Object elemData=elem.getData();
+        validateData("testFloatElement",elemData,getDate());
+        System.out.println("retrieved element:"+getDate().getTime());
     }
     
     private void validateData(String testName,Object retrieved,Object expected)
@@ -107,7 +109,7 @@ public class TestDatatype2 extends TestCase {
         buffer.append("			xsi:noNamespaceSchemaLocation='long.xsd'");
         buffer.append("			longAttribute='123' >");
         buffer.append("		<floatElement>1.23</floatElement>");
-        buffer.append("		<dateElement>1.23</dateElement>");
+        buffer.append("		<dateElement>"+getDateString()+"</dateElement>");
         buffer.append("</test>");
         
         StringReader in=new StringReader(buffer.toString());
@@ -136,5 +138,27 @@ public class TestDatatype2 extends TestCase {
         SAXReader parser=new SAXReader();
         return parser.read(in);
     }
+    
+    
+    private static String getDateString() {
+        //return dateTime in ISO8601 format
+        String yyyy=Integer.toString(year);
+        String mm=Integer.toString(month);
+        String dd=Integer.toString(date);
+        return yyyy+"-"+mm+"-"+dd;
+    }
+    
+    private static Calendar getDate() {
+        Calendar calendar=new GregorianCalendar();
+        calendar.clear();
+        calendar.set( Calendar.YEAR, year );
+        calendar.set( Calendar.MONTH, month-1 );
+        calendar.set( Calendar.DAY_OF_MONTH, date );
+        return calendar;
+    }
+    
+    public static final int year=2001;
+    public static final int month=10;
+    public static final int date=31;
     
 }
