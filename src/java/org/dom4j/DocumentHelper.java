@@ -95,7 +95,7 @@ public class DocumentHelper {
     
     /** <p><code>createXPath</code> parses an XPath expression
       * and creates a new XPath <code>XPath</code> instance
-      * using the singleton {@link XPathEngine}.</p>
+      * using the singleton {@link DocumentFactory}.</p>
       *
       * @param xpathExpression is the XPath expression to create
       * @return a new <code>XPath</code> instance
@@ -104,9 +104,22 @@ public class DocumentHelper {
         return DocumentFactory.getInstance().createXPath(xpathExpression);
     }
     
+    /** <p><code>createXPath</code> parses an XPath expression
+      * and creates a new XPath <code>XPath</code> instance
+      * using the singleton {@link DocumentFactory}.</p>
+      *
+      * @param xpathExpression is the XPath expression to create
+      * @param variableContext is the variable context to use when evaluating the XPath
+      * @return a new <code>XPath</code> instance
+      */
+    public static XPath createXPath(String xpathExpression, VariableContext variableContext) {
+        return DocumentFactory.getInstance().createXPath(xpathExpression, variableContext);
+    }
+    
+    
     /** <p><code>createXPathFilter</code> parses a NodeFilter
       * from the given XPath filter expression using the singleton
-      * {@link XPathEngine}.
+      * {@link DocumentFactory}.
       * XPath filter expressions occur within XPath expressions such as
       * <code>self::node()[ filterExpression ]</code></p>
       *

@@ -53,7 +53,7 @@ import java.util.Map;
  *
  *  @see org.dom4j.xpath.ContextSupport
  *  @see org.dom4j.xpath.NamespaceContext
- *  @see org.dom4j.xpath.VariableContext
+ *  @see org.dom4j.VariableContext
  *  @see org.dom4j.xpath.FunctionContext
  *  @see org.dom4j.xpath.XPathFunctionContext
  *

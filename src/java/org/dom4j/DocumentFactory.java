@@ -144,6 +144,19 @@ public class DocumentFactory {
         return new DefaultXPath( xpathExpression );
     }
 
+    /** <p><code>createXPath</code> parses an XPath expression
+      * and creates a new XPath <code>XPath</code> instance.</p>
+      *
+      * @param xpathExpression is the XPath expression to create
+      * @param variableContext is the variable context to use when evaluating the XPath
+      * @return a new <code>XPath</code> instance
+      */
+    public XPath createXPath(String xpathExpression, VariableContext variableContext) {
+        XPath xpath = createXPath( xpathExpression );
+        xpath.setVariableContext( variableContext );
+        return xpath;
+    }
+
     /** <p><code>createXPathFilter</code> parses a NodeFilter
       * from the given XPath filter expression.
       * XPath filter expressions occur within XPath expressions such as

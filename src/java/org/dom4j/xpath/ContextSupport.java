@@ -134,7 +134,7 @@ public class ContextSupport {
      *
      *  <p>Retrieve the currently bound value of the named
      *  variable, or null if no such binding exists.  Delegates
-     *  to the {@link org.dom4j.xpath.VariableContext} implementation
+     *  to the {@link org.dom4j.VariableContext} implementation
      *  provided, if any.
      *
      *  @param name The name of the variable sought.
@@ -144,9 +144,9 @@ public class ContextSupport {
      *  @see #setVariableContext
      */
     public Object getVariableValue(String name) {
-        if ( _variableContext == null ) {
-            return null;
+        if ( _variableContext != null ) {
+            return _variableContext.getVariableValue(name);
         }
-        return _variableContext.getVariableValue(name);
+        return null;
     }
 }

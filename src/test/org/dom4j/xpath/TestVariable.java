@@ -7,24 +7,78 @@
  * $Id$
  */
 
-package org.dom4j;
+package org.dom4j.xpath;
 
-/** <p><code>NodeFilter</code> defines the behavior for
-  * a filter or predicate which acts on a DOM4J Node.
-  * Instances can be generated from an {@link DocumentFactory}.</p>
+import java.io.File;
+import java.util.Iterator;
+import java.util.List;
+
+import junit.framework.*;
+import junit.textui.TestRunner;
+
+import org.dom4j.AbstractTestCase;
+import org.dom4j.DefaultVariableContext;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Namespace;
+import org.dom4j.XPath;
+import org.dom4j.io.SAXReader;
+
+/** Test harness for the valueOf() function
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public interface NodeFilter {
+public class TestVariable extends AbstractTestCase {
 
-    /** <p><code>matches</code> returns true if the given node matches 
-      * the filter condition.</p>
-      *
-      * @return true if this filter matches the given node
-      */
-    public boolean matches(Node node);
+    protected static boolean VERBOSE = false;
+    
+    protected static String[] paths = {
+        "$root/author[1]",
+        "$root/author[1]/@name",
+        "$author",
+        "$author/@name"
+    };
+    
+    private DefaultVariableContext variableContext = new DefaultVariableContext();
 
+    
+    public static void main( String[] args ) {
+        TestRunner.run( suite() );
+    }
+    
+    public static Test suite() {
+        return new TestSuite( TestVariable.class );
+    }
+    
+    public TestVariable(String name) {
+        super(name);
+    }
+
+    // Test case(s)
+    //-------------------------------------------------------------------------                    
+    public void testXPaths() throws Exception {        
+        int size = paths.length;
+        for ( int i = 0; i < size; i++ ) {
+            testXPath( paths[i] );
+        }
+    }
+        
+    protected void testXPath(String xpathExpression) {
+        XPath xpath = createXPath( xpathExpression );
+        String value = xpath.valueOf( document );
+        
+        log( "valueOf: " + xpath.getText() + " is: " + value );
+    }
+    
+    protected XPath createXPath( String xpath ) {
+        return DocumentHelper.createXPath( xpath, variableContext );
+    }
+    
+    protected void setUp() throws Exception {
+        super.setUp();
+        variableContext.setVariableValue( "root", document.selectSingleNode( "/root" ) );
+        variableContext.setVariableValue( "author", document.selectSingleNode( "/root/author[1]" ) );
+    }
 }
 
 
