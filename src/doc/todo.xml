@@ -4,7 +4,7 @@
     <title>Status</title>
     
     <section title="Change History">
-        <section title="Patches in CVS since release">
+        <section title="0.6 release">
           <section title="Serialization support added">
             <p>Support has been added for Java Serialization so dom4j documents can be serialized over RMI or EJB calls.
             Note that currently Serialization is <i>much</i> slower (by a factor of 2-5 times) than using the textual format of
