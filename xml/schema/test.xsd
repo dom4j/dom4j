@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns='http://www.w3.org/2001/XMLSchema'>
+
+ <element name="records">
+  <complexType>
+   <sequence>
+     <element ref="record" minOccurs='1' maxOccurs='unbounded'/>
+   </sequence>
+  </complexType>
+ </element>
+
+ <element name="record">
+  <complexType>
+    <attribute name="floatTag" type="float"/>
+    <attribute name="doubleTag" type="double"/>
+
+    <attribute name="decimalTag" type="decimal"/>
+    <attribute name="integerTag" type="integer"/>
+
+    <attribute name="nonPositiveIntegerTag" type="nonPositiveInteger"/>
+    <attribute name="negativeIntegerTag" type="negativeInteger"/>
+
+    <attribute name="longTag" type="long"/>
+    <attribute name="intTag" type="int"/>
+    <attribute name="shortTag" type="short"/>
+    <attribute name="byteTag" type="byte"/>
+
+    <attribute name="nonNegativeIntegerTag" type="nonNegativeInteger"/>
+    <attribute name="unsignedLongTag" type="unsignedLong"/>
+    <attribute name="unsignedIntTag" type="unsignedInt"/>
+    <attribute name="unsignedShortTag" type="unsignedShort"/>
+    <attribute name="unsignedByteTag" type="unsignedByte"/>
+
+    <attribute name="positiveIntegerTag" type="positiveInteger"/>
+
+    <attribute name="dateTag" type="date"/>
+    <attribute name="dateTimeTag" type="dateTime"/>
+  </complexType>
+ </element>
+
+</schema>

@@ -32,7 +32,7 @@ import org.dom4j.schema.SchemaDocumentFactory;
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class TestAutoSchema extends TestManualSchema {
+public class TestAutoSchema extends AbstractDataTypeTest {
 
     public static void main( String[] args ) {
         TestRunner.run( suite() );
@@ -46,6 +46,40 @@ public class TestAutoSchema extends TestManualSchema {
         super(name);
     }
 
+    // Test case(s)
+    //-------------------------------------------------------------------------                    
+    public void testIntAttribute() throws Exception {        
+        testNodes( "//person/@x", Integer.class );
+    }
+    
+    public void testIntElement() throws Exception {        
+        testNodes( "//person/salary", Integer.class );
+    }
+    
+    public void testString() throws Exception {        
+        testNodes( "//person/note", String.class );
+    }
+
+/*
+ * these don't yet work due to a bug in Sun's xsdlib 
+ *
+ 
+    public void testDate() throws Exception {        
+        testNodes( "//person/@d", Date.class );
+    }
+    
+    public void testDateTime() throws Exception {        
+        testNodes( "//person/@dt", Date.class );
+    }
+    
+    public void testInteger() throws Exception {        
+        testNodes( "//person/@age", Integer.class );
+    }
+*/
+
+    
+    // Implementation methods
+    //-------------------------------------------------------------------------                    
     protected void setUp() throws Exception {
         DocumentFactory factory = SchemaDocumentFactory.getInstance();
         SAXReader reader = new SAXReader( factory );

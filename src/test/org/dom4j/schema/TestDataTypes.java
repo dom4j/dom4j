@@ -9,6 +9,7 @@
 
 package org.dom4j.schema;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -26,47 +27,103 @@ import org.dom4j.io.SAXReader;
 import org.dom4j.schema.SchemaDocumentFactory;
 
 
-/** Test harness for the XML Schema Data Type integration. These tests
-  * manually load the schemas
+/** Test harness to test the various data types supported in the 
+  * XML Schema Data Type integration. 
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class TestManualSchema extends TestAutoSchema {
+public class TestDataTypes extends AbstractDataTypeTest {
 
-    protected static boolean VERBOSE = true;
-    
     public static void main( String[] args ) {
         TestRunner.run( suite() );
     }
     
     public static Test suite() {
-        return new TestSuite( TestManualSchema.class );
+        return new TestSuite( TestDataTypes.class );
     }
     
-    public TestManualSchema(String name) {
+    public TestDataTypes(String name) {
         super(name);
     }
 
-    
-    // Implementation methods
+    // Test case(s)
     //-------------------------------------------------------------------------                    
-    protected void setUp() throws Exception {
-        super.setUp();
+    
+/** The commented tests below are commented out due to current limitations
+  * with Sun's xsdlib
+  */
+    
+    public void testFloat() throws Exception {        
+        testNodes( "//floatTag", Float.class );
+    }
+    public void testDouble() throws Exception {        
+        testNodes( "//doubleTag", Double.class );
+    }
 
-        DocumentFactory factory = loadDocumentFactory();
-        
-        SAXReader reader = new SAXReader( factory );
-        document = reader.read( "xml/schema/personal.xml" );
+    
+    public void testDecimal() throws Exception {        
+        testNodes( "//decimalTag", BigDecimal.class );
+    }
+/*    
+    public void testInteger() throws Exception {        
+        testNodes( "//integerTag", Integer.class );
+    }
+
+    
+    public void testNonPositiveInteger() throws Exception {        
+        testNodes( "//nonPositiveIntegerTag", Integer.class );
     }
     
-    protected DocumentFactory loadDocumentFactory() throws Exception {
-        SchemaDocumentFactory factory = new SchemaDocumentFactory();
-        
-        SAXReader reader = new SAXReader();
-        Document schemaDocument = reader.read( "xml/schema/personal.xsd" );
-        factory.loadSchema( schemaDocument );
-        return factory;
+    public void testNegativeInteger() throws Exception {        
+        testNodes( "//negativeIntegerTag", Integer.class );
+    }
+*/    
+    
+    public void testLong() throws Exception {        
+        testNodes( "//longTag", Long.class );
+    }
+    public void testInt() throws Exception {        
+        testNodes( "//intTag", Integer.class );
+    }
+    public void testShort() throws Exception {        
+        testNodes( "//shortTag", Short.class );
+    }
+    public void testByte() throws Exception {        
+        testNodes( "//byteTag", Byte.class );
+    }
+    
+/*    
+    public void testNonNegativeInteger() throws Exception {        
+        testNodes( "//nonNegativeIntegerTag", Integer.class );
+    }
+    
+    public void testUnsignedLong() throws Exception {        
+        testNodes( "//unsignedLongTag", Long.class );
+    }
+*/    
+    public void testUnsignedInt() throws Exception {        
+        testNodes( "//unsignedIntTag", Long.class );
+    }
+    public void testUnsignedShort() throws Exception {        
+        testNodes( "//unsignedShortTag", Integer.class );
+    }
+    public void testUnsignedByte() throws Exception {        
+        testNodes( "//unsignedByteTag", Short.class );
+    }
+    
+/*    
+    public void testPositiveInteger() throws Exception {        
+        testNodes( "//positiveIntegerTag", Integer.class );
+    }
+*/    
+
+    // Implementation methods
+    //-------------------------------------------------------------------------                        
+    protected void setUp() throws Exception {
+        DocumentFactory factory = SchemaDocumentFactory.getInstance();
+        SAXReader reader = new SAXReader( factory );
+        document = reader.read( "xml/schema/test.xml" );
     }
 }
 

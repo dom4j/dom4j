@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:noNamespaceSchemaLocation='test.xsd'>
+
+  <record id="foo">
+    <floatTag>123.45</floatTag>
+    <doubleTag>123.45</doubleTag>
+
+    <decimalTag>123</decimalTag>
+    <integerTag>123</integerTag>
+
+    <nonPositiveIntegerTag>-123</nonPositiveIntegerTag>
+    <negativeIntegerTag>-123</negativeIntegerTag>
+
+    <longTag>12345678901234</longTag>
+    <intTag>12345</intTag>
+    <shortTag>1234</shortTag>
+    <byteTag>123</byteTag>
+
+    <nonNegativeIntegerTag>123</nonNegativeIntegerTag>
+    <unsignedLongTag>123</unsignedLongTag>
+    <unsignedIntTag>123</unsignedIntTag>
+    <unsignedShortTag>123</unsignedShortTag>
+    <unsignedByteTag>123</unsignedByteTag>
+
+    <positiveIntegerTag>123</positiveIntegerTag>
+
+    <dateTag>1999-05-03</dateTag>
+    <dateTimeTag>1999-05-31T13:20:00-05:00</dateTimeTag>
+  </record>
+
+</records>

@@ -428,7 +428,11 @@
   </target>
 
   <target name="test-schema" depends="compile-test">
+    <java classname="org.dom4j.schema.TestDataTypes"/>
+<!--
+    <java classname="org.dom4j.schema.TestAutoSchema"/>
     <java classname="org.dom4j.schema.TestManualSchema"/>
+-->
   </target>
 
   <target name="test-detach" depends="compile-test">

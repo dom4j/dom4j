@@ -9,7 +9,6 @@
 
 package org.dom4j.schema;
 
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,54 +18,72 @@ import junit.textui.TestRunner;
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
-import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.Node;
-import org.dom4j.io.SAXReader;
-import org.dom4j.schema.SchemaDocumentFactory;
 
 
-/** Test harness for the XML Schema Data Type integration. These tests
-  * manually load the schemas
+/** Abstract base class useful for implementation inheritence
+  * for testing XML Schema Data Type integration. 
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class TestManualSchema extends TestAutoSchema {
+public class AbstractDataTypeTest extends AbstractTestCase {
 
-    protected static boolean VERBOSE = true;
+    protected boolean VERBOSE = true;
+
     
-    public static void main( String[] args ) {
-        TestRunner.run( suite() );
-    }
-    
-    public static Test suite() {
-        return new TestSuite( TestManualSchema.class );
-    }
-    
-    public TestManualSchema(String name) {
+    public AbstractDataTypeTest(String name) {
         super(name);
     }
 
-    
     // Implementation methods
-    //-------------------------------------------------------------------------                    
-    protected void setUp() throws Exception {
-        super.setUp();
-
-        DocumentFactory factory = loadDocumentFactory();
+    //-------------------------------------------------------------------------
+    protected void testNodes(String xpath, Class type) {
+        List list = document.selectNodes( xpath );
         
-        SAXReader reader = new SAXReader( factory );
-        document = reader.read( "xml/schema/personal.xml" );
+        log( "Searched path: " + xpath + " found: " + list.size() + " result(s)" );
+        
+        if ( VERBOSE ) {
+            log( "" );
+            log( "xpath: " + xpath );
+            log( "" );
+            log( "results: " + list );
+            log( "" );
+        }
+        
+        assert( "Results are not empty", ! list.isEmpty() );
+        
+        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
+            Node node = (Node) iter.next();
+            if ( node instanceof Element ) {
+                Element element = (Element) node;
+                testDataType( element, element.getData(), type );
+            }
+            else if ( node instanceof Attribute ) {
+                Attribute attribute = (Attribute) node;
+                testDataType( attribute, attribute.getData(), type );
+            }
+            else {
+                assert( "Did not find an attribute or element: " + node, false );
+            }
+        }
     }
     
-    protected DocumentFactory loadDocumentFactory() throws Exception {
-        SchemaDocumentFactory factory = new SchemaDocumentFactory();
+    protected void testDataType(Node node, Object data, Class type) {
+        assert( "Data object is not null", data != null );
         
-        SAXReader reader = new SAXReader();
-        Document schemaDocument = reader.read( "xml/schema/personal.xsd" );
-        factory.loadSchema( schemaDocument );
-        return factory;
+        if ( VERBOSE ) {
+            log( "found: " + data + " type: " + data.getClass().getName() + " required type: " + type.getName() );
+            log( "node: " + node );
+        }
+        
+        assert( 
+            "Data object is of the correct type. Expected: " 
+                + type.getName() 
+                + " and found: " + data.getClass().getName(), 
+            type.isAssignableFrom( data.getClass() ) 
+        );
     }
 }
 
