@@ -8,6 +8,10 @@
   <body>
 
     <release version="1.5-dev" date="in CVS">
+      <action dev="maartenc" type="fix" due-to="Dion Gillard">
+        Fixed bug in <code>XMLWriter.characters(...)</code> where the escapeText
+        property of the writer was ignored.
+      </action>
       <action dev="maartenc" type="fix" due-to="Peter Stibrany">
         Fixed the <code>Stylesheet.removeRule(Rule)</code> method which didn't remove the
         <code>Rule</code> but added it again.

@@ -361,6 +361,22 @@ public class TestXMLWriter extends AbstractTestCase {
     	String xml = strWriter.toString();
     }
     
+    public void testEscapeText() throws SAXException {
+    	StringWriter writer = new StringWriter();
+    	XMLWriter xmlWriter = new XMLWriter(writer);
+    	xmlWriter.setEscapeText(false);
+    	
+    	String txt = "<test></test>";
+    	
+    	xmlWriter.startDocument();
+    	xmlWriter.characters(txt.toCharArray(), 0, txt.length());
+    	xmlWriter.endDocument();
+    	
+    	String output = writer.toString();
+    	System.out.println(output);
+    	assertTrue(output.indexOf("<test>") != -1);
+    }
+    
     protected org.dom4j.Document parseDocument(String file) throws Exception {
         SAXReader reader = new SAXReader();
         return reader.read(getClass().getResource(file));

@@ -611,7 +611,11 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
              * of character arrays.
              */
             String string = new String(ch, start, length);
-            string = escapeElementEntities(string);
+            
+            if (escapeText) {
+            	string = escapeElementEntities(string);
+            }
+            
             if (format.isTrimText()) {
                 if ((lastOutputNodeType == Node.TEXT_NODE) && !charactersAdded) {
                     writer.write(" ");
