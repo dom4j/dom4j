@@ -350,6 +350,13 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     }
     
     public void add(Namespace namespace) {
+        String prefix = namespace.getPrefix();
+        if ( prefix.equals( getNamespacePrefix() ) ) {
+            throw new IllegalAddException( 
+                "The namespace with the given prefix conflicts with the "
+                + "prefix of this element: " + prefix 
+            );
+        }
         addNode(namespace);
     }
     

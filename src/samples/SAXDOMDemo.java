@@ -13,14 +13,18 @@ import java.net.URL;
 import org.dom4j.Document;
 import org.dom4j.io.DOMReader;
 import org.dom4j.io.DOMWriter;
+import org.dom4j.io.SAXContentHandler;
 import org.dom4j.io.SAXReader;
+import org.dom4j.io.SAXWriter;
 import org.dom4j.io.XMLWriter;
 
 /** This sample program parses an XML document as a DOM4J tree using
   * SAX, it then creates a W3C DOM tree which is then used as input for
-  * creating a new DOM4J tree which is then output. 
+  * creating a new DOM4J tree which is then output to SAX which is then
+  * parsed into another DOM4J tree which is then output as XML.
+  *
   * This is clearly not terribly useful but demonstrates how to convert from 
-  * text <-> DOM4J and DOM4J <-> DOM
+  * SAX <-> DOM4J and DOM4J <-> DOM and DOM4J <-> text
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
@@ -51,8 +55,8 @@ public class SAXDOMDemo extends AbstractDemo {
     }
     
     protected void parse( URL url ) throws Exception {
-        SAXReader reader = new SAXReader();
-        Document document = reader.read(url);
+        SAXReader saxReader = new SAXReader();
+        Document document = saxReader.read(url);
         
         println( "Parsed to DOM4J tree using SAX: " + document );
         
@@ -67,6 +71,16 @@ public class SAXDOMDemo extends AbstractDemo {
         document = domReader.read( domDocument );
         
         println( "Converted to DOM4J tree using DOM: " + document );
+        
+        // now lets write it back as SAX events to
+        // a SAX ContentHandler which should build up a new document
+        SAXContentHandler contentHandler = new SAXContentHandler();
+        SAXWriter saxWriter = new SAXWriter( contentHandler, null, contentHandler );
+        
+        saxWriter.write( document );
+        document = contentHandler.getDocument();
+        
+        println( "Converted DOM4J to SAX events then back to DOM4J: " + document );
         
         process( document );
     }

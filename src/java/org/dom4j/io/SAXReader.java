@@ -67,8 +67,11 @@ import org.xml.sax.helpers.XMLReaderFactory;
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class SAXReader extends DocumentReader {
+public class SAXReader {
 
+    /** <code>DocumentFactory</code> used to create new document objects */
+    private DocumentFactory factory;
+    
     /** <code>XMLReader</code> used to parse the SAX events */
     private XMLReader xmlReader;
     
@@ -97,6 +100,15 @@ public class SAXReader extends DocumentReader {
         this.validating = validating;
     }
 
+    public SAXReader(DocumentFactory factory) {
+        this.factory = factory;
+    }
+
+    public SAXReader(DocumentFactory factory, boolean validating) {
+        this.factory = factory;
+        this.validating = validating;
+    }
+
     public SAXReader(XMLReader xmlReader) {
         this.xmlReader = xmlReader;
     }
@@ -119,8 +131,6 @@ public class SAXReader extends DocumentReader {
         this.validating = validating;
     }
 
-    
-    
     // Properties
     
     /** @return the validation mode, true if validating will be done 
@@ -137,7 +147,25 @@ public class SAXReader extends DocumentReader {
     public void setValidation(boolean validating) {
         this.validating = validating;
     }
+    
+    /** @return the <code>DocumentFactory</code> used to create document objects
+      */
+    public DocumentFactory getDocumentFactory() {
+        if (factory == null) {
+            factory = DocumentFactory.getInstance();
+        }
+        return factory;
+    }
 
+    /** <p>This sets the <code>DocumentFactory</code> used to create new documents.
+      * This method allows the building of custom DOM4J tree objects to be implemented
+      * easily using a custom derivation of {@link DocumentFactory}</p>
+      *
+      * @param factory <code>DocumentFactory</code> used to create DOM4J objects
+      */
+    public void setDocumentFactory(DocumentFactory factory) {
+        this.factory = factory;
+    }
 
     /** @return the <code>ErrorHandler</code> used by SAX
       */
@@ -248,9 +276,9 @@ public class SAXReader extends DocumentReader {
     
 
     
+    // read methods
     
-    // DocumentReader API
-    
+        
     /** <p>Reads a Document from the given <code>File</code></p>
       *
       * @param file is the <code>File</code> to read from.
@@ -345,14 +373,13 @@ public class SAXReader extends DocumentReader {
         try {
             XMLReader reader = getXMLReader();
 
-            Document document = createDocument();
-            DefaultHandler contentHandler = createContentHandler(document);
+            SAXContentHandler contentHandler = createContentHandler();
             reader.setContentHandler(contentHandler);
 
             configureReader(reader, contentHandler);
         
             reader.parse(in);
-            return document;
+            return contentHandler.getDocument();
         } 
         catch (Exception e) {
             if (e instanceof SAXParseException) {
@@ -440,15 +467,15 @@ public class SAXReader extends DocumentReader {
 
     /** Factory Method to allow user derived SAXContentHandler objects to be used
       */
-    protected DefaultHandler createContentHandler( Document document ) {
+    protected SAXContentHandler createContentHandler() {
         if ( pruningPath != null ) {
             // NOTE: should handle full XPath patterns sometime
             String[] path = tokenizePath( pruningPath );
             ElementStack stack = new PruningElementStack( path, getPruningElementHandler() );
-            return new SAXContentHandler(document, getElementHandler(), stack);
+            return new SAXContentHandler( getDocumentFactory(), getElementHandler(), stack );
         }
         else {
-            return new SAXContentHandler(document, getElementHandler());
+            return new SAXContentHandler( getDocumentFactory(), getElementHandler() );
         }
     }
     

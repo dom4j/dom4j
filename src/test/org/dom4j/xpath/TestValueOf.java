@@ -35,8 +35,12 @@ public class TestValueOf extends AbstractTestCase {
         "/root",
         "//author",
         "//author/@name",
+        "/root/author[1]",
+        "/root/author[1]/@name",
         "/root/author[2]",
-        "/root/author[2]/@name"
+        "/root/author[2]/@name",
+        "/root/author[3]",
+        "/root/author[3]/@name"
     };
     
     
