@@ -8,6 +8,7 @@
  
   <body>
       <section name="CVS">
+        <p>Fixed bug in SAXContentHandler that caused incorrect entity handling.</p>
         <p>Fixed bug in XMLWriter causing padding to be disabled, even if enabled in the specified outputformat (reported by Bo Gundersen).</p>
         <p>Added initial support for STaX streams (contributed by Christian Niles).</p>
       </section>
