@@ -27,7 +27,7 @@ import org.xml.sax.Attributes;
   * <p>The tree built allows full XPath expressions from anywhere on the 
   * tree.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class BeanDocumentFactory extends DocumentFactory {

@@ -96,6 +96,12 @@ public class QNameCache {
     }
     
     
+    /** @return the cached QName instance if there is one or adds the given
+      * qname to the cache if not 
+       */
+    public QName intern(QName qname) {
+        return get(qname.getName(), qname.getNamespace(), qname.getQualifiedName());
+    }
 
     /** @return the cache for the given namespace. If one does not
       * currently exist it is created.

@@ -17,7 +17,7 @@ import org.dom4j.tree.QNameCache;
   * or attribute. It consists of a local name and a {@link Namespace} 
   * instance. This object is immutable.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class QName implements Serializable {
@@ -152,6 +152,11 @@ public class QName implements Serializable {
         return false;
     }
     
+    public String toString() {
+        return super.toString() + " [name: " + getName() 
+            + " namespace: \"" + getNamespace() + "\"]";
+    }
+
     /** @return the factory that should be used for Elements of this QName */
     public DocumentFactory getDocumentFactory() {
         return documentFactory;

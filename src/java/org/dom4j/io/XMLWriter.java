@@ -487,7 +487,8 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
                 write((DocumentType) node);
                 break;
             case Node.NAMESPACE_NODE:
-                write((Namespace) node);
+                // Will be output with attributes
+                //write((Namespace) node);
                 break;
             default:
                 throw new IOException( "Invalid node type: " + node );

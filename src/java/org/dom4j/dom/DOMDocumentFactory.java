@@ -29,7 +29,7 @@ import org.xml.sax.Attributes;
 /** <p><code>DOMDocumentFactory</code> is a factory of DOM4J objects
   * which implement the W3C DOM API.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class DOMDocumentFactory extends DocumentFactory implements org.w3c.dom.DOMImplementation {

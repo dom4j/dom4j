@@ -247,6 +247,13 @@ public class DocumentFactory {
             return new DocumentFactory();
         }
     }        
+    
+    /** @return the cached QName instance if there is one or adds the given
+      * qname to the cache if not 
+       */
+    protected QName intern(QName qname) {
+        return cache.intern(qname);
+    }
 }
 
 

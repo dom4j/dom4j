@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns='http://www.w3.org/2001/XMLSchema'>
+
+ <element name="personnel">
+  <complexType>
+   <sequence>
+     <element ref="person" minOccurs='1' maxOccurs='unbounded'/>
+   </sequence>
+  </complexType>
+
+  <unique name="unique1">
+   <selector xpath="person"/>
+   <field xpath="@name"/>
+  </unique>
+  <key name='empid'>
+   <selector xpath="person"/>
+   <field xpath="@id"/>
+  </key>
+  <!--
+  <keyref name="keyref1" refer='empid'>
+   <selector xpath="person"/> 
+   <field xpath="link/@manager"/>  
+  </keyref>
+  -->
+
+ </element>
+
+ <element name="person">
+  <complexType>
+   <sequence>
+     <element ref="name"/>
+     <element ref="email" minOccurs='0' maxOccurs='unbounded'/>
+     <element ref="url"   minOccurs='0' maxOccurs='unbounded'/>
+     <element ref="link"  minOccurs='0' maxOccurs='1'/>
+   </sequence>
+   <attribute name="id"  type="ID" use='required'/>
+   <attribute name="note" type="string"/>
+   <attribute name="contr" default="false">
+    <simpleType>
+     <restriction base = "string">
+       <enumeration value="true"/>
+       <enumeration value="false"/>
+     </restriction>
+    </simpleType>
+   </attribute>
+   <attribute name="salary" type="integer"/>
+  </complexType>
+  <attribute name="age" type="integer"/>
+ </element>
+
+ <element name="name">
+  <complexType>
+   <all>
+    <element ref="family"/>
+    <element ref="given"/>
+   </all>
+  </complexType>
+ </element>
+
+ <element name="family" type='string'/>
+
+ <element name="given" type='string'/>
+
+ <element name="email" type='string'/>
+
+ <element name="url">
+  <complexType>
+   <attribute name="href" type="string" default="http://"/>
+  </complexType>
+ </element>
+
+ <element name="link">
+  <complexType>
+   <attribute name="manager" type="IDREF"/>
+   <attribute name="subordinates" type="IDREFS"/>
+  </complexType>
+ </element>
+
+ <notation name='gif' public='-//APP/Photoshop/4.0' system='photoshop.exe'/>
+
+</schema>

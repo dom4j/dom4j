@@ -39,7 +39,7 @@ import org.dom4j.io.XMLWriter;
 /** <p><code>AbstractElement</code> is an abstract base class for 
   * tree implementors to use for implementation inheritence.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public abstract class AbstractElement extends AbstractBranch implements Element {

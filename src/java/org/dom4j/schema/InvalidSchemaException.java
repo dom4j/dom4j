@@ -7,50 +7,18 @@
  * $Id$
  */
 
-package org.dom4j.saxon;
+package org.dom4j.schema;
 
-import java.util.Map;
-
-import org.dom4j.DocumentFactory;
-import org.dom4j.Attribute;
-import org.dom4j.Element;
-import org.dom4j.QName;
-import org.dom4j.tree.DefaultAttribute;
-import org.dom4j.tree.DefaultElement;
-
-import org.xml.sax.Attributes;
-
-/** <p><code>SaxonDocumentFactory</code> is a factory of DOM4J objects
-  * which implement the SAXON document object model.</p>
+/** <p><code>InvalidSchemaException</code> is thrown when an invalid
+  * XML Schema document is used</p>
   *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class SaxonDocumentFactory extends DocumentFactory {
+public class InvalidSchemaException extends IllegalArgumentException {
 
-    /** The Singleton instance */
-    private static SaxonDocumentFactory singleton = new SaxonDocumentFactory();
-
-    /** <p>Access to the singleton instance of this factory.</p>
-      *
-      * @return the default singleon instance
-      */
-    public static DocumentFactory getInstance() {
-        return singleton;
+    public InvalidSchemaException(String reason) {
+        super(reason);
     }
-    
-    
-    // Factory methods
-    
-/*    
-    public Attribute createAttribute(QName qname, String value) {
-        return new SaxonAttribute(qname, value);
-    }
-*/
-    // SAXON helper methods
-    
-    // Implementation methods
-    
 }
 
 

@@ -11,14 +11,16 @@ package org.dom4j.schema;
 
 import com.sun.tranquilo.datatype.DataType;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import org.dom4j.DocumentFactory;
 import org.dom4j.Attribute;
+import org.dom4j.Document;
+import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
+import org.dom4j.Namespace;
 import org.dom4j.QName;
-import org.dom4j.tree.DefaultAttribute;
-import org.dom4j.tree.DefaultElement;
+import org.dom4j.io.SAXReader;
 
 import org.xml.sax.Attributes;
 
@@ -32,9 +34,27 @@ import org.xml.sax.Attributes;
   */
 public class SchemaDocumentFactory extends DocumentFactory {
 
+    // I don't think interning of QNames is necessary
+    private static final boolean DO_INTERN_QNAME = false;
+    
+    
     /** The Singleton instance */
-    private static SchemaDocumentFactory singleton = new SchemaDocumentFactory();
+    static SchemaDocumentFactory singleton = new SchemaDocumentFactory();
+    
+    private static final Namespace XSI_NAMESPACE
+        = Namespace.get( "xsi", "http://www.w3.org/2001/XMLSchema-instance" );
+    
+    private static final QName XSI_NO_SCHEMA_LOCATION
+        = QName.get( "noNamespaceSchemaLocation", XSI_NAMESPACE );
+    
 
+    /** The builder of XML Schemas */
+    private SchemaBuilder schemaBuilder;
+    
+    /** reader of XML Schemas */
+    private SAXReader xmlSchemaReader = new SAXReader();
+
+    
     /** <p>Access to the singleton instance of this factory.</p>
       *
       * @return the default singleon instance
@@ -43,25 +63,57 @@ public class SchemaDocumentFactory extends DocumentFactory {
         return singleton;
     }
     
+    public SchemaDocumentFactory() {
+        schemaBuilder = new SchemaBuilder(this);
+    }
     
-    // Factory methods
+    
+    /** Registers the given <code>SchemaElementFactory</code> for the given 
+      * &lt;element&gt; schema element
+      */
+    public SchemaElementFactory getElementFactory( QName elementQName ) {
+        if ( DO_INTERN_QNAME ) {
+            elementQName = intern( elementQName );
+        }
+        DocumentFactory factory = elementQName.getDocumentFactory();
+        return (factory instanceof SchemaElementFactory) 
+            ? (SchemaElementFactory) factory : null;
+    }
+    
+        
+    // DocumentFactory methods
     //-------------------------------------------------------------------------
     
+    public Element createElement(QName qname, Attributes attributes) {
+        //System.out.println( "Creating element for: " + qname );
+        //System.out.println( "Has factory: " + qname.getDocumentFactory() );
+        return super.createElement(qname, attributes);
+    }
+    
     public Attribute createAttribute(QName qname, String value) {
-        DataType dataType = getDataType(qname);
-        if ( dataType == null ) {
-            return super.createAttribute( qname, value );
+        if ( qname.equals( XSI_NO_SCHEMA_LOCATION ) ) {
+            loadSchema( value );
         }
-        else {
-            return new SchemaAttribute( qname, dataType, value );
-        }
+        return super.createAttribute( qname, value );
     }
     
 
     
     // Implementation methods
-    protected DataType getDataType(QName qname) {
-        return null;
+    //-------------------------------------------------------------------------
+    protected void loadSchema( String schemaInstanceURI ) {
+        try {
+            // XXXX: massive hack!            
+            schemaInstanceURI = "xml/schema/" + schemaInstanceURI;
+            Document schemaDocument = xmlSchemaReader.read( schemaInstanceURI );
+            schemaBuilder.build( schemaDocument );
+        }
+        catch (Exception e) {
+            System.out.println( "Failed to load schema: " + schemaInstanceURI );
+            System.out.println( "Caught: " + e );
+            e.printStackTrace();
+            throw new InvalidSchemaException( "Failed to load schema: " + schemaInstanceURI );
+        }
     }
     
 }

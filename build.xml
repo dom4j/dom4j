@@ -553,9 +553,19 @@
     <java classname="ValidateDemo" args="xml/nitf/sample.xml"/>
   </target>
 
+  <target name="demo-schema" depends="samples">
+<!--
+    <java classname="SchemaDemo" args="xml/schema/personal-schema.xml"/>
+-->
+    <java classname="VisitorDemo">
+      <sysproperty key="org.dom4j.factory" value="org.dom4j.schema.SchemaDocumentFactory"/>
+      <arg line="xml/schema/personal-schema.xml"/>
+    </java>
+  </target>
 
 
-  <target name="demo-all" depends="demo-sax,demo-visitor,demo-count,demo-xpath,demo-html"/>
+
+  <target name="demo-all" depends="demo-sax,demo-visitor,demo-count,demo-xpath,demo-html,demo-schema"/>
 </project>
 
 <!-- End of file -->

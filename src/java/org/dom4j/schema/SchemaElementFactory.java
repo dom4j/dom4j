@@ -7,49 +7,76 @@
  * $Id$
  */
 
-package org.dom4j.saxon;
+package org.dom4j.schema;
 
+import com.sun.tranquilo.datatype.DataType;
+import com.sun.tranquilo.datatype.DataTypeFactory;
+
+import java.util.HashMap;
 import java.util.Map;
 
-import org.dom4j.DocumentFactory;
+
 import org.dom4j.Attribute;
+import org.dom4j.Document;
+import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.QName;
-import org.dom4j.tree.DefaultAttribute;
-import org.dom4j.tree.DefaultElement;
 
-import org.xml.sax.Attributes;
-
-/** <p><code>SaxonDocumentFactory</code> is a factory of DOM4J objects
-  * which implement the SAXON document object model.</p>
+/** <p><code>SchemaElementFactory</code> is a factory for a specific Element 
+  * in an XML Schema.</p>
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class SaxonDocumentFactory extends DocumentFactory {
+public class SchemaElementFactory extends DocumentFactory {
+    
+    private QName elementQName;
+    
+    
+    public SchemaElementFactory(QName elementQName) {
+        this.elementQName = elementQName;
+        elementQName.setDocumentFactory(this);
+    }
+    
+    /** Cache of <code>DataType</code> instances per 
+      * Attribute <code>QName</code> */
+    private Map attributeDataTypes = new HashMap();
 
-    /** The Singleton instance */
-    private static SaxonDocumentFactory singleton = new SaxonDocumentFactory();
-
-    /** <p>Access to the singleton instance of this factory.</p>
-      *
-      * @return the default singleon instance
+    
+    /** Registers the given <code>DataType</code> for the given 
+      * &lt;attribute&gt; schema element
       */
-    public static DocumentFactory getInstance() {
-        return singleton;
+    public DataType getAttributeDataType( QName attributeQName ) {
+        return (DataType) attributeDataTypes.get( attributeQName );
     }
     
+    /** Registers the given <code>DataType</code> for the given 
+      * &lt;attribute&gt; QNames
+      */
+    public void setAttributeDataType( QName attributeQName, DataType dataType ) {
+        System.out.println( "==== Creating DataType for element: " + elementQName.getQualifiedName() + " and attribute: " + attributeQName.getQualifiedName() );
+        System.out.println( "### DataType: " + dataType );
+        
+        attributeDataTypes.put( attributeQName, dataType );
+    }
     
-    // Factory methods
-    
-/*    
+    // DocumentFactory methods
+    //-------------------------------------------------------------------------
     public Attribute createAttribute(QName qname, String value) {
-        return new SaxonAttribute(qname, value);
+        System.out.println( "### Creating Attribute for element: " + elementQName.getQualifiedName() + " and attribute: " + qname.getQualifiedName() );
+        
+        DataType dataType = getAttributeDataType(qname);
+        if ( dataType == null ) {
+            System.out.println( "no DataType!" );
+            return super.createAttribute( qname, value );
+        }
+        else {
+            System.out.println( "### FOUND " + dataType );
+            return new SchemaAttribute( qname, dataType, value );
+        }
     }
-*/
-    // SAXON helper methods
     
-    // Implementation methods
+    
     
 }
 
