@@ -72,18 +72,19 @@ public class XPathGrep extends SAXDemo {
             println( "Results:" );
         }
         
-        List list = xpath.selectNodes( document );
-        
-        if ( verbose ) {
-            println( ": " + list );
+        Object object = xpath.selectObject( document );
+
+        if ( object instanceof List ) {
+            List list = (List) object;
+            for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
+                getXMLWriter().write( iter.next() );
+                getXMLWriter().println();
+            }        
+            getXMLWriter().flush();
         }
-        
-        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
-            Object object = iter.next();
-            writer.write( object );
-            writer.println();
-        }        
-        writer.flush();
+        else {
+            println( (object != null) ? object.toString() : "null" );
+        }
     }
     
     protected void readOptions( String arg ) {

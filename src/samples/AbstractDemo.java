@@ -120,6 +120,13 @@ public abstract class AbstractDemo {
         println( "Usage: java " + getClass().getName() + " " + text );
     }
 
+    protected XMLWriter getXMLWriter() throws Exception {
+        if ( writer == null ) {
+            writer = createXMLWriter();
+        }
+        return writer;
+    }
+    
     /** A Factory Method to create an <code>XMLWriter</code>
       * instance allowing derived classes to change this behaviour
       */
