@@ -86,9 +86,8 @@
   
     <mailingList>
       <name>dom4j commits list</name>
-      <subscribe>dom4j-commits-subscribe@lists.sourceforge.net</subscribe>
-      <unsubscribe>dom4j-commits-unsubscribe@lists.sourceforge.net</unsubscribe>
-      <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=34847</archive>
+      <subscribe>http://lists.sourceforge.net/lists/listinfo/dom4j-commits</subscribe>
+      <unsubscribe>http://lists.sourceforge.net/lists/listinfo/dom4j-commits</unsubscribe>
     </mailingList>
     
   </mailingLists>
