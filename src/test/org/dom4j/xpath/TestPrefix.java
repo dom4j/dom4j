@@ -85,7 +85,7 @@ public class TestPrefix extends AbstractTestCase {
     }
     
     protected void setUp() throws Exception {
-        document = new SAXReader().read( new File( "xml/soap.xml" ) );
+        document = new SAXReader().read( new File( "xml/testNamespaces.xml" ) );
     }
 }
 
