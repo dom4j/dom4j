@@ -35,12 +35,11 @@ public class TestVariable extends AbstractTestCase {
     
     protected static String[] paths = {
         "$author",
-/*        
+        "$author/@name",
         "$root/author",
         "$root/author[1]",
         "$root/author[1]/@name",
         "$author/@name"
-*/
     };
     
     private SimpleVariableContext variableContext = new SimpleVariableContext();
