@@ -1054,7 +1054,7 @@ public class DocumentStyler
         transformer = factory.newTransformer( aStyleSheet );
     }
 
-    public Document transform(Document aDocument, Source aStyleSheet) throws Exception {
+    public Document transform(Document aDocument) throws Exception {
 
         // perform the transformation
         DocumentSource source = new DocumentSource( aDocument );
