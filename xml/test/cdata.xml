@@ -1,0 +1,8 @@
+<foo>
+<bar>
+<![CDATA[Here is a multi-line
+section of content, that gets
+incorrectly parsed.
+]]>
+</bar>
+</foo>
