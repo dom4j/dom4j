@@ -62,7 +62,7 @@
     <property name="jaxen.src" value="../jaxen/jaxen/src/java/main"/>
 
     <!-- Activate support for fop in Ant (tradem) / Must be in classpath -->
-    <taskdef name="fop" classname="org.apache.fop.tools.anttasks.Fop"/>
+    <!-- Construct compile classpath -->    <path id="fop.classpath">      <fileset dir="${lib.dir}/fop">        <include name="*.jar"/>      </fileset>    </path>      <taskdef name="fop" classname="org.apache.fop.tools.anttasks.Fop">    	<classpath refid="fop.classpath"/>    </taskdef>
   </target>
 
   <!-- =================================================================== -->
