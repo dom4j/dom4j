@@ -57,13 +57,18 @@ public class TestDatatype2 extends TestCase {
         validateDocumentWithSchema(schema);
     }
 
-    public void testSchemaWithNamedType() throws Exception {
-        Document schema=getSchemaWithNamedType();
+    public void testSchemaWithNamedComplexType() throws Exception {
+        Document schema=getSchemaWithNamedComplexType();
         validateDocumentWithSchema(schema);
     }
 
     public void testSchemaWithReference() throws Exception {
         Document schema=getSchemaWithReference();
+        validateDocumentWithSchema(schema);
+    }
+
+    public void testSchemaWithNamedSimpleType() throws Exception {
+        Document schema=getSchemaWithNamedSimpleType();
         validateDocumentWithSchema(schema);
     }
 
@@ -155,17 +160,17 @@ public class TestDatatype2 extends TestCase {
         return parser.read(in);
     }
 
-    private Document getSchemaWithNamedType() throws Exception {
+    private Document getSchemaWithNamedComplexType() throws Exception {
         StringBuffer buffer=new StringBuffer();
         buffer.append("<?xml version='1.0' encoding='UTF-8'?>");
         buffer.append("<xsd:schema xmlns:xsd='http://www.w3.org/2001/XMLSchema'>");
         buffer.append("     <xsd:element name='test' type='TimePeriodType' />");
+
         buffer.append("     <xsd:complexType name='TimePeriodType'>");
         buffer.append("         <xsd:sequence>");
         buffer.append("             <xsd:element name='floatElement' type='xsd:float' />");
         buffer.append("             <xsd:element name='dateElement' type='xsd:date' />");
         buffer.append("         </xsd:sequence>");
-
         buffer.append("         <xsd:attribute name='longAttribute' type='xsd:long' />");
         buffer.append("     </xsd:complexType>");
         buffer.append("</xsd:schema>");
@@ -190,6 +195,32 @@ public class TestDatatype2 extends TestCase {
         buffer.append("     </xsd:complexType>");
 
         buffer.append("     <xsd:element name='dateElement' type='xsd:date' />");
+        buffer.append("</xsd:schema>");
+
+        StringReader in=new StringReader(buffer.toString());
+        SAXReader parser=new SAXReader();
+        return parser.read(in);
+    }
+
+    private Document getSchemaWithNamedSimpleType() throws Exception {
+        StringBuffer buffer=new StringBuffer();
+        buffer.append("<?xml version='1.0' encoding='UTF-8'?>");
+        buffer.append("<xsd:schema xmlns:xsd='http://www.w3.org/2001/XMLSchema'>");
+        buffer.append("     <xsd:element name='test'>");
+        buffer.append("         <xsd:complexType>");
+        buffer.append("             <xsd:sequence>");
+        buffer.append("                 <xsd:element name='floatElement' type='xsd:float' />");
+        buffer.append("                 <xsd:element name='dateElement' type='dateType' />");
+        buffer.append("             </xsd:sequence>");
+        buffer.append("             <xsd:attribute name='longAttribute' type='xsd:long' />");
+        buffer.append("         </xsd:complexType>");
+        buffer.append("     </xsd:element>");
+
+        buffer.append("     <xsd:simpleType name='dateType'>");
+        buffer.append("         <xsd:restriction base='xsd:date'>");
+        //buffer.append("             <whiteSpace value='collapse' />");
+        buffer.append("         </xsd:restriction>");
+        buffer.append("     </xsd:simpleType>");
         buffer.append("</xsd:schema>");
 
         StringReader in=new StringReader(buffer.toString());
