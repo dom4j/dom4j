@@ -45,6 +45,17 @@ public class SaxonNodeHelper {
         return that == other;
     }
 
+    public static String getPublicId(Node node) {
+        Document document = node.getDocument();
+        if ( document != null ) {
+            DocumentType docType = document.getDocType();
+            if ( docType != null ) {
+                return docType.getPublicID();
+            }
+        }
+        return "";
+    }
+    
     public static String getSystemId(Node node) {
         Document document = node.getDocument();
         if ( document != null ) {
@@ -59,6 +70,10 @@ public class SaxonNodeHelper {
     public static String getBaseURI(Node node) {
         // XXXX: no support for xml:base yet
         return getSystemId(node);
+    }
+
+    public static int getColumnNumber(Node node) {
+        return -1;
     }
 
     public static int getLineNumber(Node node) {
@@ -209,6 +224,11 @@ public class SaxonNodeHelper {
       */
     public static void notSupported() {
         throw new UnsupportedOperationException("Not supported yet");
+    }
+
+    public static org.w3c.dom.Node getOriginatingNode(Node node) {
+        notSupported();
+        return null;
     }
 }
 

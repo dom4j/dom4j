@@ -60,6 +60,12 @@ class Operator {
                     context, op, lhsValue, rhsValue
                 );
             }
+            else {
+                System.out.println( 
+                    "#### I don't know how to handle operator: " 
+                    + op + " on lhs: " + lhsValue + " and rhs: " + rhsValue 
+                );
+            }
         }        
         //return Collections.EMPTY_LIST;
         return result;

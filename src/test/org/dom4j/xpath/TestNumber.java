@@ -17,6 +17,7 @@ import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Node;
+import org.dom4j.XPath;
 
 /** Test harness for numeric XPath expressions
   *
@@ -30,7 +31,15 @@ public class TestNumber extends AbstractTestCase {
     protected static String[] paths = {
         "count(//author)",
         "count(//author/attribute::*)",
-        "sum(count(//author),count(//author/attribute::*))"
+        "sum(count(//author),count(//author/attribute::*))",
+        "count(ancestor::author)",
+        "count(descendant::author)",
+        "count(ancestor::*)",
+        "count(descendant::*)",
+        "count(descendant::author)+1",
+        "10 + (count(descendant::author) * 5)",
+        "2 + 2",
+        "2 + (2 * 5)"
     };
     
     
@@ -49,18 +58,26 @@ public class TestNumber extends AbstractTestCase {
     // Test case(s)
     //-------------------------------------------------------------------------                    
     public void testXPaths() throws Exception {        
+        Node element = document.selectSingleNode( "//author" );
         int size = paths.length;
         for ( int i = 0; i < size; i++ ) {
             testXPath( document, paths[i] );
+            testXPath( element, paths[i] );
         }
     }
         
     // Implementation methods
     //-------------------------------------------------------------------------                    
-    protected void testXPath(Node node, String xpath) {
-        Number number = node.numberValueOf( xpath );
+    protected void testXPath(Node node, String xpathText) {
+        XPath xpath = node.createXPath( xpathText );
+        Number number = xpath.numberValueOf( node );
 
-        log( "Searched path: " + xpath + " found: " + number );        
+        log( "Searched path: " + xpath + " found: " + number );
+
+        if ( VERBOSE ) {
+            log( "    xpath: " + xpath );        
+            log( "    for: " + node );        
+        }
     }
 }
 

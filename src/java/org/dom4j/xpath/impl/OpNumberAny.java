@@ -45,7 +45,10 @@ class OpNumberAny extends Operator {
                 ? Boolean.TRUE
                 : Boolean.FALSE
             );
-        }        
+        }
+        else {
+            System.out.println( "#### I can't handle operator: " + op );
+        }
         return null;
     }
 }
