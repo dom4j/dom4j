@@ -19,6 +19,7 @@ import java.util.TreeSet;
 import junit.framework.*;
 import junit.textui.TestRunner;
 
+import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
 import org.dom4j.rule.Pattern;
 
@@ -27,8 +28,10 @@ import org.dom4j.rule.Pattern;
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class TestRule extends TestCase
-{
+public class TestRule extends TestCase {
+    
+    protected DocumentFactory factory = new DocumentFactory();
+    
     public TestRule(String name) {
         super( name );
     }
@@ -102,9 +105,18 @@ public class TestRule extends TestCase
         assertTrue( "r1 should be next", array[1] == r1 );
 */
     }
+
+    public void testDocument() {
+        Rule rule = createRule( "/" );
+        Document document = factory.createDocument();
+        document.addElement( "foo" );
+        
+        assertTrue( "/ matches document", rule.matches( document ) );
+        assertTrue( "/ does not match root element", ! rule.matches( document.getRootElement() ) );
+    }
     
     protected Rule createRule(String expr) {
-        Pattern pattern = DocumentFactory.getInstance().createPattern( expr );
+        Pattern pattern = factory.createPattern( expr );
         return new Rule( pattern );
     }
 }
