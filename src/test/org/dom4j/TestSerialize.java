@@ -56,7 +56,7 @@ public class TestSerialize extends AbstractTestCase {
     }
     
     public void testSerializeTestSchema() throws Exception {
-        testSerialize( "xml/schema/personal.xsd" );
+        testSerialize( "xml/test/schema/personal.xsd" );
     }
     
     // Implementation methods

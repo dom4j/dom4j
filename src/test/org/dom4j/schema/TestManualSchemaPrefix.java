@@ -53,7 +53,7 @@ public class TestManualSchemaPrefix extends TestAutoSchema {
         SchemaDocumentFactory factory = new SchemaDocumentFactory();
         
         SAXReader reader = new SAXReader();
-        Document schemaDocument = reader.read( "xml/schema/personal-prefix.xsd" );
+        Document schemaDocument = reader.read( "xml/test/schema/personal-prefix.xsd" );
         factory.loadSchema( schemaDocument );
         return factory;
     }

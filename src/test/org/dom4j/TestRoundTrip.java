@@ -50,7 +50,7 @@ public class TestRoundTrip extends AbstractTestCase {
     protected String[] testDocuments = {
         //"xml/test/encode.xml",
         "xml/fibo.xml",
-        "xml/schema/personal-prefix.xsd",
+        "xml/test/schema/personal-prefix.xsd",
         //"xml/test/soap2.xml",
         "xml/test/test_schema.xml",
     };

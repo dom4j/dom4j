@@ -89,7 +89,7 @@ public class TestAutoSchema extends AbstractDataTypeTest {
     }
     
     protected String getDocumentURI() {
-        return "xml/schema/personal-schema.xml";
+        return "xml/test/schema/personal-schema.xml";
     }
     
     protected DocumentFactory loadDocumentFactory() throws Exception {

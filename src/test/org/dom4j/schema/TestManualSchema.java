@@ -52,14 +52,14 @@ public class TestManualSchema extends TestAutoSchema {
     // Implementation methods
     //-------------------------------------------------------------------------                    
     protected String getDocumentURI() {
-        return "xml/schema/personal.xml";
+        return "xml/test/schema/personal.xml";
     }
     
     protected DocumentFactory loadDocumentFactory() throws Exception {
         SchemaDocumentFactory factory = new SchemaDocumentFactory();
         
         SAXReader reader = new SAXReader();
-        Document schemaDocument = reader.read( "xml/schema/personal.xsd" );
+        Document schemaDocument = reader.read( "xml/test/schema/personal.xsd" );
         factory.loadSchema( schemaDocument );
         return factory;
     }

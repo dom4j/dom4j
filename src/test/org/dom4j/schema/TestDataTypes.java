@@ -167,7 +167,7 @@ public class TestDataTypes extends AbstractDataTypeTest {
     protected void setUp() throws Exception {
         DocumentFactory factory = SchemaDocumentFactory.getInstance();
         SAXReader reader = new SAXReader( factory );
-        document = reader.read( "xml/schema/test.xml" );
+        document = reader.read( "xml/test/schema/test.xml" );
     }
 }
 
