@@ -56,7 +56,6 @@
   <author><honorific>Mr</honorific><firstname>James</firstname><surname>Strachan</surname></author>
 </authorgroup>
 <revhistory>
- <revision>
     <revision>
       <revnumber>0.1.0</revnumber>
       <date>02-05-09</date>
@@ -66,9 +65,10 @@
             <listitem><para>Fixed typos</para></listitem>
             <listitem><para>Better understable description of some situations</para></listitem>
             <listitem><para>Use of programlistingco for rule API</para></listitem>           
-      </itemizedlist>
+        </itemizedlist>
       </revdescription>
     </revision>
+    <revision>
       <revnumber>0.0.9</revnumber>
       <date>02-05-01</date>
       <authorinitials>tradem</authorinitials>
