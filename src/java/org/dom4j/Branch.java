@@ -38,6 +38,15 @@ public interface Branch extends Node {
       */    
     public Node getNode(int index);
     
+    /** Returns the index of the given node if it is a child node of this 
+      * branch or -1 if the given node is not a child node.
+      *
+      * @param node the content child node to find.
+      * @return the index of the given node starting at 0 or -1 if the node 
+      *     is not a child node of this branch
+      */    
+    public int indexOf(Node node);
+    
     /** Returns the number of <code>Node</code> instances that this branch 
       * contains.
       *

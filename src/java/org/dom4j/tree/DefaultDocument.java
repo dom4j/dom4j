@@ -199,6 +199,10 @@ public class DefaultDocument extends AbstractDocument {
         return ( contents == null ) ? 0 : contents.size();
     }
     
+    public int indexOf(Node node) {
+        return ( contents == null ) ? -1 : contents.indexOf( node );
+    }
+    
     public Iterator nodeIterator() {
         if (contents != null) {
             return contents.iterator();

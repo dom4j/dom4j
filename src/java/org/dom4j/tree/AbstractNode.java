@@ -29,6 +29,11 @@ import org.dom4j.XPath;
  */
 public abstract class AbstractNode implements Node, Cloneable, Serializable {
     
+    protected static final String[] NODE_TYPE_NAMES ={
+        "Node", "Element", "Attribute", "Text", "Root", "", "", 
+	"Processing Instruction", "Comment", "Namespace"
+    };
+    
     /** The <code>DocumentFactory</code> instance used by default */
     private static final DocumentFactory DOCUMENT_FACTORY = DocumentFactory.getInstance();
     
@@ -40,6 +45,14 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
         return UNKNOWN_NODE;
     }
 
+    public String getNodeName() {
+        int type = getNodeType();
+        if ( type < 0 || type >= NODE_TYPE_NAMES.length ) {
+            return "Unknown";
+        }
+        return NODE_TYPE_NAMES[type];
+    }
+    
     public Document getDocument() {
         Element element = getParent();
         return ( element != null ) ? element.getDocument() : null;

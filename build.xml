@@ -22,7 +22,7 @@
     <property name="samples.dir" value="./src/samples"/>
     <property name="test.dir" value="./src/test"/>
     <property name="lib.dir" value="./lib"/>
-    <property name="packages" value="org.dom4j.*"/>
+    <property name="packages" value="org.*"/>
     <property name="api.packages" value="org.dom4j,org.dom4j.io,org.dom4j.rule"/>
 
     <property name="build.dir" value="./build"/>
@@ -213,8 +213,6 @@
 
      <!-- add dependent JARs -->
     <mkdir dir="${build.tmp}"/>
-    <unjar src="${lib.dir}/sax2.jar" dest="${build.tmp}"/>
-    <unjar src="${lib.dir}/sax2-ext.jar" dest="${build.tmp}"/>
     <unjar src="${lib.dir}/antlr-runtime.jar" dest="${build.tmp}"/>
     <delete dir="${build.tmp}/META-INF"/>
     <copy todir="${build.tmp}">
@@ -230,7 +228,7 @@
   <!-- =================================================================== -->
   <!-- Creates the API documentation                                       -->
   <!-- =================================================================== -->
-  <target name="javadoc" depends="prepare-src,collections">
+  <target name="javadoc" depends="prepare-src,collections,doc">
     <mkdir dir="${build.apidocs}"/>
     <mkdir dir="${build.javadocs}"/>
     <javadoc packagenames="${packages}"

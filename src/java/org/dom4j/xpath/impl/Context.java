@@ -11,7 +11,6 @@
 package org.dom4j.xpath.impl;
 
 import org.dom4j.xpath.ContextSupport;
-import org.dom4j.xpath.impl.Context;
 import org.dom4j.xpath.function.Function;
 
 import org.dom4j.Document;

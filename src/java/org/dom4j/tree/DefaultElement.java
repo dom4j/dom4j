@@ -636,6 +636,15 @@ public class DefaultElement extends AbstractElement {
         return null;
     }
     
+    public int indexOf(Node node) {
+        if (contents == null) {
+            return ( firstNode != null && firstNode.equals( node ) ) ? 0 : -1;
+        }
+        else {
+            return contents.indexOf( node );
+        }
+    }
+    
     public int getNodeCount() {
         if ( contents == null ) {
             return ( firstNode != null ) ? 1 : 0;

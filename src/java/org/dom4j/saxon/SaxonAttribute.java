@@ -26,7 +26,7 @@ import org.dom4j.DocumentType;
 import org.dom4j.Element;
 import org.dom4j.QName;
 import org.dom4j.Namespace;
-import org.dom4j.tree.XPathAttribute;
+import org.dom4j.dom.DOMAttribute;
 
 /** <p><code>SaxonAttribute</code> implements a doubly linked attribute which 
   * supports the SAXON tree API.</p>
@@ -34,7 +34,7 @@ import org.dom4j.tree.XPathAttribute;
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public abstract class SaxonAttribute extends XPathAttribute implements AttributeInfo {
+public abstract class SaxonAttribute extends DOMAttribute implements AttributeInfo {
 
     protected static NodeInfo[] emptyArray = new NodeInfo[0];
     protected static SingletonEnumeration emptyEnumeration = new SingletonEnumeration(null);
@@ -52,33 +52,8 @@ public abstract class SaxonAttribute extends XPathAttribute implements Attribute
     
     // NodeInfo interface
     //-------------------------------------------------------------------------        
-    public boolean isSameNode(NodeInfo other) {
-        return this == other;
-    }
-
-    public String getSystemId() {
-        Document document = getDocument();
-        if ( document != null ) {
-            DocumentType docType = document.getDocType();
-            if ( docType != null ) {
-                return docType.getSystemID();
-            }
-        }
-        return "";
-    }
-    
-    public String getBaseURI() {
-        // XXXX: no support for xml:base yet
-        return getSystemId();
-    }
-
-    public int getLineNumber() {
-        return -1;
-    }
-
-    
     public String getLocalName() {
-        return getName();
+        return getQName().getName();
     }
 
     public String getPrefix() {
@@ -93,152 +68,110 @@ public abstract class SaxonAttribute extends XPathAttribute implements Attribute
         return getName();
     }
 
-    
-    
-    public long getSequenceNumber() {
-        notSupported();
-        return -1;
+    public String getNodeName() {
+        return getName();
     }
     
-    /**
-    * Get name code. The name code is a coded form of the node name: two nodes
-    * with the same fingerprint have the same namespace URI, the same local name,
-    * and the same prefix.
-    */
-
-    public int getNameCode() {
-        notSupported();
-        return -1;
-    }
-
-
-    /**
-    * Get fingerprint. The fingerprint is a coded form of the node name: two nodes
-    * with the same fingerprint have the same namespace URI and the same local name.
-    * The fingerprint does not include information about the prefix.
-    */
-
-    public int getFingerprint() {
-        notSupported();
-        return -1;
-    }
-
-    public short getURICode() {
-        notSupported();
-        return -1;
-    }
-        
-/*
-    already part of API
+/*  already part of API
  
     public String getValue();
-
     public String getNodeName();
- *
     public String getPath(); 
  */
     
+
+    // delegate common functionality to SaxonNodeHelper
+    
+    public boolean isSameNode(NodeInfo other) {
+        return SaxonNodeHelper.isSameNode(this, other);
+    }
+
+    public String getSystemId() {
+        return SaxonNodeHelper.getSystemId(this);
+    }
+    
+    public String getBaseURI() {
+        return SaxonNodeHelper.getBaseURI(this);
+    }
+
+    public int getLineNumber() {
+        return SaxonNodeHelper.getLineNumber(this);
+    }
+    
+    public long getSequenceNumber() {
+        return SaxonNodeHelper.getSequenceNumber(this);
+    }
+    
+    public int getNameCode() {
+        return SaxonNodeHelper.getNameCode(this);
+    }
+
+    public int getFingerprint() {
+        return SaxonNodeHelper.getFingerprint(this);
+    }
+
+    public short getURICode() {
+        return SaxonNodeHelper.getURICode(this);
+    }
+        
     public String getAttributeValue(String uri, String localName) {
-        return null;
+        return SaxonNodeHelper.getAttributeValue(this, uri, localName);
     }
     
     public String getAttributeValue(String name) {
-        return null;
+        return SaxonNodeHelper.getAttributeValue(this, name);
     }
     
     public String getAttributeValue(int fingerprint) {
-        return null;
+        return SaxonNodeHelper.getAttributeValue(this, fingerprint);
     }
     
     public boolean isDocumentElement() {
-        return false;
+        return SaxonNodeHelper.isDocumentElement(this);
     }
     
     public org.w3c.dom.Element getDocumentElement() {
-/*        
-        Document document = getDocument();
-        return ( document != null ) ? document.getRootElement() : null;
-*/
-        notSupported();
-        return null;
+        return SaxonNodeHelper.getDocumentElement(this);
     }
 
     public DocumentInfo getDocumentRoot() {
-        return (DocumentInfo) getDocument();
+        return SaxonNodeHelper.getDocumentRoot(this);
     }
-
-    /**
-    * Get the next node in document order
-    * @param anchor: the scan stops when it reaches a node that is not a descendant of the specified
-    * anchor node
-    * @return the next node in the document, or null if there is no such node
-    */
 
     public NodeInfo getNextInDocument(NodeInfo anchor) {
-        notSupported();
-        return null;
+        return SaxonNodeHelper.getNextInDocument(this, anchor);
     }
 
-    /**
-    * Get the previous node in document order
-    * @return the previous node in the document, or null if there is no such node
-    */
     public NodeInfo getPreviousInDocument() {
-        notSupported();
-        return null;
+        return SaxonNodeHelper.getPreviousInDocument(this);
     }
 
     public int getNumberOfChildren() {
-        return 0;
+        return SaxonNodeHelper.getNumberOfChildren(this);
     }
 
     public NodeInfo[] getAllChildNodes() {
-        return emptyArray;
+        return SaxonNodeHelper.getAllChildNodes(this);
     }
 
     public NodeEnumeration enumerateChildren() {
-        return emptyEnumeration;
+        return SaxonNodeHelper.enumerateChildren(this);
     }
-
-    /**
-    * Get a character string that uniquely identifies this node and that collates nodes
-    * into document order
-    * @return a string. 
-    */
 
     public String generateId() {
-        notSupported();
-        return null;
+        return SaxonNodeHelper.generateId(this);
     }
-
-    /**
-    * Perform default action for this kind of node (built-in template rule)
-    */
 
     public void defaultAction(Context c) throws TransformerException {
-        notSupported();
+        SaxonNodeHelper.defaultAction(this, c);
     }
-
-    /**
-    * Copy this node to a given outputter
-    */
 
     public void copy(Outputter out) throws TransformerException {
-        notSupported();
+        SaxonNodeHelper.copy(this, out);
     }
-
-    /**
-    * Copy the string-value of this node to a given outputter
-    */
-
-    public void copyStringValue(Outputter out) throws TransformerException {
-        notSupported();
-    }
-
-
     
-    protected void notSupported() {
-        throw new UnsupportedOperationException("Not supported yet");
+    public void copyStringValue(Outputter out) throws TransformerException {
+        SaxonNodeHelper.copyStringValue(this, out);
     }
 }
 
