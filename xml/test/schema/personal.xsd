@@ -2,6 +2,7 @@
 <schema xmlns='http://www.w3.org/2001/XMLSchema'>
 
  <element name="personnel">
+
   <complexType>
    <sequence>
      <element ref="person" minOccurs='1' maxOccurs='unbounded'/>
@@ -16,6 +17,7 @@
    <selector xpath="person"/>
    <field xpath="@id"/>
   </key>
+
   <!--
   <keyref name="keyref1" refer='empid'>
    <selector xpath="person"/> 
@@ -32,9 +34,10 @@
      <element ref="email" minOccurs='0' maxOccurs='unbounded'/>
      <element ref="url"   minOccurs='0' maxOccurs='unbounded'/>
      <element ref="link"  minOccurs='0' maxOccurs='1'/>
+   	 <element name="note" type="string"/>
+     <element name="salary" type="int"/>
    </sequence>
    <attribute name="id"  type="ID" use='required'/>
-   <attribute name="note" type="string"/>
    <attribute name="contr" default="false">
     <simpleType>
      <restriction base = "string">
@@ -43,14 +46,13 @@
      </restriction>
     </simpleType>
    </attribute>
-   <attribute name="salary" type="int"/>
-  </complexType>
   <attribute name="age" type="integer"/>
   <attribute name="x" type="int"/>
   <attribute name="d" type="date"/>
   <attribute name="dt" type="dateTime"/>
+  </complexType>
  </element>
-
+ 
  <element name="name">
   <complexType>
    <all>

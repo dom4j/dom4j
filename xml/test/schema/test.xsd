@@ -11,55 +11,48 @@
 
  <element name="record">
   <complexType>
-    <attribute name="durationTag" type="duration"/>
-    <attribute name="dateTag" type="date"/>
-    <attribute name="timeTag" type="time"/>
-    <attribute name="dateTimeTag" type="dateTime"/>
-    <attribute name="gYearMonthTag" type="gYearMonth"/>
-    <attribute name="gYearTag" type="gYear"/>
-    <attribute name="gMonthDayTag" type="gMonthDay"/>
-    <attribute name="gDayTag" type="gDay"/>
-    <attribute name="gMonthTag" type="gMonth"/>
-
-    <attribute name="booleanTag" type="boolean"/>
-    <attribute name="base64BinaryTag" type="base64Binary"/>
-    <attribute name="hexBinaryTag" type="hexBinary"/>
-
-
-    <attribute name="floatTag" type="float"/>
-    <attribute name="doubleTag" type="double"/>
-
-    <attribute name="decimalTag" type="decimal"/>
-    <attribute name="integerTag" type="integer"/>
-
-    <attribute name="nonPositiveIntegerTag" type="nonPositiveInteger"/>
-    <attribute name="negativeIntegerTag" type="negativeInteger"/>
-
-    <attribute name="longTag" type="long"/>
-    <attribute name="intTag" type="int"/>
-    <attribute name="shortTag" type="short"/>
-    <attribute name="byteTag" type="byte"/>
-
-    <attribute name="nonNegativeIntegerTag" type="nonNegativeInteger"/>
-    <attribute name="unsignedLongTag" type="unsignedLong"/>
-    <attribute name="unsignedIntTag" type="unsignedInt"/>
-    <attribute name="unsignedShortTag" type="unsignedShort"/>
-    <attribute name="unsignedByteTag" type="unsignedByte"/>
-
-    <attribute name="positiveIntegerTag" type="positiveInteger"/>
-
+  	<sequence>
+    	<element name="durationTag" type="duration"/>
+    	<element name="dateTag" type="date"/>
+    	<element name="timeTag" type="time"/>
+    	<element name="dateTimeTag" type="dateTime"/>
+    	<element name="gYearMonthTag" type="gYearMonth"/>
+    	<element name="gYearTag" type="gYear"/>
 <!--
-    <attribute name="rangedInt">
-      <simpleType>
-        <restriction base="int">
-          <minimumValue value="2"/>
-          <maximumValue value="24"/>
-        </restriction>
-      </simpleType>
-    </attribute>
--->
+    	<element name="gMonthDayTag" type="gMonthDay"/>
+		<element name="gDayTag" type="gDay"/>
+    	<element name="gMonthTag" type="gMonth"/>
+-->	
+    	<element name="booleanTag" type="boolean"/>
+    	<element name="base64BinaryTag" type="base64Binary"/>
+    	<element name="hexBinaryTag" type="hexBinary"/>
+	
+    	<element name="floatTag" type="float"/>
+    	<element name="doubleTag" type="double"/>
+	
+    	<element name="decimalTag" type="decimal"/>
+    	<element name="integerTag" type="integer"/>
+	
+    	<element name="nonPositiveIntegerTag" type="nonPositiveInteger"/>
+    	<element name="negativeIntegerTag" type="negativeInteger"/>
+	
+    	<element name="longTag" type="long"/>
+    	<element name="intTag" type="int"/>
+    	<element name="shortTag" type="short"/>
+    	<element name="byteTag" type="byte"/>
+	
+    	<element name="nonNegativeIntegerTag" type="nonNegativeInteger"/>
+    	<element name="unsignedLongTag" type="unsignedLong"/>
+    	<element name="unsignedIntTag" type="unsignedInt"/>
+    	<element name="unsignedShortTag" type="unsignedShort"/>
+    	<element name="unsignedByteTag" type="unsignedByte"/>
 
+    	<element name="positiveIntegerTag" type="positiveInteger"/>
+
+	</sequence>
+    <attribute name="id" type="string" />
   </complexType>
+	
  </element>
 
 </schema>

@@ -16,9 +16,11 @@
      <xsd:element ref="email" minOccurs='0' maxOccurs='unbounded'/>
      <xsd:element ref="url"   minOccurs='0' maxOccurs='unbounded'/>
      <xsd:element ref="link"  minOccurs='0' maxOccurs='1'/>
+     <xsd:element name="note" type="xsd:string"/>
+     <xsd:element name="salary" type="xsd:int"/>
    </xsd:sequence>
    <xsd:attribute name="id"  type="ID" use='required'/>
-   <xsd:attribute name="note" type="xsd:string"/>
+
    <xsd:attribute name="contr" xsd:default="false">
     <xsd:simpleType>
      <xsd:restriction base="xsd:string">
@@ -27,12 +29,12 @@
      </xsd:restriction>
     </xsd:simpleType>
    </xsd:attribute>
-   <xsd:attribute name="salary" type="xsd:int"/>
-  </xsd:complexType>
+
   <xsd:attribute name="age" type="xsd:integer"/>
   <xsd:attribute name="x" type="xsd:int"/>
   <xsd:attribute name="d" type="xsd:date"/>
   <xsd:attribute name="dt" type="xsd:dateTime"/>
+  </xsd:complexType>
  </xsd:element>
 
  <xsd:element name="name">
