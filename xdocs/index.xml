@@ -18,7 +18,8 @@
 
     <section name="News">
       <ul>
-        <li>dom4j 1.5 beta 2 is available for download. A list of changes can be found here <a href="status.html">here</a>.</li>
+        <li>dom4j 1.5 Release Candidate 1 (RC1) is available for download. A list of changes can be found here <a href="changes-report.html">here</a>.</li>
+        <li>dom4j 1.5 beta 2 is available for download. A list of changes can be found here <a href="changes-report.html">here</a>.</li>
         <li>dom4j now has an open source license for the use of <a href="http://www.thecortex.net/clover/index.html">Clover</a></li>
         <li>A beta version of <a href="status.html">dom4j 1.5</a> release is available.
         </li>
