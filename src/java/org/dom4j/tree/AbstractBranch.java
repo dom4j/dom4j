@@ -266,6 +266,13 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
         return null;
     }
     
+    public void appendContent(Branch branch) {
+        for ( int i = 0, size = branch.nodeCount(); i < size; i++ ) {
+            Node node = branch.node(i);
+            add( (Node) node.clone() );
+        }
+    }
+        
     
     
     // Implementation methods

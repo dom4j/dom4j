@@ -495,13 +495,6 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         }
     }
         
-    public void appendContent(Element element) {
-        for ( int i = 0, size = element.nodeCount(); i < size; i++ ) {
-            Node node = element.node(i);
-            add( (Node) node.clone() );
-        }
-    }
-        
     
     // creates a copy
     

@@ -9,6 +9,7 @@
 
 package org.dom4j;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -84,6 +85,14 @@ public interface Branch extends Node {
       *   branch.
       */    
     public void setContent(List content);    
+    
+    /** Appends the content of the given branch to this branch instance.
+      * This method behaves like the {@link Collection#addAll(java.util.Collection)} 
+      * method.
+      *
+      * @param element is the element whose content will be added to me.
+      */
+    public void appendContent(Branch branch);
     
     /** Clears the content for this branch, removing any <code>Node</code> 
       * instances this branch may contain.

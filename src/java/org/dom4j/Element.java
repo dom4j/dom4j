@@ -500,17 +500,28 @@ public interface Element extends Branch {
       */
     public void appendAttributes(Element element);
     
-    /** Appends the content of the given element to me.
-      * This method behaves like the {@link Collection#addAll(java.util.Collection)} 
-      * method.
+    /** <p>Creates a deep copy of this element 
+      * The new element is detached from its parent, and getParent() on the 
+      * clone will return null.</p>
       *
-      * @param element is the element whose content will be added to me.
+      * @return a new deep copy Element
       */
-    public void appendContent(Element element);
-    
-    // creates a copy
     public Element createCopy();
+    
+    /** <p>Creates a deep copy of this element with the given local name
+      * The new element is detached from its parent, and getParent() on the 
+      * clone will return null.</p>
+      *
+      * @return a new deep copy Element
+      */
     public Element createCopy(String name);
+    
+    /** <p>Creates a deep copy of this element with the given fully qualified name.
+      * The new element is detached from its parent, and getParent() on the 
+      * clone will return null.</p>
+      *
+      * @return a new deep copy Element
+      */
     public Element createCopy(QName qName);
     
 }

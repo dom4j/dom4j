@@ -118,6 +118,14 @@ public class DefaultDocument extends AbstractDocument {
         this.entityResolver = entityResolver;
     }
     
+    public Object clone() {
+        DefaultDocument document = (DefaultDocument) super.clone();
+        document.rootElement = null;
+        document.contents = null;
+        document.appendContent(this);
+        return document;
+    }    
+    
     public List processingInstructions() {
         List source = contents;
         if ( source == null ) {
