@@ -10,6 +10,8 @@
 package org.dom4j;
 
 import java.io.File;
+import java.net.URL;
+import java.util.List;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -20,16 +22,17 @@ import junit.textui.TestRunner;
 
 import org.dom4j.io.SAXContentHandler;
 import org.dom4j.io.SAXReader;
+import org.dom4j.io.aelfred2.SAXDriver;
 import org.xml.sax.XMLReader;
 
 public class TestSAXContentHandler extends AbstractTestCase {
     private XMLReader xmlReader;
 
     protected String[] testDocuments = {
-        "xml/test/test_schema.xml",
+        "/xml/test/test_schema.xml",
         //"xml/test/encode.xml",
-        "xml/fibo.xml",
-        "xml/test/schema/personal-prefix.xsd",
+        "/xml/fibo.xml",
+        "/xml/test/schema/personal-prefix.xsd",
         //"xml/test/soap2.xml",
     };
 
@@ -46,10 +49,11 @@ public class TestSAXContentHandler extends AbstractTestCase {
     }
 
     protected void setUp() throws Exception {
-        SAXParserFactory spf = SAXParserFactory.newInstance();
-        spf.setNamespaceAware(true);
-        SAXParser parser = spf.newSAXParser();
-        xmlReader = parser.getXMLReader();
+//        SAXParserFactory spf = SAXParserFactory.newInstance();
+//        spf.setNamespaceAware(true);
+//        SAXParser parser = spf.newSAXParser();
+//        xmlReader = parser.getXMLReader();
+        xmlReader = new SAXDriver();
 
         System.out.println("Using XMLReader class: "+xmlReader.getClass().getName());
     }
@@ -62,11 +66,12 @@ public class TestSAXContentHandler extends AbstractTestCase {
         xmlReader.setProperty("http://xml.org/sax/properties/lexical-handler", contentHandler);
 
         for ( int i = 0, size = testDocuments.length; i < size; i++ ) {
-            SAXReader reader = new SAXReader();
+            SAXReader reader = new SAXReader("org.dom4j.io.aelfred2.SAXDriver");
             File file = new File(testDocuments[i]);
-            Document docFromSAXReader = reader.read( file );
+            URL url = getClass().getResource(testDocuments[i]);
+            Document docFromSAXReader = reader.read(url);
 
-            xmlReader.parse(file.toURL().toString());
+            xmlReader.parse(url.toString());
             Document docFromSAXContentHandler = contentHandler.getDocument();
 
             //System.out.println("docFromSAXReader = " + docFromSAXReader.asXML());
@@ -77,6 +82,17 @@ public class TestSAXContentHandler extends AbstractTestCase {
             assertDocumentsEqual(docFromSAXReader, docFromSAXContentHandler);
             assertEquals(docFromSAXReader.asXML(), docFromSAXContentHandler.asXML());
         }
+    }
+    
+    public void testBug926713() throws Exception {
+        URL url = getClass().getResource("/xml/test/cdata.xml");
+        SAXReader reader = new SAXReader("org.dom4j.io.aelfred2.SAXDriver");
+        
+        Document doc = reader.read(url);
+        Element foo = doc.getRootElement();
+        Element bar = foo.element("bar");
+        List content = bar.content();
+        assertEquals(1, content.size());
     }
 
 }
@@ -126,5 +142,5 @@ public class TestSAXContentHandler extends AbstractTestCase {
  *
  * Copyright 2001 (C) MetaStuff, Ltd. All Rights Reserved.
  *
- * $Id$
+ * $Id: TestXSLT.java,v
  */
