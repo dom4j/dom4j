@@ -1098,9 +1098,9 @@ Imagine that you use XSLT to process a XML Schema in order to generate a empty t
   </copyright>
   <isbn>0-201-633-612</isbn>
   <publisher>
-     <publishername>Worx Press</publishername>
+     <publishername>Addison-Wesley</publishername>
   </publisher>
-  <title>XSLT Programmer's Reference 2'nd Edition</title>
+  <title>Design Patterns: Elements of Reusable Object-Orientated Software</title>
 </biblioentry>
 </bibliodiv>
 </bibliography>

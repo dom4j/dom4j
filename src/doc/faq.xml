@@ -35,6 +35,25 @@
       </p>
     </section>
 
+    <section title="What is the difference between dom4j.jar, dom4j-full.jar and dom4j-core.jar?">
+      <p>The standard <i>dom4j</i> release comes with three jars.</p>
+      <ul>
+        <li><b>dom4j-full.jar</b> this contains all the dom4j code, the XPath engine and 
+          the interfaces for SAX and DOM. If in doubt use this JAR.
+        </li>
+        <li><b>dom4j.jar</b> this contains all the dom4j code and the XPath engine but
+          without the SAX or DOM interfaces. Usually the SAX and DOM interfaces come bundled with a JAXP
+          parser so if you are using JAXP and crimson.jar or xerces.jar
+          then dom4j.jar is the recommended JAR to use.
+        </li>
+        <li><b>dom4j-core.jar</b> this contains all the dom4j code without the XPath 
+          engine and the SAX and DOM interfaces. 
+          This JAR is intended for developers who wish to keep the dom4j.jar and the jaxen.jar
+          JARs seperate.
+        </li>
+      </ul>
+    </section>
+
     <section title="How does dom4j relate to DOM?">
       <p>DOM is a quite large language independent API.
         <i>dom4j</i> is a simpler, lightweight API which is optimised for the Java 
@@ -353,6 +372,48 @@ protected void foo(Node node) {
 }
       </pre>
     </section>
+
+
+    <section title="What does the following mean 'Warning: Error occurred using JAXP to load a SAXParser. Will use Aelfred instead'">
+      <p>
+        If dom4j detects JAXP on the classpath it tries to use it to load a SAX parser. 
+        If it can't load the SAX parser via JAXP it then tries to use the 
+        <code>org.xml.sax.driver</code> system property to denote the SAX parser to use.
+        If none of the above work dom4j outputs a warning and continues, using its own 
+        internal Aelfred2 parser instead. 
+      </p>
+      <p>
+        The following warning is a result of JAXP being in the classpath but either 
+        an old JAXP1.0 version
+        was found (rather than JAXP 1.1) or there is no JAXP configured parser 
+        (such as crimson.jar or xerces.jar) on the classpath. 
+      </p>
+<pre>
+Warning: Error occurred using JAXP to load a SAXParser. Will use Aelfred instead
+</pre>
+      <p>        
+        So the warning generally indicates an incomplete JAXP classpath and is 
+        nothing to worry excessively about.
+        If you'd like to see the full verbose reason why the load of a JAXP 
+        parser failed then you can try setting the system property 
+        <code>org.dom4j.verbose=true</code>. e.g.
+      </p>
+<pre>
+java -Dorg.dom4j.verbose=true MyApp
+</pre>
+      <p>And you should see a verbose list of why the load of a SAX parser 
+        via JAXP failed. 
+      </p>
+      
+      <p>
+        To avoid this warning happening either remove the jaxp.jar 
+        from your classpath or add a JAXP 1.1. jaxp.jar together with a JAXP 1.1
+        parser such as crimson.jar or xerces.jar
+        to your classpath.
+      </p>
+    </section>
+
+
 
   </body>
 </document>
