@@ -18,6 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -477,18 +478,25 @@ public class SAXReader {
                 
             }
         }
-        final String uriPrefix = prefix;
-        return new EntityResolver() {
-            public InputSource resolveEntity(String publicId, String systemId) {            
-                // try create a relative URI reader...
-                if ( systemId != null && systemId.length() > 0 ) {
-                    if ( uriPrefix != null ) {
-                        systemId = uriPrefix + systemId;
-                    }                    
-                }
-                return new InputSource(systemId);
+        return new SAXEntityResolver(prefix);
+    }
+    
+    protected static class SAXEntityResolver implements EntityResolver, Serializable {
+        String uriPrefix;
+        
+        public SAXEntityResolver(String uriPrefix) {
+            this.uriPrefix = uriPrefix;
+        }
+        
+        public InputSource resolveEntity(String publicId, String systemId) {            
+            // try create a relative URI reader...
+            if ( systemId != null && systemId.length() > 0 ) {
+                if ( uriPrefix != null ) {
+                    systemId = uriPrefix + systemId;
+                }                    
             }
-        };
+            return new InputSource(systemId);
+        }
     }
 
     

@@ -467,6 +467,10 @@
     <java classname="org.dom4j.TestXPathExamples"/>
   </target>
 
+  <target name="test-serialize" depends="compile-test">
+    <java classname="org.dom4j.TestSerialize"/>
+  </target>
+
   <!-- =================================================================== -->
   <!-- Helper targets                                                      -->
   <!-- =================================================================== -->

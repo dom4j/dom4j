@@ -7,56 +7,67 @@
  * $Id$
  */
 
-package org.dom4j.util;
+package org.dom4j;
 
-import com.sun.tranquilo.datatype.DataType;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.StringWriter;
+import java.util.Iterator;
+import java.util.List;
 
-import org.dom4j.Attribute;
-import org.dom4j.Document;
-import org.dom4j.DocumentFactory;
-import org.dom4j.Element;
-import org.dom4j.Namespace;
-import org.dom4j.QName;
+import junit.framework.*;
+import junit.textui.TestRunner;
+
 import org.dom4j.io.SAXReader;
 
-/** <p><code>UserDataDocumentFactory</code> is a factory of XML objects which 
-  * support the adornment of a user data object on an Element or Attribute
-  * instance such that the methods <code>getData()</code> and 
-  * <code>setData()</code> will get and set the values of a user data object.
-  * This can be useful for developers wishing to create XML trees and
-  * adorn the trees with user defined objects.</p>
+/** Tests that a dom4j document is Serializable
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class UserDataDocumentFactory extends DocumentFactory {
+public class TestSerialize extends AbstractTestCase {
+
+    protected static final boolean VERBOSE = false;
     
-    /** The Singleton instance */
-    static transient UserDataDocumentFactory singleton = new UserDataDocumentFactory();
     
-    
-    /** <p>Access to the singleton instance of this factory.</p>
-      *
-      * @return the default singleon instance
-      */
-    public static DocumentFactory getInstance() {
-        return singleton;
+    public static void main( String[] args ) {
+        TestRunner.run( suite() );
     }
     
-        
-    // DocumentFactory methods
-    //-------------------------------------------------------------------------
+    public static Test suite() {
+        return new TestSuite( TestSerialize.class );
+    }
     
-    public Element createElement(QName qname) {
-        return new UserDataElement(qname);
+    public TestSerialize(String name) {
+        super(name);
     }
 
-    public Attribute createAttribute(QName qname, String value) {
-        return new UserDataAttribute(qname, value);
-    }    
+    // Test case(s)
+    //-------------------------------------------------------------------------                    
+    public void testSerialize() throws Exception {
+        ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+        ObjectOutputStream out = new ObjectOutputStream( bytesOut );
+        out.writeObject( document );
+        out.close();
+        
+        byte[] data = bytesOut.toByteArray();
+        
+        ObjectInputStream in = new ObjectInputStream( new ByteArrayInputStream( data ) );
+        Object doc2 = in.readObject();
+        in.close();
+        
+        assert( "Read back document after serialization", doc2 != null && doc2 instanceof Document );
+        
+        assertDocumentsEqual( document, (Document) doc2 );
+    }            
+    
+    protected void setUp() throws Exception {
+        SAXReader reader = new SAXReader();
+        document = reader.read( "xml/schema/personal.xsd" );
+    }
 }
 
 

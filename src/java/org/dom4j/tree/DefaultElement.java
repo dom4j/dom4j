@@ -828,13 +828,7 @@ public class DefaultElement extends AbstractElement {
     // Implementation methods
     //-------------------------------------------------------------------------    
 
-    protected void addNode(Node node) {
-        if (node.getParent() != null) {
-            // XXX: could clone here
-            String message = "The Node already has an existing parent of \"" 
-                + node.getParent().getQualifiedName() + "\"";
-            throw new IllegalAddException(this, node, message);
-        }
+    protected void addNewNode(Node node) {
         if (content == null) {
             content = node;
         }

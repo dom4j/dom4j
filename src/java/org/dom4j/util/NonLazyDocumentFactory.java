@@ -28,7 +28,7 @@ import org.dom4j.QName;
 public class NonLazyDocumentFactory extends DocumentFactory {
     
     /** The Singleton instance */
-    static NonLazyDocumentFactory singleton = new NonLazyDocumentFactory();
+    static transient NonLazyDocumentFactory singleton = new NonLazyDocumentFactory();
     
     
     /** <p>Access to the singleton instance of this factory.</p>

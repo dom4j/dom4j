@@ -41,7 +41,7 @@ public class SchemaDocumentFactory extends DocumentFactory {
     
     
     /** The Singleton instance */
-    static SchemaDocumentFactory singleton = new SchemaDocumentFactory();
+    static transient SchemaDocumentFactory singleton = new SchemaDocumentFactory();
     
     private static final Namespace XSI_NAMESPACE
         = Namespace.get( "xsi", "http://www.w3.org/2001/XMLSchema-instance" );

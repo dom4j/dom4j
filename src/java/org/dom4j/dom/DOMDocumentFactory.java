@@ -33,8 +33,9 @@ import org.dom4j.Text;
 public class DOMDocumentFactory extends DocumentFactory implements org.w3c.dom.DOMImplementation {
 
     /** The Singleton instance */
-    protected static DOMDocumentFactory singleton = new DOMDocumentFactory();
-
+    protected static transient DOMDocumentFactory singleton = new DOMDocumentFactory();
+    
+    
     /** <p>Access to the singleton instance of this factory.</p>
       *
       * @return the default singleon instance

@@ -5,6 +5,14 @@
     
     <section title="Change History">
         <section title="Patches in CVS since release">
+          <section title="Serialization support added">
+            <p>Support has been added for Java Serialization so dom4j documents can be serialized over RMI or EJB calls.
+            Note that currently Serialization is <i>much</i> slower (by a factor of 2-5 times) than using the textual format of
+            XML so we recommend sending XML text over RMI rather than serialization if possible. Over time we will tune
+            the serialization implementation to be at least as fast as using the text format (even if that means under the 
+            covers we just use the text format).
+            </p>
+          </section>
           <section title="Patches and bug fixes">
             <p>Fixed bug in XPath engine found by Christophe Ponsard
               for paths of the form /* which were not finding

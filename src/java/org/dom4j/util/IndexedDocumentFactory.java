@@ -29,7 +29,7 @@ import org.dom4j.QName;
 public class IndexedDocumentFactory extends DocumentFactory {
     
     /** The Singleton instance */
-    static IndexedDocumentFactory singleton = new IndexedDocumentFactory();
+    static transient IndexedDocumentFactory singleton = new IndexedDocumentFactory();
     
     
     /** <p>Access to the singleton instance of this factory.</p>

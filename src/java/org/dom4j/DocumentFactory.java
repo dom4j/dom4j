@@ -9,6 +9,7 @@
 
 package org.dom4j;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import org.dom4j.rule.Pattern;
@@ -39,10 +40,10 @@ import org.xml.sax.Attributes;
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class DocumentFactory {
+public class DocumentFactory implements Serializable {
 
     /** The Singleton instance */
-    private static DocumentFactory singleton;
+    private static transient DocumentFactory singleton;
     
     protected transient QNameCache cache;
 
