@@ -1562,7 +1562,21 @@ public abstract class AbstractElement
 
     public void setText(String text) {
 
-        clearContent();
+        /* remove all text nodes */
+        List allContent = contentList();
+        if (allContent != null) {
+            Iterator it = allContent.iterator();
+            while (it.hasNext()) {
+                Node node = (Node) it.next();
+                switch (node.getNodeType()) {
+                    case CDATA_SECTION_NODE:
+                    //case ENTITY_NODE:
+                    case ENTITY_REFERENCE_NODE:
+                    case TEXT_NODE:
+                        it.remove();
+                }
+            }
+        }
 
         addText(text);
 
