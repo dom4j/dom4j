@@ -44,7 +44,7 @@
         </ant:taskdef>    
         <ant:typedef resource="clovertypes">
             <classpath>
-                <pathelement path="${basedir}/lib/tools/clover-1.3-rc2.jar"/>
+                <pathelement path="${basedir}/lib/tools/clover-1.3-rc4.jar"/>
             </classpath>
         </ant:typedef>
 
@@ -55,7 +55,7 @@
                     <ant:include name="org/dom4j/**"/>
                 </ant:fileset>
             </j:forEach>
-            <files excludes="org/xml/sax/**,org/dom4j/io/aelfred/**,org/dom4j/io/aelfred2/**" />
+            <files excludes="org/xml/sax/**,org/dom4j/io/aelfred/**,org/dom4j/io/aelfred2/**,org/dom4j/persistence/**" />
         </ant:clover-setup>
 
         <!-- Make sure that the report is generated whether the tests pass or not -->
