@@ -45,6 +45,14 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         return false;
     }
 
+    public void setName(String name) {
+        throw new UnsupportedOperationException("The name and namespace of this Element cannot be changed" );
+    }
+    
+    public void setNamespace(Namespace namespace) {
+        throw new UnsupportedOperationException("The name and namespace of this Element cannot be changed" );
+    }
+    
     public Namespace getNamespaceForPrefix(String prefix) {
         if ( prefix == null || prefix.length() <= 0 ) {
             return Namespace.NO_NAMESPACE;

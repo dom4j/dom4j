@@ -24,7 +24,7 @@ public class DefaultContentFactory implements ContentFactory {
     
     /** @return the singleton instance
       */
-    public static DefaultContentFactory getInstance() {
+    public static ContentFactory getInstance() {
         return singleton;
     }
     

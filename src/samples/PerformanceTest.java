@@ -2,6 +2,7 @@ import java.net.URL;
 import java.io.IOException;
 
 import org.dom4j.Document;
+import org.dom4j.DocumentFactory;
 import org.dom4j.TreeException;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.TreeReader;
@@ -17,11 +18,14 @@ public class PerformanceTest extends SAXDemo {
     protected static boolean VERBOSE = false;
     
     /** Default number of loops */
-    protected static final int DEFAULT_LOOP_COUNT = 10;
+    protected static final int DEFAULT_LOOP_COUNT = 100;
     
     /** Number of loops to perform */
     protected int loopCount = DEFAULT_LOOP_COUNT;
     
+    
+    /** The DocumentFactory class name to use */
+    protected String documentFactoryClassName;
     
     
     public PerformanceTest() {
@@ -37,17 +41,21 @@ public class PerformanceTest extends SAXDemo {
     
     public void run(String[] args) throws Exception {    
         if ( args.length < 1 ) {
-            printUsage( "<XML document URL> [<SAX XMLReader Class Name>] [<loopCount>]" );
+            printUsage( "<XML document URL> [<Document Factory Class Name>] [<SAX XMLReader Class Name>] [<loopCount>]" );
             return;
         }
 
         String xmlFile = args[0];
-        xmlReaderClassName = (args.length > 1) 
-            ? args[1] : DEFAULT_XMLREADER_CLASSNAME;
+        
+        documentFactoryClassName = (args.length > 1) 
+            ? args[1] : null;
+            
+        xmlReaderClassName = (args.length > 2) 
+            ? args[2] : DEFAULT_XMLREADER_CLASSNAME;
         
         loopCount = DEFAULT_LOOP_COUNT;
-        if (args.length > 2) {
-            loopCount = Integer.parseInt(args[2]);
+        if (args.length > 3) {
+            loopCount = Integer.parseInt(args[3]);
         }        
 
         parse( xmlFile );
@@ -63,7 +71,6 @@ public class PerformanceTest extends SAXDemo {
                     
         println( "Parsing url:      " + url );
         println( "Looping:          " + loopCount + " time(s)" );        
-        printParser();
         println( "DocumentFactory:  " + reader.getDocumentFactory() );
         
         if ( loopCount <= 0 ) {
@@ -142,9 +149,25 @@ public class PerformanceTest extends SAXDemo {
 
     protected void printParser() {
         println( "Using SAX parser: " + xmlReaderClassName );
+        println( "DocumentFactory:  " + documentFactoryClassName );
     }
     
     protected TreeReader createTreeReader() throws Exception {
-        return new SAXReader( xmlReaderClassName );
+        TreeReader answer = new SAXReader( xmlReaderClassName );        
+        if ( documentFactoryClassName != null ) {
+            try {
+                Class theClass = Class.forName( documentFactoryClassName );
+                DocumentFactory factory = (DocumentFactory) theClass.newInstance();
+                if ( factory != null ) {
+                    answer.setDocumentFactory( factory );
+                }
+            }
+            catch (Exception e) {
+                println( "ERROR: Failed to create an instance of DocumentFactory: " + documentFactoryClassName );
+                println( "Exception: " + e );
+                e.printStackTrace();
+            }
+        }
+        return answer;
     }
 }

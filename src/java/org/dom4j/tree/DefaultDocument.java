@@ -98,7 +98,7 @@ public class DefaultDocument extends AbstractDocument {
     }
     
     
-    
+       
     /** Allows derived classes to override the content model */
     protected ContentModel getContentModel() {
         if ( contentModel == null ) {
