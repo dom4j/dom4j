@@ -28,7 +28,7 @@
       trademark of MetaStuff, Ltd.
   
    5. Due credit should be given to the DOM4J Project
-      (http://dom4j.org/).
+      http://www.dom4j.org
   
    THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
    ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
@@ -1153,7 +1153,7 @@ public class DocumentStyler
 </programlisting>
 
 <para>
-Imagine that you use XSLT to process a XML Schema in order to generate a empty template xml file accoring the schema contraints. The above sample should how easy the Java code is when you use dom4j and it's TraX support. If you use TemplateGenerator a lot you should consider the application of singleton pattern, but for this example I avoided this for simplicity. More information about TraX is provided  <ulink url="http://www.java.sun.com/xml">here</ulink>.
+Imagine that you use XSLT to process a XML Schema in order to generate a empty template xml file accoring the schema contraints. The above sample should how easy the Java code is when you use dom4j and it's TraX support. If you use TemplateGenerator a lot you should consider the application of singleton pattern, but for this example I avoided this for simplicity. More information about TraX is provided  <ulink url="http://java.sun.com/xml/">here</ulink>.
 </para>
 
 </chapter>

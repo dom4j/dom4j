@@ -352,7 +352,7 @@ public class DocumentFactory implements Serializable {
  *    trademark of MetaStuff, Ltd.
  *
  * 5. Due credit should be given to the DOM4J Project
- *    (http://dom4j.org/).
+ *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
  * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
