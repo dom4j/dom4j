@@ -4,7 +4,7 @@
     <title>Status</title>
     
     <section title="Change History">
-        <section title="coming soon, the 0.4 release">
+        <section title="0.4 release">
           <section title="Enhanced event notification mechanism">
             <p>A new enhanced event notification mechanism has been implemented
               by David White.
@@ -26,10 +26,27 @@
               to allow more optimised and powerful access to the path to the specified document.
             </p>
           </section>
+          <section title="Early alpha release of XML Schema Data Type support">
+            <p>This release contains an alpha release of XML Schema Data Type
+            support.  
+            The main class in question is the XML Schema Data Type aware
+            <a href="apidocs/org/dom4j/schema/SchemaDocumentFactory.html">SchemaDocumentFactory</a>            
+            which will create an XML Schema Data Type aware XML object model.
+            </p>
+            <p>
+              The <code>getData()</code> and <code>setData(Object)</code> methods
+              on 
+              <a href="apidocs/org/dom4j/Attribute.html">Attribute</a> and            
+              <a href="apidocs/org/dom4j/Element.html">Element</a>            
+              allow access to the concrete data types such as Dates and Numbers.
+            </p>
+          </section>
           <section title="Patches and bug fixes">
             <p>Applied Theo's patch for the XPath <code>substring</code> function 
               that was causing the incorrect string indexes to be returned.
               The <code>substring</code> now returns the correct answer.
+            </p>
+            <p>Applied Theo's patch for incorrectly escaping of element text.
             </p>
             <p>Fixed bug in the XPath engine for absolute path expressions which 
               now work correctly when applied to leaf nodes.
