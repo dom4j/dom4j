@@ -107,6 +107,13 @@ public class SAXReader {
     /** Should external DTD declarations be expanded into a List in the DTD */
     private boolean includeExternalDTDDeclarations = false;
     
+    /** Whether adjacent text nodes should be merged */
+    private boolean mergeAdjacentText = false;    
+    
+    /** Holds value of property stripWhitespaceText. */
+    private boolean stripWhitespaceText = false;
+    
+    
     //private boolean includeExternalGeneralEntities = false;
     //private boolean includeExternalParameterEntities = false;
     
@@ -307,6 +314,8 @@ public class SAXReader {
             contentHandler.setInputSource( in );
             contentHandler.setIncludeInternalDTDDeclarations( isIncludeInternalDTDDeclarations() );
             contentHandler.setIncludeExternalDTDDeclarations( isIncludeExternalDTDDeclarations() );
+            contentHandler.setMergeAdjacentText( isMergeAdjacentText() );
+            contentHandler.setStripWhitespaceText( isStripWhitespaceText() );
             xmlReader.setContentHandler(contentHandler);
 
             configureReader(xmlReader, contentHandler);
@@ -403,6 +412,38 @@ public class SAXReader {
     public void setStringInternEnabled(boolean stringInternEnabled) {
         this.stringInternEnabled = stringInternEnabled;
     }
+    
+    /** Returns whether adjacent text nodes should be merged together.
+      * @return Value of property mergeAdjacentText.
+      */
+    public boolean isMergeAdjacentText() {
+        return mergeAdjacentText;
+    }
+    
+    /** Sets whether or not adjacent text nodes should be merged
+      * together when parsing.
+      * @param mergeAdjacentText New value of property mergeAdjacentText.
+      */
+    public void setMergeAdjacentText(boolean mergeAdjacentText) {
+        this.mergeAdjacentText = mergeAdjacentText;
+    }
+           
+    /** Sets whether whitespace between element start and end tags should be ignored
+      * 
+      * @return Value of property stripWhitespaceText.
+      */
+    public boolean isStripWhitespaceText() {
+        return stripWhitespaceText;
+    }
+    
+    /** Sets whether whitespace between element start and end tags should be ignored.
+      *
+      * @param stripWhitespaceText New value of property stripWhitespaceText.
+      */
+    public void setStripWhitespaceText(boolean stripWhitespaceText) {
+        this.stripWhitespaceText = stripWhitespaceText;
+    }
+    
     
     /** @return the <code>DocumentFactory</code> used to create document objects
       */

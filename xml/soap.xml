@@ -5,7 +5,11 @@
   <SOAP-ENV:Body>
     <m:BabelFish xmlns:m="urn:xmethodsBabelFish">
       <translationmode>en_fr</translationmode>      
-      <sourcedata>SOAP is quite easy with JSP.</sourcedata>    
+      <sourcedata>
+
+        SOAP is quite easy with JSP &amp; dom4j!
+
+      </sourcedata>    
     </m:BabelFish>
   </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>

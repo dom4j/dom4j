@@ -6,6 +6,49 @@
     <section title="Change History">
 
       <section title="Changes in CVS since last release">
+        <section title="New features">
+        <p>There is a new <i>mergeAdjacentText</i> option available on SAXReader 
+        to concatenate adjacent text nodes into a single Text node. 
+        </p>
+        <p>
+        In addition there is a new <i>stripWhitespaceText</i> option to strip text which occurs between 
+        start/end tags which only consists of whitespace. 
+        </p>
+        <p>
+        For example, parsing the following XML with the stripWhitespaceText option enabled
+        and the mergeAdjacentText option enabled
+        will result in a single child node of the parent element, rather than 3 (2 text nodes containing whitespace and one element).
+        </p>
+<pre>
+&lt;parent&gt;
+  &lt;child&gt;foo&lt;/child&gt;
+&lt;/parent&gt;
+</pre>
+        <p>
+        Note that this option will not break most mixed content markup such as the following, 
+        since its only whitespace between tag start/ends that gets removed; non-whitespace strings are not trimmed.
+        </p>
+<pre>
+&lt;p&gt;hello &lt;b&gt;James&lt;/b&gt; how are you?&lt;/p&gt;
+</pre>
+        <p>
+        Both these options together can improve the parsing performance by around 10-12% depending on the 
+        structure of the document. Though the whitespace layout of the XML document will be lost, so only
+        use these modes in data-centric applications like XML messaging and SOAP.
+        </p>
+        <p>
+        So a typical SOAP or XML messaging developer, who may care more about performance than
+        preserving exact whitespace layout, may use the following code to 
+        make the SAX parsing more optimal.
+        </p>
+<pre>
+SAXReader reader = new SAXReader();
+reader.setMergeAdjacentText( true );
+reader.setStripWhitespaceText( true );
+Document doc = reader.read( "soap.xml" );
+</pre>
+        </section>
+
         <section title="Patches">
         <p>Applied patches supplied by Steen Lehmann that fixes handling of external DTD entities in SAXContentHandler 
           and fix the XML output of the ExternalEntityDecl
