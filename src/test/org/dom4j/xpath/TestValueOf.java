@@ -44,16 +44,29 @@ public class TestValueOf extends AbstractTestCase {
         "/root/author[3]",
         "/root/author[3]/@name",
         "name()",
+        "name(.)",
         "name(..)",
+        "name(child::node())",
         "name(parent::*)",
         "name(../*)",
+        "name(../child::node())",
         "local-name()",
         "local-name(..)",
         "local-name(parent::*)",
         "local-name(../*)",
         "parent::*",
-        ".."
-        
+        "name(/)",
+        "name(/child::node())",
+        "name(/*)",
+        ".",
+        "..",
+        "../*",
+        "../child::node()",
+        "/",
+        "/*",
+        "/child::node()",
+//        "*",
+        "1+1"
     };
     
     

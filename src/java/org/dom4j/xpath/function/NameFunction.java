@@ -41,19 +41,14 @@ public class NameFunction implements Function {
             if (first instanceof List) {
                 return nameOfList( (List) first );
             }
-            else if (first instanceof Document) {
-                Document document = (Document) first;
-                Element element = document.getRootElement();
-                if (element != null) {
-                    return element.getQualifiedName();
-                }
-            }
             else if (first instanceof Element) {
                 return ((Element) first).getQualifiedName();
             }
             else if (first instanceof Attribute) {
                 return ((Attribute) first).getQualifiedName();
             }
+            // a document does not have an 'expanded name' in XPath
+            // http://www.w3.org/TR/xpath#dt-expanded-name
         }
         return "";
     }

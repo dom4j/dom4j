@@ -6,10 +6,9 @@
  * 
  * $Id$
  */
-
-
 package org.dom4j.xpath.impl;
 
+import org.dom4j.Node;
 import org.dom4j.Element;
 
 import java.util.Set;
@@ -19,57 +18,42 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-public class ParentStep extends AbbrStep
-{
-  
-  public ParentStep()
-  {
-  }
-
-  public Context applyTo(Context context)
-  {
-    context.setNodeSet( ParentStep.findParents( context.getNodeSet() ) );
-
-    return context;
-  }
-
-  static public Object findParent(Object node)
-  {
-    if ( node instanceof Element )
-    {
-      return ((Element)node).getParent();
+public class ParentStep extends AbbrStep {
+    
+    public ParentStep() {
     }
-
-    return null;
-  }
-
-  static public List findParents(List nodeSet)
-  {
-    // FIXME: Unable to find parents of anything
-    //        except Element at this point.
-    Set results = new HashSet();
-
-    Iterator elemIter = nodeSet.iterator();
-    Object   each     = null;
-    Element  parent   = null;
-
-    while (elemIter.hasNext())
-    {
-      each = elemIter.next();
-
-      if ( each instanceof Element )
-      {
-        parent = ((Element)each).getParent();
-
-        if (parent != null)
-        {
-          results.add(parent);
+    
+    public Context applyTo(Context context) {
+        context.setNodeSet( ParentStep.findParents( context.getNodeSet() ) );        
+        return context;
+    }
+    
+    public static Object findParent(Object node) {
+        if ( node instanceof Node ) {
+            Node aNode = (Node) node;
+            Node parent = aNode.getParent();
+            if ( parent == null ) {
+                parent = aNode.getDocument();
+            }
+            return parent;
+        }        
+        return null;
+    }
+    
+    public static List findParents(List nodeSet) {
+        Set results = new HashSet();
+        for ( Iterator iter = nodeSet.iterator(); iter.hasNext(); ) {
+            Node node = (Node) iter.next();
+            Node parent = node.getParent();
+            if ( parent == null ) {
+                parent = node.getDocument();
+            }
+            if ( parent != null ) {
+                results.add( parent );
+            }
         }
-      }
+        return ( results.isEmpty() ? Collections.EMPTY_LIST : new ArrayList(results) );
     }
-
-    return ( results.isEmpty() ? Collections.EMPTY_LIST : new ArrayList(results) );
-  }
 }
 
 

@@ -41,19 +41,14 @@ public class LocalNameFunction implements Function {
             if (first instanceof List) {
                 return nameOfList( (List) first );
             }
-            else if (first instanceof Document) {
-                Document document = (Document) first;
-                Element element = document.getRootElement();
-                if (element != null) {
-                    return element.getName();
-                }
-            }
             else if (first instanceof Element) {
                 return ((Element) first).getName();
             }
             else if (first instanceof Attribute) {
                 return ((Attribute) first).getName();
             }
+            // a document does not have an 'expanded name' in XPath
+            // http://www.w3.org/TR/xpath#dt-expanded-name
         }
         return "";
     }
