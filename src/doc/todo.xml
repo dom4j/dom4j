@@ -4,11 +4,13 @@
     <title>Status</title>
     
     <section title="Change History">
-        <section title="Changes in CVS since last release">
+        <section title="0.7 release">
           <section title="Integration with SAXPath">
-            <p>The <a href="http://saxpath.org">SAXPath</a> project is a Simple API for XPath. Its analogous to
-             SAX in that the API abstracts away the details of parsing XPath exprssions and provides a simple event based callback
-             interface. 
+            <p>The <a href="http://saxpath.org">SAXPath</a> project is a 
+              Simple API for XPath parsing. Its analogous to
+              SAX in that the API abstracts away the details of parsing XPath 
+              expressions and provides a simple event based callback
+              interface. 
              </p>
             <p>
               Originally dom4j was using a parser generated via the <a href="http://antlr.org">Antlr</a> tool
@@ -17,7 +19,7 @@
               and a much smaller code base. 
              </p>
             <p>
-              The dom4j.jar is now 109Kb smaller!
+              The dom4j.jar is now about 100 Kb smaller!
               Also several XPath related bugs are now fixed. For example the numeric paths like '2 + count(//foo)' are now working.              
              </p>
          </section>
