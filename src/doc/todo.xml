@@ -4,7 +4,7 @@
     <title>Status</title>
     
     <section title="Change History">
-        <section title="coming soon, 0.5 release">
+        <section title="0.5 release">
           <section title="NodeComparator available">
             <p>For those wishing to do value based comparisons of Nodes, 
               Element, Attributes, Documents or Document fragments
