@@ -15,13 +15,21 @@
 <!-- ==================================================================== -->
 
 <xsl:template match="set">
-  <xsl:variable name="id">
-    <xsl:call-template name="object.id"/>
-  </xsl:variable>
+  <div class="{name(.)}">
+    <xsl:if test="$generate.id.attributes != 0">
+      <xsl:attribute name="id">
+        <xsl:call-template name="object.id"/>
+      </xsl:attribute>
+    </xsl:if>
 
-  <div class="{name(.)}" id="{$id}">
     <xsl:call-template name="set.titlepage"/>
-    <xsl:if test="$generate.set.toc != '0'">
+
+    <xsl:variable name="toc.params">
+      <xsl:call-template name="find.path.params">
+        <xsl:with-param name="table" select="normalize-space($generate.toc)"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:if test="contains($toc.params, 'toc')">
       <xsl:call-template name="set.toc"/>
     </xsl:if>
     <xsl:apply-templates/>
@@ -30,39 +38,87 @@
 
 <xsl:template match="set/setinfo"></xsl:template>
 <xsl:template match="set/title"></xsl:template>
+<xsl:template match="set/titleabbrev"></xsl:template>
 <xsl:template match="set/subtitle"></xsl:template>
 
 <!-- ==================================================================== -->
 
 <xsl:template match="book">
-  <xsl:variable name="id">
-    <xsl:call-template name="object.id"/>
-  </xsl:variable>
+  <div class="{name(.)}">
+    <xsl:if test="$generate.id.attributes != 0">
+      <xsl:attribute name="id">
+        <xsl:call-template name="object.id"/>
+      </xsl:attribute>
+    </xsl:if>
 
-  <div class="{name(.)}" id="{$id}">
     <xsl:call-template name="book.titlepage"/>
     <xsl:apply-templates select="dedication" mode="dedication"/>
-    <xsl:if test="$generate.book.toc != '0'">
+
+    <xsl:variable name="toc.params">
+      <xsl:call-template name="find.path.params">
+        <xsl:with-param name="table" select="normalize-space($generate.toc)"/>
+      </xsl:call-template>
+    </xsl:variable>
+
+    <xsl:if test="contains($toc.params, 'toc')">
       <xsl:call-template name="division.toc"/>
     </xsl:if>
+
+    <xsl:if test="contains($toc.params, 'figure')">
+      <xsl:call-template name="list.of.titles">
+        <xsl:with-param name="titles" select="'figure'"/>
+        <xsl:with-param name="nodes" select=".//figure"/>
+      </xsl:call-template>
+    </xsl:if>
+
+    <xsl:if test="contains($toc.params, 'table')">
+      <xsl:call-template name="list.of.titles">
+        <xsl:with-param name="titles" select="'table'"/>
+        <xsl:with-param name="nodes" select=".//table"/>
+      </xsl:call-template>
+    </xsl:if>
+
+    <xsl:if test="contains($toc.params, 'example')">
+      <xsl:call-template name="list.of.titles">
+        <xsl:with-param name="titles" select="'example'"/>
+        <xsl:with-param name="nodes" select=".//example"/>
+      </xsl:call-template>
+    </xsl:if>
+
+    <xsl:if test="contains($toc.params, 'equation')">
+      <xsl:call-template name="list.of.titles">
+        <xsl:with-param name="titles" select="'equation'"/>
+        <xsl:with-param name="nodes" select=".//equation[title]"/>
+      </xsl:call-template>
+    </xsl:if>
+
     <xsl:apply-templates/>
   </div>
 </xsl:template>
 
 <xsl:template match="book/bookinfo"></xsl:template>
 <xsl:template match="book/title"></xsl:template>
+<xsl:template match="book/titleabbrev"></xsl:template>
 <xsl:template match="book/subtitle"></xsl:template>
 
 <!-- ==================================================================== -->
 
 <xsl:template match="part">
-  <xsl:variable name="id">
-    <xsl:call-template name="object.id"/>
-  </xsl:variable>
+  <div class="{name(.)}">
+    <xsl:if test="$generate.id.attributes != 0">
+      <xsl:attribute name="id">
+        <xsl:call-template name="object.id"/>
+      </xsl:attribute>
+    </xsl:if>
 
-  <div class="{name(.)}" id="{$id}">
     <xsl:call-template name="part.titlepage"/>
-    <xsl:if test="not(partintro) and $generate.part.toc != '0'">
+
+    <xsl:variable name="toc.params">
+      <xsl:call-template name="find.path.params">
+        <xsl:with-param name="table" select="normalize-space($generate.toc)"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:if test="not(partintro) and contains($toc.params, 'toc')">
       <xsl:call-template name="division.toc"/>
     </xsl:if>
     <xsl:apply-templates/>
@@ -78,14 +134,29 @@
 </xsl:template>
 
 <xsl:template match="part/docinfo"></xsl:template>
+<xsl:template match="part/partinfo"></xsl:template>
 <xsl:template match="part/title"></xsl:template>
+<xsl:template match="part/titleabbrev"></xsl:template>
 <xsl:template match="part/subtitle"></xsl:template>
 
 <xsl:template match="partintro">
   <div class="{name(.)}">
+    <xsl:if test="$generate.id.attributes != 0">
+      <xsl:attribute name="id">
+        <xsl:call-template name="object.id"/>
+      </xsl:attribute>
+    </xsl:if>
+
     <xsl:call-template name="partintro.titlepage"/>
     <xsl:apply-templates/>
-    <xsl:if test="$generate.part.toc != '0'">
+
+    <xsl:variable name="toc.params">
+      <xsl:call-template name="find.path.params">
+        <xsl:with-param name="node" select="parent::*"/>
+        <xsl:with-param name="table" select="normalize-space($generate.toc)"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:if test="contains($toc.params, 'toc')">
       <!-- not ancestor::part because partintro appears in reference -->
       <xsl:apply-templates select="parent::*" mode="make.part.toc"/>
     </xsl:if>
@@ -94,19 +165,12 @@
 </xsl:template>
 
 <xsl:template match="partintro/title"></xsl:template>
-<xsl:template match="partintro/subtitle"></xsl:template>
 <xsl:template match="partintro/titleabbrev"></xsl:template>
+<xsl:template match="partintro/subtitle"></xsl:template>
 
 <xsl:template match="partintro/title" mode="partintro.title.mode">
-  <xsl:variable name="id">
-    <xsl:call-template name="object.id">
-      <xsl:with-param name="object" select=".."/>
-    </xsl:call-template>
-  </xsl:variable>
   <h2>
-    <a name="{$id}">
-      <xsl:apply-templates/>
-    </a>
+    <xsl:apply-templates/>
   </h2>
 </xsl:template>
 

@@ -1,5 +1,7 @@
 <?xml version='1.0'?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:xlink='http://www.w3.org/1999/xlink'
+                exclude-result-prefixes="xlink"
                 version='1.0'>
 
 <!-- ********************************************************************
@@ -12,32 +14,104 @@
 
      ******************************************************************** -->
 
+<xsl:template name="simple.xlink">
+  <xsl:param name="node" select="."/>
+  <xsl:param name="content">
+    <xsl:apply-templates/>
+  </xsl:param>
+
+  <xsl:choose>
+    <xsl:when test="$node/@xlink:type='simple' and $node/@xlink:href">
+      <a>
+        <xsl:if test="@xlink.title">
+          <xsl:attribute name="title">
+            <xsl:value-of select="@xlink:title"/>
+          </xsl:attribute>
+        </xsl:if>
+
+        <xsl:attribute name="href">
+          <xsl:choose>
+            <!-- if the href starts with # and does not contain an "(" -->
+            <!-- or if the href starts with #xpointer(id(, it's just an ID -->
+            <xsl:when test="starts-with(@xlink:href,'#')
+                            and (not(contains(@xlink:href,'&#40;'))
+                            or starts-with(@xlink:href,'#xpointer&#40;id&#40;'))">
+              <xsl:variable name="idref">
+                <xsl:call-template name="xpointer.idref">
+                  <xsl:with-param name="xpointer" select="@xlink:href"/>
+                </xsl:call-template>
+              </xsl:variable>
+
+              <xsl:variable name="targets" select="key('id',$idref)"/>
+              <xsl:variable name="target" select="$targets[1]"/>
+
+              <xsl:call-template name="check.id.unique">
+                <xsl:with-param name="linkend" select="@linkend"/>
+              </xsl:call-template>
+
+              <xsl:choose>
+                <xsl:when test="count($target) = 0">
+                  <xsl:message>
+                    <xsl:text>XLink to nonexistent id: </xsl:text>
+                    <xsl:value-of select="$idref"/>
+                  </xsl:message>
+                  <xsl:text>???</xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:call-template name="href.target">
+                    <xsl:with-param name="object" select="$target"/>
+                  </xsl:call-template>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:when>
+
+            <!-- otherwise it's a URI -->
+            <xsl:otherwise>
+              <xsl:value-of select="@xlink:href"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
+        <xsl:copy-of select="$content"/>
+      </a>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:copy-of select="$content"/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
 <xsl:template name="inline.charseq">
   <xsl:param name="content">
-    <xsl:if test="@id">
-      <a name="{@id}"/>
-    </xsl:if>
-    <xsl:apply-templates/>
+    <xsl:call-template name="anchor"/>
+    <xsl:call-template name="simple.xlink">
+      <xsl:with-param name="content">
+        <xsl:apply-templates/>
+      </xsl:with-param>
+    </xsl:call-template>
   </xsl:param>
   <xsl:copy-of select="$content"/>
 </xsl:template>
 
 <xsl:template name="inline.monoseq">
   <xsl:param name="content">
-    <xsl:if test="@id">
-      <a name="{@id}"/>
-    </xsl:if>
-    <xsl:apply-templates/>
+    <xsl:call-template name="anchor"/>
+    <xsl:call-template name="simple.xlink">
+      <xsl:with-param name="content">
+        <xsl:apply-templates/>
+      </xsl:with-param>
+    </xsl:call-template>
   </xsl:param>
   <tt><xsl:copy-of select="$content"/></tt>
 </xsl:template>
 
 <xsl:template name="inline.boldseq">
   <xsl:param name="content">
-    <xsl:if test="@id">
-      <a name="{@id}"/>
-    </xsl:if>
-    <xsl:apply-templates/>
+    <xsl:call-template name="anchor"/>
+    <xsl:call-template name="simple.xlink">
+      <xsl:with-param name="content">
+        <xsl:apply-templates/>
+      </xsl:with-param>
+    </xsl:call-template>
   </xsl:param>
   <!-- don't put <b> inside figure, example, or table titles -->
   <xsl:choose>
@@ -55,20 +129,24 @@
 
 <xsl:template name="inline.italicseq">
   <xsl:param name="content">
-    <xsl:if test="@id">
-      <a name="{@id}"/>
-    </xsl:if>
-    <xsl:apply-templates/>
+    <xsl:call-template name="anchor"/>
+    <xsl:call-template name="simple.xlink">
+      <xsl:with-param name="content">
+        <xsl:apply-templates/>
+      </xsl:with-param>
+    </xsl:call-template>
   </xsl:param>
   <i><xsl:copy-of select="$content"/></i>
 </xsl:template>
 
 <xsl:template name="inline.boldmonoseq">
   <xsl:param name="content">
-    <xsl:if test="@id">
-      <a name="{@id}"/>
-    </xsl:if>
-    <xsl:apply-templates/>
+    <xsl:call-template name="anchor"/>
+    <xsl:call-template name="simple.xlink">
+      <xsl:with-param name="content">
+        <xsl:apply-templates/>
+      </xsl:with-param>
+    </xsl:call-template>
   </xsl:param>
   <!-- don't put <b> inside figure, example, or table titles -->
   <!-- or other titles that may already be represented with <b>'s. -->
@@ -88,30 +166,36 @@
 
 <xsl:template name="inline.italicmonoseq">
   <xsl:param name="content">
-    <xsl:if test="@id">
-      <a name="{@id}"/>
-    </xsl:if>
-    <xsl:apply-templates/>
+    <xsl:call-template name="anchor"/>
+    <xsl:call-template name="simple.xlink">
+      <xsl:with-param name="content">
+        <xsl:apply-templates/>
+      </xsl:with-param>
+    </xsl:call-template>
   </xsl:param>
   <i><tt><xsl:copy-of select="$content"/></tt></i>
 </xsl:template>
 
 <xsl:template name="inline.superscriptseq">
   <xsl:param name="content">
-    <xsl:if test="@id">
-      <a name="{@id}"/>
-    </xsl:if>
-    <xsl:apply-templates/>
+    <xsl:call-template name="anchor"/>
+    <xsl:call-template name="simple.xlink">
+      <xsl:with-param name="content">
+        <xsl:apply-templates/>
+      </xsl:with-param>
+    </xsl:call-template>
   </xsl:param>
   <sup><xsl:copy-of select="$content"/></sup>
 </xsl:template>
 
 <xsl:template name="inline.subscriptseq">
   <xsl:param name="content">
-    <xsl:if test="@id">
-      <a name="{@id}"/>
-    </xsl:if>
-    <xsl:apply-templates/>
+    <xsl:call-template name="anchor"/>
+    <xsl:call-template name="simple.xlink">
+      <xsl:with-param name="content">
+        <xsl:apply-templates/>
+      </xsl:with-param>
+    </xsl:call-template>
   </xsl:param>
   <sub><xsl:copy-of select="$content"/></sub>
 </xsl:template>
@@ -208,7 +292,11 @@
       <xsl:variable name="nodes" select="text()|*"/>
       <xsl:call-template name="inline.monoseq">
         <xsl:with-param name="content">
-          <xsl:apply-templates select="$nodes[1]"/>
+          <xsl:call-template name="simple.xlink">
+            <xsl:with-param name="content">
+              <xsl:apply-templates select="$nodes[1]"/>
+            </xsl:with-param>
+          </xsl:call-template>
         </xsl:with-param>
       </xsl:call-template>
       <xsl:text>(</xsl:text>
@@ -360,22 +448,87 @@
 </xsl:template>
 
 <xsl:template match="citerefentry">
-  <xsl:call-template name="inline.charseq"/>
+  <xsl:choose>
+    <xsl:when test="$citerefentry.link != '0'">
+      <a>
+        <xsl:attribute name="href">
+          <xsl:call-template name="generate.citerefentry.link"/>
+        </xsl:attribute>
+        <xsl:call-template name="inline.charseq"/>
+      </a>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:call-template name="inline.charseq"/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<xsl:template name="generate.citerefentry.link">
+  <!-- nop -->
+</xsl:template>
+
+<xsl:template name="x.generate.citerefentry.link">
+  <xsl:text>http://example.com/cgi-bin/man.cgi?</xsl:text>
+  <xsl:value-of select="refentrytitle"/>
+  <xsl:text>(</xsl:text>
+  <xsl:value-of select="manvolnum"/>
+  <xsl:text>)</xsl:text>
 </xsl:template>
 
 <xsl:template match="citetitle">
-  <xsl:call-template name="inline.italicseq"/>
-</xsl:template>
-
-<xsl:template match="emphasis">
   <xsl:choose>
-    <xsl:when test="@role='bold'">
-      <xsl:call-template name="inline.boldseq"/>
+    <xsl:when test="@pubwork = 'article'">
+      <xsl:call-template name="gentext.startquote"/>
+      <xsl:call-template name="inline.charseq"/>
+      <xsl:call-template name="gentext.endquote"/>
     </xsl:when>
     <xsl:otherwise>
       <xsl:call-template name="inline.italicseq"/>
     </xsl:otherwise>
   </xsl:choose>
+</xsl:template>
+
+<xsl:template match="emphasis">
+  <span>
+    <xsl:choose>
+      <xsl:when test="@role and $emphasis.propagates.style != 0">
+        <xsl:attribute name="class">
+          <xsl:value-of select="@role"/>
+        </xsl:attribute>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:attribute name="class">
+          <xsl:text>emphasis</xsl:text>
+        </xsl:attribute>
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:call-template name="anchor"/>
+
+    <xsl:call-template name="simple.xlink">
+      <xsl:with-param name="content">
+        <xsl:choose>
+          <xsl:when test="@role = 'bold'">
+            <!-- backwards compatibility: make bold into b elements, but -->
+            <!-- don't put bold inside figure, example, or table titles -->
+            <xsl:choose>
+              <xsl:when test="local-name(..) = 'title'
+                              and (local-name(../..) = 'figure'
+                              or local-name(../..) = 'example'
+                              or local-name(../..) = 'table')">
+                <xsl:apply-templates/>
+              </xsl:when>
+              <xsl:otherwise>
+                <b><xsl:apply-templates/></b>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:when>
+          <xsl:otherwise>
+            <em><xsl:apply-templates/></em>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:with-param>
+    </xsl:call-template>
+  </span>
 </xsl:template>
 
 <xsl:template match="foreignphrase">
@@ -387,7 +540,19 @@
 </xsl:template>
 
 <xsl:template match="phrase">
-  <xsl:call-template name="inline.charseq"/>
+  <span>
+    <xsl:if test="@role and $phrase.propagates.style != 0">
+      <xsl:attribute name="class">
+        <xsl:value-of select="@role"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:call-template name="anchor"/>
+    <xsl:call-template name="simple.xlink">
+      <xsl:with-param name="content">
+        <xsl:apply-templates/>
+      </xsl:with-param>
+    </xsl:call-template>
+  </span>
 </xsl:template>
 
 <xsl:template match="quote">
@@ -432,19 +597,182 @@
 
 <xsl:template match="trademark">
   <xsl:call-template name="inline.charseq"/>
-  <xsl:if test="@class">
-    <xsl:call-template name="dingbat">
-      <xsl:with-param name="dingbat" select="@class"/>
-    </xsl:call-template>
-  </xsl:if>
+  <xsl:choose>
+    <xsl:when test="@class = 'copyright'
+                    or @class = 'registered'">
+      <xsl:call-template name="dingbat">
+        <xsl:with-param name="dingbat" select="@class"/>
+      </xsl:call-template>
+    </xsl:when>
+    <xsl:when test="@class = 'service'">
+      <sup>SM</sup>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:call-template name="dingbat">
+        <xsl:with-param name="dingbat" select="'trademark'"/>
+      </xsl:call-template>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:template>
 
 <xsl:template match="firstterm">
-  <xsl:call-template name="inline.italicseq"/>
+  <xsl:call-template name="glossterm">
+    <xsl:with-param name="firstterm" select="1"/>
+  </xsl:call-template>
 </xsl:template>
 
-<xsl:template match="glossterm">
-  <xsl:call-template name="inline.charseq"/>
+<xsl:template match="glossterm" name="glossterm">
+  <xsl:param name="firstterm" select="0"/>
+
+  <xsl:choose>
+
+    <xsl:when test="($firstterm.only.link = 0 or $firstterm = 1) and @linkend">
+      <xsl:variable name="targets" select="key('id',@linkend)"/>
+      <xsl:variable name="target" select="$targets[1]"/>
+
+      <xsl:call-template name="check.id.unique">
+        <xsl:with-param name="linkend" select="@linkend"/>
+      </xsl:call-template>
+
+      <a>
+        <xsl:if test="@id">
+          <xsl:attribute name="name">
+            <xsl:value-of select="@id"/>
+          </xsl:attribute>
+        </xsl:if>
+
+        <xsl:attribute name="href">
+          <xsl:call-template name="href.target">
+            <xsl:with-param name="object" select="$target"/>
+          </xsl:call-template>
+        </xsl:attribute>
+
+        <xsl:call-template name="inline.italicseq"/>
+      </a>
+    </xsl:when>
+
+    <xsl:when test="not(@linkend)
+                    and ($firstterm.only.link = 0 or $firstterm = 1)
+                    and $glossary.collection != ''">
+      <xsl:variable name="term">
+        <xsl:choose>
+          <xsl:when test="@baseform"><xsl:value-of select="@baseform"/></xsl:when>
+          <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+
+      <xsl:variable name="cterm"
+           select="(document($glossary.collection,.)//glossentry[glossterm=$term])[1]"/>
+
+      <!-- HACK HACK HACK! But it works... -->
+      <!-- You'd need to do more work if you wanted to chunk on glossdiv, though -->
+
+      <xsl:variable name="glossary" select="//glossary[@role='auto']"/>
+
+      <xsl:if test="count($glossary) != 1">
+        <xsl:message>
+          <xsl:text>Warning: glossary.collection specified, but there are </xsl:text>
+          <xsl:value-of select="count($glossary)"/>
+          <xsl:text> automatic glossaries</xsl:text>
+        </xsl:message>
+      </xsl:if>
+
+      <xsl:variable name="glosschunk">
+        <xsl:call-template name="href.target">
+          <xsl:with-param name="object" select="$glossary"/>
+        </xsl:call-template>
+      </xsl:variable>
+
+      <xsl:variable name="chunkbase">
+        <xsl:choose>
+          <xsl:when test="contains($glosschunk, '#')">
+            <xsl:value-of select="substring-before($glosschunk, '#')"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$glosschunk"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+
+      <xsl:choose>
+        <xsl:when test="not($cterm)">
+          <xsl:message>
+            <xsl:text>There's no entry for </xsl:text>
+            <xsl:value-of select="$term"/>
+            <xsl:text> in </xsl:text>
+            <xsl:value-of select="$glossary.collection"/>
+          </xsl:message>
+          <xsl:call-template name="inline.italicseq"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:variable name="id">
+            <xsl:text>gl.</xsl:text>
+            <xsl:choose>
+              <xsl:when test="$cterm/@id">
+                <xsl:value-of select="$cterm/@id"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="generate-id($cterm)"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+          <a href="{$chunkbase}#{$id}">
+            <xsl:call-template name="inline.italicseq"/>
+          </a>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:when>
+
+    <xsl:when test="not(@linkend)
+                    and ($firstterm.only.link = 0 or $firstterm = 1)
+                    and $glossterm.auto.link != 0">
+      <xsl:variable name="term">
+        <xsl:choose>
+          <xsl:when test="@baseform">
+            <xsl:value-of select="@baseform"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="."/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:variable name="targets"
+                    select="//glossentry[glossterm=$term or glossterm/@baseform=$term]"/>
+      <xsl:variable name="target" select="$targets[1]"/>
+
+      <xsl:choose>
+        <xsl:when test="count($targets)=0">
+          <xsl:message>
+            <xsl:text>Error: no glossentry for glossterm: </xsl:text>
+            <xsl:value-of select="."/>
+            <xsl:text>.</xsl:text>
+          </xsl:message>
+          <xsl:call-template name="inline.italicseq"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <a>
+            <xsl:if test="@id">
+              <xsl:attribute name="name">
+                <xsl:value-of select="@id"/>
+              </xsl:attribute>
+            </xsl:if>
+
+            <xsl:attribute name="href">
+              <xsl:call-template name="href.target">
+                <xsl:with-param name="object" select="$target"/>
+              </xsl:call-template>
+            </xsl:attribute>
+
+            <xsl:call-template name="inline.italicseq"/>
+          </a>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:when>
+
+    <xsl:otherwise>
+      <xsl:call-template name="inline.italicseq"/>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:template>
 
 <xsl:template match="sgmltag">
@@ -461,101 +789,67 @@
     </xsl:choose>
   </xsl:param>
 
-  <xsl:choose>
-    <xsl:when test="$class='attribute'">
-      <xsl:call-template name="inline.charseq"/>
-    </xsl:when>
-    <xsl:when test="$class='attvalue'">
-      <xsl:call-template name="inline.monoseq"/>
-    </xsl:when>
-    <xsl:when test="$class='element'">
-      <xsl:call-template name="inline.monoseq"/>
-    </xsl:when>
-    <xsl:when test="$class='endtag'">
-      <xsl:call-template name="inline.monoseq">
-        <xsl:with-param name="content">
-          <xsl:text>&lt;/</xsl:text>
-          <xsl:apply-templates/>
-          <xsl:text>&gt;</xsl:text>
-        </xsl:with-param>
-      </xsl:call-template>
-    </xsl:when>
-    <xsl:when test="$class='genentity'">
-      <xsl:call-template name="inline.monoseq">
-        <xsl:with-param name="content">
-          <xsl:text>&amp;</xsl:text>
-          <xsl:apply-templates/>
-          <xsl:text>;</xsl:text>
-        </xsl:with-param>
-      </xsl:call-template>
-    </xsl:when>
-    <xsl:when test="$class='numcharref'">
-      <xsl:call-template name="inline.monoseq">
-        <xsl:with-param name="content">
-          <xsl:text>&amp;#</xsl:text>
-          <xsl:apply-templates/>
-          <xsl:text>;</xsl:text>
-        </xsl:with-param>
-      </xsl:call-template>
-    </xsl:when>
-    <xsl:when test="$class='paramentity'">
-      <xsl:call-template name="inline.monoseq">
-        <xsl:with-param name="content">
-          <xsl:text>%</xsl:text>
-          <xsl:apply-templates/>
-          <xsl:text>;</xsl:text>
-        </xsl:with-param>
-      </xsl:call-template>
-    </xsl:when>
-    <xsl:when test="$class='pi'">
-      <xsl:call-template name="inline.monoseq">
-        <xsl:with-param name="content">
-          <xsl:text>&lt;?</xsl:text>
-          <xsl:apply-templates/>
-          <xsl:text>&gt;</xsl:text>
-        </xsl:with-param>
-      </xsl:call-template>
-    </xsl:when>
-    <xsl:when test="$class='xmlpi'">
-      <xsl:call-template name="inline.monoseq">
-        <xsl:with-param name="content">
-          <xsl:text>&lt;?</xsl:text>
-          <xsl:apply-templates/>
-          <xsl:text>?&gt;</xsl:text>
-        </xsl:with-param>
-      </xsl:call-template>
-    </xsl:when>
-    <xsl:when test="$class='starttag'">
-      <xsl:call-template name="inline.monoseq">
-        <xsl:with-param name="content">
-          <xsl:text>&lt;</xsl:text>
-          <xsl:apply-templates/>
-          <xsl:text>&gt;</xsl:text>
-        </xsl:with-param>
-      </xsl:call-template>
-    </xsl:when>
-    <xsl:when test="$class='emptytag'">
-      <xsl:call-template name="inline.monoseq">
-        <xsl:with-param name="content">
-          <xsl:text>&lt;</xsl:text>
-          <xsl:apply-templates/>
-          <xsl:text>/&gt;</xsl:text>
-        </xsl:with-param>
-      </xsl:call-template>
-    </xsl:when>
-    <xsl:when test="$class='sgmlcomment'">
-      <xsl:call-template name="inline.monoseq">
-        <xsl:with-param name="content">
-          <xsl:text>&lt;!--</xsl:text>
-          <xsl:apply-templates/>
-          <xsl:text>--&gt;</xsl:text>
-        </xsl:with-param>
-      </xsl:call-template>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:call-template name="inline.charseq"/>
-    </xsl:otherwise>
-  </xsl:choose>
+  <tt class="sgmltag-{$class}">
+    <xsl:choose>
+      <xsl:when test="$class='attribute'">
+        <xsl:apply-templates/>
+      </xsl:when>
+      <xsl:when test="$class='attvalue'">
+        <xsl:apply-templates/>
+      </xsl:when>
+      <xsl:when test="$class='element'">
+        <xsl:apply-templates/>
+      </xsl:when>
+      <xsl:when test="$class='endtag'">
+        <xsl:text>&lt;/</xsl:text>
+        <xsl:apply-templates/>
+        <xsl:text>&gt;</xsl:text>
+      </xsl:when>
+      <xsl:when test="$class='genentity'">
+        <xsl:text>&amp;</xsl:text>
+        <xsl:apply-templates/>
+        <xsl:text>;</xsl:text>
+      </xsl:when>
+      <xsl:when test="$class='numcharref'">
+        <xsl:text>&amp;#</xsl:text>
+        <xsl:apply-templates/>
+        <xsl:text>;</xsl:text>
+      </xsl:when>
+      <xsl:when test="$class='paramentity'">
+        <xsl:text>%</xsl:text>
+        <xsl:apply-templates/>
+        <xsl:text>;</xsl:text>
+      </xsl:when>
+      <xsl:when test="$class='pi'">
+        <xsl:text>&lt;?</xsl:text>
+        <xsl:apply-templates/>
+        <xsl:text>&gt;</xsl:text>
+      </xsl:when>
+      <xsl:when test="$class='xmlpi'">
+        <xsl:text>&lt;?</xsl:text>
+        <xsl:apply-templates/>
+        <xsl:text>?&gt;</xsl:text>
+      </xsl:when>
+      <xsl:when test="$class='starttag'">
+        <xsl:text>&lt;</xsl:text>
+        <xsl:apply-templates/>
+        <xsl:text>&gt;</xsl:text>
+      </xsl:when>
+      <xsl:when test="$class='emptytag'">
+        <xsl:text>&lt;</xsl:text>
+        <xsl:apply-templates/>
+        <xsl:text>/&gt;</xsl:text>
+      </xsl:when>
+      <xsl:when test="$class='sgmlcomment'">
+        <xsl:text>&lt;!--</xsl:text>
+        <xsl:apply-templates/>
+        <xsl:text>--&gt;</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </tt>
 </xsl:template>
 
 <xsl:template match="email">
@@ -584,9 +878,9 @@
       <xsl:otherwise>-</xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
-  <xsl:for-each select="./*">
+  <xsl:for-each select="*">
     <xsl:if test="position()>1"><xsl:value-of select="$joinchar"/></xsl:if>
-    <xsl:apply-templates/>
+    <xsl:apply-templates select="."/>
   </xsl:for-each>
 </xsl:template>
 
@@ -673,8 +967,24 @@
 
 <!-- ==================================================================== -->
 
-<xsl:template match="pob|street|city|state|postcode|country|phone|fax|otheraddr">
+<xsl:template match="pob|street|city|state|postcode|country|otheraddr">
   <xsl:call-template name="inline.charseq"/>
+</xsl:template>
+
+<xsl:template match="phone|fax">
+  <xsl:call-template name="inline.charseq"/>
+</xsl:template>
+
+<!-- in Addresses, for example -->
+<xsl:template match="honorific|firstname|surname|lineage|othername">
+  <xsl:call-template name="inline.charseq"/>
+</xsl:template>
+
+<!-- ==================================================================== -->
+
+<xsl:template match="personname">
+  <xsl:call-template name="anchor"/>
+  <xsl:call-template name="person.name"/>
 </xsl:template>
 
 <!-- ==================================================================== -->

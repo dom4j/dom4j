@@ -25,12 +25,9 @@
   </meta>
 </xsl:template>
 
-<xsl:template match="keyword[position()!=last()]" mode="html.header">
-  <xsl:apply-templates/><xsl:text>, </xsl:text>
-</xsl:template>
-
-<xsl:template match="keyword[position()=last()]" mode="html.header">
+<xsl:template match="keyword" mode="html.header">
   <xsl:apply-templates/>
+  <xsl:if test="following-sibling::keyword">, </xsl:if>
 </xsl:template>
 
 <!-- ==================================================================== -->

@@ -27,6 +27,8 @@ span.off     {  }
 <xsl:template match="*[@revisionflag]">
   <xsl:choose>
     <xsl:when test="local-name(.) = 'para'
+                    or local-name(.) = 'simpara'
+                    or local-name(.) = 'formalpara'
                     or local-name(.) = 'section'
                     or local-name(.) = 'sect1'
                     or local-name(.) = 'sect2'
@@ -36,6 +38,10 @@ span.off     {  }
                     or local-name(.) = 'chapter'
                     or local-name(.) = 'preface'
                     or local-name(.) = 'itemizedlist'
+                    or local-name(.) = 'varlistentry'
+                    or local-name(.) = 'glossary'
+                    or local-name(.) = 'bibliography'
+                    or local-name(.) = 'index'
                     or local-name(.) = 'appendix'">
       <div class='{@revisionflag}'>
 	<xsl:apply-imports/>
@@ -43,8 +49,13 @@ span.off     {  }
     </xsl:when>
     <xsl:when test="local-name(.) = 'phrase'
                     or local-name(.) = 'ulink'
+                    or local-name(.) = 'link'
                     or local-name(.) = 'filename'
                     or local-name(.) = 'literal'
+                    or local-name(.) = 'member'
+                    or local-name(.) = 'glossterm'
+                    or local-name(.) = 'sgmltag'
+                    or local-name(.) = 'quote'
                     or local-name(.) = 'emphasis'
                     or local-name(.) = 'command'
                     or local-name(.) = 'xref'">
@@ -53,6 +64,7 @@ span.off     {  }
       </span>
     </xsl:when>
     <xsl:when test="local-name(.) = 'listitem'
+                    or local-name(.) = 'entry'
                     or local-name(.) = 'title'">
       <!-- nop; these are handled directly in the stylesheet -->
       <xsl:apply-imports/>
@@ -61,7 +73,7 @@ span.off     {  }
       <xsl:message>
 	<xsl:text>Revisionflag on unexpected element: </xsl:text>
 	<xsl:value-of select="local-name(.)"/>
-	<xsl:text>(Assuming block)</xsl:text>
+	<xsl:text> (Assuming block)</xsl:text>
       </xsl:message>
       <div class='{@revisionflag}'>
 	<xsl:apply-imports/>

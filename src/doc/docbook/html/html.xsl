@@ -12,6 +12,19 @@
 
      ******************************************************************** -->
 
+<xsl:template name="anchor">
+  <xsl:param name="node" select="."/>
+  <xsl:param name="conditional" select="1"/>
+  <xsl:variable name="id">
+    <xsl:call-template name="object.id">
+      <xsl:with-param name="object" select="$node"/>
+    </xsl:call-template>
+  </xsl:variable>
+  <xsl:if test="$conditional = 0 or $node/@id">
+    <a name="{$id}"/>
+  </xsl:if>
+</xsl:template>
+
 <xsl:template name="dingbat">
   <xsl:param name="dingbat">bullet</xsl:param>
   <xsl:choose>
