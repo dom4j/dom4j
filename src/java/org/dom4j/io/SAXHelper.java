@@ -28,6 +28,8 @@ import org.xml.sax.helpers.XMLReaderFactory;
   */
 class SAXHelper {
 
+    private static boolean loggedWarning = false;
+    
     public static boolean setParserProperty(XMLReader reader, String propertyName, Object value) {    
         try {
             reader.setProperty(propertyName, value);
@@ -78,24 +80,27 @@ class SAXHelper {
             return JAXPHelper.createXMLReader( validating );
         }
         catch (Throwable e) {
-            if ( isVerboseErrorReporting() ) {
-                // log all exceptions as warnings and carry
-                // on as we have a default SAX parser we can use
-                System.out.println( 
-                    "Warning: Caught exception attempting to use JAXP to "
-                     + "load a SAX XMLReader " 
-                );
-                System.out.println( "Warning: Exception was: " + e );
-                System.out.println( 
-                    "Warning: I will print the stack trace then carry on "
-                     + "using the default SAX parser" 
-                 );
-                e.printStackTrace();
-            }
-            else {
-                System.out.println( 
-                    "Warning: Error occurred using JAXP to load a SAXParser. Will use Aelfred instead" 
-                );
+            if ( ! loggedWarning ) {                    
+                loggedWarning = true;
+                if ( isVerboseErrorReporting() ) {
+                    // log all exceptions as warnings and carry
+                    // on as we have a default SAX parser we can use
+                    System.out.println( 
+                        "Warning: Caught exception attempting to use JAXP to "
+                         + "load a SAX XMLReader " 
+                    );
+                    System.out.println( "Warning: Exception was: " + e );
+                    System.out.println( 
+                        "Warning: I will print the stack trace then carry on "
+                         + "using the default SAX parser" 
+                     );
+                    e.printStackTrace();
+                }
+                else {
+                    System.out.println( 
+                        "Warning: Error occurred using JAXP to load a SAXParser. Will use Aelfred instead" 
+                    );
+                }
             }
         }
         return null;
