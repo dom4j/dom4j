@@ -2,7 +2,7 @@
 
     <path id="compile.classpath">
         <fileset dir="./lib">
-            <include name="**/*.jar" />
+            <include name="*.jar" />
         </fileset>
     </path>
 
@@ -12,7 +12,8 @@
             <include name="**/*.jar" />
         </fileset>
         <fileset dir="./lib/tools">
-            <include name="**/jtidy*.jar" />
+            <include name="jtidy*.jar" />
+            <include name="xerces*.jar" /> <!-- required by msv -->
         </fileset>
         <pathelement location="."/>
     </path>
