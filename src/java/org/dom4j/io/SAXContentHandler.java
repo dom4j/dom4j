@@ -139,6 +139,10 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
         else {
             elementStack.clear();
         }
+        if ( (elementHandler != null) &&
+             (elementHandler instanceof DispatchHandler) ) {
+            elementStack.setDispatchHandler((DispatchHandler)elementHandler);   
+        }
         
         namespaceStack.clear();
         declaredNamespaceIndex = 0;
@@ -174,13 +178,17 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
         }
 
         elementStack.pushElement(element);
+        if ( element != null && elementHandler != null ) {
+            elementHandler.onStart(elementStack);   
+        }
     }
 
     public void endElement(String namespaceURI, String localName, String qName) {
-        Element element = elementStack.popElement();
-        if ( element != null && elementHandler != null ) {
-            elementHandler.handle( element );
+        if ( (elementStack.peekElement() != null) && elementHandler != null ) {
+        //    elementHandler.handle( element );
+            elementHandler.onEnd(elementStack);
         }
+        Element element = elementStack.popElement();
     }
 
     public void characters(char[] ch, int start, int end) throws SAXException {
