@@ -674,18 +674,21 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
       * text node with it and add it to the current element 
       */
     protected void completeCurrentTextNode() {
-        boolean whitespace = true;
         if ( stripWhitespaceText ) {
+            boolean whitespace = true;
             for ( int i = 0, size = textBuffer.length(); i < size; i++ ) {
                 if ( ! Character.isWhitespace( textBuffer.charAt(i) ) ) {
                     whitespace = false;
                     break;
                 }
             }
+            if ( ! whitespace ) {
+                currentElement.addText( textBuffer.toString() );
+            }
         }
-        if ( ! whitespace ) {
+        else {
             currentElement.addText( textBuffer.toString() );
-        }
+        }        
         textBuffer.setLength(0);
         textInTextBuffer = false;
     }
