@@ -4,6 +4,7 @@
  * This software is open source. 
  * See the bottom of this file for the licence.
  * 
+ * $Id$
  */
 
 package org.dom4j.bean;
@@ -70,7 +71,7 @@ public class TestBeans extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project
+ * 5. Due credit should be given to the DOM4J Project - 
  *    http://dom4j.org/
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
