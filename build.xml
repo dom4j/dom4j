@@ -7,8 +7,8 @@
     <tstamp/>
     <property name="Name" value="dom4j"/>
     <property name="name" value="dom4j"/>
-    <property name="version" value="patched-1.1"/>
-    <property name="current.version" value="1.1"/>
+    <property name="version" value="1.2"/>
+    <property name="current.version" value="1.2"/>
     <property name="year" value="2001"/>
 
     <echo message="----------- ${Name} ${version} [${year}] ------------"/>
@@ -447,7 +447,7 @@
     <copy todir="${web.dist}" file="${build.dir}/${name}.jar"/>
 
     <copy todir="${web.htdocs}" overwrite="yes">
-      <fileset dir="${build.doc}" includes="**/*.html, **/*.css"/>
+      <fileset dir="${build.doc}" includes="**/*.html, **/*.css, **/*.pdf, **/*.ps, **/*.fo"/>
     </copy>
 
     <copy todir="${web.dist}" overwrite="yes">
