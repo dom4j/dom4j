@@ -112,9 +112,26 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         
     public String getPath() {
         Element parent = getParent();
-        return ( parent != null ) 
-            ? parent.getPath() + "/" + getQualifiedName()
-            : getQualifiedName();
+        if ( parent == null ) {
+            return "/" + getQualifiedName();
+        }
+        return parent.getPath() + "/" + getQualifiedName();
+/*        
+        StringBuffer buffer = new StringBuffer( parent.getPath() );
+        buffer.append( "/" );
+        buffer.append( getQualifiedName() );
+        List mySiblings = parent.elements( getQName() );
+        if ( mySiblings.size() > 1 ) {
+            int idx = mySiblings.indexOf( this );
+            if ( idx > 0 ) {
+                buffer.append( "[" );
+                buffer.append( Integer.toString( ++idx ) );
+                buffer.append( "]" );
+            }
+            
+        }
+        return buffer.toString();
+*/
     }
     
     public String asXML() {

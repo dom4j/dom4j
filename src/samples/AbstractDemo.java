@@ -34,7 +34,7 @@ public abstract class AbstractDemo {
         }
         catch (DocumentException e) {
             System.out.println( "Exception occurred: " + e );
-            Exception nestedException = e.getNestedException();
+            Throwable nestedException = e.getNestedException();
             if ( nestedException != null ) {
                 System.out.println( "NestedException: " + nestedException );
                 nestedException.printStackTrace();
@@ -76,6 +76,7 @@ public abstract class AbstractDemo {
 
     protected void process(Document document) throws Exception {
         getXMLWriter().write(document);
+        getXMLWriter().flush();
     }
         
     protected void print( String text ) {

@@ -268,6 +268,24 @@
   </target>
 
 
+  <target name="offline-javadoc" depends="prepare-src,collections,doc">
+    <mkdir dir="${build.javadocs}"/>
+    <javadoc packagenames="${packages}"
+             sourcepath="${build.src}"
+             destdir="${build.javadocs}"
+             author="true"
+             version="true"
+             use="true"
+             splitindex="true"
+             noindex="false"
+             windowtitle="${Name} Full JavaDoc"
+             doctitle="${Name}"
+             bottom="Copyright &#169; ${year} MetaStuff Ltd. All Rights Reserved. Hosted by &lt;p&gt; &lt;img src='http://sourceforge.net/sflogo.php?group_id=16035' width='88' height='31' border='0' alt='SourceForge Logo' /&gt;"
+             stylesheetfile="${doc.dir}/style/javadoc.css">
+    </javadoc>
+  </target>
+
+
   <!-- Build the documentation -->
   <target name="doc" depends="prepare">
     <mkdir    dir="${doc.dir}/images"/>

@@ -21,6 +21,7 @@ import org.dom4j.tree.DefaultElement;
 import org.dom4j.tree.DefaultEntity;
 import org.dom4j.tree.DefaultProcessingInstruction;
 import org.dom4j.tree.QNameCache;
+import org.dom4j.tree.XPathAttribute;
 import org.dom4j.tree.XPathEntity;
 import org.dom4j.tree.XPathText;
 import org.dom4j.xpath.DefaultXPath;
@@ -99,7 +100,8 @@ public class DocumentFactory {
 
     
     public Attribute createAttribute(Element owner, QName qname, String value) {
-        return new DefaultAttribute(qname, value);
+        //return new DefaultAttribute(qname, value);
+        return new XPathAttribute(qname, value);
     }
     
     public Attribute createAttribute(Element owner, String name, String value) {

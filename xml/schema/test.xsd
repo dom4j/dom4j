@@ -48,6 +48,17 @@
 
     <attribute name="positiveIntegerTag" type="positiveInteger"/>
 
+<!--
+    <attribute name="rangedInt">
+      <simpleType>
+        <restriction base="int">
+          <minimumValue value="2"/>
+          <maximumValue value="24"/>
+        </restriction>
+      </simpleType>
+    </attribute>
+-->
+
   </complexType>
  </element>
 

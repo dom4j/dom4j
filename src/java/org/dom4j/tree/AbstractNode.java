@@ -31,8 +31,8 @@ import org.dom4j.XPath;
 public abstract class AbstractNode implements Node, Cloneable, Serializable {
     
     protected static final String[] NODE_TYPE_NAMES ={
-        "Node", "Element", "Attribute", "Text", "Root", "", "", 
-	"Processing Instruction", "Comment", "Namespace"
+        "Node", "Element", "Attribute", "Text", "CDATA", "Entity", "Entity", "ProcessingInstruction", 
+        "Comment", "Document", "DocumentType", "DocumentFragment", "Notation", "Namespace","Unknown" 
     };
     
     /** The <code>DocumentFactory</code> instance used by default */
@@ -46,7 +46,7 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
         return UNKNOWN_NODE;
     }
 
-    public String getNodeName() {
+    public String getNodeTypeName() {
         int type = getNodeType();
         if ( type < 0 || type >= NODE_TYPE_NAMES.length ) {
             return "Unknown";

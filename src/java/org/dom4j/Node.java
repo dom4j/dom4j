@@ -62,6 +62,9 @@ public interface Node extends Cloneable {
     /** Does not match any valid node */
     public static final short UNKNOWN_NODE = 14;
     
+    /** The maximum number of node types for sizing purposes */
+    public static final short MAX_NODE_TYPE = 14;
+    
     
     /** <p><code>supportsParent</code> returns true if this node supports the 
       * parent relationship.</p>
@@ -215,12 +218,10 @@ public interface Node extends Cloneable {
       */
     public short getNodeType();
 
-    /** Get the name of this node, following the DOM rules 
-     *
-    *  @return The name of the node. For an element this is the element name, for an attribute
-    * it is the attribute name, as a QName. Other node types return conventional names such
-    * as "#text" or "#comment"
-    */
+    /** @return the name of the type of node such as "Document", "Element", "Attribute" or "Text"
+     */
+    public String getNodeTypeName();
+    
     
     /** <p>Removes this node from its parent if there is one. 
       * If this node is the root element of a document then it is removed
