@@ -72,7 +72,7 @@ public abstract class AbstractDocument extends AbstractBranch implements
             XMLWriter writer = new XMLWriter(out, outputFormat);
             writer.write(this);
 
-            return out.toString();
+            return out.toString(outputFormat.getEncoding());
         } catch (IOException e) {
             throw new RuntimeException("IOException while generating textual "
                     + "representation: " + e.getMessage());
