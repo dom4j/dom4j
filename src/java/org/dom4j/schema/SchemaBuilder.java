@@ -9,8 +9,11 @@
 
 package org.dom4j.schema;
 
+import com.sun.tranquilo.datatype.BadTypeException;
 import com.sun.tranquilo.datatype.DataType;
 import com.sun.tranquilo.datatype.DataTypeFactory;
+import com.sun.tranquilo.datatype.TypeIncubator;
+import com.sun.tranquilo.datatype.ValidationContextProvider;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,6 +23,7 @@ import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.QName;
+import org.dom4j.util.AttributeHelper;
 
 /** <p><code>SchemaBuilder</code> reads an XML Schema Document.</p>
   *
@@ -33,7 +37,10 @@ public class SchemaBuilder {
     private static final String XSD_ATTRIBUTE = "attribute";
     private static final String XSD_SIMPLETYPE = "simpleType";
     private static final String XSD_COMPLEXTYPE = "complexType";
-    
+    private static final String XSD_RESTRICTION = "restriction";
+    private static final String XSD_BASE = "base";
+    private static final String XSD_VALUE = "value";
+    private static final String XSD_FIXED = "fixed";
     
     
     /** Document factory used to register Element specific factories*/
@@ -89,7 +96,6 @@ public class SchemaBuilder {
         }
         Iterator iter = xsdElement.elementIterator( XSD_ATTRIBUTE );
         if ( iter.hasNext() ) {
-
             do {
                 onSchemaAttribute( 
                     xsdElement, 
@@ -148,12 +154,7 @@ public class SchemaBuilder {
         String type = xsdAttribute.attributeValue( "type" );
         DataType dataType = null;
         if ( type != null ) {
-            dataType = (DataType) dataTypeCache.get( type );
-            if ( dataType == null ) {
-                dataType = DataTypeFactory.getTypeByName( type );
-                // store in cache for later
-                dataTypeCache.put( type, dataType );
-            }
+            dataType = getTypeByName( type );
         }
         else {
             // must parse the <simpleType> element
@@ -171,9 +172,73 @@ public class SchemaBuilder {
     
     /** Loads a DataType object from a <simpleType> attribute schema element */
     protected DataType loadDataTypeFromSimpleType( Element xsdSimpleType ) {
+        Element xsdRestriction = xsdSimpleType.element( XSD_RESTRICTION );
+        if ( xsdRestriction != null ) {
+            String base = xsdRestriction.attributeValue( XSD_BASE );
+            if ( base != null ) {                
+                DataType baseType = getTypeByName( base );
+                if ( baseType == null ) {
+                    onSchemaError( 
+                        "Invalid base type: " + base 
+                        + " when trying to build restriction: " + xsdRestriction
+                    );
+                }
+                else {
+                    return deriveSimpleType( baseType, xsdRestriction );
+                }
+            }
+            else {
+                // simpleType and base are mutually exclusive and you
+                // must have one within a <restriction> tag
+                Element xsdSubType = xsdSimpleType.element( XSD_SIMPLETYPE );
+                if ( xsdSubType == null ) {
+                    onSchemaError(
+                        "The simpleType element: "+  xsdSimpleType 
+                        + " must contain a base attribute or simpleType element" 
+                    );
+                }
+                else {
+                    return loadDataTypeFromSimpleType( xsdSubType );
+                }
+            }
+        }
+        else {
+            onSchemaError( 
+                "No <restriction>. Could not create DataType for simpleType: " 
+                + xsdSimpleType 
+            );
+        }
         return null;
     }
 
+    /** Derives a new type from a base type and a set of restrictions */
+    protected DataType deriveSimpleType( DataType baseType, Element xsdRestriction ) {
+        TypeIncubator incubator = new TypeIncubator(baseType);
+        ValidationContextProvider context = null;
+        
+        try {
+            for ( Iterator iter = xsdRestriction.elementIterator(); iter.hasNext(); ) {
+                Element element = (Element) iter.next();
+                String name = element.getName();
+                String value = element.attributeValue( XSD_VALUE );
+                boolean fixed = AttributeHelper.booleanValue( element, XSD_FIXED );
+                
+                // add facet
+                incubator.add( name, value, fixed, context );
+            }
+            // derive a new type by those facets
+            String newTypeName = null;
+            return incubator.derive( newTypeName );
+        }
+        catch (BadTypeException e) {
+            onSchemaError( 
+                "Invalid restriction: " + e.getMessage()
+                + " when trying to build restriction: " + xsdRestriction
+            );
+            return null;
+        }
+    }
+    
     /** @return the <code>SchemaElementFactory</code> for the given
       * element QName, creating one if it does not already exist
       */
@@ -186,8 +251,29 @@ public class SchemaBuilder {
         return factory;
     }
     
+    protected DataType getTypeByName( String type ) {
+        DataType dataType = (DataType) dataTypeCache.get( type );
+        if ( dataType == null ) {
+            dataType = DataTypeFactory.getTypeByName( type );
+            // store in cache for later
+            dataTypeCache.put( type, dataType );
+        }
+        return dataType;
+    }
+    
     protected QName getQName( String name ) {
         return documentFactory.createQName(name);
+    }
+    
+    /** Called when there is a problem with the schema and the builder cannot
+      * handle the XML Schema Data Types correctly 
+      */
+    protected void onSchemaError( String message ) {
+        // Some users may wish to disable exception throwing
+        // and instead use some kind of listener for errors and continue
+        //System.out.println( "WARNING: " + message );
+        
+        throw new InvalidSchemaException( message );
     }
 }
 
