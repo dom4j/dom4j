@@ -220,7 +220,15 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
       * @param comment <code>Comment</code> to output.
       */
     public void write(Comment comment) throws IOException {        
+        if (format.isNewlines()) {
+            if ( lastOutputNodeType != Node.COMMENT_NODE ) {
+                println();
+            }
+            indent();
+        }
         writer.write(comment.asXML());
+        writePrintln();
+
         lastOutputNodeType = Node.COMMENT_NODE;
     }
     
