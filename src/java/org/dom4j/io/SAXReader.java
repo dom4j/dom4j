@@ -331,7 +331,7 @@ public class SAXReader {
       * @param errorHandler is the <code>ErrorHandler</code> used by SAX
       */
     public void setErrorHandler(ErrorHandler errorHandler) {
-        errorHandler = errorHandler;
+        this.errorHandler = errorHandler;
     }
 
     /** @return the <code>XMLReader</code> used to parse SAX events

@@ -42,6 +42,11 @@
               HTML 4.01 DTD elements which do not require proper XML element closes.
               The new elements are PARAM, AREA, LINK, COL, BASE and META.
             </p>
+            <p>Fixed bug found by Dennis Sosnoski that SAX warnings were causing
+              exceptions to be thrown by the SAXReader. Now warnings are silently ignored.
+              If you want to detect warnings then an ErrorHandler should be registered with the
+              SAXReader.
+            </p>
           </section>
         </section>
         <section title="0.8 release">

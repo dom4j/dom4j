@@ -223,14 +223,28 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
         }
     }
 
+    // ErrorHandler interface
+    //-------------------------------------------------------------------------
+    
+    /** This method is called when a warning occurs during the parsing
+      * of the document. 
+      * This method does nothing.
+      */
+    public void warning(SAXParseException exception) throws SAXException {
+        // ignore warnings by default
+    }
+
+    /** This method is called when an error is detected during parsing
+      * such as a validation error.
+      * This method rethrows the exception
+      */
     public void error(SAXParseException exception) throws SAXException {
         throw exception;
     }
 
-    public void warning(SAXParseException exception) throws SAXException {
-        throw exception;
-    }
-
+    /** This method is called when a fatal error occurs during parsing.
+      * This method rethrows the exception
+      */
     public void fatalError(SAXParseException exception) throws SAXException {
         throw exception;
     }
