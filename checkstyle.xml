@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.1//EN" "http://www.puppycrawl.com/dtds/configuration_1_1.dtd">
+<module name="Checker">
+    <module name="TreeWalker">
+        <module name="com.puppycrawl.tools.checkstyle.checks.ArrayTypeStyleCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.ModifierOrderCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.RedundantModifierCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.UpperEllCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.blocks.AvoidNestedBlocksCheck">
+            <property name="allowInSwitchCase" value="true"/>
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.blocks.EmptyBlockCheck">
+            <property name="option" value="stmt"/>
+            <property name="severity" value="warning"/>
+            <property name="tokens" value="LITERAL_DO, LITERAL_ELSE, LITERAL_FINALLY, LITERAL_IF, LITERAL_FOR, LITERAL_TRY, LITERAL_WHILE, STATIC_INIT"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.blocks.LeftCurlyCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.blocks.NeedBracesCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.blocks.RightCurlyCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.coding.EmptyStatementCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.coding.EqualsHashCodeCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.coding.HiddenFieldCheck">
+            <property name="ignoreConstructorParameter" value="true"/>
+            <property name="ignoreSetter" value="true"/>
+            <property name="severity" value="warning"/>
+            <property name="tokens" value="PARAMETER_DEF, VARIABLE_DEF"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.coding.IllegalInstantiationCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.coding.InnerAssignmentCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.coding.MissingSwitchDefaultCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.coding.RedundantThrowsCheck">
+            <property name="allowSubclasses" value="true"/>
+            <property name="allowUnchecked" value="true"/>
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.coding.SimplifyBooleanExpressionCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.coding.SimplifyBooleanReturnCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.design.FinalClassCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.design.HideUtilityClassConstructorCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.design.InterfaceIsTypeCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck">
+            <property name="packageAllowed" value="false"/>
+            <property name="protectedAllowed" value="true"/>
+            <property name="publicMemberPattern" value="^serialVersionUID"/>
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.imports.IllegalImportCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.imports.RedundantImportCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.imports.UnusedImportsCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.naming.ConstantNameCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.naming.LocalFinalVariableNameCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.naming.LocalVariableNameCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.naming.MemberNameCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.naming.MethodNameCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.naming.PackageNameCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.naming.ParameterNameCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.naming.StaticVariableNameCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.naming.TypeNameCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.sizes.FileLengthCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.sizes.MethodLengthCheck">
+            <property name="countEmpty" value="false"/>
+            <property name="max" value="150"/>
+            <property name="severity" value="warning"/>
+            <property name="tokens" value="METHOD_DEF, CTOR_DEF"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.sizes.ParameterNumberCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyForIteratorPadCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.whitespace.NoWhitespaceAfterCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.whitespace.NoWhitespaceBeforeCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.whitespace.OperatorWrapCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.whitespace.ParenPadCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.whitespace.TabCharacterCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.whitespace.WhitespaceAfterCheck">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="com.puppycrawl.tools.checkstyle.checks.whitespace.WhitespaceAroundCheck">
+            <property name="severity" value="warning"/>
+        </module>
+    </module>
+</module>
