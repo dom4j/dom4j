@@ -154,9 +154,17 @@ public class Foo {
     </section>
 
     <section title="Writing a document to a file">
-      <p>Once you have a Document (or any Node for that matter) you can
-        output to a File, a Reader or an OuputStream using the         
-        XMLWriter class.
+      <p>A quick and easy way to write a Document (or any Node) to a Writer
+       is via the write() method.
+      </p>
+<pre>
+  FileWriter out = new FileWriter( "foo.xml" );
+  document.write( out );
+</pre>
+
+      <p>If you want to be able to change the format of the output, such as pretty
+        printing or a compact format, or you want to be able to work with
+        Writer objects or OutputStream objects as the destination, then you can use the XMLWriter class.
       </p>
 <pre>
 import org.dom4j.Document;
