@@ -56,13 +56,13 @@ public class TestGetPath extends AbstractTestCase {
         
         List elements = root.elements();
         
-        testPath( (Node) elements.get(0), "/root/author" );
+        testPath( (Node) elements.get(0), "/root/author", "/root/author[1]" );
         
         for ( int i = 0, size = elements.size(); i < size; i++ ) {
             String path = "/root/author";
             String uniquePath = "/root/author";
-            if ( i > 0 ) {
-                uniquePath = "/root/author[" + (i + 1) + "]";
+            if ( size > 1 ) {
+                uniquePath = "/root/author[" + (i + 1) + "]";                
             }
 
             Element element = (Element) elements.get(i);

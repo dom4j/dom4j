@@ -99,13 +99,13 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         if ( parent == null ) {
             return "/" + getQualifiedName();
         }
-        StringBuffer buffer = new StringBuffer( parent.getPath() );
+        StringBuffer buffer = new StringBuffer( parent.getUniquePath() );
         buffer.append( "/" );
         buffer.append( getQualifiedName() );
         List mySiblings = parent.elements( getQName() );
         if ( mySiblings.size() > 1 ) {
             int idx = mySiblings.indexOf( this );
-            if ( idx > 0 ) {
+            if ( idx >= 0 ) {
                 buffer.append( "[" );
                 buffer.append( Integer.toString( ++idx ) );
                 buffer.append( "]" );
