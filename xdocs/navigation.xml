@@ -21,9 +21,14 @@
       <item name="Changes"                href="/changes-report.html"/>  -->
       <item name="Download"               href="/download.html"/>
       <item name="License"                href="/license.html"/>
-      <item name="Javadoc (1.5)"          href="/apidocs/index.html" class="newWindow" title="New Window" target="_blank"/>
+      <item name="Javadoc (1.5.1)"          href="/apidocs/index.html" class="newWindow" title="New Window" target="_blank"/>
       <item name="Javadoc (1.4)"          href="http://www.dom4j.org/dom4j-1.4/apidocs/index.html" class="newWindow" title="New Window" target="_blank"/>
     </menu>
+
+    <powered-by>
+      <item name="Code Coverage by Clover" href="http://www.cenqua.com/clover" img="http://www.cenqua.com/images/clovered1.gif"/>
+      <item name="Hosted by SourceForge" href="http://www.sourceforge.net" img="http://sourceforge.net/sflogo.php?group_id=16035&amp;type=1"/>
+    </powered-by>
 
   </body>
 </project>
