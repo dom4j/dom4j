@@ -4,4 +4,5 @@ target
 dist
 junit*.properties
 *.log
-
+.classpath
+.project
