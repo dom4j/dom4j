@@ -870,7 +870,6 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                         lastTextNode = null;
                         
                         if (format.isPadText()) {
-                            System.out.println("writing pad");
                             writer.write(PAD_TEXT);
                         }
                     }
