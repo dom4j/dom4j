@@ -24,11 +24,11 @@ import org.dom4j.tree.DefaultEntity;
 import org.dom4j.tree.DefaultProcessingInstruction;
 import org.dom4j.tree.DefaultText;
 import org.dom4j.tree.QNameCache;
+import org.dom4j.util.SimpleSingleton;
+import org.dom4j.util.SingletonStrategy;
 import org.dom4j.xpath.DefaultXPath;
 import org.dom4j.xpath.XPathPattern;
-
 import org.jaxen.VariableContext;
-import org.dom4j.util.SingletonStrategy;
 
 /**
  * <p>
@@ -46,14 +46,15 @@ import org.dom4j.util.SingletonStrategy;
 public class DocumentFactory implements Serializable {
     private static SingletonStrategy singleton = null;
 
-    private static String documentFactoryClassName = null;
-
     protected transient QNameCache cache;
 
     /** Default namespace prefix -> URI mappings for XPath expressions to use */
     private Map xpathNamespaceURIs;
 
-    static {
+    private static SingletonStrategy createSingleton() {
+        SingletonStrategy result = null;
+        
+        String documentFactoryClassName;
         try {
             documentFactoryClassName = System.getProperty("org.dom4j.factory",
                     "org.dom4j.DocumentFactory");
@@ -62,26 +63,18 @@ public class DocumentFactory implements Serializable {
         }
 
         try {
-            String defaultSingletonClass = "org.dom4j.util.SimpleSingleton";
-            Class clazz = null;
-            try {
-                String singletonClass = defaultSingletonClass;
-                singletonClass = System.getProperty(
-                        "org.dom4j.DocumentFactory.singleton.strategy",
-                        singletonClass);
-                clazz = DocumentFactory.class.forName(singletonClass);
-            } catch (Exception exc1) {
-                try {
-                    String singletonClass = defaultSingletonClass;
-                    clazz = DocumentFactory.class.forName(singletonClass);
-                } catch (Exception exc2) {
-                }
-            }
-            singleton = (SingletonStrategy) clazz.newInstance();
-            singleton.setSingletonClassName(documentFactoryClassName);
-        } catch (Exception exc3) {
+            String singletonClass = System.getProperty(
+                    "org.dom4j.DocumentFactory.singleton.strategy",
+                    "org.dom4j.util.SimpleSingleton");
+            Class clazz = DocumentFactory.class.forName(singletonClass);
+            result = (SingletonStrategy) clazz.newInstance();
+        } catch (Exception e) {
+            result = new SimpleSingleton();
         }
-        getInstance(); // create first one
+
+        result.setSingletonClassName(documentFactoryClassName);
+        
+        return result;
     }
 
     public DocumentFactory() {
@@ -96,9 +89,11 @@ public class DocumentFactory implements Serializable {
      * 
      * @return the default singleon instance
      */
-    public static DocumentFactory getInstance() {
-        DocumentFactory fact = (DocumentFactory) singleton.instance();
-        return fact;
+    public static synchronized DocumentFactory getInstance() {
+        if (singleton == null) {
+            singleton = createSingleton();
+        }
+        return (DocumentFactory) singleton.instance();
     }
 
     // Factory methods
@@ -421,8 +416,6 @@ public class DocumentFactory implements Serializable {
         cache = createQNameCache();
     }
 }
-
-
 
 /*
  * Redistribution and use of this software and associated documentation
