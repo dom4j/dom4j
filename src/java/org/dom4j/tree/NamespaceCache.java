@@ -52,13 +52,13 @@ public class NamespaceCache {
                     new Float(0.75f), new Integer(1) });
             noPrefixCache = (Map) construct.newInstance(new Object[] {
                     new Integer(11), new Float(0.75f), new Integer(1) });
-        } catch (Exception exc1) {
+        } catch (Throwable t1) {
             /* Try to use the util.concurrent library (if in classpath) */
             try {
                 Class clazz = Class.forName(CONCURRENTREADERHASHMAP_CLASS);
                 cache = (Map) clazz.newInstance();
                 noPrefixCache = (Map) clazz.newInstance();
-            } catch (Exception exc2) {
+            } catch (Throwable t2) {
                 /* If previous implementations fail, use internal one */
                 cache = new ConcurrentReaderHashMap();
                 noPrefixCache = new ConcurrentReaderHashMap();
