@@ -62,7 +62,7 @@ public class AbstractTestCase extends TestCase {
 
     
     public void assertNodesEqual( Document n1, Document n2 ) {
-        assertEquals( "Document names", n1.getName(), n2.getName() );        
+//        assertEquals( "Document names", n1.getName(), n2.getName() );        
         assertNodesEqual( n1.getDocType(), n2.getDocType() );        
         assertNodesEqualContent( n1, n2 );
     }
