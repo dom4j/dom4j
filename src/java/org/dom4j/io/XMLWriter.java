@@ -954,7 +954,9 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
     protected void writeCDATA(String text) throws IOException {
         writer.write( "<![CDATA[" );
-        writer.write( text );
+        if (text != null) {
+        	writer.write( text );
+        }
         writer.write( "]]>" );
 
         lastOutputNodeType = Node.CDATA_SECTION_NODE;

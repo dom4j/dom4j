@@ -377,6 +377,18 @@ public class TestXMLWriter extends AbstractTestCase {
     	assertTrue(output.indexOf("<test>") != -1);
     }
     
+    public void testNullCData() {
+        Element e = DocumentHelper.createElement("test");
+        e.add(DocumentHelper.createElement("another").addCDATA(null));
+        Document doc = DocumentHelper.createDocument(e);
+        
+        assertEquals(-1, e.asXML().indexOf("null"));
+        assertEquals(-1, doc.asXML().indexOf("null"));
+
+        System.out.println(e.asXML());
+        System.out.println(doc.asXML());
+    }
+    
     protected org.dom4j.Document parseDocument(String file) throws Exception {
         SAXReader reader = new SAXReader();
         return reader.read(getClass().getResource(file));

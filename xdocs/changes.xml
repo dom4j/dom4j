@@ -8,6 +8,11 @@
   <body>
 
     <release version="dev" date="in CVS">
+      <action dev="maartenc" type="fix" due-to="Daniel Hopper">
+        Fixed a bug in <code>XMLWriter</code> where a <code>NullPointerException</code>
+        was thrown if trying to write a CData section containing <code>null</code>
+        content.
+      </action>
       <action dev="maartenc" type="update">
         Modified the internal Aelfred2 parser to no longer support the
         SAX2 Extensions 1.1 API. As a result, the SAX2 sources are no
