@@ -46,7 +46,7 @@
 
     <section title="How does DOM4J relate to JDOM?">
       <p>DOM4J is a different project and different API to JDOM
-        though they have similar goals. They both attempt to make it easier
+        though they both have similar goals. They both attempt to make it easier
         to use XML on the Java platform. 
         They differ in their design, API and implementation.
       </p>
@@ -57,15 +57,10 @@
         implementations which read themselves lazily from a database or 
         Java Beans etc.
       </p>
-      <p>DOM4J will soon provide a configuration option to
-        support the W3C DOM API natively to avoid unnecessary tree duplication
-        when using DOM4J with XSLT engines etc.
-      </p>
       <p>DOM4J uses polymorphism extensively such that all document object types 
         implement the Node interface. 
-        Also both the Element and Document interfaces extend the Branch 
-        interface so that both Elements and Documents can be used 
-        polymorphically.
+        Also both the Element and Document interfaces can be used polymorphically
+        as they both extend the Branch interface.
       </p>
 
       <p>DOM4J is fully integrated with XPath support throughout the API 
@@ -74,9 +69,13 @@
 <pre>
 SAXReader reader = new SAXReader();
 Document document = reader.read( url );
-Links links = document.selectNodes( "//a[@href]" );
+List links = document.selectNodes( "//a[@href]" );
 String title = document.valueOf( "/head/title" );
 </pre>
+      <p>DOM4J will soon provide a configuration option to
+        support the W3C DOM API natively to avoid unnecessary tree duplication
+        when using DOM4J with XSLT engines etc.
+      </p>
     </section>
 
     <section title="How does DOM4J work with DOM and SAX?">
@@ -140,6 +139,7 @@ Document document = reader.read(url);
       </pre>
     </section>
 
+
     <section title="Does DOM4J support the Visitor Pattern?">
       <p>Yes. <b>DOM4J</b> supports the visitor pattern via the 
           <a href="apidocs/org/dom4j/Visitor.html">Visitor</a> interface.
@@ -169,10 +169,33 @@ protected void foo(Document doc) {
 
     <section title="Can I sort the List returned by Node.selectNodes()?">
       <p>Yes. The selectNodes() is a really useful feature to allow nodes to be
-        selected from any object in the DOM4J object model. There is a simple API
-        to allow the results of a selectNodes to be sorted.
+        selected from any object in the DOM4J object model via an XPath expression. 
+        The List that is returned can be sorted by
+        specifying another XPath expression to use as the sorting comparator.
+      </p>
+      <p>
+      For example the following code parses an XML play and finds all the
+      SPEAKER elements sorted in name order. 
       </p>
       <pre>
+SAXReader reader = new SAXReader();
+Document document = reader.read( new File( "xml/much_ado.xml" ) );
+List speakers = document.selectNodes( "//SPEAKER", "." );
+      </pre>
+      <p>
+      In the above example the name of the SPEAKER is
+      defined by the XPath expression "." as the name is stored in the text 
+      of the SPEAKER element. 
+      If the name was defined by an attribute called "name" then 
+      the XPath expression "@name" should be used for sorting.
+      </p>
+      <p>
+      You may wish to remove duplicates while sorting such that (for example)
+      the distinct list of SPEAKER elements is returned, sorted by name.
+      To do this add an extra parameter to the selectNodes() method call.
+      </p>
+      <pre>
+List distinctSpeakers = document.selectNodes( "//SPEAKER", ".", true );
       </pre>
     </section>
 
