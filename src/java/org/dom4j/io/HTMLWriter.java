@@ -55,6 +55,11 @@ public class HTMLWriter extends XMLWriter {
         super( that );
     }
 
+    /** @return true to suppress the output of the XML declaration 
+      */
+    public boolean isSuppressDeclaration() {
+        return true;
+    }
  
     /** Overriden method to only output the text of CDATA sections
       * rather than the XML format
