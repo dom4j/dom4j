@@ -422,7 +422,6 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
                     writer.write(padText);
                 }
             }
-/*            
             text = escapeElementEntities(text);
             if (trimText) {
                 StringTokenizer tokenizer = new StringTokenizer(text);
@@ -438,23 +437,6 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
             } 
             else {                    
                 writer.write(text);
-            }
-            text = escapeElementEntities(text);
-*/
-            if (trimText) {
-                StringTokenizer tokenizer = new StringTokenizer(text);
-                while (tokenizer.hasMoreTokens()) {
-                    String token = tokenizer.nextToken();
-                    
-                    writeEscapeElementEntities( token );
-                    
-                    if (tokenizer.hasMoreTokens()) {
-                        writer.write(" ");
-                    }
-                }
-            } 
-            else {                    
-                writeEscapeElementEntities( text );
             }
             
             lastOutputNodeType = Node.TEXT_NODE;
