@@ -15,6 +15,12 @@
         </path>
     </goal>
 
+    <postGoal name="clean:clean">
+        <delete>
+            <fileset dir="${basedir}" includes="junit*.properties"/>
+        </delete>
+    </postGoal>
+
     <goal name="dom4j-clover:register">
         <doc:registerReport name="Clover" 
                             pluginName="dom4j-clover" 
