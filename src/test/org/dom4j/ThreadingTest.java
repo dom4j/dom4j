@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j;
@@ -25,13 +23,15 @@ import java.util.Date;
 
 /**
  * A test harness to test the dom4j package in a threaded environment
- *
- * @author <a href="mailto:ddlucas@lse.com">David Lucas</a>
+ * 
+ * @author <a href="mailto:ddlucas@lse.com">David Lucas </a>
  * @version $Revision$
  */
 public class ThreadingTest extends AbstractTestCase {
     private static final ThreadLocal FORMATTER_CACHE = new ThreadLocal();
+
     private static final String SEPERATOR = " - ";
+
     private static final FieldPosition FIELD_ZERO = new FieldPosition(0);
 
     public ThreadingTest(String name) {
@@ -67,17 +67,17 @@ public class ThreadingTest extends AbstractTestCase {
 
     /**
      * This test combines many different types of operations on DOM4J in a
-     * threaded environment.  If a problem occurs with threading, the tests
-     * will fail.  This was used to help isolate an internal threading issue.
+     * threaded environment. If a problem occurs with threading, the tests will
+     * fail. This was used to help isolate an internal threading issue.
      * Unfortunately it may not always create the condition necessary to break
-     * un-thread-safe code.  This is due to the nature of the machine, JVM,
-     * and application and if the conditions are right.  Typically the
-     * problems of multithreading occur due to an unprotected HashMap or
-     * ArrayList in a class being used by more than one thread.  Also, most
-     * developers think that their class or object instance will only be used
-     * by one thread.  But if a factory or singleton caches a class or
-     * instance, it can quickly become an unsafe environment.  Hence this test
-     * to assist in locating threading issues.
+     * un-thread-safe code. This is due to the nature of the machine, JVM, and
+     * application and if the conditions are right. Typically the problems of
+     * multithreading occur due to an unprotected HashMap or ArrayList in a
+     * class being used by more than one thread. Also, most developers think
+     * that their class or object instance will only be used by one thread. But
+     * if a factory or singleton caches a class or instance, it can quickly
+     * become an unsafe environment. Hence this test to assist in locating
+     * threading issues.
      */
     public void testCombo() {
         int loop = 10;
@@ -96,10 +96,10 @@ public class ThreadingTest extends AbstractTestCase {
             long now = 0;
 
             xml = "<ROOT xmlns:t0=\"http://www.lse.com/t0\" >"
-                  + "  <ctx><type>Context</type></ctx>"
-                  + "  <A><B><C><D>This is a TEST</D></C></B></A>"
-                  + "  <t0:Signon><A>xyz</A><t0:Cust>customer</t0:Cust>"
-                  + "</t0:Signon></ROOT>";
+                    + "  <ctx><type>Context</type></ctx>"
+                    + "  <A><B><C><D>This is a TEST</D></C></B></A>"
+                    + "  <t0:Signon><A>xyz</A><t0:Cust>customer</t0:Cust>"
+                    + "</t0:Signon></ROOT>";
 
             for (int i = 0; i < loop; i++) {
                 doc = DocumentHelper.parseText(xml);
@@ -109,9 +109,8 @@ public class ThreadingTest extends AbstractTestCase {
                 qn = QName.get("Signon", ns);
                 item = root.element(qn);
                 value = item.asXML();
-                expected =
-                    "<t0:Signon xmlns:t0=\"http://www.lse.com/t0\"><A>xyz</A>"
-                    + "<t0:Cust>customer</t0:Cust></t0:Signon>";
+                expected = "<t0:Signon xmlns:t0=\"http://www.lse.com/t0\">"
+                        + "<A>xyz</A><t0:Cust>customer</t0:Cust></t0:Signon>";
                 assertEquals("test t0:Signon ", expected, value);
 
                 qn = root.getQName("Test");
@@ -191,10 +190,10 @@ public class ThreadingTest extends AbstractTestCase {
             long now = 0;
 
             xml = "<ROOT xmlns:t0=\"http://www.lse.com/t0\" >"
-                  + "  <ctx><type>Context</type></ctx>"
-                  + "  <A><B><C><D>This is a TEST</D></C></B></A>"
-                  + "  <t0:Signon><A>xyz</A><t0:Cust>customer</t0:Cust>"
-                  + "</t0:Signon></ROOT>";
+                    + "  <ctx><type>Context</type></ctx>"
+                    + "  <A><B><C><D>This is a TEST</D></C></B></A>"
+                    + "  <t0:Signon><A>xyz</A><t0:Cust>customer</t0:Cust>"
+                    + "</t0:Signon></ROOT>";
 
             for (int i = 0; i < loop; i++) {
                 doc = DocumentHelper.parseText(xml);
@@ -205,7 +204,7 @@ public class ThreadingTest extends AbstractTestCase {
                 expected = "<test/>";
                 assertEquals("test test ", expected, value);
 
-                //creat it again
+                // creat it again
                 qn = DocumentHelper.createQName("test");
                 value = fetchValue(qn);
                 expected = "<test/>";
@@ -227,9 +226,9 @@ public class ThreadingTest extends AbstractTestCase {
 
     /**
      * This method creates a value that can be expected during a test
-     *
+     * 
      * @param qn
-     *
+     * 
      * @return
      */
     public String fetchValue(QName qn) {
@@ -267,8 +266,8 @@ public class ThreadingTest extends AbstractTestCase {
 
     /**
      * Assembles and returns a test suite.
-     *
-     * @return The  suite
+     * 
+     * @return The suite
      */
     public static Test suite() {
         TestSuite suite = new TestSuite();
@@ -280,16 +279,18 @@ public class ThreadingTest extends AbstractTestCase {
 
     /**
      * JUnit method to exercise test via threads and loops
-     *
-     * @param users Number of users to simulate (i.e. Threads).
-     * @param iterations Number of iterations per user ( repeat the test x
-     *        times).
-     * @param testMethod method to execute (testXXX).
-     *
+     * 
+     * @param users
+     *            Number of users to simulate (i.e. Threads).
+     * @param iterations
+     *            Number of iterations per user ( repeat the test x times).
+     * @param testMethod
+     *            method to execute (testXXX).
+     * 
      * @return A Junit test
      */
     protected static Test makeRepeatedLoadTest(int users, int iterations,
-                                               String testMethod) {
+            String testMethod) {
         long maxElapsedTime = 120000 + (1000 * users * iterations);
 
         Test testCase = new ThreadingTest(testMethod);
@@ -306,50 +307,39 @@ public class ThreadingTest extends AbstractTestCase {
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

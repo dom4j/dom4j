@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j.datatype;
@@ -36,39 +34,47 @@ import org.xml.sax.InputSource;
  * <p>
  * <code>SchemaParser</code> reads an XML Schema Document.
  * </p>
- *
- * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * 
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @author Yuxin Ruan
  * @version $Revision$
  */
 public class SchemaParser {
-    private static final Namespace XSD_NAMESPACE =
-        Namespace.get("xsd", "http://www.w3.org/2001/XMLSchema");
+    private static final Namespace XSD_NAMESPACE = Namespace.get("xsd",
+            "http://www.w3.org/2001/XMLSchema");
 
     // Use QNames for the elements
-    private static final QName XSD_ELEMENT =
-        QName.get("element", XSD_NAMESPACE);
-    private static final QName XSD_ATTRIBUTE =
-        QName.get("attribute", XSD_NAMESPACE);
-    private static final QName XSD_SIMPLETYPE =
-        QName.get("simpleType", XSD_NAMESPACE);
-    private static final QName XSD_COMPLEXTYPE =
-        QName.get("complexType", XSD_NAMESPACE);
-    private static final QName XSD_RESTRICTION =
-        QName.get("restriction", XSD_NAMESPACE);
-    private static final QName XSD_SEQUENCE =
-        QName.get("sequence", XSD_NAMESPACE);
+    private static final QName XSD_ELEMENT = QName
+            .get("element", XSD_NAMESPACE);
+
+    private static final QName XSD_ATTRIBUTE = QName.get("attribute",
+            XSD_NAMESPACE);
+
+    private static final QName XSD_SIMPLETYPE = QName.get("simpleType",
+            XSD_NAMESPACE);
+
+    private static final QName XSD_COMPLEXTYPE = QName.get("complexType",
+            XSD_NAMESPACE);
+
+    private static final QName XSD_RESTRICTION = QName.get("restriction",
+            XSD_NAMESPACE);
+
+    private static final QName XSD_SEQUENCE = QName.get("sequence",
+            XSD_NAMESPACE);
+
     private static final QName XSD_CHOICE = QName.get("choice", XSD_NAMESPACE);
+
     private static final QName XSD_ALL = QName.get("all", XSD_NAMESPACE);
-    private static final QName XSD_INCLUDE =
-        QName.get("include", XSD_NAMESPACE);
+
+    private static final QName XSD_INCLUDE = QName
+            .get("include", XSD_NAMESPACE);
 
     /** Document factory used to register Element specific factories */
     private DatatypeDocumentFactory documentFactory;
 
     /**
-     * Cache of <code>XSDatatype</code> instances loaded or created during this
-     * build
+     * Cache of <code>XSDatatype</code> instances loaded or created during
+     * this build
      */
     private Map dataTypeCache = new HashMap();
 
@@ -89,8 +95,9 @@ public class SchemaParser {
 
     /**
      * Parses the given schema document
-     *
-     * @param schemaDocument is the document of the XML Schema
+     * 
+     * @param schemaDocument
+     *            is the document of the XML Schema
      */
     public void build(Document schemaDocument) {
         this.targetNamespace = null;
@@ -106,13 +113,13 @@ public class SchemaParser {
         Element root = schemaDocument.getRootElement();
 
         if (root != null) {
-            //handle schema includes
+            // handle schema includes
             Iterator includeIter = root.elementIterator(XSD_INCLUDE);
 
             while (includeIter.hasNext()) {
                 Element includeElement = (Element) includeIter.next();
-                String inclSchemaInstanceURI =
-                    includeElement.attributeValue("schemaLocation");
+                String inclSchemaInstanceURI = includeElement
+                        .attributeValue("schemaLocation");
                 EntityResolver resolver = schemaDocument.getEntityResolver();
 
                 try {
@@ -121,13 +128,12 @@ public class SchemaParser {
                         throw new InvalidSchemaException(msg);
                     }
 
-                    InputSource inputSource =
-                        resolver.resolveEntity(null, inclSchemaInstanceURI);
+                    InputSource inputSource = resolver.resolveEntity(null,
+                            inclSchemaInstanceURI);
 
                     if (inputSource == null) {
-                        String msg =
-                            "Could not resolve the schema URI: "
-                            + inclSchemaInstanceURI;
+                        String msg = "Could not resolve the schema URI: "
+                                + inclSchemaInstanceURI;
                         throw new InvalidSchemaException(msg);
                     }
 
@@ -136,29 +142,29 @@ public class SchemaParser {
                     build(inclSchemaDocument);
                 } catch (Exception e) {
                     System.out.println("Failed to load schema: "
-                                       + inclSchemaInstanceURI);
+                            + inclSchemaInstanceURI);
                     System.out.println("Caught: " + e);
                     e.printStackTrace();
                     throw new InvalidSchemaException("Failed to load schema: "
-                                                     + inclSchemaInstanceURI);
+                            + inclSchemaInstanceURI);
                 }
             }
 
-            //handle elements
+            // handle elements
             Iterator iter = root.elementIterator(XSD_ELEMENT);
 
             while (iter.hasNext()) {
                 onDatatypeElement((Element) iter.next(), documentFactory);
             }
 
-            //handle named simple types
+            // handle named simple types
             iter = root.elementIterator(XSD_SIMPLETYPE);
 
             while (iter.hasNext()) {
                 onNamedSchemaSimpleType((Element) iter.next());
             }
 
-            //hanlde named complex types
+            // hanlde named complex types
             iter = root.elementIterator(XSD_COMPLEXTYPE);
 
             while (iter.hasNext()) {
@@ -170,33 +176,34 @@ public class SchemaParser {
     }
 
     // Implementation methods
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * processes an XML Schema &lt;element&gt; tag
-     *
-     * @param xsdElement DOCUMENT ME!
-     * @param parentFactory DOCUMENT ME!
+     * 
+     * @param xsdElement
+     *            DOCUMENT ME!
+     * @param parentFactory
+     *            DOCUMENT ME!
      */
     private void onDatatypeElement(Element xsdElement,
-                                   DocumentFactory parentFactory) {
+            DocumentFactory parentFactory) {
         String name = xsdElement.attributeValue("name");
         String type = xsdElement.attributeValue("type");
         QName qname = getQName(name);
 
-        DatatypeElementFactory elementFactory =
-            getDatatypeElementFactory(qname);
+        DatatypeElementFactory factory = getDatatypeElementFactory(qname);
 
         if (type != null) {
             // register type with this element name
             XSDatatype dataType = getTypeByName(type);
 
             if (dataType != null) {
-                elementFactory.setChildElementXSDatatype(qname, dataType);
+                factory.setChildElementXSDatatype(qname, dataType);
             } else {
                 QName typeQName = getQName(type);
                 namedTypeResolver.registerTypedElement(xsdElement, typeQName,
-                                                       parentFactory);
+                        parentFactory);
             }
 
             return;
@@ -209,30 +216,31 @@ public class SchemaParser {
             XSDatatype dataType = loadXSDatatypeFromSimpleType(xsdSimpleType);
 
             if (dataType != null) {
-                elementFactory.setChildElementXSDatatype(qname, dataType);
+                factory.setChildElementXSDatatype(qname, dataType);
             }
         }
 
         Element schemaComplexType = xsdElement.element(XSD_COMPLEXTYPE);
 
         if (schemaComplexType != null) {
-            onSchemaComplexType(schemaComplexType, elementFactory);
+            onSchemaComplexType(schemaComplexType, factory);
         }
 
         Iterator iter = xsdElement.elementIterator(XSD_ATTRIBUTE);
 
         if (iter.hasNext()) {
             do {
-                onDatatypeAttribute(xsdElement, elementFactory,
-                                    (Element) iter.next());
+                onDatatypeAttribute(xsdElement, factory, (Element) iter
+                        .next());
             } while (iter.hasNext());
         }
     }
 
     /**
      * processes an named XML Schema &lt;complexTypegt; tag
-     *
-     * @param schemaComplexType DOCUMENT ME!
+     * 
+     * @param schemaComplexType
+     *            DOCUMENT ME!
      */
     private void onNamedSchemaComplexType(Element schemaComplexType) {
         Attribute nameAttr = schemaComplexType.attribute("name");
@@ -244,21 +252,22 @@ public class SchemaParser {
         String name = nameAttr.getText();
         QName qname = getQName(name);
 
-        DatatypeElementFactory elementFactory =
-            getDatatypeElementFactory(qname);
+        DatatypeElementFactory factory = getDatatypeElementFactory(qname);
 
-        onSchemaComplexType(schemaComplexType, elementFactory);
-        namedTypeResolver.registerComplexType(qname, elementFactory);
+        onSchemaComplexType(schemaComplexType, factory);
+        namedTypeResolver.registerComplexType(qname, factory);
     }
 
     /**
      * processes an XML Schema &lt;complexTypegt; tag
-     *
-     * @param schemaComplexType DOCUMENT ME!
-     * @param elementFactory DOCUMENT ME!
+     * 
+     * @param schemaComplexType
+     *            DOCUMENT ME!
+     * @param elementFactory
+     *            DOCUMENT ME!
      */
     private void onSchemaComplexType(Element schemaComplexType,
-                                     DatatypeElementFactory elementFactory) {
+            DatatypeElementFactory elementFactory) {
         Iterator iter = schemaComplexType.elementIterator(XSD_ATTRIBUTE);
 
         while (iter.hasNext()) {
@@ -271,26 +280,26 @@ public class SchemaParser {
             if (dataType != null) {
                 // register the XSDatatype for the given Attribute
                 // #### should both these be done?
-                //elementFactory.setChildElementXSDatatype( qname, dataType );
+                // elementFactory.setChildElementXSDatatype( qname, dataType );
                 elementFactory.setAttributeXSDatatype(qname, dataType);
             }
         }
 
-        //handle sequence definition
+        // handle sequence definition
         Element schemaSequence = schemaComplexType.element(XSD_SEQUENCE);
 
         if (schemaSequence != null) {
             onChildElements(schemaSequence, elementFactory);
         }
 
-        //handle choice definition
+        // handle choice definition
         Element schemaChoice = schemaComplexType.element(XSD_CHOICE);
 
         if (schemaChoice != null) {
             onChildElements(schemaChoice, elementFactory);
         }
 
-        //handle all definition
+        // handle all definition
         Element schemaAll = schemaComplexType.element(XSD_ALL);
 
         if (schemaAll != null) {
@@ -309,14 +318,16 @@ public class SchemaParser {
 
     /**
      * processes an XML Schema &lt;attribute&gt; tag
-     *
-     * @param xsdElement DOCUMENT ME!
-     * @param elementFactory DOCUMENT ME!
-     * @param xsdAttribute DOCUMENT ME!
+     * 
+     * @param xsdElement
+     *            DOCUMENT ME!
+     * @param elementFactory
+     *            DOCUMENT ME!
+     * @param xsdAttribute
+     *            DOCUMENT ME!
      */
     private void onDatatypeAttribute(Element xsdElement,
-                                     DatatypeElementFactory elementFactory,
-                                     Element xsdAttribute) {
+            DatatypeElementFactory elementFactory, Element xsdAttribute) {
         String name = xsdAttribute.attributeValue("name");
         QName qname = getQName(name);
         XSDatatype dataType = dataTypeForXsdAttribute(xsdAttribute);
@@ -327,18 +338,20 @@ public class SchemaParser {
         } else {
             String type = xsdAttribute.attributeValue("type");
             System.out.println("Warning: Couldn't find XSDatatype for type: "
-                               + type + " attribute: " + name);
+                    + type + " attribute: " + name);
         }
     }
 
     /**
      * processes an XML Schema &lt;attribute&gt; tag
-     *
-     * @param xsdAttribute DOCUMENT ME!
-     *
+     * 
+     * @param xsdAttribute
+     *            DOCUMENT ME!
+     * 
      * @return DOCUMENT ME!
-     *
-     * @throws InvalidSchemaException DOCUMENT ME!
+     * 
+     * @throws InvalidSchemaException
+     *             DOCUMENT ME!
      */
     private XSDatatype dataTypeForXsdAttribute(Element xsdAttribute) {
         String type = xsdAttribute.attributeValue("type");
@@ -352,10 +365,9 @@ public class SchemaParser {
 
             if (xsdSimpleType == null) {
                 String name = xsdAttribute.attributeValue("name");
-                String msg =
-                    "The attribute: " + name
-                    + " has no type attribute and does not contain a "
-                    + "<simpleType/> element";
+                String msg = "The attribute: " + name
+                        + " has no type attribute and does not contain a "
+                        + "<simpleType/> element";
                 throw new InvalidSchemaException(msg);
             }
 
@@ -367,8 +379,9 @@ public class SchemaParser {
 
     /**
      * processes an named XML Schema &lt;simpleTypegt; tag
-     *
-     * @param schemaSimpleType DOCUMENT ME!
+     * 
+     * @param schemaSimpleType
+     *            DOCUMENT ME!
      */
     private void onNamedSchemaSimpleType(Element schemaSimpleType) {
         Attribute nameAttr = schemaSimpleType.attribute("name");
@@ -386,9 +399,10 @@ public class SchemaParser {
     /**
      * Loads a XSDatatype object from a &lt;simpleType&gt; attribute schema
      * element
-     *
-     * @param xsdSimpleType DOCUMENT ME!
-     *
+     * 
+     * @param xsdSimpleType
+     *            DOCUMENT ME!
+     * 
      * @return DOCUMENT ME!
      */
     private XSDatatype loadXSDatatypeFromSimpleType(Element xsdSimpleType) {
@@ -402,8 +416,8 @@ public class SchemaParser {
 
                 if (baseType == null) {
                     onSchemaError("Invalid base type: " + base
-                                  + " when trying to build restriction: "
-                                  + xsdRestriction);
+                            + " when trying to build restriction: "
+                            + xsdRestriction);
                 } else {
                     return deriveSimpleType(baseType, xsdRestriction);
                 }
@@ -413,10 +427,9 @@ public class SchemaParser {
                 Element xsdSubType = xsdSimpleType.element(XSD_SIMPLETYPE);
 
                 if (xsdSubType == null) {
-                    String msg =
-                        "The simpleType element: " + xsdSimpleType
-                        + " must contain a base attribute or simpleType"
-                        + " element";
+                    String msg = "The simpleType element: " + xsdSimpleType
+                            + " must contain a base attribute or simpleType"
+                            + " element";
                     onSchemaError(msg);
                 } else {
                     return loadXSDatatypeFromSimpleType(xsdSubType);
@@ -424,7 +437,7 @@ public class SchemaParser {
             }
         } else {
             onSchemaError("No <restriction>. Could not create XSDatatype for"
-                          + " simpleType: " + xsdSimpleType);
+                    + " simpleType: " + xsdSimpleType);
         }
 
         return null;
@@ -432,20 +445,22 @@ public class SchemaParser {
 
     /**
      * Derives a new type from a base type and a set of restrictions
-     *
-     * @param baseType DOCUMENT ME!
-     * @param xsdRestriction DOCUMENT ME!
-     *
+     * 
+     * @param baseType
+     *            DOCUMENT ME!
+     * @param xsdRestriction
+     *            DOCUMENT ME!
+     * 
      * @return DOCUMENT ME!
      */
     private XSDatatype deriveSimpleType(XSDatatype baseType,
-                                        Element xsdRestriction) {
+            Element xsdRestriction) {
         TypeIncubator incubator = new TypeIncubator(baseType);
         ValidationContext context = null;
 
         try {
-            for (Iterator iter = xsdRestriction.elementIterator();
-                     iter.hasNext();) {
+            for (Iterator iter = xsdRestriction.elementIterator(); iter
+                    .hasNext();) {
                 Element element = (Element) iter.next();
                 String name = element.getName();
                 String value = element.attributeValue("value");
@@ -461,8 +476,7 @@ public class SchemaParser {
             return incubator.derive("", newTypeName);
         } catch (DatatypeException e) {
             onSchemaError("Invalid restriction: " + e.getMessage()
-                          + " when trying to build restriction: "
-                          + xsdRestriction);
+                    + " when trying to build restriction: " + xsdRestriction);
 
             return null;
         }
@@ -470,15 +484,16 @@ public class SchemaParser {
 
     /**
      * DOCUMENT ME!
-     *
-     * @param name The name of the element
-     *
+     * 
+     * @param name
+     *            The name of the element
+     * 
      * @return the <code>DatatypeElementFactory</code> for the given element
      *         QName, creating one if it does not already exist
      */
     private DatatypeElementFactory getDatatypeElementFactory(QName name) {
-        DatatypeElementFactory factory =
-            documentFactory.getElementFactory(name);
+        DatatypeElementFactory factory = documentFactory
+                .getElementFactory(name);
 
         if (factory == null) {
             factory = new DatatypeElementFactory(name);
@@ -515,8 +530,8 @@ public class SchemaParser {
             if (dataType == null) {
                 // it's no built-in type, maybe it's a type we defined ourself
                 QName typeQName = getQName(type);
-                dataType =
-                    (XSDatatype) namedTypeResolver.simpleTypeMap.get(typeQName);
+                dataType = (XSDatatype) namedTypeResolver.simpleTypeMap
+                        .get(typeQName);
             }
 
             if (dataType != null) {
@@ -539,63 +554,54 @@ public class SchemaParser {
     /**
      * Called when there is a problem with the schema and the builder cannot
      * handle the XML Schema Data Types correctly
-     *
-     * @param message DOCUMENT ME!
-     *
-     * @throws InvalidSchemaException DOCUMENT ME!
+     * 
+     * @param message
+     *            DOCUMENT ME!
+     * 
+     * @throws InvalidSchemaException
+     *             DOCUMENT ME!
      */
     private void onSchemaError(String message) {
         // Some users may wish to disable exception throwing
         // and instead use some kind of listener for errors and continue
-        //System.out.println( "WARNING: " + message );
+        // System.out.println( "WARNING: " + message );
         throw new InvalidSchemaException(message);
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j.swing;
@@ -25,11 +23,11 @@ import org.jaxen.VariableContext;
 
 /**
  * <p>
- * <code>XMLTableDefinition</code> represents a table definition based on XPath
- * expression evaluated on an XML document.
+ * <code>XMLTableDefinition</code> represents a table definition based on
+ * XPath expression evaluated on an XML document.
  * </p>
- *
- * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * 
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision$
  */
 public class XMLTableDefinition implements Serializable, VariableContext {
@@ -56,9 +54,10 @@ public class XMLTableDefinition implements Serializable, VariableContext {
 
     /**
      * Loads an XML table definition from an XML definition document
-     *
-     * @param definition DOCUMENT ME!
-     *
+     * 
+     * @param definition
+     *            DOCUMENT ME!
+     * 
      * @return DOCUMENT ME!
      */
     public static XMLTableDefinition load(Document definition) {
@@ -67,17 +66,18 @@ public class XMLTableDefinition implements Serializable, VariableContext {
 
     /**
      * Loads an XML table definition from an XML definition document
-     *
-     * @param definition DOCUMENT ME!
-     *
+     * 
+     * @param definition
+     *            DOCUMENT ME!
+     * 
      * @return DOCUMENT ME!
      */
     public static XMLTableDefinition load(Element definition) {
         XMLTableDefinition answer = new XMLTableDefinition();
         answer.setRowExpression(definition.attributeValue("select"));
 
-        for (Iterator iter = definition.elementIterator("column");
-                 iter.hasNext();) {
+        for (Iterator iter = definition.elementIterator("column"); iter
+                .hasNext();) {
             Element element = (Element) iter.next();
             String expression = element.attributeValue("select");
             String name = element.getText();
@@ -105,9 +105,10 @@ public class XMLTableDefinition implements Serializable, VariableContext {
 
     /**
      * DOCUMENT ME!
-     *
-     * @param columnIndex DOCUMENT ME!
-     *
+     * 
+     * @param columnIndex
+     *            DOCUMENT ME!
+     * 
      * @return the static column name. This is used if there is no
      *         columnNameXPath
      */
@@ -117,9 +118,10 @@ public class XMLTableDefinition implements Serializable, VariableContext {
 
     /**
      * DOCUMENT ME!
-     *
-     * @param columnIndex DOCUMENT ME!
-     *
+     * 
+     * @param columnIndex
+     *            DOCUMENT ME!
+     * 
      * @return the XPath expression used to evaluate the value of cells in this
      *         column
      */
@@ -129,12 +131,12 @@ public class XMLTableDefinition implements Serializable, VariableContext {
 
     /**
      * DOCUMENT ME!
-     *
-     * @param columnIndex DOCUMENT ME!
-     *
-     * @return the XPath expresssion used to create the column name, if there
-     *         is one or null if there is no XPath expression to name the
-     *         column.
+     * 
+     * @param columnIndex
+     *            DOCUMENT ME!
+     * 
+     * @return the XPath expresssion used to create the column name, if there is
+     *         one or null if there is no XPath expression to name the column.
      */
     public XPath getColumnNameXPath(int columnIndex) {
         return getColumn(columnIndex).getColumnNameXPath();
@@ -163,7 +165,7 @@ public class XMLTableDefinition implements Serializable, VariableContext {
     }
 
     public void addColumnWithXPathName(String columnNameXPathExpression,
-                                       String expression, int type) {
+            String expression, int type) {
         XPath columnNameXPath = createColumnXPath(columnNameXPathExpression);
         XPath xpath = createColumnXPath(expression);
         addColumn(new XMLTableColumnDefinition(columnNameXPath, xpath, type));
@@ -205,9 +207,9 @@ public class XMLTableDefinition implements Serializable, VariableContext {
         if (columnNameIndex == null) {
             columnNameIndex = new HashMap();
 
-            for (Iterator iter = columns.iterator(); iter.hasNext();) {
-                XMLTableColumnDefinition column =
-                    (XMLTableColumnDefinition) iter.next();
+            for (Iterator it = columns.iterator(); it.hasNext();) {
+                XMLTableColumnDefinition column = (XMLTableColumnDefinition) it
+                        .next();
                 columnNameIndex.put(column.getName(), column);
             }
         }
@@ -217,7 +219,7 @@ public class XMLTableDefinition implements Serializable, VariableContext {
 
     /**
      * Getter for property rowXPath.
-     *
+     * 
      * @return Value of property rowXPath.
      */
     public XPath getRowXPath() {
@@ -226,8 +228,9 @@ public class XMLTableDefinition implements Serializable, VariableContext {
 
     /**
      * Setter for property rowXPath.
-     *
-     * @param rowXPath New value of property rowXPath.
+     * 
+     * @param rowXPath
+     *            New value of property rowXPath.
      */
     public void setRowXPath(XPath rowXPath) {
         this.rowXPath = rowXPath;
@@ -238,9 +241,9 @@ public class XMLTableDefinition implements Serializable, VariableContext {
     }
 
     // VariableContext interface
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     public Object getVariableValue(String namespaceURI, String prefix,
-                                   String localName) {
+            String localName) {
         XMLTableColumnDefinition column = getColumn(localName);
 
         if (column != null) {
@@ -251,7 +254,7 @@ public class XMLTableDefinition implements Serializable, VariableContext {
     }
 
     // Implementation methods
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     protected XPath createXPath(String expression) {
         return DocumentHelper.createXPath(expression);
     }
@@ -276,50 +279,39 @@ public class XMLTableDefinition implements Serializable, VariableContext {
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

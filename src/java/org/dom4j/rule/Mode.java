@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j.rule;
@@ -19,13 +17,13 @@ import org.dom4j.Node;
 
 /**
  * <p>
- * <code>Mode</code> manages a number of RuleSet instances  for the mode in a
- * stylesheet.  It is responsible for finding the correct rule for a given
- * DOM4J Node  using the XSLT processing model uses the smallest possible
- * RuleSet to  reduce the number of Rule evaluations.
+ * <code>Mode</code> manages a number of RuleSet instances for the mode in a
+ * stylesheet. It is responsible for finding the correct rule for a given DOM4J
+ * Node using the XSLT processing model uses the smallest possible RuleSet to
+ * reduce the number of Rule evaluations.
  * </p>
- *
- * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+ * 
+ * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision$
  */
 public class Mode {
@@ -42,10 +40,12 @@ public class Mode {
 
     /**
      * Runs the actions associated with the given node
-     *
-     * @param node DOCUMENT ME!
-     *
-     * @throws Exception DOCUMENT ME!
+     * 
+     * @param node
+     *            DOCUMENT ME!
+     * 
+     * @throws Exception
+     *             DOCUMENT ME!
      */
     public void fireRule(Node node) throws Exception {
         if (node != null) {
@@ -86,11 +86,11 @@ public class Mode {
 
         if (name != null) {
             if (matchType == Node.ELEMENT_NODE) {
-                elementNameRuleSets =
-                    addToNameMap(elementNameRuleSets, name, rule);
+                elementNameRuleSets = addToNameMap(elementNameRuleSets, name,
+                        rule);
             } else if (matchType == Node.ATTRIBUTE_NODE) {
-                attributeNameRuleSets =
-                    addToNameMap(attributeNameRuleSets, name, rule);
+                attributeNameRuleSets = addToNameMap(attributeNameRuleSets,
+                        name, rule);
             }
         }
 
@@ -138,9 +138,10 @@ public class Mode {
     /**
      * Performs an XSLT processing model match for the rule which matches the
      * given Node the best.
-     *
-     * @param node is the DOM4J Node to match against
-     *
+     * 
+     * @param node
+     *            is the DOM4J Node to match against
+     * 
      * @return the matching Rule or no rule if none matched
      */
     public Rule getMatchingRule(Node node) {
@@ -200,9 +201,10 @@ public class Mode {
 
     /**
      * DOCUMENT ME!
-     *
-     * @param matchType DOCUMENT ME!
-     *
+     * 
+     * @param matchType
+     *            DOCUMENT ME!
+     * 
      * @return the RuleSet for the given matching type. This method will never
      *         return null, a new instance will be created.
      */
@@ -228,11 +230,14 @@ public class Mode {
 
     /**
      * Adds the Rule to a RuleSet for the given name.
-     *
-     * @param map DOCUMENT ME!
-     * @param name DOCUMENT ME!
-     * @param rule DOCUMENT ME!
-     *
+     * 
+     * @param map
+     *            DOCUMENT ME!
+     * @param name
+     *            DOCUMENT ME!
+     * @param rule
+     *            DOCUMENT ME!
+     * 
      * @return the Map (which will be created if the given map was null
      */
     protected Map addToNameMap(Map map, String name, Rule rule) {
@@ -263,50 +268,39 @@ public class Mode {
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

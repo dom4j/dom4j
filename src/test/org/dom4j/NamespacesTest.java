@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j;
@@ -24,8 +22,8 @@ import org.xml.sax.InputSource;
 
 /**
  * Test the use of namespaces
- *
- * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * 
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision$
  */
 public class NamespacesTest extends AbstractTestCase {
@@ -34,7 +32,7 @@ public class NamespacesTest extends AbstractTestCase {
     }
 
     // Test case(s)
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     public void testNamespaces() throws Exception {
         testNamespaces(document);
         testNamespaces(saxRoundTrip(document));
@@ -46,16 +44,16 @@ public class NamespacesTest extends AbstractTestCase {
 
         Element root = doc2.getRootElement();
         assertNamespace(root.getNamespace(), "",
-                        "http://www.w3.org/2001/XMLSchema");
-        assertEquals("xmlns=\"http://www.w3.org/2001/XMLSchema\"",
-                     root.getNamespace().asXML());
+                "http://www.w3.org/2001/XMLSchema");
+        assertEquals("xmlns=\"http://www.w3.org/2001/XMLSchema\"", root
+                .getNamespace().asXML());
         assertEquals("namespace::*[name()='']", root.getNamespace().getPath());
-        assertEquals("namespace::*[name()='']",
-                     root.getNamespace().getUniquePath());
+        assertEquals("namespace::*[name()='']", root.getNamespace()
+                .getUniquePath());
 
         List additionalNS = root.additionalNamespaces();
-        assertTrue("at least one additional namespace",
-                   (additionalNS != null) && (additionalNS.size() > 0));
+        assertTrue("at least one additional namespace", (additionalNS != null)
+                && (additionalNS.size() > 0));
 
         Namespace ns = (Namespace) additionalNS.get(0);
         assertNamespace(ns, "t", "http://www.w3.org/namespace/");
@@ -71,8 +69,8 @@ public class NamespacesTest extends AbstractTestCase {
         root.addNamespace("t", "myNewURI");
 
         additionalNS = root.additionalNamespaces();
-        assertTrue("at least one additional namespace",
-                   (additionalNS != null) && (additionalNS.size() > 0));
+        assertTrue("at least one additional namespace", (additionalNS != null)
+                && (additionalNS.size() > 0));
 
         ns = (Namespace) additionalNS.get(0);
         assertNamespace(ns, "t", "myNewURI");
@@ -82,8 +80,8 @@ public class NamespacesTest extends AbstractTestCase {
         additionalNS.add(Namespace.get("t", "myNewURI-2"));
 
         additionalNS = root.additionalNamespaces();
-        assertTrue("at least one additional namespace",
-                   (additionalNS != null) && (additionalNS.size() > 0));
+        assertTrue("at least one additional namespace", (additionalNS != null)
+                && (additionalNS.size() > 0));
 
         ns = (Namespace) additionalNS.get(0);
         assertNamespace(ns, "t", "myNewURI-2");
@@ -92,8 +90,8 @@ public class NamespacesTest extends AbstractTestCase {
         root.addNamespace("t", "myNewURI");
 
         additionalNS = root.additionalNamespaces();
-        assertTrue("at least one additional namespace",
-                   (additionalNS != null) && (additionalNS.size() > 0));
+        assertTrue("at least one additional namespace", (additionalNS != null)
+                && (additionalNS.size() > 0));
 
         ns = (Namespace) additionalNS.get(0);
         assertNamespace(ns, "t", "myNewURI");
@@ -109,8 +107,7 @@ public class NamespacesTest extends AbstractTestCase {
         testNamespaceForPrefix(domRoundTrip(document));
     }
 
-    public void testNamespaceForPrefix(Document document)
-                                throws Exception {
+    public void testNamespaceForPrefix(Document document) throws Exception {
         Element root = document.getRootElement();
         Namespace ns = root.getNamespaceForPrefix("t");
 
@@ -134,7 +131,7 @@ public class NamespacesTest extends AbstractTestCase {
     }
 
     public void testNamespaceForDefaultPrefix(Document document)
-                                       throws Exception {
+            throws Exception {
         List list = document.selectNodes("//*");
 
         for (Iterator iter = list.iterator(); iter.hasNext();) {
@@ -155,8 +152,7 @@ public class NamespacesTest extends AbstractTestCase {
         testAttributeDefaultPrefix(domRoundTrip(document));
     }
 
-    public void testAttributeDefaultPrefix(Document document)
-                                    throws Exception {
+    public void testAttributeDefaultPrefix(Document document) throws Exception {
         List list = document.selectNodes("//@*[local-name()='actor']");
 
         assertTrue("Matched at least one 'actor' attribute", list.size() > 0);
@@ -187,8 +183,7 @@ public class NamespacesTest extends AbstractTestCase {
         testNamespaceForURI(domRoundTrip(document));
     }
 
-    public void testNamespaceForURI(Document document)
-                             throws Exception {
+    public void testNamespaceForURI(Document document) throws Exception {
         Element root = document.getRootElement();
 
         Namespace ns = root.getNamespaceForURI("http://www.w3.org/namespace/");
@@ -196,8 +191,8 @@ public class NamespacesTest extends AbstractTestCase {
         assertNamespace(ns, "t", "http://www.w3.org/namespace/");
 
         Element element = (Element) root.elements().get(0);
-        Namespace ns2 =
-            element.getNamespaceForURI("http://www.w3.org/namespace/");
+        Namespace ns2 = element
+                .getNamespaceForURI("http://www.w3.org/namespace/");
 
         assertNamespace(ns2, "t", "http://www.w3.org/namespace/");
 
@@ -213,21 +208,20 @@ public class NamespacesTest extends AbstractTestCase {
         testRedeclareNamespaces(domRoundTrip(document));
     }
 
-    public void testRedeclareNamespaces(Document document)
-                                 throws Exception {
+    public void testRedeclareNamespaces(Document document) throws Exception {
         String uri = "http://schemas.xmlsoap.org/soap/envelope/";
         assertNamespaces(document.selectNodes("//*[local-name()='Envelope']"),
-                         "SOAP-ENV", uri);
+                "SOAP-ENV", uri);
         assertNamespaces(document.selectNodes("//*[local-name()='Body']"),
-                         "SOAP-ENV", uri);
+                "SOAP-ENV", uri);
         assertNamespaces(document.selectNodes("//*[local-name()='bar']"), "a",
-                         "barURI");
+                "barURI");
         assertNamespaces(document.selectNodes("//*[local-name()='newBar']"),
-                         "a", "newBarURI");
+                "a", "newBarURI");
         assertNamespaces(document.selectNodes("//*[local-name()='foo']"), "",
-                         "fooURI");
+                "fooURI");
         assertNamespaces(document.selectNodes("//*[local-name()='newFoo']"),
-                         "", "newFooURI");
+                "", "newFooURI");
     }
 
     public void testDefaultNamespaceIssue() throws Exception {
@@ -237,24 +231,23 @@ public class NamespacesTest extends AbstractTestCase {
         testDefaultNamespaceIssue(domRoundTrip(document));
     }
 
-    public void testDefaultNamespaceIssue(Document document)
-                                   throws Exception {
+    public void testDefaultNamespaceIssue(Document document) throws Exception {
         // When writing documents using a default namespace with XMLWriter
-        // a redeclaration of the default namespace to "" was dropped in the 
+        // a redeclaration of the default namespace to "" was dropped in the
         // output. Test that
-        // <xsd:schema><xsd:element><xsd:annotation><xsd:documentation><text> 
+        // <xsd:schema><xsd:element><xsd:annotation><xsd:documentation><text>
         // is in no namespace.
-        String expr =
-            "/xsd:schema/xsd:element/xsd:annotation/xsd:documentation/text";
-        assertNotNull("default namespace redeclaration",
-                      (Element) document.selectSingleNode(expr));
+        String expr 
+            = "/xsd:schema/xsd:element/xsd:annotation/xsd:documentation/text";
+        assertNotNull("default namespace redeclaration", (Element) document
+                .selectSingleNode(expr));
 
         // The test document has a default namespace declaration on the root
         // element ("schema"), but the element itself is not in the default
         // namespace. Test that declaredNamespaces on the root element also
         // returns the default namespace declaration.
-        Iterator iter =
-            document.getRootElement().declaredNamespaces().iterator();
+        Iterator iter = document.getRootElement().declaredNamespaces()
+                .iterator();
 
         while (iter.hasNext()) {
             Namespace ns = (Namespace) iter.next();
@@ -270,42 +263,39 @@ public class NamespacesTest extends AbstractTestCase {
 
     public void testDefaultNamespace() throws Exception {
         Document doc = DocumentHelper.createDocument();
-        Element processDef =
-            doc.addElement("process-definition",
-                           "http://jbpm.org/statedefinition-2.0-beta3");
+        Element processDef = doc.addElement("process-definition",
+                "http://jbpm.org/statedefinition-2.0-beta3");
         Element startState = processDef.addElement("start-state");
         startState.addAttribute("name", "start");
 
         Element transition = startState.addElement("transition");
         transition.addAttribute("to", "first");
 
-        assertEquals("http://jbpm.org/statedefinition-2.0-beta3",
-                     startState.getNamespace().getURI());
+        assertEquals("http://jbpm.org/statedefinition-2.0-beta3", startState
+                .getNamespace().getURI());
         assertEquals("", startState.getNamespace().getPrefix());
 
         System.out.println(doc.asXML());
     }
 
     // Implementation methods
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     protected void setUp() throws Exception {
         super.setUp();
         document = getDocument("/xml/test/test_schema.xml");
     }
 
-    protected Document saxRoundTrip(Document document)
-                             throws Exception {
+    protected Document saxRoundTrip(Document document) throws Exception {
         return DocumentHelper.parseText(document.asXML());
     }
 
-    protected Document domRoundTrip(Document document)
-                             throws Exception {
+    protected Document domRoundTrip(Document document) throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
 
         DocumentBuilder builder = factory.newDocumentBuilder();
-        org.w3c.dom.Document domDocument =
-            builder.parse(new InputSource(new StringReader(document.asXML())));
+        org.w3c.dom.Document domDocument = builder.parse(new InputSource(
+                new StringReader(document.asXML())));
 
         // now lets read it back as a DOM4J object
         DOMReader domReader = new DOMReader();
@@ -314,7 +304,7 @@ public class NamespacesTest extends AbstractTestCase {
     }
 
     protected void assertNamespaces(List elements, String prefix, String uri)
-                             throws Exception {
+            throws Exception {
         for (Iterator iter = elements.iterator(); iter.hasNext();) {
             Element element = (Element) iter.next();
             assertNamespace(element.getNamespace(), prefix, uri);
@@ -322,56 +312,45 @@ public class NamespacesTest extends AbstractTestCase {
     }
 
     protected void assertNamespace(Namespace ns, String prefix, String uri)
-                            throws Exception {
+            throws Exception {
         assertEquals("namespace prefix", prefix, ns.getPrefix());
         assertEquals("namespace URI", uri, ns.getURI());
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

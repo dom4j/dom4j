@@ -21,11 +21,13 @@
         <tr>
             <th align="left">Feature</th>
             <th align="left"><a href="http://www.w3.org/DOM/">WC3 DOM</a></th>
-            <th align="left"><a href="http://dom4j.org"><i>dom4j</i></a></th>
+            <th align="left"><a href="http://dom4j.org"><i>DOM4J</i></a></th>
             <th align="left"><a href="http://www.jdom.org">JDOM</a></th>
+            <th align="left"><a href="http://www.cafeconleche.org/XOM/">XOM</a></th>
         </tr>
         <tr>
             <td>Open Source</td>
+            <td>Yes</td>
             <td>Yes</td>
             <td>Yes</td>
             <td>Yes</td>
@@ -35,21 +37,25 @@
             <td>Yes</td>
             <td>Yes</td>
             <td>No</td>
+            <td>No</td>
         </tr>
         <tr>
             <td>Supports Java 2 Collections</td>
             <td>No</td>
             <td>Yes</td>
             <td>Yes</td>
+            <td>No</td>
         </tr>
         <tr>
             <td>Can use any SAX parser and XMLFilter</td>
             <td>Yes (usually)</td>
             <td>Yes</td>
             <td>Yes</td>
+            <td>Yes</td>
         </tr>
         <tr>
             <td>Convert to and from DOM trees</td>
+            <td>Yes</td>
             <td>Yes</td>
             <td>Yes</td>
             <td>Yes</td>
@@ -59,11 +65,13 @@
             <td>Yes</td>
             <td>Yes (optional)</td>
             <td>No</td>
+            <td>No</td>
         </tr>
         <tr>
             <td>Integrated XPath API support</td>
             <td>No</td>
             <td>Yes</td>
+            <td>No</td>
             <td>No</td>
         </tr>
         <tr>
@@ -71,36 +79,42 @@
             <td>No</td>
             <td>Yes</td>
             <td>Optional</td>
+            <td>Optional</td>
         </tr>
         <tr>
             <td>Support for JAXP/TrAX for XSLT integration</td>
             <td>Yes</td>
             <td>Yes</td>
             <td>Optional</td>
+            <td>Don't know</td>
         </tr>
         <tr>
             <td>Event based processing support</td>
             <td>Possible</td>
             <td>Yes</td>
             <td>No</td>
+            <td>Don't know</td>
         </tr>
         <tr>
             <td>Capable of processing a continuous XML streams</td>
             <td>Don't know</td>
             <td>Yes</td>
             <td>No</td>
+            <td>Don't know</td>
         </tr>
         <tr>
             <td>Capable of processing massive documents</td>
             <td>Don't know</td>
             <td>Yes</td>
             <td>No</td>
+            <td>Don't know</td>
         </tr>
         <tr>
             <td>XML Schema Data Type support</td>
             <td>No</td>
             <td>Yes (alpha)</td>
             <td>No</td>
+            <td>Don't know</td>
         </tr>
       </table>
 

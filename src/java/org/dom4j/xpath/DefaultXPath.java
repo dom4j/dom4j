@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j.xpath;
@@ -33,24 +31,28 @@ import org.jaxen.dom4j.Dom4jXPath;
 
 /**
  * <p>
- * Default implementation of {@link org.dom4j.XPath} which uses the <a
- * href="http://jaxen.org">Jaxen</a> project.
+ * Default implementation of {@link org.dom4j.XPath}which uses the <a
+ * href="http://jaxen.org">Jaxen </a> project.
  * </p>
- *
+ * 
  * @author bob mcwhirter
- * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  */
 public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
     private String text;
+
     private XPath xpath;
+
     private NamespaceContext namespaceContext;
 
     /**
      * Construct an XPath
-     *
-     * @param text DOCUMENT ME!
-     *
-     * @throws InvalidXPathException DOCUMENT ME!
+     * 
+     * @param text
+     *            DOCUMENT ME!
+     * 
+     * @throws InvalidXPathException
+     *             DOCUMENT ME!
      */
     public DefaultXPath(String text) throws InvalidXPathException {
         this.text = text;
@@ -61,11 +63,11 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
         return "[XPath: " + xpath + "]";
     }
 
-    // XPath interface 
+    // XPath interface
 
     /**
      * Retrieve the textual XPath string used to initialize this Object
-     *
+     * 
      * @return The XPath string
      */
     public String getText() {
@@ -143,7 +145,7 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
     }
 
     public List selectNodes(Object context, org.dom4j.XPath sortXPath,
-                            boolean distinct) {
+            boolean distinct) {
         List answer = selectNodes(context);
         sortXPath.sort(answer, distinct);
 
@@ -165,9 +167,8 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
             }
 
             throw new XPathException("The result of the XPath expression is "
-                                     + "not a Node. It was: " + answer
-                                     + " of type: "
-                                     + answer.getClass().getName());
+                    + "not a Node. It was: " + answer + " of type: "
+                    + answer.getClass().getName());
         } catch (JaxenException e) {
             handleJaxenException(e);
 
@@ -216,8 +217,9 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
      * <code>sort</code> sorts the given List of Nodes using this XPath
      * expression as a {@link Comparator}.
      * </p>
-     *
-     * @param list is the list of Nodes to sort
+     * 
+     * @param list
+     *            is the list of Nodes to sort
      */
     public void sort(List list) {
         sort(list, false);
@@ -226,12 +228,14 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
     /**
      * <p>
      * <code>sort</code> sorts the given List of Nodes using this XPath
-     * expression as a {@link Comparator}  and optionally removing duplicates.
+     * expression as a {@link Comparator}and optionally removing duplicates.
      * </p>
-     *
-     * @param list is the list of Nodes to sort
-     * @param distinct if true then duplicate values (using the sortXPath for
-     *        comparisions) will be removed from the List
+     * 
+     * @param list
+     *            is the list of Nodes to sort
+     * @param distinct
+     *            if true then duplicate values (using the sortXPath for
+     *            comparisions) will be removed from the List
      */
     public void sort(List list, boolean distinct) {
         if ((list != null) && !list.isEmpty()) {
@@ -282,41 +286,44 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
 
     /**
      * Sorts the list based on the sortValues for each node
-     *
-     * @param list DOCUMENT ME!
-     * @param sortValues DOCUMENT ME!
+     * 
+     * @param list
+     *            DOCUMENT ME!
+     * @param sortValues
+     *            DOCUMENT ME!
      */
     protected void sort(List list, final Map sortValues) {
-        Collections.sort(list,
-                         new Comparator() {
-                public int compare(Object o1, Object o2) {
-                    o1 = sortValues.get(o1);
-                    o2 = sortValues.get(o2);
+        Collections.sort(list, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                o1 = sortValues.get(o1);
+                o2 = sortValues.get(o2);
 
-                    if (o1 == o2) {
-                        return 0;
-                    } else if (o1 instanceof Comparable) {
-                        Comparable c1 = (Comparable) o1;
+                if (o1 == o2) {
+                    return 0;
+                } else if (o1 instanceof Comparable) {
+                    Comparable c1 = (Comparable) o1;
 
-                        return c1.compareTo(o2);
-                    } else if (o1 == null) {
-                        return 1;
-                    } else if (o2 == null) {
-                        return -1;
-                    } else {
-                        return o1.equals(o2) ? 0 : (-1);
-                    }
+                    return c1.compareTo(o2);
+                } else if (o1 == null) {
+                    return 1;
+                } else if (o2 == null) {
+                    return -1;
+                } else {
+                    return o1.equals(o2) ? 0 : (-1);
                 }
-            });
+            }
+        });
     }
 
     // Implementation methods
 
     /**
      * Removes items from the list which have duplicate values
-     *
-     * @param list DOCUMENT ME!
-     * @param sortValues DOCUMENT ME!
+     * 
+     * @param list
+     *            DOCUMENT ME!
+     * @param sortValues
+     *            DOCUMENT ME!
      */
     protected void removeDuplicates(List list, Map sortValues) {
         // remove distinct
@@ -336,9 +343,10 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
 
     /**
      * DOCUMENT ME!
-     *
-     * @param node DOCUMENT ME!
-     *
+     * 
+     * @param node
+     *            DOCUMENT ME!
+     * 
      * @return the node expression used for sorting comparisons
      */
     protected Object getCompareValue(Node node) {
@@ -362,56 +370,45 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
         }
     }
 
-    protected void handleJaxenException(JaxenException e)
-                                 throws XPathException {
-        throw new XPathException(text, e);
+    protected void handleJaxenException(JaxenException exception)
+            throws XPathException {
+        throw new XPathException(text, exception);
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j.dom;
@@ -29,14 +27,14 @@ import org.w3c.dom.ProcessingInstruction;
  * <code>DOMDocument</code> implements an XML document which supports the W3C
  * DOM API.
  * </p>
- *
- * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * 
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision$
  */
 public class DOMDocument extends DefaultDocument implements Document {
     /** The <code>DocumentFactory</code> instance used by default */
-    private static final DOMDocumentFactory DOCUMENT_FACTORY =
-        (DOMDocumentFactory) DOMDocumentFactory.getInstance();
+    private static final DOMDocumentFactory DOCUMENT_FACTORY
+            = (DOMDocumentFactory) DOMDocumentFactory.getInstance();
 
     public DOMDocument() {
         init();
@@ -63,7 +61,7 @@ public class DOMDocument extends DefaultDocument implements Document {
     }
 
     public DOMDocument(String name, DOMElement rootElement,
-                       DOMDocumentType docType) {
+            DOMDocumentType docType) {
         super(name, rootElement, docType);
         init();
     }
@@ -73,7 +71,7 @@ public class DOMDocument extends DefaultDocument implements Document {
     }
 
     // org.w3c.dom.Node interface
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     public boolean supports(String feature, String version) {
         return DOMNodeHelper.supports(this, feature, version);
     }
@@ -98,9 +96,9 @@ public class DOMDocument extends DefaultDocument implements Document {
         return "#document";
     }
 
-    //already part of API
+    // already part of API
     //
-    //public short getNodeType();
+    // public short getNodeType();
     public String getNodeValue() throws DOMException {
         return null;
     }
@@ -141,43 +139,41 @@ public class DOMDocument extends DefaultDocument implements Document {
     }
 
     public org.w3c.dom.Node insertBefore(org.w3c.dom.Node newChild,
-                                         org.w3c.dom.Node refChild)
-                                  throws DOMException {
+            org.w3c.dom.Node refChild) throws DOMException {
         checkNewChildNode(newChild);
 
         return DOMNodeHelper.insertBefore(this, newChild, refChild);
     }
 
     public org.w3c.dom.Node replaceChild(org.w3c.dom.Node newChild,
-                                         org.w3c.dom.Node oldChild)
-                                  throws DOMException {
+            org.w3c.dom.Node oldChild) throws DOMException {
         checkNewChildNode(newChild);
 
         return DOMNodeHelper.replaceChild(this, newChild, oldChild);
     }
 
     public org.w3c.dom.Node removeChild(org.w3c.dom.Node oldChild)
-                                 throws DOMException {
+            throws DOMException {
         return DOMNodeHelper.removeChild(this, oldChild);
     }
 
     public org.w3c.dom.Node appendChild(org.w3c.dom.Node newChild)
-                                 throws DOMException {
+            throws DOMException {
         checkNewChildNode(newChild);
 
         return DOMNodeHelper.appendChild(this, newChild);
     }
 
     private void checkNewChildNode(org.w3c.dom.Node newChild)
-                            throws DOMException {
+            throws DOMException {
         final int nodeType = newChild.getNodeType();
 
         if (!((nodeType == org.w3c.dom.Node.ELEMENT_NODE)
                 || (nodeType == org.w3c.dom.Node.COMMENT_NODE)
-                || (nodeType == org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE)
+                || (nodeType == org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE) 
                 || (nodeType == org.w3c.dom.Node.DOCUMENT_TYPE_NODE))) {
             throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-                                   "Given node cannot be a child of document");
+                    "Given node cannot be a child of document");
         }
     }
 
@@ -198,7 +194,7 @@ public class DOMDocument extends DefaultDocument implements Document {
     }
 
     // org.w3c.dom.Document interface
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     public NodeList getElementsByTagName(String name) {
         ArrayList list = new ArrayList();
         DOMNodeHelper.appendElementsByTagName(list, this, name);
@@ -229,8 +225,7 @@ public class DOMDocument extends DefaultDocument implements Document {
         return DOMNodeHelper.asDOMElement(getRootElement());
     }
 
-    public org.w3c.dom.Element createElement(String name)
-                                      throws DOMException {
+    public org.w3c.dom.Element createElement(String name) throws DOMException {
         return (org.w3c.dom.Element) getDocumentFactory().createElement(name);
     }
 
@@ -248,17 +243,14 @@ public class DOMDocument extends DefaultDocument implements Document {
         return (org.w3c.dom.Comment) getDocumentFactory().createComment(data);
     }
 
-    public CDATASection createCDATASection(String data)
-                                    throws DOMException {
+    public CDATASection createCDATASection(String data) throws DOMException {
         return (CDATASection) getDocumentFactory().createCDATA(data);
     }
 
     public ProcessingInstruction createProcessingInstruction(String target,
-                                                             String data)
-                                                      throws DOMException {
+            String data) throws DOMException {
         return (ProcessingInstruction) getDocumentFactory()
-                                           .createProcessingInstruction(target,
-                                                                        data);
+                .createProcessingInstruction(target, data);
     }
 
     public Attr createAttribute(String name) throws DOMException {
@@ -268,35 +260,32 @@ public class DOMDocument extends DefaultDocument implements Document {
     }
 
     public EntityReference createEntityReference(String name)
-                                          throws DOMException {
+            throws DOMException {
         return (EntityReference) getDocumentFactory().createEntity(name, null);
     }
 
     public org.w3c.dom.Node importNode(org.w3c.dom.Node importedNode,
-                                       boolean deep) throws DOMException {
+            boolean deep) throws DOMException {
         DOMNodeHelper.notSupported();
 
         return null;
     }
 
     public org.w3c.dom.Element createElementNS(String namespaceURI,
-                                               String qualifiedName)
-                                        throws DOMException {
-        QName qname =
-            getDocumentFactory().createQName(qualifiedName, namespaceURI);
+            String qualifiedName) throws DOMException {
+        QName qname = getDocumentFactory().createQName(qualifiedName,
+                namespaceURI);
 
         return (org.w3c.dom.Element) getDocumentFactory().createElement(qname);
     }
 
     public org.w3c.dom.Attr createAttributeNS(String namespaceURI,
-                                              String qualifiedName)
-                                       throws DOMException {
-        QName qname =
-            getDocumentFactory().createQName(qualifiedName, namespaceURI);
+            String qualifiedName) throws DOMException {
+        QName qname = getDocumentFactory().createQName(qualifiedName,
+                namespaceURI);
 
         return (org.w3c.dom.Attr) getDocumentFactory().createAttribute(null,
-                                                                       qname,
-                                                                       null);
+                qname, null);
     }
 
     public org.w3c.dom.Element getElementById(String elementId) {
@@ -304,7 +293,7 @@ public class DOMDocument extends DefaultDocument implements Document {
     }
 
     // Implementation methods
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     protected DocumentFactory getDocumentFactory() {
         if (super.getDocumentFactory() == null) {
             return DOCUMENT_FACTORY;
@@ -314,50 +303,39 @@ public class DOMDocument extends DefaultDocument implements Document {
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j.io;
@@ -27,24 +25,25 @@ import org.w3c.dom.DOMImplementation;
 
 /**
  * <p>
- * <code>DOMWriter</code> takes a DOM4J tree and outputs it as a W3C DOM object
+ * <code>DOMWriter</code> takes a DOM4J tree and outputs it as a W3C DOM
+ * object
  * </p>
- *
- * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+ * 
+ * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision$
  */
 public class DOMWriter {
     private static boolean loggedWarning = false;
-    private static final String[] DEFAULT_DOM_DOCUMENT_CLASSES =
-        {
+
+    private static final String[] DEFAULT_DOM_DOCUMENT_CLASSES = {
             "org.apache.xerces.dom.DocumentImpl", // Xerces
-        "gnu.xml.dom.DomDocument", // GNU JAXP
-        "org.apache.crimson.tree.XmlDocument", // Crimson
-        "com.sun.xml.tree.XmlDocument", // Sun's Project X
-        "oracle.xml.parser.v2.XMLDocument", // Oracle V2
-        "oracle.xml.parser.XMLDocument", // Oracle V1
-        "org.dom4j.dom.DOMDocument" // Internal DOM implementation
-        };
+            "gnu.xml.dom.DomDocument", // GNU JAXP
+            "org.apache.crimson.tree.XmlDocument", // Crimson
+            "com.sun.xml.tree.XmlDocument", // Sun's Project X
+            "oracle.xml.parser.v2.XMLDocument", // Oracle V2
+            "oracle.xml.parser.XMLDocument", // Oracle V1
+            "org.dom4j.dom.DOMDocument" // Internal DOM implementation
+    };
 
     // the Class used to create new DOM Document instances
     private Class domDocumentClass;
@@ -69,9 +68,8 @@ public class DOMWriter {
             for (int i = 0; i < size; i++) {
                 try {
                     String name = DEFAULT_DOM_DOCUMENT_CLASSES[i];
-                    result =
-                        Class.forName(name, true,
-                                      DOMWriter.class.getClassLoader());
+                    result = Class.forName(name, true, DOMWriter.class
+                            .getClassLoader());
 
                     if (result != null) {
                         break;
@@ -87,37 +85,40 @@ public class DOMWriter {
     }
 
     /**
-     * Sets the DOM {@link org.w3c.dom.Document} implementation class used by
+     * Sets the DOM {@link org.w3c.dom.Document}implementation class used by
      * the writer when creating DOM documents.
-     *
-     * @param domDocumentClass is the Class implementing the {@link
-     *        org.w3c.dom.Document} interface
+     * 
+     * @param domDocumentClass
+     *            is the Class implementing the {@linkorg.w3c.dom.Document}
+     *            interface
      */
     public void setDomDocumentClass(Class domDocumentClass) {
         this.domDocumentClass = domDocumentClass;
     }
 
     /**
-     * Sets the DOM {@link org.w3c.dom.Document} implementation class name used
+     * Sets the DOM {@link org.w3c.dom.Document}implementation class name used
      * by the writer when creating DOM documents.
-     *
-     * @param name is the name of the Class implementing the{@link
-     *        org.w3c.dom.Document} interface
-     *
-     * @throws DocumentException if the class could not be loaded
+     * 
+     * @param name
+     *            is the name of the Class implementing the {@link
+     *            org.w3c.dom.Document} interface
+     * 
+     * @throws DocumentException
+     *             if the class could not be loaded
      */
     public void setDomDocumentClassName(String name) throws DocumentException {
         try {
-            this.domDocumentClass =
-                Class.forName(name, true, DOMWriter.class.getClassLoader());
+            this.domDocumentClass = Class.forName(name, true, DOMWriter.class
+                    .getClassLoader());
         } catch (Exception e) {
             throw new DocumentException("Could not load the DOM Document "
-                                        + "class: " + name, e);
+                    + "class: " + name, e);
         }
     }
 
     public org.w3c.dom.Document write(Document document)
-                               throws DocumentException {
+            throws DocumentException {
         if (document instanceof org.w3c.dom.Document) {
             return (org.w3c.dom.Document) document;
         }
@@ -132,8 +133,7 @@ public class DOMWriter {
     }
 
     public org.w3c.dom.Document write(Document document,
-                                      org.w3c.dom.DOMImplementation domImpl)
-                               throws DocumentException {
+            org.w3c.dom.DOMImplementation domImpl) throws DocumentException {
         if (document instanceof org.w3c.dom.Document) {
             return (org.w3c.dom.Document) document;
         }
@@ -148,7 +148,7 @@ public class DOMWriter {
     }
 
     protected void appendDOMTree(org.w3c.dom.Document domDocument,
-                                 org.w3c.dom.Node domCurrent, List content) {
+            org.w3c.dom.Node domCurrent, List content) {
         int size = content.size();
 
         for (int i = 0; i < size; i++) {
@@ -169,17 +169,17 @@ public class DOMWriter {
                 appendDOMTree(domDocument, domCurrent, (Entity) object);
             } else if (object instanceof ProcessingInstruction) {
                 appendDOMTree(domDocument, domCurrent,
-                              (ProcessingInstruction) object);
+                        (ProcessingInstruction) object);
             }
         }
     }
 
     protected void appendDOMTree(org.w3c.dom.Document domDocument,
-                                 org.w3c.dom.Node domCurrent, Element element) {
+            org.w3c.dom.Node domCurrent, Element element) {
         String elUri = element.getNamespaceURI();
         String elName = element.getQualifiedName();
-        org.w3c.dom.Element domElement =
-            domDocument.createElementNS(elUri, elName);
+        org.w3c.dom.Element domElement = domDocument.createElementNS(elUri,
+                elName);
 
         int stackSize = namespaceStack.size();
 
@@ -223,45 +223,44 @@ public class DOMWriter {
     }
 
     protected void appendDOMTree(org.w3c.dom.Document domDocument,
-                                 org.w3c.dom.Node domCurrent, CDATA cdata) {
-        org.w3c.dom.CDATASection domCDATA =
-            domDocument.createCDATASection(cdata.getText());
+            org.w3c.dom.Node domCurrent, CDATA cdata) {
+        org.w3c.dom.CDATASection domCDATA = domDocument
+                .createCDATASection(cdata.getText());
         domCurrent.appendChild(domCDATA);
     }
 
     protected void appendDOMTree(org.w3c.dom.Document domDocument,
-                                 org.w3c.dom.Node domCurrent, Comment comment) {
-        org.w3c.dom.Comment domComment =
-            domDocument.createComment(comment.getText());
+            org.w3c.dom.Node domCurrent, Comment comment) {
+        org.w3c.dom.Comment domComment = domDocument.createComment(comment
+                .getText());
         domCurrent.appendChild(domComment);
     }
 
     protected void appendDOMTree(org.w3c.dom.Document domDocument,
-                                 org.w3c.dom.Node domCurrent, String text) {
+            org.w3c.dom.Node domCurrent, String text) {
         org.w3c.dom.Text domText = domDocument.createTextNode(text);
         domCurrent.appendChild(domText);
     }
 
     protected void appendDOMTree(org.w3c.dom.Document domDocument,
-                                 org.w3c.dom.Node domCurrent, Entity entity) {
-        org.w3c.dom.EntityReference domEntity =
-            domDocument.createEntityReference(entity.getName());
+            org.w3c.dom.Node domCurrent, Entity entity) {
+        org.w3c.dom.EntityReference domEntity = domDocument
+                .createEntityReference(entity.getName());
         domCurrent.appendChild(domEntity);
     }
 
     protected void appendDOMTree(org.w3c.dom.Document domDoc,
-                                 org.w3c.dom.Node domCurrent,
-                                 ProcessingInstruction pi) {
-        org.w3c.dom.ProcessingInstruction domPI =
-            domDoc.createProcessingInstruction(pi.getTarget(), pi.getText());
+            org.w3c.dom.Node domCurrent, ProcessingInstruction pi) {
+        org.w3c.dom.ProcessingInstruction domPI = domDoc
+                .createProcessingInstruction(pi.getTarget(), pi.getText());
         domCurrent.appendChild(domPI);
     }
 
     protected void writeNamespace(org.w3c.dom.Element domElement,
-                                  Namespace namespace) {
+            Namespace namespace) {
         String attributeName = attributeNameForNamespace(namespace);
 
-        //domElement.setAttributeNS("", attributeName, namespace.getURI());
+        // domElement.setAttributeNS("", attributeName, namespace.getURI());
         domElement.setAttribute(attributeName, namespace.getURI());
     }
 
@@ -277,7 +276,7 @@ public class DOMWriter {
     }
 
     protected org.w3c.dom.Document createDomDocument(Document document)
-                                              throws DocumentException {
+            throws DocumentException {
         org.w3c.dom.Document result = null;
 
         // use the given domDocumentClass (if not null)
@@ -285,9 +284,10 @@ public class DOMWriter {
             try {
                 result = (org.w3c.dom.Document) domDocumentClass.newInstance();
             } catch (Exception e) {
-                throw new DocumentException("Could not instantiate an instance "
-                                            + "of DOM Document with class: "
-                                            + domDocumentClass.getName(), e);
+                throw new DocumentException(
+                        "Could not instantiate an instance "
+                                + "of DOM Document with class: "
+                                + domDocumentClass.getName(), e);
             }
         } else {
             // lets try JAXP first before using the hardcoded default parsers
@@ -300,9 +300,8 @@ public class DOMWriter {
                     result = (org.w3c.dom.Document) theClass.newInstance();
                 } catch (Exception e) {
                     throw new DocumentException("Could not instantiate an "
-                                                + "instance of DOM Document "
-                                                + "with class: "
-                                                + theClass.getName(), e);
+                            + "instance of DOM Document " + "with class: "
+                            + theClass.getName(), e);
                 }
             }
         }
@@ -311,7 +310,7 @@ public class DOMWriter {
     }
 
     protected org.w3c.dom.Document createDomDocumentViaJAXP()
-                                                     throws DocumentException {
+            throws DocumentException {
         try {
             return JAXPHelper.createDocument(false, true);
         } catch (Throwable e) {
@@ -322,13 +321,12 @@ public class DOMWriter {
                     // log all exceptions as warnings and carry
                     // on as we have a default SAX parser we can use
                     System.out.println("Warning: Caught exception attempting "
-                                       + "to use JAXP to create a W3C DOM "
-                                       + "document");
+                            + "to use JAXP to create a W3C DOM " + "document");
                     System.out.println("Warning: Exception was: " + e);
                     e.printStackTrace();
                 } else {
                     System.out.println("Warning: Error occurred using JAXP to "
-                                       + "create a DOM document.");
+                            + "create a DOM document.");
                 }
             }
         }
@@ -337,8 +335,7 @@ public class DOMWriter {
     }
 
     protected org.w3c.dom.Document createDomDocument(Document document,
-                                                     DOMImplementation domImpl)
-                                              throws DocumentException {
+            DOMImplementation domImpl) throws DocumentException {
         String namespaceURI = null;
         String qualifiedName = null;
         org.w3c.dom.DocumentType docType = null;
@@ -367,50 +364,39 @@ public class DOMWriter {
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

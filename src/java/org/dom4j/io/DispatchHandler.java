@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j.io;
@@ -21,14 +19,14 @@ import org.dom4j.ElementPath;
  * <code>DispatchHandler</code> implements the <code>ElementHandler</code>
  * interface and provides a means to register multiple
  * <code>ElementHandler</code> instances to be used by an event based
- * processor.  This is a special <code>ElementHandler</code> in that it's
- * <b>onStart</b> and <b>onEnd</b> implementation methods are called for every
- * element encountered during the parse.  It then delegates to other
+ * processor. This is a special <code>ElementHandler</code> in that it's
+ * <b>onStart </b> and <b>onEnd </b> implementation methods are called for every
+ * element encountered during the parse. It then delegates to other
  * <code>ElementHandler</code> instances registered with it to process the
  * elements encountered.
  * </p>
- *
- * @author <a href="mailto:dwhite@equipecom.com">Dave White</a>
+ * 
+ * @author <a href="mailto:dwhite@equipecom.com">Dave White </a>
  * @version $Revision$
  */
 class DispatchHandler implements ElementHandler {
@@ -65,12 +63,14 @@ class DispatchHandler implements ElementHandler {
     }
 
     /**
-     * Adds the <code>ElementHandler</code> to be called when the  specified
+     * Adds the <code>ElementHandler</code> to be called when the specified
      * path is encounted.
-     *
-     * @param handlerPath is the path to be handled
-     * @param handler is the <code>ElementHandler</code> to be called by the
-     *        event based processor.
+     * 
+     * @param handlerPath
+     *            is the path to be handled
+     * @param handler
+     *            is the <code>ElementHandler</code> to be called by the event
+     *            based processor.
      */
     public void addHandler(String handlerPath, ElementHandler handler) {
         handlers.put(handlerPath, handler);
@@ -79,10 +79,10 @@ class DispatchHandler implements ElementHandler {
     /**
      * Removes the <code>ElementHandler</code> from the event based processor,
      * for the specified path.
-     *
-     * @param handlerPath is the path to remove the <code>ElementHandler</code>
-     *        for.
-     *
+     * 
+     * @param handlerPath
+     *            is the path to remove the <code>ElementHandler</code> for.
+     * 
      * @return DOCUMENT ME!
      */
     public ElementHandler removeHandler(String handlerPath) {
@@ -91,9 +91,10 @@ class DispatchHandler implements ElementHandler {
 
     /**
      * DOCUMENT ME!
-     *
-     * @param handlerPath DOCUMENT ME!
-     *
+     * 
+     * @param handlerPath
+     *            DOCUMENT ME!
+     * 
      * @return true when an <code>ElementHandler</code> is registered for the
      *         specified path.
      */
@@ -102,10 +103,11 @@ class DispatchHandler implements ElementHandler {
     }
 
     /**
-     * Get the registered {@link ElementHandler} for the specified path.
-     *
-     * @param handlerPath XML path to get the handler for
-     *
+     * Get the registered {@link ElementHandler}for the specified path.
+     * 
+     * @param handlerPath
+     *            XML path to get the handler for
+     * 
      * @return the registered handler
      */
     public ElementHandler getHandler(String handlerPath) {
@@ -113,9 +115,9 @@ class DispatchHandler implements ElementHandler {
     }
 
     /**
-     * Returns the number of {@link ElementHandler} objects that are waiting
-     * for their elements closing tag.
-     *
+     * Returns the number of {@link ElementHandler}objects that are waiting for
+     * their elements closing tag.
+     * 
      * @return number of active handlers
      */
     public int getActiveHandlerCount() {
@@ -125,18 +127,19 @@ class DispatchHandler implements ElementHandler {
     /**
      * When multiple <code>ElementHandler</code> instances have been
      * registered, this will set a default <code>ElementHandler</code> to be
-     * called for any path which does <b>NOT</b> have a handler registered.
-     *
-     * @param handler is the <code>ElementHandler</code> to be called by the
-     *        event based processor.
+     * called for any path which does <b>NOT </b> have a handler registered.
+     * 
+     * @param handler
+     *            is the <code>ElementHandler</code> to be called by the event
+     *            based processor.
      */
     public void setDefaultHandler(ElementHandler handler) {
         defaultHandler = handler;
     }
 
     /**
-     * Used to remove all the Element Handlers and return things back to the
-     * way they were when object was created.
+     * Used to remove all the Element Handlers and return things back to the way
+     * they were when object was created.
      */
     public void resetHandlers() {
         atRoot = true;
@@ -149,7 +152,7 @@ class DispatchHandler implements ElementHandler {
 
     /**
      * DOCUMENT ME!
-     *
+     * 
      * @return the current path for the parse
      */
     public String getPath() {
@@ -160,7 +163,7 @@ class DispatchHandler implements ElementHandler {
     public void onStart(ElementPath elementPath) {
         Element element = elementPath.getCurrent();
 
-        // Save the location of the last (i.e. parent) path 
+        // Save the location of the last (i.e. parent) path
         pathStack.add(path);
 
         // Calculate the new path
@@ -214,50 +217,39 @@ class DispatchHandler implements ElementHandler {
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j;
@@ -23,11 +21,11 @@ import org.xml.sax.InputSource;
 
 /**
  * <p>
- * <code>DocumentHelper</code> is a collection of helper methods  for using
+ * <code>DocumentHelper</code> is a collection of helper methods for using
  * DOM4J.
  * </p>
- *
- * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * 
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision$
  */
 public final class DocumentHelper {
@@ -56,12 +54,12 @@ public final class DocumentHelper {
     }
 
     public static Attribute createAttribute(Element owner, QName qname,
-                                            String value) {
+            String value) {
         return getDocumentFactory().createAttribute(owner, qname, value);
     }
 
     public static Attribute createAttribute(Element owner, String name,
-                                            String value) {
+            String value) {
         return getDocumentFactory().createAttribute(owner, name, value);
     }
 
@@ -86,12 +84,12 @@ public final class DocumentHelper {
     }
 
     public static ProcessingInstruction createProcessingInstruction(String pi,
-                                                                    String d) {
+            String d) {
         return getDocumentFactory().createProcessingInstruction(pi, d);
     }
 
     public static ProcessingInstruction createProcessingInstruction(String pi,
-                                                                    Map data) {
+            Map data) {
         return getDocumentFactory().createProcessingInstruction(pi, data);
     }
 
@@ -109,15 +107,17 @@ public final class DocumentHelper {
      * XPath <code>XPath</code> instance using the singleton {@link
      * DocumentFactory}.
      * </p>
-     *
-     * @param xpathExpression is the XPath expression to create
-     *
+     * 
+     * @param xpathExpression
+     *            is the XPath expression to create
+     * 
      * @return a new <code>XPath</code> instance
-     *
-     * @throws InvalidXPathException if the XPath expression is invalid
+     * 
+     * @throws InvalidXPathException
+     *             if the XPath expression is invalid
      */
     public static XPath createXPath(String xpathExpression)
-                             throws InvalidXPathException {
+            throws InvalidXPathException {
         return getDocumentFactory().createXPath(xpathExpression);
     }
 
@@ -127,17 +127,19 @@ public final class DocumentHelper {
      * XPath <code>XPath</code> instance using the singleton {@link
      * DocumentFactory}.
      * </p>
-     *
-     * @param xpathExpression is the XPath expression to create
-     * @param context is the variable context to use when evaluating the XPath
-     *
+     * 
+     * @param xpathExpression
+     *            is the XPath expression to create
+     * @param context
+     *            is the variable context to use when evaluating the XPath
+     * 
      * @return a new <code>XPath</code> instance
-     *
-     * @throws InvalidXPathException if the XPath expression is invalid
+     * 
+     * @throws InvalidXPathException
+     *             if the XPath expression is invalid
      */
     public static XPath createXPath(String xpathExpression,
-                                    VariableContext context)
-                             throws InvalidXPathException {
+            VariableContext context) throws InvalidXPathException {
         return getDocumentFactory().createXPath(xpathExpression, context);
     }
 
@@ -148,9 +150,10 @@ public final class DocumentHelper {
      * filter expressions occur within XPath expressions such as
      * <code>self::node()[ filterExpression ]</code>
      * </p>
-     *
-     * @param xpathFilterExpression is the XPath filter expression  to create
-     *
+     * 
+     * @param xpathFilterExpression
+     *            is the XPath filter expression to create
+     * 
      * @return a new <code>NodeFilter</code> instance
      */
     public static NodeFilter createXPathFilter(String xpathFilterExpression) {
@@ -159,13 +162,14 @@ public final class DocumentHelper {
 
     /**
      * <p>
-     * <code>createPattern</code> parses the given  XPath expression to create
-     * an XSLT style {@link Pattern} instance which can then be used in an
-     * XSLT processing model.
+     * <code>createPattern</code> parses the given XPath expression to create
+     * an XSLT style {@link Pattern}instance which can then be used in an XSLT
+     * processing model.
      * </p>
-     *
-     * @param xpathPattern is the XPath pattern expression  to create
-     *
+     * 
+     * @param xpathPattern
+     *            is the XPath pattern expression to create
+     * 
      * @return a new <code>Pattern</code> instance
      */
     public static Pattern createPattern(String xpathPattern) {
@@ -175,13 +179,15 @@ public final class DocumentHelper {
     /**
      * <p>
      * <code>selectNodes</code> performs the given XPath expression on the
-     * {@link List} of {@link Node} instances appending all the results
-     * together into a single list.
+     * {@link List}of {@link Node}instances appending all the results together
+     * into a single list.
      * </p>
-     *
-     * @param xpathFilterExpression is the XPath filter expression  to evaluate
-     * @param nodes is the list of nodes on which to evalute the XPath
-     *
+     * 
+     * @param xpathFilterExpression
+     *            is the XPath filter expression to evaluate
+     * @param nodes
+     *            is the list of nodes on which to evalute the XPath
+     * 
      * @return the results of all the XPath evaluations as a single list
      */
     public static List selectNodes(String xpathFilterExpression, List nodes) {
@@ -193,13 +199,15 @@ public final class DocumentHelper {
     /**
      * <p>
      * <code>selectNodes</code> performs the given XPath expression on the
-     * {@link List} of {@link Node} instances appending all the results
-     * together into a single list.
+     * {@link List}of {@link Node}instances appending all the results together
+     * into a single list.
      * </p>
-     *
-     * @param xpathFilterExpression is the XPath filter expression  to evaluate
-     * @param node is the Node on which to evalute the XPath
-     *
+     * 
+     * @param xpathFilterExpression
+     *            is the XPath filter expression to evaluate
+     * @param node
+     *            is the Node on which to evalute the XPath
+     * 
      * @return the results of all the XPath evaluations as a single list
      */
     public static List selectNodes(String xpathFilterExpression, Node node) {
@@ -213,9 +221,11 @@ public final class DocumentHelper {
      * <code>sort</code> sorts the given List of Nodes using an XPath
      * expression as a {@link java.util.Comparator}.
      * </p>
-     *
-     * @param list is the list of Nodes to sort
-     * @param xpathExpression is the XPath expression used for comparison
+     * 
+     * @param list
+     *            is the list of Nodes to sort
+     * @param xpathExpression
+     *            is the XPath expression used for comparison
      */
     public static void sort(List list, String xpathExpression) {
         XPath xpath = createXPath(xpathExpression);
@@ -225,14 +235,17 @@ public final class DocumentHelper {
     /**
      * <p>
      * <code>sort</code> sorts the given List of Nodes using an XPath
-     * expression as a {@link java.util.Comparator} and optionally removing
+     * expression as a {@link java.util.Comparator}and optionally removing
      * duplicates.
      * </p>
-     *
-     * @param list is the list of Nodes to sort
-     * @param expression is the XPath expression used for comparison
-     * @param distinct if true then duplicate values (using the sortXPath for
-     *        comparisions) will be removed from the List
+     * 
+     * @param list
+     *            is the list of Nodes to sort
+     * @param expression
+     *            is the XPath expression used for comparison
+     * @param distinct
+     *            if true then duplicate values (using the sortXPath for
+     *            comparisions) will be removed from the List
      */
     public static void sort(List list, String expression, boolean distinct) {
         XPath xpath = createXPath(expression);
@@ -244,12 +257,14 @@ public final class DocumentHelper {
      * <code>parseText</code> parses the given text as an XML document and
      * returns the newly created Document.
      * </p>
-     *
-     * @param text is the XML text to be parsed
-     *
+     * 
+     * @param text
+     *            is the XML text to be parsed
+     * 
      * @return a newly parsed Document
-     *
-     * @throws DocumentException if the document could not be parsed
+     * 
+     * @throws DocumentException
+     *             if the document could not be parsed
      */
     public static Document parseText(String text) throws DocumentException {
         SAXReader reader = new SAXReader();
@@ -292,16 +307,19 @@ public final class DocumentHelper {
      * makeElement
      * </p>
      * a helper method which navigates from the given Document or Element node
-     * to some Element using the path  expression, creating any necessary
+     * to some Element using the path expression, creating any necessary
      * elements along the way. For example the path <code>a/b/c</code> would
      * get the first child &lt;a&gt; element, which would be created if it did
      * not exist, then the next child &lt;b&gt; and so on until finally a
      * &lt;c&gt; element is returned.
-     *
-     * @param source is the Element or Document to start navigating from
-     * @param path is a simple path expression, seperated by '/' which denotes
-     *        the path from the source to the resulting element such as a/b/c
-     *
+     * 
+     * @param source
+     *            is the Element or Document to start navigating from
+     * @param path
+     *            is a simple path expression, seperated by '/' which denotes
+     *            the path from the source to the resulting element such as
+     *            a/b/c
+     * 
      * @return the first Element on the given path which either already existed
      *         on the path or were created by this method.
      */
@@ -313,7 +331,7 @@ public final class DocumentHelper {
             Document document = (Document) source;
             parent = document.getRootElement();
 
-            // lets throw a NoSuchElementException 
+            // lets throw a NoSuchElementException
             // if we are given an empty path
             String name = tokens.nextToken();
 
@@ -346,50 +364,39 @@ public final class DocumentHelper {
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

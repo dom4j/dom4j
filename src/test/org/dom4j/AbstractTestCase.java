@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j;
@@ -21,7 +19,7 @@ import org.dom4j.util.NodeComparator;
 
 /**
  * An abstract base class for some DOM4J test cases
- *
+ * 
  * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision$
  */
@@ -49,7 +47,7 @@ public class AbstractTestCase extends TestCase {
     }
 
     protected Document getDocument(String path, SAXReader reader)
-                            throws Exception {
+            throws Exception {
         return reader.read(getFile(path));
     }
 
@@ -58,7 +56,7 @@ public class AbstractTestCase extends TestCase {
     }
 
     public void assertDocumentsEqual(Document doc1, Document doc2)
-                              throws Exception {
+            throws Exception {
         try {
             assertTrue("Doc1 not null", doc1 != null);
             assertTrue("Doc2 not null", doc2 != null);
@@ -70,7 +68,7 @@ public class AbstractTestCase extends TestCase {
 
             NodeComparator comparator = new NodeComparator();
             assertTrue("Documents are equal",
-                       comparator.compare(doc1, doc2) == 0);
+                    comparator.compare(doc1, doc2) == 0);
         } catch (Exception e) {
             log("Failed during comparison of: " + doc1 + " and: " + doc2);
             throw e;
@@ -78,7 +76,7 @@ public class AbstractTestCase extends TestCase {
     }
 
     public void assertNodesEqual(Document n1, Document n2) {
-        //        assertEquals( "Document names", n1.getName(), n2.getName() );
+        // assertEquals( "Document names", n1.getName(), n2.getName() );
         assertNodesEqual(n1.getDocType(), n2.getDocType());
         assertNodesEqualContent(n1, n2);
     }
@@ -90,7 +88,7 @@ public class AbstractTestCase extends TestCase {
         int c2 = n2.attributeCount();
 
         assertEquals("Elements have same number of attributes (" + c1 + ", "
-                     + c2 + " for: " + n1 + " and " + n2, c1, c2);
+                + c2 + " for: " + n1 + " and " + n2, c1, c2);
 
         for (int i = 0; i < c1; i++) {
             Attribute a1 = n1.attribute(i);
@@ -104,21 +102,21 @@ public class AbstractTestCase extends TestCase {
     public void assertNodesEqual(Attribute n1, Attribute n2) {
         assertNodesEqual(n1.getQName(), n2.getQName());
 
-        assertEquals("Attribute values for: " + n1 + " and " + n2,
-                     n1.getValue(), n2.getValue());
+        assertEquals("Attribute values for: " + n1 + " and " + n2, n1
+                .getValue(), n2.getValue());
     }
 
     public void assertNodesEqual(QName n1, QName n2) {
         assertEquals("URIs equal for: " + n1.getQualifiedName() + " and "
-                     + n2.getQualifiedName(), n1.getNamespaceURI(),
-                     n2.getNamespaceURI());
-        assertEquals("qualified names equal", n1.getQualifiedName(),
-                     n2.getQualifiedName());
+                + n2.getQualifiedName(), n1.getNamespaceURI(), n2
+                .getNamespaceURI());
+        assertEquals("qualified names equal", n1.getQualifiedName(), n2
+                .getQualifiedName());
     }
 
     public void assertNodesEqual(CharacterData t1, CharacterData t2) {
-        assertEquals("Text equal for: " + t1 + " and " + t2, t1.getText(),
-                     t2.getText());
+        assertEquals("Text equal for: " + t1 + " and " + t2, t1.getText(), t2
+                .getText());
     }
 
     public void assertNodesEqual(DocumentType o1, DocumentType o2) {
@@ -129,10 +127,10 @@ public class AbstractTestCase extends TestCase {
                 assertTrue("Missing DocType: " + o1, false);
             } else {
                 assertEquals("DocType name equal", o1.getName(), o2.getName());
-                assertEquals("DocType publicID equal", o1.getPublicID(),
-                             o2.getPublicID());
-                assertEquals("DocType systemID equal", o1.getSystemID(),
-                             o2.getSystemID());
+                assertEquals("DocType publicID equal", o1.getPublicID(), o2
+                        .getPublicID());
+                assertEquals("DocType systemID equal", o1.getSystemID(), o2
+                        .getSystemID());
             }
         }
     }
@@ -143,14 +141,14 @@ public class AbstractTestCase extends TestCase {
     }
 
     public void assertNodesEqual(ProcessingInstruction n1,
-                                 ProcessingInstruction n2) {
+            ProcessingInstruction n2) {
         assertEquals("PI targets equal", n1.getTarget(), n2.getTarget());
         assertEquals("PI text equal", n1.getText(), n2.getText());
     }
 
     public void assertNodesEqual(Namespace n1, Namespace n2) {
-        assertEquals("Namespace prefixes not equal", n1.getPrefix(),
-                     n2.getPrefix());
+        assertEquals("Namespace prefixes not equal", n1.getPrefix(), n2
+                .getPrefix());
         assertEquals("Namespace URIs not equal", n1.getURI(), n2.getURI());
     }
 
@@ -166,7 +164,7 @@ public class AbstractTestCase extends TestCase {
         }
 
         assertEquals("Branches have same number of children (" + c1 + ", " + c2
-                     + " for: " + b1 + " and " + b2, c1, c2);
+                + " for: " + b1 + " and " + b2, c1, c2);
 
         for (int i = 0; i < c1; i++) {
             Node n1 = b1.node(i);
@@ -213,7 +211,7 @@ public class AbstractTestCase extends TestCase {
 
             case Node.PROCESSING_INSTRUCTION_NODE:
                 assertNodesEqual((ProcessingInstruction) n1,
-                                 (ProcessingInstruction) n2);
+                        (ProcessingInstruction) n2);
 
                 break;
 
@@ -234,30 +232,29 @@ public class AbstractTestCase extends TestCase {
 
             default:
                 assertTrue("Invalid node types. node1: " + n1 + " and node2: "
-                           + n2, false);
+                        + n2, false);
         }
     }
 
     // Implementation methods
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     protected void setUp() throws Exception {
         System.setProperty("javax.xml.parsers.SAXParserFactory",
-                           SAXParserFactoryImpl.class.getName());
+                SAXParserFactoryImpl.class.getName());
         System.setProperty("javax.xml.transform.TransformerFactory",
-                           TransformerFactoryImpl.class.getName());
+                TransformerFactoryImpl.class.getName());
         document = DocumentHelper.createDocument();
 
         Element root = document.addElement("root");
 
-        Element author1 =
-            root.addElement("author").addAttribute("name", "James")
-                .addAttribute("location", "UK").addText("James Strachan");
+        Element author1 = root.addElement("author").addAttribute("name",
+                "James").addAttribute("location", "UK").addText(
+                "James Strachan");
 
         Element url1 = author1.addElement("url");
         url1.addText("http://sourceforge.net/users/jstrachan/");
 
-        Element author2 =
-            root.addElement("author").addAttribute("name", "Bob")
+        Element author2 = root.addElement("author").addAttribute("name", "Bob")
                 .addAttribute("location", "Canada").addText("Bob McWhirter");
 
         Element url2 = author2.addElement("url");
@@ -266,7 +263,7 @@ public class AbstractTestCase extends TestCase {
 
     /**
      * DOCUMENT ME!
-     *
+     * 
      * @return the root element of the document
      */
     protected Element getRootElement() {
@@ -277,50 +274,39 @@ public class AbstractTestCase extends TestCase {
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

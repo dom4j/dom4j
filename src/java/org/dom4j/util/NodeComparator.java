@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j.util;
@@ -28,24 +26,25 @@ import org.dom4j.Text;
 
 /**
  * <p>
- * <code>NodeComparator</code> is a {@link Comparator} of Node instances which
+ * <code>NodeComparator</code> is a {@link Comparator}of Node instances which
  * is capable of comparing Nodes for equality based on their values.
  * </p>
- *
- * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * 
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision$
  */
 public class NodeComparator implements Comparator {
     /**
-     * Compares its two arguments for order.  Returns a negative integer, zero,
+     * Compares its two arguments for order. Returns a negative integer, zero,
      * or a positive integer as the first argument is less than, equal to, or
      * greater than the second.
      * 
      * <p>
      * The implementor must ensure that <tt>sgn(compare(x, y)) ==
-     * -sgn(compare(y, x))</tt> for all <tt>x</tt> and <tt>y</tt>.  (This
-     * implies that <tt>compare(x, y)</tt> must throw an exception if and only
-     * if <tt>compare(y, x)</tt> throws an exception.)
+     * -sgn(compare(y, x))</tt>
+     * for all <tt>x</tt> and <tt>y</tt>. (This implies that
+     * <tt>compare(x, y)</tt> must throw an exception if and only if
+     * <tt>compare(y, x)</tt> throws an exception.)
      * </p>
      * 
      * <p>
@@ -61,16 +60,18 @@ public class NodeComparator implements Comparator {
      * </p>
      * 
      * <p>
-     * It is generally the case, but <i>not</i> strictly required that
-     * <tt>(compare(x, y)==0) == (x.equals(y))</tt>.  Generally speaking, any
+     * It is generally the case, but <i>not </i> strictly required that
+     * <tt>(compare(x, y)==0) == (x.equals(y))</tt>. Generally speaking, any
      * comparator that violates this condition should clearly indicate this
-     * fact.  The recommended language is "Note: this comparator imposes
+     * fact. The recommended language is "Note: this comparator imposes
      * orderings that are inconsistent with equals."
      * </p>
-     *
-     * @param o1 the first object to be compared.
-     * @param o2 the second object to be compared.
-     *
+     * 
+     * @param o1
+     *            the first object to be compared.
+     * @param o2
+     *            the second object to be compared.
+     * 
      * @return a negative integer, zero, or a positive integer as the first
      *         argument is less than, equal to, or greater than the second.
      */
@@ -139,7 +140,7 @@ public class NodeComparator implements Comparator {
 
                 case Node.PROCESSING_INSTRUCTION_NODE:
                     return compare((ProcessingInstruction) n1,
-                                   (ProcessingInstruction) n2);
+                            (ProcessingInstruction) n2);
 
                 case Node.COMMENT_NODE:
                     return compare((Comment) n1, (Comment) n2);
@@ -152,7 +153,7 @@ public class NodeComparator implements Comparator {
 
                 default:
                     throw new RuntimeException("Invalid node types. node1: "
-                                               + n1 + " and node2: " + n2);
+                            + n1 + " and node2: " + n2);
             }
         }
     }
@@ -305,50 +306,39 @@ public class NodeComparator implements Comparator {
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

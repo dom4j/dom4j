@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j.io;
@@ -21,11 +19,11 @@ import org.xml.sax.SAXException;
 
 /**
  * This extension of the SAXContentHandler writes SAX events immediately to the
- * provided XMLWriter, unless some {@link org.dom4.ElementHandler} is still
+ * provided XMLWriter, unless some {@link org.dom4.ElementHandler}is still
  * handling the current Element.
- *
+ * 
  * @author Wonne Keysers (Realsoftware.be)
- *
+ * 
  * @see org.dom4j.io.SAXContentHandler
  */
 class SAXModifyContentHandler extends SAXContentHandler {
@@ -39,13 +37,12 @@ class SAXModifyContentHandler extends SAXContentHandler {
     }
 
     public SAXModifyContentHandler(DocumentFactory documentFactory,
-                                   ElementHandler elementHandler) {
+            ElementHandler elementHandler) {
         super(documentFactory, elementHandler);
     }
 
     public SAXModifyContentHandler(DocumentFactory documentFactory,
-                                   ElementHandler elementHandler,
-                                   ElementStack elementStack) {
+            ElementHandler elementHandler, ElementStack elementStack) {
         super(documentFactory, elementHandler, elementStack);
     }
 
@@ -62,7 +59,7 @@ class SAXModifyContentHandler extends SAXContentHandler {
     }
 
     public void startDTD(String name, String publicId, String systemId)
-                  throws SAXException {
+            throws SAXException {
         super.startDTD(name, publicId, systemId);
 
         if (xmlWriter != null) {
@@ -78,12 +75,12 @@ class SAXModifyContentHandler extends SAXContentHandler {
         }
     }
 
-    public void comment(char[] parm1, int parm2, int parm3)
-                 throws SAXException {
-        super.comment(parm1, parm2, parm3);
+    public void comment(char[] characters, int parm2, int parm3)
+            throws SAXException {
+        super.comment(characters, parm2, parm3);
 
         if (!activeHandlers() && (xmlWriter != null)) {
-            xmlWriter.comment(parm1, parm2, parm3);
+            xmlWriter.comment(characters, parm2, parm3);
         }
     }
 
@@ -112,8 +109,7 @@ class SAXModifyContentHandler extends SAXContentHandler {
     }
 
     public void unparsedEntityDecl(String name, String publicId,
-                                   String systemId, String notation)
-                            throws SAXException {
+            String systemId, String notation) throws SAXException {
         super.unparsedEntityDecl(name, publicId, systemId, notation);
 
         if (!activeHandlers() && (xmlWriter != null)) {
@@ -122,7 +118,7 @@ class SAXModifyContentHandler extends SAXContentHandler {
     }
 
     public void notationDecl(String name, String publicId, String systemId)
-                      throws SAXException {
+            throws SAXException {
         super.notationDecl(name, publicId, systemId);
 
         if (xmlWriter != null) {
@@ -131,7 +127,7 @@ class SAXModifyContentHandler extends SAXContentHandler {
     }
 
     public void startElement(String uri, String localName, String qName,
-                             Attributes atts) throws SAXException {
+            Attributes atts) throws SAXException {
         super.startElement(uri, localName, qName, atts);
 
         if (!activeHandlers() && (xmlWriter != null)) {
@@ -148,7 +144,7 @@ class SAXModifyContentHandler extends SAXContentHandler {
     }
 
     public void ignorableWhitespace(char[] parm1, int parm2, int parm3)
-                             throws SAXException {
+            throws SAXException {
         super.ignorableWhitespace(parm1, parm2, parm3);
 
         if (!activeHandlers() && (xmlWriter != null)) {
@@ -157,7 +153,7 @@ class SAXModifyContentHandler extends SAXContentHandler {
     }
 
     public void processingInstruction(String target, String data)
-                               throws SAXException {
+            throws SAXException {
         super.processingInstruction(target, data);
 
         if (!activeHandlers() && (xmlWriter != null)) {
@@ -190,7 +186,7 @@ class SAXModifyContentHandler extends SAXContentHandler {
     }
 
     public void startPrefixMapping(String prefix, String uri)
-                            throws SAXException {
+            throws SAXException {
         super.startPrefixMapping(prefix, uri);
 
         if (xmlWriter != null) {
@@ -199,10 +195,9 @@ class SAXModifyContentHandler extends SAXContentHandler {
     }
 
     public void endElement(String uri, String localName, String qName)
-                    throws SAXException {
-        ElementHandler currentHandler =
-            getElementStack().getDispatchHandler().getHandler(getElementStack()
-                                                                  .getPath());
+            throws SAXException {
+        ElementHandler currentHandler = getElementStack().getDispatchHandler()
+                .getHandler(getElementStack().getPath());
 
         super.endElement(uri, localName, qName);
 
@@ -211,10 +206,10 @@ class SAXModifyContentHandler extends SAXContentHandler {
                 if (currentHandler == null) {
                     xmlWriter.endElement(uri, localName, qName);
                 } else if (currentHandler instanceof SAXModifyElementHandler) {
-                    SAXModifyElementHandler modifyHandler =
-                        (SAXModifyElementHandler) currentHandler;
-                    Element modifiedElement =
-                        modifyHandler.getModifiedElement();
+                    SAXModifyElementHandler modifyHandler 
+                            = (SAXModifyElementHandler) currentHandler;
+                    Element modifiedElement = modifyHandler
+                            .getModifiedElement();
 
                     try {
                         xmlWriter.write(modifiedElement);
@@ -235,7 +230,7 @@ class SAXModifyContentHandler extends SAXContentHandler {
     }
 
     public void characters(char[] parm1, int parm2, int parm3)
-                    throws SAXException {
+            throws SAXException {
         super.characters(parm1, parm2, parm3);
 
         if (!activeHandlers() && (xmlWriter != null)) {
@@ -254,50 +249,39 @@ class SAXModifyContentHandler extends SAXContentHandler {
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

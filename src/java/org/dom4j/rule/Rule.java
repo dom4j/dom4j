@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j.rule;
@@ -16,8 +14,8 @@ import org.dom4j.Node;
  * <code>Rule</code> matches against DOM4J Node so that some action can be
  * performed such as in the XSLT processing model.
  * </p>
- *
- * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+ * 
+ * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision$
  */
 public class Rule implements Comparable {
@@ -54,11 +52,13 @@ public class Rule implements Comparable {
     }
 
     /**
-     * Constructs a new Rule with the same instance data as the given rule but
-     * a different pattern.
-     *
-     * @param that DOCUMENT ME!
-     * @param pattern DOCUMENT ME!
+     * Constructs a new Rule with the same instance data as the given rule but a
+     * different pattern.
+     * 
+     * @param that
+     *            DOCUMENT ME!
+     * @param pattern
+     *            DOCUMENT ME!
      */
     public Rule(Rule that, Pattern pattern) {
         this.mode = that.mode;
@@ -90,11 +90,12 @@ public class Rule implements Comparable {
     }
 
     /**
-     * Compares two rules in XSLT processing model order assuming that the
-     * modes are equal.
-     *
-     * @param that DOCUMENT ME!
-     *
+     * Compares two rules in XSLT processing model order assuming that the modes
+     * are equal.
+     * 
+     * @param that
+     *            DOCUMENT ME!
+     * 
      * @return DOCUMENT ME!
      */
     public int compareTo(Rule that) {
@@ -113,15 +114,16 @@ public class Rule implements Comparable {
 
     public String toString() {
         return super.toString() + "[ pattern: " + getPattern() + " action: "
-               + getAction() + " ]";
+                + getAction() + " ]";
     }
 
     /**
      * DOCUMENT ME!
-     *
-     * @param node DOCUMENT ME!
-     *
-     * @return true if the pattern matches the given  DOM4J node.
+     * 
+     * @param node
+     *            DOCUMENT ME!
+     * 
+     * @return true if the pattern matches the given DOM4J node.
      */
     public final boolean matches(Node node) {
         return pattern.matches(node);
@@ -131,7 +133,7 @@ public class Rule implements Comparable {
      * If this rule contains a union pattern then this method should return an
      * array of Rules which describe the union rule, which should contain more
      * than one rule. Otherwise this method should return null.
-     *
+     * 
      * @return an array of the rules which make up this union rule or null if
      *         this rule is not a union rule
      */
@@ -154,7 +156,7 @@ public class Rule implements Comparable {
 
     /**
      * DOCUMENT ME!
-     *
+     * 
      * @return the type of node the pattern matches which by default should
      *         return ANY_NODE if it can match any kind of node.
      */
@@ -163,14 +165,14 @@ public class Rule implements Comparable {
     }
 
     /**
-     * For patterns which only match an ATTRIBUTE_NODE or an  ELEMENT_NODE then
-     * this pattern may return the name of the element or attribute it
-     * matches. This allows a more efficient rule matching algorithm to be
-     * performed, rather than a brute  force approach of evaluating every
-     * pattern for a given Node.
-     *
-     * @return the name of the element or attribute this pattern matches or
-     *         null if this pattern matches any or more than one name.
+     * For patterns which only match an ATTRIBUTE_NODE or an ELEMENT_NODE then
+     * this pattern may return the name of the element or attribute it matches.
+     * This allows a more efficient rule matching algorithm to be performed,
+     * rather than a brute force approach of evaluating every pattern for a
+     * given Node.
+     * 
+     * @return the name of the element or attribute this pattern matches or null
+     *         if this pattern matches any or more than one name.
      */
     public final String getMatchesNodeName() {
         return pattern.getMatchesNodeName();
@@ -178,7 +180,7 @@ public class Rule implements Comparable {
 
     /**
      * Getter for property mode.
-     *
+     * 
      * @return Value of property mode.
      */
     public String getMode() {
@@ -187,8 +189,9 @@ public class Rule implements Comparable {
 
     /**
      * Setter for property mode.
-     *
-     * @param mode New value of property mode.
+     * 
+     * @param mode
+     *            New value of property mode.
      */
     public void setMode(String mode) {
         this.mode = mode;
@@ -196,7 +199,7 @@ public class Rule implements Comparable {
 
     /**
      * Getter for property importPrecedence.
-     *
+     * 
      * @return Value of property importPrecedence.
      */
     public int getImportPrecedence() {
@@ -205,8 +208,9 @@ public class Rule implements Comparable {
 
     /**
      * Setter for property importPrecedence.
-     *
-     * @param importPrecedence New value of property importPrecedence.
+     * 
+     * @param importPrecedence
+     *            New value of property importPrecedence.
      */
     public void setImportPrecedence(int importPrecedence) {
         this.importPrecedence = importPrecedence;
@@ -214,7 +218,7 @@ public class Rule implements Comparable {
 
     /**
      * Getter for property priority.
-     *
+     * 
      * @return Value of property priority.
      */
     public double getPriority() {
@@ -223,8 +227,9 @@ public class Rule implements Comparable {
 
     /**
      * Setter for property priority.
-     *
-     * @param priority New value of property priority.
+     * 
+     * @param priority
+     *            New value of property priority.
      */
     public void setPriority(double priority) {
         this.priority = priority;
@@ -232,7 +237,7 @@ public class Rule implements Comparable {
 
     /**
      * Getter for property appearenceCount.
-     *
+     * 
      * @return Value of property appearenceCount.
      */
     public int getAppearenceCount() {
@@ -241,8 +246,9 @@ public class Rule implements Comparable {
 
     /**
      * Setter for property appearenceCount.
-     *
-     * @param appearenceCount New value of property appearenceCount.
+     * 
+     * @param appearenceCount
+     *            New value of property appearenceCount.
      */
     public void setAppearenceCount(int appearenceCount) {
         this.appearenceCount = appearenceCount;
@@ -250,7 +256,7 @@ public class Rule implements Comparable {
 
     /**
      * Getter for property pattern.
-     *
+     * 
      * @return Value of property pattern.
      */
     public Pattern getPattern() {
@@ -259,8 +265,9 @@ public class Rule implements Comparable {
 
     /**
      * Setter for property pattern.
-     *
-     * @param pattern New value of property pattern.
+     * 
+     * @param pattern
+     *            New value of property pattern.
      */
     public void setPattern(Pattern pattern) {
         this.pattern = pattern;
@@ -268,7 +275,7 @@ public class Rule implements Comparable {
 
     /**
      * Getter for property action.
-     *
+     * 
      * @return Value of property action.
      */
     public Action getAction() {
@@ -277,58 +284,48 @@ public class Rule implements Comparable {
 
     /**
      * Setter for property action.
-     *
-     * @param action New value of property action.
+     * 
+     * @param action
+     *            New value of property action.
      */
     public void setAction(Action action) {
         this.action = action;
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

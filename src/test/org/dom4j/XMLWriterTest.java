@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j;
@@ -28,8 +26,8 @@ import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * A simple test harness to check that the XML Writer works
- *
- * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+ * 
+ * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision$
  */
 public class XMLWriterTest extends AbstractTestCase {
@@ -40,7 +38,7 @@ public class XMLWriterTest extends AbstractTestCase {
     }
 
     // Test case(s)
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     public void testWriter() throws Exception {
         Object object = document;
         StringWriter out = new StringWriter();
@@ -58,7 +56,7 @@ public class XMLWriterTest extends AbstractTestCase {
         }
 
         assertTrue("Output text is bigger than 10 characters",
-                   text.length() > 10);
+                text.length() > 10);
     }
 
     public void testEncodingFormats() throws Exception {
@@ -89,7 +87,7 @@ public class XMLWriterTest extends AbstractTestCase {
         System.out.println(xml);
 
         assertTrue("child2 not present",
-                   xml.indexOf("<child2>test</child2>") != -1);
+                xml.indexOf("<child2>test</child2>") != -1);
     }
 
     protected void testEncoding(String encoding) throws Exception {
@@ -110,18 +108,18 @@ public class XMLWriterTest extends AbstractTestCase {
         Document doc = new DefaultDocument(project);
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        XMLWriter writer =
-            new XMLWriter(out, new OutputFormat("\t", true, "ISO-8859-1"));
+        XMLWriter writer = new XMLWriter(out, new OutputFormat("\t", true,
+                "ISO-8859-1"));
         writer.write(doc);
 
         ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
         SAXReader reader = new SAXReader();
         Document doc2 = reader.read(in);
 
-        assertTrue("Generated document has a root element",
-                   doc2.getRootElement() != null);
-        assertEquals("Generated document has corrent named root element",
-                     doc2.getRootElement().getName(), "project");
+        assertTrue("Generated document has a root element", doc2
+                .getRootElement() != null);
+        assertEquals("Generated document has corrent named root element", doc2
+                .getRootElement().getName(), "project");
     }
 
     public void testNamespaceBug() throws Exception {
@@ -137,11 +135,11 @@ public class XMLWriterTest extends AbstractTestCase {
 
         String text = out.toString();
 
-        //System.out.println( "Generated:" + text );
+        // System.out.println( "Generated:" + text );
         Document doc2 = DocumentHelper.parseText(text);
         root = doc2.getRootElement();
-        assertEquals("root has incorrect namespace", "ns1",
-                     root.getNamespaceURI());
+        assertEquals("root has incorrect namespace", "ns1", root
+                .getNamespaceURI());
 
         Element joe = (Element) root.elementIterator().next();
         assertEquals("joe has correct namespace", "ns2", joe.getNamespaceURI());
@@ -152,8 +150,9 @@ public class XMLWriterTest extends AbstractTestCase {
 
     /**
      * This test harness was supplied by Lari Hotari
-     *
-     * @throws Exception DOCUMENT ME!
+     * 
+     * @throws Exception
+     *             DOCUMENT ME!
      */
     public void testContentHandler() throws Exception {
         StringWriter out = new StringWriter();
@@ -179,8 +178,9 @@ public class XMLWriterTest extends AbstractTestCase {
 
     /**
      * This test was provided by Manfred Lotz
-     *
-     * @throws Exception DOCUMENT ME!
+     * 
+     * @throws Exception
+     *             DOCUMENT ME!
      */
     public void testWhitespaceBug() throws Exception {
         String notes = "<notes> This is a      multiline\n\rentry</notes>";
@@ -205,16 +205,17 @@ public class XMLWriterTest extends AbstractTestCase {
         String expected = "This is a multiline entry";
 
         assertEquals("valueOf() returns the correct text padding", expected,
-                     text);
+                text);
 
         assertEquals("getText() returns the correct text padding", expected,
-                     doc2.getRootElement().getText());
+                doc2.getRootElement().getText());
     }
 
     /**
      * This test was provided by Manfred Lotz
-     *
-     * @throws Exception DOCUMENT ME!
+     * 
+     * @throws Exception
+     *             DOCUMENT ME!
      */
     public void testWhitespaceBug2() throws Exception {
         Document doc = DocumentHelper.createDocument();
@@ -242,10 +243,10 @@ public class XMLWriterTest extends AbstractTestCase {
         String expected = "to live";
 
         assertEquals("valueOf() returns the correct text padding", expected,
-                     text);
+                text);
 
         assertEquals("getText() returns the correct text padding", expected,
-                     doc2.getRootElement().element("meaning").getText());
+                doc2.getRootElement().element("meaning").getText());
     }
 
     public void testPadding() throws Exception {
@@ -261,7 +262,7 @@ public class XMLWriterTest extends AbstractTestCase {
         format.setExpandEmptyElements(true);
         format.setPadText(true);
 
-        //format.setTrimText(true);
+        // format.setTrimText(true);
         StringWriter buffer = new StringWriter();
         XMLWriter writer = new XMLWriter(buffer, format);
         writer.write(doc);
@@ -279,19 +280,19 @@ public class XMLWriterTest extends AbstractTestCase {
      */
     public void testPrettyPrinting() throws Exception {
         Document doc = DocumentFactory.getInstance().createDocument();
-        doc.addElement("summary").addAttribute("date", "6/7/8")
-           .addElement("orderline").addText("puffins").addElement("ranjit")
-           .addComment("Ranjit is a happy Puffin");
+        doc.addElement("summary").addAttribute("date", "6/7/8").addElement(
+                "orderline").addText("puffins").addElement("ranjit")
+                .addComment("Ranjit is a happy Puffin");
 
-        XMLWriter writer =
-            new XMLWriter(System.out, OutputFormat.createPrettyPrint());
+        XMLWriter writer = new XMLWriter(System.out, OutputFormat
+                .createPrettyPrint());
         writer.write(doc);
 
         doc = DocumentFactory.getInstance().createDocument();
-        doc.addElement("summary").addAttribute("date", "6/7/8")
-           .addElement("orderline").addText("puffins").addElement("ranjit")
-           .addComment("Ranjit is a happy Puffin").addComment("another comment")
-           .addElement("anotherElement");
+        doc.addElement("summary").addAttribute("date", "6/7/8").addElement(
+                "orderline").addText("puffins").addElement("ranjit")
+                .addComment("Ranjit is a happy Puffin").addComment(
+                        "another comment").addElement("anotherElement");
         writer.write(doc);
     }
 
@@ -300,13 +301,12 @@ public class XMLWriterTest extends AbstractTestCase {
         doc.addElement("root").addAttribute("test", "text with ' in it");
 
         StringWriter out = new StringWriter();
-        XMLWriter writer =
-            new XMLWriter(out, OutputFormat.createCompactFormat());
+        XMLWriter writer = new XMLWriter(out, OutputFormat
+                .createCompactFormat());
         writer.write(doc);
 
-        String expected =
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root test=\"text "
-            + "with ' in it\"/>";
+        String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                + "<root test=\"text with ' in it\"/>";
         assertEquals(expected, out.toString());
     }
 
@@ -343,11 +343,10 @@ public class XMLWriterTest extends AbstractTestCase {
 
         int start = xml.indexOf("<root");
         int end = xml.indexOf("/root>") + 6;
-        String eol = "\n"; //System.getProperty("line.separator");
-        String expected =
-            "<root>this is simple text" + eol
-            + "    <child></child>containing spaces and multiple textnodes"
-            + eol + "</root>";
+        String eol = "\n"; // System.getProperty("line.separator");
+        String expected = "<root>this is simple text" + eol
+                + "    <child></child>containing spaces and multiple textnodes"
+                + eol + "</root>";
         System.out.println("Expected:");
         System.out.println(expected);
         System.out.println("Obtained:");
@@ -378,14 +377,16 @@ public class XMLWriterTest extends AbstractTestCase {
     }
 
     public void testWriteEntities() throws Exception {
-        String xml =
-            "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n"
-            + "<!DOCTYPE xml [<!ENTITY copy \"&#169;\"> "
-            + "<!ENTITY trade \"&#8482;\"> " + "<!ENTITY deg \"&#x00b0;\"> "
-            + "<!ENTITY gt \"&#62;\"> " + "<!ENTITY sup2 \"&#x00b2;\"> "
-            + "<!ENTITY frac14 \"&#x00bc;\"> " + "<!ENTITY quot \"&#34;\"> "
-            + "<!ENTITY frac12 \"&#x00bd;\"> " + "<!ENTITY euro \"&#x20ac;\"> "
-            + "<!ENTITY Omega \"&#937;\"> ]>\n" + "<root />";
+        String xml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n"
+                + "<!DOCTYPE xml [<!ENTITY copy \"&#169;\"> "
+                + "<!ENTITY trade \"&#8482;\"> "
+                + "<!ENTITY deg \"&#x00b0;\"> " + "<!ENTITY gt \"&#62;\"> "
+                + "<!ENTITY sup2 \"&#x00b2;\"> "
+                + "<!ENTITY frac14 \"&#x00bc;\"> "
+                + "<!ENTITY quot \"&#34;\"> "
+                + "<!ENTITY frac12 \"&#x00bd;\"> "
+                + "<!ENTITY euro \"&#x20ac;\"> "
+                + "<!ENTITY Omega \"&#937;\"> ]>\n" + "<root />";
 
         SAXReader reader = new SAXReader("org.apache.xerces.parsers.SAXParser");
         reader.setIncludeInternalDTDDeclarations(true);
@@ -446,8 +447,7 @@ public class XMLWriterTest extends AbstractTestCase {
         System.out.println(doc.asXML());
     }
 
-    protected void generateXML(ContentHandler handler)
-                        throws SAXException {
+    protected void generateXML(ContentHandler handler) throws SAXException {
         handler.startDocument();
 
         AttributesImpl attrs = new AttributesImpl();
@@ -463,50 +463,39 @@ public class XMLWriterTest extends AbstractTestCase {
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

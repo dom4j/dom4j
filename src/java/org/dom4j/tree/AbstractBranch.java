@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j.tree;
@@ -26,16 +24,17 @@ import org.dom4j.io.OutputFormat;
 
 /**
  * <p>
- * <code>AbstractBranch</code> is an abstract base class for  tree implementors
+ * <code>AbstractBranch</code> is an abstract base class for tree implementors
  * to use for implementation inheritence.
  * </p>
- *
- * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * 
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision$
  */
 public abstract class AbstractBranch extends AbstractNode implements Branch {
     /** The output format used by default */
     protected static OutputFormat outputFormat = new OutputFormat();
+
     protected static final int DEFAULT_CONTENT_LIST_SIZE = 5;
 
     public AbstractBranch() {
@@ -86,9 +85,10 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
 
     /**
      * DOCUMENT ME!
-     *
-     * @param content DOCUMENT ME!
-     *
+     * 
+     * @param content
+     *            DOCUMENT ME!
+     * 
      * @return the text value of the given content object as text which returns
      *         the text value of CDATA, Entity or Text nodes
      */
@@ -99,7 +99,7 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
             switch (node.getNodeType()) {
                 case CDATA_SECTION_NODE:
 
-                //case ENTITY_NODE:
+                // case ENTITY_NODE:
                 case ENTITY_REFERENCE_NODE:
                 case TEXT_NODE:
                     return node.getText();
@@ -116,9 +116,10 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
 
     /**
      * DOCUMENT ME!
-     *
-     * @param content DOCUMENT ME!
-     *
+     * 
+     * @param content
+     *            DOCUMENT ME!
+     * 
      * @return the XPath defined string-value of the given content object
      */
     protected String getContentAsStringValue(Object content) {
@@ -128,7 +129,7 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
             switch (node.getNodeType()) {
                 case CDATA_SECTION_NODE:
 
-                //case ENTITY_NODE:
+                // case ENTITY_NODE:
                 case ENTITY_REFERENCE_NODE:
                 case TEXT_NODE:
                 case ELEMENT_NODE:
@@ -177,8 +178,8 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     }
 
     public Element addElement(String qualifiedName, String namespaceURI) {
-        Element node =
-            getDocumentFactory().createElement(qualifiedName, namespaceURI);
+        Element node = getDocumentFactory().createElement(qualifiedName,
+                namespaceURI);
         add(node);
 
         return node;
@@ -198,7 +199,7 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
         return addElement(qName);
     }
 
-    // polymorphic node methods    
+    // polymorphic node methods
     public void add(Node node) {
         switch (node.getNodeType()) {
             case ELEMENT_NODE:
@@ -324,9 +325,10 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
 
     /**
      * DOCUMENT ME!
-     *
-     * @param element DOCUMENT ME!
-     *
+     * 
+     * @param element
+     *            DOCUMENT ME!
+     * 
      * @return the ID of the given <code>Element</code>
      */
     protected String elementID(Element element) {
@@ -337,15 +339,15 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
 
     /**
      * DOCUMENT ME!
-     *
+     * 
      * @return the internal List used to manage the content
      */
     protected abstract List contentList();
 
     /**
-     * A Factory Method pattern which creates  a List implementation used to
+     * A Factory Method pattern which creates a List implementation used to
      * store content
-     *
+     * 
      * @return DOCUMENT ME!
      */
     protected List createContentList() {
@@ -353,11 +355,12 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     }
 
     /**
-     * A Factory Method pattern which creates  a List implementation used to
+     * A Factory Method pattern which creates a List implementation used to
      * store content
-     *
-     * @param size DOCUMENT ME!
-     *
+     * 
+     * @param size
+     *            DOCUMENT ME!
+     * 
      * @return DOCUMENT ME!
      */
     protected List createContentList(int size) {
@@ -365,9 +368,9 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     }
 
     /**
-     * A Factory Method pattern which creates  a BackedList implementation used
-     * to store results of  a filtered content query.
-     *
+     * A Factory Method pattern which creates a BackedList implementation used
+     * to store results of a filtered content query.
+     * 
      * @return DOCUMENT ME!
      */
     protected BackedList createResultList() {
@@ -375,11 +378,12 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     }
 
     /**
-     * A Factory Method pattern which creates  a BackedList implementation
-     * which contains a single result
-     *
-     * @param result DOCUMENT ME!
-     *
+     * A Factory Method pattern which creates a BackedList implementation which
+     * contains a single result
+     * 
+     * @param result
+     *            DOCUMENT ME!
+     * 
      * @return DOCUMENT ME!
      */
     protected List createSingleResultList(Object result) {
@@ -392,7 +396,7 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     /**
      * A Factory Method pattern which creates an empty a BackedList
      * implementation
-     *
+     * 
      * @return DOCUMENT ME!
      */
     protected List createEmptyList() {
@@ -408,16 +412,18 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     /**
      * Called when a new child node has been added to me to allow any parent
      * relationships to be created or events to be fired.
-     *
-     * @param node DOCUMENT ME!
+     * 
+     * @param node
+     *            DOCUMENT ME!
      */
     protected abstract void childAdded(Node node);
 
     /**
-     * Called when a child node has been removed  to allow any parent
+     * Called when a child node has been removed to allow any parent
      * relationships to be deleted or events to be fired.
-     *
-     * @param node DOCUMENT ME!
+     * 
+     * @param node
+     *            DOCUMENT ME!
      */
     protected abstract void childRemoved(Node node);
 
@@ -438,63 +444,54 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     }
 
     /**
-     * Called when an invalid node has been added.  Throws an {@link
+     * Called when an invalid node has been added. Throws an {@link
      * IllegalAddException}.
-     *
-     * @param node DOCUMENT ME!
-     *
-     * @throws IllegalAddException DOCUMENT ME!
+     * 
+     * @param node
+     *            DOCUMENT ME!
+     * 
+     * @throws IllegalAddException
+     *             DOCUMENT ME!
      */
     protected void invalidNodeTypeAddException(Node node) {
         throw new IllegalAddException("Invalid node type. Cannot add node: "
-                                      + node + " to this branch: " + this);
+                + node + " to this branch: " + this);
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j.tree;
@@ -39,21 +37,25 @@ import org.xml.sax.Attributes;
 
 /**
  * <p>
- * <code>AbstractElement</code> is an abstract base class for  tree
+ * <code>AbstractElement</code> is an abstract base class for tree
  * implementors to use for implementation inheritence.
  * </p>
- *
- * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * 
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision$
  */
-public abstract class AbstractElement extends AbstractBranch
-    implements org.dom4j.Element {
+public abstract class AbstractElement extends AbstractBranch implements
+        org.dom4j.Element {
     /** The <code>DocumentFactory</code> instance used by default */
-    private static final DocumentFactory DOCUMENT_FACTORY =
-        DocumentFactory.getInstance();
+    private static final DocumentFactory DOCUMENT_FACTORY = DocumentFactory
+            .getInstance();
+
     protected static final List EMPTY_LIST = Collections.EMPTY_LIST;
+
     protected static final Iterator EMPTY_ITERATOR = EMPTY_LIST.iterator();
+
     protected static final boolean VERBOSE_TOSTRING = false;
+
     protected static final boolean USE_STRINGVALUE_SEPARATOR = false;
 
     public AbstractElement() {
@@ -90,7 +92,7 @@ public abstract class AbstractElement extends AbstractBranch
      * getQualifiedName() if there is a namespace prefix defined or if no
      * namespace is present then it is getName() or if a namespace is defined
      * with no prefix then the expression is [name()='X'] where X = getName().
-     *
+     * 
      * @return DOCUMENT ME!
      */
     public String getXPathNameStep() {
@@ -170,8 +172,7 @@ public abstract class AbstractElement extends AbstractBranch
             return out.toString();
         } catch (IOException e) {
             throw new RuntimeException("IOException while generating "
-                                       + "textual representation: "
-                                       + e.getMessage());
+                    + "textual representation: " + e.getMessage());
         }
     }
 
@@ -183,10 +184,12 @@ public abstract class AbstractElement extends AbstractBranch
 
     /**
      * <p>
-     * <code>accept</code> method is the <code>Visitor Pattern</code> method.
+     * <code>accept</code> method is the <code>Visitor Pattern</code>
+     * method.
      * </p>
-     *
-     * @param visitor <code>Visitor</code> is the visitor.
+     * 
+     * @param visitor
+     *            <code>Visitor</code> is the visitor.
      */
     public void accept(Visitor visitor) {
         visitor.visit(this);
@@ -212,27 +215,27 @@ public abstract class AbstractElement extends AbstractBranch
         if ((uri != null) && (uri.length() > 0)) {
             if (VERBOSE_TOSTRING) {
                 return super.toString() + " [Element: <" + getQualifiedName()
-                       + " uri: " + uri + " attributes: " + attributeList()
-                       + " content: " + contentList() + " />]";
+                        + " uri: " + uri + " attributes: " + attributeList()
+                        + " content: " + contentList() + " />]";
             } else {
                 return super.toString() + " [Element: <" + getQualifiedName()
-                       + " uri: " + uri + " attributes: " + attributeList()
-                       + "/>]";
+                        + " uri: " + uri + " attributes: " + attributeList()
+                        + "/>]";
             }
         } else {
             if (VERBOSE_TOSTRING) {
                 return super.toString() + " [Element: <" + getQualifiedName()
-                       + " attributes: " + attributeList() + " content: "
-                       + contentList() + " />]";
+                        + " attributes: " + attributeList() + " content: "
+                        + contentList() + " />]";
             } else {
                 return super.toString() + " [Element: <" + getQualifiedName()
-                       + " attributes: " + attributeList() + "/>]";
+                        + " attributes: " + attributeList() + "/>]";
             }
         }
     }
 
     // QName methods
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     public Namespace getNamespace() {
         return getQName().getNamespace();
     }
@@ -262,7 +265,7 @@ public abstract class AbstractElement extends AbstractBranch
     }
 
     // Node methods
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     public Node node(int index) {
         if (index >= 0) {
             List list = contentList();
@@ -298,7 +301,7 @@ public abstract class AbstractElement extends AbstractBranch
     }
 
     // Element methods
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     public Element element(String name) {
         List list = contentList();
 
@@ -432,7 +435,7 @@ public abstract class AbstractElement extends AbstractBranch
     }
 
     // Attribute methods
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     public List attributes() {
         return new ContentListFacade(this, attributeList());
     }
@@ -488,14 +491,16 @@ public abstract class AbstractElement extends AbstractBranch
     /**
      * This method provides a more optimal way of setting all the attributes on
      * an Element particularly for use in {@link org.dom4j.io.SAXReader}.
-     *
-     * @param attributes DOCUMENT ME!
-     * @param namespaceStack DOCUMENT ME!
-     * @param noNamespaceAttributes DOCUMENT ME!
+     * 
+     * @param attributes
+     *            DOCUMENT ME!
+     * @param namespaceStack
+     *            DOCUMENT ME!
+     * @param noNamespaceAttributes
+     *            DOCUMENT ME!
      */
     public void setAttributes(Attributes attributes,
-                              NamespaceStack namespaceStack,
-                              boolean noNamespaceAttributes) {
+            NamespaceStack namespaceStack, boolean noNamespaceAttributes) {
         // now lets add all attribute values
         int size = attributes.getLength();
 
@@ -513,13 +518,11 @@ public abstract class AbstractElement extends AbstractBranch
 
                     String attributeValue = attributes.getValue(0);
 
-                    QName attributeQName =
-                        namespaceStack.getAttributeQName(attributeURI,
-                                                         attributeLocalName,
-                                                         name);
+                    QName attributeQName = namespaceStack.getAttributeQName(
+                            attributeURI, attributeLocalName, name);
 
                     add(factory.createAttribute(this, attributeQName,
-                                                attributeValue));
+                            attributeValue));
                 }
             } else {
                 List list = attributeList(size);
@@ -527,7 +530,7 @@ public abstract class AbstractElement extends AbstractBranch
                 list.clear();
 
                 for (int i = 0; i < size; i++) {
-                    // optimised to avoid the call to attribute(QName) to 
+                    // optimised to avoid the call to attribute(QName) to
                     // lookup an attribute for a given QName
                     String attributeName = attributes.getQName(i);
 
@@ -539,14 +542,12 @@ public abstract class AbstractElement extends AbstractBranch
 
                         String attributeValue = attributes.getValue(i);
 
-                        QName attributeQName =
-                            namespaceStack.getAttributeQName(attributeURI,
-                                                             attributeLocalName,
-                                                             attributeName);
+                        QName attributeQName = namespaceStack
+                                .getAttributeQName(attributeURI,
+                                        attributeLocalName, attributeName);
 
-                        Attribute attribute =
-                            factory.createAttribute(this, attributeQName,
-                                                    attributeValue);
+                        Attribute attribute = factory.createAttribute(this,
+                                attributeQName, attributeValue);
 
                         list.add(attribute);
 
@@ -591,11 +592,13 @@ public abstract class AbstractElement extends AbstractBranch
 
     /**
      * DOCUMENT ME!
-     *
-     * @param name DOCUMENT ME!
-     * @param value DOCUMENT ME!
-     *
-     * @deprecated As of version 0.5. Please use  {@link
+     * 
+     * @param name
+     *            DOCUMENT ME!
+     * @param value
+     *            DOCUMENT ME!
+     * 
+     * @deprecated As of version 0.5. Please use {@link
      *             #addAttribute(String,String)} instead. WILL BE REMOVED IN
      *             dom4j-1.6 !!
      */
@@ -605,11 +608,13 @@ public abstract class AbstractElement extends AbstractBranch
 
     /**
      * DOCUMENT ME!
-     *
-     * @param qName DOCUMENT ME!
-     * @param value DOCUMENT ME!
-     *
-     * @deprecated As of version 0.5. Please use  {@link
+     * 
+     * @param qName
+     *            DOCUMENT ME!
+     * @param value
+     *            DOCUMENT ME!
+     * 
+     * @deprecated As of version 0.5. Please use {@link
      *             #addAttribute(String,String)} instead. WILL BE REMOVED IN
      *             dom4j-1.6 !!
      */
@@ -619,9 +624,8 @@ public abstract class AbstractElement extends AbstractBranch
 
     public void add(Attribute attribute) {
         if (attribute.getParent() != null) {
-            String message =
-                "The Attribute already has an existing parent \""
-                + attribute.getParent().getQualifiedName() + "\"";
+            String message = "The Attribute already has an existing parent \""
+                    + attribute.getParent().getQualifiedName() + "\"";
 
             throw new IllegalAddException(this, attribute, message);
         }
@@ -664,7 +668,7 @@ public abstract class AbstractElement extends AbstractBranch
     }
 
     // Processing instruction API
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     public List processingInstructions() {
         List list = contentList();
 
@@ -746,7 +750,7 @@ public abstract class AbstractElement extends AbstractBranch
     }
 
     // Content Model methods
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     public Node getXPathResult(int index) {
         Node answer = node(index);
 
@@ -835,10 +839,8 @@ public abstract class AbstractElement extends AbstractBranch
 
             if (namespace == null) {
                 throw new IllegalAddException("No such namespace prefix: "
-                                              + prefix + " is in scope on: "
-                                              + this
-                                              + " so cannot add element: "
-                                              + name);
+                        + prefix + " is in scope on: " + this
+                        + " so cannot add element: " + name);
             }
         } else {
             namespace = getNamespaceForPrefix("");
@@ -876,8 +878,8 @@ public abstract class AbstractElement extends AbstractBranch
     }
 
     public Element addProcessingInstruction(String target, String data) {
-        ProcessingInstruction node =
-            getDocumentFactory().createProcessingInstruction(target, data);
+        ProcessingInstruction node = getDocumentFactory()
+                .createProcessingInstruction(target, data);
 
         addNewNode(node);
 
@@ -885,8 +887,8 @@ public abstract class AbstractElement extends AbstractBranch
     }
 
     public Element addProcessingInstruction(String target, Map data) {
-        ProcessingInstruction node =
-            getDocumentFactory().createProcessingInstruction(target, data);
+        ProcessingInstruction node = getDocumentFactory()
+                .createProcessingInstruction(target, data);
 
         addNewNode(node);
 
@@ -901,7 +903,7 @@ public abstract class AbstractElement extends AbstractBranch
         return this;
     }
 
-    // polymorphic node methods    
+    // polymorphic node methods
     public void add(Node node) {
         switch (node.getNodeType()) {
             case ELEMENT_NODE:
@@ -939,11 +941,10 @@ public abstract class AbstractElement extends AbstractBranch
 
                 break;
 
-            /*  XXXX: to do!
-                        case DOCUMENT_TYPE_NODE:
-                            add((DocumentType) node);
-                            break;
-            */
+            /*
+             * XXXX: to do! case DOCUMENT_TYPE_NODE: add((DocumentType) node);
+             * break;
+             */
             case NAMESPACE_NODE:
                 add((Namespace) node);
 
@@ -978,9 +979,8 @@ public abstract class AbstractElement extends AbstractBranch
                 return remove((Comment) node);
 
             /*
-                        case DOCUMENT_TYPE_NODE:
-                            return remove((DocumentType) node);
-            */
+             * case DOCUMENT_TYPE_NODE: return remove((DocumentType) node);
+             */
             case NAMESPACE_NODE:
                 return remove((Namespace) node);
 
@@ -1047,7 +1047,7 @@ public abstract class AbstractElement extends AbstractBranch
     }
 
     // Helper methods
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     public boolean hasMixedContent() {
         List content = contentList();
 
@@ -1106,7 +1106,7 @@ public abstract class AbstractElement extends AbstractBranch
                 switch (node.getNodeType()) {
                     case CDATA_SECTION_NODE:
 
-                    //case ENTITY_NODE:
+                    // case ENTITY_NODE:
                     case ENTITY_REFERENCE_NODE:
                     case TEXT_NODE:
                         it.remove();
@@ -1158,18 +1158,18 @@ public abstract class AbstractElement extends AbstractBranch
     /**
      * Puts all <code>Text</code> nodes in the full depth of the sub-tree
      * underneath this <code>Node</code>, including attribute nodes, into a
-     * "normal" form where only structure (e.g., elements, comments,
-     * processing instructions, CDATA sections, and entity references)
-     * separates <code>Text</code> nodes, i.e., there are neither adjacent
-     * <code>Text</code> nodes nor empty <code>Text</code> nodes. This can  be
-     * used to ensure that the DOM view of a document is the same as if  it
-     * were saved and re-loaded, and is useful when operations (such as
-     * XPointer  lookups) that depend on a particular document tree  structure
-     * are to be used.In cases where the document contains
-     * <code>CDATASections</code>, the normalize operation alone may not be
-     * sufficient, since XPointers do not differentiate between
-     * <code>Text</code> nodes and <code>CDATASection</code> nodes.
-     *
+     * "normal" form where only structure (e.g., elements, comments, processing
+     * instructions, CDATA sections, and entity references) separates
+     * <code>Text</code> nodes, i.e., there are neither adjacent
+     * <code>Text</code> nodes nor empty <code>Text</code> nodes. This can
+     * be used to ensure that the DOM view of a document is the same as if it
+     * were saved and re-loaded, and is useful when operations (such as XPointer
+     * lookups) that depend on a particular document tree structure are to be
+     * used.In cases where the document contains <code>CDATASections</code>,
+     * the normalize operation alone may not be sufficient, since XPointers do
+     * not differentiate between <code>Text</code> nodes and
+     * <code>CDATASection</code> nodes.
+     * 
      * @since DOM Level 2
      */
     public void normalize() {
@@ -1193,7 +1193,7 @@ public abstract class AbstractElement extends AbstractBranch
                     String value = text.getText();
 
                     // only remove empty Text nodes, not whitespace nodes
-                    //if ( value == null || value.trim().length() <= 0 ) {
+                    // if ( value == null || value.trim().length() <= 0 ) {
                     if ((value == null) || (value.length() <= 0)) {
                         remove(text);
                     } else {
@@ -1257,20 +1257,16 @@ public abstract class AbstractElement extends AbstractBranch
     /**
      * <p>
      * This returns a deep clone of this element. The new element is detached
-     * from its parent, and getParent() on the  clone will return null.
+     * from its parent, and getParent() on the clone will return null.
      * </p>
-     *
+     * 
      * @return the clone of this element
      */
 
     /*
-        public Object clone() {
-            Element clone = createElement(getQName());
-            clone.appendAttributes(this);
-            clone.appendContent(this);
-            return clone;
-        }
-    */
+     * public Object clone() { Element clone = createElement(getQName());
+     * clone.appendAttributes(this); clone.appendContent(this); return clone; }
+     */
     public Element createCopy() {
         Element clone = createElement(getQName());
 
@@ -1396,11 +1392,11 @@ public abstract class AbstractElement extends AbstractBranch
     public List getNamespacesForURI(String uri) {
         BackedList answer = createResultList();
 
-//        if (getNamespaceURI().equals(uri)) {
-//
-//            answer.addLocal(getNamespace());
-//
-//        }
+        // if (getNamespaceURI().equals(uri)) {
+        //
+        // answer.addLocal(getNamespace());
+        //
+        // }
         List list = contentList();
 
         int size = list.size();
@@ -1420,12 +1416,12 @@ public abstract class AbstractElement extends AbstractBranch
     public List declaredNamespaces() {
         BackedList answer = createResultList();
 
-//        if (getNamespaceURI().length() > 0) {
-//
-//            answer.addLocal(getNamespace());
-//
-//        }
-//
+        // if (getNamespaceURI().length() > 0) {
+        //
+        // answer.addLocal(getNamespace());
+        //
+        // }
+        //
         List list = contentList();
 
         int size = list.size();
@@ -1486,12 +1482,13 @@ public abstract class AbstractElement extends AbstractBranch
     }
 
     // Implementation helper methods
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * Ensures that the list of attributes has the given size
-     *
-     * @param minCapacity DOCUMENT ME!
+     * 
+     * @param minCapacity
+     *            DOCUMENT ME!
      */
     public void ensureAttributesCapacity(int minCapacity) {
         if (minCapacity > 1) {
@@ -1506,7 +1503,7 @@ public abstract class AbstractElement extends AbstractBranch
     }
 
     // Implementation methods
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     protected Element createElement(String name) {
         return getDocumentFactory().createElement(name);
     }
@@ -1518,9 +1515,8 @@ public abstract class AbstractElement extends AbstractBranch
     protected void addNode(Node node) {
         if (node.getParent() != null) {
             // XXX: could clone here
-            String message =
-                "The Node already has an existing parent of \""
-                + node.getParent().getQualifiedName() + "\"";
+            String message = "The Node already has an existing parent of \""
+                    + node.getParent().getQualifiedName() + "\"";
 
             throw new IllegalAddException(this, node, message);
         }
@@ -1531,9 +1527,8 @@ public abstract class AbstractElement extends AbstractBranch
     protected void addNode(int index, Node node) {
         if (node.getParent() != null) {
             // XXX: could clone here
-            String message =
-                "The Node already has an existing parent of \""
-                + node.getParent().getQualifiedName() + "\"";
+            String message = "The Node already has an existing parent of \""
+                    + node.getParent().getQualifiedName() + "\"";
 
             throw new IllegalAddException(this, node, message);
         }
@@ -1543,8 +1538,9 @@ public abstract class AbstractElement extends AbstractBranch
 
     /**
      * Like addNode() but does not require a parent check
-     *
-     * @param node DOCUMENT ME!
+     * 
+     * @param node
+     *            DOCUMENT ME!
      */
     protected void addNewNode(Node node) {
         contentList().add(node);
@@ -1570,8 +1566,9 @@ public abstract class AbstractElement extends AbstractBranch
 
     /**
      * Called when a new child node is added to create any parent relationships
-     *
-     * @param node DOCUMENT ME!
+     * 
+     * @param node
+     *            DOCUMENT ME!
      */
     protected void childAdded(Node node) {
         if (node != null) {
@@ -1589,7 +1586,7 @@ public abstract class AbstractElement extends AbstractBranch
 
     /**
      * DOCUMENT ME!
-     *
+     * 
      * @return the internal List used to store attributes or creates one if one
      *         is not available
      */
@@ -1597,9 +1594,10 @@ public abstract class AbstractElement extends AbstractBranch
 
     /**
      * DOCUMENT ME!
-     *
-     * @param attributeCount DOCUMENT ME!
-     *
+     * 
+     * @param attributeCount
+     *            DOCUMENT ME!
+     * 
      * @return the internal List used to store attributes or creates one with
      *         the specified size if one is not available
      */
@@ -1621,9 +1619,9 @@ public abstract class AbstractElement extends AbstractBranch
     }
 
     /**
-     * A Factory Method pattern which creates  a List implementation used to
+     * A Factory Method pattern which creates a List implementation used to
      * store attributes
-     *
+     * 
      * @return DOCUMENT ME!
      */
     protected List createAttributeList() {
@@ -1631,11 +1629,12 @@ public abstract class AbstractElement extends AbstractBranch
     }
 
     /**
-     * A Factory Method pattern which creates  a List implementation used to
+     * A Factory Method pattern which creates a List implementation used to
      * store attributes
-     *
-     * @param size DOCUMENT ME!
-     *
+     * 
+     * @param size
+     *            DOCUMENT ME!
+     * 
      * @return DOCUMENT ME!
      */
     protected List createAttributeList(int size) {
@@ -1647,50 +1646,39 @@ public abstract class AbstractElement extends AbstractBranch
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j.io;
@@ -32,13 +30,13 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 /**
  * <p>
- * <code>XPP3Reader</code> is a Reader of DOM4J documents that uses the fast <a
- * href="http://www.extreme.indiana.edu/soap/xpp/">XML Pull Parser 3.x</a>. It
- * is very fast for use in SOAP style environments.
+ * <code>XPP3Reader</code> is a Reader of DOM4J documents that uses the fast
+ * <a href="http://www.extreme.indiana.edu/soap/xpp/">XML Pull Parser 3.x </a>.
+ * It is very fast for use in SOAP style environments.
  * </p>
- *
- * @author <a href="mailto:pelle@neubia.com">Pelle Braendgaard</a>
- * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * 
+ * @author <a href="mailto:pelle@neubia.com">Pelle Braendgaard </a>
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision$
  */
 public class XPP3Reader {
@@ -61,77 +59,81 @@ public class XPP3Reader {
         this.factory = factory;
     }
 
-//J-
-//Jalopy doesn't format this method very well
     /**
      * <p>
      * Reads a Document from the given <code>File</code>
      * </p>
-     *
-     * @param file is the <code>File</code> to read from.
-     *
+     * 
+     * @param file
+     *            is the <code>File</code> to read from.
+     * 
      * @return the newly created Document instance
-     *
-     * @throws DocumentException if an error occurs during parsing.
-     * @throws IOException if a URL could not be made for the given File
-     * @throws XmlPullParserException DOCUMENT ME!
+     * 
+     * @throws DocumentException
+     *             if an error occurs during parsing.
+     * @throws IOException
+     *             if a URL could not be made for the given File
+     * @throws XmlPullParserException
+     *             DOCUMENT ME!
      */
-    public Document read(File file)
-                 throws DocumentException, IOException, XmlPullParserException {
+    public Document read(File file) throws DocumentException, IOException,
+            XmlPullParserException {
         String systemID = file.getAbsolutePath();
 
         return read(new BufferedReader(new FileReader(file)), systemID);
     }
-//J+
 
-//J-
-//Jalopy doesn't format this method very well
     /**
      * <p>
      * Reads a Document from the given <code>URL</code>
      * </p>
-     *
-     * @param url <code>URL</code> to read from.
-     *
+     * 
+     * @param url
+     *            <code>URL</code> to read from.
+     * 
      * @return the newly created Document instance
-     *
-     * @throws DocumentException if an error occurs during parsing.
-     * @throws IOException DOCUMENT ME!
-     * @throws XmlPullParserException DOCUMENT ME!
+     * 
+     * @throws DocumentException
+     *             if an error occurs during parsing.
+     * @throws IOException
+     *             DOCUMENT ME!
+     * @throws XmlPullParserException
+     *             DOCUMENT ME!
      */
-    public Document read(URL url)
-                 throws DocumentException, IOException, XmlPullParserException {
+    public Document read(URL url) throws DocumentException, IOException,
+            XmlPullParserException {
         String systemID = url.toExternalForm();
 
         return read(createReader(url.openStream()), systemID);
     }
-//J+
 
-//J-
-//Jalopy doesn't format this method very well
     /**
      * <p>
      * Reads a Document from the given URL or filename.
      * </p>
-     *
+     * 
      * <p>
-     * If the systemID contains a <code>':'</code> character then it is assumed
-     * to be a URL otherwise its assumed to be a file name. If you want finer
-     * grained control over this mechansim then please explicitly pass in
-     * either a {@link URL} or a {@link File} instance instead of a {@link
+     * If the systemID contains a <code>':'</code> character then it is
+     * assumed to be a URL otherwise its assumed to be a file name. If you want
+     * finer grained control over this mechansim then please explicitly pass in
+     * either a {@link URL}or a {@link File}instance instead of a {@link
      * String} to denote the source of the document.
      * </p>
-     *
-     * @param systemID is a URL for a document or a file name.
-     *
+     * 
+     * @param systemID
+     *            is a URL for a document or a file name.
+     * 
      * @return the newly created Document instance
-     *
-     * @throws DocumentException if an error occurs during parsing.
-     * @throws IOException if a URL could not be made for the given File
-     * @throws XmlPullParserException DOCUMENT ME!
+     * 
+     * @throws DocumentException
+     *             if an error occurs during parsing.
+     * @throws IOException
+     *             if a URL could not be made for the given File
+     * @throws XmlPullParserException
+     *             DOCUMENT ME!
      */
-    public Document read(String systemID)
-                 throws DocumentException, IOException, XmlPullParserException {
+    public Document read(String systemID) throws DocumentException,
+            IOException, XmlPullParserException {
         if (systemID.indexOf(':') >= 0) {
             // lets assume its a URL
             return read(new URL(systemID));
@@ -140,124 +142,130 @@ public class XPP3Reader {
             return read(new File(systemID));
         }
     }
-//J+
 
-//J-
-//Jalopy doesn't format this method very well
     /**
      * <p>
      * Reads a Document from the given stream
      * </p>
-     *
-     * @param in <code>InputStream</code> to read from.
-     *
+     * 
+     * @param in
+     *            <code>InputStream</code> to read from.
+     * 
      * @return the newly created Document instance
-     *
-     * @throws DocumentException if an error occurs during parsing.
-     * @throws IOException DOCUMENT ME!
-     * @throws XmlPullParserException DOCUMENT ME!
+     * 
+     * @throws DocumentException
+     *             if an error occurs during parsing.
+     * @throws IOException
+     *             DOCUMENT ME!
+     * @throws XmlPullParserException
+     *             DOCUMENT ME!
      */
-    public Document read(InputStream in)
-                 throws DocumentException, IOException, XmlPullParserException {
+    public Document read(InputStream in) throws DocumentException, IOException,
+            XmlPullParserException {
         return read(createReader(in));
     }
-//J+
 
-//J-
-//Jalopy doesn't format this method very well
     /**
      * <p>
      * Reads a Document from the given <code>Reader</code>
      * </p>
-     *
-     * @param reader is the reader for the input
-     *
+     * 
+     * @param reader
+     *            is the reader for the input
+     * 
      * @return the newly created Document instance
-     *
-     * @throws DocumentException if an error occurs during parsing.
-     * @throws IOException DOCUMENT ME!
-     * @throws XmlPullParserException DOCUMENT ME!
+     * 
+     * @throws DocumentException
+     *             if an error occurs during parsing.
+     * @throws IOException
+     *             DOCUMENT ME!
+     * @throws XmlPullParserException
+     *             DOCUMENT ME!
      */
-    public Document read(Reader reader)
-                 throws DocumentException, IOException, XmlPullParserException {
+    public Document read(Reader reader) throws DocumentException, IOException,
+            XmlPullParserException {
         getXPPParser().setInput(reader);
 
         return parseDocument();
     }
-//J+
 
-//J-
-//Jalopy doesn't format this method very well
     /**
      * <p>
      * Reads a Document from the given array of characters
      * </p>
-     *
-     * @param text is the text to parse
-     *
+     * 
+     * @param text
+     *            is the text to parse
+     * 
      * @return the newly created Document instance
-     *
-     * @throws DocumentException if an error occurs during parsing.
-     * @throws IOException DOCUMENT ME!
-     * @throws XmlPullParserException DOCUMENT ME!
+     * 
+     * @throws DocumentException
+     *             if an error occurs during parsing.
+     * @throws IOException
+     *             DOCUMENT ME!
+     * @throws XmlPullParserException
+     *             DOCUMENT ME!
      */
-    public Document read(char[] text)
-                 throws DocumentException, IOException, XmlPullParserException {
+    public Document read(char[] text) throws DocumentException, IOException,
+            XmlPullParserException {
         getXPPParser().setInput(new CharArrayReader(text));
 
         return parseDocument();
     }
-//J+
 
-//J-
-//Jalopy doesn't format this method very well
     /**
      * <p>
      * Reads a Document from the given stream
      * </p>
-     *
-     * @param in <code>InputStream</code> to read from.
-     * @param systemID is the URI for the input
-     *
+     * 
+     * @param in
+     *            <code>InputStream</code> to read from.
+     * @param systemID
+     *            is the URI for the input
+     * 
      * @return the newly created Document instance
-     *
-     * @throws DocumentException if an error occurs during parsing.
-     * @throws IOException DOCUMENT ME!
-     * @throws XmlPullParserException DOCUMENT ME!
+     * 
+     * @throws DocumentException
+     *             if an error occurs during parsing.
+     * @throws IOException
+     *             DOCUMENT ME!
+     * @throws XmlPullParserException
+     *             DOCUMENT ME!
      */
     public Document read(InputStream in, String systemID)
-                 throws DocumentException, IOException, XmlPullParserException {
+            throws DocumentException, IOException, XmlPullParserException {
         return read(createReader(in), systemID);
     }
-//J+
 
-//J-
-//Jalopy doesn't format this method very well
     /**
      * <p>
      * Reads a Document from the given <code>Reader</code>
      * </p>
-     *
-     * @param reader is the reader for the input
-     * @param systemID is the URI for the input
-     *
+     * 
+     * @param reader
+     *            is the reader for the input
+     * @param systemID
+     *            is the URI for the input
+     * 
      * @return the newly created Document instance
-     *
-     * @throws DocumentException if an error occurs during parsing.
-     * @throws IOException DOCUMENT ME!
-     * @throws XmlPullParserException DOCUMENT ME!
+     * 
+     * @throws DocumentException
+     *             if an error occurs during parsing.
+     * @throws IOException
+     *             DOCUMENT ME!
+     * @throws XmlPullParserException
+     *             DOCUMENT ME!
      */
     public Document read(Reader reader, String systemID)
-                 throws DocumentException, IOException, XmlPullParserException {
+            throws DocumentException, IOException, XmlPullParserException {
         Document document = read(reader);
         document.setName(systemID);
 
         return document;
     }
-//J+
 
     // Properties
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     public XmlPullParser getXPPParser() throws XmlPullParserException {
         if (xppParser == null) {
             xppParser = getXPPFactory().newPullParser();
@@ -282,8 +290,9 @@ public class XPP3Reader {
 
     /**
      * DOCUMENT ME!
-     *
-     * @return the <code>DocumentFactory</code> used to create document objects
+     * 
+     * @return the <code>DocumentFactory</code> used to create document
+     *         objects
      */
     public DocumentFactory getDocumentFactory() {
         if (factory == null) {
@@ -295,13 +304,14 @@ public class XPP3Reader {
 
     /**
      * <p>
-     * This sets the <code>DocumentFactory</code> used to create new documents.
-     * This method allows the building of custom DOM4J tree objects to be
-     * implemented easily using a custom derivation of {@link DocumentFactory}
+     * This sets the <code>DocumentFactory</code> used to create new
+     * documents. This method allows the building of custom DOM4J tree objects
+     * to be implemented easily using a custom derivation of
+     * {@link DocumentFactory}
      * </p>
-     *
-     * @param documentFactory <code>DocumentFactory</code> used to create DOM4J
-     *        objects
+     * 
+     * @param documentFactory
+     *            <code>DocumentFactory</code> used to create DOM4J objects
      */
     public void setDocumentFactory(DocumentFactory documentFactory) {
         this.factory = documentFactory;
@@ -310,10 +320,12 @@ public class XPP3Reader {
     /**
      * Adds the <code>ElementHandler</code> to be called when the specified
      * path is encounted.
-     *
-     * @param path is the path to be handled
-     * @param handler is the <code>ElementHandler</code> to be called by the
-     *        event based processor.
+     * 
+     * @param path
+     *            is the path to be handled
+     * @param handler
+     *            is the <code>ElementHandler</code> to be called by the event
+     *            based processor.
      */
     public void addHandler(String path, ElementHandler handler) {
         getDispatchHandler().addHandler(path, handler);
@@ -322,8 +334,9 @@ public class XPP3Reader {
     /**
      * Removes the <code>ElementHandler</code> from the event based processor,
      * for the specified path.
-     *
-     * @param path is the path to remove the <code>ElementHandler</code> for.
+     * 
+     * @param path
+     *            is the path to remove the <code>ElementHandler</code> for.
      */
     public void removeHandler(String path) {
         getDispatchHandler().removeHandler(path);
@@ -332,20 +345,20 @@ public class XPP3Reader {
     /**
      * When multiple <code>ElementHandler</code> instances have been
      * registered, this will set a default <code>ElementHandler</code> to be
-     * called for any path which does <b>NOT</b> have a handler registered.
-     *
-     * @param handler is the <code>ElementHandler</code> to be called by the
-     *        event based processor.
+     * called for any path which does <b>NOT </b> have a handler registered.
+     * 
+     * @param handler
+     *            is the <code>ElementHandler</code> to be called by the event
+     *            based processor.
      */
     public void setDefaultHandler(ElementHandler handler) {
         getDispatchHandler().setDefaultHandler(handler);
     }
 
     // Implementation methods
-    //-------------------------------------------------------------------------
-    protected Document parseDocument()
-                              throws DocumentException, IOException, 
-                                     XmlPullParserException {
+    // -------------------------------------------------------------------------
+    protected Document parseDocument() throws DocumentException, IOException,
+            XmlPullParserException {
         DocumentFactory df = getDocumentFactory();
         Document document = df.createDocument();
         Element parent = null;
@@ -385,9 +398,8 @@ public class XPP3Reader {
                     if (parent != null) {
                         parent.addCDATA(pp.getText());
                     } else {
-                        String msg =
-                            "Cannot have text content outside of the "
-                            + "root document";
+                        String msg = "Cannot have text content outside of the "
+                                + "root document";
                         throw new DocumentException(msg);
                     }
 
@@ -401,11 +413,9 @@ public class XPP3Reader {
                     return document;
 
                 case XmlPullParser.START_TAG: {
-                    QName qname =
-                        (pp.getPrefix() == null)
-                        ? df.createQName(pp.getName(), pp.getNamespace())
-                        : df.createQName(pp.getName(), pp.getPrefix(),
-                                         pp.getNamespace());
+                    QName qname = (pp.getPrefix() == null) ? df.createQName(pp
+                            .getName(), pp.getNamespace()) : df.createQName(pp
+                            .getName(), pp.getPrefix(), pp.getNamespace());
                     Element newElement = df.createElement(qname);
                     int nsStart = pp.getNamespaceCount(pp.getDepth() - 1);
                     int nsEnd = pp.getNamespaceCount(pp.getDepth());
@@ -413,17 +423,16 @@ public class XPP3Reader {
                     for (int i = nsStart; i < nsEnd; i++) {
                         if (pp.getNamespacePrefix(i) != null) {
                             newElement.addNamespace(pp.getNamespacePrefix(i),
-                                                    pp.getNamespaceUri(i));
+                                    pp.getNamespaceUri(i));
                         }
                     }
 
                     for (int i = 0; i < pp.getAttributeCount(); i++) {
-                        QName qa =
-                            (pp.getAttributePrefix(i) == null)
-                            ? df.createQName(pp.getAttributeName(i))
-                            : df.createQName(pp.getAttributeName(i),
-                                             pp.getAttributePrefix(i),
-                                             pp.getAttributeNamespace(i));
+                        QName qa = (pp.getAttributePrefix(i) == null) ? df
+                                .createQName(pp.getAttributeName(i)) : df
+                                .createQName(pp.getAttributeName(i), pp
+                                        .getAttributePrefix(i), pp
+                                        .getAttributeNamespace(i));
                         newElement.addAttribute(qa, pp.getAttributeValue(i));
                     }
 
@@ -452,9 +461,8 @@ public class XPP3Reader {
                     if (parent != null) {
                         parent.addText(text);
                     } else {
-                        String msg =
-                            "Cannot have text content outside of the "
-                            + "root document";
+                        String msg = "Cannot have text content outside of the "
+                                + "root document";
                         throw new DocumentException(msg);
                     }
 
@@ -481,62 +489,53 @@ public class XPP3Reader {
 
     /**
      * Factory method to create a Reader from the given InputStream.
-     *
-     * @param in DOCUMENT ME!
-     *
+     * 
+     * @param in
+     *            DOCUMENT ME!
+     * 
      * @return DOCUMENT ME!
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     protected Reader createReader(InputStream in) throws IOException {
         return new BufferedReader(new InputStreamReader(in));
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

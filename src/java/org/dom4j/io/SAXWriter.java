@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j.io;
@@ -48,20 +46,20 @@ import org.xml.sax.helpers.LocatorImpl;
  * <p>
  * <code>SAXWriter</code> writes a DOM4J tree to a SAX ContentHandler.
  * </p>
- *
- * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+ * 
+ * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision$
  */
 public class SAXWriter implements XMLReader {
-    protected static final String[] LEXICAL_HANDLER_NAMES =
-        {
+    protected static final String[] LEXICAL_HANDLER_NAMES = {
             "http://xml.org/sax/properties/lexical-handler",
-            "http://xml.org/sax/handlers/LexicalHandler"
-        };
-    protected static final String FEATURE_NAMESPACE_PREFIXES =
-        "http://xml.org/sax/features/namespace-prefixes";
-    protected static final String FEATURE_NAMESPACES =
-        "http://xml.org/sax/features/namespaces";
+            "http://xml.org/sax/handlers/LexicalHandler" };
+
+    protected static final String FEATURE_NAMESPACE_PREFIXES 
+            = "http://xml.org/sax/features/namespace-prefixes";
+
+    protected static final String FEATURE_NAMESPACES 
+            = "http://xml.org/sax/features/namespaces";
 
     /** <code>ContentHandler</code> to which SAX events are raised */
     private ContentHandler contentHandler;
@@ -71,6 +69,7 @@ public class SAXWriter implements XMLReader {
 
     /** <code>EntityResolver</code> fired when a document has a DTD */
     private EntityResolver entityResolver;
+
     private ErrorHandler errorHandler;
 
     /** <code>LexicalHandler</code> fired on Entity and CDATA sections */
@@ -99,15 +98,14 @@ public class SAXWriter implements XMLReader {
     }
 
     public SAXWriter(ContentHandler contentHandler,
-                     LexicalHandler lexicalHandler) {
+            LexicalHandler lexicalHandler) {
         this();
         this.contentHandler = contentHandler;
         this.lexicalHandler = lexicalHandler;
     }
 
     public SAXWriter(ContentHandler contentHandler,
-                     LexicalHandler lexicalHandler,
-                     EntityResolver entityResolver) {
+            LexicalHandler lexicalHandler, EntityResolver entityResolver) {
         this();
         this.contentHandler = contentHandler;
         this.lexicalHandler = lexicalHandler;
@@ -116,10 +114,12 @@ public class SAXWriter implements XMLReader {
 
     /**
      * A polymorphic method to write any Node to this SAX stream
-     *
-     * @param node DOCUMENT ME!
-     *
-     * @throws SAXException DOCUMENT ME!
+     * 
+     * @param node
+     *            DOCUMENT ME!
+     * 
+     * @throws SAXException
+     *             DOCUMENT ME!
      */
     public void write(Node node) throws SAXException {
         int nodeType = node.getNodeType();
@@ -183,10 +183,12 @@ public class SAXWriter implements XMLReader {
 
     /**
      * Generates SAX events for the given Document and all its content
-     *
-     * @param document is the Document to parse
-     *
-     * @throws SAXException if there is a SAX error processing the events
+     * 
+     * @param document
+     *            is the Document to parse
+     * 
+     * @throws SAXException
+     *             if there is a SAX error processing the events
      */
     public void write(Document document) throws SAXException {
         if (document != null) {
@@ -204,10 +206,12 @@ public class SAXWriter implements XMLReader {
 
     /**
      * Generates SAX events for the given Element and all its content
-     *
-     * @param element is the Element to parse
-     *
-     * @throws SAXException if there is a SAX error processing the events
+     * 
+     * @param element
+     *            is the Element to parse
+     * 
+     * @throws SAXException
+     *             if there is a SAX error processing the events
      */
     public void write(Element element) throws SAXException {
         write(element, new NamespaceStack());
@@ -218,10 +222,12 @@ public class SAXWriter implements XMLReader {
      * Writes the opening tag of an {@link Element}, including its {@link
      * Attribute}s but without its content.
      * </p>
-     *
-     * @param element <code>Element</code> to output.
-     *
-     * @throws SAXException DOCUMENT ME!
+     * 
+     * @param element
+     *            <code>Element</code> to output.
+     * 
+     * @throws SAXException
+     *             DOCUMENT ME!
      */
     public void writeOpen(Element element) throws SAXException {
         startElement(element, null);
@@ -231,10 +237,12 @@ public class SAXWriter implements XMLReader {
      * <p>
      * Writes the closing tag of an {@link Element}
      * </p>
-     *
-     * @param element <code>Element</code> to output.
-     *
-     * @throws SAXException DOCUMENT ME!
+     * 
+     * @param element
+     *            <code>Element</code> to output.
+     * 
+     * @throws SAXException
+     *             DOCUMENT ME!
      */
     public void writeClose(Element element) throws SAXException {
         endElement(element);
@@ -242,10 +250,12 @@ public class SAXWriter implements XMLReader {
 
     /**
      * Generates SAX events for the given text
-     *
-     * @param text is the text to send to the SAX ContentHandler
-     *
-     * @throws SAXException if there is a SAX error processing the events
+     * 
+     * @param text
+     *            is the text to send to the SAX ContentHandler
+     * 
+     * @throws SAXException
+     *             if there is a SAX error processing the events
      */
     public void write(String text) throws SAXException {
         if (text != null) {
@@ -256,10 +266,12 @@ public class SAXWriter implements XMLReader {
 
     /**
      * Generates SAX events for the given CDATA
-     *
-     * @param cdata is the CDATA to parse
-     *
-     * @throws SAXException if there is a SAX error processing the events
+     * 
+     * @param cdata
+     *            is the CDATA to parse
+     * 
+     * @throws SAXException
+     *             if there is a SAX error processing the events
      */
     public void write(CDATA cdata) throws SAXException {
         String text = cdata.getText();
@@ -275,10 +287,12 @@ public class SAXWriter implements XMLReader {
 
     /**
      * Generates SAX events for the given Comment
-     *
-     * @param comment is the Comment to parse
-     *
-     * @throws SAXException if there is a SAX error processing the events
+     * 
+     * @param comment
+     *            is the Comment to parse
+     * 
+     * @throws SAXException
+     *             if there is a SAX error processing the events
      */
     public void write(Comment comment) throws SAXException {
         if (lexicalHandler != null) {
@@ -290,10 +304,12 @@ public class SAXWriter implements XMLReader {
 
     /**
      * Generates SAX events for the given Entity
-     *
-     * @param entity is the Entity to parse
-     *
-     * @throws SAXException if there is a SAX error processing the events
+     * 
+     * @param entity
+     *            is the Entity to parse
+     * 
+     * @throws SAXException
+     *             if there is a SAX error processing the events
      */
     public void write(Entity entity) throws SAXException {
         String text = entity.getText();
@@ -310,10 +326,12 @@ public class SAXWriter implements XMLReader {
 
     /**
      * Generates SAX events for the given ProcessingInstruction
-     *
-     * @param pi is the ProcessingInstruction to parse
-     *
-     * @throws SAXException if there is a SAX error processing the events
+     * 
+     * @param pi
+     *            is the ProcessingInstruction to parse
+     * 
+     * @throws SAXException
+     *             if there is a SAX error processing the events
      */
     public void write(ProcessingInstruction pi) throws SAXException {
         String target = pi.getTarget();
@@ -326,7 +344,7 @@ public class SAXWriter implements XMLReader {
      * property defaults to <code>false</code> as per the SAX specification.
      * This property is set via the SAX feature
      * "http://xml.org/sax/features/namespace-prefixes"
-     *
+     * 
      * @return DOCUMENT ME!
      */
     public boolean isDeclareNamespaceAttributes() {
@@ -337,20 +355,21 @@ public class SAXWriter implements XMLReader {
      * Sets whether namespace declarations should be exported as "xmlns"
      * attributes or not. This property is set from the SAX feature
      * "http://xml.org/sax/features/namespace-prefixes"
-     *
-     * @param declareNamespaceAttrs DOCUMENT ME!
+     * 
+     * @param declareNamespaceAttrs
+     *            DOCUMENT ME!
      */
     public void setDeclareNamespaceAttributes(boolean declareNamespaceAttrs) {
         this.declareNamespaceAttributes = declareNamespaceAttrs;
     }
 
     // XMLReader methods
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
 
     /**
      * DOCUMENT ME!
-     *
-     * @return the <code>ContentHandler</code> called when SAX events  are
+     * 
+     * @return the <code>ContentHandler</code> called when SAX events are
      *         raised
      */
     public ContentHandler getContentHandler() {
@@ -358,10 +377,11 @@ public class SAXWriter implements XMLReader {
     }
 
     /**
-     * Sets the <code>ContentHandler</code> called when SAX events  are raised
-     *
-     * @param contentHandler is the <code>ContentHandler</code> called when SAX
-     *        events  are raised
+     * Sets the <code>ContentHandler</code> called when SAX events are raised
+     * 
+     * @param contentHandler
+     *            is the <code>ContentHandler</code> called when SAX events
+     *            are raised
      */
     public void setContentHandler(ContentHandler contentHandler) {
         this.contentHandler = contentHandler;
@@ -369,7 +389,7 @@ public class SAXWriter implements XMLReader {
 
     /**
      * DOCUMENT ME!
-     *
+     * 
      * @return the <code>DTDHandler</code>
      */
     public DTDHandler getDTDHandler() {
@@ -378,8 +398,9 @@ public class SAXWriter implements XMLReader {
 
     /**
      * Sets the <code>DTDHandler</code>.
-     *
-     * @param handler DOCUMENT ME!
+     * 
+     * @param handler
+     *            DOCUMENT ME!
      */
     public void setDTDHandler(DTDHandler handler) {
         this.dtdHandler = handler;
@@ -387,7 +408,7 @@ public class SAXWriter implements XMLReader {
 
     /**
      * DOCUMENT ME!
-     *
+     * 
      * @return the <code>ErrorHandler</code>
      */
     public ErrorHandler getErrorHandler() {
@@ -396,8 +417,9 @@ public class SAXWriter implements XMLReader {
 
     /**
      * Sets the <code>ErrorHandler</code>.
-     *
-     * @param errorHandler DOCUMENT ME!
+     * 
+     * @param errorHandler
+     *            DOCUMENT ME!
      */
     public void setErrorHandler(ErrorHandler errorHandler) {
         this.errorHandler = errorHandler;
@@ -405,8 +427,8 @@ public class SAXWriter implements XMLReader {
 
     /**
      * DOCUMENT ME!
-     *
-     * @return the <code>EntityResolver</code> used when a Document contains  a
+     * 
+     * @return the <code>EntityResolver</code> used when a Document contains a
      *         DTD
      */
     public EntityResolver getEntityResolver() {
@@ -414,9 +436,10 @@ public class SAXWriter implements XMLReader {
     }
 
     /**
-     * Sets the <code>EntityResolver</code> .
-     *
-     * @param entityResolver is the <code>EntityResolver</code>
+     * Sets the <code>EntityResolver</code>.
+     * 
+     * @param entityResolver
+     *            is the <code>EntityResolver</code>
      */
     public void setEntityResolver(EntityResolver entityResolver) {
         this.entityResolver = entityResolver;
@@ -424,8 +447,8 @@ public class SAXWriter implements XMLReader {
 
     /**
      * DOCUMENT ME!
-     *
-     * @return the <code>LexicalHandler</code> used when a Document contains  a
+     * 
+     * @return the <code>LexicalHandler</code> used when a Document contains a
      *         DTD
      */
     public LexicalHandler getLexicalHandler() {
@@ -433,9 +456,10 @@ public class SAXWriter implements XMLReader {
     }
 
     /**
-     * Sets the <code>LexicalHandler</code> .
-     *
-     * @param lexicalHandler is the <code>LexicalHandler</code>
+     * Sets the <code>LexicalHandler</code>.
+     * 
+     * @param lexicalHandler
+     *            is the <code>LexicalHandler</code>
      */
     public void setLexicalHandler(LexicalHandler lexicalHandler) {
         this.lexicalHandler = lexicalHandler;
@@ -443,8 +467,9 @@ public class SAXWriter implements XMLReader {
 
     /**
      * Sets the <code>XMLReader</code> used to write SAX events to
-     *
-     * @param xmlReader is the <code>XMLReader</code>
+     * 
+     * @param xmlReader
+     *            is the <code>XMLReader</code>
      */
     public void setXMLReader(XMLReader xmlReader) {
         setContentHandler(xmlReader.getContentHandler());
@@ -455,17 +480,19 @@ public class SAXWriter implements XMLReader {
 
     /**
      * Looks up the value of a feature.
-     *
-     * @param name DOCUMENT ME!
-     *
+     * 
+     * @param name
+     *            DOCUMENT ME!
+     * 
      * @return DOCUMENT ME!
-     *
-     * @throws SAXNotRecognizedException DOCUMENT ME!
-     * @throws SAXNotSupportedException DOCUMENT ME!
+     * 
+     * @throws SAXNotRecognizedException
+     *             DOCUMENT ME!
+     * @throws SAXNotSupportedException
+     *             DOCUMENT ME!
      */
-    public boolean getFeature(String name)
-                       throws SAXNotRecognizedException, 
-                              SAXNotSupportedException {
+    public boolean getFeature(String name) throws SAXNotRecognizedException,
+            SAXNotSupportedException {
         Boolean answer = (Boolean) features.get(name);
 
         return (answer != null) && answer.booleanValue();
@@ -474,15 +501,19 @@ public class SAXWriter implements XMLReader {
     /**
      * This implementation does actually use any features but just stores them
      * for later retrieval
-     *
-     * @param name DOCUMENT ME!
-     * @param value DOCUMENT ME!
-     *
-     * @throws SAXNotRecognizedException DOCUMENT ME!
-     * @throws SAXNotSupportedException DOCUMENT ME!
+     * 
+     * @param name
+     *            DOCUMENT ME!
+     * @param value
+     *            DOCUMENT ME!
+     * 
+     * @throws SAXNotRecognizedException
+     *             DOCUMENT ME!
+     * @throws SAXNotSupportedException
+     *             DOCUMENT ME!
      */
     public void setFeature(String name, boolean value)
-                    throws SAXNotRecognizedException, SAXNotSupportedException {
+            throws SAXNotRecognizedException, SAXNotSupportedException {
         if (FEATURE_NAMESPACE_PREFIXES.equals(name)) {
             setDeclareNamespaceAttributes(value);
         } else if (FEATURE_NAMESPACE_PREFIXES.equals(name)) {
@@ -497,9 +528,11 @@ public class SAXWriter implements XMLReader {
 
     /**
      * Sets the given SAX property
-     *
-     * @param name DOCUMENT ME!
-     * @param value DOCUMENT ME!
+     * 
+     * @param name
+     *            DOCUMENT ME!
+     * @param value
+     *            DOCUMENT ME!
      */
     public void setProperty(String name, Object value) {
         for (int i = 0; i < LEXICAL_HANDLER_NAMES.length; i++) {
@@ -515,17 +548,19 @@ public class SAXWriter implements XMLReader {
 
     /**
      * Gets the given SAX property
-     *
-     * @param name DOCUMENT ME!
-     *
+     * 
+     * @param name
+     *            DOCUMENT ME!
+     * 
      * @return DOCUMENT ME!
-     *
-     * @throws SAXNotRecognizedException DOCUMENT ME!
-     * @throws SAXNotSupportedException DOCUMENT ME!
+     * 
+     * @throws SAXNotRecognizedException
+     *             DOCUMENT ME!
+     * @throws SAXNotSupportedException
+     *             DOCUMENT ME!
      */
-    public Object getProperty(String name)
-                       throws SAXNotRecognizedException, 
-                              SAXNotSupportedException {
+    public Object getProperty(String name) throws SAXNotRecognizedException,
+            SAXNotSupportedException {
         for (int i = 0; i < LEXICAL_HANDLER_NAMES.length; i++) {
             if (LEXICAL_HANDLER_NAMES[i].equals(name)) {
                 return getLexicalHandler();
@@ -537,26 +572,29 @@ public class SAXWriter implements XMLReader {
 
     /**
      * This method is not supported.
-     *
-     * @param systemId DOCUMENT ME!
-     *
-     * @throws SAXNotSupportedException DOCUMENT ME!
+     * 
+     * @param systemId
+     *            DOCUMENT ME!
+     * 
+     * @throws SAXNotSupportedException
+     *             DOCUMENT ME!
      */
     public void parse(String systemId) throws SAXNotSupportedException {
         throw new SAXNotSupportedException("This XMLReader can only accept"
-                                           + " <dom4j> InputSource objects");
+                + " <dom4j> InputSource objects");
     }
 
     /**
-     * Parses an XML document.  This method can only accept DocumentInputSource
-     * inputs otherwise a {@link SAXNotSupportedException} exception is
-     * thrown.
-     *
-     * @param input DOCUMENT ME!
-     *
-     * @throws SAXException DOCUMENT ME!
-     * @throws SAXNotSupportedException if the input source is not wrapping a
-     *         dom4j document
+     * Parses an XML document. This method can only accept DocumentInputSource
+     * inputs otherwise a {@link SAXNotSupportedException}exception is thrown.
+     * 
+     * @param input
+     *            DOCUMENT ME!
+     * 
+     * @throws SAXException
+     *             DOCUMENT ME!
+     * @throws SAXNotSupportedException
+     *             if the input source is not wrapping a dom4j document
      */
     public void parse(InputSource input) throws SAXException {
         if (input instanceof DocumentInputSource) {
@@ -564,15 +602,16 @@ public class SAXWriter implements XMLReader {
             Document document = documentInput.getDocument();
             write(document);
         } else {
-            throw new SAXNotSupportedException("This XMLReader can only accept "
-                                               + "<dom4j> InputSource objects");
+            throw new SAXNotSupportedException(
+                    "This XMLReader can only accept "
+                            + "<dom4j> InputSource objects");
         }
     }
 
-    // Implementation methods    
-    //-------------------------------------------------------------------------
+    // Implementation methods
+    // -------------------------------------------------------------------------
     protected void writeContent(Branch branch, NamespaceStack namespaceStack)
-                         throws SAXException {
+            throws SAXException {
         for (Iterator iter = branch.nodeIterator(); iter.hasNext();) {
             Object object = iter.next();
 
@@ -588,8 +627,7 @@ public class SAXWriter implements XMLReader {
                     write((Comment) object);
                 } else {
                     throw new SAXException("Invalid Node in DOM4J content: "
-                                           + object + " of type: "
-                                           + object.getClass());
+                            + object + " of type: " + object.getClass());
                 }
             } else if (object instanceof String) {
                 write((String) object);
@@ -601,21 +639,23 @@ public class SAXWriter implements XMLReader {
                 write((Namespace) object);
             } else {
                 throw new SAXException("Invalid Node in DOM4J content: "
-                                       + object);
+                        + object);
             }
         }
     }
 
     /**
-     * The {@link org.xml.sax.Locator} is only really useful when parsing a
+     * The {@link org.xml.sax.Locator}is only really useful when parsing a
      * textual document as its main purpose is to identify the line and column
      * number. Since we are processing an in memory tree which will probably
-     * have its line number information removed, we'll just use -1 for the
-     * line and column numbers.
-     *
-     * @param document DOCUMENT ME!
-     *
-     * @throws SAXException DOCUMENT ME!
+     * have its line number information removed, we'll just use -1 for the line
+     * and column numbers.
+     * 
+     * @param document
+     *            DOCUMENT ME!
+     * 
+     * @throws SAXException
+     *             DOCUMENT ME!
      */
     protected void documentLocator(Document document) throws SAXException {
         LocatorImpl locator = new LocatorImpl();
@@ -656,8 +696,7 @@ public class SAXWriter implements XMLReader {
                         entityResolver.resolveEntity(publicID, systemID);
                     } catch (IOException e) {
                         throw new SAXException("Could not resolve publicID: "
-                                               + publicID + " systemID: "
-                                               + systemID, e);
+                                + publicID + " systemID: " + systemID, e);
                     }
                 }
             }
@@ -667,10 +706,12 @@ public class SAXWriter implements XMLReader {
     /**
      * We do not yet support DTD or XML Schemas so this method does nothing
      * right now.
-     *
-     * @param document DOCUMENT ME!
-     *
-     * @throws SAXException DOCUMENT ME!
+     * 
+     * @param document
+     *            DOCUMENT ME!
+     * 
+     * @throws SAXException
+     *             DOCUMENT ME!
      */
     protected void dtdHandler(Document document) throws SAXException {
     }
@@ -684,10 +725,10 @@ public class SAXWriter implements XMLReader {
     }
 
     protected void write(Element element, NamespaceStack namespaceStack)
-                  throws SAXException {
+            throws SAXException {
         int stackSize = namespaceStack.size();
-        AttributesImpl namespaceAttributes =
-            startPrefixMapping(element, namespaceStack);
+        AttributesImpl namespaceAttributes = startPrefixMapping(element,
+                namespaceStack);
         startElement(element, namespaceAttributes);
         writeContent(element, namespaceStack);
         endElement(element);
@@ -697,17 +738,19 @@ public class SAXWriter implements XMLReader {
     /**
      * Fires a SAX startPrefixMapping event for all the namespaceStack which
      * have just come into scope
-     *
-     * @param element DOCUMENT ME!
-     * @param namespaceStack DOCUMENT ME!
-     *
+     * 
+     * @param element
+     *            DOCUMENT ME!
+     * @param namespaceStack
+     *            DOCUMENT ME!
+     * 
      * @return DOCUMENT ME!
-     *
-     * @throws SAXException DOCUMENT ME!
+     * 
+     * @throws SAXException
+     *             DOCUMENT ME!
      */
     protected AttributesImpl startPrefixMapping(Element element,
-                                                NamespaceStack namespaceStack)
-                                         throws SAXException {
+            NamespaceStack namespaceStack) throws SAXException {
         AttributesImpl namespaceAttributes = null;
 
         // start with the namespace of the element
@@ -717,9 +760,9 @@ public class SAXWriter implements XMLReader {
                 && !isIgnoreableNamespace(elementNamespace, namespaceStack)) {
             namespaceStack.push(elementNamespace);
             contentHandler.startPrefixMapping(elementNamespace.getPrefix(),
-                                              elementNamespace.getURI());
-            namespaceAttributes =
-                addNamespaceAttribute(namespaceAttributes, elementNamespace);
+                    elementNamespace.getURI());
+            namespaceAttributes = addNamespaceAttribute(namespaceAttributes,
+                    elementNamespace);
         }
 
         List declaredNamespaces = element.declaredNamespaces();
@@ -730,9 +773,9 @@ public class SAXWriter implements XMLReader {
             if (!isIgnoreableNamespace(namespace, namespaceStack)) {
                 namespaceStack.push(namespace);
                 contentHandler.startPrefixMapping(namespace.getPrefix(),
-                                                  namespace.getURI());
-                namespaceAttributes =
-                    addNamespaceAttribute(namespaceAttributes, namespace);
+                        namespace.getURI());
+                namespaceAttributes = addNamespaceAttribute(
+                        namespaceAttributes, namespace);
             }
         }
 
@@ -742,14 +785,17 @@ public class SAXWriter implements XMLReader {
     /**
      * Fires a SAX endPrefixMapping event for all the namespaceStack which have
      * gone out of scope
-     *
-     * @param stack DOCUMENT ME!
-     * @param stackSize DOCUMENT ME!
-     *
-     * @throws SAXException DOCUMENT ME!
+     * 
+     * @param stack
+     *            DOCUMENT ME!
+     * @param stackSize
+     *            DOCUMENT ME!
+     * 
+     * @throws SAXException
+     *             DOCUMENT ME!
      */
     protected void endPrefixMapping(NamespaceStack stack, int stackSize)
-                             throws SAXException {
+            throws SAXException {
         while (stack.size() > stackSize) {
             Namespace namespace = stack.pop();
 
@@ -760,23 +806,19 @@ public class SAXWriter implements XMLReader {
     }
 
     protected void startElement(Element element,
-                                AttributesImpl namespaceAttributes)
-                         throws SAXException {
-        contentHandler.startElement(element.getNamespaceURI(),
-                                    element.getName(),
-                                    element.getQualifiedName(),
-                                    createAttributes(element,
-                                                     namespaceAttributes));
+            AttributesImpl namespaceAttributes) throws SAXException {
+        contentHandler.startElement(element.getNamespaceURI(), element
+                .getName(), element.getQualifiedName(), createAttributes(
+                element, namespaceAttributes));
     }
 
     protected void endElement(Element element) throws SAXException {
         contentHandler.endElement(element.getNamespaceURI(), element.getName(),
-                                  element.getQualifiedName());
+                element.getQualifiedName());
     }
 
     protected Attributes createAttributes(Element element,
-                                          Attributes namespaceAttributes)
-                                   throws SAXException {
+            Attributes namespaceAttributes) throws SAXException {
         attributes.clear();
 
         if (namespaceAttributes != null) {
@@ -785,10 +827,9 @@ public class SAXWriter implements XMLReader {
 
         for (Iterator iter = element.attributeIterator(); iter.hasNext();) {
             Attribute attribute = (Attribute) iter.next();
-            attributes.addAttribute(attribute.getNamespaceURI(),
-                                    attribute.getName(),
-                                    attribute.getQualifiedName(), "CDATA",
-                                    attribute.getValue());
+            attributes.addAttribute(attribute.getNamespaceURI(), attribute
+                    .getName(), attribute.getQualifiedName(), "CDATA",
+                    attribute.getValue());
         }
 
         return attributes;
@@ -798,14 +839,16 @@ public class SAXWriter implements XMLReader {
      * If isDelcareNamespaceAttributes() is enabled then this method will add
      * the given namespace declaration to the supplied attributes object,
      * creating one if it does not exist.
-     *
-     * @param attrs DOCUMENT ME!
-     * @param namespace DOCUMENT ME!
-     *
+     * 
+     * @param attrs
+     *            DOCUMENT ME!
+     * @param namespace
+     *            DOCUMENT ME!
+     * 
      * @return DOCUMENT ME!
      */
     protected AttributesImpl addNamespaceAttribute(AttributesImpl attrs,
-                                                   Namespace namespace) {
+            Namespace namespace) {
         if (declareNamespaceAttributes) {
             if (attrs == null) {
                 attrs = new AttributesImpl();
@@ -831,16 +874,18 @@ public class SAXWriter implements XMLReader {
 
     /**
      * DOCUMENT ME!
-     *
-     * @param namespace DOCUMENT ME!
-     * @param namespaceStack DOCUMENT ME!
-     *
-     * @return true if the given namespace is an ignorable namespace  (such as
+     * 
+     * @param namespace
+     *            DOCUMENT ME!
+     * @param namespaceStack
+     *            DOCUMENT ME!
+     * 
+     * @return true if the given namespace is an ignorable namespace (such as
      *         Namespace.NO_NAMESPACE or Namespace.XML_NAMESPACE) or if the
      *         namespace has already been declared in the current scope
      */
     protected boolean isIgnoreableNamespace(Namespace namespace,
-                                            NamespaceStack namespaceStack) {
+            NamespaceStack namespaceStack) {
         if (namespace.equals(Namespace.NO_NAMESPACE)
                 || namespace.equals(Namespace.XML_NAMESPACE)) {
             return true;
@@ -862,50 +907,39 @@ public class SAXWriter implements XMLReader {
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j.io;
@@ -46,37 +44,37 @@ import org.xml.sax.helpers.XMLFilterImpl;
 
 /**
  * <p>
- * <code>XMLWriter</code> takes a DOM4J tree and formats it to a stream as XML.
- * It can also take SAX events too so can be used by SAX clients as this
- * object implements the {@link org.xml.sax.ContentHandler} and {@link
- * LexicalHandler} interfaces. as well. This formatter performs typical
- * document formatting.  The XML declaration and processing instructions are
- * always on their own lines. An {@link OutputFormat} object can be used to
- * define how whitespace is handled when printing and allows various
- * configuration options, such as to allow suppression of the XML declaration,
- * the encoding declaration or whether empty documents are collapsed.
+ * <code>XMLWriter</code> takes a DOM4J tree and formats it to a stream as
+ * XML. It can also take SAX events too so can be used by SAX clients as this
+ * object implements the {@link org.xml.sax.ContentHandler}and {@link
+ * LexicalHandler} interfaces. as well. This formatter performs typical document
+ * formatting. The XML declaration and processing instructions are always on
+ * their own lines. An {@link OutputFormat}object can be used to define how
+ * whitespace is handled when printing and allows various configuration options,
+ * such as to allow suppression of the XML declaration, the encoding declaration
+ * or whether empty documents are collapsed.
  * </p>
  * 
  * <p>
- * There are <code>write(...)</code> methods to print any of the standard DOM4J
- * classes, including <code>Document</code> and <code>Element</code>, to
- * either a <code>Writer</code> or an <code>OutputStream</code>.  Warning:
- * using your own <code>Writer</code> may cause the writer's preferred
- * character encoding to be ignored.  If you use encodings other than UTF8, we
- * recommend using the method that takes an OutputStream instead.
+ * There are <code>write(...)</code> methods to print any of the standard
+ * DOM4J classes, including <code>Document</code> and <code>Element</code>,
+ * to either a <code>Writer</code> or an <code>OutputStream</code>.
+ * Warning: using your own <code>Writer</code> may cause the writer's
+ * preferred character encoding to be ignored. If you use encodings other than
+ * UTF8, we recommend using the method that takes an OutputStream instead.
  * </p>
- *
- * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * 
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @author Joseph Bowbeer
  * @version $Revision$
  */
 public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     private static final String PAD_TEXT = " ";
-    protected static final String[] LEXICAL_HANDLER_NAMES =
-        {
+
+    protected static final String[] LEXICAL_HANDLER_NAMES = {
             "http://xml.org/sax/properties/lexical-handler",
-            "http://xml.org/sax/handlers/LexicalHandler"
-        };
+            "http://xml.org/sax/handlers/LexicalHandler" };
+
     protected static final OutputFormat DEFAULT_FORMAT = new OutputFormat();
 
     /** Should entityRefs by resolved when writing ? */
@@ -113,10 +111,10 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     private StringBuffer buffer = new StringBuffer();
 
     /**
-     * whether we have added characters before from the same chunk of
-     * characters
+     * whether we have added characters before from the same chunk of characters
      */
     private boolean charsAdded = false;
+
     private char lastChar;
 
     /** Whether a flush should occur after writing a document */
@@ -169,7 +167,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
 
     public XMLWriter(OutputStream out, OutputFormat format)
-              throws UnsupportedEncodingException {
+            throws UnsupportedEncodingException {
         this.format = format;
         this.writer = createWriter(out, format.getEncoding());
         this.autoFlush = true;
@@ -189,14 +187,14 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
 
     public void setOutputStream(OutputStream out)
-                         throws UnsupportedEncodingException {
+            throws UnsupportedEncodingException {
         this.writer = createWriter(out, format.getEncoding());
         this.autoFlush = true;
     }
 
     /**
      * DOCUMENT ME!
-     *
+     * 
      * @return true if text thats output should be escaped. This is enabled by
      *         default. It could be disabled if the output format is textual,
      *         like in XSLT where we can have xml, html or text output.
@@ -209,19 +207,21 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
      * Sets whether text output should be escaped or not. This is enabled by
      * default. It could be disabled if the output format is textual, like in
      * XSLT where we can have xml, html or text output.
-     *
-     * @param escapeText DOCUMENT ME!
+     * 
+     * @param escapeText
+     *            DOCUMENT ME!
      */
     public void setEscapeText(boolean escapeText) {
         this.escapeText = escapeText;
     }
 
     /**
-     * Set the initial indentation level.  This can be used to output a
-     * document (or, more likely, an element) starting at a given indent
-     * level, so it's not always flush against the left margin. Default: 0
-     *
-     * @param indentLevel the number of indents to start with
+     * Set the initial indentation level. This can be used to output a document
+     * (or, more likely, an element) starting at a given indent level, so it's
+     * not always flush against the left margin. Default: 0
+     * 
+     * @param indentLevel
+     *            the number of indents to start with
      */
     public void setIndentLevel(int indentLevel) {
         this.indentLevel = indentLevel;
@@ -231,7 +231,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
      * Returns the maximum allowed character code that should be allowed
      * unescaped which defaults to 127 in US-ASCII (7 bit) or 255 in ISO- (8
      * bit).
-     *
+     * 
      * @return DOCUMENT ME!
      */
     public int getMaximumAllowedCharacter() {
@@ -248,8 +248,9 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
      * escape any characters (other than the special XML characters like &lt;
      * &gt; &amp;) If this is not explicitly set then it is defaulted from the
      * encoding.
-     *
-     * @param maximumAllowedCharacter The maximumAllowedCharacter to set
+     * 
+     * @param maximumAllowedCharacter
+     *            The maximumAllowedCharacter to set
      */
     public void setMaximumAllowedCharacter(int maximumAllowedCharacter) {
         this.maximumAllowedCharacter = maximumAllowedCharacter;
@@ -257,8 +258,9 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     /**
      * Flushes the underlying Writer
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     public void flush() throws IOException {
         writer.flush();
@@ -266,8 +268,9 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     /**
      * Closes the underlying Writer
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     public void close() throws IOException {
         writer.close();
@@ -275,8 +278,9 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     /**
      * Writes the new line text to the underlying Writer
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     public void println() throws IOException {
         writer.write(format.getLineSeparator());
@@ -284,10 +288,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     /**
      * Writes the given {@link Attribute}.
-     *
-     * @param attribute <code>Attribute</code> to output.
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @param attribute
+     *            <code>Attribute</code> to output.
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     public void write(Attribute attribute) throws IOException {
         writeAttribute(attribute);
@@ -303,19 +309,21 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
      * </p>
      * 
      * <p>
-     * Warning: using your own Writer may cause the writer's preferred
-     * character encoding to be ignored.  If you use encodings other than
-     * UTF8, we recommend using the method that takes an OutputStream instead.
+     * Warning: using your own Writer may cause the writer's preferred character
+     * encoding to be ignored. If you use encodings other than UTF8, we
+     * recommend using the method that takes an OutputStream instead.
      * </p>
      * 
      * <p>
      * Note: as with all Writers, you may need to flush() yours after this
      * method returns.
      * </p>
-     *
-     * @param doc <code>Document</code> to format.
-     *
-     * @throws IOException if there's any problem writing.
+     * 
+     * @param doc
+     *            <code>Document</code> to format.
+     * 
+     * @throws IOException
+     *             if there's any problem writing.
      */
     public void write(Document doc) throws IOException {
         writeDeclaration();
@@ -340,13 +348,16 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     /**
      * <p>
      * Writes the <code>{@link Element}</code>, including its <code>{@link
-     * Attribute}</code>s, and its value, and all its content (child nodes) to
-     * the current Writer.
+     * Attribute}</code>
+     * s, and its value, and all its content (child nodes) to the current
+     * Writer.
      * </p>
-     *
-     * @param element <code>Element</code> to output.
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @param element
+     *            <code>Element</code> to output.
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     public void write(Element element) throws IOException {
         writeElement(element);
@@ -358,10 +369,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     /**
      * Writes the given {@link CDATA}.
-     *
-     * @param cdata <code>CDATA</code> to output.
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @param cdata
+     *            <code>CDATA</code> to output.
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     public void write(CDATA cdata) throws IOException {
         writeCDATA(cdata.getText());
@@ -373,10 +386,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     /**
      * Writes the given {@link Comment}.
-     *
-     * @param comment <code>Comment</code> to output.
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @param comment
+     *            <code>Comment</code> to output.
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     public void write(Comment comment) throws IOException {
         writeComment(comment.getText());
@@ -388,10 +403,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     /**
      * Writes the given {@link DocumentType}.
-     *
-     * @param docType <code>DocumentType</code> to output.
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @param docType
+     *            <code>DocumentType</code> to output.
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     public void write(DocumentType docType) throws IOException {
         writeDocType(docType);
@@ -403,10 +420,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     /**
      * Writes the given {@link Entity}.
-     *
-     * @param entity <code>Entity</code> to output.
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @param entity
+     *            <code>Entity</code> to output.
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     public void write(Entity entity) throws IOException {
         writeEntity(entity);
@@ -418,10 +437,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     /**
      * Writes the given {@link Namespace}.
-     *
-     * @param namespace <code>Namespace</code> to output.
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @param namespace
+     *            <code>Namespace</code> to output.
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     public void write(Namespace namespace) throws IOException {
         writeNamespace(namespace);
@@ -433,14 +454,15 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     /**
      * Writes the given {@link ProcessingInstruction}.
-     *
-     * @param processingInstruction <code>ProcessingInstruction</code> to
-     *        output.
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @param processingInstruction
+     *            <code>ProcessingInstruction</code> to output.
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     public void write(ProcessingInstruction processingInstruction)
-               throws IOException {
+            throws IOException {
         writeProcessingInstruction(processingInstruction);
 
         if (autoFlush) {
@@ -453,10 +475,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
      * Print out a {@link String}, Perfoms the necessary entity escaping and
      * whitespace stripping.
      * </p>
-     *
-     * @param text is the text to output
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @param text
+     *            is the text to output
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     public void write(String text) throws IOException {
         writeString(text);
@@ -468,10 +492,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     /**
      * Writes the given {@link Text}.
-     *
-     * @param text <code>Text</code> to output.
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @param text
+     *            <code>Text</code> to output.
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     public void write(Text text) throws IOException {
         writeString(text.getText());
@@ -483,10 +509,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     /**
      * Writes the given {@link Node}.
-     *
-     * @param node <code>Node</code> to output.
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @param node
+     *            <code>Node</code> to output.
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     public void write(Node node) throws IOException {
         writeNode(node);
@@ -499,10 +527,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     /**
      * Writes the given object which should be a String, a Node or a List of
      * Nodes.
-     *
-     * @param object is the object to output.
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @param object
+     *            is the object to output.
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     public void write(Object object) throws IOException {
         if (object instanceof Node) {
@@ -525,10 +555,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
      * Writes the opening tag of an {@link Element}, including its {@link
      * Attribute}s but without its content.
      * </p>
-     *
-     * @param element <code>Element</code> to output.
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @param element
+     *            <code>Element</code> to output.
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     public void writeOpen(Element element) throws IOException {
         writer.write("<");
@@ -541,26 +573,26 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
      * <p>
      * Writes the closing tag of an {@link Element}
      * </p>
-     *
-     * @param element <code>Element</code> to output.
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @param element
+     *            <code>Element</code> to output.
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     public void writeClose(Element element) throws IOException {
         writeClose(element.getQualifiedName());
     }
 
     // XMLFilterImpl methods
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     public void parse(InputSource source) throws IOException, SAXException {
         installLexicalHandler();
         super.parse(source);
     }
 
-//J-
-//Jalopy doesn't format this method very well
     public void setProperty(String name, Object value)
-                    throws SAXNotRecognizedException, SAXNotSupportedException {
+            throws SAXNotRecognizedException, SAXNotSupportedException {
         for (int i = 0; i < LEXICAL_HANDLER_NAMES.length; i++) {
             if (LEXICAL_HANDLER_NAMES[i].equals(name)) {
                 setLexicalHandler((LexicalHandler) value);
@@ -571,10 +603,9 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
         super.setProperty(name, value);
     }
-//J+
-    public Object getProperty(String name)
-                       throws SAXNotRecognizedException, 
-                              SAXNotSupportedException {
+
+    public Object getProperty(String name) throws SAXNotRecognizedException,
+            SAXNotSupportedException {
         for (int i = 0; i < LEXICAL_HANDLER_NAMES.length; i++) {
             if (LEXICAL_HANDLER_NAMES[i].equals(name)) {
                 return getLexicalHandler();
@@ -597,7 +628,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
 
     // ContentHandler interface
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     public void setDocumentLocator(Locator locator) {
         super.setDocumentLocator(locator);
     }
@@ -623,7 +654,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
 
     public void startPrefixMapping(String prefix, String uri)
-                            throws SAXException {
+            throws SAXException {
         if (namespacesMap == null) {
             namespacesMap = new HashMap();
         }
@@ -637,8 +668,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
 
     public void startElement(String namespaceURI, String localName,
-                             String qName, Attributes attributes)
-                      throws SAXException {
+            String qName, Attributes attributes) throws SAXException {
         try {
             charsAdded = false;
 
@@ -659,7 +689,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
 
     public void endElement(String namespaceURI, String localName, String qName)
-                    throws SAXException {
+            throws SAXException {
         try {
             charsAdded = false;
             --indentLevel;
@@ -688,15 +718,15 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
 
     public void characters(char[] ch, int start, int length)
-                    throws SAXException {
+            throws SAXException {
         if ((ch == null) || (ch.length == 0) || (length <= 0)) {
             return;
         }
 
         try {
             /*
-             * we can't use the writeString method here because it's possible
-             * we don't receive all characters at once and calling writeString
+             * we can't use the writeString method here because it's possible we
+             * don't receive all characters at once and calling writeString
              * would cause unwanted spaces to be added in between these chunks
              * of character arrays.
              */
@@ -736,12 +766,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
 
     public void ignorableWhitespace(char[] ch, int start, int length)
-                             throws SAXException {
+            throws SAXException {
         super.ignorableWhitespace(ch, start, length);
     }
 
     public void processingInstruction(String target, String data)
-                               throws SAXException {
+            throws SAXException {
         try {
             indent();
             writer.write("<?");
@@ -759,22 +789,21 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
 
     // DTDHandler interface
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     public void notationDecl(String name, String publicID, String systemID)
-                      throws SAXException {
+            throws SAXException {
         super.notationDecl(name, publicID, systemID);
     }
 
     public void unparsedEntityDecl(String name, String publicID,
-                                   String systemID, String notationName)
-                            throws SAXException {
+            String systemID, String notationName) throws SAXException {
         super.unparsedEntityDecl(name, publicID, systemID, notationName);
     }
 
     // LexicalHandler interface
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     public void startDTD(String name, String publicID, String systemID)
-                  throws SAXException {
+            throws SAXException {
         inDTD = true;
 
         try {
@@ -838,8 +867,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         }
     }
 
-    public void comment(char[] ch, int start, int length)
-                 throws SAXException {
+    public void comment(char[] ch, int start, int length) throws SAXException {
         if (showCommentsInDTDs || !inDTD) {
             try {
                 charsAdded = false;
@@ -855,7 +883,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
 
     // Implementation methods
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     protected void writeElement(Element element) throws IOException {
         int size = element.nodeCount();
         String qualifiedName = element.getQualifiedName();
@@ -933,17 +961,17 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
 
     /**
-     * Determines if element is a special case of XML elements where it
-     * contains an xml:space attribute of "preserve". If it does, then retain
-     * whitespace.
-     *
-     * @param element DOCUMENT ME!
-     *
+     * Determines if element is a special case of XML elements where it contains
+     * an xml:space attribute of "preserve". If it does, then retain whitespace.
+     * 
+     * @param element
+     *            DOCUMENT ME!
+     * 
      * @return DOCUMENT ME!
      */
     protected final boolean isElementSpacePreserved(Element element) {
         final Attribute attr = (Attribute) element.attribute("space");
-        boolean preserveFound = preserve; //default to global state
+        boolean preserveFound = preserve; // default to global state
 
         if (attr != null) {
             if ("xml".equals(attr.getNamespacePrefix())
@@ -963,17 +991,18 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
      * whitespace trimming occurs to avoid problems with multiple text nodes
      * being created due to text content that spans parser buffers in a SAX
      * parser.
-     *
-     * @param element DOCUMENT ME!
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @param element
+     *            DOCUMENT ME!
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
-    protected void writeElementContent(Element element)
-                                throws IOException {
+    protected void writeElementContent(Element element) throws IOException {
         boolean trim = format.isTrimText();
         boolean oldPreserve = preserve;
 
-        if (trim) { //verify we have to before more expensive test
+        if (trim) { // verify we have to before more expensive test
             preserve = isElementSpacePreserved(element);
             trim = !preserve;
         }
@@ -1085,8 +1114,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         }
     }
 
-    protected void writeNamespace(Namespace namespace)
-                           throws IOException {
+    protected void writeNamespace(Namespace namespace) throws IOException {
         if (namespace != null) {
             writeNamespace(namespace.getPrefix(), namespace.getURI());
         }
@@ -1094,13 +1122,14 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     /**
      * Writes the SAX namepsaces
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     protected void writeNamespaces() throws IOException {
         if (namespacesMap != null) {
-            for (Iterator iter = namespacesMap.entrySet().iterator();
-                     iter.hasNext();) {
+            for (Iterator iter = namespacesMap.entrySet().iterator(); iter
+                    .hasNext();) {
                 Map.Entry entry = (Map.Entry) iter.next();
                 String prefix = (String) entry.getKey();
                 String uri = (String) entry.getValue();
@@ -1113,14 +1142,14 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     /**
      * Writes the SAX namepsaces
-     *
-     * @param prefix DOCUMENT ME!
-     * @param uri DOCUMENT ME!
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @param prefix
+     * @param uri
+     * 
+     * @throws IOException
      */
-    protected void writeNamespace(String prefix, String uri)
-                           throws IOException {
+    protected void writeNamespace(String prefix, String uri) 
+            throws IOException {
         if ((prefix != null) && (prefix.length() > 0)) {
             writer.write(" xmlns:");
             writer.write(prefix);
@@ -1134,8 +1163,8 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
 
     protected void writeProcessingInstruction(ProcessingInstruction pi)
-                                       throws IOException {
-        //indent();
+            throws IOException {
+        // indent();
         writer.write("<?");
         writer.write(pi.getName());
         writer.write(" ");
@@ -1152,11 +1181,11 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                 text = escapeElementEntities(text);
             }
 
-//            if (format.isPadText()) {
-//                if (lastOutputNodeType == Node.ELEMENT_NODE) {
-//                    writer.write(PAD_TEXT);
-//                }
-//            }
+            // if (format.isPadText()) {
+            // if (lastOutputNodeType == Node.ELEMENT_NODE) {
+            // writer.write(PAD_TEXT);
+            // }
+            // }
             if (format.isTrimText()) {
                 boolean first = true;
                 StringTokenizer tokenizer = new StringTokenizer(text);
@@ -1187,10 +1216,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     /**
      * This method is used to write out Nodes that contain text and still allow
      * for xml:space to be handled properly.
-     *
-     * @param node DOCUMENT ME!
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @param node
+     *            DOCUMENT ME!
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     protected void writeNodeText(Node node) throws IOException {
         String text = node.getText();
@@ -1222,7 +1253,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
             case Node.TEXT_NODE:
                 writeNodeText(node);
 
-                //write((Text) node);
+                // write((Text) node);
                 break;
 
             case Node.CDATA_SECTION_NODE:
@@ -1258,7 +1289,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
             case Node.NAMESPACE_NODE:
 
                 // Will be output with attributes
-                //write((Namespace) node);
+                // write((Namespace) node);
                 break;
 
             default:
@@ -1288,7 +1319,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
 
     protected void writeDocType(String name, String publicID, String systemID)
-                         throws IOException {
+            throws IOException {
         boolean hasPublic = false;
 
         writer.write("<!DOCTYPE ");
@@ -1346,10 +1377,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     /**
      * Writes the attributes of the given element
-     *
-     * @param element DOCUMENT ME!
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @param element
+     *            DOCUMENT ME!
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     protected void writeAttributes(Element element) throws IOException {
         // I do not yet handle the case where the same prefix maps to
@@ -1371,8 +1404,8 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                 }
             }
 
-            // If the attribute is a namespace declaration, check if we have 
-            // already written that declaration elsewhere (if that's the case, 
+            // If the attribute is a namespace declaration, check if we have
+            // already written that declaration elsewhere (if that's the case,
             // it must be in the namespace stack
             String attName = attribute.getName();
 
@@ -1402,8 +1435,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         }
     }
 
-    protected void writeAttribute(Attribute attribute)
-                           throws IOException {
+    protected void writeAttribute(Attribute attribute) throws IOException {
         writer.write(" ");
         writer.write(attribute.getQualifiedName());
         writer.write("=");
@@ -1417,15 +1449,14 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         lastOutputNodeType = Node.ATTRIBUTE_NODE;
     }
 
-    protected void writeAttributes(Attributes attributes)
-                            throws IOException {
+    protected void writeAttributes(Attributes attributes) throws IOException {
         for (int i = 0, size = attributes.getLength(); i < size; i++) {
             writeAttribute(attributes, i);
         }
     }
 
     protected void writeAttribute(Attributes attributes, int index)
-                           throws IOException {
+            throws IOException {
         char quote = format.getAttributeQuoteCharacter();
         writer.write(" ");
         writer.write(attributes.getQName(index));
@@ -1449,8 +1480,9 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
      * <p>
      * This will print a new line only if the newlines flag was set to true
      * </p>
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     protected void writePrintln() throws IOException {
         if (format.isNewlines()) {
@@ -1460,16 +1492,19 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     /**
      * Get an OutputStreamWriter, use preferred encoding.
-     *
-     * @param outStream DOCUMENT ME!
-     * @param encoding DOCUMENT ME!
-     *
+     * 
+     * @param outStream
+     *            DOCUMENT ME!
+     * @param encoding
+     *            DOCUMENT ME!
+     * 
      * @return DOCUMENT ME!
-     *
-     * @throws UnsupportedEncodingException DOCUMENT ME!
+     * 
+     * @throws UnsupportedEncodingException
+     *             DOCUMENT ME!
      */
     protected Writer createWriter(OutputStream outStream, String encoding)
-                           throws UnsupportedEncodingException {
+            throws UnsupportedEncodingException {
         return new BufferedWriter(new OutputStreamWriter(outStream, encoding));
     }
 
@@ -1478,8 +1513,9 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
      * This will write the declaration to the given Writer. Assumes XML version
      * 1.0 since we don't directly know.
      * </p>
-     *
-     * @throws IOException DOCUMENT ME!
+     * 
+     * @throws IOException
+     *             DOCUMENT ME!
      */
     protected void writeDeclaration() throws IOException {
         String encoding = format.getEncoding();
@@ -1518,7 +1554,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
 
     protected void writeEmptyElementClose(String qualifiedName)
-                                   throws IOException {
+            throws IOException {
         // Simply close up
         if (!format.isExpandEmptyElements()) {
             writer.write("/>");
@@ -1537,9 +1573,10 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
      * This will take the pre-defined entities in XML 1.0 and convert their
      * character representation to the appropriate entity reference, suitable
      * for XML attributes.
-     *
-     * @param text DOCUMENT ME!
-     *
+     * 
+     * @param text
+     *            DOCUMENT ME!
+     * 
      * @return DOCUMENT ME!
      */
     protected String escapeElementEntities(String text) {
@@ -1617,10 +1654,9 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         return answer;
     }
 
-    protected void writeEscapeAttributeEntities(String text)
-                                         throws IOException {
-        if (text != null) {
-            String escapedText = escapeAttributeEntities(text);
+    protected void writeEscapeAttributeEntities(String txt) throws IOException {
+        if (txt != null) {
+            String escapedText = escapeAttributeEntities(txt);
             writer.write(escapedText);
         }
     }
@@ -1629,9 +1665,10 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
      * This will take the pre-defined entities in XML 1.0 and convert their
      * character representation to the appropriate entity reference, suitable
      * for XML attributes.
-     *
-     * @param text DOCUMENT ME!
-     *
+     * 
+     * @param text
+     *            DOCUMENT ME!
+     * 
      * @return DOCUMENT ME!
      */
     protected String escapeAttributeEntities(String text) {
@@ -1726,9 +1763,10 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     /**
      * Should the given character be escaped. This depends on the encoding of
      * the document.
-     *
-     * @param c DOCUMENT ME!
-     *
+     * 
+     * @param c
+     *            DOCUMENT ME!
+     * 
      * @return boolean
      */
     protected boolean shouldEncodeChar(char c) {
@@ -1741,7 +1779,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
      * Returns the maximum allowed character code that should be allowed
      * unescaped which defaults to 127 in US-ASCII (7 bit) or 255 in ISO- (8
      * bit).
-     *
+     * 
      * @return DOCUMENT ME!
      */
     protected int defaultMaximumAllowedCharacter() {
@@ -1775,14 +1813,14 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         throw new SAXException(e);
     }
 
-    //Laramie Crocker 4/8/2002 10:38AM
+    // Laramie Crocker 4/8/2002 10:38AM
 
     /**
      * Lets subclasses get at the current format object, so they can call
      * setTrimText, setNewLines, etc. Put in to support the HTMLWriter, in the
      * way that it pushes the current newline/trim state onto a stack and
      * overrides the state within preformatted tags.
-     *
+     * 
      * @return DOCUMENT ME!
      */
     protected OutputFormat getOutputFormat() {
@@ -1798,50 +1836,39 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

@@ -1,21 +1,19 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j.io;
 
 /**
  * <p>
- * <code>OutputFormat</code> represents the format configuration used by {@link
- * XMLWriter} and its base classes to format the XML output
+ * <code>OutputFormat</code> represents the format configuration used by
+ * {@linkXMLWriter}and its base classes to format the XML output
  * </p>
- *
- * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+ * 
+ * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision$
  */
 public class OutputFormat implements Cloneable {
@@ -38,8 +36,8 @@ public class OutputFormat implements Cloneable {
     private String encoding = "UTF-8";
 
     /**
-     * Whether or not to output the encoding in the XML declaration - default
-     * is <code>false</code>
+     * Whether or not to output the encoding in the XML declaration - default is
+     * <code>false</code>
      */
     private boolean omitEncoding = false;
 
@@ -74,15 +72,15 @@ public class OutputFormat implements Cloneable {
      * Controls when to output a line.separtor every so many tags in case of no
      * lines and total text trimming.
      */
-    private int newLineAfterNTags = 0; //zero means don't bother.
+    private int newLineAfterNTags = 0; // zero means don't bother.
 
     /** Quote character to use when writing attributes. */
     private char attributeQuoteChar = '\"';
 
     /**
      * Creates an <code>OutputFormat</code> with no additional whitespace
-     * (indent or new lines) added. The whitespace from the element text
-     * content is fully preserved.
+     * (indent or new lines) added. The whitespace from the element text content
+     * is fully preserved.
      */
     public OutputFormat() {
     }
@@ -90,9 +88,10 @@ public class OutputFormat implements Cloneable {
     /**
      * Creates an <code>OutputFormat</code> with the given indent added but no
      * new lines added. All whitespace from element text will be included.
-     *
-     * @param indent is the indent string to be used for indentation (usually a
-     *        number of spaces).
+     * 
+     * @param indent
+     *            is the indent string to be used for indentation (usually a
+     *            number of spaces).
      */
     public OutputFormat(String indent) {
         this.indent = indent;
@@ -100,12 +99,14 @@ public class OutputFormat implements Cloneable {
 
     /**
      * Creates an <code>OutputFormat</code> with the given indent added with
-     * optional newlines between the Elements. All whitespace from element
-     * text will be included.
-     *
-     * @param indent is the indent string to be used for indentation (usually a
-     *        number of spaces).
-     * @param newlines whether new lines are added to layout the
+     * optional newlines between the Elements. All whitespace from element text
+     * will be included.
+     * 
+     * @param indent
+     *            is the indent string to be used for indentation (usually a
+     *            number of spaces).
+     * @param newlines
+     *            whether new lines are added to layout the
      */
     public OutputFormat(String indent, boolean newlines) {
         this.indent = indent;
@@ -115,11 +116,14 @@ public class OutputFormat implements Cloneable {
     /**
      * Creates an <code>OutputFormat</code> with the given indent added with
      * optional newlines between the Elements and the given encoding format.
-     *
-     * @param indent is the indent string to be used for indentation (usually a
-     *        number of spaces).
-     * @param newlines whether new lines are added to layout the
-     * @param encoding is the text encoding to use for writing the XML
+     * 
+     * @param indent
+     *            is the indent string to be used for indentation (usually a
+     *            number of spaces).
+     * @param newlines
+     *            whether new lines are added to layout the
+     * @param encoding
+     *            is the text encoding to use for writing the XML
      */
     public OutputFormat(String indent, boolean newlines, String encoding) {
         this.indent = indent;
@@ -134,14 +138,14 @@ public class OutputFormat implements Cloneable {
     /**
      * <p>
      * This will set the new-line separator. The default is <code>\n</code>.
-     * Note that if the "newlines" property is false, this value is
-     * irrelevant.  To make it output the system default line ending string,
-     * call
+     * Note that if the "newlines" property is false, this value is irrelevant.
+     * To make it output the system default line ending string, call
      * <code>setLineSeparator(System.getProperty("line.separator"))</code>
      * </p>
-     *
-     * @param separator <code>String</code> line separator to use.
-     *
+     * 
+     * @param separator
+     *            <code>String</code> line separator to use.
+     * 
      * @see #setNewlines(boolean)
      */
     public void setLineSeparator(String separator) {
@@ -154,10 +158,11 @@ public class OutputFormat implements Cloneable {
 
     /**
      * DOCUMENT ME!
-     *
-     * @param newlines <code>true</code> indicates new lines should be printed,
-     *        else new lines are ignored (compacted).
-     *
+     * 
+     * @param newlines
+     *            <code>true</code> indicates new lines should be printed,
+     *            else new lines are ignored (compacted).
+     * 
      * @see #setLineSeparator(String)
      */
     public void setNewlines(boolean newlines) {
@@ -170,8 +175,9 @@ public class OutputFormat implements Cloneable {
 
     /**
      * DOCUMENT ME!
-     *
-     * @param encoding encoding format
+     * 
+     * @param encoding
+     *            encoding format
      */
     public void setEncoding(String encoding) {
         this.encoding = encoding;
@@ -184,12 +190,14 @@ public class OutputFormat implements Cloneable {
     /**
      * <p>
      * This will set whether the XML declaration (<code>&lt;?xml version="1.0"
-     * encoding="UTF-8"?&gt;</code>) includes the encoding of the document. It
-     * is common to suppress this in protocols such as WML and SOAP.
+     * encoding="UTF-8"?&gt;</code>)
+     * includes the encoding of the document. It is common to suppress this in
+     * protocols such as WML and SOAP.
      * </p>
-     *
-     * @param omitEncoding <code>boolean</code> indicating whether or not the
-     *        XML declaration should indicate the document encoding.
+     * 
+     * @param omitEncoding
+     *            <code>boolean</code> indicating whether or not the XML
+     *            declaration should indicate the document encoding.
      */
     public void setOmitEncoding(boolean omitEncoding) {
         this.omitEncoding = omitEncoding;
@@ -198,12 +206,14 @@ public class OutputFormat implements Cloneable {
     /**
      * <p>
      * This will set whether the XML declaration (<code>&lt;?xml version="1.0"
-     * encoding="UTF-8"?&gt;</code>) is included or not. It is common to
-     * suppress this in protocols such as WML and SOAP.
+     * encoding="UTF-8"?&gt;</code>)
+     * is included or not. It is common to suppress this in protocols such as
+     * WML and SOAP.
      * </p>
-     *
-     * @param suppressDeclaration <code>boolean</code> indicating whether or
-     *        not the XML declaration should be suppressed.
+     * 
+     * @param suppressDeclaration
+     *            <code>boolean</code> indicating whether or not the XML
+     *            declaration should be suppressed.
      */
     public void setSuppressDeclaration(boolean suppressDeclaration) {
         this.suppressDeclaration = suppressDeclaration;
@@ -211,9 +221,10 @@ public class OutputFormat implements Cloneable {
 
     /**
      * DOCUMENT ME!
-     *
+     * 
      * @return true if the output of the XML declaration (<code>&lt;?xml
-     *         version="1.0"?&gt;</code>) should be suppressed else false.
+     *         version="1.0"?&gt;</code>)
+     *         should be suppressed else false.
      */
     public boolean isSuppressDeclaration() {
         return suppressDeclaration;
@@ -224,10 +235,10 @@ public class OutputFormat implements Cloneable {
      * This will set whether a new line is printed after the XML declaration
      * (assuming it is not supressed.)
      * </p>
-     *
-     * @param newLineAfterDeclaration <code>boolean</code> indicating  whether
-     *        or not to print new line following the XML declaration. The
-     *        default is true.
+     * 
+     * @param newLineAfterDeclaration
+     *            <code>boolean</code> indicating whether or not to print new
+     *            line following the XML declaration. The default is true.
      */
     public void setNewLineAfterDeclaration(boolean newLineAfterDeclaration) {
         this.newLineAfterDeclaration = newLineAfterDeclaration;
@@ -235,7 +246,7 @@ public class OutputFormat implements Cloneable {
 
     /**
      * DOCUMENT ME!
-     *
+     * 
      * @return true if a new line should be printed following XML declaration
      */
     public boolean isNewLineAfterDeclaration() {
@@ -252,9 +263,10 @@ public class OutputFormat implements Cloneable {
      * <code>&lt;tagName&gt;</code> to
      * <code>&lt;tagName&gt;&lt;/tagName&gt;</code>.
      * </p>
-     *
-     * @param expandEmptyElements <code>boolean</code> indicating whether or
-     *        not empty elements should be expanded.
+     * 
+     * @param expandEmptyElements
+     *            <code>boolean</code> indicating whether or not empty
+     *            elements should be expanded.
      */
     public void setExpandEmptyElements(boolean expandEmptyElements) {
         this.expandEmptyElements = expandEmptyElements;
@@ -271,14 +283,16 @@ public class OutputFormat implements Cloneable {
      * org.dom4j.Element#getTextTrim()}</code>.
      * </p>
      * 
-     * <p></p>
+     * <p>
+     * </p>
      * 
      * <p>
      * Default: false
      * </p>
-     *
-     * @param trimText <code>boolean</code> true=>trim the whitespace,
-     *        false=>use text verbatim
+     * 
+     * @param trimText
+     *            <code>boolean</code> true=>trim the whitespace, false=>use
+     *            text verbatim
      */
     public void setTrimText(boolean trimText) {
         this.trimText = trimText;
@@ -291,20 +305,21 @@ public class OutputFormat implements Cloneable {
     /**
      * <p>
      * Ensure that text immediately preceded by or followed by an element will
-     * be "padded" with a single space.  This is used to allow make
+     * be "padded" with a single space. This is used to allow make
      * browser-friendly HTML, avoiding trimText's transformation of, e.g.,
      * <code>The quick &lt;b&gt;brown&lt;/b&gt; fox</code> into <code>The
-     * quick&lt;b&gt;brown&lt;/b&gt;fox</code> (the latter will run the three
-     * separate words together into a single word). This setting is not too
-     * useful if you haven't also called {@link #setTrimText}.
+     * quick&lt;b&gt;brown&lt;/b&gt;fox</code>
+     * (the latter will run the three separate words together into a single
+     * word). This setting is not too useful if you haven't also called
+     * {@link #setTrimText}.
      * </p>
      * 
      * <p>
      * Default: false
      * </p>
-     *
-     * @param padText <code>boolean</code> if true, pad string-element
-     *        boundaries
+     * 
+     * @param padText
+     *            <code>boolean</code> if true, pad string-element boundaries
      */
     public void setPadText(boolean padText) {
         this.padText = padText;
@@ -321,8 +336,9 @@ public class OutputFormat implements Cloneable {
      * string (""), then no indentation will happen.
      * </p>
      * Default: none (null)
-     *
-     * @param indent <code>String</code> to use for indentation.
+     * 
+     * @param indent
+     *            <code>String</code> to use for indentation.
      */
     public void setIndent(String indent) {
         // nullify empty string to void unnecessary indentation code
@@ -334,10 +350,11 @@ public class OutputFormat implements Cloneable {
     }
 
     /**
-     * Set the indent on or off.  If setting on, will use the value of
+     * Set the indent on or off. If setting on, will use the value of
      * STANDARD_INDENT, which is usually two spaces.
-     *
-     * @param doIndent if true, set indenting on; if false, set indenting off
+     * 
+     * @param doIndent
+     *            if true, set indenting on; if false, set indenting off
      */
     public void setIndent(boolean doIndent) {
         if (doIndent) {
@@ -349,12 +366,13 @@ public class OutputFormat implements Cloneable {
 
     /**
      * <p>
-     * This will set the indent <code>String</code>'s size; an indentSize of 4
-     * would result in the indention being equivalent to the
+     * This will set the indent <code>String</code>'s size; an indentSize of
+     * 4 would result in the indention being equivalent to the
      * <code>String</code> "&nbsp;&nbsp;&nbsp;&nbsp;" (four space characters).
      * </p>
-     *
-     * @param indentSize <code>int</code> number of spaces in indentation.
+     * 
+     * @param indentSize
+     *            <code>int</code> number of spaces in indentation.
      */
     public void setIndentSize(int indentSize) {
         StringBuffer indentBuffer = new StringBuffer();
@@ -369,16 +387,16 @@ public class OutputFormat implements Cloneable {
     /**
      * <p>
      * Whether or not to use the XHTML standard: like HTML but passes an XML
-     * parser with real, closed tags.  Also, XHTML CDATA sections  will be
-     * output with the CDATA delimiters: ( &quot;<b>&lt;![CDATA[</b>&quot; and
-     * &quot;<b>]]&gt;</b>&quot; ) otherwise, the class HTMLWriter will output
-     * the CDATA text, but not the delimiters.
+     * parser with real, closed tags. Also, XHTML CDATA sections will be output
+     * with the CDATA delimiters: ( &quot; <b>&lt;![CDATA[ </b>&quot; and &quot;
+     * <b>]]&gt; </b>&quot; ) otherwise, the class HTMLWriter will output the
+     * CDATA text, but not the delimiters.
      * </p>
      * 
      * <p>
      * Default is <code>false</code>
      * </p>
-     *
+     * 
      * @return DOCUMENT ME!
      */
     public boolean isXHTML() {
@@ -388,18 +406,19 @@ public class OutputFormat implements Cloneable {
     /**
      * <p>
      * This will set whether or not to use the XHTML standard: like HTML but
-     * passes an XML parser with real, closed tags.  Also, XHTML CDATA
-     * sections will be output with the CDATA delimiters: (
-     * &quot;<b>&lt;[CDATA[</b>&quot; and &quot;<b>]]&lt;</b> ) otherwise, the
-     * class HTMLWriter will output the CDATA text, but not the delimiters.
+     * passes an XML parser with real, closed tags. Also, XHTML CDATA sections
+     * will be output with the CDATA delimiters: ( &quot; <b>&lt;[CDATA[
+     * </b>&quot; and &quot; <b>]]&lt; </b>) otherwise, the class HTMLWriter
+     * will output the CDATA text, but not the delimiters.
      * </p>
      * 
      * <p>
      * Default: false
      * </p>
-     *
-     * @param xhtml <code>boolean</code> true=>conform to XHTML, false=>conform
-     *        to HTML, can have unclosed tags, etc.
+     * 
+     * @param xhtml
+     *            <code>boolean</code> true=>conform to XHTML, false=>conform
+     *            to HTML, can have unclosed tags, etc.
      */
     public void setXHTML(boolean xhtml) {
         doXHTML = xhtml;
@@ -411,14 +430,15 @@ public class OutputFormat implements Cloneable {
 
     /**
      * Controls output of a line.separator every tagCount tags when isNewlines
-     * is false. If tagCount equals zero, it means don't do anything special.
-     * If greater than zero, then a line.separator will be output after
-     * tagCount tags have been output.  Used when you would like to squeeze
-     * the html as much as possible, but some browsers don't like really long
-     * lines. A tag count of 10 would produce a line.separator in the output
-     * after 10 close tags (including single tags).
-     *
-     * @param tagCount DOCUMENT ME!
+     * is false. If tagCount equals zero, it means don't do anything special. If
+     * greater than zero, then a line.separator will be output after tagCount
+     * tags have been output. Used when you would like to squeeze the html as
+     * much as possible, but some browsers don't like really long lines. A tag
+     * count of 10 would produce a line.separator in the output after 10 close
+     * tags (including single tags).
+     * 
+     * @param tagCount
+     *            DOCUMENT ME!
      */
     public void setNewLineAfterNTags(int tagCount) {
         newLineAfterNTags = tagCount;
@@ -432,29 +452,32 @@ public class OutputFormat implements Cloneable {
      * Sets the character used to quote attribute values. The specified
      * character must be a valid XML attribute quote character, otherwise an
      * <code>IllegalArgumentException</code> will be thrown.
-     *
-     * @param quoteChar The character to use when quoting attribute values.
-     *
-     * @throws IllegalArgumentException If the specified character is not a
-     *         valid XML attribute quote character.
+     * 
+     * @param quoteChar
+     *            The character to use when quoting attribute values.
+     * 
+     * @throws IllegalArgumentException
+     *             If the specified character is not a valid XML attribute quote
+     *             character.
      */
     public void setAttributeQuoteCharacter(char quoteChar) {
         if ((quoteChar == '\'') || (quoteChar == '"')) {
             attributeQuoteChar = quoteChar;
         } else {
             throw new IllegalArgumentException("Invalid attribute quote "
-                                               + "character (" + quoteChar
-                                               + ")");
+                    + "character (" + quoteChar + ")");
         }
     }
 
     /**
      * Parses command line arguments of the form <code>-omitEncoding
      * -indentSize 3 -newlines -trimText</code>
-     *
-     * @param args is the array of command line arguments
-     * @param i is the index in args to start parsing options
-     *
+     * 
+     * @param args
+     *            is the array of command line arguments
+     * @param i
+     *            is the index in args to start parsing options
+     * 
      * @return the index of first parameter that we didn't understand
      */
     public int parseOptions(String[] args, int i) {
@@ -490,10 +513,10 @@ public class OutputFormat implements Cloneable {
     }
 
     /**
-     * A static helper method to create the default pretty printing format.
-     * This format consists of an indent of 2 spaces, newlines after each
-     * element and all other whitespace trimmed, and XMTML is false.
-     *
+     * A static helper method to create the default pretty printing format. This
+     * format consists of an indent of 2 spaces, newlines after each element and
+     * all other whitespace trimmed, and XMTML is false.
+     * 
      * @return DOCUMENT ME!
      */
     public static OutputFormat createPrettyPrint() {
@@ -507,9 +530,9 @@ public class OutputFormat implements Cloneable {
 
     /**
      * A static helper method to create the default compact format. This format
-     * does not have any indentation or newlines after an alement and all
-     * other whitespace trimmed
-     *
+     * does not have any indentation or newlines after an alement and all other
+     * whitespace trimmed
+     * 
      * @return DOCUMENT ME!
      */
     public static OutputFormat createCompactFormat() {
@@ -522,50 +545,39 @@ public class OutputFormat implements Cloneable {
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j.io;
@@ -28,34 +26,41 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * <p>
- * Records SAX events such that they may be "replayed" at a later time.
- * Provides an alternative serialization approach when externalizing a DOM4J
- * document.   Rather than serializing a document as text and re-parsing, the
- * sax events may be serialized instead.
+ * Records SAX events such that they may be "replayed" at a later time. Provides
+ * an alternative serialization approach when externalizing a DOM4J document.
+ * Rather than serializing a document as text and re-parsing, the sax events may
+ * be serialized instead.
  * </p>
  * Example usage:
+ * 
  * <pre>
- *      SAXEventRecorder recorder = new SAXEventRecorder();
- *      SAXWriter saxWriter = new SAXWriter(recorder);
- *      saxWriter.write(document);
- *      out.writeObject(recorder);
- *      ...
- *      SAXEventRecorder recorder = (SAXEventRecorder)in.readObject();
- *      SAXContentHandler saxContentHandler = new SAXContentHandler();
- *      recorder.replay(saxContentHandler);
- *      Document document = saxContentHandler.getDocument();
- *      </pre>
- *
- * @author Todd Wolff  (Bluestem Software)
+ * 
+ * 
+ *        SAXEventRecorder recorder = new SAXEventRecorder();
+ *        SAXWriter saxWriter = new SAXWriter(recorder);
+ *        saxWriter.write(document);
+ *        out.writeObject(recorder);
+ *        ...
+ *        SAXEventRecorder recorder = (SAXEventRecorder)in.readObject();
+ *        SAXContentHandler saxContentHandler = new SAXContentHandler();
+ *        recorder.replay(saxContentHandler);
+ *        Document document = saxContentHandler.getDocument();
+ * 
+ *  
+ * </pre>
+ * 
+ * @author Todd Wolff (Bluestem Software)
  */
 public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
-                                                                DeclHandler,
-                                                                DTDHandler,
-                                                                Externalizable {
+        DeclHandler, DTDHandler, Externalizable {
     public static final long serialVersionUID = 1;
+
     private static final byte STRING = 0;
+
     private static final byte OBJECT = 1;
+
     private static final byte NULL = 2;
+
     private List events = new ArrayList();
 
     public SAXEventRecorder() {
@@ -72,13 +77,13 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
                 // replay to ContentHandler
                 case SAXEvent.PROCESSING_INSTRUCTION:
                     handler.processingInstruction((String) saxEvent.getParm(0),
-                                                  (String) saxEvent.getParm(1));
+                            (String) saxEvent.getParm(1));
 
                     break;
 
                 case SAXEvent.START_PREFIX_MAPPING:
                     handler.startPrefixMapping((String) saxEvent.getParm(0),
-                                               (String) saxEvent.getParm(1));
+                            (String) saxEvent.getParm(1));
 
                     break;
 
@@ -108,22 +113,20 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
                         while (attsItr.hasNext()) {
                             String[] attParms = (String[]) attsItr.next();
                             attributes.addAttribute(attParms[0], attParms[1],
-                                                    attParms[2], attParms[3],
-                                                    attParms[4]);
+                                    attParms[2], attParms[3], attParms[4]);
                         }
                     }
 
                     handler.startElement((String) saxEvent.getParm(0),
-                                         (String) saxEvent.getParm(1),
-                                         (String) saxEvent.getParm(2),
-                                         attributes);
+                            (String) saxEvent.getParm(1), (String) saxEvent
+                                    .getParm(2), attributes);
 
                     break;
 
                 case SAXEvent.END_ELEMENT:
                     handler.endElement((String) saxEvent.getParm(0),
-                                       (String) saxEvent.getParm(1),
-                                       (String) saxEvent.getParm(2));
+                            (String) saxEvent.getParm(1), (String) saxEvent
+                                    .getParm(2));
 
                     break;
 
@@ -136,14 +139,11 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
 
                     break;
 
-                // replay to LexicalHandler         
+                // replay to LexicalHandler
                 case SAXEvent.START_DTD:
                     ((LexicalHandler) handler).startDTD((String) saxEvent
-                                                        .getParm(0),
-                                                        (String) saxEvent
-                                                        .getParm(1),
-                                                        (String) saxEvent
-                                                        .getParm(2));
+                            .getParm(0), (String) saxEvent.getParm(1),
+                            (String) saxEvent.getParm(2));
 
                     break;
 
@@ -154,13 +154,13 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
 
                 case SAXEvent.START_ENTITY:
                     ((LexicalHandler) handler).startEntity((String) saxEvent
-                                                           .getParm(0));
+                            .getParm(0));
 
                     break;
 
                 case SAXEvent.END_ENTITY:
                     ((LexicalHandler) handler).endEntity((String) saxEvent
-                                                         .getParm(0));
+                            .getParm(0));
 
                     break;
 
@@ -183,58 +183,46 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
 
                     break;
 
-                // replay to DeclHandler   
+                // replay to DeclHandler
                 case SAXEvent.ELEMENT_DECL:
                     ((DeclHandler) handler).elementDecl((String) saxEvent
-                                                        .getParm(0),
-                                                        (String) saxEvent
-                                                        .getParm(1));
+                            .getParm(0), (String) saxEvent.getParm(1));
 
                     break;
 
                 case SAXEvent.ATTRIBUTE_DECL:
                     ((DeclHandler) handler).attributeDecl((String) saxEvent
-                                                          .getParm(0),
-                                                          (String) saxEvent
-                                                          .getParm(1),
-                                                          (String) saxEvent
-                                                          .getParm(2),
-                                                          (String) saxEvent
-                                                          .getParm(3),
-                                                          (String) saxEvent
-                                                          .getParm(4));
+                            .getParm(0), (String) saxEvent.getParm(1),
+                            (String) saxEvent.getParm(2), (String) saxEvent
+                                    .getParm(3), (String) saxEvent.getParm(4));
 
                     break;
 
                 case SAXEvent.INTERNAL_ENTITY_DECL:
-                    ((DeclHandler) handler).internalEntityDecl((String) saxEvent
-                                                               .getParm(0),
-                                                               (String) saxEvent
-                                                               .getParm(1));
+                    ((DeclHandler) handler).internalEntityDecl(
+                            (String) saxEvent.getParm(0), (String) saxEvent
+                                    .getParm(1));
 
                     break;
 
                 case SAXEvent.EXTERNAL_ENTITY_DECL:
-                    ((DeclHandler) handler).externalEntityDecl((String) saxEvent
-                                                               .getParm(0),
-                                                               (String) saxEvent
-                                                               .getParm(1),
-                                                               (String) saxEvent
-                                                               .getParm(2));
+                    ((DeclHandler) handler).externalEntityDecl(
+                            (String) saxEvent.getParm(0), (String) saxEvent
+                                    .getParm(1), (String) saxEvent.getParm(2));
 
                     break;
 
                 default:
                     throw new SAXException("Unrecognized event: "
-                                           + saxEvent.event);
+                            + saxEvent.event);
             }
         }
     }
 
     // ContentHandler interface
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     public void processingInstruction(String target, String data)
-                               throws SAXException {
+            throws SAXException {
         SAXEvent saxEvent = new SAXEvent(SAXEvent.PROCESSING_INSTRUCTION);
         saxEvent.addParm(target);
         saxEvent.addParm(data);
@@ -242,7 +230,7 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
     }
 
     public void startPrefixMapping(String prefix, String uri)
-                            throws SAXException {
+            throws SAXException {
         SAXEvent saxEvent = new SAXEvent(SAXEvent.START_PREFIX_MAPPING);
         saxEvent.addParm(prefix);
         saxEvent.addParm(uri);
@@ -266,8 +254,7 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
     }
 
     public void startElement(String namespaceURI, String localName,
-                             String qualifiedName, Attributes attributes)
-                      throws SAXException {
+            String qualifiedName, Attributes attributes) throws SAXException {
         SAXEvent saxEvent = new SAXEvent(SAXEvent.START_ELEMENT);
         saxEvent.addParm(namespaceURI);
         saxEvent.addParm(localName);
@@ -294,7 +281,7 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
     }
 
     public void endElement(String namespaceURI, String localName, String qName)
-                    throws SAXException {
+            throws SAXException {
         SAXEvent saxEvent = new SAXEvent(SAXEvent.END_ELEMENT);
         saxEvent.addParm(namespaceURI);
         saxEvent.addParm(localName);
@@ -302,8 +289,7 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
         events.add(saxEvent);
     }
 
-    public void characters(char[] ch, int start, int end)
-                    throws SAXException {
+    public void characters(char[] ch, int start, int end) throws SAXException {
         SAXEvent saxEvent = new SAXEvent(SAXEvent.CHARACTERS);
         saxEvent.addParm(ch);
         saxEvent.addParm(new Integer(start));
@@ -312,9 +298,9 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
     }
 
     // LexicalHandler interface
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     public void startDTD(String name, String publicId, String systemId)
-                  throws SAXException {
+            throws SAXException {
         SAXEvent saxEvent = new SAXEvent(SAXEvent.START_DTD);
         saxEvent.addParm(name);
         saxEvent.addParm(publicId);
@@ -349,8 +335,7 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
         events.add(saxEvent);
     }
 
-    public void comment(char[] ch, int start, int end)
-                 throws SAXException {
+    public void comment(char[] ch, int start, int end) throws SAXException {
         SAXEvent saxEvent = new SAXEvent(SAXEvent.COMMENT);
         saxEvent.addParm(ch);
         saxEvent.addParm(new Integer(start));
@@ -359,9 +344,8 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
     }
 
     // DeclHandler interface
-    //-------------------------------------------------------------------------
-    public void elementDecl(String name, String model)
-                     throws SAXException {
+    // -------------------------------------------------------------------------
+    public void elementDecl(String name, String model) throws SAXException {
         SAXEvent saxEvent = new SAXEvent(SAXEvent.ELEMENT_DECL);
         saxEvent.addParm(name);
         saxEvent.addParm(model);
@@ -369,8 +353,7 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
     }
 
     public void attributeDecl(String eName, String aName, String type,
-                              String valueDefault, String value)
-                       throws SAXException {
+            String valueDefault, String value) throws SAXException {
         SAXEvent saxEvent = new SAXEvent(SAXEvent.ATTRIBUTE_DECL);
         saxEvent.addParm(eName);
         saxEvent.addParm(aName);
@@ -381,7 +364,7 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
     }
 
     public void internalEntityDecl(String name, String value)
-                            throws SAXException {
+            throws SAXException {
         SAXEvent saxEvent = new SAXEvent(SAXEvent.INTERNAL_ENTITY_DECL);
         saxEvent.addParm(name);
         saxEvent.addParm(value);
@@ -389,7 +372,7 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
     }
 
     public void externalEntityDecl(String name, String publicId, String sysId)
-                            throws SAXException {
+            throws SAXException {
         SAXEvent saxEvent = new SAXEvent(SAXEvent.EXTERNAL_ENTITY_DECL);
         saxEvent.addParm(name);
         saxEvent.addParm(publicId);
@@ -406,37 +389,58 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
         }
     }
 
-    public void readExternal(ObjectInput in)
-                      throws ClassNotFoundException, IOException {
+    public void readExternal(ObjectInput in) throws ClassNotFoundException,
+            IOException {
         if (in.readByte() != NULL) {
             events = (List) in.readObject();
         }
     }
 
     // SAXEvent inner class
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     static class SAXEvent implements Externalizable {
         public static final long serialVersionUID = 1;
+
         static final byte PROCESSING_INSTRUCTION = 1;
+
         static final byte START_PREFIX_MAPPING = 2;
+
         static final byte END_PREFIX_MAPPING = 3;
+
         static final byte START_DOCUMENT = 4;
+
         static final byte END_DOCUMENT = 5;
+
         static final byte START_ELEMENT = 6;
+
         static final byte END_ELEMENT = 7;
+
         static final byte CHARACTERS = 8;
+
         static final byte START_DTD = 9;
+
         static final byte END_DTD = 10;
+
         static final byte START_ENTITY = 11;
+
         static final byte END_ENTITY = 12;
+
         static final byte START_CDATA = 13;
+
         static final byte END_CDATA = 14;
+
         static final byte COMMENT = 15;
+
         static final byte ELEMENT_DECL = 16;
+
         static final byte ATTRIBUTE_DECL = 17;
+
         static final byte INTERNAL_ENTITY_DECL = 18;
+
         static final byte EXTERNAL_ENTITY_DECL = 19;
+
         protected byte event;
+
         protected List parms;
 
         public SAXEvent() {
@@ -473,8 +477,8 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
             }
         }
 
-        public void readExternal(ObjectInput in)
-                          throws ClassNotFoundException, IOException {
+        public void readExternal(ObjectInput in) throws ClassNotFoundException,
+                IOException {
             event = in.readByte();
 
             if (in.readByte() != NULL) {
@@ -484,50 +488,39 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

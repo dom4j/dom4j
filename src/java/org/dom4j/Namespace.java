@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j;
@@ -18,8 +16,8 @@ import org.dom4j.tree.NamespaceCache;
  * <code>Namespace</code> is a Flyweight Namespace that can be shared amongst
  * nodes.
  * </p>
- *
- * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * 
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision$
  */
 public class Namespace extends AbstractNode {
@@ -27,8 +25,8 @@ public class Namespace extends AbstractNode {
     protected static final NamespaceCache CACHE = new NamespaceCache();
 
     /** XML Namespace */
-    public static final Namespace XML_NAMESPACE =
-        CACHE.get("xml", "http://www.w3.org/XML/1998/namespace");
+    public static final Namespace XML_NAMESPACE = CACHE.get("xml",
+            "http://www.w3.org/XML/1998/namespace");
 
     /** No Namespace present */
     public static final Namespace NO_NAMESPACE = CACHE.get("", "");
@@ -44,9 +42,11 @@ public class Namespace extends AbstractNode {
 
     /**
      * DOCUMENT ME!
-     *
-     * @param prefix is the prefix for this namespace
-     * @param uri is the URI for this namespace
+     * 
+     * @param prefix
+     *            is the prefix for this namespace
+     * @param uri
+     *            is the URI for this namespace
      */
     public Namespace(String prefix, String uri) {
         this.prefix = (prefix != null) ? prefix : "";
@@ -54,12 +54,14 @@ public class Namespace extends AbstractNode {
     }
 
     /**
-     * A helper method to return the Namespace instance for the given prefix
-     * and URI
-     *
-     * @param prefix DOCUMENT ME!
-     * @param uri DOCUMENT ME!
-     *
+     * A helper method to return the Namespace instance for the given prefix and
+     * URI
+     * 
+     * @param prefix
+     *            DOCUMENT ME!
+     * @param uri
+     *            DOCUMENT ME!
+     * 
      * @return an interned Namespace object
      */
     public static Namespace get(String prefix, String uri) {
@@ -69,9 +71,10 @@ public class Namespace extends AbstractNode {
     /**
      * A helper method to return the Namespace instance for no prefix and the
      * URI
-     *
-     * @param uri DOCUMENT ME!
-     *
+     * 
+     * @param uri
+     *            DOCUMENT ME!
+     * 
      * @return an interned Namespace object
      */
     public static Namespace get(String uri) {
@@ -84,7 +87,7 @@ public class Namespace extends AbstractNode {
 
     /**
      * DOCUMENT ME!
-     *
+     * 
      * @return the hash code based on the qualified name and the URI of the
      *         namespace.
      */
@@ -99,7 +102,7 @@ public class Namespace extends AbstractNode {
     /**
      * Factory method to create the hashcode allowing derived classes to change
      * the behaviour
-     *
+     * 
      * @return DOCUMENT ME!
      */
     protected int createHashCode() {
@@ -115,9 +118,10 @@ public class Namespace extends AbstractNode {
     /**
      * Checks whether this Namespace equals the given Namespace. Two Namespaces
      * are equals if their URI and prefix are equal.
-     *
-     * @param object DOCUMENT ME!
-     *
+     * 
+     * @param object
+     *            DOCUMENT ME!
+     * 
      * @return DOCUMENT ME!
      */
     public boolean equals(Object object) {
@@ -129,7 +133,7 @@ public class Namespace extends AbstractNode {
             // we cache hash codes so this should be quick
             if (hashCode() == that.hashCode()) {
                 return uri.equals(that.getURI())
-                       && prefix.equals(that.getPrefix());
+                        && prefix.equals(that.getPrefix());
             }
         }
 
@@ -146,7 +150,7 @@ public class Namespace extends AbstractNode {
 
     /**
      * DOCUMENT ME!
-     *
+     * 
      * @return the prefix for this <code>Namespace</code>.
      */
     public String getPrefix() {
@@ -155,7 +159,7 @@ public class Namespace extends AbstractNode {
 
     /**
      * DOCUMENT ME!
-     *
+     * 
      * @return the URI for this <code>Namespace</code>.
      */
     public String getURI() {
@@ -200,7 +204,7 @@ public class Namespace extends AbstractNode {
 
     public String toString() {
         return super.toString() + " [Namespace: prefix " + getPrefix()
-               + " mapped to URI \"" + getURI() + "\"]";
+                + " mapped to URI \"" + getURI() + "\"]";
     }
 
     public String asXML() {
@@ -230,50 +234,39 @@ public class Namespace extends AbstractNode {
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

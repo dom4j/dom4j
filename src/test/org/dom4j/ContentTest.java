@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j;
@@ -16,8 +14,8 @@ import java.util.List;
 
 /**
  * A test harness to test the content API in DOM4J
- *
- * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+ * 
+ * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision$
  */
 public class ContentTest extends AbstractTestCase {
@@ -28,22 +26,22 @@ public class ContentTest extends AbstractTestCase {
     }
 
     // Test case(s)
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     public void testRoot() throws Exception {
         Element root = document.getRootElement();
         assertTrue("Has root element", root != null);
 
         List authors = root.elements("author");
-        assertTrue("Root has children",
-                   (authors != null) && (authors.size() == 2));
+        assertTrue("Root has children", (authors != null)
+                && (authors.size() == 2));
 
         Element author1 = (Element) authors.get(0);
         Element author2 = (Element) authors.get(1);
 
-        assertTrue("Author1 is James",
-                   author1.attributeValue("name").equals("James"));
-        assertTrue("Author2 is Bob",
-                   author2.attributeValue("name").equals("Bob"));
+        assertTrue("Author1 is James", author1.attributeValue("name").equals(
+                "James"));
+        assertTrue("Author2 is Bob", author2.attributeValue("name").equals(
+                "Bob"));
 
         testGetAttributes(author1);
         testGetAttributes(author2);
@@ -54,8 +52,8 @@ public class ContentTest extends AbstractTestCase {
         assertTrue("Has root element", root != null);
 
         List content = root.content();
-        assertTrue("Root has content",
-                   (content != null) && (content.size() >= 2));
+        assertTrue("Root has content", (content != null)
+                && (content.size() >= 2));
 
         boolean iterated = false;
 
@@ -98,8 +96,8 @@ public class ContentTest extends AbstractTestCase {
         for (int i = 0; i < count; i++) {
             Node node = root.getXPathResult(i);
             assertTrue("Valid node returned from node()", node != null);
-            assertTrue("Node supports the parent relationship",
-                       node.supportsParent());
+            assertTrue("Node supports the parent relationship", node
+                    .supportsParent());
             iterated = true;
         }
 
@@ -109,7 +107,7 @@ public class ContentTest extends AbstractTestCase {
     public void testOrderOfPI() throws Exception {
         Document document = factory.createDocument();
         document.addProcessingInstruction("xml-stylesheet",
-                                          "type=\"text/xsl\" href=\"...\"");
+                "type=\"text/xsl\" href=\"...\"");
         document.addElement("root");
 
         List list = document.content();
@@ -121,13 +119,12 @@ public class ContentTest extends AbstractTestCase {
         Object root = list.get(1);
 
         assertTrue("First element is not a PI",
-                   pi instanceof ProcessingInstruction);
+                pi instanceof ProcessingInstruction);
         assertTrue("Second element is an element", root instanceof Element);
 
-        String xml =
-            "<?xml version=\"1.0\" ?>\n"
-            + "<?xml-stylesheet type=\"text/xsl\" href=\"foo\" ?>\n"
-            + "<root/>";
+        String xml = "<?xml version=\"1.0\" ?>\n"
+                + "<?xml-stylesheet type=\"text/xsl\" href=\"foo\" ?>\n"
+                + "<root/>";
         document = DocumentHelper.parseText(xml);
 
         list = document.content();
@@ -138,7 +135,7 @@ public class ContentTest extends AbstractTestCase {
         root = list.get(1);
 
         assertTrue("First element is not a PI",
-                   pi instanceof ProcessingInstruction);
+                pi instanceof ProcessingInstruction);
         assertTrue("Second element is an element", root instanceof Element);
     }
 
@@ -205,7 +202,7 @@ public class ContentTest extends AbstractTestCase {
     }
 
     // Implementation methods
-    //-------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     protected void testGetAttributes(Element author) throws Exception {
         String definedName = "name";
         String undefinedName = "undefined-attribute-name";
@@ -213,58 +210,47 @@ public class ContentTest extends AbstractTestCase {
 
         String value = author.attributeValue(definedName, defaultValue);
         assertTrue("Defined value doesn't return specified default value",
-                   value != defaultValue);
+                value != defaultValue);
 
         value = author.attributeValue(undefinedName, defaultValue);
         assertTrue("Undefined value returns specified default value",
-                   value == defaultValue);
+                value == defaultValue);
     }
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */

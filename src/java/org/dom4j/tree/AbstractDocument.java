@@ -1,10 +1,8 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  *
  * This software is open source.
  * See the bottom of this file for the licence.
- *
- * $Id$
  */
 
 package org.dom4j.tree;
@@ -30,15 +28,15 @@ import org.dom4j.io.XMLWriter;
 
 /**
  * <p>
- * <code>AbstractDocument</code> is an abstract base class for  tree
+ * <code>AbstractDocument</code> is an abstract base class for tree
  * implementors to use for implementation inheritence.
  * </p>
- *
- * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * 
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision$
  */
-public abstract class AbstractDocument extends AbstractBranch
-    implements Document {
+public abstract class AbstractDocument extends AbstractBranch implements
+        Document {
     public AbstractDocument() {
     }
 
@@ -77,7 +75,7 @@ public abstract class AbstractDocument extends AbstractBranch
             return out.toString();
         } catch (IOException e) {
             throw new RuntimeException("IOException while generating textual "
-                                       + "representation: " + e.getMessage());
+                    + "representation: " + e.getMessage());
         }
     }
 
@@ -88,10 +86,12 @@ public abstract class AbstractDocument extends AbstractBranch
 
     /**
      * <p>
-     * <code>accept</code> method is the <code>Visitor Pattern</code> method.
+     * <code>accept</code> method is the <code>Visitor Pattern</code>
+     * method.
      * </p>
-     *
-     * @param visitor <code>Visitor</code> is the visitor.
+     * 
+     * @param visitor
+     *            <code>Visitor</code> is the visitor.
      */
     public void accept(Visitor visitor) {
         visitor.visit(this);
@@ -110,8 +110,8 @@ public abstract class AbstractDocument extends AbstractBranch
                 Object object = iter.next();
 
                 if (object instanceof String) {
-                    Text text =
-                        getDocumentFactory().createText((String) object);
+                    Text text = getDocumentFactory()
+                            .createText((String) object);
                     visitor.visit(text);
                 } else {
                     Node node = (Node) object;
@@ -141,16 +141,16 @@ public abstract class AbstractDocument extends AbstractBranch
     }
 
     public Document addProcessingInstruction(String target, String data) {
-        ProcessingInstruction node =
-            getDocumentFactory().createProcessingInstruction(target, data);
+        ProcessingInstruction node = getDocumentFactory()
+                .createProcessingInstruction(target, data);
         add(node);
 
         return this;
     }
 
     public Document addProcessingInstruction(String target, Map data) {
-        ProcessingInstruction node =
-            getDocumentFactory().createProcessingInstruction(target, data);
+        ProcessingInstruction node = getDocumentFactory()
+                .createProcessingInstruction(target, data);
         add(node);
 
         return this;
@@ -164,8 +164,8 @@ public abstract class AbstractDocument extends AbstractBranch
     }
 
     public Element addElement(String qualifiedName, String namespaceURI) {
-        Element element =
-            getDocumentFactory().createElement(qualifiedName, namespaceURI);
+        Element element = getDocumentFactory().createElement(qualifiedName,
+                namespaceURI);
         add(element);
 
         return element;
@@ -227,65 +227,54 @@ public abstract class AbstractDocument extends AbstractBranch
 
         if (root != null) {
             throw new IllegalAddException(this, element,
-                                          "Cannot add another element to this "
-                                          + "Document as it already has a root "
-                                          + "element of: "
-                                          + root.getQualifiedName());
+                    "Cannot add another element to this "
+                            + "Document as it already has a root "
+                            + "element of: " + root.getQualifiedName());
         }
     }
 
     /**
      * Called to set the root element variable
-     *
-     * @param rootElement DOCUMENT ME!
+     * 
+     * @param rootElement
+     *            DOCUMENT ME!
      */
     protected abstract void rootElementAdded(Element rootElement);
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project -
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * $Id$
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */
