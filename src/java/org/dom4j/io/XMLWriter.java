@@ -71,7 +71,7 @@ import org.xml.sax.ext.LexicalHandler;
   */
 public class XMLWriter implements ContentHandler, LexicalHandler {
 
-    private static final boolean ESCAPE_XML_ENTITIES = false;
+    private static final boolean ESCAPE_XML_ENTITIES = true;
     
     protected static final OutputFormat DEFAULT_FORMAT = new OutputFormat();
 
@@ -91,6 +91,8 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         document indented, if you like) **/
     private int indentLevel = 0;
 
+    /** buffer used when escaping strings */
+    private StringBuffer buffer = new StringBuffer();
     
 
     public XMLWriter(Writer writer) {
@@ -169,7 +171,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         writer.write("\"");
         
         //writer.write(escapeAttributeEntities(attribute.getValue()));
-        writeEscapeAttributeEntities( writer, attribute.getValue() );
+        writeEscapeAttributeEntities( attribute.getValue() );
         
         writer.write("\"");
         lastOutputNodeType = Node.ATTRIBUTE_NODE;
@@ -444,7 +446,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
                 while (tokenizer.hasMoreTokens()) {
                     String token = tokenizer.nextToken();
                     
-                    writeEscapeElementEntities( writer, token );
+                    writeEscapeElementEntities( token );
                     
                     if (tokenizer.hasMoreTokens()) {
                         writer.write(" ");
@@ -452,7 +454,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
                 }
             } 
             else {                    
-                writeEscapeElementEntities( writer, text );
+                writeEscapeElementEntities( text );
             }
             
             lastOutputNodeType = Node.TEXT_NODE;
@@ -748,7 +750,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
             writer.write("\"");
             
             //writer.write(escapeAttributeEntities(attribute.getValue()));
-            writeEscapeAttributeEntities( writer, attribute.getValue() );
+            writeEscapeAttributeEntities( attribute.getValue() );
             
             writer.write("\"");
         }
@@ -768,7 +770,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         writer.write("\"");
         
         //writer.write(escapeAttributeEntities(attributes.getValue(index)));
-        writeEscapeAttributeEntities( writer, attributes.getValue(index) );
+        writeEscapeAttributeEntities( attributes.getValue(index) );
 
         writer.write("\"");
     }
@@ -893,169 +895,109 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         return format.isExpandEmptyElements();
     }
 
-    /**
-     * <p>
-     * This will take the five pre-defined entities in XML 1.0 and
-     *   convert their character representation to the appropriate
-     *   entity reference, suitable for XML attributes.
-     * </p>
-     *
-     * @param st <code>String</code> input to escape.
-     * @return <code>String</code> with escaped content.
-     */
-    protected String escapeAttributeEntities(String st) {
-        StringBuffer buff = new StringBuffer();
-        char[] block = st.toCharArray();
-        String stEntity = null;
-        int i, last;
 
-        for (i=0, last=0; i < block.length; i++) {
+    /** This will take the pre-defined entities in XML 1.0 and
+      * convert their character representation to the appropriate
+      * entity reference, suitable for XML attributes.
+      */
+    protected void writeEscapeElementEntities(String text) throws IOException {
+        if ( ESCAPE_XML_ENTITIES ) {
+            text = escapeElementEntities( text );
+        }
+        writer.write( text );
+    }
+
+    
+    /** This will take the pre-defined entities in XML 1.0 and
+      * convert their character representation to the appropriate
+      * entity reference, suitable for XML attributes.
+      */
+    protected void writeEscapeAttributeEntities(String text) throws IOException {
+        if ( ESCAPE_XML_ENTITIES ) {
+            text = escapeAttributeEntities( text );
+        }
+        writer.write( text );
+    }
+
+    
+    /** This will take the pre-defined entities in XML 1.0 and
+      * convert their character representation to the appropriate
+      * entity reference, suitable for XML attributes.
+      */
+    protected String escapeElementEntities(String text) {
+        char[] block = text.toCharArray();
+        int i, last = 0;
+        for ( i = 0; i < block.length; i++ ) {
+            String entity = null;
             switch(block[i]) {
                 case '<' :
-                    stEntity = "&lt;";
+                    entity = "&lt;";
                     break;
                 case '>' :
-                    stEntity = "&gt;";
+                    entity = "&gt;";
+                    break;
+                case '&' :
+                    entity = "&amp;";
+                    break;
+            }
+            if (entity != null) {
+                buffer.append(block, last, i - last);
+                buffer.append(entity);
+                last = i + 1;
+            }
+        }
+        if ( last == 0 ) {
+            return text;
+        }
+        if ( last < block.length ) {
+            buffer.append(block, last, i - last);
+        }
+        String answer = buffer.toString();
+        buffer.setLength(0);
+        return answer;
+    }
+    
+    /** This will take the pre-defined entities in XML 1.0 and
+      * convert their character representation to the appropriate
+      * entity reference, suitable for XML attributes.
+      */
+    protected String escapeAttributeEntities(String text) {
+        char[] block = text.toCharArray();
+        int i, last = 0;
+        for ( i = 0; i < block.length; i++ ) {
+            String entity = null;
+            switch(block[i]) {
+                case '<' :
+                    entity = "&lt;";
+                    break;
+                case '>' :
+                    entity = "&gt;";
                     break;
                 case '\'' :
-                    stEntity = "&apos;";
+                    entity = "&apos;";
                     break;
                 case '\"' :
-                    stEntity = "&quot;";
+                    entity = "&quot;";
                     break;
                 case '&' :
-                    stEntity = "&amp;";
+                    entity = "&amp;";
                     break;
-                default :
-                    /* no-op */ ;
             }
-            if (stEntity != null) {
-                buff.append(block, last, i - last);
-                buff.append(stEntity);
-                stEntity = null;
+            if (entity != null) {
+                buffer.append(block, last, i - last);
+                buffer.append(entity);
                 last = i + 1;
             }
         }
-        if(last < block.length) {
-            buff.append(block, last, i - last);
+        if ( last == 0 ) {
+            return text;
         }
-
-        return buff.toString();
-    }
-
-    
-    /** This will take the five pre-defined entities in XML 1.0 and
-      * convert their character representation to the appropriate
-      * entity reference, suitable for XML attributes.
-      *
-      */
-    protected void writeEscapeAttributeEntities(Writer writer, String st) throws IOException {
-        if ( ESCAPE_XML_ENTITIES ) {
-            char[] block = st.toCharArray();
-            for ( int i = 0, last = 0, size = block.length; i < size; i++ ) {
-                char ch = block[i];
-                switch (ch) {
-                    case '<' :
-                        writer.write( "&lt;" );
-                        break;
-                    case '>' :
-                        writer.write( "&gt;" );
-                        break;
-                    case '\'' :
-                        writer.write( "&apos;" );
-                        break;
-                    case '\"' :
-                        writer.write( "&quot;" );
-                        break;
-                    case '&' :
-                        writer.write( "&amp;" );
-                        break;
-                    default :
-                        writer.write( ch );
-                }
-            }
+        if ( last < block.length ) {
+            buffer.append(block, last, i - last);
         }
-        else {
-            writer.write( st );
-        }
-    }
-
-    
-
-
-    /**
-     * <p>
-     * This will take the three pre-defined entities in XML 1.0
-     *   (used specifically in XML elements) and
-     *   convert their character representation to the appropriate
-     *   entity reference, suitable for XML element.
-     * </p>
-     *
-     * @param st <code>String</code> input to escape.
-     * @return <code>String</code> with escaped content.
-     */
-    protected String escapeElementEntities(String st) {
-        StringBuffer buff = new StringBuffer();
-        char[] block = st.toCharArray();
-        String stEntity = null;
-        int i, last;
-
-        for (i=0, last=0; i < block.length; i++) {
-            switch(block[i]) {
-                case '<' :
-                    stEntity = "&lt;";
-                    break;
-                case '>' :
-                    stEntity = "&gt;";
-                    break;
-                case '&' :
-                    stEntity = "&amp;";
-                    break;
-                default :
-                    /* no-op */ ;
-            }
-            if (stEntity != null) {
-                buff.append(block, last, i - last);
-                buff.append(stEntity);
-                stEntity = null;
-                last = i + 1;
-            }
-        }
-        if(last < block.length) {
-            buff.append(block, last, i - last);
-        }
-
-        return buff.toString();
-    }
-
-    /** This will take the five pre-defined entities in XML 1.0 and
-      * convert their character representation to the appropriate
-      * entity reference, suitable for XML attributes.
-      *
-      */
-    protected void writeEscapeElementEntities(Writer writer, String st) throws IOException {
-        if ( ESCAPE_XML_ENTITIES ) {
-            char[] block = st.toCharArray();
-            for ( int i = 0, last = 0, size = block.length; i < size; i++ ) {
-                char ch = block[i];
-                switch (ch) {
-                    case '<' :
-                        writer.write( "&lt;" );
-                        break;
-                    case '>' :
-                        writer.write( "&gt;" );
-                        break;
-                    case '&' :
-                        writer.write( "&amp;" );
-                        break;
-                    default :
-                        writer.write( ch );
-                }
-            }
-        }
-        else {
-            writer.write( st );
-        }
+        String answer = buffer.toString();
+        buffer.setLength(0);
+        return answer;
     }
 
     protected void handleException(IOException e) throws SAXException {
