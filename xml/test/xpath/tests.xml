@@ -65,6 +65,13 @@
     </context>
   </document>
 
+  <document url="xml/much_ado.xml">
+    <context select="/">
+      <valueOf select="/PLAY/TITLE">Much Ado about Nothing</valueOf>
+    </context>
+  </document>
+
+ 
   
   <document url="xml/moreover/sample.xml">
     <context select="/">
