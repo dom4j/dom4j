@@ -84,6 +84,14 @@ public class TestBackedList extends AbstractTestCase {
         assertEquals(4, children.size());
         assertEquals("dummy1", ((Node) children.get(1)).getName());
         assertEquals("dummy2", ((Node) children.get(2)).getName());
+        
+        /*
+         * Some tests for issue reported at
+         * http://sourceforge.net/tracker/index.php?func=detail&aid=853714&group_id=16035&atid=316035
+         */
+        children.add(children.size(), factory.createElement("dummy3"));
+        children = root.elements("author");
+        children.add(children.size(), factory.createElement("dummy4"));
     }
     
     public void testSort() {
