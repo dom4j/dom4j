@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<main>
+<import href="FranzBeilImport1.xml" />
+<import href="FranzBeilImport2.xml" />
+<import href="FranzBeilImport3.xml" />
+</main>
