@@ -44,6 +44,10 @@ public class DOMEntityReference extends DefaultEntity implements org.w3c.dom.Ent
     
     // org.w3c.dom.Node interface
     //-------------------------------------------------------------------------        
+    public boolean supports(String feature, String version) {
+        return DOMNodeHelper.supports(this, feature, version);
+    }
+        
     public String getNamespaceURI() {
         return DOMNodeHelper.getNamespaceURI(this);
     }

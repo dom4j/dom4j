@@ -47,9 +47,88 @@
       <email>jstrachan@apache.org</email>
       <organization>SpiritSoft, Inc.</organization>
     </developer>
+    
+    <!-- ### need to fill in the rest of the details from the documentation... -->
+    
   </developers>
   
   <dependencies>
+
+<!--    
+    <dependency>
+      <name>jaxp</name>
+      <type>required</type>
+      <version>1.1</version>
+      <jar>jaxp-1.1.jar</jar>
+    </dependency>
+-->
+
+    <dependency>
+      <name>jaxen</name>
+      <type>required</type>
+      <version>1.0-FCS-full</version>
+      <jar>jaxen-1.0-FCS-full.jar</jar>
+    </dependency>
+
+    <dependency>
+      <name>saxpath</name>
+      <type>required</type>
+      <version>1.0-FCS</version>
+      <jar>saxpath-1.0-FCS.jar</jar>
+    </dependency>
+
+    <dependency>
+      <name>msv</name>
+      <type>required</type>
+      <version>20020414</version>
+      <jar>msv-20020414.jar</jar>
+    </dependency>
+
+    <dependency>
+      <name>xsdlib</name>
+      <type>required</type>
+      <version>20020414</version>
+      <jar>xsdlib-20020414.jar</jar>
+    </dependency>
+
+    <dependency>
+      <name>relaxngDatatype</name>
+      <type>required</type>
+      <version>1.0</version>
+      <jar>relaxngDatatype.jar</jar>
+    </dependency>
+
+	<!-- ### still required? -->
+    <dependency>
+      <name>isorelax</name>
+      <type>required</type>
+      <version>1.0</version>
+      <jar>isorelax.jar</jar>
+    </dependency>
+
+	<!-- ### move to XPP 3 ASAP -->
+    <dependency>
+      <name>PullParser</name>
+      <type>required</type>
+      <version>2</version>
+      <jar>PullParser2.jar</jar>
+    </dependency>
+
+	<!-- testing dependencies -->
+	
+    <dependency>
+      <name>Tidy</name>
+      <type>required</type>
+      <version>1.0</version>
+      <jar>Tidy.jar</jar>
+    </dependency>
+
+    <dependency>
+      <name>xercesImpl</name>
+      <type>required</type>
+      <version>2.0.0</version>
+      <jar>xercesImpl-2.0.0.jar</jar>
+    </dependency>
     
     <dependency>
       <name>xmlParseAPIs</name>
@@ -57,7 +136,6 @@
       <version>2.0.0</version>
       <jar>xmlParserAPIs-2.0.0.jar</jar>
     </dependency>
-
   </dependencies>
   
   <build>
@@ -67,7 +145,7 @@
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
     <aspectSourceDirectories></aspectSourceDirectories>
     <unitTestPatterns>
-      <unitTestPattern>include = **/*Test*.java</unitTestPattern>
+      <unitTestPattern>include = **/Test*.java</unitTestPattern>
     </unitTestPatterns>
 
     <jarResources>
@@ -75,6 +153,8 @@
     </jarResources>
 
     <jars></jars>
-    <nagEmailAddress>dom4j-dev@</nagEmailAddress>
+    
+    <!-- ### -->
+    <nagEmailAddress>dom4j-dev@lists.sourceforge.net</nagEmailAddress>
   </build>
 </project>

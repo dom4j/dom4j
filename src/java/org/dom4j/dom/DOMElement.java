@@ -57,6 +57,10 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     
     // org.w3c.dom.Node interface
     //-------------------------------------------------------------------------        
+    public boolean supports(String feature, String version) {
+        return DOMNodeHelper.supports(this, feature, version);
+    }
+        
     public String getNamespaceURI() {
         return getQName().getNamespaceURI();
     }

@@ -11,6 +11,8 @@
     <section name="Change History">
 
       <section name="Changes in CVS since last release">
+        <p>Removed internal Aelfred distribution. So dom4j.jar now requires a parser such as crimson.jar or xerces.jar to be on the classpath, preferably along with JAXP.
+        </p>
         <p>Update of Cookbook containing a chapter about rule API.
         </p>
         <p>Patched SAXWriter to not pass in null System or Public IDs which can cause problems in Saxon.

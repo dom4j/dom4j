@@ -15,9 +15,13 @@ import org.dom4j.persistence.MarshallingContext;
 public abstract class DocumentMarshalling implements MarshallingStrategy {
 
   public static DocumentMarshalling getInstance(MarshallingContext context) throws Exception {
+/*
+ * Temporarily commented out for now... Will try put back when the build works on latest XMLDb
+ *       
     if (context.getMarshallingStrategy().equals("nativ")) {
        return new org.dom4j.persistence.nativ.XMLDBStrategy(context);
     }
+*/  
     return null;
   }
 

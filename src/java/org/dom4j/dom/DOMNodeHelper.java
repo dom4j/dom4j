@@ -47,6 +47,9 @@ public class DOMNodeHelper {
     
     // Node API
     //-------------------------------------------------------------------------        
+    public static boolean supports(Node node, String feature, String version) {
+        return false;
+    }
 
     public static String getNamespaceURI(Node node) {
         return null;
