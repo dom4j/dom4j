@@ -34,7 +34,6 @@ import org.dom4j.io.SAXContentHandler;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.SAXWriter;
 import org.dom4j.io.XMLWriter;
-import org.w3c.tidy.Tidy;
 
 /** A test harness to test the the round trips of Documents.
   *
@@ -100,8 +99,9 @@ public class TestRoundTrip extends AbstractTestCase {
         }
     }
 
-    public void testJTidyRoundTrip() throws Exception {
-        Document document = loadHTML("/readme.html");
+    public void testRoundTrip() throws Exception {
+    	SAXReader reader = new SAXReader();
+    	Document document = reader.read(getClass().getResource("/xml/xmlspec.xml"));
   
         //Document doc1 = roundTripText( document );
         Document doc1 = roundTripSAX( document );
@@ -123,17 +123,6 @@ public class TestRoundTrip extends AbstractTestCase {
         SAXReader reader = new SAXReader();
         URL  url = getClass().getResource(file);
         return reader.read(url);
-    }
-    
-    protected Document loadHTML( String xmlFile ) throws Exception {
-        InputStream in = getClass().getResourceAsStream(xmlFile);
-        Tidy tidy = new Tidy();
-        tidy.setXHTML(true);
-        tidy.setDocType("omit");
-        org.w3c.dom.Document domDocument = tidy.parseDOM( in, null );
-        
-        DOMReader domReader = new DOMReader();
-        return domReader.read( domDocument );
     }
     
     protected Document roundTripDOM(Document document) throws Exception {

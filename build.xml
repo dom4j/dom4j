@@ -15,16 +15,10 @@
             <include name="**/*.jar" />
         </fileset>
         <fileset dir="./lib/tools">
-            <include name="jtidy*.jar" />
             <include name="xalan*.jar" />
             <include name="xerces*.jar" /> <!-- required by msv -->
         </fileset>
         <pathelement location="."/>
-<!--
-    	<fileset dir="./lib/jaxb-ri">
-            <include name="*.jar" />
-        </fileset>
--->
     </path>
 
     <path id="samples.classpath">

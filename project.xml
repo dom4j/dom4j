@@ -235,13 +235,6 @@
     </dependency>
     
     <dependency>
-      <groupId>jtidy</groupId>
-      <artifactId>jtidy</artifactId>
-      <version>4aug2000r7-dev</version>
-      <url>http://jtidy.sourceforge.net/</url>
-    </dependency>
-
-    <dependency>
       <groupId>stax</groupId>
       <artifactId>stax-ri</artifactId>
       <version>1.0</version>
