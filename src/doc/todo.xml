@@ -4,6 +4,14 @@
     <title>Status</title>
     
     <section title="Change History">
+        <section title="Changes in CVS since last release">
+          <section title="Patches and bug fixes">
+            <p>Fixed bug in getNamespaceForPrefix() where if the prefix is null or ""
+               and there is a default namespace defined, this method was returning 
+               a namespace instance with the incorrect URI. 
+            </p>
+          </section>
+        </section>
         <section title="0.8 release">
           <section title="New methods">
             <pre>hasContent()</pre>

@@ -447,9 +447,9 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
             DocumentFactory factory = getDocumentFactory();
             if ( size == 1 ) {
                 // allow lazy construction of the List of Attributes
+                String attributeQualifiedName = attributes.getQName(0);
                 String attributeURI = attributes.getURI(0);
                 String attributeLocalName = attributes.getLocalName(0);
-                String attributeQualifiedName = attributes.getQName(0);
                 String attributeValue = attributes.getValue(0);
 
                 QName attributeQName = namespaceStack.getQName( 
@@ -463,9 +463,9 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
                 for ( int i = 0; i < size; i++ ) {
                     // optimised to avoid the call to attribute(QName) to 
                     // lookup an attribute for a given QName
+                    String attributeQualifiedName = attributes.getQName(i);
                     String attributeURI = attributes.getURI(i);
                     String attributeLocalName = attributes.getLocalName(i);
-                    String attributeQualifiedName = attributes.getQName(i);
                     String attributeValue = attributes.getValue(i);
 
                     QName attributeQName = namespaceStack.getQName( 
@@ -1046,10 +1046,10 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     
     
     public Namespace getNamespaceForPrefix(String prefix) {
-        if ( prefix == null || prefix.length() <= 0 ) {
-            return Namespace.NO_NAMESPACE;
+        if ( prefix == null ) {
+            prefix = "";
         }
-        else if ( prefix.equals( getNamespacePrefix() ) ) {
+        if ( prefix.equals( getNamespacePrefix() ) ) {
             return getNamespace();
         }
         else if ( prefix.equals( "xml" ) ) {
@@ -1067,6 +1067,16 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
                     }
                 }
             }
+        }
+        Element parent = getParent();
+        if ( parent != null ) {
+            Namespace answer = parent.getNamespaceForPrefix(prefix);
+            if ( answer != null ) {
+                return answer;
+            }               
+        }
+        if ( prefix == null || prefix.length() <= 0 ) {
+            return Namespace.NO_NAMESPACE;
         }
         return null;
     }

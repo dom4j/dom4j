@@ -106,6 +106,28 @@ public class TestNamespaces extends AbstractTestCase {
         log( "found: " + ns.asXML() );
     }
     
+    public void testNamespaceForDefaultPrefix() throws Exception {
+        SAXReader reader = new SAXReader();
+        Document document = reader.read("xml/test/defaultNamespace.xml");
+        
+        List list = document.selectNodes( "//*" );
+        
+        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
+            Element element = (Element) iter.next();
+            
+            Namespace ns = element.getNamespaceForPrefix( "" );
+        
+            assertNamespace( ns, "", "dummyNamespace" );
+            
+            ns = element.getNamespaceForPrefix( null );
+        
+            assertNamespace( ns, "", "dummyNamespace" );
+            
+            log( "found: " + ns.asXML() );
+
+        }
+    }
+    
     public void testNamespaceForURI() throws Exception {
         Element root = document.getRootElement();
         
