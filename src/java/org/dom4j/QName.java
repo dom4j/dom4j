@@ -9,6 +9,8 @@
 
 package org.dom4j;
 
+import java.io.Serializable;
+
 import org.dom4j.tree.QNameCache;
 
 /** <p><code>QName</code> represents a qualified name value of an XML element 
@@ -18,9 +20,9 @@ import org.dom4j.tree.QNameCache;
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class QName {
+public class QName implements Serializable {
 
-    protected static QNameCache cache = new QNameCache();
+    protected transient static QNameCache cache = new QNameCache();
     
     
     /** The local name of the element or attribute */
