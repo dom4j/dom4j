@@ -123,7 +123,7 @@ public class AttributeDecl {
         if (valueDefault != null) {
             buffer.append(valueDefault);
             if (valueDefault.equals("#FIXED")) {
-                buffer.append("\"");
+                buffer.append(" \"");
                 buffer.append(value);
                 buffer.append("\"");
             }
