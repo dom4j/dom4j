@@ -34,7 +34,7 @@
       
       <p>To learn more about CVS go <a href="http://www.cvshome.org/">here</a>.
         You can browse the current CVS repository 
-        <a href="http://cvs.sourceforge.net/cgi-bin/cvsweb.cgi/?cvsroot=dom4j">here</a></p>
+        <a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/dom4j/">here</a></p>
 
       <section title="Anonymous CVS Access">
         <p>
