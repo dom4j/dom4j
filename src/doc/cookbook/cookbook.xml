@@ -9,6 +9,14 @@
   <author><honorific>Mr</honorific><firstname>James</firstname><surname>Strachan</surname></author>
 </authorgroup>
 <revhistory>
+  <revision>
+      <revnumber>0.0.8</revnumber>
+      <date>01-09-25</date>
+      <authorinitials>tradem</authorinitials>
+      <revdescription>
+         <para>Fixed the MSV sample in order make it compilable. Lot's of thanks to Martijn Koster for pointing that out.</para>
+      </revdescription>
+  </revision>
  <revision>
     <revnumber>0.0.7</revnumber>
     <date>01-09-03</date>
@@ -90,18 +98,18 @@
 <chapter>
 <title>Introducing dom4j</title>
 <para>
-<application>dom4j</application> is a object model representing an XML Tree in memory. 
-<application>dom4j</application> offers a easy-to-use API that provides a powerfull set of 
+<application>dom4j</application> is a object model representing an XML Tree in memory.
+<application>dom4j</application> offers a easy-to-use API that provides a powerfull set of
 features to process, manipulate or navigate XML and work with XPath and XSLT as well as integrate with SAX, JAXP and DOM.
 </para>
 <para>
-<application>dom4j</application> is designed to be interface-based in order to provide highly configurable implementation strategies. 
+<application>dom4j</application> is designed to be interface-based in order to provide highly configurable implementation strategies.
 You are able to create your own XML tree implementations by simply providing a DocumentFactory implementation.
 This makes it very simple to resuse much of the dom4j code while extending it to provide whatever implementation features you wish.
 </para>
 <para>
 This
-document will guide you through <application>dom4j</application>'s features in a pratical way. 
+document will guide you through <application>dom4j</application>'s features in a pratical way.
 It uses a lot of examples with source code to achive that. The document is
 also desinged as a reference so that you don't have to read the entire document right now. This guide concentrates on daily work with
 <application>dom4j</application> and is therefore called <emphasis>cookbook</emphasis>.
@@ -117,11 +125,11 @@ to get easily readable property data.
 
 <section><title>Reading XML data</title>
 <para>
-How does <application>dom4j</application> help you to get at the data stored in XML? 
+How does <application>dom4j</application> help you to get at the data stored in XML?
 <application>dom4j</application> comes with a set of
 builder classes that parses the xml data and creating
-a tree like object structure in memory. 
-You can easily manipulate and navigate through that model. 
+a tree like object structure in memory.
+You can easily manipulate and navigate through that model.
 The following example shows how you can
 read your data using <application>dom4j</application> API.
 
@@ -151,10 +159,10 @@ public class DeployFileLoaderSample {
 </para>
 
 <para>
-The above example code should clarify the use of <classname>org.dom4j.io.SAXReader</classname> to 
+The above example code should clarify the use of <classname>org.dom4j.io.SAXReader</classname> to
 build a complete <application>dom4j</application>-tree from a given file.
-The org.dom4j.io package of <application>dom4j</application> contains a set of classes 
-for creating and serializing <acronym>XML</acronym> objects. 
+The org.dom4j.io package of <application>dom4j</application> contains a set of classes
+for creating and serializing <acronym>XML</acronym> objects.
 The read() method
 is overloaded so that you able to pass different kind of object that represents a source.
 </para>
@@ -215,20 +223,20 @@ public class DeployFileLoaderSample {
 <title>Integrating with other XML APIs</title>
 <para>
 <application>dom4j</application> offers also classes for integration with
-the two original XML processing APIs - SAX and DOM. 
-So far we have been talking about reading a document with SAX. 
+the two original XML processing APIs - SAX and DOM.
+So far we have been talking about reading a document with SAX.
 The <classname>org.dom4j.SAXContentHandler</classname> class implements several
-SAX interfaces directly (such as ContentHandler) so that you can embed <application>dom4j</application> 
-directly inside any SAX application. 
+SAX interfaces directly (such as ContentHandler) so that you can embed <application>dom4j</application>
+directly inside any SAX application.
 You can also use this class to implement your own specific SAX-based Reader class if you need to.
 </para>
 
 <para>
 The <classname>DOMReader</classname> class allows you to convert an existing <acronym>DOM</acronym> tree
 into a <application>dom4j</application> tree.
-This could be usefull if you already used DOM and want to replace it step by step 
-with <application>dom4j</application> or if you just needs some of <acronym>DOM</acronym>'s 
-behaviour and want to save memory ressources by transforming it in a <application>dom4j</application> Model. 
+This could be usefull if you already used DOM and want to replace it step by step
+with <application>dom4j</application> or if you just needs some of <acronym>DOM</acronym>'s
+behaviour and want to save memory ressources by transforming it in a <application>dom4j</application> Model.
 You are able to transform a DOM Document, a <acronym>DOM</acronym> node branch and a single element.
 </para>
 
@@ -281,14 +289,14 @@ public class DeployFileCreator {
 </programlisting>
 
 <para>
-The listing shows how to generate a new Document from scratch. 
-The method <classname>generateDoc(String aRootElement)</classname> takes a String parameter. 
-The string value contains the name of the root element of the new document. 
-As you can see <classname>org.dom4j.DocumentFactory</classname> is a singleton 
+The listing shows how to generate a new Document from scratch.
+The method <classname>generateDoc(String aRootElement)</classname> takes a String parameter.
+The string value contains the name of the root element of the new document.
+As you can see <classname>org.dom4j.DocumentFactory</classname> is a singleton
 that is accessable via <classname>getInstance()</classname> as most Java singletons are.
-After we obtained the instance we can <classname>DocumentFactory</classname> methods. 
+After we obtained the instance we can <classname>DocumentFactory</classname> methods.
 They follow the <emphasis>createXXX()</emphasis> naming convention, so if you want to create a Attribute you would
-call <emphasis>createAttribute()</emphasis> instead. 
+call <emphasis>createAttribute()</emphasis> instead.
 If your class uses DocumentFactory a lot or uses a different DocumentFactory instance then
 you could add it as a member variable and initiate it via getInstance in your constructor.
 </para>
@@ -346,7 +354,7 @@ public class Foo {
       .addAttribute( "name", "James" )
       .addAttribute( "location", "UK" )
       .addText( "James Strachan" );
-    
+
     return document;
   }
 }
@@ -356,7 +364,7 @@ public class Foo {
 
 
 <para>
-As mentioned earlier <application>dom4j</application> is an interface based API. 
+As mentioned earlier <application>dom4j</application> is an interface based API.
 This means that DocumentFactory and the reader classes in the org.dom4j.io package always use the org.dom4j interfaces
 rather than any concrete implementation classes.
 The Collection API and <acronym>W3C</acronym>'s <acronym>DOM</acronym> are other examples of APIs that
@@ -370,7 +378,7 @@ This wide spread design is described by <citation>BillVenners</citation>.
 <title>Serialization and Output</title>
 
 <para>
-Once you have parsed or created a document you want to serialize it to disk or 
+Once you have parsed or created a document you want to serialize it to disk or
 into a plain (or encrypted) stream. <application>dom4j</application> provides a set of classes to serialize
 your dom4j tree in four ways:
 </para>
@@ -383,12 +391,12 @@ your dom4j tree in four ways:
 </itemizedlist>
 
 <section><title>Serializing to XML</title>
-<classname>org.dom4j.io.XMLWriter</classname> is a easy-to-use and easy-to-understand class used 
-to serialize a <application>dom4j</application> tree to a plain <acronym>XML</acronym>. 
+<classname>org.dom4j.io.XMLWriter</classname> is a easy-to-use and easy-to-understand class used
+to serialize a <application>dom4j</application> tree to a plain <acronym>XML</acronym>.
 You are able
-to write the <acronym>XML</acronym> tree to either an <classname>java.io.OutputStream</classname> 
-or a <classname>java.io.Writer</classname>. 
-This can be configured with the overloaded constructor or via the 
+to write the <acronym>XML</acronym> tree to either an <classname>java.io.OutputStream</classname>
+or a <classname>java.io.Writer</classname>.
+This can be configured with the overloaded constructor or via the
 <classname>setOutputStream()</classname> or <classname>setReader()</classname> methods.
 Let's have a look at a example.
 
@@ -416,10 +424,10 @@ public class DeployFileCreator {
 </programlisting>
 
 <para>
-We use the constructor of <classname>XMLWriter</classname> to pass a to given 
-<classname>OutputStream</classname> along with the required character encoding. 
-It is easier to use a <classname>Writer</classname> rather than an <classname>OutputStream</classname>, 
-because the <classname>Writer</classname>  is String based and so has ness 
+We use the constructor of <classname>XMLWriter</classname> to pass a to given
+<classname>OutputStream</classname> along with the required character encoding.
+It is easier to use a <classname>Writer</classname> rather than an <classname>OutputStream</classname>,
+because the <classname>Writer</classname>  is String based and so has ness
 character encoding issues.
 The write() methods of <classname>Writer</classname> are overloaded so that you can write all of the dom4j objects individually if required.
 </para>
@@ -428,8 +436,8 @@ The write() methods of <classname>Writer</classname> are overloaded so that you 
 <section><title>Customizing the output format</title>
 <para>
 The default output format is to write the XML document as-is.
-If you want to change the output format then there is a class 
-<classname>org.dom4j.io.OutputFormat</classname> which allows you to define pretty printing options, 
+If you want to change the output format then there is a class
+<classname>org.dom4j.io.OutputFormat</classname> which allows you to define pretty printing options,
 to suppress the output of the XML declaration, change the line ending and so on.
 There is also a helper method <classname>OutputFormat.createPrettyPrint()</classname> which will
 create a default pretty printing format that you can further customize if you wish.
@@ -461,14 +469,14 @@ public class DeployFileCreator {
 </programlisting>
 
 <para>
-An interesting feature of <classname>OutputFormat</classname> the ability to set 
+An interesting feature of <classname>OutputFormat</classname> the ability to set
 the character encoding. It is a good idiom to use this mechansim for setting the encoding
 as the XMLWriter will be able to use this encoding to create an OutputStream as well
 as to output the XML declaration.
 </para>
 
 <para>
-The <classname>close()</classname> method closes the underlying <classname>Writer</classname>. 
+The <classname>close()</classname> method closes the underlying <classname>Writer</classname>.
 </para>
 
 <programlisting>
@@ -506,9 +514,9 @@ public class DeployFileCreator {
 </programlisting>
 
 <para>
-The serialization methods in our little example will now set encoding using <classname>OutputFormater</classname>. 
-The default encoding if none is specifed will be <acronym>UTF-8</acronym>. 
-If you need a simple output on screen for debbuing or testing you can omit setting of 
+The serialization methods in our little example will now set encoding using <classname>OutputFormater</classname>.
+The default encoding if none is specifed will be <acronym>UTF-8</acronym>.
+If you need a simple output on screen for debbuing or testing you can omit setting of
 a <classname>Writer</classname> or an <classname>OutputStream</classname> completely
 as <classname>XMLWriter</classname> will default to <classname>System.out</classname>.
 </para>
@@ -519,10 +527,10 @@ as <classname>XMLWriter</classname> will default to <classname>System.out</class
 
 <section><title>Printing HTML</title>
 <para>
-<classname>HTMLWriter</classname> takes a <application>dom4j</application> tree 
+<classname>HTMLWriter</classname> takes a <application>dom4j</application> tree
 and formats it to a stream as <acronym>HTML</acronym>. This formatter is similar to
-<classname>XMLWriter</classname> but outputs the text of CDATA and Entity sections rather than the serialised 
-format as in <acronym>XML</acronym> and also supports many HTML element which have no corresponding close tag 
+<classname>XMLWriter</classname> but outputs the text of CDATA and Entity sections rather than the serialised
+format as in <acronym>XML</acronym> and also supports many HTML element which have no corresponding close tag
 such as for &lt;BR&gt; and &lt;P&gt;
 </para>
 
@@ -560,9 +568,9 @@ public class DeployFileCreator {
 
 <section><title>Building a DOM tree</title>
 <para>
-Sometimes it's necessary to transform your <application>dom4j</application> tree 
+Sometimes it's necessary to transform your <application>dom4j</application> tree
 into a <acronym>DOM</acronym> tree, because you are currently refactoring your application.
-<application>dom4j</application> is very convient for integration with older <acronym>XML</acronym> 
+<application>dom4j</application> is very convient for integration with older <acronym>XML</acronym>
 <acronym>API</acronym>'s like <acronym>DOM</acronym> or <acronym>SAX</acronym>
 (see <anchor id="dom4j2SAX">Generating SAX Events</anchor>). Let's move to an example:
 </para>
@@ -578,7 +586,7 @@ public class DeployFileLoaderSample {
   private org.dom4j.Document doc;
 
   public org.w3c.dom.Document transformtoDOM() {
-    DOMWriter writer = new DOMWriter(); 
+    DOMWriter writer = new DOMWriter();
     return writer.write(this.doc);
   }
 }
@@ -614,8 +622,8 @@ public class DeployFileLoaderSample {
 </programlisting>
 
 <para>
-Using <classname>SAXWriter</classname> is fairly easy as you can see. 
-You can resolve also <classname>org.dom.Element</classname> which means that 
+Using <classname>SAXWriter</classname> is fairly easy as you can see.
+You can resolve also <classname>org.dom.Element</classname> which means that
 you are able to process a single element branch or even a single node with <acronym>SAX</acronym>.
 </para>
 </section>
@@ -637,12 +645,12 @@ dom4j offers several powerful mechansims for navigating through a document:-
 
 <section><title>Using Iterator</title>
 <para>
-Most Java developers have already used java.util.Iterator or it's ancestor 
-<classname>java.util.Enumeration</classname>. 
+Most Java developers have already used java.util.Iterator or it's ancestor
+<classname>java.util.Enumeration</classname>.
 Both classe are fairly involed into the Collection API and used
-to visit the elements of a collection. The Iterator is appylied usually with a while 
+to visit the elements of a collection. The Iterator is appylied usually with a while
 loop and Iterator methods hasNext() and next() item. Right now Collection API
-dont support Generic Type (like C++ Templates), but there's already a Early Access Implemention available. 
+dont support Generic Type (like C++ Templates), but there's already a Early Access Implemention available.
 Now let's move to an living example of it in dom4j.
 </para>
 </section>
@@ -671,7 +679,7 @@ public class DeployFileLoaderSample {
 </programlisting>
 
 <para>
-The above example might be a little bit confusing if you are not too familiar with the Collections API. 
+The above example might be a little bit confusing if you are not too familiar with the Collections API.
 Casting is necessary when you want to acess the object. Java Generics will solve this problem in future.
 </para>
 
@@ -754,7 +762,7 @@ public class DeployFileLoaderSample {
 
     // we have access to the size() and other List methods
     if ( elements.size() > 4 ) {
-      // now lets remove a range of elements  
+      // now lets remove a range of elements
       elements.subList( 3, 4 ).clear();
     }
   }
@@ -765,7 +773,7 @@ public class DeployFileLoaderSample {
 
 <section><title>Using XPath</title>
 <para>
-<acronym>XPath</acronym> is is one of the most usefull features of <application>dom4j</application>. 
+<acronym>XPath</acronym> is is one of the most usefull features of <application>dom4j</application>.
 You can use it to retrieve nodes from any location as well as evaluating complex expressions.
 A good XPath refercence can be found in Micheal Kay's XSLT book <citation>XSLTReference</citation>
 along with the <citation>Zvon</citation> Zvon tutorial.
@@ -803,12 +811,12 @@ public class DeployFileLoaderSample {
 </programlisting>
 
 <para>
-As selectNodes returns a List we can apply <classname>Iterator</classname> 
-or any other operation avaliable on <classname>java.util.List</classname>. 
+As selectNodes returns a List we can apply <classname>Iterator</classname>
+or any other operation avaliable on <classname>java.util.List</classname>.
 <!--  won't work in dom4j 1.0 - Document interface has no method "valueOf(..)" and no "numberValueOf(..)"
 You can also select a single node via <classname>selectSingleNode()</classname>
 as well as to select a String expression via <classname>valueOf()</classname>
-or Number 
+or Number
 value of an XPath expression via <classname>numberVvalueOf()</classname>.
 -->
 </para>
@@ -816,12 +824,12 @@ value of an XPath expression via <classname>numberVvalueOf()</classname>.
 
 <section><title>Using Visitor Pattern</title>
 <para>
-The visitor pattern has a recrusive behavior and acts like <acronym>SAX</acronym> 
-in the way that partical traversal is <emphasis>not</emphasis> possible. 
+The visitor pattern has a recrusive behavior and acts like <acronym>SAX</acronym>
+in the way that partical traversal is <emphasis>not</emphasis> possible.
 This means the complete document or the complete element branch will be visited.
- You should consider wisely when you want to use Visitor pattern, but then it 
-offers a powerful and elegant way of navigation. 
-This document doesn't explain Vistor Pattern in deepth, 
+ You should consider wisely when you want to use Visitor pattern, but then it
+offers a powerful and elegant way of navigation.
+This document doesn't explain Vistor Pattern in deepth,
 <citation>GoF98</citation> covers more information.
 </para>
 
@@ -852,10 +860,10 @@ public class VisitorSample {
 </programlisting>
 
 <para>
-As you can see we used a anonymous inner class to override the 
-<classname>VisitorSupport</classname> callback adapter method 
+As you can see we used a anonymous inner class to override the
+<classname>VisitorSupport</classname> callback adapter method
 visit(Element element) and the accept() method starts
-the vistor mechansim. 
+the vistor mechansim.
 Please keep in mind that the <emphasis>complete</emphasis> element branch is visited.
 </para>
 </section>
@@ -870,8 +878,8 @@ Accessing XML content statically alone would not very special. Thus dom4j offers
 
 <section><title>What <classname>org.dom4j.Document</classname> provides</title>
 <para>
-A <classname>org.dom4j.Document</classname> allows you to configure and retreive the root element. 
-You are also able to set the DOCTYPE or a SAX based <classname>EntityResolver</classname>. 
+A <classname>org.dom4j.Document</classname> allows you to configure and retreive the root element.
+You are also able to set the DOCTYPE or a SAX based <classname>EntityResolver</classname>.
 An empty <classname>Document</classname> should be created via <classname>org.dom4j.DocumentFactory</classname>.
 </para>
 </section>
@@ -996,7 +1004,7 @@ An empty <classname>Document</classname> should be created via <classname>org.do
 
   <para>
   The difference between <emphasis>createCopy(...)</emphasis> and <emphasis>clone()</emphasis> is that first is a polymorphic method that created a decoupled deep copy whereas <emphasis>clone()</emphasis> returns a returns a deep copy of the
-  current document or element itself. 
+  current document or element itself.
   </para>
 
   <caution><title>Consider use of Cloning</title>
@@ -1073,7 +1081,7 @@ Imagine that you use XSLT to process a XML Schema in order to generate a empty t
 
 <para>
 The first way to describe and constrain the form and data of a XML document is as old as XML itself.
-Document Type Definitions are used since the XML Specicifiation has been published. 
+Document Type Definitions are used since the XML Specicifiation has been published.
 At lot of applications used this DTDs to describe and validate her documents. Unfortunatly
 the DTD Syntax was not that powerfull as needed. Written in SGML, DTDs are also not so easy to handle as
 XML is.
@@ -1081,7 +1089,7 @@ XML is.
 
 <para>
 During the time of DTDs a couple of people invents several other possible ways that could
-be used to describe a document and force its content in the desired form. Latly the 
+be used to describe a document and force its content in the desired form. Latly the
 W3C published XML Schema Specification with a couple of massive inprovements. XML Schemas
 are no described by XML and the way to describe a Schema is done with DTD once and not longer
 by every XML user. A growing group of people using XML Schema now. But XML Schema isn't perfect.
@@ -1090,7 +1098,7 @@ the following technologies:
 </para>
 
 <itemizedlist>
-  <listitem><para>Relax NG (Regular Language description for XML Next Generation)<citation>RelaxNG</citation></para></listitem> 
+  <listitem><para>Relax NG (Regular Language description for XML Next Generation)<citation>RelaxNG</citation></para></listitem>
   <listitem><para>Relax (Regular Language description for XML)<citation>Relax</citation></para></listitem>
   <listitem><para>TREX<citation>TREX</citation></para></listitem>
   <listitem><para>XML DTDs<citation>DTD</citation></para></listitem>
@@ -1130,7 +1138,7 @@ public static void main(String[] args) {
     if (tempXsdElement.getData() instanceof Integer) {
        tempXsdElement.setData(new Integer(23));
      }
-  }  
+  }
 }
 </programlisting>
 
@@ -1149,7 +1157,7 @@ the mailing listy. This helps us to make the Data Type support more error-prone 
 dom4j currently comes not with its one validation engine. You are forced to use a different
 engine instead. We recommend the use of Xerces 1.4.x or later in the past, but now you are
 able to use Suns Multi Schema Validator as well. Xerces is able to validate against DTDs and
-XML Schema, but not against TREX or Relax. You would belive it, but the Mulit Schema Validator Libery 
+XML Schema, but not against TREX or Relax. You would belive it, but the Mulit Schema Validator Libery
 supports all earlier mentioned types for validation.
 </para>
 
@@ -1161,11 +1169,11 @@ Using Valdiation consumes valueable resources. Use it wisely.
 
 <section><title>Using Apaches Xerces 1.4.x and dom4j for validation</title>
 <para>
-Using Xerecs 1.4.x for Schema and Validation is very easy. You have to download 
+Using Xerecs 1.4.x for Schema and Validation is very easy. You have to download
 Xerces at Apaches XML web sites. The past has shown that not always the newest version
 is best. You can view there mailing lists in order to find out which version is buggy
-and which works well. For Schema support at least Xerecs 1.4.0 is necessary. If you 
-work according the following rules valdation should be no problem. 
+and which works well. For Schema support at least Xerecs 1.4.0 is necessary. If you
+work according the following rules valdation should be no problem.
 </para>
 
 <itemizedlist>
@@ -1194,13 +1202,13 @@ public static void main(String[] args) {
   SAXReader reader = new SAXReader();
 
   reader.setValidation(true);
-        
+
   // specify the schema to use
-  reader.setProperty( 
-   "http://apache.org/xml/properties/schema/external-noNamespaceSchemaLocation", 
-   "prices.xsd" 
+  reader.setProperty(
+   "http://apache.org/xml/properties/schema/external-noNamespaceSchemaLocation",
+   "prices.xsd"
   );
-    
+
   // add an error handler which turns any errors into XML
    XMLErrorHandler errorHandler = new XMLErrorHandler();
    reader.setErrorHandler( errorHandler );
@@ -1208,9 +1216,9 @@ public static void main(String[] args) {
   // now lets parse the document
   Document document = reader.read(args[0]);
 
- // now lets output the errors as XML        
+ // now lets output the errors as XML
   XMLWriter writer = new XMLWriter( OutputFormat.createPrettyPrint() );
-  writer.write( errorHandler.getErrors() );        
+  writer.write( errorHandler.getErrors() );
 }
 
 </programlisting>
@@ -1218,7 +1226,7 @@ public static void main(String[] args) {
 <caution><title>Xerces and Crimson</title>
 <para>
 Both, Xerecs and Crimson, are JaXPable Parsers. You should be carefully in using
-Crimson and Xerces in same classpath. Xerces will work only correct when it is the 
+Crimson and Xerces in same classpath. Xerces will work only correct when it is the
 mentioned <emphasis>before</emphasis> Crimson in classpath. At this time I
 recommend that you should either Xereces <emphasis>or</emphasis> Crimson.
 </para>
@@ -1233,7 +1241,7 @@ documents. The Multi Schema Validator (MSV) supports following kinds of Schmemat
 </para>
 
 <itemizedlist>
-  <listitem><para>Relax NG</para></listitem> 
+  <listitem><para>Relax NG</para></listitem>
   <listitem><para>Relax </para></listitem>
   <listitem><para>TREX</para></listitem>
   <listitem><para>XML DTDs</para></listitem>
@@ -1249,15 +1257,15 @@ the MSV and with dom4j.
 import com.sun.msv.grammar.Grammar;
 import com.sun.msv.reader.util.GrammarLoader;
 import com.sun.msv.reader.util.IgnoreController;
-import com.sun.msv.verifier.DocumentDelcaration;
-import com.sun.msv.verifier.VadilityViolation;
+import com.sun.msv.verifier.DocumentDeclaration;
+import com.sun.msv.verifier.ValidityViolation;
 import com.sun.msv.verifier.Verifier;
 import com.sun.msv.verifier.VerificationErrorHandler;
 
 import javax.xml.parsers.SAXParserFactory;
 
 import org.dom4j.Document;
-import org.dom4j.DocumentExcpetion;
+import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.SAXWriter;
 
@@ -1266,76 +1274,95 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXParseException;
 
-public class MSVandDOM4JDemo {
+import java.net.URL;
+import java.io.File;
 
-  public void validate(Document doc, String schema) throws Excpetion {
+public class Schema {
 
-    // Turn on Namespace handling JAXP SAXParserFactory
-    SAXParserFactory saxFacotry = SAXParserFactory.newInstance();
-    saxFactory.setNamespaceAware( true );
+    public static void main(String argv[]) {
+        try {
+            String filename = argv[0];
+            String schema = argv[1];
 
+            URL fileURL = new File(filename).toURL();
+            URL schemaURL = new File(schema).toURL();
 
-    // create MSVs DocumentDeclaration by over a IgnoreController in a anonyous inner class
-    DocumentDeclaration docDeclaration =
-                                        GrammarLoader.loadVGM( 
-                                                               schema, 
-                                                               new IgnoreController() {
-
-         public void error(Locator[] locations, String message, Exception exception) {
-           System.out.println( "ERROR: "+  message); 
-         }
-
-         public void error(Locator[] locations, String message) {
-           System.out.println( "WARNING: "+  message); 
-         }
-    };
-
-    // create a new Vertifier by overwriding its method using a anonymous inner class
-    
-    Verifier verifier = new Vertifier( docDeclaration, 
-                                         new VertificationHandler() {
-            
-        public void onError(ValidityViolation e) {
-          System.out.println( "Document unvalid! Error: " + e);
+            SAXReader reader = new SAXReader();
+            Document doc = reader.read(fileURL);
+            validate(doc, schemaURL.toExternalForm());
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
         }
-
-        public void onWarning(ValidityViolation e) {
-          System.out.println( "Document unvalid! Warining: " + e);
-        }
-   };
-
-   // validate now!
-
-   SAXWriter writer = new SAXWriter( (ContentHandler) verifier );
-   writer.setErrorHandler( 
-     new ErrorHandler() {
-     
-      public void error(SAXParseException e) {
-        System.out.println("ERROR:" + e); 
-      }
-
-      public void fatalError(SAXParseException e) {
-        System.out.println("Fatal:" + e); 
-      } 
-
-      public void warning(SAXParseException e) {
-        System.out.println("Warning:" + e); 
-      } 
     }
-  };
 
-  }
+    static public void validate(Document doc, String schema)
+        throws Exception {
 
+        // Turn on Namespace handling in theJAXP SAXParserFactory
+        SAXParserFactory saxFactory = SAXParserFactory.newInstance();
+        saxFactory.setNamespaceAware(true);
+
+        // create MSVs DocumentDeclaration by overriding
+        // a IgnoreController in an anonyous inner class
+        DocumentDeclaration docDeclaration =
+            GrammarLoader.loadVGM(schema, new IgnoreController() {
+
+                    public void error(Locator[] locations,
+                                      String message,
+                                      Exception exception) {
+                        System.out.println("ERROR: " + message);
+            }
+
+            public void error(Locator[] locations, String message) {
+                System.out.println("WARNING: " + message);
+            }
+        }, saxFactory);
+
+        // create a new Verifier that reports vlidation errors
+        // using an anonymous inner class
+        Verifier verifier =
+            new Verifier(docDeclaration, new VerificationErrorHandler() {
+
+                    public void onError(ValidityViolation e) {
+                        System.out.println("Document invalid! Error: " + e);
+                    }
+
+                    public void onWarning(ValidityViolation e) {
+                        System.out.println("Document invalid! Warning: " + e);
+                    }
+                });
+
+        SAXWriter writer = new SAXWriter((ContentHandler) verifier);
+        writer.setErrorHandler(new ErrorHandler() {
+
+                public void error(SAXParseException e) {
+                    System.out.println("ERROR:" + e);
+                }
+
+                public void fatalError(SAXParseException e) {
+                    System.out.println("Fatal:" + e);
+                }
+
+                public void warning(SAXParseException e) {
+                    System.out.println("Warning:" + e);
+                }
+        });
+
+        // validate now!
+        writer.write(doc);
+        if (verifier.isValid())
+            System.err.println("The document was valid");
+        else
+            System.err.println("The document was not valid");
+    }
 }
-
-
 </programlisting>
 
 <para>
-At the first look the use of MSV looks not trival. The Xerces validation is 
+At the first look the use of MSV looks not trival. The Xerces validation is
 easier to use in code, but not so powerfull. Currently its not clear if XML Schema
 will be the next standard for validation. Relax NG gots a even more growing
-lobby. If you want to build a open application that is not fixed to a 
+lobby. If you want to build a open application that is not fixed to a
 specific XML parser and specific XML Schematas you should use this powerfull
 tool.
 </para>
