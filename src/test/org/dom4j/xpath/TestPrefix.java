@@ -68,7 +68,7 @@ public class TestPrefix extends AbstractTestCase {
         
         log( "Searched path: " + xpathText + " found: " + list.size() + " result(s)" );
 
-        assert( list.size() > 0 );
+        assertTrue( list.size() > 0 );
         
         if ( VERBOSE ) {
             log( "xpath: " + xpath );

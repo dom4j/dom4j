@@ -117,7 +117,7 @@ public class TestValueOf extends AbstractTestCase {
         }
         catch (Throwable e) {
             e.printStackTrace();
-            assert( "Failed with exception: " + e, false );
+            assertTrue( "Failed with exception: " + e, false );
         }
     }
     

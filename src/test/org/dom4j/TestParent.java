@@ -76,13 +76,13 @@ public class TestParent extends AbstractTestCase {
             log( "Parent: " + parent );
             log( "getParent(): " + node.getParent() );
             
-            assert( "getParent() returns parent for: " + node, node.getParent() == parent );
+            assertTrue( "getParent() returns parent for: " + node, node.getParent() == parent );
         }
         else {
             // lets create an XPath node
             Node xpathNode = node.asXPathResult( parent );
-            assert( "XPath Node supports parent for: " + xpathNode, xpathNode.supportsParent() );
-            assert( "getParent() returns parent for: " + xpathNode, xpathNode.getParent() == parent );
+            assertTrue( "XPath Node supports parent for: " + xpathNode, xpathNode.supportsParent() );
+            assertTrue( "getParent() returns parent for: " + xpathNode, xpathNode.getParent() == parent );
         }
     }    
 }

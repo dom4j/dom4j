@@ -84,7 +84,7 @@ public class TestNumber extends AbstractTestCase {
         catch (Throwable e) {
             log( "Caught exception: " + e );
             e.printStackTrace();
-            assert( "Failed to process:  " + xpathText + " caught exception: " + e, false );
+            assertTrue( "Failed to process:  " + xpathText + " caught exception: " + e, false );
         }
     }
     

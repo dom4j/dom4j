@@ -66,7 +66,7 @@ public class TestBoolean extends AbstractTestCase {
     //-------------------------------------------------------------------------                    
     protected void testXPath(String xpathExpression) {
         XPath xpath = DocumentHelper.createXPath( xpathExpression );
-        assert( "No xpath object was created", xpath != null );
+        assertTrue( "No xpath object was created", xpath != null );
         
         log( "Evaluating xpath: " + xpath );
         

@@ -70,13 +70,13 @@ public class TestText extends AbstractTestCase {
             
             log( "Found Result: " + object );
             
-            assert( "Results should be Text objects", object instanceof Text );
+            assertTrue( "Results should be Text objects", object instanceof Text );
             
             Text text = (Text) object;
             
-            assert( "Results should support the parent relationship", text.supportsParent() );
-            assert( "Results should contain reference to the parent element", text.getParent() != null );
-            assert( "Results should contain reference to the owning document", text.getDocument() != null );
+            assertTrue( "Results should support the parent relationship", text.supportsParent() );
+            assertTrue( "Results should contain reference to the parent element", text.getParent() != null );
+            assertTrue( "Results should contain reference to the owning document", text.getDocument() != null );
         }
     }
 }

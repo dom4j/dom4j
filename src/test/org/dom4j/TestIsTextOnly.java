@@ -43,8 +43,8 @@ public class TestIsTextOnly extends AbstractTestCase {
         Element first = root.addElement( "child" );
         first.addText( "This is some text" );
         
-        assert( "Root node is not text only: " + root, ! root.isTextOnly() );
-        assert( "First child is text only: " + first, first.isTextOnly() );
+        assertTrue( "Root node is not text only: " + root, ! root.isTextOnly() );
+        assertTrue( "First child is text only: " + first, first.isTextOnly() );
     }
         
     // Implementation methods

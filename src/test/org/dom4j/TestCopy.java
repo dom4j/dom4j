@@ -42,7 +42,7 @@ public class TestCopy extends AbstractTestCase {
         Element root = document.getRootElement();
         List authors = root.elements( "author" );
         
-        assert( "Should be at least 2 authors", authors.size() == 2 );
+        assertTrue( "Should be at least 2 authors", authors.size() == 2 );
         
         Element author1 = (Element) authors.get(0);
         Element author2 = (Element) authors.get(1);
@@ -54,33 +54,33 @@ public class TestCopy extends AbstractTestCase {
     
 
     protected void testCopy(Element element) throws Exception {
-        assert( "Not null", element != null );
+        assertTrue( "Not null", element != null );
         
         int attributeCount = element.attributeCount();
         int nodeCount = element.nodeCount();
         
         Element copy = element.createCopy();
         
-        assert( "Same node size after copy", element.nodeCount() == nodeCount );
-        assert( "Same attribute size after copy", element.attributeCount() == attributeCount );
+        assertTrue( "Same node size after copy", element.nodeCount() == nodeCount );
+        assertTrue( "Same attribute size after copy", element.attributeCount() == attributeCount );
         
-        assert( "Copy has same node size", copy.nodeCount() == nodeCount );
-        assert( "Copy has same attribute size", copy.attributeCount() == attributeCount );
+        assertTrue( "Copy has same node size", copy.nodeCount() == nodeCount );
+        assertTrue( "Copy has same attribute size", copy.attributeCount() == attributeCount );
         
         for (int i = 0; i < attributeCount; i++ ) {
             Attribute attr1 = element.attribute(i);
             Attribute attr2 = copy.attribute(i);
             
-            assert( "Attribute: " + i + " name is equal", attr1.getName().equals( attr2.getName() ) );
-            assert( "Attribute: " + i + " value is equal", attr1.getValue().equals( attr2.getValue() ) );
+            assertTrue( "Attribute: " + i + " name is equal", attr1.getName().equals( attr2.getName() ) );
+            assertTrue( "Attribute: " + i + " value is equal", attr1.getValue().equals( attr2.getValue() ) );
         }
         
         for (int i = 0; i < nodeCount; i++ ) {
             Node node1 = element.node(i);
             Node node2 = copy.node(i);
             
-            assert( "Node: " + i + " type is equal", node1.getNodeType() == node2.getNodeType() );
-            assert( "Node: " + i + " value is equal", node1.getText().equals( node2.getText() ) );
+            assertTrue( "Node: " + i + " type is equal", node1.getNodeType() == node2.getNodeType() );
+            assertTrue( "Node: " + i + " value is equal", node1.getText().equals( node2.getText() ) );
         }
     }
 }

@@ -74,7 +74,7 @@ public class TestMatrixConcat extends AbstractTestCase {
         //log( "(0) = " + object + " type: " + object.getClass() );
         
         int size = results.length;
-        assert( "List should contain " + size + " results: " + list, list.size() == size );
+        assertTrue( "List should contain " + size + " results: " + list, list.size() == size );
         
         for ( int i = 0; i < size; i++ ) {
             assertEquals( list.get(i), results[i] );

@@ -39,13 +39,13 @@ public class TestAttributeDetach extends AbstractTestCase {
     public void testDetachAttribute() throws Exception {
         List attributes = document.selectNodes( "//@name" );
         
-        assert( "Found more than one attribute: ", attributes.size() > 0 );
+        assertTrue( "Found more than one attribute: ", attributes.size() > 0 );
         
         for ( Iterator iter = attributes.iterator(); iter.hasNext(); ) {
             Attribute attribute = (Attribute) iter.next();
             Element element = attribute.getParent();
             
-            assert( 
+            assertTrue( 
                 "Attribute: " + attribute + " has parent: " + element, 
                 attribute.getParent() == element
             );
@@ -64,8 +64,8 @@ public class TestAttributeDetach extends AbstractTestCase {
             attribute2 = element.attribute( qname );
             value2 = element.attributeValue( qname );
             
-            assert( "Element now has no value: " + value2, value2 == null );
-            assert( "Element now has no attribute: " + attribute2, attribute2 == null );
+            assertTrue( "Element now has no value: " + value2, value2 == null );
+            assertTrue( "Element now has no attribute: " + attribute2, attribute2 == null );
         }
     }
     

@@ -78,15 +78,15 @@ public class TestNamespace extends AbstractTestCase {
             
             log( "Found Result: " + object );
             
-            assert( "Results should be Namespace objects", object instanceof Namespace );
+            assertTrue( "Results should be Namespace objects", object instanceof Namespace );
             
             Namespace namespace = (Namespace) object;
             
             log( "Parent node: " + namespace.getParent() );
             
-            assert( "Results should support the parent relationship", namespace.supportsParent() );
-            assert( "Results should contain reference to the parent element", namespace.getParent() != null );
-            assert( "Results should contain reference to the owning document", namespace.getDocument() != null );
+            assertTrue( "Results should support the parent relationship", namespace.supportsParent() );
+            assertTrue( "Results should contain reference to the parent element", namespace.getParent() != null );
+            assertTrue( "Results should contain reference to the owning document", namespace.getDocument() != null );
         }
     }
     

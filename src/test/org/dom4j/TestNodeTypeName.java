@@ -117,7 +117,7 @@ public class TestNodeTypeName extends AbstractTestCase {
                 assertEquals( nodeTypeName, "Text" );                
             }
             else {
-                assert( "Invalid node type: " + nodeTypeName + " for node: " + node, false );
+                assertTrue( "Invalid node type: " + nodeTypeName + " for node: " + node, false );
             }
         }
     }    

@@ -56,7 +56,7 @@ public class TestBackedList extends AbstractTestCase {
         
         List list2 = element.elements();
         
-        assert( "Both lists should contain same number of elements", list.size() == list2.size() );
+        assertTrue( "Both lists should contain same number of elements", list.size() == list2.size() );
         
         XMLWriter writer = new XMLWriter( System.out );
         

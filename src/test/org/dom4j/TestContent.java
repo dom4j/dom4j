@@ -38,16 +38,16 @@ public class TestContent extends AbstractTestCase {
     //-------------------------------------------------------------------------                    
     public void testRoot() throws Exception {
         Element root = document.getRootElement();
-        assert( "Has root element", root != null );
+        assertTrue( "Has root element", root != null );
         
         List authors = root.elements( "author" );
-        assert( "Root has children", authors != null && authors.size() == 2 );
+        assertTrue( "Root has children", authors != null && authors.size() == 2 );
         
         Element author1 = (Element) authors.get(0);
         Element author2 = (Element) authors.get(1);
         
-        assert( "Author1 is James", author1.attributeValue( "name" ).equals( "James" ) );
-        assert( "Author2 is Bob", author2.attributeValue( "name" ).equals( "Bob" ) );
+        assertTrue( "Author1 is James", author1.attributeValue( "name" ).equals( "James" ) );
+        assertTrue( "Author2 is Bob", author2.attributeValue( "name" ).equals( "Bob" ) );
         
         testGetAttributes(author1);
         testGetAttributes(author2);
@@ -55,54 +55,54 @@ public class TestContent extends AbstractTestCase {
         
     public void testContent() throws Exception {
         Element root = document.getRootElement();
-        assert( "Has root element", root != null );
+        assertTrue( "Has root element", root != null );
         
         List content = root.content();
-        assert( "Root has content", content != null && content.size() >= 2 );
+        assertTrue( "Root has content", content != null && content.size() >= 2 );
 
         boolean iterated = false;
         for ( Iterator iter = content.iterator(); iter.hasNext(); ) {
             Object object = iter.next();
-            assert( "Content object is a node", object instanceof Node );
+            assertTrue( "Content object is a node", object instanceof Node );
             iterated = true;
         }
         
-        assert( "Iteration completed", iterated );
+        assertTrue( "Iteration completed", iterated );
     }
     
     public void testGetNode() throws Exception {
         Element root = document.getRootElement();
-        assert( "Has root element", root != null );
+        assertTrue( "Has root element", root != null );
         
         int count = root.nodeCount();
-        assert( "Root has correct node count", count == 2 );
+        assertTrue( "Root has correct node count", count == 2 );
         
         boolean iterated = false;
         for ( int i = 0; i < count; i++ ) {
             Node node = root.node(i);
-            assert( "Valid node returned from node()", node != null );
+            assertTrue( "Valid node returned from node()", node != null );
             iterated = true;
         }
         
-        assert( "Iteration completed", iterated );
+        assertTrue( "Iteration completed", iterated );
     }
         
     public void testGetXPathNode() throws Exception {
         Element root = document.getRootElement();
-        assert( "Has root element", root != null );
+        assertTrue( "Has root element", root != null );
         
         int count = root.nodeCount();
-        assert( "Root has correct node count", count == 2 );
+        assertTrue( "Root has correct node count", count == 2 );
         
         boolean iterated = false;
         for ( int i = 0; i < count; i++ ) {
             Node node = root.getXPathResult(i);
-            assert( "Valid node returned from node()", node != null );
-            assert( "Node supports the parent relationship", node.supportsParent() );
+            assertTrue( "Valid node returned from node()", node != null );
+            assertTrue( "Node supports the parent relationship", node.supportsParent() );
             iterated = true;
         }
         
-        assert( "Iteration completed", iterated );
+        assertTrue( "Iteration completed", iterated );
     }
         
     // Implementation methods
@@ -114,10 +114,10 @@ public class TestContent extends AbstractTestCase {
         String defaultValue = "** Default Value **";
         
         String value = author.attributeValue( definedName, defaultValue );
-        assert( "Defined value doesn't return specified default value", value != defaultValue );
+        assertTrue( "Defined value doesn't return specified default value", value != defaultValue );
         
         value = author.attributeValue( undefinedName, defaultValue );        
-        assert( "Undefined value returns specified default value", value == defaultValue );
+        assertTrue( "Undefined value returns specified default value", value == defaultValue );
     }
     
 }

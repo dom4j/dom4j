@@ -79,7 +79,7 @@ public class TestVariable extends AbstractTestCase {
             log( "results: " + list );
         }
         
-        assert( "Results should not contain the root node", ! list.contains( rootNode ) );
+        assertTrue( "Results should not contain the root node", ! list.contains( rootNode ) );
     }
     
     protected XPath createXPath( String xpath ) {

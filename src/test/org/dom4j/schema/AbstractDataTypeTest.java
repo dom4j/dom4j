@@ -52,7 +52,7 @@ public class AbstractDataTypeTest extends AbstractTestCase {
             log( "" );
         }
         
-        assert( "Results are not empty", ! list.isEmpty() );
+        assertTrue( "Results are not empty", ! list.isEmpty() );
         
         for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
             Node node = (Node) iter.next();
@@ -65,20 +65,20 @@ public class AbstractDataTypeTest extends AbstractTestCase {
                 testDataType( attribute, attribute.getData(), type );
             }
             else {
-                assert( "Did not find an attribute or element: " + node, false );
+                assertTrue( "Did not find an attribute or element: " + node, false );
             }
         }
     }
     
     protected void testDataType(Node node, Object data, Class type) {
-        assert( "Data object is not null", data != null );
+        assertTrue( "Data object is not null", data != null );
         
         if ( VERBOSE ) {
             log( "found: " + data + " type: " + data.getClass().getName() + " required type: " + type.getName() );
             log( "node: " + node );
         }
         
-        assert( 
+        assertTrue( 
             "Data object is of the correct type. Expected: " 
                 + type.getName() 
                 + " and found: " + data.getClass().getName(), 

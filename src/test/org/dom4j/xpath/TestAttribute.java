@@ -78,13 +78,13 @@ public class TestAttribute extends AbstractTestCase {
             
             log( "Found Result: " + object );
             
-            assert( "Results should be Attribute objects", object instanceof Attribute );
+            assertTrue( "Results should be Attribute objects", object instanceof Attribute );
             
             Attribute attribute = (Attribute) object;
             
-            assert( "Results should support the parent relationship", attribute.supportsParent() );
-            assert( "Results should contain reference to the parent element", attribute.getParent() != null );
-            assert( "Results should contain reference to the owning document", attribute.getDocument() != null );
+            assertTrue( "Results should support the parent relationship", attribute.supportsParent() );
+            assertTrue( "Results should contain reference to the parent element", attribute.getParent() != null );
+            assertTrue( "Results should contain reference to the owning document", attribute.getDocument() != null );
         }
     }
 }

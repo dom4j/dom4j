@@ -63,7 +63,7 @@ public class TestFilter extends AbstractTestCase {
     //-------------------------------------------------------------------------                    
     protected void testXPath(String xpathExpression) {
         NodeFilter nodeFilter = DocumentHelper.createXPathFilter( xpathExpression );
-        assert( "No NodeFilter object was created", nodeFilter != null );
+        assertTrue( "No NodeFilter object was created", nodeFilter != null );
         
         if ( VERBOSE ) {
             log( "Evaluating XPathFilter: " + xpathExpression + " using NodeFilter: " + nodeFilter );
