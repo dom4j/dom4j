@@ -7,7 +7,7 @@
     <tstamp/>
     <property name="Name" value="dom4j"/>
     <property name="name" value="dom4j"/>
-    <property name="version" value="1.4"/>
+    <property name="version" value="1.5-beta-1"/>
     <property name="current.version" value="1.4"/>
     <property name="year" value="2003"/>
 

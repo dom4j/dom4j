@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <name>dom4j</name>
   <id>dom4j</id>
-  <currentVersion>1.4</currentVersion>
+  <currentVersion>1.5-beta-1</currentVersion>
   
   <organization>
 	<name>MetaStuff Ltd.</name>
@@ -39,7 +39,7 @@
     </packageGroup>
     <packageGroup>
       <title>Bundled Aelfred Parser</title>
-      <packages>org.dom4j.io.aelfred</packages>
+      <packages>org.dom4j.io.aelfred,org.dom4j.io.aelfred2</packages>
     </packageGroup>
     <packageGroup>
       <title>Implementation classes</title>
@@ -111,11 +111,6 @@
       <version>1.1-beta-2</version>
     </dependency>
 
-<!--    <dependency>
-      <id>saxpath</id>
-      <version>1.0-FCS</version>
-    </dependency>
--->
     <dependency>
       <id>msv</id>
       <version>20020414</version>
