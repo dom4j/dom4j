@@ -66,28 +66,28 @@ public class IndexedElement extends DefaultElement {
         return (Attribute) getAttributeIndex().get(qName);
     }
 
-    public Element getElement(String name) {
-        return asElement( getElementIndex().get(name) );
+    public Element element(String name) {
+        return asElement( elementIndex().get(name) );
     }
     
-    public Element getElement(QName qName) {
-        return asElement( getElementIndex().get(qName) );
+    public Element element(QName qName) {
+        return asElement( elementIndex().get(qName) );
     }
         
-    public List getElements(String name) {
-        return asElementList( getElementIndex().get(name) );
+    public List elements(String name) {
+        return asElementList( elementIndex().get(name) );
     }
     
-    public List getElements(QName qName) {
-        return asElementList( getElementIndex().get(qName) );
+    public List elements(QName qName) {
+        return asElementList( elementIndex().get(qName) );
     }
         
     public Iterator elementIterator(String name) {
-        return asElementIterator( getElementIndex().get(name) );
+        return asElementIterator( elementIndex().get(name) );
     }
     
     public Iterator elementIterator(QName qName) {
-        return asElementIterator( getElementIndex().get(qName) );
+        return asElementIterator( elementIndex().get(qName) );
     }
     
     
@@ -166,7 +166,7 @@ public class IndexedElement extends DefaultElement {
         return attributeIndex;
     }
     
-    protected Map getElementIndex() {
+    protected Map elementIndex() {
         if ( elementIndex == null ) {
             elementIndex = createElementIndex();
         }

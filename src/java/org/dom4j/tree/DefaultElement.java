@@ -400,12 +400,12 @@ public class DefaultElement extends AbstractElement {
         return false;
     }
     
-    public Element getElementByID(String elementID) {
+    public Element elementByID(String elementID) {
         List source = contents;
         if ( source == null ) {
             if ( firstNode instanceof Element ) {
                 Element element = (Element) firstNode;
-                String id = getElementID(element);
+                String id = elementID(element);
                 if ( id != null && id.equals( elementID ) ) {
                     return element;
                 }
@@ -417,7 +417,7 @@ public class DefaultElement extends AbstractElement {
                 Object object = source.get(i);
                 if ( object instanceof Element ) {
                     Element element = (Element) object;
-                    String id = getElementID(element);
+                    String id = elementID(element);
                     if ( id != null && id.equals( elementID ) ) {
                         return element;
                     }
@@ -427,7 +427,7 @@ public class DefaultElement extends AbstractElement {
         return null;
     }
     
-    public Element getElement(String name) {
+    public Element element(String name) {
         List source = contents;
         if ( source == null ) {
             if ( firstNode instanceof Element ) {
@@ -452,7 +452,7 @@ public class DefaultElement extends AbstractElement {
         return null;
     }
     
-    public Element getElement(QName qName) {
+    public Element element(QName qName) {
         List source = contents;
         if ( source == null ) {
             if ( firstNode instanceof Element ) {
@@ -477,13 +477,13 @@ public class DefaultElement extends AbstractElement {
         return null;
     }
 
-    public Element getElement(String name, Namespace namespace) {
-        return getElement( QName.get( name, namespace ) );
+    public Element element(String name, Namespace namespace) {
+        return element( QName.get( name, namespace ) );
     }
     
     
     
-    public List getElements() {
+    public List elements() {
         List source = contents;
         if ( source == null ) {
             if ( firstNode instanceof Element ) {
@@ -503,7 +503,7 @@ public class DefaultElement extends AbstractElement {
         return answer;
     }
     
-    public List getElements(String name) {
+    public List elements(String name) {
         List source = contents;
         if ( source == null ) {
             if ( firstNode instanceof Element ) {
@@ -528,7 +528,7 @@ public class DefaultElement extends AbstractElement {
         return answer;
     }
     
-    public List getElements(QName qName) {
+    public List elements(QName qName) {
         List source = contents;
         if ( source == null ) {
             if ( firstNode instanceof Element ) {
@@ -553,8 +553,8 @@ public class DefaultElement extends AbstractElement {
         return answer;
     }
     
-    public List getElements(String name, Namespace namespace) {
-        return getElements( QName.get(name, namespace ) );
+    public List elements(String name, Namespace namespace) {
+        return elements( QName.get(name, namespace ) );
     }
     
     public Iterator elementIterator() {
@@ -798,7 +798,7 @@ public class DefaultElement extends AbstractElement {
       * a BackedList implementation used to store results of 
       * a filtered content query such as 
       * {@link #getProcessingInstructions} or
-      * {@link #getElements} which changes are reflected in the content
+      * {@link #elements} which changes are reflected in the content
       */
     protected BackedList createResultList() {
         return new BackedList( this, getContentList() );
@@ -827,7 +827,7 @@ public class DefaultElement extends AbstractElement {
     
     /** @return the ID of the given <code>Element</code>
       */
-    protected String getElementID(Element element) {
+    protected String elementID(Element element) {
         // XXX: there will be other ways of finding the ID
         // XXX: should probably have an IDResolver or something
         return element.attributeValue( "id" );

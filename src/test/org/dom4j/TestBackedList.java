@@ -50,11 +50,11 @@ public class TestBackedList extends AbstractTestCase {
     protected void mutate(Element element) throws Exception {
         DocumentFactory factory = DocumentFactory.getInstance();
         
-        List list = element.getElements();
+        List list = element.elements();
         list.add(factory.createElement("last" ));
         list.add(0, factory.createElement("first" ));
         
-        List list2 = element.getElements();
+        List list2 = element.elements();
         
         assert( "Both lists should contain same number of elements", list.size() == list2.size() );
         

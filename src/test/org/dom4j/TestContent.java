@@ -32,7 +32,7 @@ public class TestContent extends AbstractTestCase {
         Element root = document.getRootElement();
         assert( "Has root element", root != null );
         
-        List authors = root.getElements( "author" );
+        List authors = root.elements( "author" );
         assert( "Root has children", authors != null && authors.size() == 2 );
         
         Element author1 = (Element) authors.get(0);

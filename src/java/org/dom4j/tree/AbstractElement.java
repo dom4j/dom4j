@@ -437,24 +437,24 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         addText(text);
     }
 
-    public String getElementText(String name) {
-        Element element = getElement(name);
+    public String elementText(String name) {
+        Element element = element(name);
         return (element != null) ? element.getText() : null;
     }
         
-    public String getElementText(QName qName) {
-        Element element = getElement(qName);
+    public String elementText(QName qName) {
+        Element element = element(qName);
         return (element != null) ? element.getText() : null;
     }
         
     
-    public String getElementTextTrim(String name) {
-        Element element = getElement(name);
+    public String elementTextTrim(String name) {
+        Element element = element(name);
         return (element != null) ? element.getTextTrim() : null;
     }
     
-    public String getElementTextTrim(QName qName) {
-        Element element = getElement(qName);
+    public String elementTextTrim(QName qName) {
+        Element element = element(qName);
         return (element != null) ? element.getTextTrim() : null;
     }
         
