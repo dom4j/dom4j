@@ -133,30 +133,35 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     public XMLWriter(Writer writer, OutputFormat format) {
         this.writer = writer;
         this.format = format;
+	namespaceStack.push(Namespace.NO_NAMESPACE);
     }
 
     public XMLWriter() {
         this.format = DEFAULT_FORMAT;
         this.writer = new BufferedWriter( new OutputStreamWriter( System.out ) );
         this.autoFlush = true;
+	namespaceStack.push(Namespace.NO_NAMESPACE);
     }
 
     public XMLWriter(OutputStream out) throws UnsupportedEncodingException {
         this.format = DEFAULT_FORMAT;
         this.writer = createWriter(out, format.getEncoding());
         this.autoFlush = true;
+	namespaceStack.push(Namespace.NO_NAMESPACE);
     }
 
     public XMLWriter(OutputStream out, OutputFormat format) throws UnsupportedEncodingException {
         this.format = format;
         this.writer = createWriter(out, format.getEncoding());
         this.autoFlush = true;
+	namespaceStack.push(Namespace.NO_NAMESPACE);
     }
 
     public XMLWriter(OutputFormat format) throws UnsupportedEncodingException {
         this.format = format;
         this.writer = createWriter( System.out, format.getEncoding() );
         this.autoFlush = true;
+	namespaceStack.push(Namespace.NO_NAMESPACE);
     }
 
 
@@ -1291,9 +1296,9 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
 
     protected boolean isNamespaceDeclaration( Namespace ns ) {
-        if (ns != null && ns != Namespace.NO_NAMESPACE && ns != Namespace.XML_NAMESPACE) {
+        if (ns != null && ns != Namespace.XML_NAMESPACE) {
             String uri = ns.getURI();
-            if ( uri != null && uri.length() > 0 ) {
+            if ( uri != null ) {
                 if ( ! namespaceStack.contains( ns ) ) {
                     return true;
 
@@ -1301,6 +1306,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
             }
         }
         return false;
+
     }
 
     protected void handleException(IOException e) throws SAXException {
