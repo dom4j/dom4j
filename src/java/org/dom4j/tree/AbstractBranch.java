@@ -38,7 +38,7 @@ import org.dom4j.io.XMLWriter;
 public abstract class AbstractBranch extends AbstractNode implements Branch {
 
     /** The XML writer used by default */
-    protected static final XMLWriter writer = new XMLWriter( "  ", true );
+    protected static final XMLWriter writer = new XMLWriter( "  ", false );
 
     /** The <code>ContentFactory</code> instance used by default */
     private static final ContentFactory CONTENT_FACTORY = ContentFactory.getInstance();
