@@ -26,7 +26,7 @@ import org.saxpath.XPathReader;
 import org.saxpath.SAXPathException;
 import org.saxpath.helpers.XPathReaderFactory;
 
-import org.jaxpath.JAXPathHandler;
+import org.jaxen.JAXPathHandler;
 
 import java.io.StringReader;
 
@@ -332,6 +332,10 @@ public class DefaultXPath implements org.dom4j.XPath {
     
     
     private void parse() {
+        _expr = parse( _xpath );
+    }
+    
+    protected static Expr parse(String text) {        
         try {
             XPathReader reader = XPathReaderFactory.createReader();
             
@@ -341,17 +345,17 @@ public class DefaultXPath implements org.dom4j.XPath {
             
             reader.setXPathHandler( handler );
             
-            reader.parse( _xpath );
+            reader.parse( text );
             
-            org.jaxpath.expr.XPath xpath = handler.getXPath(true);
-            _expr = (Expr) xpath.getRootExpr();
+            org.jaxen.expr.XPath xpath = handler.getXPath(true);
+            return (Expr) xpath.getRootExpr();
         }
         catch (SAXPathException e) {
-            throw new InvalidXPathException( _xpath, e.getMessage() );
+            throw new InvalidXPathException( text, e.getMessage() );
         }
-        if ( _expr == null ) {
-            throw new InvalidXPathException( _xpath );
+        catch (RuntimeException e) {
         }
+        throw new InvalidXPathException( text );
     }
     
     protected List applyTo(Object context) {

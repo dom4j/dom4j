@@ -18,13 +18,13 @@ import org.dom4j.xpath.impl.Context;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Expr implements org.jaxpath.expr.Expr {    
+public abstract class Expr implements org.jaxen.expr.Expr {    
     
     public String getText() {
         return "[N/I]";
     }
     
-    public org.jaxpath.expr.Expr simplify() {
+    public org.jaxen.expr.Expr simplify() {
         return this;
     }
     

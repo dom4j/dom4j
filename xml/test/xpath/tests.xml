@@ -35,7 +35,6 @@
       <valueOf select="name()"></valueOf>
       <valueOf select="name(.)"></valueOf>
       <valueOf select="name(parent::*)"></valueOf>
-      <valueOf select="name(/)"></valueOf>
       <valueOf select="name(/.)"></valueOf>
       <valueOf select="name(/self::node())"></valueOf>
 

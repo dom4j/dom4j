@@ -12,7 +12,7 @@ package org.dom4j.xpath.impl;
 
 import org.dom4j.xpath.impl.Context;
 
-public class StringExpr extends Expr implements org.jaxpath.expr.LiteralExpr {
+public class StringExpr extends Expr implements org.jaxen.expr.LiteralExpr {
     
     private String _text = null;
     

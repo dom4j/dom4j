@@ -23,13 +23,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Collections;
 
-public class BinaryExpr extends Expr implements org.jaxpath.expr.BinaryExpr {
+public class BinaryExpr extends Expr implements org.jaxen.expr.BinaryExpr {
     
     private Op    _op   = null;
     private Expr  _lhs  = null;
     private Expr  _rhs  = null;
     
-    public BinaryExpr(Op op, org.jaxpath.expr.Expr lhs, org.jaxpath.expr.Expr rhs) {
+    public BinaryExpr(Op op, org.jaxen.expr.Expr lhs, org.jaxen.expr.Expr rhs) {
         this( op, (Expr) lhs, (Expr) rhs );
     }
     
@@ -39,7 +39,7 @@ public class BinaryExpr extends Expr implements org.jaxpath.expr.BinaryExpr {
         _rhs = rhs;
     }
     
-    public org.jaxpath.expr.Expr simplify() {
+    public org.jaxen.expr.Expr simplify() {
         if ( _lhs != null ) {
             _lhs = (Expr) _lhs.simplify();
         }
@@ -49,11 +49,11 @@ public class BinaryExpr extends Expr implements org.jaxpath.expr.BinaryExpr {
         return this;
     }
     
-    public org.jaxpath.expr.Expr getLHS() {
+    public org.jaxen.expr.Expr getLHS() {
         return _lhs;
     }
     
-    public org.jaxpath.expr.Expr getRHS() {
+    public org.jaxen.expr.Expr getRHS() {
         return _rhs;
     }
     

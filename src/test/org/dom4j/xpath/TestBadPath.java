@@ -31,7 +31,8 @@ public class TestBadPath extends AbstractTestCase {
 
     String[] paths = {
         "+",
-//        "/foo/bar/"
+        "/foo/bar/",
+        "name(/)"
     };
     
     public static void main( String[] args ) {

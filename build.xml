@@ -403,6 +403,7 @@
   <!-- Unit Testing Targets                                                -->
   <!-- =================================================================== -->
   <target name="test" depends="compile-test">
+    <mkdir dir="${build.dir}/test-results"/>
     <junit printsummary="yes" haltonfailure="yes">
       <formatter type="plain"/>
 
@@ -411,7 +412,7 @@
         <pathelement path="${java.class.path}" />
       </classpath>
 
-      <batchtest fork="yes">
+      <batchtest fork="yes" todir="${build.dir}/test-results">
         <fileset dir="${test.dir}">
           <include name="**/Test*.java" />
           <exclude name="**/AllTests.java,**/Abstract*.java" />

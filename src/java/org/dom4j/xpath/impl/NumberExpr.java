@@ -13,7 +13,7 @@ package org.dom4j.xpath.impl;
 import org.dom4j.Element;
 import org.dom4j.xpath.impl.Context;
 
-public class NumberExpr extends Expr implements org.jaxpath.expr.NumberExpr {
+public class NumberExpr extends Expr implements org.jaxen.expr.NumberExpr {
     
     private Number _number = null;
     

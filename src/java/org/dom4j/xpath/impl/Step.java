@@ -21,7 +21,7 @@ import java.util.HashSet;
 
 import org.dom4j.Node;
 
-public abstract class Step extends Expr implements org.jaxpath.expr.Step {
+public abstract class Step extends Expr implements org.jaxen.expr.Step {
     
     private boolean _isAbsolute = false;
     

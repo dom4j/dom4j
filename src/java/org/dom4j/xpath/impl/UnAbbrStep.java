@@ -46,7 +46,7 @@ public abstract class UnAbbrStep extends Step {
         return _axisCode;
     }
     
-    public void addPredicate(org.jaxpath.expr.Predicate pred) {
+    public void addPredicate(org.jaxen.expr.Predicate pred) {
         if ( _predicates == null ) {
             _predicates = new ArrayList();
         }        

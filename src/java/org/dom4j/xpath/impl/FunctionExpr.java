@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-public class FunctionExpr extends Expr implements org.jaxpath.expr.FunctionCallExpr {
+public class FunctionExpr extends Expr implements org.jaxen.expr.FunctionCallExpr {
     
     private String _name = null;
     private List   _args = null;
@@ -32,13 +32,13 @@ public class FunctionExpr extends Expr implements org.jaxpath.expr.FunctionCallE
         _args = args;
     }
     
-    public org.jaxpath.expr.Expr simplify() {
+    public org.jaxen.expr.Expr simplify() {
         if ( _args != null ) {
             for ( int i = 0, size = _args.size(); i < size; i++ ) {
                 Object object = _args.get(i);
-                if ( object instanceof org.jaxpath.expr.Expr ) { 
-                    org.jaxpath.expr.Expr expr = (org.jaxpath.expr.Expr) object;
-                    org.jaxpath.expr.Expr expr2 = expr.simplify();
+                if ( object instanceof org.jaxen.expr.Expr ) { 
+                    org.jaxen.expr.Expr expr = (org.jaxen.expr.Expr) object;
+                    org.jaxen.expr.Expr expr2 = expr.simplify();
                     if ( expr2 != expr ) {
                         _args.set(i, expr2);
                     }
@@ -48,7 +48,7 @@ public class FunctionExpr extends Expr implements org.jaxpath.expr.FunctionCallE
         return this;
     }
 
-    public void addParameter(org.jaxpath.expr.Expr expr) {
+    public void addParameter(org.jaxen.expr.Expr expr) {
         if ( _args == null ) {
             _args = new ArrayList();
         }

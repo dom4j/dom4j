@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.Iterator;
 
 
-public class LocationPath extends PathExpr implements org.jaxpath.expr.LocationPath {
+public class LocationPath extends PathExpr implements org.jaxen.expr.LocationPath {
     
     private boolean _isAbsolute;
     private List    _steps;
@@ -36,6 +36,7 @@ public class LocationPath extends PathExpr implements org.jaxpath.expr.LocationP
         _isAbsolute = isAbsolute;
     }
     
+    
     public void setAbsolute(boolean isAbsolute) {
         _isAbsolute = isAbsolute;
     }
@@ -44,7 +45,7 @@ public class LocationPath extends PathExpr implements org.jaxpath.expr.LocationP
         return _isAbsolute;
     }
 
-    public void addStep(org.jaxpath.expr.Step step) {
+    public void addStep(org.jaxen.expr.Step step) {
         if ( _steps == null ) {
             _steps = new ArrayList();
         }
@@ -56,6 +57,10 @@ public class LocationPath extends PathExpr implements org.jaxpath.expr.LocationP
             _steps = new ArrayList();
         }
         _steps.add(step);        
+    }
+    
+    public boolean isEmpty() {
+        return _steps == null || _steps.isEmpty();
     }
     
     public List getSteps() {

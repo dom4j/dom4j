@@ -14,7 +14,7 @@ import java.util.List;
 
 public abstract class AbbrStep extends Step {
 
-    public void addPredicate(org.jaxpath.expr.Predicate predicate) {
+    public void addPredicate(org.jaxen.expr.Predicate predicate) {
         throw new RuntimeException( "Not supported yet" );
     }
     

@@ -22,7 +22,7 @@ import org.saxpath.XPathReader;
 import org.saxpath.SAXPathException;
 import org.saxpath.helpers.XPathReaderFactory;
 
-import org.jaxpath.JAXPathHandler;
+import org.jaxen.JAXPathHandler;
 
 import java.io.StringReader;
 
@@ -50,7 +50,7 @@ public class XPathPattern implements Pattern {
     
     public XPathPattern(String text) {
         this.text = text;
-        this.expression = parse( text );
+        this.expression = DefaultXPath.parse( text );
     }
 
     public boolean matches( Node node ) {
@@ -109,33 +109,6 @@ public class XPathPattern implements Pattern {
     protected Context createContext() {
         return new Context();
     }
-    
-
-    private Expr parse( String text ) {
-	  Expr expr = null;
-        try {
-            XPathReader reader = XPathReaderFactory.createReader();
-            
-            JAXPathHandler handler = new JAXPathHandler();
-            
-            handler.setXPathFactory( new DefaultXPathFactory() );
-            
-            reader.setXPathHandler( handler );
-            
-            reader.parse( text );
-            
-            org.jaxpath.expr.XPath xpath = handler.getXPath(true);
-            expr = (Expr) xpath.getRootExpr();
-        }
-        catch (SAXPathException e) {
-            throw new InvalidXPathException( text, e.getMessage() );
-        }
-        if ( expr == null ) {
-            throw new InvalidXPathException( text );
-        }
-        return expr;
-    }
-    
 }
 
 

@@ -127,7 +127,7 @@ class Operator {
             return Double.valueOf( s );
 /*            
             if ( s != null && s.length() > 0 ) {
-                //System.out.println( "Converting: " + s + " to number" );
+                System.out.println( "Converting: " + s + " to number" );
                 return Double.valueOf( s );
             }
             else {
@@ -136,7 +136,7 @@ class Operator {
                 e.printStackTrace();
             }
             return null;
-*/            
+*/
         }
     }
     
