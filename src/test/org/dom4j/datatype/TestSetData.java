@@ -181,7 +181,7 @@ public class TestSetData extends AbstractTestCase {
     //-------------------------------------------------------------------------                    
     protected void setUp() throws Exception {
         SAXReader reader = new SAXReader();
-        Document schema = reader.read( "d:/projects/dom4j/xml/test/schema/personal.xsd" );
+        Document schema = reader.read( "xml/test/schema/personal.xsd" );
         factory.loadSchema( schema );
         Namespace ns = new Namespace( "t", "urn://testing" );
         factory.loadSchema( schema, ns );

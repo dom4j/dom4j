@@ -26,7 +26,7 @@ import org.dom4j.io.SAXReader;
 public class TestMergeText extends AbstractTestCase {
 
     /** Input XML file to read */
-    protected static String INPUT_XML_FILE = "xml/test/mergeText.xml";
+    protected static String INPUT_XML_FILE = "xml/test/mergetext.xml";
     
     public static void main( String[] args ) {
         TestRunner.run( suite() );
@@ -57,7 +57,7 @@ public class TestMergeText extends AbstractTestCase {
     protected void setUp() throws Exception {
         SAXReader reader = new SAXReader();
         reader.setMergeAdjacentText(true);
-        document = reader.read( new File( INPUT_XML_FILE ) );
+        document = reader.read( new File( INPUT_XML_FILE ).toURL() );
     }
     
     private void checkNoAdjacent(Element parent) {
