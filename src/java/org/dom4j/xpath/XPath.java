@@ -206,7 +206,9 @@ public class XPath implements org.dom4j.XPath {
     }
     
     public boolean matches( Node node ) {
-        return _expr.matches( new Context(), node );
+        Context context = new Context();
+        context.setNodeSet( node );
+        return _expr.matches( context, node );
     }
     
     /** Sorts the list based on the sortValues for each node
