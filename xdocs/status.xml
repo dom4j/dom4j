@@ -9,6 +9,7 @@
   <body>
 
       <section name="1.5 beta 1">
+        <p>DOMWriter writes now DOM Level 2 attributes and elements (reported by Geert Dendoncker and Joury Gokel).</p>
         <p>Use latest implementation of the Aelfred parser.</p>
         <p>Fixed some problems with internal/external DTD declarations (reported by Bryan Thompson).</p>
         <p>Upgraded to Jaxen 1.1 beta 2.</p>
