@@ -14,6 +14,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.Collections;
 
 import org.dom4j.DocumentFactory;
 import org.dom4j.QName;
@@ -28,12 +30,12 @@ import org.dom4j.Namespace;
 public class QNameCache {
 
     /** Cache of {@link QName} instances with no namespace */
-    protected Map noNamespaceCache = new Hashtable();
+    protected Map noNamespaceCache = Collections.synchronizedMap(new HashMap());
 
     /** Cache of {@link Map} instances indexed by namespace which contain
       * caches of {@link QName} for each name
       */
-    protected Map namespaceCache = new Hashtable();
+    protected Map namespaceCache = Collections.synchronizedMap(new HashMap());
 
     /** The document factory associated with new QNames instances in this cache
       * or null if no instances should be associated by default
