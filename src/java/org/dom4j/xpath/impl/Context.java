@@ -163,6 +163,18 @@ public class Context implements Cloneable {
         return dupe;
     }
 
+    public Context duplicate( List nodeSet ) {
+        Context dupe = null;
+        try {
+            dupe = (Context) this.clone();
+            dupe._nodeSet = nodeSet;
+        }
+        catch (CloneNotSupportedException e) {
+            dupe = null;
+        }
+        return dupe;
+    }
+
     public String toString() {
         return ("[Context " + _nodeSet + "]");
     }

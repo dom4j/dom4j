@@ -10,10 +10,10 @@
 
 package org.dom4j.xpath.function;
 
-import org.dom4j.xpath.impl.Context;
-
 import org.dom4j.Attribute;
+import org.dom4j.Document;
 import org.dom4j.Element;
+import org.dom4j.xpath.impl.Context;
 
 import java.util.List;
 
@@ -22,41 +22,35 @@ import java.util.List;
    
    @author bob mcwhirter (bob @ werken.com)
 */
-public class LocalNameFunction implements Function
-{
+public class LocalNameFunction implements Function {
 
-  public Object call(Context context,
-                     List args)
-  {
-    if (args.size() == 0)
-    {
-      return evaluate( context );
+    public Object call(Context context, List args) {
+        if (args.size() == 0) {
+            return evaluate( context );
+        }
+        return evaluate( context.duplicate( args ) );
     }
 
-    // FIXME: Toss exception
-    return null;
-  }
-
-  public static String evaluate(Context context)
-  {
-    List list = context.getNodeSet();
-    
-    if ( ! list.isEmpty() )
-    {
-      Object first = list.get(0);
-      
-      if (first instanceof Element)
-      {
-        return ((Element)first).getName();
-      }
-      else if (first instanceof Attribute)
-      {
-        return ((Attribute)first).getName();
-      }
+    public static String evaluate(Context context) {
+        List list = context.getNodeSet();
+        if ( ! list.isEmpty() ) {            
+            Object first = list.get(0);
+            if (first instanceof Document) {
+                Document document = (Document) first;
+                Element element = document.getRootElement();
+                if (element != null) {
+                    return element.getName();
+                }
+            }
+            if (first instanceof Element) {
+                return ((Element) first).getName();
+            }
+            else if (first instanceof Attribute) {
+                return ((Attribute) first).getName();
+            }
+        }
+        return "";
     }
-
-    return "";
-  }
 }
 
 
