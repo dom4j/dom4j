@@ -249,7 +249,9 @@ List customers
           This would avoid any performance hit by making this kind of validation 
           the default behaviour.
         </li>
-        <li>Implement an org.dom4j.util.NodeComparator for comparing nodes
+        <li>Implement a canonical XML processor
+        </li>
+        <li>Implement XML Signature
         </li>
         <li>
           Consider adding support for 
