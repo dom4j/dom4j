@@ -412,10 +412,6 @@
     <java classname="VisitorDemo" args="xml/web.xml"/>
   </target>
 
-  <target name="demo-visitor2" depends="gen-moreover,samples">
-    <java classname="VisitorDemo2" args="xml/moreover/sample.xml org.dom4j.schema.moreover.SchemaDocumentFactory"/>
-  </target>
-
   <target name="demo-count" depends="samples">
     <java classname="CountDemo" args="xml/fibo.xml"/>
   </target>
@@ -424,7 +420,7 @@
     <java classname="HTMLWriterDemo" args="xml/xhtml.xml"/>
   </target>
 
-  <target name="test-performance" depends="demo-compile">
+  <target name="test-performance" depends="samples">
     <java classname="PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10"/>
 
     <java classname="PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10">
@@ -455,54 +451,6 @@
 
   <target name="demo-bigdoc" depends="samples">
     <java classname="LargeDocumentDemo" args="xml/much_ado.xml /PLAY/ACT"/>
-  </target>
-
-  <target name="demo-readdtd" depends="compile">
-    <java classname="org.dom4j.dtd.DTDReader" args="xml/xhtml/xhtml-basic.xml"/>
-<!--
-    <java classname="org.dom4j.dtd.DTDReader" args="xml/moreover/sample.xml"/>
--->
-  </target>
-
-  <target name="gen-xhtml" depends="compile">
-    <mkdir dir="${build.generated.src}"/>
-    <java classname="org.dom4j.tool.generator.SchemaGenerator" args="xml/xhtml/xhtml-basic.xml ${build.generated.src} org.dom4j.schema.xhtml"/>
-    <javac srcdir="${build.generated.src}"
-           destdir="${build.dest}"
-           debug="${debug}"
-           optimize="${optimize}"/>
-  </target>
-
-  <target name="time-xhtml" depends="gen-xhtml,samples">
-    <java classname="PerformanceTest" args="xml/xhtml/xhtml-basic.xml"/>
-    <java classname="PerformanceTest" args="xml/xhtml/xhtml-basic.xml org.dom4j.schema.xhtml.SchemaDocumentFactory"/>
-  </target>
-
-  <target name="gen-moreover" depends="compile">
-    <mkdir dir="${build.generated.src}"/>
-    <java classname="org.dom4j.tool.generator.SchemaGenerator" args="xml/moreover/sample.xml ${build.generated.src} org.dom4j.schema.moreover"/>
-    <javac srcdir="${build.generated.src}"
-           destdir="${build.dest}"
-           debug="${debug}"
-           optimize="${optimize}"/>
-  </target>
-
-  <target name="time-moreover" depends="gen-moreover,samples">
-    <java classname="PerformanceTest" args="xml/moreover/sample.xml"/>
-    <java classname="PerformanceTest" args="xml/moreover/sample.xml org.dom4j.schema.moreover.SchemaDocumentFactory"/>
-  </target>
-
-
-  <target name="demo-compile" depends="samples">
-    <mkdir dir="${build.dir}/xml"/>
-    <java classname="Compile" args="xml/much_ado.xml ${build.dir}/xml/much_ado.xb"/>
-    <java classname="Compile" args="xml/periodic_table.xml ${build.dir}/xml/periodic_table.xb"/>
-  </target>
-
-  <target name="demo-decompile" depends="samples">
-    <mkdir dir="${build.dir}/xml"/>
-    <java classname="Decompile" args="${build.dir}/xml/much_ado.xb ${build.dir}/xml/much_ado.xml"/>
-    <java classname="Decompile" args="${build.dir}/xml/periodic_table.xb ${build.dir}/xml/periodic_tablexml"/>
   </target>
 
 
