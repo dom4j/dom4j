@@ -57,9 +57,6 @@ import org.xml.sax.helpers.DefaultHandler;
   */
 public class SAXContentHandler extends DefaultHandler implements LexicalHandler, DeclHandler, DTDHandler {
 
-    /** Should standard entities be passed through? */
-    private static final boolean SHOW_STANDARD_ENTITIES = true;
-    
     /** The factory used to create new <code>Document</code> instances */
     private DocumentFactory documentFactory;
 
@@ -96,9 +93,6 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     /** external DTD declarations */
     private List externalDTDDeclarations;
     
-    /** A <code>Set</code> of the entity names we should ignore */
-    private Set ignoreEntityNames;
-
     /** The number of namespaces that are declared in the current scope */
     private int declaredNamespaceIndex;
 
@@ -313,7 +307,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
         // Ignore DTD references
         entity = null;
         if (! insideDTDSection ) {
-            if ( SHOW_STANDARD_ENTITIES || ! getIgnoreEntityNames().contains(name)) {
+            if ( ! isIgnorableEntity(name) ) {
                 entity = name;
             }
         }
@@ -615,25 +609,14 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
         return document;
     }
     
-    /** @return the set of entity names which are ignored
+    /** a Strategy Method to determine if a given entity name is ignorable
       */
-    protected Set getIgnoreEntityNames() {
-        if ( ignoreEntityNames == null ) {
-            ignoreEntityNames = createIgnoreEntityNames();
-        }
-        return ignoreEntityNames;
-    }
-    
-    /** a Factory Method to create a set of entity names which are ignored
-      */
-    protected Set createIgnoreEntityNames() {
-        HashSet answer = new HashSet();
-        answer.add("amp");
-        answer.add("apos");
-        answer.add("gt");
-        answer.add("lt");
-        answer.add("quot");
-        return answer;
+    protected boolean isIgnorableEntity(String name) {
+        return "amp".equals( name ) 
+            || "apos".equals( name ) 
+            || "gt".equals( name ) 
+            || "lt".equals( name ) 
+            || "quot".equals( name );
     }
     
     
