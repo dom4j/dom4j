@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
+
+ <xsd:xsd:element name="personnel">
+  <xsd:complexType>
+   <xsd:sequence>
+     <xsd:element ref="person" minOccurs='1' maxOccurs='unbounded'/>
+   </xsd:sequence>
+  </xsd:complexType>
+ </xsd:element>
+
+ <xsd:element name="person">
+  <xsd:complexType>
+   <xsd:sequence>
+     <xsd:element ref="name"/>
+     <xsd:element ref="email" minOccurs='0' maxOccurs='unbounded'/>
+     <xsd:element ref="url"   minOccurs='0' maxOccurs='unbounded'/>
+     <xsd:element ref="link"  minOccurs='0' maxOccurs='1'/>
+   </xsd:sequence>
+   <attribute name="id"  type="ID" use='required'/>
+   <attribute name="note" type="xsd:string"/>
+   <attribute name="contr" default="false">
+    <xsd:simpleType>
+     <restriction base = "xsd:string">
+       <enumeration value="true"/>
+       <enumeration value="false"/>
+     </restriction>
+    </xsd:simpleType>
+   </attribute>
+   <attribute name="salary" type="xsd:int"/>
+  </xsd:complexType>
+  <attribute name="age" type="xsd:integer"/>
+  <attribute name="x" type="xsd:int"/>
+  <attribute name="d" type="xsd:date"/>
+  <attribute name="dt" type="xsd:dateTime"/>
+ </xsd:element>
+
+ <xsd:element name="name">
+  <xsd:complexType>
+   <xsd:all>
+    <xsd:element ref="family"/>
+    <xsd:element ref="given"/>
+   </xsd:all>
+  </xsd:complexType>
+ </xsd:element>
+
+ <xsd:element name="family" type='xsd:string'/>
+
+ <xsd:element name="given" type='xsd:string'/>
+
+ <xsd:element name="email" type='xsd:string'/>
+
+ <xsd:element name="url">
+  <xsd:complexType>
+   <attribute name="href" type="xsd:string" default="http://"/>
+  </xsd:complexType>
+ </xsd:element>
+
+ <xsd:element name="link">
+  <xsd:complexType>
+   <attribute name="manager" type="IDREF"/>
+   <attribute name="subordinates" type="IDREFS"/>
+  </xsd:complexType>
+ </xsd:element>
+
+ <notation name='gif' public='-//APP/Photoshop/4.0' system='photoshop.exe'/>
+
+</schema>
