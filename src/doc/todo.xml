@@ -6,7 +6,7 @@
     <section title="Change History">
         <section title="Changes in CVS since last release">
           <section title="Integration with saxpath">
-            <p>The <a href="http://saxpath.org">saxpath</a> project is a Simple API for XPath. Its analagous to
+            <p>The <a href="http://saxpath.org">saxpath</a> project is a Simple API for XPath. Its analogous to
              SAX in that the API abstracts away the details of parsing and provides a simple event based callback
              interface. 
              </p>
