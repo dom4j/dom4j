@@ -120,8 +120,10 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
 
     public void setRootElement(Element rootElement) {
         clearContent();
-        super.add(rootElement);
-        rootElementAdded(rootElement);
+        if ( rootElement != null ) {
+            super.add(rootElement);
+            rootElementAdded(rootElement);
+        }
     }
 
     public void add(Element element) {

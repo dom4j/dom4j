@@ -25,6 +25,8 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
+import org.xml.sax.Attributes;
+
 /** <p><code>DOMAttribute</code> implements an XML element which 
   * supports the W3C DOM API.</p>
   *
@@ -43,6 +45,10 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
 
     public DOMElement(QName qname) { 
         super(qname);
+    }
+
+    public DOMElement(QName qname, Attributes attributes) { 
+        super(qname, attributes);
     }
 
     public DOMElement(String name, Namespace namespace) { 

@@ -226,20 +226,25 @@ public class DefaultDocument extends AbstractDocument {
     
     
     protected void addNode(Node node) {
-        if (node.getDocument() != null) {
-            // XXX: could clone here
-            String message = "The Node already has an existing document of \"" 
-                + node.getDocument().getName() + "\"";
-            throw new IllegalAddException(this, node, message);
+        if ( node != null ) {
+            Document document = node.getDocument();
+            if (document != null && document != this) {
+                // XXX: could clone here
+                String message = "The Node already has an existing document: " + document;
+                throw new IllegalAddException(this, node, message);
+            }
+            if (contents == null) {
+                contents = createContentList();
+            }
+            contents.add(node);
+            childAdded(node);
         }
-        if (contents == null) {
-            contents = createContentList();
-        }
-        contents.add(node);
-        childAdded(node);
     }
 
     protected boolean removeNode(Node node) {
+        if ( node == rootElement) {
+            rootElement = null;
+        }
         if (contents != null && contents.remove(node)) {
             childRemoved(node);
             return true;
