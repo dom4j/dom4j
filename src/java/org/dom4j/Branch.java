@@ -14,6 +14,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.xml.sax.Attributes;
+
+
 /** <p><code>Branch</code> interface defines the common behaviour 
   * for Nodes which can contain child nodes (content) such as 
   * XML elements and documents. 
@@ -117,6 +120,17 @@ public interface Branch extends Node {
       * @return the newly added <code>Element</code> node.
       */    
     public Element addElement(QName qname);
+    
+    /** Adds a new <code>Element</code> node with the given {@link QName} 
+      * to this branch and returns a reference to the new node. 
+      * This method is used by {@link org.dom4j.io.SAXReader} to allow
+      * more optimal or more flexible construction of element instances based 
+      * on the available attributes.
+      *
+      * @param qname is the qualified name for the <code>Element</code> node.
+      * @return the newly added <code>Element</code> node.
+      */    
+    public Element addElement(QName qName, Attributes attributes);
     
     /** Adds a processing instruction for the given target
       *

@@ -526,6 +526,10 @@
     <java classname="LinkChecker" args="xml/xhtml/xhtml-basic.xml"/>
   </target>
 
+  <target name="demo-bean" depends="samples">
+    <java classname="bean.BeanDemo" args="xml/bean/gui.xml"/>
+  </target>
+
 
 
   <target name="demo-all" depends="demo-sax,demo-visitor,demo-count,demo-xpath,demo-html"/>

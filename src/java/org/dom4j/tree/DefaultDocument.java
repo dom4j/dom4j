@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.dom4j.Comment;
 import org.dom4j.Document;
+import org.dom4j.DocumentFactory;
 import org.dom4j.DocumentType;
 import org.dom4j.Element;
 import org.dom4j.IllegalAddException;
@@ -44,6 +45,9 @@ public class DefaultDocument extends AbstractDocument {
     
     /** The document type for this document */
     private DocumentType docType;
+    
+    /** The document factory used by default */
+    private DocumentFactory documentFactory = DocumentFactory.getInstance();
     
     
     public DefaultDocument() { 
@@ -261,6 +265,13 @@ public class DefaultDocument extends AbstractDocument {
         return new BackedList( this, getContentList(), 0 );
     }
     
+    protected DocumentFactory getDocumentFactory() {
+        return documentFactory;
+    }
+
+    public void setDocumentFactory(DocumentFactory documentFactory) {
+        this.documentFactory = documentFactory;
+    }
 }
 
 

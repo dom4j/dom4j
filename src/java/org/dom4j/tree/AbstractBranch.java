@@ -33,6 +33,8 @@ import org.dom4j.ProcessingInstruction;
 import org.dom4j.Text;
 import org.dom4j.io.XMLWriter;
 
+import org.xml.sax.Attributes;
+
 /** <p><code>AbstractBranch</code> is an abstract base class for 
   * tree implementors to use for implementation inheritence.</p>
   *
@@ -179,6 +181,12 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     
     public Element addElement(QName qname) {
         Element node = getDocumentFactory().createElement( qname );
+        add( node );
+        return node;
+    }
+    
+    public Element addElement(QName qname, Attributes attributes) {
+        Element node = getDocumentFactory().createElement( qname, attributes );
         add( node );
         return node;
     }
