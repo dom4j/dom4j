@@ -49,7 +49,7 @@ public class BeanDocumentFactory extends DocumentFactory {
     public Element createElement(QName qname) {
         Object bean = createBean( qname );
         if ( bean == null ) {
-            return new DefaultElement(qname);
+            return new BeanElement(qname);
         }
         else {
             return new BeanElement(qname, bean);
@@ -59,7 +59,7 @@ public class BeanDocumentFactory extends DocumentFactory {
     public Element createElement(QName qname, Attributes attributes) {
         Object bean = createBean( qname, attributes );
         if ( bean == null ) {
-            return new DefaultElement(qname);
+            return new BeanElement(qname);
         }
         else {
             return new BeanElement(qname, bean);
@@ -83,9 +83,6 @@ public class BeanDocumentFactory extends DocumentFactory {
     
     protected Object createBean( QName qname, Attributes attributes ) {
         String value = attributes.getValue( "className" );
-        
-        System.out.println( "#### found class: " + value );
-        
         if ( value != null ) {
             try {
                 Class beanClass = Class.forName( value );

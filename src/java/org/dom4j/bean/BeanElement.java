@@ -46,6 +46,10 @@ public class BeanElement extends DefaultElement {
         this.bean = bean;
     }
 
+    public BeanElement(QName qname) { 
+        super( qname);
+    }
+
     /** @return the JavaBean associated with this element 
       */
     public Object getData() {
@@ -57,12 +61,29 @@ public class BeanElement extends DefaultElement {
         setAttributeList(null);
     }
     
+    public void setAttributeValue(String name, String value) {
+        Attribute attribute = getAttribute(name);
+        if (attribute != null ) {
+            attribute.setValue(value);
+        }
+    }
+
+    public void setAttributeValue(QName qName, String value) {
+        Attribute attribute = getAttribute(qName);
+        if (attribute != null ) {
+            attribute.setValue(value);
+        }
+    }
+    
+    public void setAttributes(List attributes) {
+        throw new UnsupportedOperationException( "setAttributes(List) is not supported yet!" );
+    }
+    
     
     
     // Implementation methods
     
     protected DocumentFactory getDocumentFactory() {
-        System.out.println( "###### BeanElement:getDocumentFactory()");
         return DOCUMENT_FACTORY;
     }
     
