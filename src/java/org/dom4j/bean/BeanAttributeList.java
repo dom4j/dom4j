@@ -9,12 +9,13 @@
 
 package org.dom4j.bean;
 
-import java.beans.PropertyDescriptor;
 import java.util.AbstractList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.dom4j.Attribute;
+import org.dom4j.Element;
+import org.dom4j.QName;
 
 /** <p><code>BeanAttributeList</code> implements a list of Attributes
   * which are the properties of a JavaBean.</p>
@@ -34,6 +35,12 @@ public class BeanAttributeList extends AbstractList {
     private BeanAttribute[] attributes;
   
     
+    public BeanAttributeList(BeanElement parent, BeanMetaData beanMetaData) { 
+        this.parent = parent;
+        this.beanMetaData = beanMetaData;
+        this.attributes = new BeanAttribute[ beanMetaData.getAttributeCount() ];
+    }
+    
     public BeanAttributeList(BeanElement parent) { 
         this.parent = parent;
         
@@ -43,6 +50,47 @@ public class BeanAttributeList extends AbstractList {
         this.attributes = new BeanAttribute[ beanMetaData.getAttributeCount() ];
     }
     
+    public Attribute getAttribute(String name) {
+        int index = beanMetaData.getIndex(name);
+        return getAttribute(index);
+    }
+    
+    public Attribute getAttribute(QName qname) {
+        int index = beanMetaData.getIndex(qname);
+        return getAttribute(index);
+    }
+    
+    public BeanAttribute getAttribute(int index) {
+        if ( index >= 0 && index <= attributes.length ) {
+            BeanAttribute attribute = attributes[index];
+            if ( attribute == null ) {
+                attribute = createAttribute( parent, index );
+                attributes[index] = attribute;
+            }
+            return attribute;
+        }
+        return null;
+    }
+    
+    public BeanElement getParent() {
+        return parent;
+    }
+    
+    public QName getQName(int index) {
+        return beanMetaData.getQName(index);
+    }
+
+    public Object getData(int index) {
+        return beanMetaData.getData(index, parent.getData());
+    }
+    
+    public void setData(int index, Object data) {
+        beanMetaData.setData(index, parent.getData(), data);
+    }
+    
+    
+    // List interface
+    //-------------------------------------------------------------------------        
     public int size() {
         return attributes.length;
     }
@@ -50,7 +98,7 @@ public class BeanAttributeList extends AbstractList {
     public Object get(int index) {
         BeanAttribute attribute = attributes[index];
         if ( attribute == null ) {
-            attribute = beanMetaData.createAttribute( parent, index );
+            attribute = createAttribute( parent, index );
             attributes[index] = attribute;
         }
         return attribute;
@@ -86,6 +134,13 @@ public class BeanAttributeList extends AbstractList {
                 attribute.setValue( null );
             }
         }
+    }
+
+    
+    // Implementation methods
+    //-------------------------------------------------------------------------    
+    protected BeanAttribute createAttribute( BeanElement parent, int index ) {
+        return new BeanAttribute( this, index );
     }
 }
 

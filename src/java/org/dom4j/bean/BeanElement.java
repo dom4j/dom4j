@@ -61,6 +61,14 @@ public class BeanElement extends DefaultElement {
         setAttributeList(null);
     }
     
+    public Attribute getAttribute(String name) {
+        return getBeanAttributeList().getAttribute(name);
+    }
+    
+    public Attribute getAttribute(QName qname) {
+        return getBeanAttributeList().getAttribute(qname);
+    }
+    
     public void setAttributeValue(String name, String value) {
         Attribute attribute = getAttribute(name);
         if (attribute != null ) {
@@ -82,7 +90,7 @@ public class BeanElement extends DefaultElement {
     
     
     // Implementation methods
-    
+    //-------------------------------------------------------------------------        
     protected DocumentFactory getDocumentFactory() {
         return DOCUMENT_FACTORY;
     }
@@ -96,8 +104,7 @@ public class BeanElement extends DefaultElement {
       */
     protected List createAttributeList() {
         return new BeanAttributeList(this);
-    }
-    
+    }    
 }
 
 
