@@ -99,6 +99,11 @@ public class TestXPath extends AbstractTestCase {
 
         assertTrue("created a valid XPath: " + xpath != null );
     }
+    
+    public void testBug857704() throws Exception {
+        Document doc = DocumentHelper.parseText("<foo xmlns:bar='http://blort'/>");
+        doc.selectNodes("//*[preceding-sibling::*]");       // shouldn't throw NPE
+    }
 
     // Implementation methods
 
