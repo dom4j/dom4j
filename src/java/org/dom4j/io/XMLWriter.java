@@ -198,18 +198,13 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
       * @param attribute <code>Attribute</code> to output.
       */
     public void write(Attribute attribute) throws IOException {        
-        writer.write(" ");
-        writer.write(attribute.getQualifiedName());
-        writer.write("=");
-
-        writer.write("\"");
+        writeAttribute(attribute);
         
-        writeEscapeAttributeEntities(attribute.getValue());
-        
-        writer.write("\"");
-        lastOutputNodeType = Node.ATTRIBUTE_NODE;
+        if ( autoFlush ) {
+            flush();
+        }
     }
-
+    
     
     /** <p>This will print the <code>Document</code> to the current Writer.</p>
      *
@@ -229,12 +224,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         
         if (doc.getDocType() != null) {
             indent();
-            write(doc.getDocType());
+            writeDocType(doc.getDocType());
         }
 
         for ( int i = 0, size = doc.nodeCount(); i < size; i++ ) {
             Node node = doc.node(i);
-            write( node );
+            writeNode( node );
         }
         writePrintln();
         
@@ -250,91 +245,24 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
       * @param element <code>Element</code> to output.
       */
     public void write(Element element) throws IOException {
-        int size = element.nodeCount();
-        String qualifiedName = element.getQualifiedName();
+        writeElement(element);
         
-        writePrintln();
-        indent();
-        
-        writer.write("<");
-        writer.write(qualifiedName);
-        
-        int previouslyDeclaredNamespaces = namespaceStack.size();
-        Namespace ns = element.getNamespace();
-        if (isNamespaceDeclaration( ns ) ) {
-            namespaceStack.push(ns);
-            write(ns);
+        if ( autoFlush ) {
+            flush();
         }
-
-        // Print out additional namespace declarations
-        boolean textOnly = true;
-        for ( int i = 0; i < size; i++ ) {
-            Node node = element.node(i);
-            if ( node instanceof Namespace ) {
-                Namespace additional = (Namespace) node;
-                if (isNamespaceDeclaration( additional ) ) {
-                    namespaceStack.push(additional);
-                    write(additional);
-                }
-            }
-            else if ( node instanceof Element) {
-                textOnly = false;
-            }
-        }
-
-        writeAttributes(element);
-
-        lastOutputNodeType = Node.ELEMENT_NODE;
-        
-        if ( size <= 0 ) {
-            writeEmptyElementClose(qualifiedName);
-        }
-        else {
-            writer.write(">");
-            if ( textOnly ) {
-                // we have at least one text node so lets assume
-                // that its non-empty
-                for ( int i = 0; i < size; i++ ) {
-                    Node node = element.node(i);
-                    write(node);
-                }
-            }
-            else {
-                // we know it's not null or empty from above
-                ++indentLevel;
-                
-                for ( int i = 0; i < size; i++ ) {
-                    Node node = element.node(i);
-                    write(node);
-                }
-                --indentLevel;                
-
-                writePrintln();
-                indent();
-            }
-            writer.write("</");
-            writer.write(qualifiedName);
-            writer.write(">");
-        }
-
-        // remove declared namespaceStack from stack
-        while (namespaceStack.size() > previouslyDeclaredNamespaces) {
-            namespaceStack.pop();
-        }
-        
-        lastOutputNodeType = Node.ELEMENT_NODE;
     }
+    
         
     /** Writes the given {@link CDATA}.
       *
       * @param cdata <code>CDATA</code> to output.
       */
     public void write(CDATA cdata) throws IOException {
-        writer.write( "<![CDATA[" );
-        writer.write( cdata.getText() );
-        writer.write( "]]>" );
+        writeCDATA( cdata.getText() );
         
-        lastOutputNodeType = Node.CDATA_SECTION_NODE;
+        if ( autoFlush ) {
+            flush();
+        }
     }
     
     /** Writes the given {@link Comment}.
@@ -343,6 +271,10 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
       */
     public void write(Comment comment) throws IOException {        
         writeComment( comment.getText() );
+        
+        if ( autoFlush ) {
+            flush();
+        }
     }
     
     /** Writes the given {@link DocumentType}.
@@ -350,9 +282,10 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
       * @param docType <code>DocumentType</code> to output.
       */
     public void write(DocumentType docType) throws IOException {
-        if (docType != null) {
-            writeDocType( docType.getElementName(), docType.getPublicID(), docType.getSystemID() );
-            writePrintln();
+        writeDocType(docType);
+        
+        if ( autoFlush ) {
+            flush();
         }
     }
 
@@ -363,6 +296,10 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
       */
     public void write(Entity entity) throws IOException {
         writeEntityRef( entity.getName() );
+        
+        if ( autoFlush ) {
+            flush();
+        }
     }
     
 
@@ -371,33 +308,23 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
       * @param namespace <code>Namespace</code> to output.
       */
     public void write(Namespace namespace) throws IOException {
-        if ( namespace != null ) {
-            String prefix = namespace.getPrefix();
-            writer.write(" xmlns");
-            if (prefix != null && prefix.length() > 0) {
-                writer.write(":");
-                writer.write(prefix);
-            }
-            writer.write("=\"");
-            writer.write(namespace.getURI());
-            writer.write("\"");
+        writeNamespace(namespace);
+        
+        if ( autoFlush ) {
+            flush();
         }
     }
-
+    
     /** Writes the given {@link ProcessingInstruction}.
       *
       * @param processingInstruction <code>ProcessingInstruction</code> to output.
       */
     public void write(ProcessingInstruction processingInstruction) throws IOException {
-        //indent();
-        writer.write( "<?" );
-        writer.write( processingInstruction.getName() );
-        writer.write( " " );
-        writer.write( processingInstruction.getText() );
-        writer.write( "?>" );
-        writePrintln();
+        writeProcessingInstruction(processingInstruction);
         
-        lastOutputNodeType = Node.PROCESSING_INSTRUCTION_NODE;
+        if ( autoFlush ) {
+            flush();
+        }
     }
     
     /** <p>Print out a {@link String}, Perfoms
@@ -406,45 +333,23 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
       * @param text is the text to output
       */
     public void write(String text) throws IOException {
-        if ( text.length() > 0 ) {
-            if ( ESCAPE_TEXT ) {
-                text = escapeElementEntities(text);
-            }
-            
-            if ( SUPPORT_PAD_TEXT ) {
-                if (lastOutputNodeType == Node.ELEMENT_NODE) {
-                    String padText = getPadText();
-                    if ( padText != null ) {
-                        writer.write(padText);
-                    }
-                }
-            }
-            
-            if (format.isTrimText()) {
-                StringTokenizer tokenizer = new StringTokenizer(text);
-                while (tokenizer.hasMoreTokens()) {
-                    String token = tokenizer.nextToken();
-                    writer.write(token);
-                    if (tokenizer.hasMoreTokens()) {
-                        writer.write(" ");
-                    }
-                    lastOutputNodeType = Node.TEXT_NODE;
-                }
-            } 
-            else {                    
-                lastOutputNodeType = Node.TEXT_NODE;
-                writer.write(text);
-            }            
+        writeString(text);
+        
+        if ( autoFlush ) {
+            flush();
         }
     }
-
 
     /** Writes the given {@link Text}.
       *
       * @param text <code>Text</code> to output.
       */
     public void write(Text text) throws IOException {
-        write(text.getText());
+        writeString(text.getText());
+        
+        if ( autoFlush ) {
+            flush();
+        }
     }
     
     /** Writes the given {@link Node}.
@@ -452,42 +357,10 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
       * @param node <code>Node</code> to output.
       */
     public void write(Node node) throws IOException {
-        int nodeType = node.getNodeType();
-        switch (nodeType) {
-            case Node.ELEMENT_NODE:
-                write((Element) node);
-                break;
-            case Node.ATTRIBUTE_NODE:
-                write((Attribute) node);
-                break;
-            case Node.TEXT_NODE:
-                write(node.getText());
-                //write((Text) node);
-                break;
-            case Node.CDATA_SECTION_NODE:
-                write((CDATA) node);
-                break;
-            case Node.ENTITY_REFERENCE_NODE:
-                write((Entity) node);
-                break;
-            case Node.PROCESSING_INSTRUCTION_NODE:
-                write((ProcessingInstruction) node);
-                break;
-            case Node.COMMENT_NODE:
-                write((Comment) node);
-                break;
-            case Node.DOCUMENT_NODE:
-                write((Document) node);
-                break;                
-            case Node.DOCUMENT_TYPE_NODE:
-                write((DocumentType) node);
-                break;
-            case Node.NAMESPACE_NODE:
-                // Will be output with attributes
-                //write((Namespace) node);
-                break;
-            default:
-                throw new IOException( "Invalid node type: " + node );
+        writeNode(node);
+        
+        if ( autoFlush ) {
+            flush();
         }
     }
     
@@ -783,7 +656,201 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     
     
     // Implementation methods
-    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------    
+    protected void writeElement(Element element) throws IOException {
+        int size = element.nodeCount();
+        String qualifiedName = element.getQualifiedName();
+        
+        writePrintln();
+        indent();
+        
+        writer.write("<");
+        writer.write(qualifiedName);
+        
+        int previouslyDeclaredNamespaces = namespaceStack.size();
+        Namespace ns = element.getNamespace();
+        if (isNamespaceDeclaration( ns ) ) {
+            namespaceStack.push(ns);
+            writeNamespace(ns);
+        }
+
+        // Print out additional namespace declarations
+        boolean textOnly = true;
+        for ( int i = 0; i < size; i++ ) {
+            Node node = element.node(i);
+            if ( node instanceof Namespace ) {
+                Namespace additional = (Namespace) node;
+                if (isNamespaceDeclaration( additional ) ) {
+                    namespaceStack.push(additional);
+                    writeNamespace(additional);
+                }
+            }
+            else if ( node instanceof Element) {
+                textOnly = false;
+            }
+        }
+
+        writeAttributes(element);
+
+        lastOutputNodeType = Node.ELEMENT_NODE;
+        
+        if ( size <= 0 ) {
+            writeEmptyElementClose(qualifiedName);
+        }
+        else {
+            writer.write(">");
+            if ( textOnly ) {
+                // we have at least one text node so lets assume
+                // that its non-empty
+                for ( int i = 0; i < size; i++ ) {
+                    Node node = element.node(i);
+                    writeNode(node);
+                }
+            }
+            else {
+                // we know it's not null or empty from above
+                ++indentLevel;
+                
+                for ( int i = 0; i < size; i++ ) {
+                    Node node = element.node(i);
+                    writeNode(node);
+                }
+                --indentLevel;                
+
+                writePrintln();
+                indent();
+            }
+            writer.write("</");
+            writer.write(qualifiedName);
+            writer.write(">");
+        }
+
+        // remove declared namespaceStack from stack
+        while (namespaceStack.size() > previouslyDeclaredNamespaces) {
+            namespaceStack.pop();
+        }
+        
+        lastOutputNodeType = Node.ELEMENT_NODE;
+    }
+    
+    protected void writeCDATA(String text) throws IOException {
+        writer.write( "<![CDATA[" );
+        writer.write( text );
+        writer.write( "]]>" );
+        
+        lastOutputNodeType = Node.CDATA_SECTION_NODE;
+    }
+
+    protected void writeDocType(DocumentType docType) throws IOException {
+        if (docType != null) {
+            writeDocType( docType.getElementName(), docType.getPublicID(), docType.getSystemID() );
+            writePrintln();
+        }
+    }
+
+    protected void writeNamespace(Namespace namespace) throws IOException {
+        if ( namespace != null ) {
+            String prefix = namespace.getPrefix();
+            writer.write(" xmlns");
+            if (prefix != null && prefix.length() > 0) {
+                writer.write(":");
+                writer.write(prefix);
+            }
+            writer.write("=\"");
+            writer.write(namespace.getURI());
+            writer.write("\"");
+        }
+    }
+
+    protected void writeProcessingInstruction(ProcessingInstruction processingInstruction) throws IOException {
+        //indent();
+        writer.write( "<?" );
+        writer.write( processingInstruction.getName() );
+        writer.write( " " );
+        writer.write( processingInstruction.getText() );
+        writer.write( "?>" );
+        writePrintln();
+        
+        lastOutputNodeType = Node.PROCESSING_INSTRUCTION_NODE;
+    }
+    
+    protected void writeString(String text) throws IOException {
+        if ( text.length() > 0 ) {
+            if ( ESCAPE_TEXT ) {
+                text = escapeElementEntities(text);
+            }
+            
+            if ( SUPPORT_PAD_TEXT ) {
+                if (lastOutputNodeType == Node.ELEMENT_NODE) {
+                    String padText = getPadText();
+                    if ( padText != null ) {
+                        writer.write(padText);
+                    }
+                }
+            }
+            
+            if (format.isTrimText()) {
+                StringTokenizer tokenizer = new StringTokenizer(text);
+                while (tokenizer.hasMoreTokens()) {
+                    String token = tokenizer.nextToken();
+                    writer.write(token);
+                    if (tokenizer.hasMoreTokens()) {
+                        writer.write(" ");
+                    }
+                    lastOutputNodeType = Node.TEXT_NODE;
+                }
+            } 
+            else {                    
+                lastOutputNodeType = Node.TEXT_NODE;
+                writer.write(text);
+            }            
+        }
+    }
+
+        
+    protected void writeNode(Node node) throws IOException {
+        int nodeType = node.getNodeType();
+        switch (nodeType) {
+            case Node.ELEMENT_NODE:
+                writeElement((Element) node);
+                break;
+            case Node.ATTRIBUTE_NODE:
+                writeAttribute((Attribute) node);
+                break;
+            case Node.TEXT_NODE:
+                writeString(node.getText());
+                //write((Text) node);
+                break;
+            case Node.CDATA_SECTION_NODE:
+                writeCDATA(node.getText());
+                break;
+            case Node.ENTITY_REFERENCE_NODE:
+                writeEntityRef( node.getName() );
+                break;
+            case Node.PROCESSING_INSTRUCTION_NODE:
+                writeProcessingInstruction((ProcessingInstruction) node);
+                break;
+            case Node.COMMENT_NODE:
+                writeComment(node.getText());
+                break;
+            case Node.DOCUMENT_NODE:
+                write((Document) node);
+                break;                
+            case Node.DOCUMENT_TYPE_NODE:
+                writeDocType((DocumentType) node);
+                break;
+            case Node.NAMESPACE_NODE:
+                // Will be output with attributes
+                //write((Namespace) node);
+                break;
+            default:
+                throw new IOException( "Invalid node type: " + node );
+        }
+    }
+    
+    
+    
+    
     protected void installLexicalHandler() {
         XMLReader parent = getParent();
         if (parent == null) {
@@ -867,7 +934,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                 String prefix = ns.getPrefix();           
                 String uri = namespaceStack.getURI(prefix);
                 if (!ns.getURI().equals(uri)) { // output a new namespace declaration
-                    write(ns);
+                    writeNamespace(ns);
                     namespaceStack.push(ns);
                 }
             }
@@ -880,13 +947,26 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         }
     }
 
-    protected void write(Attributes attributes) throws IOException {
+    protected void writeAttribute(Attribute attribute) throws IOException {        
+        writer.write(" ");
+        writer.write(attribute.getQualifiedName());
+        writer.write("=");
+
+        writer.write("\"");
+        
+        writeEscapeAttributeEntities(attribute.getValue());
+        
+        writer.write("\"");
+        lastOutputNodeType = Node.ATTRIBUTE_NODE;
+    }
+
+    protected void writeAttributes(Attributes attributes) throws IOException {
         for (int i = 0, size = attributes.getLength(); i < size; i++) {
-            write( attributes, i );
+            writeAttribute( attributes, i );
         }
     }
 
-    protected void write(Attributes attributes, int index) throws IOException {       
+    protected void writeAttribute(Attributes attributes, int index) throws IOException {       
         writer.write(" ");
         writer.write(attributes.getQName(index));
         writer.write("=\"");        

@@ -82,6 +82,11 @@ xpath.setVariableContext( myVariableContext );
 List nodes = xpath.selectNodes( document );
 </pre>
           </p>
+          <p>
+            Patched XMLWriter to that a flush() is not required when using an OutputStream 
+            and the various sub-document write() methods 
+            are called such as write(Element), write(Attribute), write(Node), write(Namespace) etc.
+          </p>
         </section>
         <section title="0.9 release">
           <section title="Full support for the Jaxen XPath engine">
