@@ -11,6 +11,7 @@ package org.dom4j;
 
 import junit.framework.TestCase;
 
+import org.apache.xerces.jaxp.SAXParserFactoryImpl;
 import org.dom4j.util.NodeComparator;
 
 /** An abstract base class for some DOM4J test cases
@@ -24,17 +25,19 @@ public class AbstractTestCase extends TestCase {
     
     protected Document document;
     
-    
-    public AbstractTestCase(String name) {
-        super(name);
+    protected AbstractTestCase() {
+    	super();
     }
-
+    
+    protected AbstractTestCase(String name) {
+    	super(name);
+    }
+    
     public void log(String text) {
         System.out.println(text);
     }
     
-    
-    public void assertDocumentsEqual(Document doc1, Document doc2) throws Exception {
+   public void assertDocumentsEqual(Document doc1, Document doc2) throws Exception {
         try {
             assertTrue( "Doc1 not null", doc1 != null );
             assertTrue( "Doc2 not null", doc2 != null );
@@ -214,6 +217,7 @@ public class AbstractTestCase extends TestCase {
     // Implementation methods
     //-------------------------------------------------------------------------                    
     protected void setUp() throws Exception {
+    	System.setProperty("javax.xml.parsers.SAXParserFactory", SAXParserFactoryImpl.class.getName());
         document = createDocument();
         
         Element root = document.addElement( "root" );

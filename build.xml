@@ -272,13 +272,13 @@
         <path refid="test.classpath" />
       </classpath>
 
-      <jvmarg value="-Djavax.xml.parsers.SAXParserFactory=org.dom4j.JAXPFactory" />
+      <!--jvmarg value="-Djavax.xml.parsers.SAXParserFactory=org.dom4j.JAXPFactory" /-->
       <jvmarg value="-Djavax.xml.transform.TransformerFactory=org.apache.xalan.processor.TransformerFactoryImpl" />
 
       <batchtest fork="yes" todir="${build.dir}/test-results/xml">
         <fileset dir="${test.dir}">
-          <include name="**/Test*.java" />
-          <exclude name="**/AllTests.java,**/Abstract*.java" />
+          <include name="**/*Test.java" />
+          <exclude name="**/AllTests.java,**/Abstract*.java,**/TestCase.java" />
         </fileset>
       </batchtest>
     </junit>
