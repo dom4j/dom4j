@@ -176,6 +176,13 @@ public interface Node extends Cloneable {
       */
     public String getString();    
     
+    /** <p>Returns the String of the XPath expression to reach this node from 
+      * the root node.</p>
+      *
+      * @return the XPath text expression for this node.
+      */
+    public String getPath();
+    
     
     /** <p><code>asXML</code> returns the textual XML representation of this 
       * node.</p>

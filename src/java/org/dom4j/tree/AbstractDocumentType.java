@@ -32,10 +32,6 @@ public abstract class AbstractDocumentType extends AbstractNode implements Docum
         return DOCUMENT_TYPE_NODE;
     }
 
-    public String toString() {
-        return super.toString() + " [DocumentType: " + asXML() + "]";
-    }
-
     public String getName() {
         return getElementName();
     }
@@ -44,6 +40,15 @@ public abstract class AbstractDocumentType extends AbstractNode implements Docum
         setElementName(name);
     }
     
+    public String getPath() {
+        // not available in XPath
+        return "";
+    }
+
+    public String toString() {
+        return super.toString() + " [DocumentType: " + asXML() + "]";
+    }
+
     public String asXML() {
         StringBuffer buffer = new StringBuffer( "<!DOCTYPE " );
         buffer.append( getElementName() );

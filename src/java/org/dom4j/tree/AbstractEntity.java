@@ -9,6 +9,7 @@
 
 package org.dom4j.tree;
 
+import org.dom4j.Element;
 import org.dom4j.Entity;
 import org.dom4j.Visitor;
 
@@ -28,6 +29,14 @@ public abstract class AbstractEntity extends AbstractNode implements Entity {
         return ENTITY_REFERENCE_NODE;
     }
 
+    public String getPath() {
+        // From XPaths perspective, entities are included in text
+        Element parent = getParent();
+        return ( parent != null ) 
+            ? parent.getPath() + "/text()"
+            : "text()";
+    }
+    
     public String toString() {
         return super.toString() + " [Entity: &" + getName() + ";]";
     }

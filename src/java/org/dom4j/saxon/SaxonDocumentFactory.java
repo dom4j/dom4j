@@ -7,45 +7,51 @@
  * $Id$
  */
 
-package org.dom4j.tree;
+package org.dom4j.saxon;
 
-import org.dom4j.Comment;
+import java.util.Map;
+
+import org.dom4j.DocumentFactory;
+import org.dom4j.Attribute;
 import org.dom4j.Element;
-import org.dom4j.Visitor;
+import org.dom4j.QName;
+import org.dom4j.tree.DefaultAttribute;
+import org.dom4j.tree.DefaultElement;
 
-/** <p><code>AbstractComment</code> is an abstract base class for 
-  * tree implementors to use for implementation inheritence.</p>
+import org.xml.sax.Attributes;
+
+/** <p><code>SaxonDocumentFactory</code> is a factory of DOM4J objects
+  * which implement the SAXON document object model.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public abstract class AbstractComment extends AbstractCharacterData implements Comment {
+public class SaxonDocumentFactory extends DocumentFactory {
 
-    public AbstractComment() {
-    }
+    /** The Singleton instance */
+    private static SaxonDocumentFactory singleton = new SaxonDocumentFactory();
 
-    public short getNodeType() {
-        return COMMENT_NODE;
-    }
-
-    public String getPath() {
-        Element parent = getParent();
-        return ( parent != null ) 
-            ? parent.getPath() + "/comment()"
-            : "comment()";
-    }
-
-    public String toString() {
-        return super.toString() + " [Comment: \"" + getText() + "\"]";
-    }
-
-    public String asXML() {
-        return "<!--" + getText() + "-->";
+    /** <p>Access to the singleton instance of this factory.</p>
+      *
+      * @return the default singleon instance
+      */
+    public static DocumentFactory getInstance() {
+        return singleton;
     }
     
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
+    
+    // Factory methods
+    
+/*    
+    public Attribute createAttribute(QName qname, String value) {
+        return new SaxonAttribute(qname, value);
     }
+*/    
+
+    // SAXON helper methods
+    
+    // Implementation methods
+    
 }
 
 

@@ -43,6 +43,9 @@ import org.dom4j.Visitor;
   */
 public abstract class AbstractElement extends AbstractBranch implements Element {
 
+    protected static final boolean VERBOSE_TOSTRING = false;
+    
+    
     public AbstractElement() { 
     }
 
@@ -69,6 +72,13 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         throw new UnsupportedOperationException("The name and namespace of this Element cannot be changed" );
     }
         
+    public String getPath() {
+        Element parent = getParent();
+        return ( parent != null ) 
+            ? parent.getPath() + "/" + getQualifiedName()
+            : getQualifiedName();
+    }
+    
     public String asXML() {
         try {
             StringWriter out = new StringWriter();
@@ -124,9 +134,15 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     }
     
     public String toString() {
-        return super.toString() + " [Element: <" + getQualifiedName() 
-            + " attributes: " + getAttributeList()
-            + " content: " + getContentList() + " />]";
+        if ( VERBOSE_TOSTRING ) {
+            return super.toString() + " [Element: <" + getQualifiedName() 
+                + " attributes: " + getAttributeList()
+                + " content: " + getContentList() + " />]";
+        }
+        else {
+            return super.toString() + " [Element: <" + getQualifiedName() 
+                + " attributes: " + getAttributeList() + "/>]";
+        }
     }
     
 

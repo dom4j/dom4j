@@ -10,6 +10,7 @@
 package org.dom4j.tree;
 
 import org.dom4j.CharacterData;
+import org.dom4j.Element;
 
 /** <p><code>AbstractCharacterData</code> is an abstract base class for 
   * tree implementors to use for implementation inheritence.</p>
@@ -21,6 +22,14 @@ public abstract class AbstractCharacterData extends AbstractNode implements Char
 
     public AbstractCharacterData() {
     }
+    
+    public String getPath() {
+        Element parent = getParent();
+        return ( parent != null ) 
+            ? parent.getPath() + "/text()"
+            : "text()";
+    }
+    
 }
 
 

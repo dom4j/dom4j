@@ -87,6 +87,13 @@ public abstract class AbstractAttribute extends AbstractNode implements Attribut
         return getQName().getQualifiedName();
     }
     
+    public String getPath() {
+        Element parent = getParent();
+        return ( parent != null ) 
+            ? parent.getPath() + "/@" + getName() 
+            : "@" + getName();
+    }
+    
     protected Node createXPathNode(Element parent) {
         return new XPathAttribute(parent, getQName(), getValue());
     }

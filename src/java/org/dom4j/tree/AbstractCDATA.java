@@ -27,7 +27,6 @@ public abstract class AbstractCDATA extends AbstractCharacterData implements CDA
         return CDATA_SECTION_NODE;
     }
 
-
     public String toString() {
         return super.toString() + " [CDATA: \"" + getText() + "\"]";
     }

@@ -7,44 +7,74 @@
  * $Id$
  */
 
-package org.dom4j.tree;
+package org.dom4j.xpath;
 
-import org.dom4j.Comment;
+import java.io.File;
+import java.util.Iterator;
+import java.util.List;
+
+import junit.framework.*;
+import junit.textui.TestRunner;
+
+import org.dom4j.AbstractTestCase;
+import org.dom4j.Branch;
 import org.dom4j.Element;
-import org.dom4j.Visitor;
+import org.dom4j.Node;
 
-/** <p><code>AbstractComment</code> is an abstract base class for 
-  * tree implementors to use for implementation inheritence.</p>
+/** Test harness for the GetPath() method
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public abstract class AbstractComment extends AbstractCharacterData implements Comment {
+public class TestGetPath extends AbstractTestCase {
 
-    public AbstractComment() {
-    }
-
-    public short getNodeType() {
-        return COMMENT_NODE;
-    }
-
-    public String getPath() {
-        Element parent = getParent();
-        return ( parent != null ) 
-            ? parent.getPath() + "/comment()"
-            : "comment()";
-    }
-
-    public String toString() {
-        return super.toString() + " [Comment: \"" + getText() + "\"]";
-    }
-
-    public String asXML() {
-        return "<!--" + getText() + "-->";
+    public static void main( String[] args ) {
+        TestRunner.run( suite() );
     }
     
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
+    public static Test suite() {
+        return new TestSuite( TestGetPath.class );
+    }
+    
+    public TestGetPath(String name) {
+        super(name);
+    }
+
+    // Test case(s)
+    //-------------------------------------------------------------------------                    
+    public void testGetPath() throws Exception {
+        log( "Testing paths" );
+        
+        testBranchPath( document );
+    }
+        
+    protected void testBranchPath(Branch branch) {
+        testNodePath( branch );
+        
+        if ( branch instanceof Element ) {
+            Element element = (Element) branch;
+            for ( Iterator iter = element.attributeIterator(); iter.hasNext(); ) {
+                Node node = (Node) iter.next();
+                testNodePath( node );
+            }
+        }
+        
+        for ( Iterator iter = branch.nodeIterator(); iter.hasNext(); ) {
+            Node node = (Node) iter.next();
+            if ( node instanceof Branch ) {
+                testBranchPath( (Branch) node );
+            }
+            else {
+                testNodePath( node );
+            }
+        }
+    }
+    
+    protected void testNodePath(Node node) {
+        
+        String path = node.getPath();
+        
+        log( "Path: " + path + " node: " + node );
     }
 }
 

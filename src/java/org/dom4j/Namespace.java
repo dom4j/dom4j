@@ -115,6 +115,14 @@ public class Namespace extends AbstractNode {
     }
 
 
+    public String getPath() {
+        String match = ( prefix != null ) ? prefix : "*";
+        Element parent = getParent();
+        return ( parent != null ) 
+            ? parent.getPath() + "/namespace::" + match
+            : "namespace::" + match;
+    }
+    
     public String toString() {
         return super.toString() + " [Namespace: prefix " + getPrefix() 
             + " mapped to URI \"" + getURI() + "\"]";

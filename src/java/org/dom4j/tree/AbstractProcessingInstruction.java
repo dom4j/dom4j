@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
+import org.dom4j.Element;
 import org.dom4j.ProcessingInstruction;
 import org.dom4j.Visitor;
 
@@ -32,6 +33,13 @@ public abstract class AbstractProcessingInstruction extends AbstractNode impleme
         return PROCESSING_INSTRUCTION_NODE;
     }
 
+    public String getPath() {
+        Element parent = getParent();
+        return ( parent != null ) 
+            ? parent.getPath() + "/processing-instruction()"
+            : "processing-instruction()";
+    }
+    
     public String toString() {
         return super.toString() + " [ProcessingInstruction: &" + getName() + ";]";
     }
