@@ -7,6 +7,12 @@
 
   <body>
 
+    <release version="dev" date="in CVS">
+      <action dev="maartenc" type="add" due-to="Pelle Braendgaard">
+        Added support for the XPP3 parser.
+      </action>
+    </release>
+
     <release version="1.5" date="2004-09-03">
       <action dev="maartenc" type="fix" due-to="Dion Gillard">
         Fixed bug in <code>XMLWriter.characters(...)</code> where the escapeText
