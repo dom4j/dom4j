@@ -3,6 +3,9 @@
   <body>
     <title>Quick Start Guide</title>
     
+    <p>The Quick Start Guide will hopefully show you how to do the basic operations in dom4j.
+    </p>
+
     <section title="Parsing XML">
       <p>One of the first things you'll probably want to do is to parse an 
         XML document of some kind. This is easy to do in <i>dom4j</i>.
@@ -150,6 +153,57 @@ public class Foo {
 </pre>
     </section>
 
+    <section title="Writing a document to a file">
+      <p>Once you have a Document (or any Node for that matter) you can
+        output to a File, a Reader or an OuputStream using the         
+        XMLWriter class.
+      </p>
+<pre>
+import org.dom4j.Document;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
+
+public class Foo {
+
+    public void write(Document document) throws IOException {
+
+        // lets write to a file
+        XMLWriter writer = new XMLWriter(
+            new FileWriter( "output.xml" )
+        );
+        writer.write( document );
+        writer.close();
+
+
+        // Pretty print the document to System.out
+        OutputFormat format = OutputFormat.createPrettyPrint();
+        writer = new XMLWriter( System.out, format );
+        writer.write( document );
+    }
+}
+</pre>
+    </section>
+
+    <section title="Converting to and from Strings">
+      <p>If you have a reference to a Document or any other Node such as an 
+        Attribute or Element, you can turn it into the default XML text
+        via the asXML() method.
+      </p>
+<pre>
+        Document document = ...;
+        String text = document.asXML();
+</pre>
+      <p>If you have some XML as a String you can parse it
+        back into a Document again using the helper method 
+        DocumentHelper.parseText()
+      </p>
+<pre>
+        String text = "&lt;person&gt; &lt;name&gt;James&lt;/name&gt; &lt;/person&gt;";
+        Document document = DocumentHelper.parseText(text);
+</pre>
+    </section>
+
+
     <section title="Styling a Document with XSLT">
       <p>Applying XSLT on a Document is quite straightforward using the 
         <a href="http://java.sun.com/xml/">JAXP</a> API from Sun. 
@@ -189,8 +243,8 @@ public class Foo {
     }
 }
 </pre>
-    </section>
 
+    </section>
   </body>
 </document>
 

@@ -5,6 +5,27 @@
     
     <section title="Change History">
         <section title="Changes in CVS since last release">
+          <section title="Refactor of XPath engine to Jaxen">
+            <p>The XPath engine in dom4j has been migrated to using <a href="http://jaxen.org">Jaxen</a>.
+              This single XPath engine can be plugged into any model such that Jaxen will support
+              DOM, dom4j, EXML and JDOM. Hopefully we'll get Jaxen working on Java Beans too.
+            </p>
+            <p>
+              In general this will mean a much better, more compliant and more bug-free XPath
+              engine for dom4j as it will be used extensively across XML object models.
+            </p>
+            <p>
+              Already numerous irregularities have been fixed in the XPath support in dom4j.
+              We have donated the dom4j XPath test harness to Jaxen so that we now have a large
+              rigorous test harness to ensure correct XPath behaviour - this test harness is run
+              against all 4 current XML object models to ensure consistent behaviour and valid 
+              XPath compliance.             
+            </p>
+            <p>
+              We are also in the process of migrating over our XPath extension functions as 
+              well as adding additional XPath functions such as those defined in XSLT and XPointer.
+            </p>
+          </section>
           <section title="Patches and bug fixes">
             <p>Fixed bug in getNamespaceForPrefix() where if the prefix is null or ""
                and there is a default namespace defined, this method was returning 
