@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -11,42 +11,42 @@ package org.dom4j;
 
 import junit.textui.TestRunner;
 
-/** 
+/**
  * A test harness for the normalize() method
  *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  * @version $Revision$
  */
 public class NormalizeTest extends AbstractTestCase {
-
-	public static void main(String[] args) {
-		TestRunner.run(NormalizeTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(NormalizeTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     public void testNormalize() throws Exception {
         String text = document.asXML();
-                
+
         document.normalize();
-        
+
         String normalizedText = document.asXML();
-        
-        log( "Initial: " + text );
-        log( "Normalized: " + normalizedText );
-        
-        String value = document.valueOf( "/dummy/full" );
-        assertEquals( "Should not trim text", " node ", value );
+
+        log("Initial: " + text);
+        log("Normalized: " + normalizedText);
+
+        String value = document.valueOf("/dummy/full");
+        assertEquals("Should not trim text", " node ", value);
     }
-    
-        
+
     // Implementation methods
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     protected void setUp() throws Exception {
-    	super.setUp();
-        document = DocumentHelper.parseText( 
-            "<dummy> <full> node </full> with text <and>another node</and> </dummy>"
-        );
+        super.setUp();
+
+        String xml =
+            "<dummy> <full> node </full> with text "
+            + "<and>another node</and> </dummy>";
+        document = DocumentHelper.parseText(xml);
     }
 }
 
@@ -77,7 +77,7 @@ public class NormalizeTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -15,48 +15,39 @@ import org.dom4j.AbstractTestCase;
 import org.dom4j.Node;
 import org.dom4j.XPath;
 
-/** 
+/**
  * Test harness for numeric XPath expressions
  *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
  * @version $Revision$
  */
 public class ObjectTest extends AbstractTestCase {
-
-    protected static boolean VERBOSE = true;
-    
     protected static String[] paths = {
-        "name(/.)",
-        "name()"
-    };
-    
-	public static void main(String[] args) {
-		TestRunner.run(ObjectTest.class);
-	}
+                                          "name(/.)",
+                                          "name()"
+                                      };
+
+    public static void main(String[] args) {
+        TestRunner.run(ObjectTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
-    public void testXPaths() throws Exception {        
-        Node element = document.selectSingleNode( "//author" );
+    //-------------------------------------------------------------------------
+    public void testXPaths() throws Exception {
+        Node element = document.selectSingleNode("//author");
         int size = paths.length;
-        for ( int i = 0; i < size; i++ ) {
-            testXPath( document, paths[i] );
-            testXPath( element, paths[i] );
+
+        for (int i = 0; i < size; i++) {
+            testXPath(document, paths[i]);
+            testXPath(element, paths[i]);
         }
     }
-        
+
     // Implementation methods
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     protected void testXPath(Node node, String xpathText) {
-        XPath xpath = node.createXPath( xpathText );
-        Object object = xpath.evaluate( node );
-
-        log( "Searched path: " + xpath + " found: " + object );
-
-        if ( VERBOSE ) {
-            log( "    xpath: " + xpath );        
-            log( "    for: " + node );        
-        }
+        XPath xpath = node.createXPath(xpathText);
+        Object object = xpath.evaluate(node);
     }
 }
 
@@ -87,7 +78,7 @@ public class ObjectTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -11,17 +11,18 @@ package org.dom4j.rule;
 
 import org.dom4j.Node;
 
-
-/** <p><code>NullAction</code> represents an empty action that does nothing.</p>
-  *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
-  * @version $Revision$
-  */
+/**
+ * <p>
+ * <code>NullAction</code> represents an empty action that does nothing.
+ * </p>
+ *
+ * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+ * @version $Revision$
+ */
 public class NullAction implements Action {
-
     /** Singleton instance */
     public static final NullAction SINGLETON = new NullAction();
-    
+
     public void run(Node node) throws Exception {
     }
 }
@@ -53,7 +54,7 @@ public class NullAction implements Action {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,13 +1,15 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j.io;
+
+import junit.textui.TestRunner;
 
 import java.io.File;
 import java.io.FileReader;
@@ -15,32 +17,28 @@ import java.io.StringWriter;
 
 import javax.xml.stream.XMLInputFactory;
 
-import junit.textui.TestRunner;
-
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Document;
 
-/** 
+/**
  * Tests STAX->DOM4J functionality.
  *
  * @author <a href="mailto:maartenc@sourceforge.net">Maarten Coene</a>
  * @author Christian Niles
  */
 public class StaxTest extends AbstractTestCase {
-
-	public static void main(String[] args) {
-		TestRunner.run(StaxTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(StaxTest.class);
+    }
 
     // Test case(s)
     //-------------------------------------------------------------------------
 
     /**
-     * Tests that the encoding specified in the XML declaration is exposed in the
-     * Document read via StAX, and also that it gets output when writing.
-     */    
+     * Tests that the encoding specified in the XML declaration is exposed in
+     * the Document read via StAX, and also that it gets output when writing.
+     */
     public void testEncoding() {
-
         /*
          * only execute if a reference implementation is available
          */
@@ -53,26 +51,26 @@ public class StaxTest extends AbstractTestCase {
 
         try {
             File file = getFile("/xml/russArticle.xml");
-            STAXEventReader xmlReader = new STAXEventReader(); 
+            STAXEventReader xmlReader = new STAXEventReader();
             Document doc = xmlReader.readDocument(new FileReader(file));
 
-            assertEquals("russArticle.xml encoding wasn't correct", "koi8-r", doc.getXMLEncoding());
-            
+            assertEquals("russArticle.xml encoding wasn't correct", "koi8-r",
+                         doc.getXMLEncoding());
+
             StringWriter writer = new StringWriter();
             STAXEventWriter xmlWriter = new STAXEventWriter(writer);
             xmlWriter.writeDocument(doc);
-            
+
             String output = writer.toString();
             String xmlDecl = output.substring(0, output.indexOf("?>") + 2);
-            assertEquals("Unexpected xml declaration", 
-                    "<?xml version=\'1.0\' encoding=\'koi8-r\'?>", xmlDecl);
+            String expected = "<?xml version=\'1.0\' encoding=\'koi8-r\'?>";
+            assertEquals("Unexpected xml declaration", expected, xmlDecl);
             System.out.println(output);
         } catch (Exception e) {
             e.printStackTrace();
             fail(e.getMessage());
         }
     }
-    
 }
 
 
@@ -102,7 +100,7 @@ public class StaxTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -10,30 +10,33 @@
 package org.dom4j.dom;
 
 import org.dom4j.tree.DefaultDocumentType;
+
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
-/** <p><code>DOMDocumentType</code> implements a DocumentType node which
-  * supports the W3C DOM API.</p>
-  *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
-  * @version $Revision$
-  */
-public class DOMDocumentType extends DefaultDocumentType implements org.w3c.dom.DocumentType {
-
+/**
+ * <p>
+ * <code>DOMDocumentType</code> implements a DocumentType node which supports
+ * the W3C DOM API.
+ * </p>
+ *
+ * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+ * @version $Revision$
+ */
+public class DOMDocumentType extends DefaultDocumentType
+    implements org.w3c.dom.DocumentType {
     public DOMDocumentType() {
     }
 
     public DOMDocumentType(String elementName, String systemID) {
-        super( elementName, systemID );
+        super(elementName, systemID);
     }
 
-    public DOMDocumentType(String elementName, String publicID, String systemID) {
-        super( elementName, publicID, systemID );
+    public DOMDocumentType(String name, String publicID, String systemID) {
+        super(name, publicID, systemID);
     }
-
 
     // org.w3c.dom.Node interface
     //-------------------------------------------------------------------------
@@ -64,16 +67,12 @@ public class DOMDocumentType extends DefaultDocumentType implements org.w3c.dom.
     //already part of API
     //
     //public short getNodeType();
-
-
-
     public String getNodeValue() throws DOMException {
         return null;
     }
 
     public void setNodeValue(String nodeValue) throws DOMException {
     }
-
 
     public org.w3c.dom.Node getParentNode() {
         return DOMNodeHelper.getParentNode(this);
@@ -107,36 +106,39 @@ public class DOMDocumentType extends DefaultDocumentType implements org.w3c.dom.
         return DOMNodeHelper.getOwnerDocument(this);
     }
 
-    public org.w3c.dom.Node insertBefore(
-        org.w3c.dom.Node newChild,
-        org.w3c.dom.Node refChild
-    ) throws DOMException {
+    public org.w3c.dom.Node insertBefore(org.w3c.dom.Node newChild,
+                                         org.w3c.dom.Node refChild)
+                                  throws DOMException {
         checkNewChildNode(newChild);
+
         return DOMNodeHelper.insertBefore(this, newChild, refChild);
     }
 
-    public org.w3c.dom.Node replaceChild(
-        org.w3c.dom.Node newChild,
-        org.w3c.dom.Node oldChild
-    ) throws DOMException {
+    public org.w3c.dom.Node replaceChild(org.w3c.dom.Node newChild,
+                                         org.w3c.dom.Node oldChild)
+                                  throws DOMException {
         checkNewChildNode(newChild);
+
         return DOMNodeHelper.replaceChild(this, newChild, oldChild);
     }
 
-    public org.w3c.dom.Node removeChild(org.w3c.dom.Node oldChild) throws DOMException {
+    public org.w3c.dom.Node removeChild(org.w3c.dom.Node oldChild)
+                                 throws DOMException {
         return DOMNodeHelper.removeChild(this, oldChild);
     }
 
-    public org.w3c.dom.Node appendChild(org.w3c.dom.Node newChild) throws DOMException {
+    public org.w3c.dom.Node appendChild(org.w3c.dom.Node newChild)
+                                 throws DOMException {
         checkNewChildNode(newChild);
+
         return DOMNodeHelper.appendChild(this, newChild);
     }
-    
-    private void checkNewChildNode(org.w3c.dom.Node newChild) throws DOMException {
+
+    private void checkNewChildNode(org.w3c.dom.Node newChild)
+                            throws DOMException {
         throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-            "DocumentType nodes cannot have children");
+                               "DocumentType nodes cannot have children");
     }
-    
 
     public boolean hasChildNodes() {
         return DOMNodeHelper.hasChildNodes(this);
@@ -208,7 +210,7 @@ public class DOMDocumentType extends DefaultDocumentType implements org.w3c.dom.
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,41 +1,41 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j;
 
-/** <p><code>ElementHandler</code> interface defines a handler of 
-  *  <code>Element</code> objects. 
-  * It is used primarily in event based processing models such as for 
-  * processing large XML documents as they are being parsed rather than 
-  * waiting until the whole document is parsed.</p>
-  *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
-  * @version $Revision$
-  */
+/**
+ * <p>
+ * <code>ElementHandler</code> interface defines a handler of
+ * <code>Element</code> objects.  It is used primarily in event based
+ * processing models such as for  processing large XML documents as they are
+ * being parsed rather than  waiting until the whole document is parsed.
+ * </p>
+ *
+ * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+ * @version $Revision$
+ */
 public interface ElementHandler {
-    
-    /** Called by an event based processor when an elements openning
-      * tag is encountered.
-      *
-      * @param elementPath is the current <code>ElementPath</code> 
-      * to process
-      */
-    public void onStart(ElementPath elementPath);
-    
-    /** Called by an event based processor when an elements closing
-      * tag is encountered.
-      *
-      * @param elementPath is the current <code>ElementPath</code>
-      * to process
-      */
-    public void onEnd(ElementPath elementPath);
+    /**
+     * Called by an event based processor when an elements openning tag is
+     * encountered.
+     *
+     * @param elementPath is the current <code>ElementPath</code>  to process
+     */
+    void onStart(ElementPath elementPath);
 
+    /**
+     * Called by an event based processor when an elements closing tag is
+     * encountered.
+     *
+     * @param elementPath is the current <code>ElementPath</code> to process
+     */
+    void onEnd(ElementPath elementPath);
 }
 
 
@@ -65,7 +65,7 @@ public interface ElementHandler {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

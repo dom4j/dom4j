@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -28,17 +28,20 @@ import org.dom4j.Text;
 import org.dom4j.Visitor;
 import org.dom4j.io.XMLWriter;
 
-/** <p><code>AbstractDocument</code> is an abstract base class for 
-  * tree implementors to use for implementation inheritence.</p>
-  *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
-  * @version $Revision$
-  */
-public abstract class AbstractDocument extends AbstractBranch implements Document {
-    
-    public AbstractDocument() { 
+/**
+ * <p>
+ * <code>AbstractDocument</code> is an abstract base class for  tree
+ * implementors to use for implementation inheritence.
+ * </p>
+ *
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * @version $Revision$
+ */
+public abstract class AbstractDocument extends AbstractBranch
+    implements Document {
+    public AbstractDocument() {
     }
- 
+
     public short getNodeType() {
         return DOCUMENT_NODE;
     }
@@ -46,121 +49,139 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
     public String getPath(Element context) {
         return "/";
     }
-    
+
     public String getUniquePath(Element context) {
         return "/";
     }
-    
+
     public Document getDocument() {
         return this;
     }
-    
+
     public String getXMLEncoding() {
         return null;
     }
 
     public String getStringValue() {
         Element root = getRootElement();
-        return ( root != null ) ? root.getStringValue() : "";
+
+        return (root != null) ? root.getStringValue() : "";
     }
-    
+
     public String asXML() {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             XMLWriter writer = new XMLWriter(out, outputFormat);
             writer.write(this);
+
             return out.toString();
-        } 
-        catch (IOException e) {
-            throw new RuntimeException("IOException while generating textual representation: " + e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException("IOException while generating textual "
+                                       + "representation: " + e.getMessage());
         }
     }
 
     public void write(Writer out) throws IOException {
-        XMLWriter writer = new XMLWriter( out, outputFormat );
+        XMLWriter writer = new XMLWriter(out, outputFormat);
         writer.write(this);
     }
-        
-    /** <p><code>accept</code> method is the <code>Visitor Pattern</code> method.
-      * </p>
-      *
-      * @param visitor <code>Visitor</code> is the visitor.
-      */
+
+    /**
+     * <p>
+     * <code>accept</code> method is the <code>Visitor Pattern</code> method.
+     * </p>
+     *
+     * @param visitor <code>Visitor</code> is the visitor.
+     */
     public void accept(Visitor visitor) {
         visitor.visit(this);
 
         DocumentType docType = getDocType();
-        if ( docType != null ) {
-            visitor.visit( docType );
+
+        if (docType != null) {
+            visitor.visit(docType);
         }
-        
+
         // visit content
         List content = content();
+
         if (content != null) {
-            for ( Iterator iter = content.iterator(); iter.hasNext(); ) {
+            for (Iterator iter = content.iterator(); iter.hasNext();) {
                 Object object = iter.next();
+
                 if (object instanceof String) {
-                    Text text = getDocumentFactory().createText((String) object);
+                    Text text =
+                        getDocumentFactory().createText((String) object);
                     visitor.visit(text);
-                } 
-                else {
+                } else {
                     Node node = (Node) object;
                     node.accept(visitor);
                 }
-            }            
+            }
         }
     }
-    
+
     public String toString() {
         return super.toString() + " [Document: name " + getName() + "]";
     }
-    
+
     public void normalize() {
         Element element = getRootElement();
-        if ( element != null ) {
+
+        if (element != null) {
             element.normalize();
         }
     }
-    
+
     public Document addComment(String comment) {
-        Comment node = getDocumentFactory().createComment( comment );
-        add( node );
+        Comment node = getDocumentFactory().createComment(comment);
+        add(node);
+
         return this;
     }
-       
+
     public Document addProcessingInstruction(String target, String data) {
-        ProcessingInstruction node = getDocumentFactory().createProcessingInstruction( target, data );
-        add( node );
+        ProcessingInstruction node =
+            getDocumentFactory().createProcessingInstruction(target, data);
+        add(node);
+
         return this;
     }
-    
+
     public Document addProcessingInstruction(String target, Map data) {
-        ProcessingInstruction node = getDocumentFactory().createProcessingInstruction( target, data );
-        add( node );
+        ProcessingInstruction node =
+            getDocumentFactory().createProcessingInstruction(target, data);
+        add(node);
+
         return this;
     }
-    
+
     public Element addElement(String name) {
         Element element = getDocumentFactory().createElement(name);
         add(element);
+
         return element;
     }
-    
+
     public Element addElement(String qualifiedName, String namespaceURI) {
-        Element element = getDocumentFactory().createElement(qualifiedName, namespaceURI);
+        Element element =
+            getDocumentFactory().createElement(qualifiedName, namespaceURI);
         add(element);
+
         return element;
     }
-    
+
     public Element addElement(QName qName) {
         Element element = getDocumentFactory().createElement(qName);
         add(element);
+
         return element;
     }
 
     public void setRootElement(Element rootElement) {
         clearContent();
-        if ( rootElement != null ) {
+
+        if (rootElement != null) {
             super.add(rootElement);
             rootElementAdded(rootElement);
         }
@@ -171,48 +192,54 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
         super.add(element);
         rootElementAdded(element);
     }
-    
+
     public boolean remove(Element element) {
-        boolean answer = super.remove(element);        
+        boolean answer = super.remove(element);
         Element root = getRootElement();
-        if ( root != null && answer ) {
+
+        if ((root != null) && answer) {
             setRootElement(null);
         }
+
         element.setDocument(null);
+
         return answer;
     }
-        
+
     public Node asXPathResult(Element parent) {
         return this;
     }
-    
+
     protected void childAdded(Node node) {
-        if (node != null ) {
+        if (node != null) {
             node.setDocument(this);
         }
     }
-    
-    protected void childRemoved(Node node) {
-        if ( node != null ) {
-            node.setDocument(null);
-        }
-    }     
 
-    protected void checkAddElementAllowed(Element element) {
-        Element root = getRootElement();
-        if ( root != null ) {
-            throw new IllegalAddException(  
-                this, 
-                element, 
-                "Cannot add another element to this Document as it already has "
-                + " a root element of: " + root.getQualifiedName()
-            );
+    protected void childRemoved(Node node) {
+        if (node != null) {
+            node.setDocument(null);
         }
     }
 
-    /** Called to set the root element variable */
+    protected void checkAddElementAllowed(Element element) {
+        Element root = getRootElement();
+
+        if (root != null) {
+            throw new IllegalAddException(this, element,
+                                          "Cannot add another element to this "
+                                          + "Document as it already has a root "
+                                          + "element of: "
+                                          + root.getQualifiedName());
+        }
+    }
+
+    /**
+     * Called to set the root element variable
+     *
+     * @param rootElement DOCUMENT ME!
+     */
     protected abstract void rootElementAdded(Element rootElement);
-    
 }
 
 
@@ -242,7 +269,7 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

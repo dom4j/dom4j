@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -20,339 +20,378 @@ import java.util.Map;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentFactory;
+
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 /**
- * The SAXModifier reads, modifies and writes XML documents using SAX. <br>
- * Registered {@link ElementModifier} objects can provide modifications to (part of) the xml tree,
- * while the document is still being processed. This makes it possible to change large xml documents
- * without having them in memory.<br>
- * The modified document is written when the {@link XMLWriter} is specified.
+ * The SAXModifier reads, modifies and writes XML documents using SAX.
  * 
+ * <p>
+ * Registered {@link ElementModifier} objects can provide modifications to
+ * (part of) the xml tree, while the document is still being processed. This
+ * makes it possible to change large xml documents without having them in
+ * memory.
+ * </p>
+ * 
+ * <p>
+ * The modified document is written when the {@link XMLWriter} is specified.
+ * </p>
+ *
+ * @author Wonne Keysers (Realsoftware.be)
+ *
  * @see org.dom4j.io.SAXReader
  * @see org.dom4j.io.XMLWriter
- * @author Wonne Keysers (Realsoftware.be)
  */
 public class SAXModifier {
+    private XMLWriter xmlWriter;
+    private XMLReader xmlReader;
+    private boolean pruneElements;
+    private SAXModifyReader modifyReader;
+    private HashMap modifiers = new HashMap();
 
-   private XMLWriter xmlWriter;
-   private XMLReader xmlReader;
+    /**
+     * Creates a new modifier.<br>
+     * The XMLReader to parse the source will be created via the
+     * org.xml.sax.driver system property or JAXP if the system property is
+     * not set.
+     */
+    public SAXModifier() {
+    }
 
-   private boolean pruneElements;
-   private SAXModifyReader modifyReader;
-   private HashMap modifiers = new HashMap();
+    /**
+     * Creates a new modifier.<br>
+     * The XMLReader to parse the source will be created via the
+     * org.xml.sax.driver system property or JAXP if the system property is
+     * not set.
+     *
+     * @param pruneElements Set to true when the modified document must NOT be
+     *        kept in memory.
+     */
+    public SAXModifier(boolean pruneElements) {
+        this.pruneElements = pruneElements;
+    }
 
-   /**
-    * Creates a new modifier.<br>
-    * The XMLReader to parse the source will be created via the org.xml.sax.driver system property
-    * or JAXP if the system property is not set.
-    */
-   public SAXModifier() {
-   }
+    /**
+     * Creates a new modifier that will the specified {@link
+     * org.xml.sax.XMLReader} to parse the source.
+     *
+     * @param xmlReader The XMLReader to use
+     */
+    public SAXModifier(XMLReader xmlReader) {
+        this.xmlReader = xmlReader;
+    }
 
-   /**
-    * Creates a new modifier.<br>
-    * The XMLReader to parse the source will be created via the org.xml.sax.driver system property
-    * or JAXP if the system property is not set.
-    * 
-    * @param pruneElements Set to true when the modified document must NOT be kept in memory.
-    */
-   public SAXModifier(boolean pruneElements) {
-      this.pruneElements = pruneElements;
-   }
+    /**
+     * Creates a new modifier that will the specified {@link
+     * org.xml.sax.XMLReader} to parse the source.
+     *
+     * @param xmlReader The XMLReader to use
+     * @param pruneElements Set to true when the modified document must NOT be
+     *        kept in memory.
+     */
+    public SAXModifier(XMLReader xmlReader, boolean pruneElements) {
+        this.xmlReader = xmlReader;
+    }
 
-   /**
-    * Creates a new modifier that will the specified {@link org.xml.sax.XMLReader}
-    * to parse the source.
-    * 
-    * @param xmlReader The XMLReader to use
-    */
-   public SAXModifier(XMLReader xmlReader) {
-      this.xmlReader = xmlReader;
-   }
+    /**
+     * Reads a Document from the given {@link java.io.File} and writes it to
+     * the specified {@link XMLWriter} using SAX. Registered {@link
+     * ElementModifier} objects are invoked on the fly.
+     *
+     * @param source is the <code>File</code> to read from.
+     *
+     * @return the newly created Document instance
+     *
+     * @throws DocumentException DocumentException org.dom4j.DocumentException}
+     *         if an error occurs during parsing.
+     */
+    public Document modify(File source) throws DocumentException {
+        try {
+            return installModifyReader().read(source);
+        } catch (SAXModifyException ex) {
+            Throwable cause = ex.getCause();
+            throw new DocumentException(cause.getMessage(), cause);
+        }
+    }
 
-   /**
-    * Creates a new modifier that will the specified {@link org.xml.sax.XMLReader}
-    * to parse the source.
-    * 
-    * @param xmlReader The XMLReader to use
-    * @param pruneElements Set to true when the modified document must NOT be kept in memory.
-    */
-   public SAXModifier(XMLReader xmlReader, boolean pruneElements) {
-      this.xmlReader = xmlReader;
-   }
+    /**
+     * Reads a Document from the given {@link org.xml.sax.InputSource} and
+     * writes it to the specified {@link XMLWriter} using SAX. Registered
+     * {@link ElementModifier} objects are invoked on the fly.
+     *
+     * @param source is the <code>org.xml.sax.InputSource</code> to read from.
+     *
+     * @return the newly created Document instance
+     *
+     * @throws DocumentException DocumentException org.dom4j.DocumentException}
+     *         if an error occurs during parsing.
+     */
+    public Document modify(InputSource source) throws DocumentException {
+        try {
+            return installModifyReader().read(source);
+        } catch (SAXModifyException ex) {
+            Throwable cause = ex.getCause();
+            throw new DocumentException(cause.getMessage(), cause);
+        }
+    }
 
-   /** 
-    * Reads a Document from the given {@link java.io.File}
-    * and writes it to the specified {@link XMLWriter} using SAX.
-    * Registered {@link ElementModifier} objects are invoked on the fly.
-    *
-    * @param source is the <code>File</code> to read from.
-    * @return the newly created Document instance
-    * @throws {@link org.dom4j.DocumentException} if an error occurs during parsing.
-    */
-   public Document modify(File source) throws DocumentException {
-      try {
-         return installModifyReader().read(source);
-      }
-      catch (SAXModifyException ex) {
-         Throwable cause = ex.getCause();
-         throw new DocumentException(cause.getMessage(), cause);
-      }
-   }
+    /**
+     * Reads a Document from the given {@link java.io.InputStream} and writes
+     * it to the specified {@link XMLWriter} using SAX. Registered {@link
+     * ElementModifier} objects are invoked on the fly.
+     *
+     * @param source is the <code>java.io.InputStream</code> to read from.
+     *
+     * @return the newly created Document instance
+     *
+     * @throws DocumentException DocumentException org.dom4j.DocumentException}
+     *         if an error occurs during parsing.
+     */
+    public Document modify(InputStream source) throws DocumentException {
+        try {
+            return installModifyReader().read(source);
+        } catch (SAXModifyException ex) {
+            Throwable cause = ex.getCause();
+            throw new DocumentException(cause.getMessage(), cause);
+        }
+    }
 
-   /** 
-    * Reads a Document from the given {@link org.xml.sax.InputSource}
-    * and writes it to the specified {@link XMLWriter} using SAX.
-    * Registered {@link ElementModifier} objects are invoked on the fly.
-    *
-    * @param source is the <code>org.xml.sax.InputSource</code> to read from.
-    * @return the newly created Document instance
-    * @throws {@link org.dom4j.DocumentException} if an error occurs during parsing.
-    */
-   public Document modify(InputSource source) throws DocumentException {
-      try {
-         return installModifyReader().read(source);
-      }
-      catch (SAXModifyException ex) {
-         Throwable cause = ex.getCause();
-         throw new DocumentException(cause.getMessage(), cause);
-      }
-   }
+    /**
+     * Reads a Document from the given {@link java.io.InputStream} and writes
+     * it to the specified {@link XMLWriter} using SAX. Registered {@link
+     * ElementModifier} objects are invoked on the fly.
+     *
+     * @param source is the <code>java.io.InputStream</code> to read from.
+     * @param systemId DOCUMENT ME!
+     *
+     * @return the newly created Document instance
+     *
+     * @throws DocumentException DocumentException org.dom4j.DocumentException}
+     *         if an error occurs during parsing.
+     */
+    public Document modify(InputStream source, String systemId)
+                    throws DocumentException {
+        try {
+            return installModifyReader().read(source);
+        } catch (SAXModifyException ex) {
+            Throwable cause = ex.getCause();
+            throw new DocumentException(cause.getMessage(), cause);
+        }
+    }
 
-   /** 
-    * Reads a Document from the given {@link java.io.InputStream}
-    * and writes it to the specified {@link XMLWriter} using SAX.
-    * Registered {@link ElementModifier} objects are invoked on the fly.
-    *
-    * @param source is the <code>java.io.InputStream</code> to read from.
-    * @return the newly created Document instance
-    * @throws {@link org.dom4j.DocumentException} if an error occurs during parsing.
-    */
-   public Document modify(InputStream source) throws DocumentException {
-      try {
-         return installModifyReader().read(source);
-      }
-      catch (SAXModifyException ex) {
-         Throwable cause = ex.getCause();
-         throw new DocumentException(cause.getMessage(), cause);
-      }
-   }
+    /**
+     * Reads a Document from the given {@link java.io.Reader} and writes it to
+     * the specified {@link XMLWriter} using SAX. Registered {@link
+     * ElementModifier} objects are invoked on the fly.
+     *
+     * @param source is the <code>java.io.Reader</code> to read from.
+     *
+     * @return the newly created Document instance
+     *
+     * @throws DocumentException DocumentException org.dom4j.DocumentException}
+     *         if an error occurs during parsing.
+     */
+    public Document modify(Reader source) throws DocumentException {
+        try {
+            return installModifyReader().read(source);
+        } catch (SAXModifyException ex) {
+            Throwable cause = ex.getCause();
+            throw new DocumentException(cause.getMessage(), cause);
+        }
+    }
 
-   /** 
-    * Reads a Document from the given {@link java.io.InputStream}
-    * and writes it to the specified {@link XMLWriter} using SAX.
-    * Registered {@link ElementModifier} objects are invoked on the fly.
-    *
-    * @param source is the <code>java.io.InputStream</code> to read from.
-    * @return the newly created Document instance
-    * @throws {@link org.dom4j.DocumentException} if an error occurs during parsing.
-    */
-   public Document modify(InputStream source, String systemId) throws DocumentException {
-      try {
-         return installModifyReader().read(source);
-      }
-      catch (SAXModifyException ex) {
-         Throwable cause = ex.getCause();
-         throw new DocumentException(cause.getMessage(), cause);
-      }
-   }
+    /**
+     * Reads a Document from the given {@link java.io.Reader} and writes it to
+     * the specified {@link XMLWriter} using SAX. Registered {@link
+     * ElementModifier} objects are invoked on the fly.
+     *
+     * @param source is the <code>java.io.Reader</code> to read from.
+     * @param systemId DOCUMENT ME!
+     *
+     * @return the newly created Document instance
+     *
+     * @throws DocumentException DocumentException org.dom4j.DocumentException}
+     *         if an error occurs during parsing.
+     */
+    public Document modify(Reader source, String systemId)
+                    throws DocumentException {
+        try {
+            return installModifyReader().read(source);
+        } catch (SAXModifyException ex) {
+            Throwable cause = ex.getCause();
+            throw new DocumentException(cause.getMessage(), cause);
+        }
+    }
 
-   /** 
-    * Reads a Document from the given {@link java.io.Reader}
-    * and writes it to the specified {@link XMLWriter} using SAX.
-    * Registered {@link ElementModifier} objects are invoked on the fly.
-    *
-    * @param source is the <code>java.io.Reader</code> to read from.
-    * @return the newly created Document instance
-    * @throws {@link org.dom4j.DocumentException} if an error occurs during parsing.
-    */
-   public Document modify(Reader source) throws DocumentException {
-      try {
-         return installModifyReader().read(source);
-      }
-      catch (SAXModifyException ex) {
-         Throwable cause = ex.getCause();
-         throw new DocumentException(cause.getMessage(), cause);
-      }
-   }
+    /**
+     * Reads a Document from the given {@link java.net.URL} and writes it to
+     * the specified {@link XMLWriter} using SAX. Registered {@link
+     * ElementModifier} objects are invoked on the fly.
+     *
+     * @param source is the <code>java.net.URL</code> to read from.
+     *
+     * @return the newly created Document instance
+     *
+     * @throws DocumentException DocumentException org.dom4j.DocumentException}
+     *         if an error occurs during parsing.
+     */
+    public Document modify(URL source) throws DocumentException {
+        try {
+            return installModifyReader().read(source);
+        } catch (SAXModifyException ex) {
+            Throwable cause = ex.getCause();
+            throw new DocumentException(cause.getMessage(), cause);
+        }
+    }
 
-   /** 
-    * Reads a Document from the given {@link java.io.Reader}
-    * and writes it to the specified {@link XMLWriter} using SAX.
-    * Registered {@link ElementModifier} objects are invoked on the fly.
-    *
-    * @param source is the <code>java.io.Reader</code> to read from.
-    * @return the newly created Document instance
-    * @throws {@link org.dom4j.DocumentException} if an error occurs during parsing.
-    */
-   public Document modify(Reader source, String systemId) throws DocumentException {
-      try {
-         return installModifyReader().read(source);
-      }
-      catch (SAXModifyException ex) {
-         Throwable cause = ex.getCause();
-         throw new DocumentException(cause.getMessage(), cause);
-      }
-   }
+    /**
+     * Reads a Document from the given URL or filename and writes it to the
+     * specified {@link XMLWriter} using SAX. Registered {@link
+     * ElementModifier} objects are invoked on the fly.
+     *
+     * @param source is the URL or filename to read from.
+     *
+     * @return the newly created Document instance
+     *
+     * @throws DocumentException DocumentException org.dom4j.DocumentException}
+     *         if an error occurs during parsing.
+     */
+    public Document modify(String source) throws DocumentException {
+        try {
+            return installModifyReader().read(source);
+        } catch (SAXModifyException ex) {
+            Throwable cause = ex.getCause();
+            throw new DocumentException(cause.getMessage(), cause);
+        }
+    }
 
-   /** 
-    * Reads a Document from the given {@link java.net.URL}
-    * and writes it to the specified {@link XMLWriter} using SAX.
-    * Registered {@link ElementModifier} objects are invoked on the fly.
-    *
-    * @param source is the <code>java.net.URL</code> to read from.
-    * @return the newly created Document instance
-    * @throws {@link org.dom4j.DocumentException} if an error occurs during parsing.
-    */
-   public Document modify(URL source) throws DocumentException {
-      try {
-         return installModifyReader().read(source);
-      }
-      catch (SAXModifyException ex) {
-         Throwable cause = ex.getCause();
-         throw new DocumentException(cause.getMessage(), cause);
-      }
-   }
+    /**
+     * Adds the {@link ElementModifier} to be called when the specified element
+     * path is encounted while parsing the source.
+     *
+     * @param path The element path to be handled
+     * @param modifier The {@link ElementModifier} to be called by the event
+     *        based processor.
+     */
+    public void addModifier(String path, ElementModifier modifier) {
+        this.modifiers.put(path, modifier);
+    }
 
-   /** 
-    * Reads a Document from the given URL or filename
-    * and writes it to the specified {@link XMLWriter} using SAX.
-    * Registered {@link ElementModifier} objects are invoked on the fly.
-    *
-    * @param source is the URL or filename to read from.
-    * @return the newly created Document instance
-    * @throws {@link org.dom4j.DocumentException} if an error occurs during parsing.
-    */
-   public Document modify(String source) throws DocumentException {
-      try {
-         return installModifyReader().read(source);
-      }
-      catch (SAXModifyException ex) {
-         Throwable cause = ex.getCause();
-         throw new DocumentException(cause.getMessage(), cause);
-      }
-   }
+    /**
+     * Removes all registered {@link ElementModifier} instances from the event
+     * based processor.
+     */
+    public void resetModifiers() {
+        this.modifiers.clear();
+        getSAXModifyReader().resetHandlers();
+    }
 
-   /** 
-    * Adds the {@link ElementModifier} to be called
-    * when the specified element path is encounted while parsing the source.
-    *
-    * @param path The element path to be handled
-    * @param modifier The {@link ElementModifier} to be called by the event based processor.
-    */
-   public void addModifier(String path, ElementModifier modifier) {
-      this.modifiers.put(path, modifier);
-   }
+    /**
+     * Removes the {@link ElementModifier} from the event based processor, for
+     * the specified element path.
+     *
+     * @param path The path to remove the {@link ElementModifier} for.
+     */
+    public void removeModifier(String path) {
+        this.modifiers.remove(path);
+        getSAXModifyReader().removeHandler(path);
+    }
 
-   /**
-    * Removes all registered {@link ElementModifier} instances from the event based processor.
-    */
-   public void resetModifiers() {
-      this.modifiers.clear();
-      getSAXModifyReader().resetHandlers();
-   }
+    /**
+     * Get the {@link org.dom4j.DocumentFactory} used to create the DOM4J
+     * document structure
+     *
+     * @return <code>DocumentFactory</code> that will be used
+     */
+    public DocumentFactory getDocumentFactory() {
+        return getSAXModifyReader().getDocumentFactory();
+    }
 
-   /**
-    * Removes the {@link ElementModifier} from the event based processor,
-    * for the specified element path.
-    *
-    * @param path The path to remove the {@link ElementModifier} for.
-    */
-   public void removeModifier(String path) {
-      this.modifiers.remove(path);
-      getSAXModifyReader().removeHandler(path);
-   }
+    /**
+     * Sets the {@link org.dom4j.DocumentFactory} used to create the DOM4J
+     * document tree.
+     *
+     * @param factory <code>DocumentFactory</code> to be used
+     */
+    public void setDocumentFactory(DocumentFactory factory) {
+        getSAXModifyReader().setDocumentFactory(factory);
+    }
 
-   /**
-    * Get the {@link org.dom4j.DocumentFactory} used to create the DOM4J document structure
-    * 
-    * @return <code>DocumentFactory</code> that will be used
-    */
-   public DocumentFactory getDocumentFactory() {
-      return getSAXModifyReader().getDocumentFactory();
-   }
+    /**
+     * Returns the current {@link XMLWriter}.
+     *
+     * @return XMLWriter
+     */
+    public XMLWriter getXMLWriter() {
+        return this.xmlWriter;
+    }
 
-   /**
-    * Sets the {@link org.dom4j.DocumentFactory} used to create the DOM4J document tree.
-    * 
-    * @param factory <code>DocumentFactory</code> to be used
-    */
-   public void setDocumentFactory(DocumentFactory factory) {
-      getSAXModifyReader().setDocumentFactory(factory);
-   }
+    /**
+     * Sets the {@link XMLWriter} used to write the modified document.
+     *
+     * @param writer The writer to use.
+     */
+    public void setXMLWriter(XMLWriter writer) {
+        this.xmlWriter = writer;
+    }
 
-   /**
-    * Returns the current {@link XMLWriter}.  
-    * @return XMLWriter
-    */
-   public XMLWriter getXMLWriter() {
-      return this.xmlWriter;
-   }
+    /**
+     * Returns true when xml elements are not kept in memory while parsing. The
+     * {@link org.dom4j.Document} returned by the modify methods will be null.
+     *
+     * @return Returns the pruneElements.
+     */
+    public boolean isPruneElements() {
+        return pruneElements;
+    }
 
-   /**
-    * Sets the {@link XMLWriter} used to write the modified document.
-    * @param xmlWriter The writer to use.
-    */
-   public void setXMLWriter(XMLWriter xmlWriter) {
-      this.xmlWriter = xmlWriter;
-   }
+    private SAXReader installModifyReader() throws DocumentException {
+        try {
+            SAXModifyReader reader = getSAXModifyReader();
 
-   /**
-    * Returns true when xml elements are not kept in memory while parsing.
-    * The {@link org.dom4j.Document} returned by the modify methods will be null.
-    * @return Returns the pruneElements.
-    */
-   public boolean isPruneElements() {
-      return pruneElements;
-   }
+            if (isPruneElements()) {
+                modifyReader.setDispatchHandler(new PruningDispatchHandler());
+            }
 
-   private SAXReader installModifyReader() throws DocumentException {
-      try {
-         SAXModifyReader reader = getSAXModifyReader();
-         
-         if (isPruneElements()) {
-            modifyReader.setDispatchHandler(new PruningDispatchHandler());
-         }
-         
-         reader.resetHandlers();
-         
-         Iterator modifierIt = this.modifiers.entrySet().iterator();
-         while(modifierIt.hasNext()){
-            Map.Entry entry = (Map.Entry)modifierIt.next();
-            
-	        SAXModifyElementHandler modifierHandler
-	        	= new SAXModifyElementHandler((ElementModifier)entry.getValue());
-	        reader.addHandler((String)entry.getKey(), modifierHandler);
-         }
+            reader.resetHandlers();
 
-         reader.setXMLWriter(getXMLWriter());
-         reader.setXMLReader(getXMLReader());
+            Iterator modifierIt = this.modifiers.entrySet().iterator();
 
-         return reader;
-      }
-      catch (SAXException ex) {
-         throw new DocumentException(ex.getMessage(), ex);
-      }
-   }
+            while (modifierIt.hasNext()) {
+                Map.Entry entry = (Map.Entry) modifierIt.next();
 
-   private XMLReader getXMLReader() throws SAXException {
-      if (this.xmlReader == null) {
-         xmlReader = SAXHelper.createXMLReader(false);
-      }
-      return this.xmlReader;
-   }
+                SAXModifyElementHandler modifierHandler =
+                    new SAXModifyElementHandler((ElementModifier) entry
+                                                .getValue());
+                reader.addHandler((String) entry.getKey(), modifierHandler);
+            }
 
-   private SAXModifyReader getSAXModifyReader() {
-      if (modifyReader == null) {
-         modifyReader = new SAXModifyReader();
-      }
+            reader.setXMLWriter(getXMLWriter());
+            reader.setXMLReader(getXMLReader());
 
-      return modifyReader;
-   }
+            return reader;
+        } catch (SAXException ex) {
+            throw new DocumentException(ex.getMessage(), ex);
+        }
+    }
 
+    private XMLReader getXMLReader() throws SAXException {
+        if (this.xmlReader == null) {
+            xmlReader = SAXHelper.createXMLReader(false);
+        }
+
+        return this.xmlReader;
+    }
+
+    private SAXModifyReader getSAXModifyReader() {
+        if (modifyReader == null) {
+            modifyReader = new SAXModifyReader();
+        }
+
+        return modifyReader;
+    }
 }
 
 
@@ -382,7 +421,7 @@ public class SAXModifier {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -13,75 +13,80 @@ import org.dom4j.Element;
 import org.dom4j.QName;
 import org.dom4j.tree.DefaultElement;
 
-/** <p><code>UserDataElement</code> support the adornment of a user 
-  * data object on an Element or Attribute instance such that the 
-  * methods {@link #getData} {@link #setData(Object)}
-  * will get and set the values of a user data object.
-  * This can be useful for developers wishing to create XML trees and
-  * adorn the trees with user defined objects.</p>
-  *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
-  * @version $Revision$
-  */
+/**
+ * <p>
+ * <code>UserDataElement</code> support the adornment of a user  data object on
+ * an Element or Attribute instance such that the  methods {@link
+ * #getData}{@link #setData(Object)} will get and set the values of a user
+ * data object. This can be useful for developers wishing to create XML trees
+ * and adorn the trees with user defined objects.
+ * </p>
+ *
+ * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+ * @version $Revision$
+ */
 public class UserDataElement extends DefaultElement {
-
-//    private static final DocumentFactory DOCUMENT_FACTORY = UserDataDocumentFactory.getInstance();
-    
     /** The user data object */
     private Object data;
 
-    
-    public UserDataElement(String name) { 
+    public UserDataElement(String name) {
         super(name);
     }
 
-    public UserDataElement(QName qname) { 
+    public UserDataElement(QName qname) {
         super(qname);
     }
-        
+
     public Object getData() {
         return data;
     }
-    
+
     public void setData(Object data) {
         this.data = data;
-    }    
-    
+    }
+
     public String toString() {
         return super.toString() + " userData: " + data;
     }
-    
+
     public Object clone() {
         UserDataElement answer = (UserDataElement) super.clone();
-        if ( answer != this ) {
+
+        if (answer != this) {
             answer.data = getCopyOfUserData();
         }
+
         return answer;
     }
 
     // Implementation methods
-    //-------------------------------------------------------------------------    
-    
-    /** If a deep copy of user data is required whenever the clone() or createCopy()
-      * methods are called on this element then this method should return a clone 
-      * of the user data
-      */
+    //-------------------------------------------------------------------------
+
+    /**
+     * If a deep copy of user data is required whenever the clone() or
+     * createCopy() methods are called on this element then this method should
+     * return a clone  of the user data
+     *
+     * @return DOCUMENT ME!
+     */
     protected Object getCopyOfUserData() {
-        return data;            
+        return data;
     }
 
     protected Element createElement(String name) {
         Element answer = getDocumentFactory().createElement(name);
-        answer.setData( getCopyOfUserData() );
+        answer.setData(getCopyOfUserData());
+
         return answer;
     }
-    
+
     protected Element createElement(QName qName) {
         Element answer = getDocumentFactory().createElement(qName);
-        answer.setData( getCopyOfUserData() );
+        answer.setData(getCopyOfUserData());
+
         return answer;
     }
-    
+
 //    protected DocumentFactory getDocumentFactory() {
 //        return DOCUMENT_FACTORY;
 //    }
@@ -114,7 +119,7 @@ public class UserDataElement extends DefaultElement {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

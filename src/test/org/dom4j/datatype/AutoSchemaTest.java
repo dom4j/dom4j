@@ -1,81 +1,77 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j.datatype;
 
+import junit.textui.TestRunner;
+
 import java.math.BigInteger;
 import java.util.Calendar;
-
-import junit.textui.TestRunner;
 
 import org.dom4j.DocumentFactory;
 import org.dom4j.io.SAXReader;
 
-
-/** 
- * Test harness for the XML Schema Data Type integration. These tests
- * use auto-loading of the XML Schema document
+/**
+ * Test harness for the XML Schema Data Type integration. These tests use
+ * auto-loading of the XML Schema document
  *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  * @version $Revision$
  */
 public class AutoSchemaTest extends AbstractDataTypeTestCase {
-
-	public static void main(String[] args) {
-		TestRunner.run(AutoSchemaTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(AutoSchemaTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
-    public void testIntAttribute() throws Exception {        
-        testNodes( "//person/@x", Integer.class );
-    }
-    
-    public void testIntElement() throws Exception {        
-        testNodes( "//person/salary", Integer.class );
-    }
-    
-    public void testString() throws Exception {        
-        testNodes( "//person/note", String.class );
+    //-------------------------------------------------------------------------
+    public void testIntAttribute() throws Exception {
+        testNodes("//person/@x", Integer.class);
     }
 
-    public void testDate() throws Exception {        
-        testNodes( "//person/@d", Calendar.class );
-    }
-    
-    public void testDateTime() throws Exception {        
-        testNodes( "//person/@dt", Calendar.class );
-    }
-    
-    public void testInteger() throws Exception {        
-        testNodes( "//person/@age", BigInteger.class );
+    public void testIntElement() throws Exception {
+        testNodes("//person/salary", Integer.class);
     }
 
-    
+    public void testString() throws Exception {
+        testNodes("//person/note", String.class);
+    }
+
+    public void testDate() throws Exception {
+        testNodes("//person/@d", Calendar.class);
+    }
+
+    public void testDateTime() throws Exception {
+        testNodes("//person/@dt", Calendar.class);
+    }
+
+    public void testInteger() throws Exception {
+        testNodes("//person/@age", BigInteger.class);
+    }
+
     // Implementation methods
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     protected void setUp() throws Exception {
-    	super.setUp();
+        super.setUp();
 
-    	DocumentFactory factory = loadDocumentFactory();
+        DocumentFactory factory = loadDocumentFactory();
         SAXReader reader = new SAXReader(factory);
         document = getDocument(getDocumentURI(), reader);
     }
-    
+
     protected String getDocumentURI() {
         return "/xml/test/schema/personal-schema.xml";
     }
-    
+
     protected DocumentFactory loadDocumentFactory() throws Exception {
         return DatatypeDocumentFactory.getInstance();
     }
-    
 }
 
 
@@ -105,7 +101,7 @@ public class AutoSchemaTest extends AbstractDataTypeTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

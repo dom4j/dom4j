@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -16,51 +16,56 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
 
-/** 
+/**
  * Tests the selectSingleNode method
  *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  * @version $Revision$
  */
 public class SelectSingleNodeTest extends AbstractTestCase {
-
-	public static void main(String[] args) {
-		TestRunner.run(SelectSingleNodeTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(SelectSingleNodeTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
-    public void testSelectSingleNode() throws Exception {        
-    	Document document = getDocument("/xml/test/jimBrain.xml");
+    //-------------------------------------------------------------------------
+    public void testSelectSingleNode() throws Exception {
+        Document document = getDocument("/xml/test/jimBrain.xml");
         Node node = document.selectSingleNode("/properties/client/threadsafe");
-        assertTrue( "Found a valid node", node != null );
-        
-        Element server = (Element) document.selectSingleNode( "/properties/server" );
-        assertTrue( "Found a valid server", server != null );
+        assertTrue("Found a valid node", node != null);
 
-        server = (Element) document.getRootElement().selectSingleNode( "/properties/server" );
-        assertTrue( "Found a valid server", server != null );
+        Element server =
+            (Element) document.selectSingleNode("/properties/server");
+        assertTrue("Found a valid server", server != null);
+
+        Element root = document.getRootElement();
+        server = (Element) root.selectSingleNode("/properties/server");
+        assertTrue("Found a valid server", server != null);
 
         // try finding it via a relative path
-        server = (Element) document.selectSingleNode( "properties/server" );
-        assertTrue( "Found a valid server", server != null );
-        
+        server = (Element) document.selectSingleNode("properties/server");
+        assertTrue("Found a valid server", server != null);
+
         // now lets use a relative path
-        Element connection = (Element) server.selectSingleNode( "db/connection" );
-        assertTrue( "Found a valid connection", connection != null );
+        Element connection = (Element) server.selectSingleNode("db/connection");
+        assertTrue("Found a valid connection", connection != null);
     }
 
-    /** Test out Steen's bug */
-    public void testSteensBug() throws Exception {        
+    /**
+     * Test out Steen's bug
+     *
+     * @throws Exception DOCUMENT ME!
+     */
+    public void testSteensBug() throws Exception {
         Document document = getDocument("/xml/schema/personal.xsd");
-        
-        assertNotNull( document.selectSingleNode( "/xs:schema/xs:element[@name='person']" ) );
-        
+
+        String xpath = "/xs:schema/xs:element[@name='person']";
+        assertNotNull("element is null", document.selectSingleNode(xpath));
+
         Element root = document.getRootElement();
-        
-        assertNotNull( root.selectSingleNode( "/xs:schema/xs:element[@name='person']" ) );        
+
+        assertNotNull("element is null", root.selectSingleNode(xpath));
     }
-    
 }
 
 
@@ -90,7 +95,7 @@ public class SelectSingleNodeTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

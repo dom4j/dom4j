@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -12,22 +12,20 @@ package org.dom4j.io;
 import org.dom4j.ElementPath;
 
 /**
- * This extension on the {@link DispatchHandler} prunes the current {@link org.dom4j.Element}
- * when there are no {@link ElementHandler) objects active the element.
- * 
+ * This extension on the {@link DispatchHandler} prunes the current {@link
+ * org.dom4j.Element} when there are no {@link ElementHandler} objects active
+ * the element.
+ *
  * @author Wonne keysers (Realsoftware)
  */
-
 class PruningDispatchHandler extends DispatchHandler {
+    public void onEnd(ElementPath elementPath) {
+        super.onEnd(elementPath);
 
-   public void onEnd(ElementPath elementPath) {
-      super.onEnd(elementPath);
-
-      if (getActiveHandlerCount() == 0) {
-         elementPath.getCurrent().detach();
-      }
-   }
-
+        if (getActiveHandlerCount() == 0) {
+            elementPath.getCurrent().detach();
+        }
+    }
 }
 
 
@@ -57,7 +55,7 @@ class PruningDispatchHandler extends DispatchHandler {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -11,49 +11,48 @@ package org.dom4j;
 
 import junit.textui.TestRunner;
 
-/** 
+/**
  * A test harness to test the addAttribute() methods on attributes
  *
  * @author <a href="mailto:maartenc@users.sourceforge.net">Maarten Coene</a>
  */
 public class AddAttributeTest extends AbstractTestCase {
+    public static void main(String[] args) {
+        TestRunner.run(AddAttributeTest.class);
+    }
 
-	public static void main(String[] args) {
-		TestRunner.run(AddAttributeTest.class);
-	}
-
-	// Test case(s)
-    //-------------------------------------------------------------------------                    
+    // Test case(s)
+    //-------------------------------------------------------------------------
     public void testAddAttributeNormalValue() throws Exception {
         String testAttributeName = "testAtt";
         String testAttributeValue = "testValue";
-        
-        Node authorNode = document.selectSingleNode("//root/author[1]"); 
+
+        Node authorNode = document.selectSingleNode("//root/author[1]");
 
         assertTrue(authorNode instanceof Element);
-        
+
         Element authorEl = (Element) authorNode;
         authorEl.addAttribute(testAttributeName, testAttributeValue);
-        
+
         assertEquals(3, authorEl.attributeCount());
-        assertEquals(testAttributeValue, authorEl.attributeValue(testAttributeName));
+        assertEquals(testAttributeValue,
+                     authorEl.attributeValue(testAttributeName));
     }
-    
+
     public void testAddAttributeNullValue() throws Exception {
         String testAttributeName = "location";
         String testAttributeValue = null;
-        
-        Node authorNode = document.selectSingleNode("//root/author[1]"); 
+
+        Node authorNode = document.selectSingleNode("//root/author[1]");
 
         assertTrue(authorNode instanceof Element);
-        
+
         Element authorEl = (Element) authorNode;
         authorEl.addAttribute(testAttributeName, testAttributeValue);
-        
+
         assertEquals(1, authorEl.attributeCount());
         assertNull(authorEl.attributeValue(testAttributeName));
     }
-    
 }
 
 
@@ -83,7 +82,7 @@ public class AddAttributeTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

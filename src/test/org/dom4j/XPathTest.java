@@ -1,31 +1,28 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j;
 
-import java.util.List;
-
 import junit.textui.TestRunner;
+
+import java.util.List;
 
 import org.dom4j.tree.DefaultElement;
 import org.dom4j.xpath.DefaultXPath;
 
-/** 
+/**
  * A test harness to test XPath expression evaluation in DOM4J
  *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
  * @version $Revision$
  */
 public class XPathTest extends AbstractTestCase {
-
-    protected static boolean VERBOSE = true;
-
     protected static String[] paths =
         {
             ".",
@@ -55,112 +52,85 @@ public class XPathTest extends AbstractTestCase {
             "normalize-space(' a  b  c  d ')",
             "//root|//author[1]|//author[2]",
             "//root/author[2]",
-            "//root/author[3]" };
+            "//root/author[3]"
+        };
 
-	public static void main(String[] args) {
-		TestRunner.run(XPathTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(XPathTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     public void testXPaths() throws Exception {
         int size = paths.length;
+
         for (int i = 0; i < size; i++) {
             testXPath(paths[i]);
         }
     }
 
     public void testCreateXPathBug() throws Exception {
-        Element element = new DefaultElement( "foo" );
-        XPath xpath = element.createXPath( "//bar" );        
+        Element element = new DefaultElement("foo");
+        XPath xpath = element.createXPath("//bar");
 
-        assertTrue("created a valid XPath: " + xpath != null );
+        assertTrue(("created a valid XPath: " + xpath) != null);
     }
-    
+
     public void testBug857704() throws Exception {
-        Document doc = DocumentHelper.parseText("<foo xmlns:bar='http://blort'/>");
-        doc.selectNodes("//*[preceding-sibling::*]");       // shouldn't throw NPE
+        Document doc =
+            DocumentHelper.parseText("<foo xmlns:bar='http://blort'/>");
+        doc.selectNodes("//*[preceding-sibling::*]"); // shouldn't throw NPE
     }
 
     public void testBooleanValueOf() throws Exception {
         Document doc = DocumentHelper.parseText("<root><foo>blah</foo></root>");
-        
+
         XPath path = new DefaultXPath("//root");
         assertTrue(path.booleanValueOf(doc));
-        
+
         path = new DefaultXPath("//root2");
         assertFalse(path.booleanValueOf(doc));
     }
 
     // Implementation methods
-
-    //-------------------------------------------------------------------------                    
-
+    //-------------------------------------------------------------------------
     protected void testXPath(String xpathExpression) {
-
         log("Searched path: " + xpathExpression);
 
         XPath xpath = DocumentHelper.createXPath(xpathExpression);
 
         List list = xpath.selectNodes(document);
 
-        log("Found        : " + list.size() + " result(s)");
-
-        if (VERBOSE) {
-
-            log("...........................................");
-
-            log("XPath:       :" + xpath);
-
-            log("...........................................");
-
-        }
-
-        log("Results");
-
         if (list == null) {
-
             log("null");
-
-        }
-
-        else {
-
+        } else {
             log("[");
 
             for (int i = 0, size = list.size(); i < size; i++) {
-
                 Object object = list.get(i);
 
                 String text = "null";
 
                 if (object instanceof Node) {
-
                     Node node = (Node) object;
 
                     text = node.asXML();
-
-                }
-
-                else if (object != null) {
-
+                } else if (object != null) {
                     text = object.toString();
-
                 }
 
                 log("    " + text);
-
             }
 
             log("]");
-
         }
 
         log("...........................................");
-
     }
-
 }
+
+
+
 
 /*
  * Redistribution and use of this software and associated documentation
@@ -186,7 +156,7 @@ public class XPathTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

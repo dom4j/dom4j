@@ -1,49 +1,50 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j.io;
 
-import java.io.StringWriter;
-
 import junit.textui.TestRunner;
 
+import java.io.StringWriter;
+
 import org.dom4j.AbstractTestCase;
+
 import org.w3c.dom.NamedNodeMap;
 
 /**
+ * DOCUMENT ME!
  *
  * @author Maarten
  */
 public class DOMWriterTest extends AbstractTestCase {
-    
-	public static void main(String[] args) {
-		TestRunner.run(DOMWriterTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(DOMWriterTest.class);
+    }
 
     public void testNamespaceBug() throws Exception {
         org.dom4j.Document doc = getDocument("/xml/namespaces.xml");
         DOMWriter writer = new DOMWriter(org.dom4j.dom.DOMDocument.class);
         org.w3c.dom.Document result = writer.write(doc);
-        
+
         NamedNodeMap atts = result.getDocumentElement().getAttributes();
         assertEquals(4, atts.getLength());
-        
+
         XMLWriter wr = new XMLWriter();
         wr.setOutputStream(System.out);
         wr.write((org.dom4j.Document) result);
     }
-    
+
     public void testBug905745() throws Exception {
         org.dom4j.Document doc = getDocument("/xml/namespaces.xml");
         DOMWriter writer = new DOMWriter();
         org.w3c.dom.Document result = writer.write(doc);
-        
+
         NamedNodeMap atts = result.getDocumentElement().getAttributes();
         org.w3c.dom.Node versionAttr = atts.getNamedItem("version");
         assertNotNull(versionAttr);
@@ -51,24 +52,25 @@ public class DOMWriterTest extends AbstractTestCase {
         assertEquals("version", versionAttr.getLocalName());
         assertEquals("version", versionAttr.getNodeName());
     }
-    
+
     public void testBug926752() throws Exception {
         org.dom4j.Document doc = getDocument("/xml/test/defaultNamespace.xml");
         DOMWriter writer = new DOMWriter(org.dom4j.dom.DOMDocument.class);
         org.w3c.dom.Document result = writer.write(doc);
-        
+
         NamedNodeMap atts = result.getDocumentElement().getAttributes();
         assertEquals(1, atts.getLength());
-        
+
         OutputFormat format = OutputFormat.createCompactFormat();
         format.setSuppressDeclaration(true);
+
         XMLWriter wr = new XMLWriter(format);
         StringWriter strWriter = new StringWriter();
         wr.setWriter(strWriter);
         wr.write((org.dom4j.Document) result);
-        assertEquals("<a xmlns=\"dummyNamespace\"><b><c>Hello</c></b></a>", strWriter.toString());
+        assertEquals("<a xmlns=\"dummyNamespace\"><b><c>Hello</c></b></a>",
+                     strWriter.toString());
     }
-
 }
 
 
@@ -98,7 +100,7 @@ public class DOMWriterTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -12,17 +12,18 @@ package org.dom4j;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
-/** <p><code>DocumentException</code> is a nested Exception which may be thrown
-  * during the processing of a DOM4J document.
-  *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
-  * @version $Revision$
-  */
+/**
+ * <p>
+ * <code>DocumentException</code> is a nested Exception which may be thrown
+ * during the processing of a DOM4J document.
+ * </p>
+ *
+ * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+ * @version $Revision$
+ */
 public class DocumentException extends Exception {
-
     /** A wrapped <code>Throwable</code> */
     private Throwable nestedException;
-    
 
     public DocumentException() {
         super("Error occurred in DOM4J application.");
@@ -31,24 +32,25 @@ public class DocumentException extends Exception {
     public DocumentException(String message) {
         super(message);
     }
-    
+
     public DocumentException(Throwable nestedException) {
-        super(nestedException.getMessage());    
+        super(nestedException.getMessage());
         this.nestedException = nestedException;
-    }    
+    }
 
     public DocumentException(String message, Throwable nestedException) {
-        super(message);    
+        super(message);
         this.nestedException = nestedException;
-    }    
+    }
 
     public Throwable getNestedException() {
         return nestedException;
     }
-    
+
     public String getMessage() {
         if (nestedException != null) {
-            return super.getMessage() + " Nested exception: " + nestedException.getMessage();
+            return super.getMessage() + " Nested exception: "
+                   + nestedException.getMessage();
         } else {
             return super.getMessage();
         }
@@ -56,6 +58,7 @@ public class DocumentException extends Exception {
 
     public void printStackTrace() {
         super.printStackTrace();
+
         if (nestedException != null) {
             System.err.print("Nested exception: ");
             nestedException.printStackTrace();
@@ -64,6 +67,7 @@ public class DocumentException extends Exception {
 
     public void printStackTrace(PrintStream out) {
         super.printStackTrace(out);
+
         if (nestedException != null) {
             out.println("Nested exception: ");
             nestedException.printStackTrace(out);
@@ -72,6 +76,7 @@ public class DocumentException extends Exception {
 
     public void printStackTrace(PrintWriter writer) {
         super.printStackTrace(writer);
+
         if (nestedException != null) {
             writer.println("Nested exception: ");
             nestedException.printStackTrace(writer);
@@ -106,7 +111,7 @@ public class DocumentException extends Exception {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,77 +1,70 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j.xpath;
 
+import junit.textui.TestRunner;
+
 import java.util.Iterator;
 import java.util.List;
-
-import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Node;
 import org.dom4j.NodeFilter;
 
-/** 
+/**
  * Test harness for XPath filters
  *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
  * @version $Revision$
  */
 public class FilterTest extends AbstractTestCase {
+    protected static String[] paths =
+        {
+            ".[name()='author']",
+            ".[name()='XXXX']",
+            ".[.='James Strachan']",
+            ".[.='XXXX']"
+        };
 
-    protected static boolean VERBOSE = false;
-    
-    protected static String[] paths = {
-        ".[name()='author']",
-        ".[name()='XXXX']",
-        ".[.='James Strachan']",
-        ".[.='XXXX']"
-    };
-    
-	public static void main(String[] args) {
-		TestRunner.run(FilterTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(FilterTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
-    public void testXPaths() throws Exception {        
+    //-------------------------------------------------------------------------
+    public void testXPaths() throws Exception {
         int size = paths.length;
-        for ( int i = 0; i < size; i++ ) {
-            testXPath( paths[i] );
+
+        for (int i = 0; i < size; i++) {
+            testXPath(paths[i]);
         }
     }
-        
+
     // Implementation methods
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     protected void testXPath(String xpathExpression) {
-        NodeFilter nodeFilter = DocumentHelper.createXPathFilter( xpathExpression );
-        assertTrue( "No NodeFilter object was created", nodeFilter != null );
-        
-        if ( VERBOSE ) {
-            log( "Evaluating XPathFilter: " + xpathExpression + " using NodeFilter: " + nodeFilter );
-        }
-        
-        log( "Evaluating XPathFilter: " + xpathExpression );
-        
+        NodeFilter nodeFilter =
+            DocumentHelper.createXPathFilter(xpathExpression);
+        assertTrue("No NodeFilter object was created", nodeFilter != null);
+
         List list = document.selectNodes("//author");
-        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
+
+        for (Iterator iter = list.iterator(); iter.hasNext();) {
             Node node = (Node) iter.next();
-            
-            if ( nodeFilter.matches( node ) ) {
-                log( "Matches node: "+ node.asXML() );
+
+            if (nodeFilter.matches(node)) {
+                log("Matches node: " + node.asXML());
+            } else {
+                log("No match for node: " + node.asXML());
             }
-            else {
-                log( "No match for node: "+ node.asXML() );
-            }
-            
         }
     }
 }
@@ -103,7 +96,7 @@ public class FilterTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

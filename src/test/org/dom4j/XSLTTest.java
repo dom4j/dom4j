@@ -1,13 +1,15 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j;
+
+import junit.textui.TestRunner;
 
 import java.util.List;
 
@@ -16,66 +18,60 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 
-import junit.textui.TestRunner;
-
 import org.dom4j.io.DocumentResult;
 import org.dom4j.io.DocumentSource;
 
-/** 
+/**
  * Tests that XSLT works correctly
  *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  * @version $Revision$
  */
 public class XSLTTest extends AbstractTestCase {
-
-	public static void main(String[] args) {
-		TestRunner.run(XSLTTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(XSLTTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
-    public void testTransform() throws Exception {   
-        Document transformedDoc = transform( "/xml/nitf/ashtml.xsl" );
-        
+    //-------------------------------------------------------------------------
+    public void testTransform() throws Exception {
+        Document transformedDoc = transform("/xml/nitf/ashtml.xsl");
+
         //log( transformedDoc.asXML() );
-        
-        assertTrue( "Transformed Document is not null", transformedDoc != null );
-        
-        List h1List = transformedDoc.selectNodes( "/html//h1" );
-        
-        assertTrue( "At least one <h1>", h1List.size() > 0 );
-        
-        List pList = transformedDoc.selectNodes( "//p" );
-        
-        assertTrue( "At least one <p>", pList.size() > 0 );
+        assertTrue("Transformed Document is not null", transformedDoc != null);
+
+        List h1List = transformedDoc.selectNodes("/html//h1");
+
+        assertTrue("At least one <h1>", h1List.size() > 0);
+
+        List pList = transformedDoc.selectNodes("//p");
+
+        assertTrue("At least one <p>", pList.size() > 0);
     }
-    
+
     // Implementation methods
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     protected void setUp() throws Exception {
-    	super.setUp();
+        super.setUp();
         document = getDocument("/xml/nitf/sample.xml");
     }
-        
-    protected Document transform(String xsl) throws Exception {   
-        assertTrue( "Document is not null", document != null );
-               
+
+    protected Document transform(String xsl) throws Exception {
+        assertTrue("Document is not null", document != null);
+
         // load the transformer
         TransformerFactory factory = TransformerFactory.newInstance();
-        Transformer transformer = factory.newTransformer( 
-            new StreamSource(getFile(xsl))
-        );
-        
+        Transformer transformer =
+            factory.newTransformer(new StreamSource(getFile(xsl)));
+
         // now lets create the TrAX source and result
         // objects and do the transformation
-        Source source = new DocumentSource( document );
+        Source source = new DocumentSource(document);
         DocumentResult result = new DocumentResult();
-        transformer.transform( source, result );
+        transformer.transform(source, result);
 
         return result.getDocument();
     }
-        
 }
 
 
@@ -105,7 +101,7 @@ public class XSLTTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

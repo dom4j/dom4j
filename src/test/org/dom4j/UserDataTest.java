@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -16,102 +16,108 @@ import org.dom4j.util.UserDataAttribute;
 import org.dom4j.util.UserDataDocumentFactory;
 import org.dom4j.util.UserDataElement;
 
-/** 
+/**
  * Tests the UserDataDocumentFactory
  *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  * @version $Revision$
  */
 public class UserDataTest extends AbstractTestCase {
-
     /** Input XML file to read */
-    protected static String INPUT_XML_FILE = "/xml/web.xml";
-    
-    private Object userData = new Double( 1.23456 );
+    private static final String INPUT_XML_FILE = "/xml/web.xml";
+    private Object userData = new Double(1.23456);
 
-	public static void main(String[] args) {
-		TestRunner.run(UserDataTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(UserDataTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     public void testSetData() throws Exception {
         Element root = getRootElement();
-        
-        assertTrue( "Element instanceof UserDataElement", root instanceof UserDataElement );
-       
-        root.setData( userData );
-        
-        assertTrue( "Stored user data!", root.getData() == userData );
-        
-        log( "root: " + root );        
-        
-        assertUserData( root, userData );
-        
+
+        assertTrue("Element instanceof UserDataElement",
+                   root instanceof UserDataElement);
+
+        root.setData(userData);
+
+        assertTrue("Stored user data!", root.getData() == userData);
+
+        log("root: " + root);
+
+        assertUserData(root, userData);
+
         Element cloned = (Element) root.clone();
-        assertTrue( "Cloned new instance", cloned != root );
-        assertUserData( cloned, userData );
+        assertTrue("Cloned new instance", cloned != root);
+        assertUserData(cloned, userData);
 
         cloned = root.createCopy();
-        assertTrue( "Cloned new instance", cloned != root );
-        assertUserData( cloned, userData );
+        assertTrue("Cloned new instance", cloned != root);
+        assertUserData(cloned, userData);
     }
-    
+
     public void testCloneAttribute() throws Exception {
         Element root = getRootElement();
         root.addAttribute("name", "value");
+
         Attribute attribute = root.attribute("name");
         assertTrue(attribute instanceof UserDataAttribute);
-        
+
         Element cloned = (Element) root.clone();
         Attribute clonedAttribute = cloned.attribute("name");
         assertTrue(clonedAttribute instanceof UserDataAttribute);
     }
-        
+
     public void testNewAdditions() throws Exception {
         Element root = getRootElement();
-        
-        Element newElement = root.addElement( "foo1234" );        
-        assertTrue( "New Element is a UserDataElement", newElement instanceof UserDataElement );
-        
-        root.addAttribute( "bar456", "123" );
-        
-        Attribute newAttribute = root.attribute( "bar456" );
-        
-        assertTrue( "New Attribute is a UserDataAttribute", newAttribute instanceof UserDataAttribute );
+
+        Element newElement = root.addElement("foo1234");
+        assertTrue("New Element is a UserDataElement",
+                   newElement instanceof UserDataElement);
+
+        root.addAttribute("bar456", "123");
+
+        Attribute newAttribute = root.attribute("bar456");
+
+        assertTrue("New Attribute is a UserDataAttribute",
+                   newAttribute instanceof UserDataAttribute);
     }
-        
+
     public void testNewDocument() throws Exception {
         DocumentFactory factory = UserDataDocumentFactory.getInstance();
         Document document = factory.createDocument();
-        
-        Element root = document.addElement( "root" );
-        assertTrue( "Root Element is a UserDataElement", root instanceof UserDataElement );
-        
-        Element newElement = root.addElement( "foo1234" );        
-        assertTrue( "New Element is a UserDataElement", newElement instanceof UserDataElement );
-        
-        root.addAttribute( "bar456", "123" );
-        
-        Attribute newAttribute = root.attribute( "bar456" );
-        
-        assertTrue( "New Attribute is a UserDataAttribute", newAttribute instanceof UserDataAttribute );
+
+        Element root = document.addElement("root");
+        assertTrue("Root Element is a UserDataElement",
+                   root instanceof UserDataElement);
+
+        Element newElement = root.addElement("foo1234");
+        assertTrue("New Element is a UserDataElement",
+                   newElement instanceof UserDataElement);
+
+        root.addAttribute("bar456", "123");
+
+        Attribute newAttribute = root.attribute("bar456");
+
+        assertTrue("New Attribute is a UserDataAttribute",
+                   newAttribute instanceof UserDataAttribute);
     }
-        
-        
+
     // Implementation methods
-    //-------------------------------------------------------------------------                    
-    protected void assertUserData( Element root, Object userData ) throws Exception {
+    //-------------------------------------------------------------------------
+    protected void assertUserData(Element root, Object data)
+                           throws Exception {
         Object result = root.getData();
-        
-        assertTrue( "No user data!", result != null );
-        assertTrue( "Stored user data correctly", userData.equals( result ) );
+
+        assertTrue("No user data!", result != null);
+        assertTrue("Stored user data correctly", data.equals(result));
     }
-        
+
     protected void setUp() throws Exception {
-    	super.setUp();
+        super.setUp();
+
         SAXReader reader = new SAXReader();
-        reader.setDocumentFactory( UserDataDocumentFactory.getInstance() );
+        reader.setDocumentFactory(UserDataDocumentFactory.getInstance());
         document = getDocument(INPUT_XML_FILE, reader);
     }
 }
@@ -143,7 +149,7 @@ public class UserDataTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,125 +1,135 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j;
+
+import junit.textui.TestRunner;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import junit.textui.TestRunner;
-
 import org.dom4j.io.SAXReader;
 
-/** 
+/**
  * A test harness to test the use of Namespaces.
  *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
  * @version $Revision$
  */
 public class NamespaceTest extends AbstractTestCase {
-
     /** Input XML file to read */
-    protected static String INPUT_XML_FILE = "/xml/namespaces.xml";
-    
+    private static final String INPUT_XML_FILE = "/xml/namespaces.xml";
+
     /** Namespace to use in tests */
-    protected static Namespace XSL_NAMESPACE = Namespace.get( 
-        "xsl", "http://www.w3.org/1999/XSL/Transform" 
-    );
-    
-    protected static QName XSL_TEMPLATE = QName.get( "template", XSL_NAMESPACE );
-    
-	public static void main(String[] args) {
-		TestRunner.run(NamespaceTest.class);
-	}
+    private static final Namespace XSL_NAMESPACE =
+        Namespace.get("xsl", "http://www.w3.org/1999/XSL/Transform");
+    private static final QName XSL_TEMPLATE =
+        QName.get("template", XSL_NAMESPACE);
+
+    public static void main(String[] args) {
+        TestRunner.run(NamespaceTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     public void debugShowNamespaces() throws Exception {
         Element root = getRootElement();
-        
-        for ( Iterator iter = root.elementIterator(); iter.hasNext(); ) {
+
+        for (Iterator iter = root.elementIterator(); iter.hasNext();) {
             Element element = (Element) iter.next();
-            
-            log( "Found element:    " + element );
-            log( "Namespace:        " + element.getNamespace() );
-            log( "Namespace prefix: " + element.getNamespacePrefix() );
-            log( "Namespace URI:    " + element.getNamespaceURI() );
+
+            log("Found element:    " + element);
+            log("Namespace:        " + element.getNamespace());
+            log("Namespace prefix: " + element.getNamespacePrefix());
+            log("Namespace URI:    " + element.getNamespaceURI());
         }
     }
-        
+
     public void testGetElement() throws Exception {
         Element root = getRootElement();
-        
-        Element firstTemplate = root.element( XSL_TEMPLATE );
-        assertTrue( "Root element contains at least one <xsl:template/> element", firstTemplate != null );
-        
-        log( "Found element: " + firstTemplate );
+
+        Element firstTemplate = root.element(XSL_TEMPLATE);
+        assertTrue("Root element contains at least one <xsl:template/> element",
+                   firstTemplate != null);
+
+        log("Found element: " + firstTemplate);
     }
-        
+
     public void testGetElements() throws Exception {
         Element root = getRootElement();
-        
-        List list = root.elements( XSL_TEMPLATE );
-        assertTrue( "Root element contains at least one <xsl:template/> element", list.size() > 0 );
-        
-        log( "Found elements: " + list );
+
+        List list = root.elements(XSL_TEMPLATE);
+        assertTrue("Root element contains at least one <xsl:template/> element",
+                   list.size() > 0);
+
+        log("Found elements: " + list);
     }
-        
+
     public void testElementIterator() throws Exception {
         Element root = getRootElement();
-        Iterator iter = root.elementIterator( XSL_TEMPLATE );
-        assertTrue( "Root element contains at least one <xsl:template/> element", iter.hasNext() );
+        Iterator iter = root.elementIterator(XSL_TEMPLATE);
+        assertTrue("Root element contains at least one <xsl:template/> element",
+                   iter.hasNext());
 
         do {
             Element element = (Element) iter.next();
-            log( "Found element: " + element );
-        }
-        while ( iter.hasNext() );
+            log("Found element: " + element);
+        } while (iter.hasNext());
     }
 
-    /** Tests the use of namespace URI Mapping associated with a DocumentFactory */
+    /**
+     * Tests the use of namespace URI Mapping associated with a DocumentFactory
+     *
+     * @throws Exception DOCUMENT ME!
+     */
     public void testNamespaceUriMap() throws Exception {
         // register namespace prefix->uri mappings with factory
         Map uris = new HashMap();
-        uris.put( "x", "fooNamespace" );
-        uris.put( "y", "barNamespace" );
-        
+        uris.put("x", "fooNamespace");
+        uris.put("y", "barNamespace");
+
         DocumentFactory factory = new DocumentFactory();
-        factory.setXPathNamespaceURIs( uris );
-        
+        factory.setXPathNamespaceURIs(uris);
+
         // parse or create a document
         SAXReader reader = new SAXReader();
-        reader.setDocumentFactory( factory );
+        reader.setDocumentFactory(factory);
+
         Document doc = getDocument("/xml/test/nestedNamespaces.xml", reader);
-        
+
         // evaluate XPath using registered namespace prefixes
         // which do not appear in the document (though the URIs do!)
-        String value = doc.valueOf( "/x:pizza/y:cheese/x:pepper" );
-        
-        log( "Found value: " + value );
-        
-        assertEquals( "XPath used default namesapce URIS", "works", value );
+        String value = doc.valueOf("/x:pizza/y:cheese/x:pepper");
+
+        log("Found value: " + value);
+
+        assertEquals("XPath used default namesapce URIS", "works", value);
     }
-    
+
     // Implementation methods
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     protected void setUp() throws Exception {
-    	super.setUp();
+        super.setUp();
         document = getDocument(INPUT_XML_FILE);
     }
 
-    /** @return the root element of the document */
+    /**
+     * DOCUMENT ME!
+     *
+     * @return the root element of the document
+     */
     protected Element getRootElement() {
         Element root = document.getRootElement();
-        assertTrue( "Document has root element", root != null );
+        assertTrue("Document has root element", root != null);
+
         return root;
     }
 }
@@ -151,7 +161,7 @@ public class NamespaceTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

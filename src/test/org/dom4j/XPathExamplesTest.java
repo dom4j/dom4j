@@ -1,198 +1,190 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j;
 
+import junit.textui.TestRunner;
+
 import java.util.Iterator;
 import java.util.List;
-
-import junit.textui.TestRunner;
 
 import org.dom4j.io.SAXReader;
 import org.dom4j.rule.Pattern;
 
-
-/** 
+/**
  * Performs a number of unit test cases on the XPath engine
  *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  * @version $Revision$
  */
 public class XPathExamplesTest extends AbstractTestCase {
-
-    protected static boolean VERBOSE = true;
-
     protected SAXReader xmlReader = new SAXReader();
-    
+
     /** The document on which the tests are being run */
     protected Document testDocument;
-    
+
     /** The context node on which the tests are being run */
     protected Node testContext;
 
     /** factory for XPath, Patterns and nodes */
     protected DocumentFactory factory = DocumentFactory.getInstance();
-    
-	public static void main(String[] args) {
-		TestRunner.run(XPathExamplesTest.class);
-	}
+
+    public static void main(String[] args) {
+        TestRunner.run(XPathExamplesTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     public void testXPaths() throws Exception {
         Document document = getDocument("/xml/test/xpath/tests.xml");
         Element root = document.getRootElement();
-        for ( Iterator iter = root.elementIterator( "document" ); iter.hasNext(); ) {
+
+        Iterator iter = root.elementIterator("document");
+
+        while (iter.hasNext()) {
             Element documentTest = (Element) iter.next();
-            testDocument( documentTest );
+            testDocument(documentTest);
         }
     }
-        
+
     // Implementation methods
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     protected void testDocument(Element documentTest) throws Exception {
-        String url = documentTest.attributeValue( "url" );
+        String url = documentTest.attributeValue("url");
         testDocument = xmlReader.read(getFile(url));
-        assertTrue( "Loaded test document: " + url, testDocument != null );
-        
-        log( "Loaded document: " + url );
-        
-        for ( Iterator iter = documentTest.elementIterator( "context" ); iter.hasNext(); ) {
+        assertTrue("Loaded test document: " + url, testDocument != null);
+
+        log("Loaded document: " + url);
+
+        for (Iterator iter = documentTest.elementIterator("context");
+                 iter.hasNext();) {
             Element context = (Element) iter.next();
-            testContext( documentTest, context );
+            testContext(documentTest, context);
         }
     }
-        
-    protected void testContext(Element documentTest, Element context) throws Exception {
-        String xpath = context.attributeValue( "select" );        
-        
-        if ( VERBOSE ) {
-            log( "Selecting nodes for XPath: " + testDocument.createXPath( xpath ) );
-        }
-        
-        List list = testDocument.selectNodes( xpath );
-        
-        assertTrue( "Found at least one context nodes to test for path: " + xpath, list != null && list.size() > 0 );
-        
-        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
+
+    protected void testContext(Element documentTest, Element context)
+                        throws Exception {
+        String xpath = context.attributeValue("select");
+
+        List list = testDocument.selectNodes(xpath);
+
+        assertTrue("Found at least one context nodes to test for path: "
+                   + xpath, (list != null) && (list.size() > 0));
+
+        for (Iterator iter = list.iterator(); iter.hasNext();) {
             Object object = iter.next();
-            assertTrue( "Context node is a Node: " + object, object instanceof Node );
+            assertTrue("Context node is a Node: " + object,
+                       object instanceof Node);
             testContext = (Node) object;
 
-            log( "Context is now: " + testContext );            
-            runTests( documentTest, context );
-            log( "" );
+            log("Context is now: " + testContext);
+            runTests(documentTest, context);
+            log("");
         }
     }
-    
-    protected void runTests(Element documentTest, Element context) throws Exception {
-        for ( Iterator iter = context.elementIterator( "test" ); iter.hasNext(); ) {
+
+    protected void runTests(Element documentTest, Element context)
+                     throws Exception {
+        for (Iterator iter = context.elementIterator("test"); iter.hasNext();) {
             Element test = (Element) iter.next();
-            runTest( documentTest, context, test );
+            runTest(documentTest, context, test);
         }
-        for ( Iterator iter = context.elementIterator( "valueOf" ); iter.hasNext(); ) {
+
+        for (Iterator iter = context.elementIterator("valueOf");
+                 iter.hasNext();) {
             Element valueOf = (Element) iter.next();
-            testValueOf( documentTest, context, valueOf );
+            testValueOf(documentTest, context, valueOf);
         }
-        for ( Iterator iter = context.elementIterator( "pattern" ); iter.hasNext(); ) {
+
+        for (Iterator iter = context.elementIterator("pattern");
+                 iter.hasNext();) {
             Element pattern = (Element) iter.next();
-            testPattern( documentTest, context, pattern );
+            testPattern(documentTest, context, pattern);
         }
-        for ( Iterator iter = context.elementIterator( "filter" ); iter.hasNext(); ) {
+
+        Iterator iter = context.elementIterator("fileter");
+
+        while (iter.hasNext()) {
             Element filter = (Element) iter.next();
-            testFilter( documentTest, context, filter );
+            testFilter(documentTest, context, filter);
         }
     }
-        
-    protected void runTest(Element documentTest, Element context, Element test) throws Exception {
-        String xpath = test.attributeValue( "select" );
-        
+
+    protected void runTest(Element documentTest, Element context, Element test)
+                    throws Exception {
+        String xpath = test.attributeValue("select");
+
         String description = "Path: " + xpath;
-        
-        if ( VERBOSE ) {
-            log( "" );
-            log( "XPath for: " + xpath );
-            log( "is: " + testContext.createXPath( xpath ) );
-            log( "" );
+
+        String count = test.attributeValue("count");
+
+        if (count != null) {
+            int expectedSize = Integer.parseInt(count);
+            List results = testContext.selectNodes(xpath);
+
+            log(description + " found result size: " + results.size());
+
+            assertEquals(description + " wrong result size", expectedSize,
+                         results.size());
         }
-        
-        String count = test.attributeValue( "count" );
-        if ( count != null ) {
-            int expectedSize = Integer.parseInt( count );
-            List results = testContext.selectNodes( xpath );
-            
-            log( description + " found result size: " + results.size() );
-            
-            assertEquals( description + " wrong result size", expectedSize, results.size() );
-        }
-        
-        Element valueOf = test.element( "valueOf" );
-        if ( valueOf != null ) {
-            Node node = testContext.selectSingleNode( xpath );
-            assertTrue( description + " found node", node != null );
-            
+
+        Element valueOf = test.element("valueOf");
+
+        if (valueOf != null) {
+            Node node = testContext.selectSingleNode(xpath);
+            assertTrue(description + " found node", node != null);
+
             String expected = valueOf.getText();
-            String result = node.valueOf( valueOf.attributeValue( "select" ) );            
-            
-            log( description );
-            log( "\texpected: " + expected + " result: " + result );
-            
-            assertEquals( description, expected, result );
+            String result = node.valueOf(valueOf.attributeValue("select"));
+
+            log(description);
+            log("\texpected: " + expected + " result: " + result);
+
+            assertEquals(description, expected, result);
         }
     }
-        
-    protected void testValueOf(Element documentTest, Element context, Element valueOf) throws Exception {
-        String xpath = valueOf.attributeValue( "select" );
+
+    protected void testValueOf(Element documentTest, Element context,
+                               Element valueOf) throws Exception {
+        String xpath = valueOf.attributeValue("select");
         String description = "valueOf: " + xpath;
-        
-        if ( VERBOSE ) {
-            log( "XPath: " + testContext.createXPath( xpath ) );
-        }
-        
+
         String expected = valueOf.getText();
-        String result = testContext.valueOf( xpath );            
+        String result = testContext.valueOf(xpath);
 
-        log( description );
-        log( "\texpected: " + expected + " result: " + result );
+        log(description);
+        log("\texpected: " + expected + " result: " + result);
 
-        assertEquals( description, expected, result );
+        assertEquals(description, expected, result);
     }
-    
-    protected void testPattern(Element documentTest, Element context, Element patternElement) throws Exception {
-        String match = patternElement.attributeValue( "match" );
-        String description = "match: " + match;
-        
-        log( "" );
-        log( description );
 
-        Pattern pattern = factory.createPattern( match );
-        
-        if ( VERBOSE ) {
-            log( "Pattern: " + pattern );
-        }
-        
-        assertTrue( description, pattern.matches( testContext ) );
-        
+    protected void testPattern(Element documentTest, Element context,
+                               Element patternElement)
+                        throws Exception {
+        String match = patternElement.attributeValue("match");
+        String description = "match: " + match;
+
+        log("");
+        log(description);
+
+        Pattern pattern = factory.createPattern(match);
+
+        assertTrue(description, pattern.matches(testContext));
     }
-    
-    protected void testFilter(Element documentTest, Element context, Element pattern) throws Exception {
-        String match = pattern.attributeValue( "match" );
-        String description = "match: " + match;
-        
-        log( "" );
-        log( description );
 
-        if ( VERBOSE ) {
-            log( "Pattern: " + factory.createXPathFilter( match ) );
-        }
-        
-        assertTrue( description, testContext.matches( match ) );        
+    protected void testFilter(Element documentTest, Element context,
+                              Element pattern) throws Exception {
+        String match = pattern.attributeValue("match");
+        String description = "match: " + match;
+
+        assertTrue(description, testContext.matches(match));
     }
 }
 
@@ -223,7 +215,7 @@ public class XPathExamplesTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

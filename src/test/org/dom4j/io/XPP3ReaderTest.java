@@ -1,44 +1,43 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j.io;
 
+import junit.textui.TestRunner;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.StringWriter;
-
-import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Document;
 import org.dom4j.Element;
 
-/** 
+/**
  * Test class for the XPP3Reader. This is based on the TestSaxReader class.
  *
  * @author <a href="mailto:pelle@neubia.com">Pelle Braendgaard</a>
  * @author <a href="mailto:maartenc@sourceforge.net">Maarten Coene</a>
  */
 public class XPP3ReaderTest extends AbstractTestCase {
-
-	public static void main(String[] args) {
-		TestRunner.run(XPP3ReaderTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(XPP3ReaderTest.class);
+    }
 
     // Test case(s)
     //-------------------------------------------------------------------------
     public void testRussian() throws Exception {
         File file = getFile("/xml/russArticle.xml");
-        XPP3Reader xmlReader = new XPP3Reader(); 
-        Document doc = xmlReader.read(file); 
+        XPP3Reader xmlReader = new XPP3Reader();
+        Document doc = xmlReader.read(file);
         Element el = doc.getRootElement();
-        
+
         StringWriter writer = new StringWriter();
         XMLWriter xmlWriter = new XMLWriter(writer);
         OutputFormat format = OutputFormat.createPrettyPrint();
@@ -46,20 +45,20 @@ public class XPP3ReaderTest extends AbstractTestCase {
         xmlWriter.write(doc);
         log(writer.toString());
     }
-    
+
     public void testRussian2() throws Exception {
         File file = getFile("/xml/russArticle.xml");
         XPP3Reader xmlReader = new XPP3Reader();
         Document doc = xmlReader.read(file);
-        XMLWriter xmlWriter = new XMLWriter( new OutputFormat ( "", false, "koi8-r" ) );
+        XMLWriter xmlWriter =
+            new XMLWriter(new OutputFormat("", false, "koi8-r"));
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         xmlWriter.setOutputStream(out);
-        xmlWriter.write( doc );
+        xmlWriter.write(doc);
         xmlWriter.flush();
         xmlWriter.close();
         log(out.toString());
     }
-
 }
 
 
@@ -89,7 +88,7 @@ public class XPP3ReaderTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

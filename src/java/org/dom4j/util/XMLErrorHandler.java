@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -12,35 +12,37 @@ package org.dom4j.util;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.QName;
+
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXParseException;
 
-/** <code>XMLErrorHandler</code> is a SAX {@link ErrorHandler} which 
-  * turns the SAX parsing errors into XML so that the output can be formatted
-  * using XSLT or the errors can be included in a SOAP message.
-  *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
-  * @version $Revision$
-  */
+/**
+ * <code>XMLErrorHandler</code> is a SAX {@link ErrorHandler} which  turns the
+ * SAX parsing errors into XML so that the output can be formatted using XSLT
+ * or the errors can be included in a SOAP message.
+ *
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * @version $Revision$
+ */
 public class XMLErrorHandler implements ErrorHandler {
-     
-    protected static final QName ERROR_QNAME = QName.get( "error" );
-    protected static final QName FATALERROR_QNAME = QName.get( "fatalError" );
-    protected static final QName WARNING_QNAME = QName.get( "warning" );
-    
+    protected static final QName ERROR_QNAME = QName.get("error");
+    protected static final QName FATALERROR_QNAME = QName.get("fatalError");
+    protected static final QName WARNING_QNAME = QName.get("warning");
+
     /** Stores the errors that occur during a SAX parse */
     private Element errors;
 
     /** QName used for error elements */
     private QName errorQName = ERROR_QNAME;
+
     /** QName used for fatalerror elements */
     private QName fatalErrorQName = FATALERROR_QNAME;
+
     /** QName used for warning elements */
     private QName warningQName = WARNING_QNAME;
 
-    
     public XMLErrorHandler() {
-        this.errors = DocumentHelper.createElement( "errors" );
+        this.errors = DocumentHelper.createElement("errors");
     }
 
     public XMLErrorHandler(Element errors) {
@@ -48,18 +50,18 @@ public class XMLErrorHandler implements ErrorHandler {
     }
 
     public void error(SAXParseException e) {
-        Element element = errors.addElement( errorQName );
-        addException( element, e );
+        Element element = errors.addElement(errorQName);
+        addException(element, e);
     }
 
     public void fatalError(SAXParseException e) {
-        Element element = errors.addElement( fatalErrorQName );
-        addException( element, e );
+        Element element = errors.addElement(fatalErrorQName);
+        addException(element, e);
     }
 
     public void warning(SAXParseException e) {
-        Element element = errors.addElement( warningQName );
-        addException( element, e );
+        Element element = errors.addElement(warningQName);
+        addException(element, e);
     }
 
     // Properties
@@ -67,13 +69,12 @@ public class XMLErrorHandler implements ErrorHandler {
     public Element getErrors() {
         return errors;
     }
-    
+
     public void setErrors(Element errors) {
         this.errors = errors;
     }
 
     // Allow the QNames used to create subelements to be changed
-    
     public QName getErrorQName() {
         return errorQName;
     }
@@ -100,24 +101,33 @@ public class XMLErrorHandler implements ErrorHandler {
 
     // Implementation methods
     //-------------------------------------------------------------------------
-    
-    /** Adds the given parse exception information to the given element instance */
+
+    /**
+     * Adds the given parse exception information to the given element instance
+     *
+     * @param element DOCUMENT ME!
+     * @param e DOCUMENT ME!
+     */
     protected void addException(Element element, SAXParseException e) {
-        element.addAttribute( "column", Integer.toString( e.getColumnNumber() ) );
-        element.addAttribute( "line", Integer.toString( e.getLineNumber() ) );
+        element.addAttribute("column", Integer.toString(e.getColumnNumber()));
+        element.addAttribute("line", Integer.toString(e.getLineNumber()));
 
         String publicID = e.getPublicId();
-        if ( publicID != null && publicID.length() > 0 ) {
-            element.addAttribute( "publicID", publicID );
-        }
-        String systemID = e.getSystemId();
-        if ( systemID != null && systemID.length() > 0 ) {
-            element.addAttribute( "systemID", systemID );
+
+        if ((publicID != null) && (publicID.length() > 0)) {
+            element.addAttribute("publicID", publicID);
         }
 
-        element.addText( e.getMessage() );
+        String systemID = e.getSystemId();
+
+        if ((systemID != null) && (systemID.length() > 0)) {
+            element.addAttribute("systemID", systemID);
+        }
+
+        element.addText(e.getMessage());
     }
-}    
+}
+
 
 
 
@@ -145,7 +155,7 @@ public class XMLErrorHandler implements ErrorHandler {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

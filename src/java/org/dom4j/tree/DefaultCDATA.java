@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -11,36 +11,44 @@ package org.dom4j.tree;
 
 import org.dom4j.Element;
 
-/** <p><code>DefaultCDATA</code> is the default CDATA implementation.
-  * It is a doubly linked node which supports the parent relationship 
-  * and can be modified in place.</p>
-  *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
-  * @version $Revision$
-  */
+/**
+ * <p>
+ * <code>DefaultCDATA</code> is the default CDATA implementation. It is a
+ * doubly linked node which supports the parent relationship  and can be
+ * modified in place.
+ * </p>
+ *
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * @version $Revision$
+ */
 public class DefaultCDATA extends FlyweightCDATA {
-
     /** The parent of this node */
     private Element parent;
 
-    /** @param text is the CDATA text
-      */
+    /**
+     * DOCUMENT ME!
+     *
+     * @param text is the CDATA text
+     */
     public DefaultCDATA(String text) {
-    	super(text);
+        super(text);
     }
 
-    /** @param parent is the parent element
-      * @param text is the CDATA text
-      */
-    public DefaultCDATA(Element parent,String text) {
-    	super(text);
+    /**
+     * DOCUMENT ME!
+     *
+     * @param parent is the parent element
+     * @param text is the CDATA text
+     */
+    public DefaultCDATA(Element parent, String text) {
+        super(text);
         this.parent = parent;
     }
 
     public void setText(String text) {
-    	this.text = text;
+        this.text = text;
     }
-    
+
     public Element getParent() {
         return parent;
     }
@@ -48,7 +56,7 @@ public class DefaultCDATA extends FlyweightCDATA {
     public void setParent(Element parent) {
         this.parent = parent;
     }
-    
+
     public boolean supportsParent() {
         return true;
     }
@@ -85,7 +93,7 @@ public class DefaultCDATA extends FlyweightCDATA {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

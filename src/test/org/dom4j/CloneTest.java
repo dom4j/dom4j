@@ -1,135 +1,136 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j;
 
-import java.util.Comparator;
-
 import junit.textui.TestRunner;
+
+import java.util.Comparator;
 
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 import org.dom4j.util.NodeComparator;
 
-/** 
+/**
  * A test harness to test the clone() methods on Nodes
  *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  * @version $Revision$
  */
 public class CloneTest extends AbstractTestCase {
-
     private static final boolean VERBOSE = false;
-    
     private Comparator comparator = new NodeComparator();
-    
-	public static void main(String[] args) {
-		TestRunner.run(CloneTest.class);
-	}
+
+    public static void main(String[] args) {
+        TestRunner.run(CloneTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     public void testDocumentClone() throws Exception {
-        document.setName( "doc1" );
-        
-        Document doc2 = (Document) document.clone();
-        
-        assertTrue( "Returned a new document", document != doc2 );
-        
-        if ( VERBOSE ) {        
-            XMLWriter writer = new XMLWriter( 
-                System.out, OutputFormat.createPrettyPrint() 
-            );
-        
-            log( "document1" );
-            writer.write( document );
+        document.setName("doc1");
 
-            log( "document2" );
-            writer.write( doc2 );
+        Document doc2 = (Document) document.clone();
+
+        assertTrue("Returned a new document", document != doc2);
+
+        if (VERBOSE) {
+            XMLWriter writer =
+                new XMLWriter(System.out, OutputFormat.createPrettyPrint());
+
+            log("document1");
+            writer.write(document);
+
+            log("document2");
+            writer.write(doc2);
         }
-        
-        assertTrue( "Documents are equal", comparator.compare( document, doc2 ) == 0 );
-    }
-    
-    public void testAddCloneToOtherElement() {
-    	DocumentFactory factory = DocumentFactory.getInstance();
-    	Document doc = factory.createDocument();
-    	Element root = doc.addElement("root");
-    	Element parent1 = root.addElement("parent");
-    	Element child1 = parent1.addElement("child");
-    	
-    	Element parent2 = (Element) parent1.clone();
-    	root.add(parent2);
 
-    	assertSame("parent not correct", root, parent2.getParent());
-    	assertSame("document not correct", doc, parent2.getDocument());
-    	
-    	Element child2 = parent2.element("child");
-    	
-    	assertNotSame("child not cloned", child1, child2);
-    	assertSame("parent not correct", parent2, child2.getParent());
-    	assertSame("document not correct", doc, child2.getDocument());
+        assertTrue("Documents are equal",
+                   comparator.compare(document, doc2) == 0);
     }
-    
+
+    public void testAddCloneToOtherElement() {
+        DocumentFactory factory = DocumentFactory.getInstance();
+        Document doc = factory.createDocument();
+        Element root = doc.addElement("root");
+        Element parent1 = root.addElement("parent");
+        Element child1 = parent1.addElement("child");
+
+        Element parent2 = (Element) parent1.clone();
+        root.add(parent2);
+
+        assertSame("parent not correct", root, parent2.getParent());
+        assertSame("document not correct", doc, parent2.getDocument());
+
+        Element child2 = parent2.element("child");
+
+        assertNotSame("child not cloned", child1, child2);
+        assertSame("parent not correct", parent2, child2.getParent());
+        assertSame("document not correct", doc, child2.getDocument());
+    }
+
     public void testRootElementClone() throws Exception {
-        testElementClone( document.getRootElement() );
+        testElementClone(document.getRootElement());
     }
-    
+
     public void testAuthorElementClone() throws Exception {
-        testElementClone( (Element) document.selectSingleNode( "//author" ) );
+        testElementClone((Element) document.selectSingleNode("//author"));
     }
-    
-    public void testRootCompare1() throws Exception {                
+
+    public void testRootCompare1() throws Exception {
         Document doc2 = (Document) document.clone();
         Element author = doc2.getRootElement();
-        author.addAttribute( "foo", "bar" );
-        
-        assertTrue( "Documents are not equal", comparator.compare( document, doc2 ) != 0 );
+        author.addAttribute("foo", "bar");
+
+        assertTrue("Documents are not equal",
+                   comparator.compare(document, doc2) != 0);
     }
-    
-    public void testRootCompare2() throws Exception {                
+
+    public void testRootCompare2() throws Exception {
         Document doc2 = (Document) document.clone();
         Element author = doc2.getRootElement();
-        
-        author.addText( "foo" );
-        
-        assertTrue( "Documents are not equal", comparator.compare( document, doc2 ) != 0 );
+
+        author.addText("foo");
+
+        assertTrue("Documents are not equal",
+                   comparator.compare(document, doc2) != 0);
     }
-    
-    public void testAuthorCompare1() throws Exception {                
+
+    public void testAuthorCompare1() throws Exception {
         Document doc2 = (Document) document.clone();
-        Element author = (Element) doc2.selectSingleNode( "//author" );
-        author.addAttribute( "name", "James Strachan" );
-        
-        assertTrue( "Documents are not equal", comparator.compare( document, doc2 ) != 0 );
+        Element author = (Element) doc2.selectSingleNode("//author");
+        author.addAttribute("name", "James Strachan");
+
+        assertTrue("Documents are not equal",
+                   comparator.compare(document, doc2) != 0);
     }
-    
-    public void testAuthorCompare2() throws Exception {                
+
+    public void testAuthorCompare2() throws Exception {
         Document doc2 = (Document) document.clone();
-        Element author = (Element) doc2.selectSingleNode( "//author" );
-        
-        author.addText( "foo" );
-        
-        assertTrue( "Documents are not equal", comparator.compare( document, doc2 ) != 0 );
+        Element author = (Element) doc2.selectSingleNode("//author");
+
+        author.addText("foo");
+
+        assertTrue("Documents are not equal",
+                   comparator.compare(document, doc2) != 0);
     }
-    
-    
-    protected void testElementClone( Element element ) throws Exception {        
+
+    protected void testElementClone(Element element) throws Exception {
         Element element2 = (Element) element.clone();
-        
-        assertTrue( "Returned a new Element", element2 != element );
-        assertTrue( "New element has no parent", element2.getParent() == null );
-        assertTrue( "New element has no Document", element2.getDocument() == null );
-        
-        assertTrue( "Element fragments are equal", comparator.compare( element, element2 ) == 0 );
+
+        assertTrue("Returned a new Element", element2 != element);
+        assertNull("New element has no parent", element2.getParent());
+        assertNull("New element has no Document", element2.getDocument());
+
+        assertTrue("Element fragments are equal",
+                   comparator.compare(element, element2) == 0);
     }
-    
 }
 
 
@@ -159,7 +160,7 @@ public class CloneTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

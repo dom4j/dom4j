@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -14,34 +14,37 @@ import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.QName;
 
-/** <p><code>UserDataDocumentFactory</code> is a factory of XML objects which 
-  * support the adornment of a user data object on an Element or Attribute
-  * instance such that the methods <code>getData()</code> and 
-  * <code>setData()</code> will get and set the values of a user data object.
-  * This can be useful for developers wishing to create XML trees and
-  * adorn the trees with user defined objects.</p>
-  *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
-  * @version $Revision$
-  */
+/**
+ * <p>
+ * <code>UserDataDocumentFactory</code> is a factory of XML objects which
+ * support the adornment of a user data object on an Element or Attribute
+ * instance such that the methods <code>getData()</code> and
+ * <code>setData()</code> will get and set the values of a user data object.
+ * This can be useful for developers wishing to create XML trees and adorn the
+ * trees with user defined objects.
+ * </p>
+ *
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * @version $Revision$
+ */
 public class UserDataDocumentFactory extends DocumentFactory {
-    
     /** The Singleton instance */
-    static transient UserDataDocumentFactory singleton = new UserDataDocumentFactory();
-    
-    
-    /** <p>Access to the singleton instance of this factory.</p>
-      *
-      * @return the default singleon instance
-      */
+    protected static transient UserDataDocumentFactory singleton =
+        new UserDataDocumentFactory();
+
+    /**
+     * <p>
+     * Access to the singleton instance of this factory.
+     * </p>
+     *
+     * @return the default singleon instance
+     */
     public static DocumentFactory getInstance() {
         return singleton;
     }
-    
-        
+
     // DocumentFactory methods
     //-------------------------------------------------------------------------
-    
     public Element createElement(QName qname) {
         return new UserDataElement(qname);
     }
@@ -49,7 +52,6 @@ public class UserDataDocumentFactory extends DocumentFactory {
     public Attribute createAttribute(Element owner, QName qname, String value) {
         return new UserDataAttribute(qname, value);
     }
-    
 }
 
 
@@ -79,7 +81,7 @@ public class UserDataDocumentFactory extends DocumentFactory {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

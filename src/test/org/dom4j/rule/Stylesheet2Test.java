@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -14,58 +14,53 @@ import junit.textui.TestRunner;
 import org.dom4j.Node;
 
 /**
- * A test harness to test the use of the Stylesheet and the
- * XSLT rule engine.
+ * A test harness to test the use of the Stylesheet and the XSLT rule engine.
  *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
  * @version $Revision$
  */
 public class Stylesheet2Test extends StylesheetTest {
-
     protected String[] templates = {
-        "/",
-        "title",
-        "para",
-        "*",
-    };
+                                       "/",
+                                       "title",
+                                       "para",
+                                       "*",
+                                   };
 
-	public static void main(String[] args) {
-		TestRunner.run(Stylesheet2Test.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(Stylesheet2Test.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     public void testRules() throws Exception {
-        for ( int i = 0, size = templates.length; i < size; i++ ) {
-            addTemplate( templates[i] );
+        for (int i = 0, size = templates.length; i < size; i++) {
+            addTemplate(templates[i]);
         }
-        
-        log( "" );
-        log( "........................................" );
-        log( "" );
-        log( "Running stylesheet" );
-        
-        stylesheet.run( document );
-        
-        log( "Finished" );
+
+        log("");
+        log("........................................");
+        log("");
+        log("Running stylesheet");
+
+        stylesheet.run(document);
+
+        log("Finished");
     }
-        
-        
+
     // Implementation methods
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     public void setUp() throws Exception {
-    	super.setUp();
+        super.setUp();
         document = getDocument("/xml/test/littledoc.xml");
-        
+
         stylesheet = new Stylesheet();
-        stylesheet.setValueOfAction(
-            new Action() {
+        stylesheet.setValueOfAction(new Action() {
                 public void run(Node node) {
-                    log( "Default ValueOf action on node: " + node );
-                    log( "........................................" );
+                    log("Default ValueOf action on node: " + node);
+                    log("........................................");
                 }
-            }
-        );
+            });
     }
 }
 
@@ -96,7 +91,7 @@ public class Stylesheet2Test extends StylesheetTest {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

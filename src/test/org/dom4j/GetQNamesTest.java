@@ -1,66 +1,66 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j;
 
-import java.util.List;
-
 import junit.textui.TestRunner;
+
+import java.util.List;
 
 import org.dom4j.io.SAXReader;
 
-/** 
+/**
  * A test harness to test the DocumentFactory.getQNames() method
  *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  * @version $Revision$
  */
 public class GetQNamesTest extends AbstractTestCase {
-    
-	public static void main(String[] args) {
-		TestRunner.run(GetQNamesTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(GetQNamesTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     public void testQNames() throws Exception {
-    	DocumentFactory factory = new DocumentFactory();
+        DocumentFactory factory = new DocumentFactory();
 
-    	SAXReader reader = new SAXReader();
-        reader.setDocumentFactory( factory );
+        SAXReader reader = new SAXReader();
+        reader.setDocumentFactory(factory);
         getDocument("/xml/test/soap2.xml", reader);
 
         List qnames = factory.getQNames();
         assertEquals("Number of QNames not correct", 15, qnames.size());
     }
-    
-    /** 
+
+    /**
      * Test the element rename functionality which was lacking as spotted by
      * Rob Lebowitz
+     *
+     * @throws Exception DOCUMENT ME!
      */
     public void testRename() throws Exception {
         Document doc = DocumentHelper.createDocument();
-        Element root = doc.addElement( "foo" );
-        
-        assertEquals( "named correctly", "foo", root.getName() );
-        
-        root.setName( "bar" );
-        
-        assertEquals( "named correctly", "bar", root.getName() );
-        
-        QName xyz = root.getQName( "xyz" );
-        
-        root.setQName( xyz );
-        
-        assertEquals( "QNamed correctly", xyz, root.getQName() );
+        Element root = doc.addElement("foo");
+
+        assertEquals("named correctly", "foo", root.getName());
+
+        root.setName("bar");
+
+        assertEquals("named correctly", "bar", root.getName());
+
+        QName xyz = root.getQName("xyz");
+
+        root.setQName(xyz);
+
+        assertEquals("QNamed correctly", xyz, root.getQName());
     }
-        
 }
 
 
@@ -90,7 +90,7 @@ public class GetQNamesTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

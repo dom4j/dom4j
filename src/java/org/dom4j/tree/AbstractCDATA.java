@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -16,17 +16,20 @@ import java.io.Writer;
 import org.dom4j.CDATA;
 import org.dom4j.Visitor;
 
-/** <p><code>AbstractCDATA</code> is an abstract base class for 
-  * tree implementors to use for implementation inheritence.</p>
-  *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
-  * @version $Revision$
-  */
-public abstract class AbstractCDATA extends AbstractCharacterData implements CDATA {
-
+/**
+ * <p>
+ * <code>AbstractCDATA</code> is an abstract base class for  tree implementors
+ * to use for implementation inheritence.
+ * </p>
+ *
+ * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+ * @version $Revision$
+ */
+public abstract class AbstractCDATA extends AbstractCharacterData
+    implements CDATA {
     public AbstractCDATA() {
     }
-    
+
     public short getNodeType() {
         return CDATA_SECTION_NODE;
     }
@@ -37,23 +40,26 @@ public abstract class AbstractCDATA extends AbstractCharacterData implements CDA
 
     public String asXML() {
         StringWriter writer = new StringWriter();
+
         try {
-        	write(writer);
+            write(writer);
         } catch (IOException e) {
-        	// will not happen since we are using a StringWriter!
+            // will not happen since we are using a StringWriter!
         }
-        	
+
         return writer.toString();
     }
-    
+
     public void write(Writer writer) throws IOException {
-        writer.write( "<![CDATA[" );
+        writer.write("<![CDATA[");
+
         if (getText() != null) {
-        	writer.write(getText());
+            writer.write(getText());
         }
-        writer.write( "]]>" );
+
+        writer.write("]]>");
     }
-    
+
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }
@@ -86,7 +92,7 @@ public abstract class AbstractCDATA extends AbstractCharacterData implements CDA
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

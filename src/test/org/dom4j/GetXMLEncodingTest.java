@@ -1,66 +1,67 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j;
 
+import junit.textui.TestRunner;
+
 import java.io.ByteArrayInputStream;
 import java.io.StringReader;
 
-import junit.textui.TestRunner;
-
 import org.dom4j.io.SAXReader;
+
 import org.xml.sax.InputSource;
 
-/** 
+/**
+ * DOCUMENT ME!
  *
  * @author Maarten Coene
  * @version $Revision$
  */
 public class GetXMLEncodingTest extends AbstractTestCase {
-    
-	public static void main(String[] args) {
-		TestRunner.run(GetXMLEncodingTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(GetXMLEncodingTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     public void testXMLEncodingFromString() throws Exception {
         String xmlEnc = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root/>";
-       
+
         SAXReader reader = new SAXReader();
-        InputSource source = new InputSource(new ByteArrayInputStream(xmlEnc.getBytes("UTF-8")));
+        InputSource source =
+            new InputSource(new ByteArrayInputStream(xmlEnc.getBytes("UTF-8")));
         Document doc = reader.read(source);
         assertEquals("UTF-8", doc.getXMLEncoding());
-        
+
         doc = reader.read(new StringReader(xmlEnc));
         assertNull(doc.getXMLEncoding());
     }
-    
+
     public void testXMLEncodingFromURL() throws Exception {
-    	Document doc = getDocument("/xml/test/encode.xml");
-    	assertEquals("UTF-8", doc.getXMLEncoding());
-    	
-    	doc = getDocument("/xml/russArticle.xml");
-    	assertEquals("koi8-r", doc.getXMLEncoding());
+        Document doc = getDocument("/xml/test/encode.xml");
+        assertEquals("UTF-8", doc.getXMLEncoding());
+
+        doc = getDocument("/xml/russArticle.xml");
+        assertEquals("koi8-r", doc.getXMLEncoding());
     }
 
     public void testXMLEncodingFromStringWithHelper() throws Exception {
         String xmlEnc = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root/>";
         String xmlNoEnc = "<root/>";
 
-       	Document doc = DocumentHelper.parseText(xmlEnc);
-       	assertEquals("UTF-8", doc.getXMLEncoding());
-        
-       	doc = DocumentHelper.parseText(xmlNoEnc);
-       	assertNull(doc.getXMLEncoding());
+        Document doc = DocumentHelper.parseText(xmlEnc);
+        assertEquals("UTF-8", doc.getXMLEncoding());
+
+        doc = DocumentHelper.parseText(xmlNoEnc);
+        assertNull(doc.getXMLEncoding());
     }
-    
 }
 
 
@@ -90,7 +91,7 @@ public class GetXMLEncodingTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -24,112 +24,138 @@ import org.dom4j.ProcessingInstruction;
 import org.dom4j.QName;
 import org.dom4j.io.OutputFormat;
 
-/** <p><code>AbstractBranch</code> is an abstract base class for 
-  * tree implementors to use for implementation inheritence.</p>
-  *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
-  * @version $Revision$
-  */
+/**
+ * <p>
+ * <code>AbstractBranch</code> is an abstract base class for  tree implementors
+ * to use for implementation inheritence.
+ * </p>
+ *
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * @version $Revision$
+ */
 public abstract class AbstractBranch extends AbstractNode implements Branch {
-
     /** The output format used by default */
-    protected static final OutputFormat outputFormat = new OutputFormat();
-
+    protected static OutputFormat outputFormat = new OutputFormat();
     protected static final int DEFAULT_CONTENT_LIST_SIZE = 5;
-    
-    
-    public AbstractBranch() { 
+
+    public AbstractBranch() {
     }
 
-    
     public boolean isReadOnly() {
         return false;
-    }    
-    
+    }
+
     public boolean hasContent() {
         return nodeCount() > 0;
     }
 
     public List content() {
         List backingList = contentList();
+
         return new ContentListFacade(this, backingList);
     }
-    
+
     public String getText() {
         List content = contentList();
+
         if (content != null) {
             int size = content.size();
+
             if (size >= 1) {
                 Object first = content.get(0);
-                String firstText = getContentAsText( first );
+                String firstText = getContentAsText(first);
+
                 if (size == 1) {
                     // optimised to avoid StringBuffer creation
                     return firstText;
-                }
-                else {
-                    StringBuffer buffer = new StringBuffer( firstText );
-                    for ( int i = 1; i < size; i++ ) {
+                } else {
+                    StringBuffer buffer = new StringBuffer(firstText);
+
+                    for (int i = 1; i < size; i++) {
                         Object node = content.get(i);
-                        buffer.append( getContentAsText( node ) );
+                        buffer.append(getContentAsText(node));
                     }
+
                     return buffer.toString();
                 }
             }
         }
+
         return "";
     }
 
-    /** @return the text value of the given content object
-     * as text which returns the text value of CDATA, Entity or Text nodes
+    /**
+     * DOCUMENT ME!
+     *
+     * @param content DOCUMENT ME!
+     *
+     * @return the text value of the given content object as text which returns
+     *         the text value of CDATA, Entity or Text nodes
      */
     protected String getContentAsText(Object content) {
-        if ( content instanceof Node) {
+        if (content instanceof Node) {
             Node node = (Node) content;
-            switch ( node.getNodeType() ) {
+
+            switch (node.getNodeType()) {
                 case CDATA_SECTION_NODE:
+
                 //case ENTITY_NODE:
                 case ENTITY_REFERENCE_NODE:
                 case TEXT_NODE:
                     return node.getText();
+
+                default:
+                    break;
             }
-        }
-        else if ( content instanceof String) {
+        } else if (content instanceof String) {
             return (String) content;
         }
+
         return "";
     }
 
-    /** @return the XPath defined string-value of the given content object
+    /**
+     * DOCUMENT ME!
+     *
+     * @param content DOCUMENT ME!
+     *
+     * @return the XPath defined string-value of the given content object
      */
     protected String getContentAsStringValue(Object content) {
-        if ( content instanceof Node) {
+        if (content instanceof Node) {
             Node node = (Node) content;
-            switch ( node.getNodeType() ) {
+
+            switch (node.getNodeType()) {
                 case CDATA_SECTION_NODE:
+
                 //case ENTITY_NODE:
                 case ENTITY_REFERENCE_NODE:
                 case TEXT_NODE:
                 case ELEMENT_NODE:
                     return node.getStringValue();
+
+                default:
+                    break;
             }
-        }
-        else if ( content instanceof String) {
+        } else if (content instanceof String) {
             return (String) content;
         }
+
         return "";
     }
 
-    
     public String getTextTrim() {
         String text = getText();
 
         StringBuffer textContent = new StringBuffer();
         StringTokenizer tokenizer = new StringTokenizer(text);
+
         while (tokenizer.hasMoreTokens()) {
             String str = tokenizer.nextToken();
             textContent.append(str);
+
             if (tokenizer.hasMoreTokens()) {
-                textContent.append(" ");  // separator
+                textContent.append(" "); // separator
             }
         }
 
@@ -137,240 +163,292 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     }
 
     public void setProcessingInstructions(List listOfPIs) {
-        for ( Iterator iter = listOfPIs.iterator(); iter.hasNext(); ) {
+        for (Iterator iter = listOfPIs.iterator(); iter.hasNext();) {
             ProcessingInstruction pi = (ProcessingInstruction) iter.next();
             addNode(pi);
         }
     }
-    
-    public Element addElement(String name) {
-        Element node = getDocumentFactory().createElement( name );
-        add( node );
-        return node;
-    }
-    
-    public Element addElement(String qualifiedName, String namespaceURI) {
-        Element node = getDocumentFactory().createElement( qualifiedName, namespaceURI );
-        add( node );
-        return node;
-    }
-    
-    public Element addElement(QName qname) {
-        Element node = getDocumentFactory().createElement( qname );
-        add( node );
-        return node;
-    }
-    
-    public Element addElement(String name, String prefix, String uri) {
-        Namespace namespace = Namespace.get( prefix, uri );
-        QName qName = getDocumentFactory().createQName( name, namespace );
-        return addElement( qName );
-    }
-    
-    // polymorphic node methods    
 
+    public Element addElement(String name) {
+        Element node = getDocumentFactory().createElement(name);
+        add(node);
+
+        return node;
+    }
+
+    public Element addElement(String qualifiedName, String namespaceURI) {
+        Element node =
+            getDocumentFactory().createElement(qualifiedName, namespaceURI);
+        add(node);
+
+        return node;
+    }
+
+    public Element addElement(QName qname) {
+        Element node = getDocumentFactory().createElement(qname);
+        add(node);
+
+        return node;
+    }
+
+    public Element addElement(String name, String prefix, String uri) {
+        Namespace namespace = Namespace.get(prefix, uri);
+        QName qName = getDocumentFactory().createQName(name, namespace);
+
+        return addElement(qName);
+    }
+
+    // polymorphic node methods    
     public void add(Node node) {
-        switch ( node.getNodeType() ) {
+        switch (node.getNodeType()) {
             case ELEMENT_NODE:
                 add((Element) node);
+
                 break;
+
             case COMMENT_NODE:
                 add((Comment) node);
+
                 break;
+
             case PROCESSING_INSTRUCTION_NODE:
                 add((ProcessingInstruction) node);
+
                 break;
+
             default:
                 invalidNodeTypeAddException(node);
         }
     }
-    
+
     public boolean remove(Node node) {
-        switch ( node.getNodeType() ) {
+        switch (node.getNodeType()) {
             case ELEMENT_NODE:
                 return remove((Element) node);
+
             case COMMENT_NODE:
                 return remove((Comment) node);
+
             case PROCESSING_INSTRUCTION_NODE:
                 return remove((ProcessingInstruction) node);
+
             default:
                 invalidNodeTypeAddException(node);
+
                 return false;
         }
     }
-    
+
     // typesafe versions using node classes
-    
     public void add(Comment comment) {
         addNode(comment);
     }
-    
+
     public void add(Element element) {
         addNode(element);
     }
-    
+
     public void add(ProcessingInstruction pi) {
         addNode(pi);
     }
-    
+
     public boolean remove(Comment comment) {
         return removeNode(comment);
     }
-    
+
     public boolean remove(Element element) {
         return removeNode(element);
     }
-    
+
     public boolean remove(ProcessingInstruction pi) {
         return removeNode(pi);
     }
-    
-    
+
     public Element elementByID(String elementID) {
-        for ( int i = 0, size = nodeCount(); i < size; i++ ) {
+        for (int i = 0, size = nodeCount(); i < size; i++) {
             Node node = node(i);
-            if ( node instanceof Element ) {
+
+            if (node instanceof Element) {
                 Element element = (Element) node;
                 String id = elementID(element);
-                if ( id != null && id.equals( elementID ) ) {
+
+                if ((id != null) && id.equals(elementID)) {
                     return element;
-                }
-                else {
-                    element = element.elementByID( elementID );
-                    if ( element != null ) {
+                } else {
+                    element = element.elementByID(elementID);
+
+                    if (element != null) {
                         return element;
                     }
                 }
             }
         }
+
         return null;
     }
-    
+
     public void appendContent(Branch branch) {
-        for ( int i = 0, size = branch.nodeCount(); i < size; i++ ) {
+        for (int i = 0, size = branch.nodeCount(); i < size; i++) {
             Node node = branch.node(i);
-            add( (Node) node.clone() );
+            add((Node) node.clone());
         }
     }
-        
-    
+
     public Node node(int index) {
         Object object = contentList().get(index);
+
         if (object instanceof Node) {
             return (Node) object;
         }
+
         if (object instanceof String) {
             return getDocumentFactory().createText(object.toString());
         }
+
         return null;
     }
-    
+
     public int nodeCount() {
         return contentList().size();
     }
-    
+
     public int indexOf(Node node) {
-        return contentList().indexOf( node );
+        return contentList().indexOf(node);
     }
-    
+
     public Iterator nodeIterator() {
         return contentList().iterator();
     }
 
-    
     // Implementation methods
-    
-    /** @return the ID of the given <code>Element</code>
-      */
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @param element DOCUMENT ME!
+     *
+     * @return the ID of the given <code>Element</code>
+     */
     protected String elementID(Element element) {
         // XXX: there will be other ways of finding the ID
         // XXX: should probably have an IDResolver or something
-        return element.attributeValue( "ID" );
+        return element.attributeValue("ID");
     }
-    
-    /** @return the internal List used to manage the content */
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return the internal List used to manage the content
+     */
     protected abstract List contentList();
 
-    /** A Factory Method pattern which creates 
-      * a List implementation used to store content
-      */
+    /**
+     * A Factory Method pattern which creates  a List implementation used to
+     * store content
+     *
+     * @return DOCUMENT ME!
+     */
     protected List createContentList() {
-        return new ArrayList( DEFAULT_CONTENT_LIST_SIZE );
+        return new ArrayList(DEFAULT_CONTENT_LIST_SIZE);
     }
-    
-    /** A Factory Method pattern which creates 
-      * a List implementation used to store content
-      */
+
+    /**
+     * A Factory Method pattern which creates  a List implementation used to
+     * store content
+     *
+     * @param size DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
     protected List createContentList(int size) {
-        return new ArrayList( size );
+        return new ArrayList(size);
     }
-    
-    
-    /** A Factory Method pattern which creates 
-      * a BackedList implementation used to store results of 
-      * a filtered content query.     */
+
+    /**
+     * A Factory Method pattern which creates  a BackedList implementation used
+     * to store results of  a filtered content query.
+     *
+     * @return DOCUMENT ME!
+     */
     protected BackedList createResultList() {
-        return new BackedList( this, contentList() );
+        return new BackedList(this, contentList());
     }
-    
-    /** A Factory Method pattern which creates 
-      * a BackedList implementation which contains a single result
-      */
-    protected List createSingleResultList( Object result ) {
-        BackedList list = new BackedList( this, contentList(), 1 );
-        list.addLocal( result );
+
+    /**
+     * A Factory Method pattern which creates  a BackedList implementation
+     * which contains a single result
+     *
+     * @param result DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    protected List createSingleResultList(Object result) {
+        BackedList list = new BackedList(this, contentList(), 1);
+        list.addLocal(result);
+
         return list;
     }
-    
-    /** A Factory Method pattern which creates an empty
-      * a BackedList implementation
-      */
+
+    /**
+     * A Factory Method pattern which creates an empty a BackedList
+     * implementation
+     *
+     * @return DOCUMENT ME!
+     */
     protected List createEmptyList() {
-        return new BackedList( this, contentList(), 0 );
+        return new BackedList(this, contentList(), 0);
     }
-    
-    
+
     protected abstract void addNode(Node node);
-    
+
     protected abstract void addNode(int index, Node node);
-    
+
     protected abstract boolean removeNode(Node node);
-    
-    
-    /** Called when a new child node has been added to me
-      * to allow any parent relationships to be created or
-      * events to be fired.
-      */
+
+    /**
+     * Called when a new child node has been added to me to allow any parent
+     * relationships to be created or events to be fired.
+     *
+     * @param node DOCUMENT ME!
+     */
     protected abstract void childAdded(Node node);
-    
-    /** Called when a child node has been removed 
-      * to allow any parent relationships to be deleted or
-      * events to be fired.
-      */
+
+    /**
+     * Called when a child node has been removed  to allow any parent
+     * relationships to be deleted or events to be fired.
+     *
+     * @param node DOCUMENT ME!
+     */
     protected abstract void childRemoved(Node node);
 
-    /** Called when the given List content has been removed so
-      * each node should have its parent and document relationships
-      * cleared
-      */
+    /**
+     * Called when the given List content has been removed so each node should
+     * have its parent and document relationships cleared
+     */
     protected void contentRemoved() {
         List content = contentList();
-        for ( int i = 0, size = content.size(); i < size; i++ ) {
+
+        for (int i = 0, size = content.size(); i < size; i++) {
             Object object = content.get(i);
-            if ( object instanceof Node ) {
-                 childRemoved( (Node) object );
-            }            
+
+            if (object instanceof Node) {
+                childRemoved((Node) object);
+            }
         }
     }
 
-    /** Called when an invalid node has been added. 
-      * Throws an {@link IllegalAddException}.
-      */
+    /**
+     * Called when an invalid node has been added.  Throws an {@link
+     * IllegalAddException}.
+     *
+     * @param node DOCUMENT ME!
+     *
+     * @throws IllegalAddException DOCUMENT ME!
+     */
     protected void invalidNodeTypeAddException(Node node) {
-        throw new IllegalAddException( "Invalid node type. Cannot add node: " + node + " to this branch: " + this );
+        throw new IllegalAddException("Invalid node type. Cannot add node: "
+                                      + node + " to this branch: " + this);
     }
-    
-
 }
 
 
@@ -400,7 +478,7 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

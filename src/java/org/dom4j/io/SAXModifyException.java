@@ -1,30 +1,30 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j.io;
 
 /**
- * Exception internally thrown by the SAX Modification classes.
- * This is a RuntimeException since the {@link org.dom4j.ElementHandler} methods 
- * do not throw Exceptions.
- * 
+ * Exception internally thrown by the SAX Modification classes. This is a
+ * RuntimeException since the {@link org.dom4j.ElementHandler} methods  do not
+ * throw Exceptions.
+ *
  * @author Wonne Keysers (Realsoftware.be)
  */
 class SAXModifyException extends RuntimeException {
-
-   /**
-    * @param cause The causing {@link java.lang.Throwable}
-    */
-   protected SAXModifyException(Throwable cause) {
-      super(cause);
-   }
-   
+    /**
+     * DOCUMENT ME!
+     *
+     * @param cause The causing {@link java.lang.Throwable}
+     */
+    protected SAXModifyException(Throwable cause) {
+        super(cause);
+    }
 }
 
 
@@ -54,7 +54,7 @@ class SAXModifyException extends RuntimeException {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -20,20 +20,21 @@ import org.dom4j.Namespace;
 import org.dom4j.QName;
 import org.dom4j.tree.NamespaceStack;
 
-/** <p><code>DOMReader</code> navigates a W3C DOM tree and creates
-  * a DOM4J tree from it.</p>
-  *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
-  * @version $Revision$
-  */
+/**
+ * <p>
+ * <code>DOMReader</code> navigates a W3C DOM tree and creates a DOM4J tree
+ * from it.
+ * </p>
+ *
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * @version $Revision$
+ */
 public class DOMReader {
-
     /** <code>DocumentFactory</code> used to create new document objects */
     private DocumentFactory factory;
 
     /** stack of <code>Namespace</code> and <code>QName</code> objects */
     private NamespaceStack namespaceStack;
-
 
     public DOMReader() {
         this.factory = DocumentFactory.getInstance();
@@ -45,120 +46,131 @@ public class DOMReader {
         this.namespaceStack = new NamespaceStack(factory);
     }
 
-    /** @return the <code>DocumentFactory</code> used to create document objects
-      */
+    /**
+     * DOCUMENT ME!
+     *
+     * @return the <code>DocumentFactory</code> used to create document objects
+     */
     public DocumentFactory getDocumentFactory() {
         return factory;
     }
 
-    /** <p>This sets the <code>DocumentFactory</code> used to create new documents.
-      * This method allows the building of custom DOM4J tree objects to be implemented
-      * easily using a custom derivation of {@link DocumentFactory}</p>
-      *
-      * @param factory <code>DocumentFactory</code> used to create DOM4J objects
-      */
-    public void setDocumentFactory(DocumentFactory factory) {
-        this.factory = factory;
+    /**
+     * <p>
+     * This sets the <code>DocumentFactory</code> used to create new documents.
+     * This method allows the building of custom DOM4J tree objects to be
+     * implemented easily using a custom derivation of {@link DocumentFactory}
+     * </p>
+     *
+     * @param docFactory <code>DocumentFactory</code> used to create DOM4J
+     *        objects
+     */
+    public void setDocumentFactory(DocumentFactory docFactory) {
+        this.factory = docFactory;
         this.namespaceStack.setDocumentFactory(factory);
     }
 
     public Document read(org.w3c.dom.Document domDocument) {
-        if ( domDocument instanceof Document ) {
+        if (domDocument instanceof Document) {
             return (Document) domDocument;
         }
+
         Document document = createDocument();
 
         clearNamespaceStack();
 
         org.w3c.dom.NodeList nodeList = domDocument.getChildNodes();
-        for ( int i = 0, size = nodeList.getLength(); i < size; i++ ) {
-            readTree( nodeList.item(i), document );
+
+        for (int i = 0, size = nodeList.getLength(); i < size; i++) {
+            readTree(nodeList.item(i), document);
         }
+
         return document;
     }
-
 
     // Implementation methods
     protected void readTree(org.w3c.dom.Node node, Branch current) {
         Element element = null;
         Document document = null;
-        if ( current instanceof Element ) {
+
+        if (current instanceof Element) {
             element = (Element) current;
-        }
-        else {
+        } else {
             document = (Document) current;
         }
+
         switch (node.getNodeType()) {
             case org.w3c.dom.Node.ELEMENT_NODE:
                 readElement(node, current);
+
                 break;
 
             case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
-                if ( current instanceof Element ) {
-                    ((Element) current).addProcessingInstruction(
-                        node.getNodeName(), node.getNodeValue()
-                    );
+
+                if (current instanceof Element) {
+                    Element currentEl = (Element) current;
+                    currentEl.addProcessingInstruction(node.getNodeName(),
+                                                       node.getNodeValue());
+                } else {
+                    Document currentDoc = (Document) current;
+                    currentDoc.addProcessingInstruction(node.getNodeName(),
+                                                        node.getNodeValue());
                 }
-                else {
-                    ((Document) current).addProcessingInstruction(
-                        node.getNodeName(), node.getNodeValue()
-                    );
-                }
+
                 break;
 
             case org.w3c.dom.Node.COMMENT_NODE:
-                if ( current instanceof Element ) {
-                    ((Element) current).addComment( node.getNodeValue() );
+
+                if (current instanceof Element) {
+                    ((Element) current).addComment(node.getNodeValue());
+                } else {
+                    ((Document) current).addComment(node.getNodeValue());
                 }
-                else {
-                    ((Document) current).addComment( node.getNodeValue() );
-                }
+
                 break;
 
             case org.w3c.dom.Node.DOCUMENT_TYPE_NODE:
-                org.w3c.dom.DocumentType domDocType
-                    = (org.w3c.dom.DocumentType) node;
 
-                document.addDocType(
-                    domDocType.getName(),
-                    domDocType.getPublicId(),
-                    domDocType.getSystemId()
-                );
+                org.w3c.dom.DocumentType domDocType =
+                    (org.w3c.dom.DocumentType) node;
+                document.addDocType(domDocType.getName(),
+                                    domDocType.getPublicId(),
+                                    domDocType.getSystemId());
+
                 break;
 
             case org.w3c.dom.Node.TEXT_NODE:
-                element.addText( node.getNodeValue() );
+                element.addText(node.getNodeValue());
+
                 break;
 
             case org.w3c.dom.Node.CDATA_SECTION_NODE:
-                element.addCDATA( node.getNodeValue() );
+                element.addCDATA(node.getNodeValue());
+
                 break;
 
+            case org.w3c.dom.Node.ENTITY_REFERENCE_NODE:
 
-            case org.w3c.dom.Node.ENTITY_REFERENCE_NODE: {
                 // is there a better way to get the value of an entity?
-                    org.w3c.dom.Node firstChild = node.getFirstChild();
-                    if ( firstChild != null ) {
-                        element.addEntity(
-                            node.getNodeName(),
-                            firstChild.getNodeValue()
-                        );
-                    }
-                    else {
-                        element.addEntity( node.getNodeName(), "" );
-                    }
+                org.w3c.dom.Node firstChild = node.getFirstChild();
+
+                if (firstChild != null) {
+                    element.addEntity(node.getNodeName(),
+                                      firstChild.getNodeValue());
+                } else {
+                    element.addEntity(node.getNodeName(), "");
                 }
+
                 break;
 
             case org.w3c.dom.Node.ENTITY_NODE:
-                element.addEntity(
-                    node.getNodeName(),
-                    node.getNodeValue()
-                );
+                element.addEntity(node.getNodeName(), node.getNodeValue());
+
                 break;
 
             default:
-                System.out.println( "WARNING: Unknown DOM node type: " + node.getNodeType() );
+                System.out.println("WARNING: Unknown DOM node type: "
+                                   + node.getNodeType());
         }
     }
 
@@ -167,63 +179,70 @@ public class DOMReader {
 
         String namespaceUri = node.getNamespaceURI();
         String elementPrefix = node.getPrefix();
+
         if (elementPrefix == null) {
             elementPrefix = "";
         }
-        
+
         org.w3c.dom.NamedNodeMap attributeList = node.getAttributes();
-        if (( attributeList != null ) && ( namespaceUri == null )) {
+
+        if ((attributeList != null) && (namespaceUri == null)) {
             // test if we have an "xmlns" attribute
-            org.w3c.dom.Node attribute = attributeList.getNamedItem( "xmlns" );
-            if ( attribute != null ) {
+            org.w3c.dom.Node attribute = attributeList.getNamedItem("xmlns");
+
+            if (attribute != null) {
                 namespaceUri = attribute.getNodeValue();
                 elementPrefix = "";
             }
         }
 
-        QName qName = namespaceStack.getQName( namespaceUri, node.getLocalName(), node.getNodeName() );
+        QName qName =
+            namespaceStack.getQName(namespaceUri, node.getLocalName(),
+                                    node.getNodeName());
         Element element = current.addElement(qName);
-        
-        if ( attributeList != null ) {
+
+        if (attributeList != null) {
             int size = attributeList.getLength();
             List attributes = new ArrayList(size);
-            for ( int i = 0; i < size; i++ ) {
+
+            for (int i = 0; i < size; i++) {
                 org.w3c.dom.Node attribute = attributeList.item(i);
 
                 // Define all namespaces first then process attributes later
                 String name = attribute.getNodeName();
+
                 if (name.startsWith("xmlns")) {
                     String prefix = getPrefix(name);
                     String uri = attribute.getNodeValue();
 
-//                    if (!uri.equals(namespaceUri) || !prefix.equals(elementPrefix)) {
-                        Namespace namespace = namespaceStack.addNamespace( prefix, uri );
-                        element.add( namespace );
-//                    }
-                }
-                else {
-                    attributes.add( attribute );
+                    Namespace namespace =
+                        namespaceStack.addNamespace(prefix, uri);
+                    element.add(namespace);
+                } else {
+                    attributes.add(attribute);
                 }
             }
 
             // now add the attributes, the namespaces should be available
             size = attributes.size();
-            for ( int i = 0; i < size; i++ ) {
-                org.w3c.dom.Node attribute = (org.w3c.dom.Node) attributes.get(i);
-                QName attributeQName = namespaceStack.getQName(
-                    attribute.getNamespaceURI(),
-                    attribute.getLocalName(),
-                    attribute.getNodeName()
-                );
-                element.addAttribute( attributeQName, attribute.getNodeValue() );
+
+            for (int i = 0; i < size; i++) {
+                org.w3c.dom.Node attribute =
+                    (org.w3c.dom.Node) attributes.get(i);
+                QName attributeQName =
+                    namespaceStack.getQName(attribute.getNamespaceURI(),
+                                            attribute.getLocalName(),
+                                            attribute.getNodeName());
+                element.addAttribute(attributeQName, attribute.getNodeValue());
             }
         }
 
         // Recurse on child nodes
         org.w3c.dom.NodeList children = node.getChildNodes();
-        for ( int i = 0, size = children.getLength(); i < size; i++ ) {
+
+        for (int i = 0, size = children.getLength(); i < size; i++) {
             org.w3c.dom.Node child = children.item(i);
-            readTree( child, element );
+            readTree(child, element);
         }
 
         // pop namespaces from the stack
@@ -242,13 +261,15 @@ public class DOMReader {
 
     protected void clearNamespaceStack() {
         namespaceStack.clear();
-        if ( ! namespaceStack.contains( Namespace.XML_NAMESPACE ) ) {
-            namespaceStack.push( Namespace.XML_NAMESPACE );
+
+        if (!namespaceStack.contains(Namespace.XML_NAMESPACE)) {
+            namespaceStack.push(Namespace.XML_NAMESPACE);
         }
     }
-    
+
     private String getPrefix(String xmlnsDecl) {
         int index = xmlnsDecl.indexOf(':', 5);
+
         if (index != -1) {
             return xmlnsDecl.substring(index + 1);
         } else {
@@ -284,7 +305,7 @@ public class DOMReader {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,65 +1,50 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j.xpath;
 
-import java.io.File;
-import java.util.Iterator;
-import java.util.List;
-
 import junit.textui.TestRunner;
 
+import java.io.File;
+import java.util.List;
+
 import org.dom4j.AbstractTestCase;
-import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
 
-/** 
+/**
  * Test harness for the sorting version of the selectNodes() function
  *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
  * @version $Revision$
  */
 public class SortByTest extends AbstractTestCase {
-
-    protected static boolean VERBOSE = true;
-    
-	public static void main(String[] args) {
-		TestRunner.run(SortByTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(SortByTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     public void testXPaths() throws Exception {
-        
-        List list = document.selectNodes( "//SPEAKER", "NAME" );
-        
-        log( "Number of SPEAKER instances: " + list.size() );
-        
-        List noDuplicates = document.selectNodes( "//SPEAKER", ".", true );
-        
-        log( "Number of distinct SPEAKER instances: " + noDuplicates.size() );
-        
-        log( "Number of distinct SPEAKER instances: " + noDuplicates.size() );
-        
-        if ( VERBOSE ) {
-            log( "Results of sorted XPath expression with duplicates removed... " );
+        List list = document.selectNodes("//SPEAKER", "NAME");
 
-            for ( Iterator iter = noDuplicates.iterator(); iter.hasNext(); ) {
-                Node node = (Node) iter.next();
-                System.out.println( node.asXML() );
-            }
-        }
+        log("Number of SPEAKER instances: " + list.size());
+
+        List noDuplicates = document.selectNodes("//SPEAKER", ".", true);
+
+        log("Number of distinct SPEAKER instances: " + noDuplicates.size());
+
+        log("Number of distinct SPEAKER instances: " + noDuplicates.size());
     }
-        
+
     protected void setUp() throws Exception {
-    	super.setUp();
-        document = new SAXReader().read( new File( "xml/much_ado.xml" ) );
+        super.setUp();
+        document = new SAXReader().read(new File("xml/much_ado.xml"));
     }
 }
 
@@ -90,7 +75,7 @@ public class SortByTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -12,60 +12,65 @@ package org.dom4j.tree;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
 
-/** <p><code>FlyweightAttribute</code> is a Flyweight pattern implementation
-  * of a singly linked, read-only XML Attribute.</p>
-  *
-  * <p>This node could be shared across documents and elements though 
-  * it does not support the parent relationship.</p>
-  *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
-  * @version $Revision$
-  */
+/**
+ * <p>
+ * <code>FlyweightAttribute</code> is a Flyweight pattern implementation of a
+ * singly linked, read-only XML Attribute.
+ * </p>
+ * 
+ * <p>
+ * This node could be shared across documents and elements though  it does not
+ * support the parent relationship.
+ * </p>
+ *
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * @version $Revision$
+ */
 public class FlyweightAttribute extends AbstractAttribute {
-
     /** The <code>QName</code> for this element */
     private QName qname;
-    
+
     /** The value of the <code>Attribute</code> */
     protected String value;
 
-    
     public FlyweightAttribute(QName qname) {
         this.qname = qname;
     }
 
-    public FlyweightAttribute(QName qname,String value) { 
+    public FlyweightAttribute(QName qname, String value) {
         this.qname = qname;
         this.value = value;
     }
-    
-    /** Creates the <code>Attribute</code> with the specified local name
-      * and value.
-      *
-      * @param name is the name of the attribute
-      * @param value is the value of the attribute
-      */
-    public FlyweightAttribute(String name,String value) {
+
+    /**
+     * Creates the <code>Attribute</code> with the specified local name and
+     * value.
+     *
+     * @param name is the name of the attribute
+     * @param value is the value of the attribute
+     */
+    public FlyweightAttribute(String name, String value) {
         this.qname = getDocumentFactory().createQName(name);
         this.value = value;
     }
 
-    /** Creates the <code>Attribute</code> with the specified local name,
-      * value and <code>Namespace</code>.
-      *
-      * @param name is the name of the attribute
-      * @param value is the value of the attribute
-      * @param namespace is the namespace of the attribute
-      */
-    public FlyweightAttribute(String name,String value,Namespace namespace) {
+    /**
+     * Creates the <code>Attribute</code> with the specified local name, value
+     * and <code>Namespace</code>.
+     *
+     * @param name is the name of the attribute
+     * @param value is the value of the attribute
+     * @param namespace is the namespace of the attribute
+     */
+    public FlyweightAttribute(String name, String value, Namespace namespace) {
         this.qname = getDocumentFactory().createQName(name, namespace);
         this.value = value;
     }
-    
+
     public String getValue() {
         return value;
     }
-    
+
     public QName getQName() {
         return qname;
     }
@@ -98,7 +103,7 @@ public class FlyweightAttribute extends AbstractAttribute {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -12,57 +12,57 @@ package org.dom4j.io;
 import javax.xml.transform.sax.SAXResult;
 
 import org.dom4j.Document;
+
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
 
 /**
- * <p><code>DocumentResult</code> implements a JAXP {@link SAXResult} 
- * for a {@link Document}.</p>
+ * <p>
+ * <code>DocumentResult</code> implements a JAXP {@link SAXResult}  for a
+ * {@link Document}.
+ * </p>
  *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
  * @version $Revision$
  */
 public class DocumentResult extends SAXResult {
-
     private SAXContentHandler contentHandler;
-    
+
     public DocumentResult() {
-        this( new SAXContentHandler() );
+        this(new SAXContentHandler());
     }
-    
+
     public DocumentResult(SAXContentHandler contentHandler) {
         this.contentHandler = contentHandler;
-        super.setHandler( this.contentHandler );
-        super.setLexicalHandler( this.contentHandler );
+        super.setHandler(this.contentHandler);
+        super.setLexicalHandler(this.contentHandler);
     }
 
-    /** @return the Document created by the transformation 
-      */
+    /**
+     * DOCUMENT ME!
+     *
+     * @return the Document created by the transformation
+     */
     public Document getDocument() {
         return contentHandler.getDocument();
     }
 
-
     // Overloaded methods
-    //-------------------------------------------------------------------------                
-    
-    public void setHandler(ContentHandler handler) { 
-        if ( handler instanceof SAXContentHandler ) {
+    //-------------------------------------------------------------------------
+    public void setHandler(ContentHandler handler) {
+        if (handler instanceof SAXContentHandler) {
             this.contentHandler = (SAXContentHandler) handler;
-            super.setHandler( this.contentHandler );
+            super.setHandler(this.contentHandler);
         }
     }
 
-    public void setLexicalHandler(LexicalHandler handler) { 
-        if ( handler instanceof SAXContentHandler ) {
+    public void setLexicalHandler(LexicalHandler handler) {
+        if (handler instanceof SAXContentHandler) {
             this.contentHandler = (SAXContentHandler) handler;
-            super.setLexicalHandler( this.contentHandler );
+            super.setLexicalHandler(this.contentHandler);
         }
     }
 }
-
-
-
 
 
 
@@ -91,7 +91,7 @@ public class DocumentResult extends SAXResult {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

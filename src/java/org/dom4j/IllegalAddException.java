@@ -1,37 +1,37 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j;
 
-/** <p><code>IllegalAddException</code> is thrown when a node
-  * is added incorrectly to an <code>{@link Element}</code></p>
-  *
-  * @version $Revision$
-  */
+/**
+ * <p>
+ * <code>IllegalAddException</code> is thrown when a node is added incorrectly
+ * to an <code>{@link Element}</code>
+ * </p>
+ *
+ * @version $Revision$
+ */
 public class IllegalAddException extends IllegalArgumentException {
-
     public IllegalAddException(String reason) {
         super(reason);
     }
-    
-    public IllegalAddException(Element parent,Node node,String reason) {
-        super( "The node \"" + node.toString() 
-            + "\" could not be added to the element \"" 
-            + parent.getQualifiedName() + "\" because: " + reason 
-        );
+
+    public IllegalAddException(Element parent, Node node, String reason) {
+        super("The node \"" + node.toString()
+              + "\" could not be added to the element \""
+              + parent.getQualifiedName() + "\" because: " + reason);
     }
-    
-    public IllegalAddException(Branch parent,Node node,String reason) {
-        super( "The node \"" + node.toString() 
-            + "\" could not be added to the branch \"" 
-            + parent.getName() + "\" because: " + reason 
-        );
+
+    public IllegalAddException(Branch parent, Node node, String reason) {
+        super("The node \"" + node.toString()
+              + "\" could not be added to the branch \"" + parent.getName()
+              + "\" because: " + reason);
     }
 }
 
@@ -62,7 +62,7 @@ public class IllegalAddException extends IllegalArgumentException {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,148 +1,160 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j.io;
 
-import java.io.StringWriter;
-import java.io.StringReader;
-
 import junit.textui.TestRunner;
+
+import java.io.StringReader;
+import java.io.StringWriter;
 
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Document;
 
-/** 
+/**
  * A simple test harness to check that the XML Writer works
  *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
  * @version $Revision$
  */
 public class WriteUnmergedTextTest extends AbstractTestCase {
-
-    private String inputText = "<?xml version = \"1.0\"?><TestEscapedEntities><TEXT>Test using &lt; &amp; &gt;</TEXT></TestEscapedEntities>";
     protected static final boolean VERBOSE = true;
-    
-	public static void main(String[] args) {
-		TestRunner.run(WriteUnmergedTextTest.class);
-	}
+    private String inputText =
+        "<?xml version = \"1.0\"?><TestEscapedEntities><TEXT>Test using &lt; "
+        + "&amp; &gt;</TEXT></TestEscapedEntities>";
+
+    public static void main(String[] args) {
+        TestRunner.run(WriteUnmergedTextTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
-    public String readwriteText(OutputFormat outFormat, boolean mergeAdjacentText) throws Exception {
-        
+    //-------------------------------------------------------------------------
+    public String readwriteText(OutputFormat outFormat,
+                                boolean mergeAdjacentText)
+                         throws Exception {
         StringWriter out = new StringWriter();
         StringReader in = new StringReader(inputText);
         SAXReader reader = new SAXReader();
- 
+
         //reader.setValidation(true);
         reader.setMergeAdjacentText(mergeAdjacentText);
 
         Document document = reader.read(in);
 
-        XMLWriter writer = outFormat == null ? new XMLWriter(out) : new XMLWriter(out, outFormat);
+        XMLWriter writer =
+            (outFormat == null) ? new XMLWriter(out)
+                                : new XMLWriter(out, outFormat);
         writer.write(document);
-        writer.close(); 
-        
+        writer.close();
+
         String outText = out.toString();
+
         return outText;
-    }        
-    
-    
+    }
+
     public void testWithoutFormatNonMerged() throws Exception {
-
         String outText = readwriteText(null, false);
-            
-        if ( VERBOSE ) {
-            log( "Text output is ["  );
-            log( outText );
-            log( "]. Done" );
+
+        if (VERBOSE) {
+            log("Text output is [");
+            log(outText);
+            log("]. Done");
         }
-        
+
         // should contain &amp; and &lt;
-        assertTrue("Output text contains \"&amp;\"", outText.lastIndexOf("&amp;") >= 0);
-        assertTrue("Output text contains \"&lt;\"", outText.lastIndexOf("&lt;") >= 0);
-    } 
-           
+        assertTrue("Output text contains \"&amp;\"",
+                   outText.lastIndexOf("&amp;") >= 0);
+        assertTrue("Output text contains \"&lt;\"",
+                   outText.lastIndexOf("&lt;") >= 0);
+    }
+
     public void testWithCompactFormatNonMerged() throws Exception {
+        String outText =
+            readwriteText(OutputFormat.createCompactFormat(), false);
 
-        String outText = readwriteText(OutputFormat.createCompactFormat(), false);
-            
-        if ( VERBOSE ) {
-            log( "Text output is ["  );
-            log( outText );
-            log( "]. Done" );
+        if (VERBOSE) {
+            log("Text output is [");
+            log(outText);
+            log("]. Done");
         }
-        
+
         // should contain &amp; and &lt;
-        assertTrue("Output text contains \"&amp;\"", outText.lastIndexOf("&amp;") >= 0);
-        assertTrue("Output text contains \"&lt;\"", outText.lastIndexOf("&lt;") >= 0);
+        assertTrue("Output text contains \"&amp;\"",
+                   outText.lastIndexOf("&amp;") >= 0);
+        assertTrue("Output text contains \"&lt;\"",
+                   outText.lastIndexOf("&lt;") >= 0);
     }
-            
+
     public void testWithPrettyPrintFormatNonMerged() throws Exception {
-
         String outText = readwriteText(OutputFormat.createPrettyPrint(), false);
-            
-        if ( VERBOSE ) {
-            log( "Text output is ["  );
-            log( outText );
-            log( "]. Done" );
-        }
-        
-        // should contain &amp; and &lt;
-        assertTrue("Output text contains \"&amp;\"", outText.lastIndexOf("&amp;") >= 0);
-        assertTrue("Output text contains \"&lt;\"", outText.lastIndexOf("&lt;") >= 0);
-    }        
-   
-    public void testWithoutFormatMerged() throws Exception {
 
-        String outText = readwriteText(null, true);
-            
-        if ( VERBOSE ) {
-            log( "Text output is ["  );
-            log( outText );
-            log( "]. Done" );
+        if (VERBOSE) {
+            log("Text output is [");
+            log(outText);
+            log("]. Done");
         }
-        
-        // should contain &amp; and &lt;
-        assertTrue("Output text contains \"&amp;\"", outText.lastIndexOf("&amp;") >= 0);
-        assertTrue("Output text contains \"&lt;\"", outText.lastIndexOf("&lt;") >= 0);
-    } 
-           
-    public void testWithCompactFormatMerged() throws Exception {
 
-        String outText = readwriteText(OutputFormat.createCompactFormat(), true);
-            
-        if ( VERBOSE ) {
-            log( "Text output is ["  );
-            log( outText );
-            log( "]. Done" );
-        }
-        
         // should contain &amp; and &lt;
-        assertTrue("Output text contains \"&amp;\"", outText.lastIndexOf("&amp;") >= 0);
-        assertTrue("Output text contains \"&lt;\"", outText.lastIndexOf("&lt;") >= 0);
+        assertTrue("Output text contains \"&amp;\"",
+                   outText.lastIndexOf("&amp;") >= 0);
+        assertTrue("Output text contains \"&lt;\"",
+                   outText.lastIndexOf("&lt;") >= 0);
     }
-            
-    public void testWithPrettyPrintFormatMerged() throws Exception {
 
-        String outText = readwriteText(OutputFormat.createPrettyPrint(), true);
-            
-        if ( VERBOSE ) {
-            log( "Text output is ["  );
-            log( outText );
-            log( "]. Done" );
+    public void testWithoutFormatMerged() throws Exception {
+        String outText = readwriteText(null, true);
+
+        if (VERBOSE) {
+            log("Text output is [");
+            log(outText);
+            log("]. Done");
         }
-        
+
         // should contain &amp; and &lt;
-        assertTrue("Output text contains \"&amp;\"", outText.lastIndexOf("&amp;") >= 0);
-        assertTrue("Output text contains \"&lt;\"", outText.lastIndexOf("&lt;") >= 0);
-    }        
+        assertTrue("Output text contains \"&amp;\"",
+                   outText.lastIndexOf("&amp;") >= 0);
+        assertTrue("Output text contains \"&lt;\"",
+                   outText.lastIndexOf("&lt;") >= 0);
+    }
+
+    public void testWithCompactFormatMerged() throws Exception {
+        String outText =
+            readwriteText(OutputFormat.createCompactFormat(), true);
+
+        if (VERBOSE) {
+            log("Text output is [");
+            log(outText);
+            log("]. Done");
+        }
+
+        // should contain &amp; and &lt;
+        assertTrue("Output text contains \"&amp;\"",
+                   outText.lastIndexOf("&amp;") >= 0);
+        assertTrue("Output text contains \"&lt;\"",
+                   outText.lastIndexOf("&lt;") >= 0);
+    }
+
+    public void testWithPrettyPrintFormatMerged() throws Exception {
+        String outText = readwriteText(OutputFormat.createPrettyPrint(), true);
+
+        if (VERBOSE) {
+            log("Text output is [");
+            log(outText);
+            log("]. Done");
+        }
+
+        // should contain &amp; and &lt;
+        assertTrue("Output text contains \"&amp;\"",
+                   outText.lastIndexOf("&amp;") >= 0);
+        assertTrue("Output text contains \"&lt;\"",
+                   outText.lastIndexOf("&lt;") >= 0);
+    }
 }
 
 
@@ -172,7 +184,7 @@ public class WriteUnmergedTextTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

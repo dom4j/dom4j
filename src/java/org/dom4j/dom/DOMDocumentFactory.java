@@ -24,47 +24,51 @@ import org.dom4j.ProcessingInstruction;
 import org.dom4j.QName;
 import org.dom4j.Text;
 
-/** <p><code>DOMDocumentFactory</code> is a factory of DOM4J objects
-  * which implement the W3C DOM API.</p>
-  *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
-  * @version $Revision$
-  */
-public class DOMDocumentFactory extends DocumentFactory implements org.w3c.dom.DOMImplementation {
+import org.w3c.dom.DOMException;
 
-    /** The Singleton instance */
-    //protected static transient DOMDocumentFactory singleton = new DOMDocumentFactory();
-    private final static ThreadLocal singlePerThread=new ThreadLocal();
-    private static String domDocumentFactoryClassName=null;
+/**
+ * <p>
+ * <code>DOMDocumentFactory</code> is a factory of DOM4J objects which
+ * implement the W3C DOM API.
+ * </p>
+ *
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * @version $Revision$
+ */
+public class DOMDocumentFactory extends DocumentFactory
+    implements org.w3c.dom.DOMImplementation {
+    private static final ThreadLocal SINGLE_PER_THREAD = new ThreadLocal();
+    private static String domDocumentFactoryClassName = null;
 
-
-
-    /** <p>Access to the singleton instance of this factory.</p>
-      *
-      * @return the default singleon instance
-      */
+    /**
+     * <p>
+     * Access to the singleton instance of this factory.
+     * </p>
+     *
+     * @return the default singleon instance
+     */
     public static DocumentFactory getInstance() {
-      DOMDocumentFactory fact =(DOMDocumentFactory)singlePerThread.get();
-       if (fact==null) {
-         fact=  new DOMDocumentFactory();
-         singlePerThread.set(fact);
+        DOMDocumentFactory fact = (DOMDocumentFactory) SINGLE_PER_THREAD.get();
+
+        if (fact == null) {
+            fact = new DOMDocumentFactory();
+            SINGLE_PER_THREAD.set(fact);
         }
-       if (fact==null){
-       }
-       return fact;
+
+        return fact;
     }
 
-
     // Factory methods
-
     public Document createDocument() {
         DOMDocument answer = new DOMDocument();
-        answer.setDocumentFactory( this );
+        answer.setDocumentFactory(this);
+
         return answer;
     }
 
-    public DocumentType createDocType(String name, String publicId, String systemId) {
-        return new DOMDocumentType( name, publicId, systemId );
+    public DocumentType createDocType(String name, String publicId,
+                                      String systemId) {
+        return new DOMDocumentType(name, publicId, systemId);
     }
 
     public Element createElement(QName qname) {
@@ -103,63 +107,61 @@ public class DOMDocumentFactory extends DocumentFactory implements org.w3c.dom.D
         return new DOMNamespace(prefix, uri);
     }
 
-
-    public ProcessingInstruction createProcessingInstruction(String target, String data) {
+    public ProcessingInstruction createProcessingInstruction(String target,
+                                                             String data) {
         return new DOMProcessingInstruction(target, data);
     }
 
-    public ProcessingInstruction createProcessingInstruction(String target, Map data) {
+    public ProcessingInstruction createProcessingInstruction(String target,
+                                                             Map data) {
         return new DOMProcessingInstruction(target, data);
     }
 
     // org.w3c.dom.DOMImplementation interface
-
-    public boolean hasFeature(String feature, String version) {
-        if ("XML".equalsIgnoreCase(feature) || "Core".equalsIgnoreCase(feature)) {
-          return (version == null || version.length() == 0 || "1.0".equals(version) || "2.0".equals(version));
+    public boolean hasFeature(String feat, String version) {
+        if ("XML".equalsIgnoreCase(feat) || "Core".equalsIgnoreCase(feat)) {
+            return ((version == null) || (version.length() == 0)
+                   || "1.0".equals(version) || "2.0".equals(version));
         }
+
         return false;
     }
 
-    public org.w3c.dom.DocumentType createDocumentType(
-        String qualifiedName, String publicId, String systemId
-    ) throws org.w3c.dom.DOMException {
-        return new DOMDocumentType( qualifiedName, publicId, systemId );
+    public org.w3c.dom.DocumentType createDocumentType(String qualifiedName,
+                                                       String publicId,
+                                                       String systemId)
+                                                throws DOMException {
+        return new DOMDocumentType(qualifiedName, publicId, systemId);
     }
 
-    public org.w3c.dom.Document createDocument(
-        String namespaceURI,
-        String qualifiedName,
-        org.w3c.dom.DocumentType documentType
-    ) throws org.w3c.dom.DOMException {
+    public org.w3c.dom.Document createDocument(String namespaceURI,
+                                               String qualifiedName,
+                                               org.w3c.dom.DocumentType docType)
+                                        throws org.w3c.dom.DOMException {
         DOMDocument document;
-        if (documentType != null) {
-            DOMDocumentType docType = asDocumentType( documentType );
-            document = new DOMDocument( docType );
+
+        if (docType != null) {
+            DOMDocumentType documentType = asDocumentType(docType);
+            document = new DOMDocument(documentType);
         } else {
             document = new DOMDocument();
         }
 
-        document.addElement( createQName( qualifiedName, namespaceURI ) );
+        document.addElement(createQName(qualifiedName, namespaceURI));
+
         return document;
-   }
-
-
-    // Implementation methods
-
-    protected DOMDocumentType asDocumentType( org.w3c.dom.DocumentType documentType ) {
-        if ( documentType instanceof DOMDocumentType ) {
-            return (DOMDocumentType) documentType;
-        }
-        else {
-            return new DOMDocumentType(
-                documentType.getName(),
-                documentType.getPublicId(),
-                documentType.getSystemId()
-            );
-        }
     }
 
+    // Implementation methods
+    protected DOMDocumentType asDocumentType(org.w3c.dom.DocumentType docType) {
+        if (docType instanceof DOMDocumentType) {
+            return (DOMDocumentType) docType;
+        } else {
+            return new DOMDocumentType(docType.getName(),
+                                       docType.getPublicId(),
+                                       docType.getSystemId());
+        }
+    }
 }
 
 
@@ -189,7 +191,7 @@ public class DOMDocumentFactory extends DocumentFactory implements org.w3c.dom.D
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

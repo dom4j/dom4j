@@ -1,53 +1,51 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j;
 
-import java.io.StringWriter;
-
 import junit.textui.TestRunner;
+
+import java.io.StringWriter;
 
 import org.dom4j.io.HTMLWriter;
 import org.dom4j.io.OutputFormat;
 
-/** 
+/**
  * Test harness for the HTMLWriter
  *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  * @version $Revision$
  */
 public class HTMLWriterTest extends AbstractTestCase {
-
-	public static void main(String[] args) {
-		TestRunner.run(HTMLWriterTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(HTMLWriterTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     public void testWriter() throws Exception {
-        Document document = DocumentHelper.parseText( 
-            "<html> <body><![CDATA[First&nbsp;test]]></body> </html>"
-        );
+        String xml = "<html> <body><![CDATA[First&nbsp;test]]></body> </html>";
+        Document document = DocumentHelper.parseText(xml);
         StringWriter buffer = new StringWriter();
-        HTMLWriter writer = new HTMLWriter( buffer );
-        writer.write( document );
-        
+        HTMLWriter writer = new HTMLWriter(buffer);
+        writer.write(document);
+
         String output = buffer.toString();
-        
+
         String expects = "\n<html>\n  <body>First&nbsp;test</body>\n</html>\n";
-        
+
         System.out.println("expects: " + expects);
         System.out.println("output: " + output);
-        
-        assertEquals( "Output is correct", expects, output );
+
+        assertEquals("Output is correct", expects, output);
     }
-    
+
     public void testBug923882() throws Exception {
         Document doc = DocumentFactory.getInstance().createDocument();
         Element root = doc.addElement("root");
@@ -58,77 +56,85 @@ public class HTMLWriterTest extends AbstractTestCase {
         root.addText(" contai");
         root.addText("ning spaces and");
         root.addText(" multiple textnodes");
+
         OutputFormat format = new OutputFormat();
         format.setEncoding("UTF-8");
         format.setIndentSize(4);
         format.setNewlines(true);
         format.setTrimText(true);
         format.setExpandEmptyElements(true);
+
         StringWriter buffer = new StringWriter();
         HTMLWriter writer = new HTMLWriter(buffer, format);
-        writer.write( doc );
+        writer.write(doc);
+
         String xml = buffer.toString();
-        log( xml );
-        int start = xml.indexOf("<root"),
-                end = xml.indexOf("/root>")+6;
+        log(xml);
+
+        int start = xml.indexOf("<root");
+        int end = xml.indexOf("/root>") + 6;
         String eol = "\n"; //System.getProperty("line.separator");
-        String expected = 
-                "<root>this is simple text" + eol +
-                "    <child></child>containing spaces and multiple textnodes" + eol +
-                "</root>";
-        System.out.println("Expected:"); System.out.println(expected);
-        System.out.println("Obtained:"); System.out.println(xml.substring(start, end));
+        String expected =
+            "<root>this is simple text" + eol
+            + "    <child></child>containing spaces and multiple textnodes"
+            + eol + "</root>";
+        System.out.println("Expected:");
+        System.out.println(expected);
+        System.out.println("Obtained:");
+        System.out.println(xml.substring(start, end));
         assertEquals(expected, xml.substring(start, end));
     }
-    
+
     public void testBug923882asWriter() throws Exception {
         // use an the HTMLWriter sax-methods.
         //
         StringWriter buffer = new StringWriter();
-        HTMLWriter writer = new HTMLWriter(buffer, OutputFormat.createPrettyPrint());
+        HTMLWriter writer =
+            new HTMLWriter(buffer, OutputFormat.createPrettyPrint());
         writer.characters("wor".toCharArray(), 0, 3);
         writer.characters("d-being-cut".toCharArray(), 0, 11);
-                
+
         String expected = "word-being-cut";
         assertEquals(expected, buffer.toString());
-        
+
         buffer = new StringWriter();
         writer = new HTMLWriter(buffer, OutputFormat.createPrettyPrint());
         writer.characters("    wor".toCharArray(), 0, 7);
         writer.characters("d being    ".toCharArray(), 0, 11);
         writer.characters("  cut".toCharArray(), 0, 5);
-                
+
         expected = "word being cut";
         assertEquals(expected, buffer.toString());
     }
-    
-    public void testBug923882asWriterWithEmptyCharArray() throws Exception {
+
+    public void testBug923882asWriterWithEmptyCharArray()
+                                                 throws Exception {
         // use an the HTMLWriter sax-methods.
         //
         StringWriter buffer = new StringWriter();
-        HTMLWriter writer = new HTMLWriter(buffer, OutputFormat.createPrettyPrint());
+        HTMLWriter writer =
+            new HTMLWriter(buffer, OutputFormat.createPrettyPrint());
         writer.characters("wor".toCharArray(), 0, 3);
         writer.characters(new char[0], 0, 0);
         writer.characters("d-being-cut".toCharArray(), 0, 11);
-                
+
         String expected = "word-being-cut";
         assertEquals(expected, buffer.toString());
     }
-    
+
     public void testBug619415() throws Exception {
         Document doc = getDocument("/xml/test/dosLineFeeds.xml");
-        
+
         StringWriter wr = new StringWriter();
         HTMLWriter writer = new HTMLWriter(wr, new OutputFormat("", false));
         writer.write(doc);
-        
+
         String result = wr.toString();
         System.out.println(result);
-        
+
         assertTrue(result.indexOf("Mary had a little lamb.") > -1);
         assertTrue(result.indexOf("Hello, this is a test.") > -1);
     }
-    
 }
 
 
@@ -158,7 +164,7 @@ public class HTMLWriterTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -18,65 +18,64 @@ import javax.xml.transform.sax.SAXResult;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
 
-/** <p><code>XMLResult</code> implements a JAXP {@link SAXResult}
-  * for an output stream with support for pretty printing
-  * and control over how the XML is formatted.</p>
-  *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
-  * @version $Revision$
-  */
+/**
+ * <p>
+ * <code>XMLResult</code> implements a JAXP {@link SAXResult} for an output
+ * stream with support for pretty printing and control over how the XML is
+ * formatted.
+ * </p>
+ *
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * @version $Revision$
+ */
 public class XMLResult extends SAXResult {
-
     private XMLWriter xmlWriter;
 
-    
     public XMLResult() {
-        this( new XMLWriter() );
+        this(new XMLWriter());
     }
-    
+
     public XMLResult(Writer writer) {
-        this( new XMLWriter( writer ) );
+        this(new XMLWriter(writer));
     }
-    
+
     public XMLResult(Writer writer, OutputFormat format) {
-        this( new XMLWriter( writer, format ) );
+        this(new XMLWriter(writer, format));
     }
-    
+
     public XMLResult(OutputStream out) throws UnsupportedEncodingException {
-        this( new XMLWriter( out ) );
+        this(new XMLWriter(out));
     }
-    
-    public XMLResult(OutputStream out, OutputFormat format) throws UnsupportedEncodingException {
-        this( new XMLWriter( out, format ) );
+
+    public XMLResult(OutputStream out, OutputFormat format)
+              throws UnsupportedEncodingException {
+        this(new XMLWriter(out, format));
     }
-    
+
     public XMLResult(XMLWriter xmlWriter) {
         super(xmlWriter);
         this.xmlWriter = xmlWriter;
-        setLexicalHandler( xmlWriter );
+        setLexicalHandler(xmlWriter);
     }
 
     public XMLWriter getXMLWriter() {
         return xmlWriter;
     }
-    
-    public void setXMLWriter(XMLWriter xmlWriter) {
-        this.xmlWriter = xmlWriter;
-        setHandler( xmlWriter );
-        setLexicalHandler( xmlWriter );
+
+    public void setXMLWriter(XMLWriter writer) {
+        this.xmlWriter = writer;
+        setHandler(xmlWriter);
+        setLexicalHandler(xmlWriter);
     }
-    
+
     public ContentHandler getHandler() {
         return xmlWriter;
     }
-    
+
     public LexicalHandler getLexicalHandler() {
         return xmlWriter;
     }
 }
-
-
-
 
 
 
@@ -105,7 +104,7 @@ public class XMLResult extends SAXResult {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

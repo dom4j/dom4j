@@ -1,71 +1,69 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j;
 
-import java.util.Iterator;
-
 import junit.textui.TestRunner;
+
+import java.util.Iterator;
 
 import org.dom4j.io.SAXReader;
 
-/** 
+/**
  * A test harness for SAXReader option setMergeAdjacentText(true)
  *
  * @author <a href="mailto:slehmann@novell.com">Steen Lehmann</a>
  * @version $Revision$
  */
 public class MergeTextTest extends AbstractTestCase {
-
     /** Input XML file to read */
-    protected static String INPUT_XML_FILE = "/xml/test/mergetext.xml";
-    
-	public static void main(String[] args) {
-		TestRunner.run(MergeTextTest.class);
-	}
+    private static final String INPUT_XML_FILE = "/xml/test/mergetext.xml";
+
+    public static void main(String[] args) {
+        TestRunner.run(MergeTextTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     public void testNoAdjacentText() throws Exception {
-        
         // After reading using SAXReader with mergeAdjacentText true,
         // no two Text objects should be adjacent to each other in the
         // document.
-
         SAXReader reader = new SAXReader();
         reader.setMergeAdjacentText(true);
+
         Document document = getDocument(INPUT_XML_FILE, reader);
 
         checkNoAdjacent(document.getRootElement());
-        log( "No adjacent Text nodes in " + document.asXML() );
+        log("No adjacent Text nodes in " + document.asXML());
     }
-        
+
     // Implementation methods
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     private void checkNoAdjacent(Element parent) {
         // Check that no two Text nodes are adjacent in the parent's content
         Node prev = null;
         Iterator iter = parent.nodeIterator();
-            while (iter.hasNext()) {
-                Node n = (Node)iter.next();
-                    if (n instanceof Text && (prev != null && prev instanceof Text)) {
-                        fail("Node: " + n + " is text and so is its "
-                            + "preceding sibling: " + prev);
-                    }
-                    else if (n instanceof Element) {
-                        checkNoAdjacent((Element)n);
-                    }
-                    
-                 prev = n;
+
+        while (iter.hasNext()) {
+            Node n = (Node) iter.next();
+
+            if (n instanceof Text && ((prev != null) && prev instanceof Text)) {
+                fail("Node: " + n + " is text and so is its "
+                     + "preceding sibling: " + prev);
+            } else if (n instanceof Element) {
+                checkNoAdjacent((Element) n);
             }
+
+            prev = n;
+        }
     }
-    
 }
 
 
@@ -95,7 +93,7 @@ public class MergeTextTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -16,80 +16,87 @@ import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.XPath;
 
-
-/** <p><code>Stylesheet</code> implements an XSLT stylesheet
-  * such that rules can be added to the stylesheet and the 
-  * stylesheet can be applied to a source document or node.</p>
-  *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
-  * @version $Revision$
-  */
+/**
+ * <p>
+ * <code>Stylesheet</code> implements an XSLT stylesheet such that rules can be
+ * added to the stylesheet and the  stylesheet can be applied to a source
+ * document or node.
+ * </p>
+ *
+ * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+ * @version $Revision$
+ */
 public class Stylesheet {
-
     private RuleManager ruleManager = new RuleManager();
-    
-    /** Holds value of property mode. */
-    private String modeName;    
 
-    
+    /** Holds value of property mode. */
+    private String modeName;
+
     public Stylesheet() {
     }
 
-    public void addRule( Rule rule ) {
-        ruleManager.addRule( rule );
-    }
-    
-    public void removeRule( Rule rule ) {
-        ruleManager.removeRule( rule );
+    public void addRule(Rule rule) {
+        ruleManager.addRule(rule);
     }
 
-    /** Runs this stylesheet on the given input which should be 
-      * either a Node or a List of Node objects.
-      */
+    public void removeRule(Rule rule) {
+        ruleManager.removeRule(rule);
+    }
+
+    /**
+     * Runs this stylesheet on the given input which should be  either a Node
+     * or a List of Node objects.
+     *
+     * @param input DOCUMENT ME!
+     *
+     * @throws Exception DOCUMENT ME!
+     */
     public void run(Object input) throws Exception {
         run(input, this.modeName);
     }
-    
+
     public void run(Object input, String mode) throws Exception {
         if (input instanceof Node) {
-            run ((Node) input, mode);
-        }
-        else if (input instanceof List) {
+            run((Node) input, mode);
+        } else if (input instanceof List) {
             run((List) input, mode);
         }
     }
-    
+
     public void run(List list) throws Exception {
         run(list, this.modeName);
     }
-    
+
     public void run(List list, String mode) throws Exception {
         for (int i = 0, size = list.size(); i < size; i++) {
             Object object = list.get(i);
+
             if (object instanceof Node) {
                 run((Node) object, mode);
             }
         }
     }
-    
+
     public void run(Node node) throws Exception {
         run(node, this.modeName);
     }
-    
+
     public void run(Node node, String mode) throws Exception {
         Mode mod = ruleManager.getMode(mode);
         mod.fireRule(node);
     }
-    
-    
-    public void applyTemplates(Object input, XPath xpath) throws Exception {
+
+    public void applyTemplates(Object input, XPath xpath)
+                        throws Exception {
         applyTemplates(input, xpath, this.modeName);
     }
-    
-    public void applyTemplates(Object input, XPath xpath, String mode) throws Exception {
+
+    public void applyTemplates(Object input, XPath xpath, String mode)
+                        throws Exception {
         List list = xpath.selectNodes(input);
         list.remove(input);
         applyTemplates(list, mode);
+
 //        for ( int i = 0, size = list.size(); i < size; i++ ) {
 //            Object object = list.get(i);
 //            if ( object != input && object instanceof Node ) {
@@ -97,14 +104,17 @@ public class Stylesheet {
 //            }
 //        }
     }
-    
-    public void applyTemplates(Object input, org.jaxen.XPath xpath) throws Exception {
+
+    public void applyTemplates(Object input, org.jaxen.XPath xpath)
+                        throws Exception {
         applyTemplates(input, xpath, this.modeName);
     }
-    
-    public void applyTemplates(Object input, org.jaxen.XPath xpath, String mode) throws Exception {
+
+    public void applyTemplates(Object input, org.jaxen.XPath xpath, String mode)
+                        throws Exception {
         List list = xpath.selectNodes(input);
         applyTemplates(list, mode);
+
 //        for ( int i = 0, size = list.size(); i < size; i++ ) {
 //            Object object = list.get(i);
 //            if ( object != input && object instanceof Node ) {
@@ -112,31 +122,31 @@ public class Stylesheet {
 //            }
 //        }
     }
-    
+
     public void applyTemplates(Object input) throws Exception {
         applyTemplates(input, this.modeName);
     }
-    
-    public void applyTemplates(Object input, String mode) throws Exception {
+
+    public void applyTemplates(Object input, String mode)
+                        throws Exception {
         // iterate through all children
         Mode mod = ruleManager.getMode(mode);
 
-        if ( input instanceof Element ) {
-            mod.applyTemplates( (Element) input );
-        }
-        else if ( input instanceof Document ) { 
-            mod.applyTemplates( (Document) input );
-        }
-        else if ( input instanceof List ) {
+        if (input instanceof Element) {
+            mod.applyTemplates((Element) input);
+        } else if (input instanceof Document) {
+            mod.applyTemplates((Document) input);
+        } else if (input instanceof List) {
             List list = (List) input;
-            for ( int i = 0, size = list.size(); i < size; i++ ) {
+
+            for (int i = 0, size = list.size(); i < size; i++) {
                 Object object = list.get(i);
-                if ( object != input ) {
-                    if ( object instanceof Element ) {
-                        mod.applyTemplates( (Element) object );
-                    }
-                    else if ( object instanceof Document ) { 
-                        mod.applyTemplates( (Document) object );
+
+                if (object != input) {
+                    if (object instanceof Element) {
+                        mod.applyTemplates((Element) object);
+                    } else if (object instanceof Document) {
+                        mod.applyTemplates((Document) object);
                     }
                 }
             }
@@ -147,36 +157,46 @@ public class Stylesheet {
         ruleManager.clear();
     }
 
-    
     // Properties
-    //-------------------------------------------------------------------------                
-    
-    /** @return the name of the mode the stylesheet uses by default
-      */
+    //-------------------------------------------------------------------------
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return the name of the mode the stylesheet uses by default
+     */
     public String getModeName() {
         return modeName;
     }
-    
-    /** Sets the name of the mode that the stylesheet uses by default.
-      */
+
+    /**
+     * Sets the name of the mode that the stylesheet uses by default.
+     *
+     * @param modeName DOCUMENT ME!
+     */
     public void setModeName(String modeName) {
         this.modeName = modeName;
     }
-    
-    /** @return the default value-of action which is used 
-     * in the default rules for the pattern "text()|@*"
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return the default value-of action which is used  in the default rules
+     *         for the pattern "text()|&#64;"
      */
     public Action getValueOfAction() {
         return ruleManager.getValueOfAction();
     }
-    
-    /** Sets the default value-of action which is used 
-     * in the default rules for the pattern "text()|@*"
+
+    /**
+     * Sets the default value-of action which is used  in the default rules for
+     * the pattern "text()|&#64;"
+     *
+     * @param valueOfAction DOCUMENT ME!
      */
     public void setValueOfAction(Action valueOfAction) {
-        ruleManager.setValueOfAction( valueOfAction );
+        ruleManager.setValueOfAction(valueOfAction);
     }
-    
 }
 
 
@@ -206,7 +226,7 @@ public class Stylesheet {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

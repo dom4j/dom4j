@@ -1,51 +1,52 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j.io;
 
+import junit.textui.TestRunner;
+
 import java.io.StringWriter;
+
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
-
-import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 
-/** 
+/**
+ * DOCUMENT ME!
  *
  * @author <a href="mailto:maartenc@sourceforge.net">Maarten Coene</a>
  */
 public class DocumentSourceTest extends AbstractTestCase {
-
-	public static void main(String[] args) {
-		TestRunner.run(DocumentSourceTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(DocumentSourceTest.class);
+    }
 
     // Test case(s)
     //-------------------------------------------------------------------------
     public void testBug555549() throws Exception {
         // simulate <cr><lf>
-        String xml = "<field id='Description' type='textarea'>line1" + (char) 13 + (char) 10 +
-                     "line2</field>";
+        String xml =
+            "<field id='Description' type='textarea'>line1" + (char) 13
+            + (char) 10 + "line2</field>";
         Document doc = DocumentHelper.parseText(xml);
         TransformerFactory tf = TransformerFactory.newInstance();
         Transformer txml = tf.newTransformer();
         StringWriter writer = new StringWriter();
         txml.transform(new DocumentSource(doc), new StreamResult(writer));
-        
+
         System.out.println(writer.toString());
         assertTrue(writer.toString().indexOf("&#13") == -1);
     }
-    
 }
 
 
@@ -75,7 +76,7 @@ public class DocumentSourceTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

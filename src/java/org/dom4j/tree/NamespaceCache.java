@@ -15,9 +15,12 @@ import java.util.Map;
 
 import org.dom4j.Namespace;
 
-/** 
- * <p><code>NamespaceCache</code> caches instances of <code>DefaultNamespace</code>
- * for reuse both across documents and within documents.</p>
+/**
+ * <p>
+ * <code>NamespaceCache</code> caches instances of
+ * <code>DefaultNamespace</code> for reuse both across documents and within
+ * documents.
+ * </p>
  *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
  * @author Maarten Coene
@@ -25,28 +28,48 @@ import org.dom4j.Namespace;
  * @version $Revision$
  */
 public class NamespaceCache {
+    private static final String CONCURRENTREADERHASHMAP_CLASS =
+        "EDU.oswego.cs.dl.util.concurrent.ConcurrentReaderHashMap";
 
-    /** Cache of {@link Map} instances indexed by URI which contain
-      * caches of {@link Namespace} for each prefix
-      */
-    protected static Map cache; 
+    /**
+     * Cache of {@link Map} instances indexed by URI which contain caches of
+     * {@link Namespace} for each prefix
+     */
+    protected static Map cache;
 
-    /** Cache of {@link Namespace} instances indexed by URI
-      * for default namespaces with no prefixes
-      */
+    /**
+     * Cache of {@link Namespace} instances indexed by URI for default
+     * namespaces with no prefixes
+     */
     protected static Map noPrefixCache;
 
     static {
         /* Try the java.util.concurrent.ConcurrentHashMap first. */
         try {
-            Class clazz = Class.forName("java.util.concurrent.ConcurrentHashMap");
-            Constructor construct = clazz.getConstructor(new Class[] {Integer.TYPE, Float.TYPE, Integer.TYPE});
-            cache = (Map) construct.newInstance(new Object[] {new Integer(11), new Float(0.75), new Integer(1)});
-            noPrefixCache = (Map) construct.newInstance(new Object[] {new Integer(11), new Float(0.75), new Integer(1)});
+            Class clazz =
+                Class.forName("java.util.concurrent.ConcurrentHashMap");
+            Constructor construct =
+                clazz.getConstructor(new Class[] {
+                                         Integer.TYPE,
+                                         Float.TYPE,
+                                         Integer.TYPE
+                                     });
+            cache =
+                (Map) construct.newInstance(new Object[] {
+                                                new Integer(11),
+                                                new Float(0.75f),
+                                                new Integer(1)
+                                            });
+            noPrefixCache =
+                (Map) construct.newInstance(new Object[] {
+                                                new Integer(11),
+                                                new Float(0.75f),
+                                                new Integer(1)
+                                            });
         } catch (Exception exc1) {
             /* Try to use the util.concurrent library (if in classpath) */
             try {
-                Class clazz = Class.forName("EDU.oswego.cs.dl.util.concurrent.ConcurrentReaderHashMap");
+                Class clazz = Class.forName(CONCURRENTREADERHASHMAP_CLASS);
                 cache = (Map) clazz.newInstance();
                 noPrefixCache = (Map) clazz.newInstance();
             } catch (Exception exc2) {
@@ -55,79 +78,109 @@ public class NamespaceCache {
                 noPrefixCache = new ConcurrentReaderHashMap();
             }
         }
-       
     }
 
-
-    /** @return the namespace for the given prefix and uri
-      */
+    /**
+     * DOCUMENT ME!
+     *
+     * @param prefix DOCUMENT ME!
+     * @param uri DOCUMENT ME!
+     *
+     * @return the namespace for the given prefix and uri
+     */
     public Namespace get(String prefix, String uri) {
-        Map cache = getURICache(uri);
-        WeakReference ref = (WeakReference) cache.get(prefix);
+        Map uriCache = getURICache(uri);
+        WeakReference ref = (WeakReference) uriCache.get(prefix);
         Namespace answer = null;
+
         if (ref != null) {
-        	answer = (Namespace) ref.get();
+            answer = (Namespace) ref.get();
         }
+
         if (answer == null) {
-            synchronized (cache) {
-                ref = (WeakReference) cache.get(prefix);
+            synchronized (uriCache) {
+                ref = (WeakReference) uriCache.get(prefix);
+
                 if (ref != null) {
-                	answer = (Namespace) ref.get();
+                    answer = (Namespace) ref.get();
                 }
+
                 if (answer == null) {
                     answer = createNamespace(prefix, uri);
-                    cache.put(prefix, new WeakReference(answer));
+                    uriCache.put(prefix, new WeakReference(answer));
                 }
             }
         }
+
         return answer;
     }
 
-
-    /** @return the name model for the given name and namepsace
-      */
+    /**
+     * DOCUMENT ME!
+     *
+     * @param uri DOCUMENT ME!
+     *
+     * @return the name model for the given name and namepsace
+     */
     public Namespace get(String uri) {
         WeakReference ref = (WeakReference) noPrefixCache.get(uri);
         Namespace answer = null;
+
         if (ref != null) {
-        	answer = (Namespace) ref.get();
+            answer = (Namespace) ref.get();
         }
+
         if (answer == null) {
             synchronized (noPrefixCache) {
-            	ref = (WeakReference) noPrefixCache.get(uri);
+                ref = (WeakReference) noPrefixCache.get(uri);
+
                 if (ref != null) {
-                	answer = (Namespace) ref.get();
+                    answer = (Namespace) ref.get();
                 }
+
                 if (answer == null) {
                     answer = createNamespace("", uri);
                     noPrefixCache.put(uri, new WeakReference(answer));
                 }
             }
         }
+
         return answer;
     }
 
-
-    /** @return the cache for the given namespace URI. If one does not
-      * currently exist it is created.
-      */
+    /**
+     * DOCUMENT ME!
+     *
+     * @param uri DOCUMENT ME!
+     *
+     * @return the cache for the given namespace URI. If one does not currently
+     *         exist it is created.
+     */
     protected Map getURICache(String uri) {
         Map answer = (Map) cache.get(uri);
+
         if (answer == null) {
             synchronized (cache) {
                 answer = (Map) cache.get(uri);
+
                 if (answer == null) {
                     answer = new ConcurrentReaderHashMap();
                     cache.put(uri, answer);
                 }
             }
         }
+
         return answer;
     }
 
-    /** A factory method to create {@link Namespace} instance
-      * @return a newly created {@link Namespace} instance.
-      */
+    /**
+     * A factory method to create {@link Namespace} instance
+     *
+     * @param prefix DOCUMENT ME!
+     * @param uri DOCUMENT ME!
+     *
+     * @return a newly created {@link Namespace} instance.
+     */
     protected Namespace createNamespace(String prefix, String uri) {
         return new Namespace(prefix, uri);
     }
@@ -160,8 +213,8 @@ public class NamespaceCache {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
- *    http://dom4j.org/
+ * 5. Due credit should be given to the DOM4J Project -
+ *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
  * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT

@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -13,37 +13,42 @@ import org.dom4j.Attribute;
 import org.dom4j.Element;
 import org.dom4j.QName;
 
-/** <p><code>AttributeHelper</code> a number of helper methods for 
-  * working with attribute values.</p>
-  *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
-  * @version $Revision$
-  */
+/**
+ * <p>
+ * <code>AttributeHelper</code> a number of helper methods for  working with
+ * attribute values.
+ * </p>
+ *
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * @version $Revision$
+ */
 public class AttributeHelper {
+    protected AttributeHelper() {
+    }
 
     public static boolean booleanValue(Element element, String attributeName) {
-        return booleanValue( element.attribute( attributeName ) );
+        return booleanValue(element.attribute(attributeName));
     }
-    
+
     public static boolean booleanValue(Element element, QName attributeQName) {
-        return booleanValue( element.attribute( attributeQName ) );
+        return booleanValue(element.attribute(attributeQName));
     }
-    
+
     protected static boolean booleanValue(Attribute attribute) {
-        if ( attribute == null ) {
+        if (attribute == null) {
             return false;
         }
+
         Object value = attribute.getData();
-        if ( value == null ) {
+
+        if (value == null) {
             return false;
-        }
-        else
-        if ( value instanceof Boolean ) {
+        } else if (value instanceof Boolean) {
             Boolean b = (Boolean) value;
+
             return b.booleanValue();
-        }
-        else {
-            return "true".equalsIgnoreCase( value.toString() );
+        } else {
+            return "true".equalsIgnoreCase(value.toString());
         }
     }
 }
@@ -75,7 +80,7 @@ public class AttributeHelper {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

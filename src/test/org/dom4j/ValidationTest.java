@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -13,27 +13,26 @@ import junit.textui.TestRunner;
 
 import org.dom4j.io.SAXReader;
 
-/** 
+/**
  * A test harness for validation when using SAXReader
  *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  * @version $Revision$
  */
 public class ValidationTest extends AbstractTestCase {
-
-	public static void main(String[] args) {
-		TestRunner.run(ValidationTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(ValidationTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     public void testValidation() throws Exception {
         try {
             SAXReader reader = new SAXReader(true);
             reader.read("test");
             fail();
         } catch (DocumentException e) {
-            ; // internal parser is non validating, so OK
+            // internal parser is non validating, so OK
         }
     }
 }
@@ -65,7 +64,7 @@ public class ValidationTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -11,59 +11,58 @@ package org.dom4j.tree;
 
 import org.dom4j.Element;
 
-/** <p><code>DefaultEntity</code> is the default Entity implementation.
-  * It is a doubly linked node which supports the parent relationship 
-  * and can be modified in place.</p>
-  *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
-  * @version $Revision$
-  */
+/**
+ * <p>
+ * <code>DefaultEntity</code> is the default Entity implementation. It is a
+ * doubly linked node which supports the parent relationship  and can be
+ * modified in place.
+ * </p>
+ *
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * @version $Revision$
+ */
 public class DefaultEntity extends FlyweightEntity {
-
     /** The parent of this node */
     private Element parent;
 
-    /** Creates the <code>Entity</code> with the specified name
-      *
-      * @param name is the name of the entity
-      */
+    /**
+     * Creates the <code>Entity</code> with the specified name
+     *
+     * @param name is the name of the entity
+     */
     public DefaultEntity(String name) {
-        super( name );
+        super(name);
     }
 
-    /** Creates the <code>Entity</code> with the specified name
-      * and text.
-      *
-      * @param name is the name of the entity
-      * @param text is the text of the entity
-      */
-    public DefaultEntity(String name,String text) {
-        super( name, text );
+    /**
+     * Creates the <code>Entity</code> with the specified name and text.
+     *
+     * @param name is the name of the entity
+     * @param text is the text of the entity
+     */
+    public DefaultEntity(String name, String text) {
+        super(name, text);
     }
-    
-    
-    /** Creates the <code>Entity</code> with the specified name
-      * and text.
-      *
-      * @param parent is the parent element
-      * @param name is the name of the entity
-      * @param text is the text of the entity
-      */
-    public DefaultEntity(Element parent,String name,String text) {
-        super( name, text );
+
+    /**
+     * Creates the <code>Entity</code> with the specified name and text.
+     *
+     * @param parent is the parent element
+     * @param name is the name of the entity
+     * @param text is the text of the entity
+     */
+    public DefaultEntity(Element parent, String name, String text) {
+        super(name, text);
         this.parent = parent;
     }
 
-    
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public void setText(String text) {
         this.text = text;
     }
-    
-    
 
     public Element getParent() {
         return parent;
@@ -72,15 +71,14 @@ public class DefaultEntity extends FlyweightEntity {
     public void setParent(Element parent) {
         this.parent = parent;
     }
-    
+
     public boolean supportsParent() {
         return true;
     }
-    
+
     public boolean isReadOnly() {
         return false;
     }
-
 }
 
 
@@ -110,7 +108,7 @@ public class DefaultEntity extends FlyweightEntity {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,13 +1,15 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j;
+
+import junit.textui.TestRunner;
 
 import java.io.StringWriter;
 
@@ -16,68 +18,63 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 
-import junit.textui.TestRunner;
-
 import org.dom4j.io.DocumentSource;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLResult;
 import org.dom4j.io.XMLWriter;
 
-/** 
+/**
  * Test harness for the XMLResult which acts as a JAXP Result
  *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  * @version $Revision$
  */
 public class XMLResultTest extends AbstractTestCase {
-
     protected static final boolean VERBOSE = false;
-    
-	public static void main(String[] args) {
-		TestRunner.run(XMLResultTest.class);
-	}
+
+    public static void main(String[] args) {
+        TestRunner.run(XMLResultTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     public void testWriter() throws Exception {
         // load a default transformer
         TransformerFactory factory = TransformerFactory.newInstance();
         Transformer transformer = factory.newTransformer();
-        
+
         // use dom4j document as the source
-        Source source = new DocumentSource( document );
-        
+        Source source = new DocumentSource(document);
+
         // use pretty print format and a buffer for the result
         OutputFormat format = OutputFormat.createCompactFormat();
         StringWriter buffer = new StringWriter();
-        Result result = new XMLResult( buffer, format );
-        
+        Result result = new XMLResult(buffer, format);
+
         // now lets transform
-        transformer.transform( source, result );
+        transformer.transform(source, result);
 
         String text = buffer.toString();
-        
-        if ( VERBOSE ) {
-            log( "Using JAXP and XMLResult the document is:- " );
-            log( text );
+
+        if (VERBOSE) {
+            log("Using JAXP and XMLResult the document is:- ");
+            log(text);
         }
-        
-        
-        
+
         StringWriter out = new StringWriter();
-        
-        XMLWriter writer = new XMLWriter( out, format );
-        writer.write( document );
-        
+
+        XMLWriter writer = new XMLWriter(out, format);
+        writer.write(document);
+
         String text2 = out.toString();
-            
-        if ( VERBOSE ) {
-            log( "Using XMLWriter the text is:-"  );
-            log( text2 );
+
+        if (VERBOSE) {
+            log("Using XMLWriter the text is:-");
+            log(text2);
         }
-        
-        assertEquals( "The text output should be identical", text2 ,text );
-    }            
+
+        assertEquals("The text output should be identical", text2, text);
+    }
 }
 
 
@@ -107,7 +104,7 @@ public class XMLResultTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

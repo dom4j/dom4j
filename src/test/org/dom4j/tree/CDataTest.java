@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -14,24 +14,24 @@ import junit.textui.TestRunner;
 import org.dom4j.AbstractTestCase;
 
 /**
+ * DOCUMENT ME!
+ *
  * @author Maarten Coene
  */
 public class CDataTest extends AbstractTestCase {
+    public static void main(String[] args) {
+        TestRunner.run(CDataTest.class);
+    }
 
-	public static void main(String[] args) {
-		TestRunner.run(CDataTest.class);
-	}
+    public void testNullTest() {
+        DefaultCDATA cdata = new DefaultCDATA(null);
+        assertEquals("CData not correct", "<![CDATA[]]>", cdata.asXML());
+    }
 
-	public void testNullTest() {
-		DefaultCDATA cdata = new DefaultCDATA(null);
-		assertEquals("CData not correct", "<![CDATA[]]>", cdata.asXML());
-	}
-	
-	public void testNormal() {
-		DefaultCDATA cdata = new DefaultCDATA("sample");
-		assertEquals("CData not correct", "<![CDATA[sample]]>", cdata.asXML());
-	}
-	
+    public void testNormal() {
+        DefaultCDATA cdata = new DefaultCDATA("sample");
+        assertEquals("CData not correct", "<![CDATA[sample]]>", cdata.asXML());
+    }
 }
 
 
@@ -61,7 +61,7 @@ public class CDataTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

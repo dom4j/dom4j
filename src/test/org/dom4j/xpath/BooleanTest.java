@@ -1,81 +1,75 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j.xpath;
 
+import junit.textui.TestRunner;
+
 import java.util.Iterator;
 import java.util.List;
-
-import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Node;
 import org.dom4j.XPath;
 
-/** 
+/**
  * Test harness for the boolean expressions
  *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
  * @version $Revision$
  */
 public class BooleanTest extends AbstractTestCase {
+    protected static String[] paths =
+        {
+            ".[name()='author']",
+            ".[.='James Strachan']",
+            ".[name()='XXXX']",
+            ".[.='XXXX']",
+            "name()='author'",
+            "name()='XXXX'",
+            ".='James Strachan'",
+            ".='XXXX'"
+        };
 
-    protected static boolean VERBOSE = true;
-    
-    protected static String[] paths = {
-        ".[name()='author']",
-        ".[.='James Strachan']",
-        ".[name()='XXXX']",
-        ".[.='XXXX']",
-        "name()='author'",
-        "name()='XXXX'",
-        ".='James Strachan'",
-        ".='XXXX'"
-    };
-    
-	public static void main(String[] args) {
-		TestRunner.run(BooleanTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(BooleanTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
-    public void testXPaths() throws Exception {        
+    //-------------------------------------------------------------------------
+    public void testXPaths() throws Exception {
         int size = paths.length;
-        for ( int i = 0; i < size; i++ ) {
-            testXPath( paths[i] );
+
+        for (int i = 0; i < size; i++) {
+            testXPath(paths[i]);
         }
     }
-        
+
     // Implementation methods
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     protected void testXPath(String xpathExpression) {
-        XPath xpath = DocumentHelper.createXPath( xpathExpression );
-        assertTrue( "No xpath object was created", xpath != null );
-        
-        log( "Evaluating xpath: " + xpath );
-        
+        XPath xpath = DocumentHelper.createXPath(xpathExpression);
+        assertTrue("No xpath object was created", xpath != null);
+
+        log("Evaluating xpath: " + xpath);
+
         List list = document.selectNodes("//author");
-        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
+
+        for (Iterator iter = list.iterator(); iter.hasNext();) {
             Node node = (Node) iter.next();
             testXPath(node, xpath);
         }
     }
-        
+
     protected void testXPath(Node node, XPath xpath) {
-        List list = xpath.selectNodes( node );
-        
-        log( "Searched path: " + xpath + " found: " + list.size() + " result(s)" );
-        
-        if ( VERBOSE ) {
-            System.out.println( list );
-        }
+        List list = xpath.selectNodes(node);
     }
 }
 
@@ -106,7 +100,7 @@ public class BooleanTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,90 +1,92 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j.io;
 
 import org.dom4j.DocumentFactory;
+
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 /**
  * The SAXModifier parses, updates and writes an XML document.<br>
- * 
- * The input that is parsed is directly written to the specified output, unless the current xml element has an
- * associated ElementHandler.<br>
- * The {@link org.dom4j.ElementHandler} objects make it possible to update the document on the fly,
- * without having read tje complete document.
- * 
+ * The input that is parsed is directly written to the specified output,
+ * unless the current xml element has an associated ElementHandler.<br>
+ * The {@link org.dom4j.ElementHandler} objects make it possible to update the
+ * document on the fly, without having read tje complete document.
+ *
+ * @author Wonne Keysers (Realsoftware.be)
+ *
  * @see org.dom4j.io.SAXReader
  * @see org.dom4j.io.XMLWriters
- * @author Wonne Keysers (Realsoftware.be)
  */
 class SAXModifyReader extends SAXReader {
+    private XMLWriter xmlWriter;
+    private boolean pruneElements;
 
-   private XMLWriter xmlWriter;
-   private boolean pruneElements;
+    public SAXModifyReader() {
+    }
 
-   public SAXModifyReader() {
-   }
+    public SAXModifyReader(boolean validating) {
+        super(validating);
+    }
 
-   public SAXModifyReader(boolean validating) {
-      super(validating);
-   }
+    public SAXModifyReader(DocumentFactory factory) {
+        super(factory);
+    }
 
-   public SAXModifyReader(DocumentFactory factory) {
-      super(factory);
-   }
+    public SAXModifyReader(DocumentFactory factory, boolean validating) {
+        super(factory, validating);
+    }
 
-   public SAXModifyReader(DocumentFactory factory, boolean validating) {
-      super(factory, validating);
-   }
+    public SAXModifyReader(XMLReader xmlReader) {
+        super(xmlReader);
+    }
 
-   public SAXModifyReader(XMLReader xmlReader) {
-      super(xmlReader);
-   }
+    public SAXModifyReader(XMLReader xmlReader, boolean validating) {
+        super(xmlReader, validating);
+    }
 
-   public SAXModifyReader(XMLReader xmlReader, boolean validating) {
-      super(xmlReader, validating);
-   }
+    public SAXModifyReader(String xmlReaderClassName) throws SAXException {
+        super(xmlReaderClassName);
+    }
 
-   public SAXModifyReader(String xmlReaderClassName) throws SAXException {
-      super(xmlReaderClassName);
-   }
+    public SAXModifyReader(String xmlReaderClassName, boolean validating)
+                    throws SAXException {
+        super(xmlReaderClassName, validating);
+    }
 
-   public SAXModifyReader(String xmlReaderClassName, boolean validating) throws SAXException {
-      super(xmlReaderClassName, validating);
-   }
+    public void setXMLWriter(XMLWriter writer) {
+        this.xmlWriter = writer;
+    }
 
-   public void setXMLWriter(XMLWriter xmlWriter) {
-      this.xmlWriter = xmlWriter;
-   }
+    public boolean isPruneElements() {
+        return pruneElements;
+    }
 
-   public boolean isPruneElements() {
-      return pruneElements;
-   }
+    public void setPruneElements(boolean pruneElements) {
+        this.pruneElements = pruneElements;
+    }
 
-   public void setPruneElements(boolean pruneElements) {
-      this.pruneElements = pruneElements;
-   }
+    protected SAXContentHandler createContentHandler(XMLReader reader) {
+        SAXModifyContentHandler handler =
+            new SAXModifyContentHandler(getDocumentFactory(),
+                                        getDispatchHandler());
 
-   protected SAXContentHandler createContentHandler(XMLReader reader) {
-      SAXModifyContentHandler handler = new SAXModifyContentHandler(getDocumentFactory(), getDispatchHandler());
+        handler.setXMLWriter(xmlWriter);
 
-      handler.setXMLWriter(xmlWriter);
+        return handler;
+    }
 
-      return handler;
-   }
-
-   protected XMLWriter getXMLWriter() {
-      return this.xmlWriter;
-   }
-
+    protected XMLWriter getXMLWriter() {
+        return this.xmlWriter;
+    }
 }
 
 
@@ -114,7 +116,7 @@ class SAXModifyReader extends SAXReader {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

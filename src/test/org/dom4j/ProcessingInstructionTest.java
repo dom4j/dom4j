@@ -1,47 +1,50 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j;
 
-import java.util.Map;
-
 import junit.textui.TestRunner;
 
+import java.util.Map;
+
 /**
+ * DOCUMENT ME!
+ *
  * @author kralik
  * @author Maarten Coene
  */
 public class ProcessingInstructionTest extends AbstractTestCase {
-    
-	public static void main(String[] args) {
-		TestRunner.run(ProcessingInstructionTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(ProcessingInstructionTest.class);
+    }
 
     public void testParseValues() {
-        ProcessingInstruction pi=
-                DocumentHelper.createProcessingInstruction("pi", " abc='123' def=\"2!=3\" ghi=' 4 = '");
-        
+        String data = " abc='123' def=\"2!=3\" ghi=' 4 = '";
+        ProcessingInstruction pi =
+            DocumentHelper.createProcessingInstruction("pi", data);
+
         Map values = pi.getValues();
         assertEquals(3, values.size());
         assertEquals("123", pi.getValue("abc"));
         assertEquals("2!=3", pi.getValue("def"));
         assertEquals(" 4 = ", pi.getValue("ghi"));
     }
-    
+
     public void testBug787428() {
+        String data = "xpath=\"/abc/cde[@id='qqq']\"";
         ProcessingInstruction pi =
-                DocumentHelper.createProcessingInstruction("merge", "xpath=\"/abc/cde[@id='qqq']\"");
-        
+            DocumentHelper.createProcessingInstruction("merge", data);
+
         assertEquals("/abc/cde[@id='qqq']", pi.getValue("xpath"));
     }
-    
 }
+
 
 
 
@@ -69,7 +72,7 @@ public class ProcessingInstructionTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

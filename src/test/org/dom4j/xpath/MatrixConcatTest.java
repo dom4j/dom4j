@@ -1,78 +1,77 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j.xpath;
 
+import junit.textui.TestRunner;
+
 import java.io.File;
 import java.util.List;
-
-import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
 import org.dom4j.io.SAXReader;
 
-/** 
+/**
  * Test harness for the matrix-concat extension function
  *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
  * @version $Revision$
  */
 public class MatrixConcatTest extends AbstractTestCase {
-
-	public static void main(String[] args) {
-		TestRunner.run(MatrixConcatTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(MatrixConcatTest.class);
+    }
 
     // Test case(s)
     //------------------------------------------------------------------------- 
-    public void testMatrixConcat() throws Exception {          
-        String[] results1 = {
-            "EQUITY_CF1",
-            "EQUITY_CF2",
-            "EQUITY_CF3"
-        };
-        
-        String[] results2 = {
-            "EQUITY_BAR_CF1",
-            "EQUITY_BAR_CF2",
-            "EQUITY_BAR_CF3"
-        };
-        
-        testMatrixConcat( "matrix-concat('EQUITY_',/product/cashflows/CashFlow/XREF)", results1 );
-        testMatrixConcat( "matrix-concat('EQUITY_','BAR_',/product/cashflows/CashFlow/XREF)", results2 );
-        testMatrixConcat( "matrix-concat(/product/equity/IDENTIFIER,/product/cashflows/CashFlow/XREF)", results1 );
+    public void testMatrixConcat() throws Exception {
+        String[] exp1 = {
+                            "EQUITY_CF1",
+                            "EQUITY_CF2",
+                            "EQUITY_CF3"
+                        };
+
+        String[] exp2 = {
+                            "EQUITY_BAR_CF1",
+                            "EQUITY_BAR_CF2",
+                            "EQUITY_BAR_CF3"
+                        };
+
+        testMatrixConcat("'EQUITY_',/product/cashflows/CashFlow/XREF", exp1);
+        testMatrixConcat("'EQUITY_','BAR_',/product/cashflows/CashFlow/XREF",
+                         exp2);
     }
- 
-    
+
     // Implementation methods
-    //-------------------------------------------------------------------------                    
-    protected void testMatrixConcat(String path, String[] results) throws Exception {          
-        log( "Using XPath: "  + path );
-        
-        List list = document.selectNodes( path );
-        
-        log( "Found: "  + list );
-        
+    //-------------------------------------------------------------------------
+    protected void testMatrixConcat(String path, String[] results)
+                             throws Exception {
+        log("Using XPath: " + path);
+
+        List list = document.selectNodes("matrix-concat(" + path + ")");
+
+        log("Found: " + list);
+
         //Object object = list.get(0);
         //log( "(0) = " + object + " type: " + object.getClass() );
-        
         int size = results.length;
-        assertTrue( "List should contain " + size + " results: " + list, list.size() == size );
-        
-        for ( int i = 0; i < size; i++ ) {
-            assertEquals( list.get(i), results[i] );
+        assertTrue("List should contain " + size + " results: " + list,
+                   list.size() == size);
+
+        for (int i = 0; i < size; i++) {
+            assertEquals(list.get(i), results[i]);
         }
     }
-        
+
     protected void setUp() throws Exception {
-    	super.setUp();
-        document = new SAXReader().read( new File( "xml/test/product.xml" ) );
+        super.setUp();
+        document = new SAXReader().read(new File("xml/test/product.xml"));
     }
 }
 
@@ -103,7 +102,7 @@ public class MatrixConcatTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

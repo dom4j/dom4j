@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -14,27 +14,27 @@ import junit.textui.TestRunner;
 import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
 
-
-/** 
- * Test harness for the XML Schema Data Type integration. These tests
- * manually load the schemas using prefixes in the XSD file.
+/**
+ * Test harness for the XML Schema Data Type integration. These tests manually
+ * load the schemas using prefixes in the XSD file.
  *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  * @version $Revision$
  */
 public class ManualSchemaPrefixTest extends AutoSchemaTest {
-
-	public static void main(String[] args) {
-		TestRunner.run(ManualSchemaPrefixTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(ManualSchemaPrefixTest.class);
+    }
 
     // Implementation methods
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     protected DocumentFactory loadDocumentFactory() throws Exception {
         DatatypeDocumentFactory factory = new DatatypeDocumentFactory();
-        
-        Document schemaDocument = getDocument("/xml/test/schema/personal-prefix.xsd");
+
+        Document schemaDocument =
+            getDocument("/xml/test/schema/personal-prefix.xsd");
         factory.loadSchema(schemaDocument);
+
         return factory;
     }
 }
@@ -66,7 +66,7 @@ public class ManualSchemaPrefixTest extends AutoSchemaTest {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

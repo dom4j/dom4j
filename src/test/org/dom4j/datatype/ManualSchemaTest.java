@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -14,31 +14,30 @@ import junit.textui.TestRunner;
 import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
 
-
-/** 
- * Test harness for the XML Schema Data Type integration. These tests
- * manually load the schemas
+/**
+ * Test harness for the XML Schema Data Type integration. These tests manually
+ * load the schemas
  *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  * @version $Revision$
  */
 public class ManualSchemaTest extends AutoSchemaTest {
-
-	public static void main(String[] args) {
-		TestRunner.run(ManualSchemaTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(ManualSchemaTest.class);
+    }
 
     // Implementation methods
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     protected String getDocumentURI() {
         return "/xml/test/schema/personal.xml";
     }
-    
+
     protected DocumentFactory loadDocumentFactory() throws Exception {
         DatatypeDocumentFactory factory = new DatatypeDocumentFactory();
-        
+
         Document schemaDocument = getDocument("/xml/test/schema/personal.xsd");
         factory.loadSchema(schemaDocument);
+
         return factory;
     }
 }
@@ -70,7 +69,7 @@ public class ManualSchemaTest extends AutoSchemaTest {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -14,33 +14,41 @@ import java.util.Iterator;
 import org.dom4j.Element;
 import org.dom4j.QName;
 
-
-/** <p><code>ElementQNameIterator</code> is a filtering {@link Iterator} which 
-  * filters out objects which do not implement the {@link Element} 
-  * interface and are not of the correct fully qualified element name.</p>
-  *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
-  * @version $Revision$
-  * @deprecated  THIS CLASS WILL BE REMOVED IN dom4j-1.6 !!
-  */
+/**
+ * <p>
+ * <code>ElementQNameIterator</code> is a filtering {@link Iterator} which
+ * filters out objects which do not implement the {@link Element}  interface
+ * and are not of the correct fully qualified element name.
+ * </p>
+ *
+ * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+ * @version $Revision$
+ *
+ * @deprecated THIS CLASS WILL BE REMOVED IN dom4j-1.6 !!
+ */
 public class ElementQNameIterator extends FilterIterator {
-    
     private QName qName;
-    
-    public ElementQNameIterator( Iterator proxy, QName qName ) {
+
+    public ElementQNameIterator(Iterator proxy, QName qName) {
         super(proxy);
         this.qName = qName;
     }
 
-
-    /** @return true if the given element implements the {@link Element} 
-      * interface and matches the given {@link QName}
-      */
+    /**
+     * DOCUMENT ME!
+     *
+     * @param object DOCUMENT ME!
+     *
+     * @return true if the given element implements the {@link Element}
+     *         interface and matches the given {@link QName}
+     */
     protected boolean matches(Object object) {
         if (object instanceof Element) {
             Element element = (Element) object;
-            return qName.equals( element.getQName() );
+
+            return qName.equals(element.getQName());
         }
+
         return false;
     }
 }
@@ -72,7 +80,7 @@ public class ElementQNameIterator extends FilterIterator {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -12,54 +12,53 @@ package org.dom4j.rule.pattern;
 import org.dom4j.Node;
 import org.dom4j.rule.Pattern;
 
-
-/** <p><code>NodeTypePattern</code> implements a Pattern which matches
-  * any node of the given node type.
-  *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
-  * @version $Revision$
-  */
+/**
+ * <p>
+ * <code>NodeTypePattern</code> implements a Pattern which matches any node of
+ * the given node type.
+ * </p>
+ *
+ * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+ * @version $Revision$
+ */
 public class NodeTypePattern implements Pattern {
-    
-    /** A pattern which matches any Attribute node  */
-    public static final NodeTypePattern ANY_ATTRIBUTE
-        = new NodeTypePattern( Node.ATTRIBUTE_NODE );
-    
-    /** A pattern which matches any Comment  node  */
-    public static final NodeTypePattern ANY_COMMENT
-        = new NodeTypePattern( Node.COMMENT_NODE );
-    
-    /** A pattern which matches any Document node  */
-    public static final NodeTypePattern ANY_DOCUMENT
-        = new NodeTypePattern( Node.DOCUMENT_NODE );
-    
-    /** A pattern which matches any Element node  */
-    public static final NodeTypePattern ANY_ELEMENT 
-        = new NodeTypePattern( Node.ELEMENT_NODE );
-    
-    /** A pattern which matches any ProcessingInstruction node  */
-    public static final NodeTypePattern ANY_PROCESSING_INSTRUCTION
-        = new NodeTypePattern( Node.PROCESSING_INSTRUCTION_NODE );
-    
-    /** A pattern which matches any Text node  */
-    public static final NodeTypePattern ANY_TEXT 
-        = new NodeTypePattern( Node.TEXT_NODE );
-    
+    /** A pattern which matches any Attribute node */
+    public static final NodeTypePattern ANY_ATTRIBUTE =
+        new NodeTypePattern(Node.ATTRIBUTE_NODE);
+
+    /** A pattern which matches any Comment  node */
+    public static final NodeTypePattern ANY_COMMENT =
+        new NodeTypePattern(Node.COMMENT_NODE);
+
+    /** A pattern which matches any Document node */
+    public static final NodeTypePattern ANY_DOCUMENT =
+        new NodeTypePattern(Node.DOCUMENT_NODE);
+
+    /** A pattern which matches any Element node */
+    public static final NodeTypePattern ANY_ELEMENT =
+        new NodeTypePattern(Node.ELEMENT_NODE);
+
+    /** A pattern which matches any ProcessingInstruction node */
+    public static final NodeTypePattern ANY_PROCESSING_INSTRUCTION =
+        new NodeTypePattern(Node.PROCESSING_INSTRUCTION_NODE);
+
+    /** A pattern which matches any Text node */
+    public static final NodeTypePattern ANY_TEXT =
+        new NodeTypePattern(Node.TEXT_NODE);
     private short nodeType;
 
-    
     public NodeTypePattern(short nodeType) {
         this.nodeType = nodeType;
     }
 
-    public boolean matches( Node node ) {
+    public boolean matches(Node node) {
         return node.getNodeType() == nodeType;
     }
-    
-    public double getPriority()  {
+
+    public double getPriority() {
         return Pattern.DEFAULT_PRIORITY;
     }
-    
+
     public Pattern[] getUnionPatterns() {
         return null;
     }
@@ -71,7 +70,6 @@ public class NodeTypePattern implements Pattern {
     public String getMatchesNodeName() {
         return null;
     }
-
 }
 
 
@@ -101,7 +99,7 @@ public class NodeTypePattern implements Pattern {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

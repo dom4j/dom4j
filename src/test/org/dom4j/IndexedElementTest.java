@@ -1,73 +1,73 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j;
 
-import java.util.List;
-
 import junit.textui.TestRunner;
+
+import java.util.List;
 
 import org.dom4j.util.IndexedDocumentFactory;
 
-/** 
+/**
  * A test harness for the IndexedElement implementation
  *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  * @version $Revision$
  */
 public class IndexedElementTest extends AbstractTestCase {
-
-    protected static boolean VERBOSE = true;
-    
-	public static void main(String[] args) {
-		TestRunner.run(IndexedElementTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(IndexedElementTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
-    public void testXPaths() throws Exception {        
-        testXPath( "//author" );
+    //-------------------------------------------------------------------------
+    public void testXPaths() throws Exception {
+        testXPath("//author");
     }
-        
+
     // Implementation methods
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     protected void testXPath(String xpath) {
-        List list = document.selectNodes( xpath );
-        
-        log( "Searched path: " + xpath );
-        log( "Found        : " + list.size() + " result(s)" );
-        
-        log( "Results" );
-        if ( list == null ) {
-            log( "null" );
-        }
-        else {
-            log( "[" );
-            for ( int i = 0, size = list.size(); i < size; i++ ) {
+        List list = document.selectNodes(xpath);
+
+        log("Searched path: " + xpath);
+        log("Found        : " + list.size() + " result(s)");
+
+        log("Results");
+
+        if (list == null) {
+            log("null");
+        } else {
+            log("[");
+
+            for (int i = 0, size = list.size(); i < size; i++) {
                 Object object = list.get(i);
                 String text = "null";
-                if ( object instanceof Node ) {
+
+                if (object instanceof Node) {
                     Node node = (Node) object;
                     text = node.asXML();
-                }
-                else if ( object != null ) {
+                } else if (object != null) {
                     text = object.toString();
                 }
-                log( "    " + text );
+
+                log("    " + text);
             }
-            log( "]" );
+
+            log("]");
         }
-        log( "..........................................." );
-        
-        assertTrue( "Found some results", list.size() > 0 );
+
+        log("...........................................");
+
+        assertTrue("Found some results", list.size() > 0);
     }
-            
 
     protected Document createDocument() {
         return IndexedDocumentFactory.getInstance().createDocument();
@@ -101,7 +101,7 @@ public class IndexedElementTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

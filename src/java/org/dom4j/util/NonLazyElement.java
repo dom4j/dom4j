@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -13,38 +13,39 @@ import org.dom4j.Namespace;
 import org.dom4j.QName;
 import org.dom4j.tree.BaseElement;
 
-/** <p><code>NonLazyElement</code> is the default DOM4J default implementation
-  * of an XML element.</p>
-  *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
-  * @version $Revision$
-  */
+/**
+ * <p>
+ * <code>NonLazyElement</code> is the default DOM4J default implementation of
+ * an XML element.
+ * </p>
+ *
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * @version $Revision$
+ */
 public class NonLazyElement extends BaseElement {
-
-    public NonLazyElement(String name) { 
+    public NonLazyElement(String name) {
         super(name);
         this.attributes = createAttributeList();
         this.content = createContentList();
     }
 
-    public NonLazyElement(QName qname) { 
+    public NonLazyElement(QName qname) {
         super(qname);
         this.attributes = createAttributeList();
         this.content = createContentList();
     }
 
-    public NonLazyElement(String name, Namespace namespace) { 
+    public NonLazyElement(String name, Namespace namespace) {
         super(name, namespace);
         this.attributes = createAttributeList();
         this.content = createContentList();
     }
 
-    public NonLazyElement(QName qname, int attributeCount) { 
+    public NonLazyElement(QName qname, int attributeCount) {
         super(qname);
-        this.attributes = createAttributeList( attributeCount );
+        this.attributes = createAttributeList(attributeCount);
         this.content = createContentList();
     }
-
 }
 
 
@@ -74,7 +75,7 @@ public class NonLazyElement extends BaseElement {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

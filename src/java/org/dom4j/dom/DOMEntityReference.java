@@ -11,31 +11,34 @@ package org.dom4j.dom;
 
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultEntity;
+
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
-/** <p><code>DOMEntity</code> implements a Entity node which
-  * supports the W3C DOM API.</p>
-  *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
-  * @version $Revision$
-  */
-public class DOMEntityReference extends DefaultEntity implements org.w3c.dom.EntityReference {
-
+/**
+ * <p>
+ * <code>DOMEntity</code> implements a Entity node which supports the W3C DOM
+ * API.
+ * </p>
+ *
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * @version $Revision$
+ */
+public class DOMEntityReference extends DefaultEntity
+    implements org.w3c.dom.EntityReference {
     public DOMEntityReference(String name) {
-        super( name );
+        super(name);
     }
 
     public DOMEntityReference(String name, String text) {
-        super( name, text );
+        super(name, text);
     }
 
     public DOMEntityReference(Element parent, String name, String text) {
-        super( parent, name, text );
+        super(parent, name, text);
     }
-
 
     // org.w3c.dom.Node interface
     //-------------------------------------------------------------------------
@@ -66,16 +69,12 @@ public class DOMEntityReference extends DefaultEntity implements org.w3c.dom.Ent
     //already part of API
     //
     //public short getNodeType();
-
-
-
     public String getNodeValue() throws DOMException {
         return null;
     }
 
     public void setNodeValue(String nodeValue) throws DOMException {
     }
-
 
     public org.w3c.dom.Node getParentNode() {
         return DOMNodeHelper.getParentNode(this);
@@ -109,45 +108,50 @@ public class DOMEntityReference extends DefaultEntity implements org.w3c.dom.Ent
         return DOMNodeHelper.getOwnerDocument(this);
     }
 
-    public org.w3c.dom.Node insertBefore(
-        org.w3c.dom.Node newChild,
-        org.w3c.dom.Node refChild
-    ) throws DOMException {
+    public org.w3c.dom.Node insertBefore(org.w3c.dom.Node newChild,
+                                         org.w3c.dom.Node refChild)
+                                  throws DOMException {
         checkNewChildNode(newChild);
+
         return DOMNodeHelper.insertBefore(this, newChild, refChild);
     }
 
-    public org.w3c.dom.Node replaceChild(
-        org.w3c.dom.Node newChild,
-        org.w3c.dom.Node oldChild
-    ) throws DOMException {
+    public org.w3c.dom.Node replaceChild(org.w3c.dom.Node newChild,
+                                         org.w3c.dom.Node oldChild)
+                                  throws DOMException {
         checkNewChildNode(newChild);
+
         return DOMNodeHelper.replaceChild(this, newChild, oldChild);
     }
 
-    public org.w3c.dom.Node removeChild(org.w3c.dom.Node oldChild) throws DOMException {
+    public org.w3c.dom.Node removeChild(org.w3c.dom.Node oldChild)
+                                 throws DOMException {
         return DOMNodeHelper.removeChild(this, oldChild);
     }
 
-    public org.w3c.dom.Node appendChild(org.w3c.dom.Node newChild) throws DOMException {
+    public org.w3c.dom.Node appendChild(org.w3c.dom.Node newChild)
+                                 throws DOMException {
         checkNewChildNode(newChild);
+
         return DOMNodeHelper.appendChild(this, newChild);
     }
 
-    private void checkNewChildNode(org.w3c.dom.Node newChild) throws DOMException {
+    private void checkNewChildNode(org.w3c.dom.Node newChild)
+                            throws DOMException {
         final int nodeType = newChild.getNodeType();
-        if (!(nodeType == org.w3c.dom.Node.ELEMENT_NODE ||
-              nodeType == org.w3c.dom.Node.TEXT_NODE ||
-              nodeType == org.w3c.dom.Node.COMMENT_NODE ||
-              nodeType == org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE ||
-              nodeType == org.w3c.dom.Node.CDATA_SECTION_NODE ||
-              nodeType == org.w3c.dom.Node.ENTITY_REFERENCE_NODE)) {
+
+        if (!((nodeType == org.w3c.dom.Node.ELEMENT_NODE)
+                || (nodeType == org.w3c.dom.Node.TEXT_NODE)
+                || (nodeType == org.w3c.dom.Node.COMMENT_NODE)
+                || (nodeType == org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE)
+                || (nodeType == org.w3c.dom.Node.CDATA_SECTION_NODE)
+                || (nodeType == org.w3c.dom.Node.ENTITY_REFERENCE_NODE))) {
             throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-               "Specified node cannot be a child of an entity reference");
+                                   "Given node cannot be a child of an entity "
+                                   + "reference");
         }
     }
-    
-    
+
     public boolean hasChildNodes() {
         return DOMNodeHelper.hasChildNodes(this);
     }
@@ -196,7 +200,7 @@ public class DOMEntityReference extends DefaultEntity implements org.w3c.dom.Ent
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

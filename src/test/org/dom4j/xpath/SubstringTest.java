@@ -1,76 +1,76 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j.xpath;
 
+import junit.textui.TestRunner;
+
 import java.io.File;
 import java.util.List;
-
-import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-/** 
+/**
  * Test harness for the substring function
  *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
  * @version $Revision$
  */
 public class SubstringTest extends AbstractTestCase {
-
-	public static void main(String[] args) {
-		TestRunner.run(SubstringTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(SubstringTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
-    public void testSubstring() throws Exception {          
+    //-------------------------------------------------------------------------
+    public void testSubstring() throws Exception {
         String[] results1 = {
-            "1100",
-            "1101"
-        };
-        
-        testSubstring( "//field[substring(@id,1,2)='11']", results1 );
-        
+                                "1100",
+                                "1101"
+                            };
+
+        testSubstring("//field[substring(@id,1,2)='11']", results1);
+
         String[] results2 = {
-            "2111",
-            "3111"
-        };
-        testSubstring( "//field[substring(@id,3)='11']", results2 );
+                                "2111",
+                                "3111"
+                            };
+        testSubstring("//field[substring(@id,3)='11']", results2);
     }
-        
+
     // Implementation methods
-    //-------------------------------------------------------------------------                    
-    protected void testSubstring(String path, String[] results) throws Exception {          
-        log( "Using XPath: "  + path );
-        
-        List list = document.selectNodes( path );
-        
-        log( "Found: "  + list );
-        
+    //-------------------------------------------------------------------------
+    protected void testSubstring(String path, String[] results)
+                          throws Exception {
+        log("Using XPath: " + path);
+
+        List list = document.selectNodes(path);
+
+        log("Found: " + list);
+
         //Object object = list.get(0);
         //log( "(0) = " + object + " type: " + object.getClass() );
-        
         int size = results.length;
-        assertTrue( "List should contain " + size + " results: " + list, list.size() == size );
-        
-        for ( int i = 0; i < size; i++ ) {
+        assertTrue("List should contain " + size + " results: " + list,
+                   list.size() == size);
+
+        for (int i = 0; i < size; i++) {
             Element element = (Element) list.get(i);
-            assertEquals( element.attributeValue( "id" ), results[i] );
+            assertEquals(element.attributeValue("id"), results[i]);
         }
     }
-        
+
     protected void setUp() throws Exception {
-    	super.setUp();
-        document = new SAXReader().read( new File( "xml/test/fields.xml" ) );
+        super.setUp();
+        document = new SAXReader().read(new File("xml/test/fields.xml"));
     }
 }
 
@@ -101,7 +101,7 @@ public class SubstringTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

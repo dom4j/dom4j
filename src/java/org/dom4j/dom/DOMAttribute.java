@@ -12,19 +12,22 @@ package org.dom4j.dom;
 import org.dom4j.Element;
 import org.dom4j.QName;
 import org.dom4j.tree.DefaultAttribute;
+
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
-/** <p><code>DOMAttribute</code> implements a doubly linked attribute which
-  * supports the W3C DOM API.</p>
-  *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
-  * @version $Revision$
-  */
+/**
+ * <p>
+ * <code>DOMAttribute</code> implements a doubly linked attribute which
+ * supports the W3C DOM API.
+ * </p>
+ *
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * @version $Revision$
+ */
 public class DOMAttribute extends DefaultAttribute implements org.w3c.dom.Attr {
-
     public DOMAttribute(QName qname) {
         super(qname);
     }
@@ -36,7 +39,6 @@ public class DOMAttribute extends DefaultAttribute implements org.w3c.dom.Attr {
     public DOMAttribute(Element parent, QName qname, String value) {
         super(parent, qname, value);
     }
-
 
     // org.w3c.dom.Node interface
     //-------------------------------------------------------------------------
@@ -67,9 +69,6 @@ public class DOMAttribute extends DefaultAttribute implements org.w3c.dom.Attr {
     //already part of API
     //
     //public short getNodeType();
-
-
-
     public String getNodeValue() throws DOMException {
         return DOMNodeHelper.getNodeValue(this);
     }
@@ -77,7 +76,6 @@ public class DOMAttribute extends DefaultAttribute implements org.w3c.dom.Attr {
     public void setNodeValue(String nodeValue) throws DOMException {
         DOMNodeHelper.setNodeValue(this, nodeValue);
     }
-
 
     public org.w3c.dom.Node getParentNode() {
         // Per http://www.w3.org/TR/DOM-Level-2-Core/core.html#ID-637646024
@@ -114,40 +112,44 @@ public class DOMAttribute extends DefaultAttribute implements org.w3c.dom.Attr {
         return DOMNodeHelper.getOwnerDocument(this);
     }
 
-    public org.w3c.dom.Node insertBefore(
-        org.w3c.dom.Node newChild,
-        org.w3c.dom.Node refChild
-    ) throws DOMException {
+    public org.w3c.dom.Node insertBefore(org.w3c.dom.Node newChild,
+                                         org.w3c.dom.Node refChild)
+                                  throws DOMException {
         checkNewChildNode(newChild);
+
         return DOMNodeHelper.insertBefore(this, newChild, refChild);
     }
 
-    public org.w3c.dom.Node replaceChild(
-        org.w3c.dom.Node newChild,
-        org.w3c.dom.Node oldChild
-    ) throws DOMException {
+    public org.w3c.dom.Node replaceChild(org.w3c.dom.Node newChild,
+                                         org.w3c.dom.Node oldChild)
+                                  throws DOMException {
         checkNewChildNode(newChild);
+
         return DOMNodeHelper.replaceChild(this, newChild, oldChild);
     }
 
-    public org.w3c.dom.Node removeChild(org.w3c.dom.Node oldChild) throws DOMException {
+    public org.w3c.dom.Node removeChild(org.w3c.dom.Node oldChild)
+                                 throws DOMException {
         return DOMNodeHelper.removeChild(this, oldChild);
     }
 
-    public org.w3c.dom.Node appendChild(org.w3c.dom.Node newChild) throws DOMException {
+    public org.w3c.dom.Node appendChild(org.w3c.dom.Node newChild)
+                                 throws DOMException {
         checkNewChildNode(newChild);
+
         return DOMNodeHelper.appendChild(this, newChild);
     }
-    
-    private void checkNewChildNode(org.w3c.dom.Node newChild) throws DOMException {
+
+    private void checkNewChildNode(org.w3c.dom.Node newChild)
+                            throws DOMException {
         final int nodeType = newChild.getNodeType();
-        if (!(nodeType == org.w3c.dom.Node.TEXT_NODE ||
-              nodeType == org.w3c.dom.Node.ENTITY_REFERENCE_NODE)) {
+
+        if (!((nodeType == org.w3c.dom.Node.TEXT_NODE)
+                || (nodeType == org.w3c.dom.Node.ENTITY_REFERENCE_NODE))) {
             throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-               "Specified node cannot be a child of attribute");
+                                   "The node cannot be a child of attribute");
         }
     }
-    
 
     public boolean hasChildNodes() {
         return DOMNodeHelper.hasChildNodes(this);
@@ -169,24 +171,18 @@ public class DOMAttribute extends DefaultAttribute implements org.w3c.dom.Attr {
         return DOMNodeHelper.hasAttributes(this);
     }
 
-
     // org.w3c.dom.Attr interface
     //-------------------------------------------------------------------------
-
     //public String getName();
-
     public boolean getSpecified() {
         return true;
     }
 
     //public String getValue();
-
     //public void setValue(String value) throws DOMException;
-
     public org.w3c.dom.Element getOwnerElement() {
-        return DOMNodeHelper.asDOMElement( getParent() );
+        return DOMNodeHelper.asDOMElement(getParent());
     }
-
 }
 
 
@@ -216,7 +212,7 @@ public class DOMAttribute extends DefaultAttribute implements org.w3c.dom.Attr {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

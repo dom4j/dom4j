@@ -1,105 +1,110 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j.io;
 
+import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.ElementHandler;
 import org.dom4j.ElementPath;
 
 /**
- * This {@link org.dom4j.ElementHandler} is used to trigger {@link ElementModifier) objects
- * in order to modify (parts of) the Document on the fly.<br>
- * When an element is completely parsed,
- * a copy is handed to the associated (if any) {@link ElementModifier) that on his turn returns
- * the modified element that has to come in the tree.
- *  
+ * This {@link org.dom4j.ElementHandler} is used to trigger {@link
+ * ElementModifier} objects in order to modify (parts of) the Document on the
+ * fly.
+ * 
+ * <p>
+ * When an element is completely parsed, a copy is handed to the associated (if
+ * any) {@link ElementModifier} that on his turn returns the modified element
+ * that has to come in the tree.
+ * </p>
+ *
  * @author Wonne Keysers (Realsoftware.be)
  */
 class SAXModifyElementHandler implements ElementHandler {
+    private ElementModifier elemModifier;
+    private Element modifiedElement;
 
-   private ElementModifier elemModifier;
-   private Element modifiedElement;
+    public SAXModifyElementHandler(ElementModifier elemModifier) {
+        this.elemModifier = elemModifier;
+    }
 
-   public SAXModifyElementHandler(ElementModifier elemModifier) {
-      this.elemModifier = elemModifier;
-   }
+    public void onStart(ElementPath elementPath) {
+        this.modifiedElement = elementPath.getCurrent();
+    }
 
-   public void onStart(ElementPath elementPath) {
-      this.modifiedElement = elementPath.getCurrent();
-   }
+    public void onEnd(ElementPath elementPath) {
+        try {
+            Element origElement = elementPath.getCurrent();
+            Element currentParent = origElement.getParent();
 
-   public void onEnd(ElementPath elementPath) {
-      try {
-         Element originalElement = elementPath.getCurrent();
-         Element currentParent = originalElement.getParent();
-         
-         if( currentParent != null){
-            //Clone sets parent + document to null
-            Element clonedElem = (Element) originalElement.clone();
-            
-            //Ask for modified element
-            modifiedElement = elemModifier.modifyElement(clonedElem);
-            
-            if( modifiedElement != null ){            
-	            //Restore parent + document
-	            modifiedElement.setParent(originalElement.getParent());
-	            modifiedElement.setDocument(originalElement.getDocument());
-	
-	            //Replace old with new element in parent
-	            int contentIndex = currentParent.indexOf(originalElement);
-	            currentParent.content().set(contentIndex, modifiedElement);
+            if (currentParent != null) {
+                //Clone sets parent + document to null
+                Element clonedElem = (Element) origElement.clone();
+
+                //Ask for modified element
+                modifiedElement = elemModifier.modifyElement(clonedElem);
+
+                if (modifiedElement != null) {
+                    //Restore parent + document
+                    modifiedElement.setParent(origElement.getParent());
+                    modifiedElement.setDocument(origElement.getDocument());
+
+                    //Replace old with new element in parent
+                    int contentIndex = currentParent.indexOf(origElement);
+                    currentParent.content().set(contentIndex, modifiedElement);
+                }
+
+                //Remove the old element
+                origElement.detach();
+            } else {
+                if (origElement.isRootElement()) {
+                    //Clone sets parent + document to null
+                    Element clonedElem = (Element) origElement.clone();
+
+                    //Ask for modified element
+                    modifiedElement = elemModifier.modifyElement(clonedElem);
+
+                    if (modifiedElement != null) {
+                        //Restore parent + document
+                        modifiedElement.setDocument(origElement.getDocument());
+
+                        //Replace old with new element in parent
+                        Document doc = origElement.getDocument();
+                        doc.setRootElement(modifiedElement);
+                    }
+
+                    //Remove the old element
+                    origElement.detach();
+                }
             }
 
-            //Remove the old element
-            originalElement.detach();
-         }
-         else{
-            if( originalElement.isRootElement() ){
-             //Clone sets parent + document to null
-            Element clonedElem = (Element) originalElement.clone();
-            
-            //Ask for modified element
-            modifiedElement = elemModifier.modifyElement(clonedElem);
-            
-            if( modifiedElement != null ){               
-	            //Restore parent + document
-	            modifiedElement.setDocument(originalElement.getDocument());
-	
-	            //Replace old with new element in parent
-	            originalElement.getDocument().setRootElement(modifiedElement);
+            // Put the new element on the ElementStack, it might get pruned by 
+            // the PruningDispatchHandler
+            if (elementPath instanceof ElementStack) {
+                ElementStack elementStack = ((ElementStack) elementPath);
+                elementStack.popElement();
+                elementStack.pushElement(modifiedElement);
             }
-            
-            //Remove the old element
-            originalElement.detach();
-            }
-         }        
-         
-         //Put the new element on the ElementStack, it might get pruned by the PruningDispatchHandler
-         if( elementPath instanceof ElementStack ){
-            ElementStack elementStack = ((ElementStack)elementPath);
-            elementStack.popElement();
-            elementStack.pushElement(modifiedElement);
-         }
-      }
-      catch (Exception ex) {
-         throw new SAXModifyException(ex);
-      }
-   }
+        } catch (Exception ex) {
+            throw new SAXModifyException(ex);
+        }
+    }
 
-   /**
-    * @return Returns the modified Element.
-    */
-   protected Element getModifiedElement() {
-      return modifiedElement;
-   }
-
+    /**
+     * DOCUMENT ME!
+     *
+     * @return Returns the modified Element.
+     */
+    protected Element getModifiedElement() {
+        return modifiedElement;
+    }
 }
 
 
@@ -129,7 +134,7 @@ class SAXModifyElementHandler implements ElementHandler {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

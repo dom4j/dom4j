@@ -70,7 +70,7 @@ public class XPathGrep extends SAXDemo {
             println( "Results:" );
         }
         
-        Object object = xpath.selectObject( document );
+        Object object = xpath.evaluate( document );
 
         if ( object instanceof List ) {
             List list = (List) object;

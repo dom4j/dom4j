@@ -11,28 +11,28 @@ package org.dom4j.dom;
 
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultComment;
+
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
-/** <p><code>DOMText</code> implements a Text node which
-  * supports the W3C DOM API.</p>
-  *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
-  * @version $Revision$
-  */
+/**
+ * <p>
+ * <code>DOMText</code> implements a Text node which supports the W3C DOM API.
+ * </p>
+ *
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * @version $Revision$
+ */
 public class DOMComment extends DefaultComment implements org.w3c.dom.Comment {
-
     public DOMComment(String text) {
-    super(text);
+        super(text);
     }
 
-    public DOMComment(Element parent,String text) {
-    super(parent, text);
+    public DOMComment(Element parent, String text) {
+        super(parent, text);
     }
-
-
 
     // org.w3c.dom.Node interface
     //-------------------------------------------------------------------------
@@ -63,9 +63,6 @@ public class DOMComment extends DefaultComment implements org.w3c.dom.Comment {
     //already part of API
     //
     //public short getNodeType();
-
-
-
     public String getNodeValue() throws DOMException {
         return DOMNodeHelper.getNodeValue(this);
     }
@@ -73,7 +70,6 @@ public class DOMComment extends DefaultComment implements org.w3c.dom.Comment {
     public void setNodeValue(String nodeValue) throws DOMException {
         DOMNodeHelper.setNodeValue(this, nodeValue);
     }
-
 
     public org.w3c.dom.Node getParentNode() {
         return DOMNodeHelper.getParentNode(this);
@@ -107,37 +103,40 @@ public class DOMComment extends DefaultComment implements org.w3c.dom.Comment {
         return DOMNodeHelper.getOwnerDocument(this);
     }
 
-    public org.w3c.dom.Node insertBefore(
-        org.w3c.dom.Node newChild,
-        org.w3c.dom.Node refChild
-    ) throws DOMException {
+    public org.w3c.dom.Node insertBefore(org.w3c.dom.Node newChild,
+                                         org.w3c.dom.Node refChild)
+                                  throws DOMException {
         checkNewChildNode(newChild);
+
         return DOMNodeHelper.insertBefore(this, newChild, refChild);
     }
 
-    public org.w3c.dom.Node replaceChild(
-        org.w3c.dom.Node newChild,
-        org.w3c.dom.Node oldChild
-    ) throws DOMException {
+    public org.w3c.dom.Node replaceChild(org.w3c.dom.Node newChild,
+                                         org.w3c.dom.Node oldChild)
+                                  throws DOMException {
         checkNewChildNode(newChild);
+
         return DOMNodeHelper.replaceChild(this, newChild, oldChild);
     }
 
-    public org.w3c.dom.Node removeChild(org.w3c.dom.Node oldChild) throws DOMException {
+    public org.w3c.dom.Node removeChild(org.w3c.dom.Node oldChild)
+                                 throws DOMException {
         return DOMNodeHelper.removeChild(this, oldChild);
     }
 
-    public org.w3c.dom.Node appendChild(org.w3c.dom.Node newChild) throws DOMException {
+    public org.w3c.dom.Node appendChild(org.w3c.dom.Node newChild)
+                                 throws DOMException {
         checkNewChildNode(newChild);
+
         return DOMNodeHelper.appendChild(this, newChild);
     }
 
-    private final void checkNewChildNode(org.w3c.dom.Node newChild) throws DOMException {
+    private void checkNewChildNode(org.w3c.dom.Node newChild)
+                            throws DOMException {
         throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-            "Comment nodes cannot have children");
+                               "Comment nodes cannot have children");
     }
-    
-    
+
     public boolean hasChildNodes() {
         return DOMNodeHelper.hasChildNodes(this);
     }
@@ -172,7 +171,8 @@ public class DOMComment extends DefaultComment implements org.w3c.dom.Comment {
         return DOMNodeHelper.getLength(this);
     }
 
-    public String substringData( int offset, int count) throws DOMException {
+    public String substringData(int offset, int count)
+                         throws DOMException {
         return DOMNodeHelper.substringData(this, offset, count);
     }
 
@@ -188,9 +188,8 @@ public class DOMComment extends DefaultComment implements org.w3c.dom.Comment {
         DOMNodeHelper.deleteData(this, offset, count);
     }
 
-    public void replaceData(
-        int offset, int count, String arg
-    ) throws DOMException {
+    public void replaceData(int offset, int count, String arg)
+                     throws DOMException {
         DOMNodeHelper.replaceData(this, offset, count, arg);
     }
 }
@@ -222,7 +221,7 @@ public class DOMComment extends DefaultComment implements org.w3c.dom.Comment {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

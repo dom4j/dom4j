@@ -13,19 +13,23 @@ import java.util.Map;
 
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultProcessingInstruction;
+
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
-/** <p><code>DOMProcessingInstruction</code> implements a ProcessingInstruction node which
-  * supports the W3C DOM API.</p>
-  *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
-  * @version $Revision$
-  */
-public class DOMProcessingInstruction extends DefaultProcessingInstruction implements org.w3c.dom.ProcessingInstruction {
-
+/**
+ * <p>
+ * <code>DOMProcessingInstruction</code> implements a ProcessingInstruction
+ * node which supports the W3C DOM API.
+ * </p>
+ *
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * @version $Revision$
+ */
+public class DOMProcessingInstruction extends DefaultProcessingInstruction
+    implements org.w3c.dom.ProcessingInstruction {
     public DOMProcessingInstruction(String target, Map values) {
         super(target, values);
     }
@@ -34,10 +38,9 @@ public class DOMProcessingInstruction extends DefaultProcessingInstruction imple
         super(target, values);
     }
 
-    public DOMProcessingInstruction(Element parent, String target, String values) {
-        super(parent, target, values);
+    public DOMProcessingInstruction(Element parent, String target, String val) {
+        super(parent, target, val);
     }
-
 
     // org.w3c.dom.Node interface
     //-------------------------------------------------------------------------
@@ -68,9 +71,6 @@ public class DOMProcessingInstruction extends DefaultProcessingInstruction imple
     //already part of API
     //
     //public short getNodeType();
-
-
-
     public String getNodeValue() throws DOMException {
         return DOMNodeHelper.getNodeValue(this);
     }
@@ -78,7 +78,6 @@ public class DOMProcessingInstruction extends DefaultProcessingInstruction imple
     public void setNodeValue(String nodeValue) throws DOMException {
         DOMNodeHelper.setNodeValue(this, nodeValue);
     }
-
 
     public org.w3c.dom.Node getParentNode() {
         return DOMNodeHelper.getParentNode(this);
@@ -112,36 +111,39 @@ public class DOMProcessingInstruction extends DefaultProcessingInstruction imple
         return DOMNodeHelper.getOwnerDocument(this);
     }
 
-    public org.w3c.dom.Node insertBefore(
-        org.w3c.dom.Node newChild,
-        org.w3c.dom.Node refChild
-    ) throws DOMException {
+    public org.w3c.dom.Node insertBefore(org.w3c.dom.Node newChild,
+                                         org.w3c.dom.Node refChild)
+                                  throws DOMException {
         checkNewChildNode(newChild);
+
         return DOMNodeHelper.insertBefore(this, newChild, refChild);
     }
 
-    public org.w3c.dom.Node replaceChild(
-        org.w3c.dom.Node newChild,
-        org.w3c.dom.Node oldChild
-    ) throws DOMException {
+    public org.w3c.dom.Node replaceChild(org.w3c.dom.Node newChild,
+                                         org.w3c.dom.Node oldChild)
+                                  throws DOMException {
         checkNewChildNode(newChild);
+
         return DOMNodeHelper.replaceChild(this, newChild, oldChild);
     }
 
-    public org.w3c.dom.Node removeChild(org.w3c.dom.Node oldChild) throws DOMException {
+    public org.w3c.dom.Node removeChild(org.w3c.dom.Node oldChild)
+                                 throws DOMException {
         return DOMNodeHelper.removeChild(this, oldChild);
     }
 
-    public org.w3c.dom.Node appendChild(org.w3c.dom.Node newChild) throws DOMException {
+    public org.w3c.dom.Node appendChild(org.w3c.dom.Node newChild)
+                                 throws DOMException {
         checkNewChildNode(newChild);
+
         return DOMNodeHelper.appendChild(this, newChild);
     }
-    
-    private void checkNewChildNode(org.w3c.dom.Node newChild) throws DOMException {
+
+    private void checkNewChildNode(org.w3c.dom.Node newChild)
+                            throws DOMException {
         throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,
-            "ProcessingInstruction nodes cannot have children");
+                               "PI nodes cannot have children");
     }
-    
 
     public boolean hasChildNodes() {
         return DOMNodeHelper.hasChildNodes(this);
@@ -165,21 +167,16 @@ public class DOMProcessingInstruction extends DefaultProcessingInstruction imple
 
     // org.w3c.dom.ProcessingInstruction interface
     //-------------------------------------------------------------------------
-
     //public String getTarget();
-
     public String getData() {
         return getText();
     }
 
     public void setData(String data) throws DOMException {
-        if ( isReadOnly() ) {
-            throw new DOMException(
-                DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                "This ProcessingInstruction is read only"
-            );
-        }
-        else {
+        if (isReadOnly()) {
+            throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
+                                   "This ProcessingInstruction is read only");
+        } else {
             setText(data);
         }
     }
@@ -215,7 +212,7 @@ public class DOMProcessingInstruction extends DefaultProcessingInstruction imple
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -14,23 +14,22 @@ import junit.textui.TestRunner;
 import org.dom4j.AbstractTestCase;
 import org.dom4j.io.SAXReader;
 
-/** 
-  *
-  * @author <a href="mailto:maartenc@users.sourceforge.net">Maarten Coene</a>
-  */
+/**
+ * DOCUMENT ME!
+ *
+ * @author <a href="mailto:maartenc@users.sourceforge.net">Maarten Coene</a>
+ */
 public class BeansTest extends AbstractTestCase {
-
-	public static void main(String[] args) {
-		TestRunner.run(BeansTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(BeansTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     public void testReadXML() throws Exception {
         SAXReader reader = new SAXReader(BeanDocumentFactory.getInstance());
         getDocument("/xml/bean/gui.xml", reader);
     }
-    
 }
 
 
@@ -60,8 +59,8 @@ public class BeansTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
- *    http://dom4j.org/
+ * 5. Due credit should be given to the DOM4J Project -
+ *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
  * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT

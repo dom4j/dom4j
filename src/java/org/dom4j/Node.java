@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -13,432 +13,535 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
-/** <p><code>Node</code> defines the polymorphic behavior 
-  * for all XML nodes in a dom4j tree.</p>
-  *
-  * <p>A node can be output as its XML format, can be detached from its position in
-  * a document and can have XPath expressions evaluated on itself.</p>
-  *
-  * <p>A node may optionally support the parent relationship and may be 
-  * read only.</p>
-  *
-  * @see #supportsParent 
-  * @see #isReadOnly
-  *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
-  * @version $Revision$
-  */
+/**
+ * <p>
+ * <code>Node</code> defines the polymorphic behavior  for all XML nodes in a
+ * dom4j tree.
+ * </p>
+ * 
+ * <p>
+ * A node can be output as its XML format, can be detached from its position in
+ * a document and can have XPath expressions evaluated on itself.
+ * </p>
+ * 
+ * <p>
+ * A node may optionally support the parent relationship and may be  read only.
+ * </p>
+ *
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * @version $Revision$
+ *
+ * @see #supportsParent
+ * @see #isReadOnly
+ */
 public interface Node extends Cloneable {
-
     // W3C DOM complient node type codes
-    
+
     /** Matches Element nodes */
-    public static final short ANY_NODE = 0;
+    short ANY_NODE = 0;
+
     /** Matches Element nodes */
-    public static final short ELEMENT_NODE = 1;
+    short ELEMENT_NODE = 1;
+
     /** Matches elements nodes */
-    public static final short ATTRIBUTE_NODE = 2;
+    short ATTRIBUTE_NODE = 2;
+
     /** Matches elements nodes */
-    public static final short TEXT_NODE = 3;
+    short TEXT_NODE = 3;
+
     /** Matches elements nodes */
-    public static final short CDATA_SECTION_NODE = 4;
+    short CDATA_SECTION_NODE = 4;
+
     /** Matches elements nodes */
-    public static final short ENTITY_REFERENCE_NODE = 5;
+    short ENTITY_REFERENCE_NODE = 5;
+
     /** Matches elements nodes */
+
     //public static final short ENTITY_NODE = 6;
+
     /** Matches ProcessingInstruction */
-    public static final short PROCESSING_INSTRUCTION_NODE = 7;
+    short PROCESSING_INSTRUCTION_NODE = 7;
+
     /** Matches Comments nodes */
-    public static final short COMMENT_NODE = 8;
+    short COMMENT_NODE = 8;
+
     /** Matches Document nodes */
-    public static final short DOCUMENT_NODE = 9;
+    short DOCUMENT_NODE = 9;
+
     /** Matches DocumentType nodes */
-    public static final short DOCUMENT_TYPE_NODE = 10;
+    short DOCUMENT_TYPE_NODE = 10;
+
     //public static final short DOCUMENT_FRAGMENT_NODE = 11;
     //public static final short NOTATION_NODE = 12;
-    
+
     /** Matchs a Namespace Node - NOTE this differs from DOM */
+
     // XXXX: ????
-    public static final short NAMESPACE_NODE = 13;
-    
+    short NAMESPACE_NODE = 13;
+
     /** Does not match any valid node */
-    public static final short UNKNOWN_NODE = 14;
-    
+    short UNKNOWN_NODE = 14;
+
     /** The maximum number of node types for sizing purposes */
-    public static final short MAX_NODE_TYPE = 14;
-    
-    
-    /** <p><code>supportsParent</code> returns true if this node supports the 
-      * parent relationship.</p>
-      * 
-      * <p>Some XML tree implementations are singly linked and only support
-      * downward navigation through children relationships. 
-      * The default case is that both parent and children relationships are
-      * supported though for memory and performance reasons the parent
-      * relationship may not be supported.
-      * </p>
-      *
-      * @return true if this node supports the parent relationship
-      * or false it is not supported
-      */
-    public boolean supportsParent();
+    short MAX_NODE_TYPE = 14;
 
-    /** <p><code>getParent</code> returns the parent <code>Element</code> 
-      * if this node supports the parent relationship or null if it is 
-      * the root element or does not support the parent relationship.</p>
-      *
-      * <p>This method is an optional feature and may not be supported
-      * for all <code>Node</code> implementations.</p>
-      *
-      * @return the parent of this node or null if it is the root of the 
-      * tree or the parent relationship is not supported.
-      */
-    public Element getParent();
+    /**
+     * <p>
+     * <code>supportsParent</code> returns true if this node supports the
+     * parent relationship.
+     * </p>
+     * 
+     * <p>
+     * Some XML tree implementations are singly linked and only support
+     * downward navigation through children relationships.  The default case
+     * is that both parent and children relationships are supported though for
+     * memory and performance reasons the parent relationship may not be
+     * supported.
+     * </p>
+     *
+     * @return true if this node supports the parent relationship or false it
+     *         is not supported
+     */
+    boolean supportsParent();
 
-    /** <p><code>setParent</code> sets the parent relationship of
-      * this node if the parent relationship is supported or does nothing
-      * if the parent relationship is not supported.</p>
-      *
-      * <p>This method should only be called from inside an 
-      * <code>Element</code> implementation method and is not intended for 
-      * general use.</p>
-      *
-      * @param parent is the new parent of this node.
-      */
-    public void setParent(Element parent);
-    
+    /**
+     * <p>
+     * <code>getParent</code> returns the parent <code>Element</code>  if this
+     * node supports the parent relationship or null if it is  the root
+     * element or does not support the parent relationship.
+     * </p>
+     * 
+     * <p>
+     * This method is an optional feature and may not be supported for all
+     * <code>Node</code> implementations.
+     * </p>
+     *
+     * @return the parent of this node or null if it is the root of the  tree
+     *         or the parent relationship is not supported.
+     */
+    Element getParent();
 
-    /** <p><code>getDocument</code> returns the <code>Document</code>
-      * that this <code>Node</code> is part of if this node supports
-      * the parent relationship.</p>
-      *
-      * <p>This method is an optional feature and may not be supported
-      * for all <code>Node</code> implementations.</p>
-      *
-      * @return the document of this node or null if this feature is not 
-      * supported or the node is not associated with a <code>Document</code>
-      */
-    public Document getDocument();
+    /**
+     * <p>
+     * <code>setParent</code> sets the parent relationship of this node if the
+     * parent relationship is supported or does nothing if the parent
+     * relationship is not supported.
+     * </p>
+     * 
+     * <p>
+     * This method should only be called from inside an  <code>Element</code>
+     * implementation method and is not intended for  general use.
+     * </p>
+     *
+     * @param parent is the new parent of this node.
+     */
+    void setParent(Element parent);
 
-    /** <p><code>setDocument</code> sets the document of this node if the 
-      * parent relationship is supported or does nothing if the parent 
-      * relationship is not supported.</p>
-      *
-      * <p>This method should only be called from inside a
-      * <code>Document</code> implementation method and is not intended for 
-      * general use.</p>
-      *
-      * @param document is the new document of this node.
-      */
-    public void setDocument(Document document);
-    
-    
-    /** <p><code>isReadOnly</code> returns true if this node is read only
-      * and cannot be modified. 
-      * Any attempt to modify a read-only <code>Node</code> will result in 
-      * an <code>UnsupportedOperationException</code> being thrown.</p>
-      *
-      * @return true if this <code>Node</code> is read only 
-      * and cannot be modified otherwise false.
-      */
-    public boolean isReadOnly();
+    /**
+     * <p>
+     * <code>getDocument</code> returns the <code>Document</code> that this
+     * <code>Node</code> is part of if this node supports the parent
+     * relationship.
+     * </p>
+     * 
+     * <p>
+     * This method is an optional feature and may not be supported for all
+     * <code>Node</code> implementations.
+     * </p>
+     *
+     * @return the document of this node or null if this feature is not
+     *         supported or the node is not associated with a
+     *         <code>Document</code>
+     */
+    Document getDocument();
 
-    /** <p><code>hasContent</code> returns true if this node is a Branch
-      * (either an Element or a Document) and it contains at least one
-      * content node such as a child Element or Text node.</p>
-      *
-      * @return true if this <code>Node</code> is a Branch
-      * with a nodeCount() of one or more.
-      */
-    public boolean hasContent();
-    
+    /**
+     * <p>
+     * <code>setDocument</code> sets the document of this node if the  parent
+     * relationship is supported or does nothing if the parent  relationship
+     * is not supported.
+     * </p>
+     * 
+     * <p>
+     * This method should only be called from inside a <code>Document</code>
+     * implementation method and is not intended for  general use.
+     * </p>
+     *
+     * @param document is the new document of this node.
+     */
+    void setDocument(Document document);
 
-    
-    /** <p><code>getName</code> returns the name of this node.
-      * This is the XML local name of the element, attribute, entity or 
-      * processing instruction. 
-      * For CDATA and Text nodes this method will return null.</p>
-      *
-      * @return the XML name of this node
-      */
-    public String getName();    
+    /**
+     * <p>
+     * <code>isReadOnly</code> returns true if this node is read only and
+     * cannot be modified.  Any attempt to modify a read-only
+     * <code>Node</code> will result in  an
+     * <code>UnsupportedOperationException</code> being thrown.
+     * </p>
+     *
+     * @return true if this <code>Node</code> is read only  and cannot be
+     *         modified otherwise false.
+     */
+    boolean isReadOnly();
 
-    
-   /** <p>Sets the text data of this node or this method will 
-     * throw an <code>UnsupportedOperationException</code> if it is 
-     * read-only.</p>
+    /**
+     * <p>
+     * <code>hasContent</code> returns true if this node is a Branch (either an
+     * Element or a Document) and it contains at least one content node such
+     * as a child Element or Text node.
+     * </p>
+     *
+     * @return true if this <code>Node</code> is a Branch with a nodeCount() of
+     *         one or more.
+     */
+    boolean hasContent();
+
+    /**
+     * <p>
+     * <code>getName</code> returns the name of this node. This is the XML
+     * local name of the element, attribute, entity or  processing
+     * instruction.  For CDATA and Text nodes this method will return null.
+     * </p>
+     *
+     * @return the XML name of this node
+     */
+    String getName();
+
+    /**
+     * <p>
+     * Sets the text data of this node or this method will  throw an
+     * <code>UnsupportedOperationException</code> if it is  read-only.
+     * </p>
      *
      * @param name is the new name of this node
      */
-    public void setName(String name);
+    void setName(String name);
 
-    /** <p>Returns the text of this node.</p>
-      *
-      * @return the text for this node.
-      */
-    public String getText();
-    
-   /** <p>Sets the text data of this node or this method will 
-     * throw an <code>UnsupportedOperationException</code> if it is 
-     * read-only.</p>
+    /**
+     * <p>
+     * Returns the text of this node.
+     * </p>
+     *
+     * @return the text for this node.
+     */
+    String getText();
+
+    /**
+     * <p>
+     * Sets the text data of this node or this method will  throw an
+     * <code>UnsupportedOperationException</code> if it is  read-only.
+     * </p>
      *
      * @param text is the new textual value of this node
      */
-    public void setText(String text);
-    
-    /** Returns the XPath string-value of this node. 
-      * The behaviour of this method is defined in the 
-      * <a href="http://www.w3.org/TR/xpath">XPath specification</a>.
-      *
-      * @return the text from all the child Text and Element nodes appended 
-      * together.
-      */
-    public String getStringValue();    
-    
-    /** <p>Returns the XPath expression which will return a node set
-      * containing the given node such as /a/b/@c. No indexing will
-      * be used to restrict the path if multiple elements with the
-      * same name occur on the path.</p>
-      *
-      * @return the XPath expression which will return a nodeset
-      * containing at least this node.
-      */
-    public String getPath();
-    
-    /** <p>Returns the relative XPath expression which will return a node set
-      * containing the given node such as a/b/@c. No indexing will
-      * be used to restrict the path if multiple elements with the
-      * same name occur on the path.
-      *
-      * @param context is the parent context from which the relative path should 
-      * start. If the context is null or the context is not an ancestor of
-      * this node then the path will be absolute and start from the document and so 
-      * begin with the '/' character.
-      *
-      * @return the XPath expression relative to the given context 
-      * which will return a nodeset containing at least this node.
-      */
-    public String getPath(Element context);
-    
-    /** <p>Returns the XPath expression which will return a nodeset
-      * of one node which is the current node. This method will use
-      * the XPath index operator to restrict the path if
-      * multiple elements with the same name occur on the path.</p>
-      *
-      * @return the XPath expression which will return a nodeset
-      * containing just this node.
-      */
-    public String getUniquePath();
-    
-    /** <p>Returns the relative unique XPath expression from the given context
-      * which will return a nodeset
-      * of one node which is the current node. 
-      * This method will use the XPath index operator to restrict the 
-      * path if multiple elements with the same name occur on the path.
-      * </p>
-      *
-      * @param context is the parent context from which the path should 
-      * start. If the context is null or the context is not an ancestor of
-      * this node then the path will start from the document and so 
-      * begin with the '/' character.
-      *
-      * @return the XPath expression relative to the given context 
-      * which will return a nodeset containing just this node.
-      */
-    public String getUniquePath(Element context);
-    
-    
-    /** <p><code>asXML</code> returns the textual XML representation of this 
-      * node.</p>
-      *
-      * @return the XML representation of this node
-      */
-    public String asXML();    
+    void setText(String text);
 
-    /** <p><code>write</code> writes this node as the default XML 
-      * notation for this node. If you wish to control the XML output
-      * (such as for pretty printing, changing the indentation policy etc.) 
-      * then please use {@link org.dom4j.io.XMLWriter} or its derivations.
-      *
-      * @param writer is the <code>Writer</code> to output the XML to
-      */
-    public void write(Writer writer) throws IOException;
-
-    
-    /** Returns the code according to the type of node. 
-      * This makes processing nodes polymorphically much easier as the
-      * switch statement can be used instead of multiple if (instanceof) 
-      * statements.
-      *
-      * @return a W3C DOM complient code for the node type such as 
-      * ELEMENT_NODE or ATTRIBUTE_NODE
-      */
-    public short getNodeType();
-
-    /** @return the name of the type of node such as "Document", "Element", "Attribute" or "Text"
+    /**
+     * Returns the XPath string-value of this node.  The behaviour of this
+     * method is defined in the  <a href="http://www.w3.org/TR/xpath">XPath
+     * specification</a>.
+     *
+     * @return the text from all the child Text and Element nodes appended
+     *         together.
      */
-    public String getNodeTypeName();
-    
-    
-    /** <p>Removes this node from its parent if there is one. 
-      * If this node is the root element of a document then it is removed
-      * from the document as well.</p>
-      *
-      * <p>This method is useful if you want to remove
-      * a node from its source document and add it to another document.
-      * For example</p>
-      *
-      * <code>
-      *     Node node = ...;
-      *     Element someOtherElement = ...;
-      *     someOtherElement.add( node.detach() );
-      * </code>
-      *
-      * @return the node that has been removed from its parent node if 
-      * any and its document if any.
-      */
-    public Node detach();
-    
-    
-    
-    /** <p><code>selectNodes</code> evaluates an XPath expression and returns 
-      * the result as a <code>List</code> of <code>Node</code> instances or 
-      * <code>String</code> instances depending on the XPath expression.</p>
-      *
-      * @param xpathExpression is the XPath expression to be evaluated
-      * @return the list of <code>Node</code> or <code>String</code> instances 
-      * depending on the XPath expression
-      */
-    public List selectNodes(String xpathExpression);
-    
-    /** <p><code>selectObject</code> evaluates an XPath expression and returns 
-      * the result as an {@link Object}. The object returned can
-      * either be a {@link List} of one or more {@link Node} instances
-      * or a scalar object like a {@link String} or a {@link Number} 
-      * instance depending on the XPath expression. 
-      *
-      * @param xpathExpression is the XPath expression to be evaluated
-      * @return the value of the XPath expression as a
-      * {@link List} of {@link Node} instances, a {@link String} or 
-      * a {@link Number} instance depending on the XPath expression. 
-      */
-    public Object selectObject(String xpathExpression);
-    
-    /** <p><code>selectNodes</code> evaluates an XPath expression then
-      * sorts the results using a secondary XPath expression
-      * Returns a sorted <code>List</code> of <code>Node</code> instances.</p>
-      *
-      * @param xpathExpression is the XPath expression to be evaluated
-      * @param comparisonXPathExpression is the XPath expression used
-      *     to compare the results by for sorting
-      * @return the list of <code>Node</code> instances 
-      * sorted by the comparisonXPathExpression
-      */
-    public List selectNodes( 
-        String xpathExpression, 
-        String comparisonXPathExpression 
-    );
-    
-    /** <p><code>selectNodes</code> evaluates an XPath expression then
-      * sorts the results using a secondary XPath expression
-      * Returns a sorted <code>List</code> of <code>Node</code> instances.</p>
-      *
-      * @param xpathExpression is the XPath expression to be evaluated
-      * @param comparisonXPathExpression is the XPath expression used
-      *     to compare the results by for sorting
-      * @param removeDuplicates if this parameter is true then duplicate 
-      *     values (using the comparisonXPathExpression) are removed from
-      *     the result List.
-      * @return the list of <code>Node</code> instances 
-      * sorted by the comparisonXPathExpression
-      */
-    public List selectNodes(
-        String xpathExpression, 
-        String comparisonXPathExpression, 
-        boolean removeDuplicates
-    );
-    
-    /** <p><code>selectSingleNode</code> evaluates an XPath expression
-      * and returns the result as a single <code>Node</code> instance.</p>
-      *
-      * @param xpathExpression is the XPath expression to be evaluated
-      * @return the <code>Node</code> matching the XPath expression
-      */
-    public Node selectSingleNode(String xpathExpression);
+    String getStringValue();
 
-    /** <p><code>valueOf</code> evaluates an XPath expression
-      * and returns the textual representation of the results the XPath 
-      * string-value of this node. 
-      * The string-value for a given node type is defined in the 
-      * <a href="http://www.w3.org/TR/xpath">XPath specification</a>.
-      *
-      * @param xpathExpression is the XPath expression to be evaluated
-      * @return the string-value representation of the results of the XPath 
-      * expression
-      */
-    public String valueOf(String xpathExpression);
+    /**
+     * <p>
+     * Returns the XPath expression which will return a node set containing the
+     * given node such as /a/b/&#64;c. No indexing will be used to restrict
+     * the path if multiple elements with the same name occur on the path.
+     * </p>
+     *
+     * @return the XPath expression which will return a nodeset containing at
+     *         least this node.
+     */
+    String getPath();
 
-    /** <p><code>numberValueOf</code> evaluates an XPath expression
-      * and returns the numeric value of the XPath expression if the XPath
-      * expression results in a number, or null if the result is not a number.
-      *
-      * @param xpathExpression is the XPath expression to be evaluated
-      * @return the numeric result of the XPath expression or null
-      * if the result is not a number.
-      */
-    public Number numberValueOf(String xpathExpression);
+    /**
+     * Returns the relative XPath expression which will return a node set
+     * containing the given node such as a/b/&#64;c. No indexing will be used
+     * to restrict the path if multiple elements with the same name occur on
+     * the path.
+     *
+     * @param context is the parent context from which the relative path should
+     *        start. If the context is null or the context is not an ancestor
+     *        of this node then the path will be absolute and start from the
+     *        document and so  begin with the '/' character.
+     *
+     * @return the XPath expression relative to the given context  which will
+     *         return a nodeset containing at least this node.
+     */
+    String getPath(Element context);
 
-        
-    /** <p><code>matches</code> returns true if evaluating the given
-      * XPath expression on this node returns a non-empty node set containing this node.</p>
-      *
-      * <p>This method does not behave like the &lt;xsl:if&gt; element - if you want
-      * that behaviour, to evaluate if an XPath expression matches something, then
-      * you can use the following code to be equivalent...
-      * </p>
-      * <code>if ( node.selectSingleNode( "/some/path" ) != nulll )</code>
-      *
-      * @param xpathExpression is an XPath expression
-      * @return true if this node is returned by the given XPath expression
-      */
-    public boolean matches(String xpathExpression);
+    /**
+     * <p>
+     * Returns the XPath expression which will return a nodeset of one node
+     * which is the current node. This method will use the XPath index
+     * operator to restrict the path if multiple elements with the same name
+     * occur on the path.
+     * </p>
+     *
+     * @return the XPath expression which will return a nodeset containing just
+     *         this node.
+     */
+    String getUniquePath();
 
-    /** <p><code>createXPath</code> creates an XPath object for
-      * the given xpathExpression.
-      * The XPath object allows the variable context to be specified.</p>
-      *
-      * @param xpathExpression is the XPath expression to be evaluated
-      * @return an XPath object represeting the given expression
-      * @throws InvalidXPathException if the XPath expression is invalid
-      */
-    public XPath createXPath(String xpathExpression) throws InvalidXPathException;
+    /**
+     * <p>
+     * Returns the relative unique XPath expression from the given context
+     * which will return a nodeset of one node which is the current node. This
+     * method will use the XPath index operator to restrict the  path if
+     * multiple elements with the same name occur on the path.
+     * </p>
+     *
+     * @param context is the parent context from which the path should  start.
+     *        If the context is null or the context is not an ancestor of this
+     *        node then the path will start from the document and so  begin
+     *        with the '/' character.
+     *
+     * @return the XPath expression relative to the given context  which will
+     *         return a nodeset containing just this node.
+     */
+    String getUniquePath(Element context);
 
-    /** <p><code>asXPathResult</code> returns a version of this node which is
-      * capable of being an XPath result. 
-      * The result of an XPath expression should always support the parent 
-      * relationship, whether the original XML tree was singly or doubly linked.
-      * If the node does not support the parent relationship then a new node
-      * will be created which is linked to its parent and returned.
-      *
-      * @return a <code>Node</code> which supports the parent relationship
-      */
-    public Node asXPathResult(Element parent);
+    /**
+     * <p>
+     * <code>asXML</code> returns the textual XML representation of this  node.
+     * </p>
+     *
+     * @return the XML representation of this node
+     */
+    String asXML();
 
-    
-    /** <p><code>accept</code> is the method used in the Visitor Pattern.</p>
-      *
-      * @param visitor is the visitor in the Visitor Pattern
-      */
-    public void accept(Visitor visitor);
+    /**
+     * <p>
+     * <code>write</code> writes this node as the default XML  notation for
+     * this node. If you wish to control the XML output (such as for pretty
+     * printing, changing the indentation policy etc.)  then please use {@link
+     * org.dom4j.io.XMLWriter} or its derivations.
+     * </p>
+     *
+     * @param writer is the <code>Writer</code> to output the XML to
+     *
+     * @throws IOException DOCUMENT ME!
+     */
+    void write(Writer writer) throws IOException;
 
-    
-    
-    /** <p><code>clone</code> will return a deep clone or if this node is
-      * read-only then clone will return the same instance.
-      *
-      * @return a deep clone of myself or myself if I am read only.
-      */
-    public Object clone();
+    /**
+     * Returns the code according to the type of node.  This makes processing
+     * nodes polymorphically much easier as the switch statement can be used
+     * instead of multiple if (instanceof)  statements.
+     *
+     * @return a W3C DOM complient code for the node type such as  ELEMENT_NODE
+     *         or ATTRIBUTE_NODE
+     */
+    short getNodeType();
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return the name of the type of node such as "Document", "Element",
+     *         "Attribute" or "Text"
+     */
+    String getNodeTypeName();
+
+    /**
+     * <p>
+     * Removes this node from its parent if there is one.  If this node is the
+     * root element of a document then it is removed from the document as
+     * well.
+     * </p>
+     * 
+     * <p>
+     * This method is useful if you want to remove a node from its source
+     * document and add it to another document. For example
+     * </p>
+     * <code> Node node = ...; Element someOtherElement = ...;
+     * someOtherElement.add( node.detach() ); </code>
+     *
+     * @return the node that has been removed from its parent node if  any and
+     *         its document if any.
+     */
+    Node detach();
+
+    /**
+     * <p>
+     * <code>selectNodes</code> evaluates an XPath expression and returns  the
+     * result as a <code>List</code> of <code>Node</code> instances or
+     * <code>String</code> instances depending on the XPath expression.
+     * </p>
+     *
+     * @param xpathExpression is the XPath expression to be evaluated
+     *
+     * @return the list of <code>Node</code> or <code>String</code> instances
+     *         depending on the XPath expression
+     */
+    List selectNodes(String xpathExpression);
+
+    /**
+     * <p>
+     * <code>selectObject</code> evaluates an XPath expression and returns  the
+     * result as an {@link Object}. The object returned can either be a {@link
+     * List} of one or more {@link Node} instances or a scalar object like a
+     * {@link String} or a {@link Number}  instance depending on the XPath
+     * expression.
+     * </p>
+     *
+     * @param xpathExpression is the XPath expression to be evaluated
+     *
+     * @return the value of the XPath expression as a {@link List} of {@link
+     *         Node} instances, a {@link String} or  a {@link Number} instance
+     *         depending on the XPath expression.
+     */
+    Object selectObject(String xpathExpression);
+
+    /**
+     * <p>
+     * <code>selectNodes</code> evaluates an XPath expression then sorts the
+     * results using a secondary XPath expression Returns a sorted
+     * <code>List</code> of <code>Node</code> instances.
+     * </p>
+     *
+     * @param xpathExpression is the XPath expression to be evaluated
+     * @param comparisonXPathExpression is the XPath expression used to compare
+     *        the results by for sorting
+     *
+     * @return the list of <code>Node</code> instances  sorted by the
+     *         comparisonXPathExpression
+     */
+    List selectNodes(String xpathExpression, String comparisonXPathExpression);
+
+    /**
+     * <p>
+     * <code>selectNodes</code> evaluates an XPath expression then sorts the
+     * results using a secondary XPath expression Returns a sorted
+     * <code>List</code> of <code>Node</code> instances.
+     * </p>
+     *
+     * @param xpathExpression is the XPath expression to be evaluated
+     * @param comparisonXPathExpression is the XPath expression used to compare
+     *        the results by for sorting
+     * @param removeDuplicates if this parameter is true then duplicate  values
+     *        (using the comparisonXPathExpression) are removed from the
+     *        result List.
+     *
+     * @return the list of <code>Node</code> instances  sorted by the
+     *         comparisonXPathExpression
+     */
+    List selectNodes(String xpathExpression, String comparisonXPathExpression,
+                     boolean removeDuplicates);
+
+    /**
+     * <p>
+     * <code>selectSingleNode</code> evaluates an XPath expression and returns
+     * the result as a single <code>Node</code> instance.
+     * </p>
+     *
+     * @param xpathExpression is the XPath expression to be evaluated
+     *
+     * @return the <code>Node</code> matching the XPath expression
+     */
+    Node selectSingleNode(String xpathExpression);
+
+    /**
+     * <p>
+     * <code>valueOf</code> evaluates an XPath expression and returns the
+     * textual representation of the results the XPath  string-value of this
+     * node.  The string-value for a given node type is defined in the  <a
+     * href="http://www.w3.org/TR/xpath">XPath specification</a>.
+     * </p>
+     *
+     * @param xpathExpression is the XPath expression to be evaluated
+     *
+     * @return the string-value representation of the results of the XPath
+     *         expression
+     */
+    String valueOf(String xpathExpression);
+
+    /**
+     * <p>
+     * <code>numberValueOf</code> evaluates an XPath expression and returns the
+     * numeric value of the XPath expression if the XPath expression results
+     * in a number, or null if the result is not a number.
+     * </p>
+     *
+     * @param xpathExpression is the XPath expression to be evaluated
+     *
+     * @return the numeric result of the XPath expression or null if the result
+     *         is not a number.
+     */
+    Number numberValueOf(String xpathExpression);
+
+    /**
+     * <p>
+     * <code>matches</code> returns true if evaluating the given XPath
+     * expression on this node returns a non-empty node set containing this
+     * node.
+     * </p>
+     * 
+     * <p>
+     * This method does not behave like the &lt;xsl:if&gt; element - if you
+     * want that behaviour, to evaluate if an XPath expression matches
+     * something, then you can use the following code to be equivalent...
+     * </p>
+     * <code>if ( node.selectSingleNode( "/some/path" ) != nulll )</code>
+     *
+     * @param xpathExpression is an XPath expression
+     *
+     * @return true if this node is returned by the given XPath expression
+     */
+    boolean matches(String xpathExpression);
+
+    /**
+     * <p>
+     * <code>createXPath</code> creates an XPath object for the given
+     * xpathExpression. The XPath object allows the variable context to be
+     * specified.
+     * </p>
+     *
+     * @param xpathExpression is the XPath expression to be evaluated
+     *
+     * @return an XPath object represeting the given expression
+     *
+     * @throws InvalidXPathException if the XPath expression is invalid
+     */
+    XPath createXPath(String xpathExpression) throws InvalidXPathException;
+
+    /**
+     * <p>
+     * <code>asXPathResult</code> returns a version of this node which is
+     * capable of being an XPath result.  The result of an XPath expression
+     * should always support the parent  relationship, whether the original
+     * XML tree was singly or doubly linked. If the node does not support the
+     * parent relationship then a new node will be created which is linked to
+     * its parent and returned.
+     * </p>
+     *
+     * @param parent DOCUMENT ME!
+     *
+     * @return a <code>Node</code> which supports the parent relationship
+     */
+    Node asXPathResult(Element parent);
+
+    /**
+     * <p>
+     * <code>accept</code> is the method used in the Visitor Pattern.
+     * </p>
+     *
+     * @param visitor is the visitor in the Visitor Pattern
+     */
+    void accept(Visitor visitor);
+
+    /**
+     * <p>
+     * <code>clone</code> will return a deep clone or if this node is read-only
+     * then clone will return the same instance.
+     * </p>
+     *
+     * @return a deep clone of myself or myself if I am read only.
+     */
+    Object clone();
 }
 
 
@@ -468,7 +571,7 @@ public interface Node extends Cloneable {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

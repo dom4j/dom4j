@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -14,48 +14,46 @@ import junit.textui.TestRunner;
 import org.dom4j.AbstractTestCase;
 import org.dom4j.XPath;
 
-/** 
+/**
  * Tests bad XPath expressions
  *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  * @version $Revision$
  */
 public class BadPathTest extends AbstractTestCase {
+    private String[] paths = {
+                                 "+",
+                                 "/foo/bar/",
+                             };
 
-    String[] paths = {
-        "+",
-        "/foo/bar/",
-    };
-    
-	public static void main(String[] args) {
-		TestRunner.run(BadPathTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(BadPathTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     public void testBadPaths() throws Exception {
-        for ( int i = 0, size = paths.length; i < size; i++ ) {
+        for (int i = 0, size = paths.length; i < size; i++) {
             String path = paths[i];
-            testBadPath( path );
+            testBadPath(path);
         }
     }
-    
+
     protected void testBadPath(String path) throws Exception {
         try {
-            document.selectObject( path );
-            
-            fail( "Should have thrown exception for: " + path );
+            document.selectObject(path);
+
+            fail("Should have thrown exception for: " + path);
+        } catch (Exception e) {
+            log("Successfully caught: " + e);
         }
-        catch (Exception e) {
-            log( "Successfully caught: " + e );
-        }
+
         try {
-            XPath xpath = document.createXPath( path );
-            
-            fail( "Should have thrown exception for: " + path );
-        }
-        catch (Exception e) {
-            log( "Successfully caught: " + e );
+            XPath xpath = document.createXPath(path);
+
+            fail("Should have thrown exception for: " + path);
+        } catch (Exception e) {
+            log("Successfully caught: " + e);
         }
     }
 }
@@ -87,7 +85,7 @@ public class BadPathTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -17,10 +17,9 @@ import junit.textui.TestRunner;
  * @author <a href="mailto:maartenc@users.sourceforge.net">Maarten Coene</a>
  */
 public class SetTextTest extends AbstractTestCase {
-    
-	public static void main(String[] args) {
-		TestRunner.run(SetTextTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(SetTextTest.class);
+    }
 
     /*
      * The structure of the test document is:
@@ -37,31 +36,29 @@ public class SetTextTest extends AbstractTestCase {
      */
     public void testSetText1() throws Exception {
         String newURL = "newURL";
-        
-        Node urlNode = document.selectSingleNode("//root/author[1]/url"); 
+
+        Node urlNode = document.selectSingleNode("//root/author[1]/url");
         urlNode.setText(newURL);
-        
+
         assertEquals(newURL, urlNode.getText());
         assertTrue(urlNode instanceof Element);
-        
+
         Element urlElement = (Element) urlNode;
         assertEquals(0, urlElement.elements().size());
     }
-        
+
     public void testSetText2() throws Exception {
         String newName = "Strachem James";
-        
-        Node authorNode = document.selectSingleNode("//root/author[1]"); 
+
+        Node authorNode = document.selectSingleNode("//root/author[1]");
         authorNode.setText(newName);
-        
+
         assertEquals(newName, authorNode.getText());
         assertTrue(authorNode instanceof Element);
-        
+
         Element urlElement = (Element) authorNode;
         assertEquals(1, urlElement.elements().size());
     }
-        
-
 }
 
 
@@ -91,7 +88,7 @@ public class SetTextTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

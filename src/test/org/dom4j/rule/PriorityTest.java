@@ -14,44 +14,44 @@ import junit.textui.TestRunner;
 import org.dom4j.AbstractTestCase;
 import org.dom4j.DocumentFactory;
 
-/** 
+/**
  * Tests the priority behaviour of Pattern.
  *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  * @version $Revision$
  */
 public class PriorityTest extends AbstractTestCase {
-
-	public static void main(String[] args) {
-		TestRunner.run(PriorityTest.class);
-	}
-
-	public void testNameNode() throws Exception {
-        testPriority( "foo", 0 );
+    public static void main(String[] args) {
+        TestRunner.run(PriorityTest.class);
     }
-    
+
+    public void testNameNode() throws Exception {
+        testPriority("foo", 0);
+    }
+
     public void testFilter() throws Exception {
-        testPriority( "foo[@id='123']", 0.5 );
+        testPriority("foo[@id='123']", 0.5);
     }
-    
+
     public void testURI() throws Exception {
-        testPriority( "foo:*", -0.25);
+        testPriority("foo:*", -0.25);
     }
-    
+
     public void testAnyNode() throws Exception {
-        testPriority( "*", -0.5 );
+        testPriority("*", -0.5);
     }
-    
-    protected void testPriority(String expr, double priority) throws Exception {
-        System.out.println( "parsing: " + expr );
-        
-        Pattern pattern = DocumentFactory.getInstance().createPattern( expr );
+
+    protected void testPriority(String expr, double priority)
+                         throws Exception {
+        System.out.println("parsing: " + expr);
+
+        Pattern pattern = DocumentFactory.getInstance().createPattern(expr);
         double d = pattern.getPriority();
-        
-        System.out.println( "expr: " + expr + " has priority: " + d );
-        System.out.println( "pattern: " + pattern );
-        
-        assertEquals( "expr: " + expr, new Double(priority), new Double(d) );
+
+        System.out.println("expr: " + expr + " has priority: " + d);
+        System.out.println("pattern: " + pattern);
+
+        assertEquals("expr: " + expr, new Double(priority), new Double(d));
     }
 }
 
@@ -82,7 +82,7 @@ public class PriorityTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

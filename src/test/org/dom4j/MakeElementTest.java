@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -11,75 +11,73 @@ package org.dom4j;
 
 import junit.textui.TestRunner;
 
-/** 
+/**
  * A test harness to test the DocumentHelper.makeElement() methodt
  *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  * @version $Revision$
  */
 public class MakeElementTest extends AbstractTestCase {
-
-	public static void main(String[] args) {
-		TestRunner.run(MakeElementTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(MakeElementTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     public void testMakeElement() throws Exception {
         Document doc = DocumentHelper.createDocument();
-        
-        Element c = DocumentHelper.makeElement( doc, "a/b/c" );
-        assertTrue( "Should return a valid element", c != null );
-        
-        Element c2 = DocumentHelper.makeElement( doc, "a/b/c" );
-        
-        assertTrue( "Found same element again", c == c2 );
-        
-        c.addAttribute( "x", "123" );
-        
-        Node found = doc.selectSingleNode( "/a/b/c[@x='123']" );
-        
-        assertEquals( "Found same node via XPath", c, found );
-        
+
+        Element c = DocumentHelper.makeElement(doc, "a/b/c");
+        assertTrue("Should return a valid element", c != null);
+
+        Element c2 = DocumentHelper.makeElement(doc, "a/b/c");
+
+        assertTrue("Found same element again", c == c2);
+
+        c.addAttribute("x", "123");
+
+        Node found = doc.selectSingleNode("/a/b/c[@x='123']");
+
+        assertEquals("Found same node via XPath", c, found);
+
         Element b = c.getParent();
-        
-        Element e = DocumentHelper.makeElement( b, "c/d/e" );
-        
-        assertTrue( "Should return a valid element", e != null );
-        
-        Element e2 = DocumentHelper.makeElement( b, "c/d/e" );
-        
-        assertTrue( "Found same element again", e == e2 );
-        
-        e.addAttribute( "y", "456" );
-        
-        found = b.selectSingleNode( "c/d/e[@y='456']" );
-        
-        assertEquals( "Found same node via XPath", e, found );        
+
+        Element e = DocumentHelper.makeElement(b, "c/d/e");
+
+        assertTrue("Should return a valid element", e != null);
+
+        Element e2 = DocumentHelper.makeElement(b, "c/d/e");
+
+        assertTrue("Found same element again", e == e2);
+
+        e.addAttribute("y", "456");
+
+        found = b.selectSingleNode("c/d/e[@y='456']");
+
+        assertEquals("Found same node via XPath", e, found);
     }
-    
+
     public void testMakeQualifiedElement() throws Exception {
         Document doc = DocumentHelper.createDocument();
-        Element root = doc.addElement( "root" );
-        root.addNamespace( "", "defaultURI" );
-        root.addNamespace( "foo", "fooURI" );
-        root.addNamespace( "bar", "barURI" );
-        
-        Element c = DocumentHelper.makeElement( doc, "root/foo:b/bar:c" );
-        assertTrue( "Should return a valid element", c != null );
-        
-        assertEquals( "c has a valid namespace", "barURI", c.getNamespaceURI() );
-        
+        Element root = doc.addElement("root");
+        root.addNamespace("", "defaultURI");
+        root.addNamespace("foo", "fooURI");
+        root.addNamespace("bar", "barURI");
+
+        Element c = DocumentHelper.makeElement(doc, "root/foo:b/bar:c");
+        assertTrue("Should return a valid element", c != null);
+
+        assertEquals("c has a valid namespace", "barURI", c.getNamespaceURI());
+
         Element b = c.getParent();
-        
-        assertEquals( "b has a valid namespace", "fooURI", b.getNamespaceURI() );
-        
-        log( "Created: " + c );
-        
-        Element c2 = DocumentHelper.makeElement( doc, "root/foo:b/bar:c" );
-        assertTrue( "Found same element again", c == c2 );
+
+        assertEquals("b has a valid namespace", "fooURI", b.getNamespaceURI());
+
+        log("Created: " + c);
+
+        Element c2 = DocumentHelper.makeElement(doc, "root/foo:b/bar:c");
+        assertTrue("Found same element again", c == c2);
     }
-    
 }
 
 
@@ -109,7 +107,7 @@ public class MakeElementTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

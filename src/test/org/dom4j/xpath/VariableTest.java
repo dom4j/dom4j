@@ -1,88 +1,82 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j.xpath;
 
-import java.util.List;
-
 import junit.textui.TestRunner;
+
+import java.util.List;
 
 import org.dom4j.AbstractTestCase;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Node;
 import org.dom4j.XPath;
+
 import org.jaxen.SimpleVariableContext;
 
-/** 
+/**
  * Test harness for the valueOf() function
  *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
  * @version $Revision$
  */
 public class VariableTest extends AbstractTestCase {
-
-    protected static boolean VERBOSE = true;
-    
-    protected static String[] paths = {
-        "$author",
-        "$author/@name",
-        "$root/author",
-        "$root/author[1]",
-        "$root/author[1]/@name",
-        "$author/@name"
-    };
-    
+    protected static String[] paths =
+        {
+            "$author",
+            "$author/@name",
+            "$root/author",
+            "$root/author[1]",
+            "$root/author[1]/@name",
+            "$author/@name"
+        };
     private SimpleVariableContext variableContext = new SimpleVariableContext();
     private Node rootNode;
     private Node authorNode;
 
-	public static void main(String[] args) {
-		TestRunner.run(VariableTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(VariableTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
-    public void testXPaths() throws Exception {        
+    //-------------------------------------------------------------------------
+    public void testXPaths() throws Exception {
         int size = paths.length;
-        for ( int i = 0; i < size; i++ ) {
-            testXPath( paths[i] );
+
+        for (int i = 0; i < size; i++) {
+            testXPath(paths[i]);
         }
     }
-        
+
     protected void testXPath(String xpathText) {
-        XPath xpath = createXPath( xpathText );
-        List list = xpath.selectNodes( document );
-        
-        log( "Searched path: " + xpathText + " found: " + list.size() + " result(s)" );
-        
-        if ( VERBOSE ) {
-            log( "" );
-            log( "xpath: " + xpath );
-            log( "" );
-            log( "results: " + list );
-        }
-        
-        assertTrue( "Results should not contain the root node", ! list.contains( rootNode ) );
+        XPath xpath = createXPath(xpathText);
+        List list = xpath.selectNodes(document);
+
+        log("Searched path: " + xpathText + " found: " + list.size()
+            + " result(s)");
+
+        assertTrue("Results should not contain the root node",
+                   !list.contains(rootNode));
     }
-    
-    protected XPath createXPath( String xpath ) {
-        return DocumentHelper.createXPath( xpath, variableContext );
+
+    protected XPath createXPath(String xpath) {
+        return DocumentHelper.createXPath(xpath, variableContext);
     }
-    
+
     protected void setUp() throws Exception {
         super.setUp();
 
-        rootNode = document.selectSingleNode( "/root" );
-        authorNode = document.selectSingleNode( "/root/author[1]" );
-        
-        variableContext.setVariableValue( "root", rootNode );
-        variableContext.setVariableValue( "author", authorNode );
+        rootNode = document.selectSingleNode("/root");
+        authorNode = document.selectSingleNode("/root/author[1]");
+
+        variableContext.setVariableValue("root", rootNode);
+        variableContext.setVariableValue("author", authorNode);
     }
 }
 
@@ -113,7 +107,7 @@ public class VariableTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

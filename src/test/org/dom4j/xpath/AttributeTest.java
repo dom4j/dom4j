@@ -1,79 +1,78 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j.xpath;
 
+import junit.textui.TestRunner;
+
 import java.util.Iterator;
 import java.util.List;
-
-import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Attribute;
 import org.dom4j.DocumentHelper;
 import org.dom4j.XPath;
 
-/** 
- * Test harness for the attribute axis 
+/**
+ * Test harness for the attribute axis
  *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
  * @version $Revision$
  */
 public class AttributeTest extends AbstractTestCase {
+    protected static String[] paths =
+        {
+            "attribute::*",
+            "/root/author/attribute::*",
+            "//attribute::*",
+            "@name"
+        };
 
-    protected static boolean VERBOSE = false;
-    
-    protected static String[] paths = {
-        "attribute::*",
-        "/root/author/attribute::*",
-        "//attribute::*",
-        "@name"
-    };
-    
-	public static void main(String[] args) {
-		TestRunner.run(AttributeTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(AttributeTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
-    public void testXPaths() throws Exception {        
+    //-------------------------------------------------------------------------
+    public void testXPaths() throws Exception {
         int size = paths.length;
-        for ( int i = 0; i < size; i++ ) {
-            testXPath( paths[i] );
+
+        for (int i = 0; i < size; i++) {
+            testXPath(paths[i]);
         }
     }
-        
+
     // Implementation methods
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     protected void testXPath(String xpathText) {
         XPath xpath = DocumentHelper.createXPath(xpathText);
-        List list = xpath.selectNodes( document );
-        
-        log( "Searched path: " + xpathText + " found: " + list.size() + " result(s)" );
-        
-        if ( VERBOSE ) {
-            log( "xpath: " + xpath );
-            log( "results: " + list );
-        }
-        
-        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
+        List list = xpath.selectNodes(document);
+
+        log("Searched path: " + xpathText + " found: " + list.size()
+            + " result(s)");
+
+        for (Iterator iter = list.iterator(); iter.hasNext();) {
             Object object = iter.next();
-            
-            log( "Found Result: " + object );
-            
-            assertTrue( "Results should be Attribute objects", object instanceof Attribute );
-            
+
+            log("Found Result: " + object);
+
+            assertTrue("Results should be Attribute objects",
+                       object instanceof Attribute);
+
             Attribute attribute = (Attribute) object;
-            
-            assertTrue( "Results should support the parent relationship", attribute.supportsParent() );
-            assertTrue( "Results should contain reference to the parent element", attribute.getParent() != null );
-            assertTrue( "Results should contain reference to the owning document", attribute.getDocument() != null );
+
+            assertTrue("Results should support the parent relationship",
+                       attribute.supportsParent());
+            assertTrue("Results should contain reference to the parent element",
+                       attribute.getParent() != null);
+            assertTrue("Resulting document not correct",
+                       attribute.getDocument() != null);
         }
     }
 }
@@ -105,7 +104,7 @@ public class AttributeTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

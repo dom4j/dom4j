@@ -1,55 +1,56 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j.xpath;
 
+import junit.textui.TestRunner;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-
-import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Node;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 
-/** 
+/**
  * Tests the use of a Map for defining namespace URIs
  *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  * @version $Revision$
  */
 public class UriMapTest extends AbstractTestCase {
-
-	public static void main(String[] args) {
-		TestRunner.run(UriMapTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(UriMapTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     public void testURIMap() throws Exception {
         Map uris = new HashMap();
-        uris.put( "SOAP-ENV", "http://schemas.xmlsoap.org/soap/envelope/" );
-        uris.put( "m", "urn:xmethodsBabelFish" );        
-        XPath xpath = document.createXPath( "/SOAP-ENV:Envelope/SOAP-ENV:Body/m:BabelFish" );
-        xpath.setNamespaceURIs( uris );        
-        Node babelfish = xpath.selectSingleNode( document );
-        
+        uris.put("SOAP-ENV", "http://schemas.xmlsoap.org/soap/envelope/");
+        uris.put("m", "urn:xmethodsBabelFish");
+
+        String path = "/SOAP-ENV:Envelope/SOAP-ENV:Body/m:BabelFish";
+        XPath xpath = document.createXPath(path);
+        xpath.setNamespaceURIs(uris);
+
+        Node babelfish = xpath.selectSingleNode(document);
+
         //log( "Found: " + babelfish );
-        
-        assertTrue( "Found valid node", babelfish != null );
+        assertTrue("Found valid node", babelfish != null);
     }
-    
+
     protected void setUp() throws Exception {
-    	super.setUp();
-        document = new SAXReader().read( new File( "xml/soap.xml" ) );
+        super.setUp();
+        document = new SAXReader().read(new File("xml/soap.xml"));
     }
 }
 
@@ -80,7 +81,7 @@ public class UriMapTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

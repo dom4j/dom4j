@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -15,77 +15,71 @@ import org.dom4j.AbstractTestCase;
 import org.dom4j.Node;
 import org.dom4j.XPath;
 
-/** 
+/**
  * Test harness for numeric XPath expressions
  *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
  * @version $Revision$
  */
 public class NumberTest extends AbstractTestCase {
+    protected static String[] paths =
+        {
+            "2+2",
+            "2 + 2",
+            "2 + number(1) + 2",
+            "number(1) * 2",
+            "2 + count(//author) + 2",
+            "2 + (2 * 5)",
+            "count(//author) + count(//author/attribute::*)",
+            "(12 + count(//author) + count(//author/attribute::*)) div 2",
+            "count(//author)",
+            "count(//author/attribute::*)",
+            "2 + number(1) * 2",
+            "count(descendant::author)",
+            "count(ancestor::author)",
+            "count(descendant::*)",
+            "count(descendant::author)+1",
+            "count(ancestor::*)",
+            "10 + count(ancestor-or-self::author) + 5",
+            "10 + count(descendant::author) * 5",
+            "10 + (count(descendant::author) * 5)",
+        };
 
-    protected static boolean VERBOSE = false;
-    
-    protected static String[] paths = {
-        "2+2",
-        "2 + 2",
-        "2 + number(1) + 2",
-        "number(1) * 2",
-        "2 + count(//author) + 2",
-        "2 + (2 * 5)",
-        "count(//author) + count(//author/attribute::*)",
-        "(12 + count(//author) + count(//author/attribute::*)) div 2",
-        "count(//author)",
-        "count(//author/attribute::*)",
-        "2 + number(1) * 2",
-        "count(descendant::author)",
-        "count(ancestor::author)",
-        "count(descendant::*)",
-        "count(descendant::author)+1",
-        "count(ancestor::*)",
-        "10 + count(ancestor-or-self::author) + 5",
-        "10 + count(descendant::author) * 5",
-        "10 + (count(descendant::author) * 5)",
-    };
-    
-	public static void main(String[] args) {
-		TestRunner.run(NumberTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(NumberTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
-    public void testXPaths() throws Exception {        
-        Node element = document.selectSingleNode( "//author" );
+    //-------------------------------------------------------------------------
+    public void testXPaths() throws Exception {
+        Node element = document.selectSingleNode("//author");
         int size = paths.length;
-        for ( int i = 0; i < size; i++ ) {
-            testXPath( document, paths[i] );
-            testXPath( element, paths[i] );
+
+        for (int i = 0; i < size; i++) {
+            testXPath(document, paths[i]);
+            testXPath(element, paths[i]);
         }
-        log( "Finished successfully" );
+
+        log("Finished successfully");
     }
-        
+
     // Implementation methods
-    //-------------------------------------------------------------------------                    
-    protected void testXPath(Node node, String xpathText) throws Exception {
+    //-------------------------------------------------------------------------
+    protected void testXPath(Node node, String xpathText)
+                      throws Exception {
         try {
-            XPath xpath = node.createXPath( xpathText );
-            
-            if ( VERBOSE ) {
-                log( "    xpath: " + xpath );        
-                log( "    for: " + node );        
-            }
-            
-            Number number = xpath.numberValueOf( node );
+            XPath xpath = node.createXPath(xpathText);
 
-            log( "Searched path: " + xpathText + " found: " + number );
+            Number number = xpath.numberValueOf(node);
 
-        }
-        catch (Throwable e) {
-            log( "Caught exception: " + e );
+            log("Searched path: " + xpathText + " found: " + number);
+        } catch (Throwable e) {
+            log("Caught exception: " + e);
             e.printStackTrace();
-            assertTrue( "Failed to process:  " + xpathText + " caught exception: " + e, false );
+            assertTrue("Failed to process:  " + xpathText
+                       + " caught exception: " + e, false);
         }
     }
-    
 }
 
 
@@ -115,7 +109,7 @@ public class NumberTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

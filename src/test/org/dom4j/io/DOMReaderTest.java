@@ -1,59 +1,57 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j.io;
 
+import junit.textui.TestRunner;
+
 import java.io.ByteArrayInputStream;
 import java.util.List;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
 
 /**
+ * DOCUMENT ME!
  *
  * @author Maarten
  */
 public class DOMReaderTest extends AbstractTestCase {
-    
-	public static void main(String[] args) {
-		TestRunner.run(DOMReaderTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(DOMReaderTest.class);
+    }
 
     public void testBug972737() throws Exception {
-        String xml = 
-                "<schema targetNamespace='http://SharedTest.org/xsd' " +
-                "        xmlns='http://www.w3.org/2001/XMLSchema' " +
-                "        xmlns:xsd='http://www.w3.org/2001/XMLSchema'>" +
-                "    <complexType name='AllStruct'>" +
-                "        <all>" +
-                "            <element name='arString' type='xsd:string'/>" +
-                "            <element name='varInt' type='xsd:int'/>" +
-                "        </all>" +
-                "    </complexType>" +
-                "</schema>";
+        String xml =
+            "<schema targetNamespace='http://SharedTest.org/xsd' "
+            + "        xmlns='http://www.w3.org/2001/XMLSchema' "
+            + "        xmlns:xsd='http://www.w3.org/2001/XMLSchema'>"
+            + "    <complexType name='AllStruct'>" + "        <all>"
+            + "            <element name='arString' type='xsd:string'/>"
+            + "            <element name='varInt' type='xsd:int'/>"
+            + "        </all>" + "    </complexType>" + "</schema>";
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
-        org.w3c.dom.Document doc = builder.parse(new ByteArrayInputStream(xml.getBytes()));
-        
+        org.w3c.dom.Document doc =
+            builder.parse(new ByteArrayInputStream(xml.getBytes()));
+
         DOMReader reader = new DOMReader();
         org.dom4j.Document dom4jDoc = reader.read(doc);
-        
+
         List namespaces = dom4jDoc.getRootElement().declaredNamespaces();
         assertEquals(2, namespaces.size());
-        
+
         System.out.println(dom4jDoc.asXML());
     }
-
 }
 
 
@@ -83,7 +81,7 @@ public class DOMReaderTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

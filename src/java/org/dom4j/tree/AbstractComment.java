@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -16,14 +16,17 @@ import org.dom4j.Comment;
 import org.dom4j.Element;
 import org.dom4j.Visitor;
 
-/** <p><code>AbstractComment</code> is an abstract base class for 
-  * tree implementors to use for implementation inheritence.</p>
-  *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
-  * @version $Revision$
-  */
-public abstract class AbstractComment extends AbstractCharacterData implements Comment {
-
+/**
+ * <p>
+ * <code>AbstractComment</code> is an abstract base class for  tree
+ * implementors to use for implementation inheritence.
+ * </p>
+ *
+ * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+ * @version $Revision$
+ */
+public abstract class AbstractComment extends AbstractCharacterData
+    implements Comment {
     public AbstractComment() {
     }
 
@@ -33,18 +36,17 @@ public abstract class AbstractComment extends AbstractCharacterData implements C
 
     public String getPath(Element context) {
         Element parent = getParent();
-        return ( parent != null && parent != context ) 
-            ? parent.getPath( context ) + "/comment()"
-            : "comment()";
+
+        return ((parent != null) && (parent != context))
+               ? (parent.getPath(context) + "/comment()") : "comment()";
     }
 
     public String getUniquePath(Element context) {
         Element parent = getParent();
-        return ( parent != null && parent != context ) 
-            ? parent.getUniquePath( context ) + "/comment()"
-            : "comment()";
-    }
 
+        return ((parent != null) && (parent != context))
+               ? (parent.getUniquePath(context) + "/comment()") : "comment()";
+    }
 
     public String toString() {
         return super.toString() + " [Comment: \"" + getText() + "\"]";
@@ -53,13 +55,13 @@ public abstract class AbstractComment extends AbstractCharacterData implements C
     public String asXML() {
         return "<!--" + getText() + "-->";
     }
-    
+
     public void write(Writer writer) throws IOException {
-        writer.write( "<!--" );
-        writer.write( getText() );
-        writer.write( "-->" );
+        writer.write("<!--");
+        writer.write(getText());
+        writer.write("-->");
     }
-    
+
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }
@@ -92,7 +94,7 @@ public abstract class AbstractComment extends AbstractCharacterData implements C
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS

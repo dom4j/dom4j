@@ -1,9 +1,9 @@
 /*
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -15,34 +15,32 @@ import org.dom4j.AbstractTestCase;
 import org.dom4j.Document;
 import org.dom4j.io.SAXReader;
 
-
-/** 
- * Tests the SchemaParser based on a test case provided by
- * Luis Peña Sánchez
+/**
+ * Tests the SchemaParser based on a test case provided by Luis Peña Sánchez
  *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  * @version $Revision$
  */
 public class SchemaParseTest extends AbstractTestCase {
-
-	public static void main(String[] args) {
-		TestRunner.run(SchemaParseTest.class);
-	}
+    public static void main(String[] args) {
+        TestRunner.run(SchemaParseTest.class);
+    }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
-    public void testParseSchema() throws Exception {        
+    //-------------------------------------------------------------------------
+    public void testParseSchema() throws Exception {
         DatatypeDocumentFactory factory = new DatatypeDocumentFactory();
 
         SAXReader reader = new SAXReader();
-        reader.setDocumentFactory( factory );
+        reader.setDocumentFactory(factory);
+
         Document schema = getDocument("/xml/test/LuisSchema.xsd", reader);
         factory.loadSchema(schema);
-     
-        log( "Loaded the schema" );
-        
+
+        log("Loaded the schema");
+
         // now load an instance document
-    }    
+    }
 }
 
 
@@ -72,7 +70,7 @@ public class SchemaParseTest extends AbstractTestCase {
  *    permission of MetaStuff, Ltd. DOM4J is a registered
  *    trademark of MetaStuff, Ltd.
  *
- * 5. Due credit should be given to the DOM4J Project - 
+ * 5. Due credit should be given to the DOM4J Project -
  *    http://www.dom4j.org
  *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
