@@ -94,24 +94,6 @@ public class TestBackedList extends AbstractTestCase {
         children.add(children.size(), factory.createElement("dummy4"));
     }
     
-    public void testSort() {
-//        DocumentFactory factory = DocumentFactory.getInstance();
-//        Element root = (Element) document.selectSingleNode( "/root" );
-//        root.elements().add(factory.createElement("aaa"));
-//        
-//        List elements = root.elements();
-//        Collections.sort(elements, new Comparator() {
-//            public int compare(Object obj1, Object obj2) {
-//                Node node1 = (Node) obj1;
-//                Node node2 = (Node) obj2;
-//                return node1.getName().compareTo(node2.getName());
-//            }
-//        }); 
-//        
-//        List sortedElements = root.elements();
-//        assertEquals("aaa", ((Node) sortedElements.get(0)).getName());
-    }
-        
     // Implementation methods
     //-------------------------------------------------------------------------                    
     protected void mutate(Element element) throws Exception {
