@@ -170,7 +170,8 @@
 
     <!-- copy src files -->
     <copy todir="${build.src}">
-      <fileset dir="${samples.dir}"/>
+      <!-- temporarily comment out persistence stuff to stop gump errors -->
+      <fileset dir="${samples.dir}" exclude="org/dom4j/persistence/**"/>
     </copy>
   </target>
 
