@@ -22,7 +22,17 @@ public class ContentFactory {
 
     /** The Singleton instance */
     protected static ContentFactory singleton = new ContentFactory();
- 
+
+    // Static helper methods
+    
+    /** A helper method which returns a {@link Namespace} instance
+      * for the given prefix and URI using the singleton content factory
+      */
+    public static Namespace getNamespace(String prefix, String uri) {
+        return singleton.createNamespace(prefix, uri);
+    }
+    
+    
     /** <p>Access to the Singleton instance of ContentFactory for
       * the default implementation.</p>
       *
