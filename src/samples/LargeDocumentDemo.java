@@ -41,10 +41,20 @@ public class LargeDocumentDemo extends SAXDemo implements ElementHandler {
     }
     
     // ElementHandler interface     
-    public void handle(Element element) {
-        println( "Called during parsing with element: " + element 
+    public void onStart(ElementPath path) {
+        Element element = path.getCurrent();
+        println( "onStart: of parsing element: " + element );
+    }
+    
+    public void onEnd(ElementPath path) {
+        Element element = path.getCurrent();
+        
+        println( "onEnd: of parsing element: " + element
             + " with: " + element.content().size() + " content node(s)" 
         );
+        
+        // now prune the current element to reduce memory
+        element.detach();
     }
     
     protected Document parse( String url ) throws Exception {
@@ -54,7 +64,7 @@ public class LargeDocumentDemo extends SAXDemo implements ElementHandler {
         println( "Using Pruning Path: " + pruningPath );
         
         // enable pruning to call me back as each Element is complete
-        reader.setPruningMode( pruningPath, this );
+        reader.addHandler( pruningPath, this );
         
         println( "##### starting parse" );
         Document document = reader.read(url);
