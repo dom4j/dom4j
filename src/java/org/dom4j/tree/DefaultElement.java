@@ -81,6 +81,13 @@ public class DefaultElement extends AbstractElement {
         }
     }
 
+    public DefaultElement(QName qname, int attributeCount) { 
+        this.qname = qname;
+        if ( attributeCount > 1 ) {
+            this.attributes = new ArrayList( attributeCount );
+        }
+    }
+
     public DefaultElement(String name, Namespace namespace) { 
         this.qname = getDocumentFactory().createQName(name, namespace);
     }

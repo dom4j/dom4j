@@ -36,7 +36,7 @@ import org.xml.sax.Attributes;
   * <p>The tree built allows full XPath expressions from anywhere on the 
   * tree.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class DocumentFactory {
@@ -88,6 +88,10 @@ public class DocumentFactory {
     
     public Element createElement(QName qname) {
         return new DefaultElement(qname);
+    }
+    
+    public Element createElement(QName qname, int attributeCount) {
+        return new DefaultElement(qname, attributeCount);
     }
     
     public Element createElement(QName qname, Attributes attributes) {

@@ -481,6 +481,11 @@
     <java classname="SAXDemo" args="${xml.format.options} xml/fibo.xml"/>
   </target>
 
+  <target name="demo-pull" depends="samples">
+    <java classname="PullParserDemo" args="${xml.format.options} xml/web.xml"/>
+    <java classname="PullParserDemo" args="${xml.format.options} xml/fibo.xml"/>
+  </target>
+
   <target name="demo-sax2" depends="samples">
     <java classname="SAXDemo" args="${xml.format.options} xml/xhtml/xhtml-basic.xml"/>
   </target>

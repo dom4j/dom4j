@@ -359,16 +359,6 @@ public class SAXReader {
         setXMLReader( XMLReaderFactory.createXMLReader(xmlReaderClassName) );
     }
 
-    private DispatchHandler getDispatchHandler() {
-        if (dispatchHandler == null) {
-            dispatchHandler = new DispatchHandler();
-        }
-        return dispatchHandler;   
-    }
-    
-    private void setDispatchHandler(DispatchHandler dispatchHandler) {
-        this.dispatchHandler = dispatchHandler;
-    }
     
     /** Adds the <code>ElementHandler</code> to be called when the 
       * specified path is encounted.
@@ -402,7 +392,17 @@ public class SAXReader {
     }
     
     // Implementation methods    
-    //-------------------------------------------------------------------------                
+    //-------------------------------------------------------------------------                    
+    protected DispatchHandler getDispatchHandler() {
+        if (dispatchHandler == null) {
+            dispatchHandler = new DispatchHandler();
+        }
+        return dispatchHandler;   
+    }
+    
+    protected void setDispatchHandler(DispatchHandler dispatchHandler) {
+        this.dispatchHandler = dispatchHandler;
+    }
     
     /** Factory Method to allow alternate methods of 
       * creating and configuring XMLReader objects

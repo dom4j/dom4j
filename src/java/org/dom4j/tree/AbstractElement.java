@@ -571,9 +571,25 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         add(node);
     }
     
-    public void addText(String text) {
-        Text node = getDocumentFactory().createText(text);
-        add(node);
+    public Element addElement(String name) {
+        DocumentFactory factory = getDocumentFactory();
+        
+        // should we inherit the parents namespace?
+/*        
+        
+        String prefix = getPrefix();
+        Element node = null;
+        if ( prefix == null || prefix.length() <= 0 ) {
+            QName qname = factory.createQName( name, getNamespace() );
+            node = factory.createElement( qname );
+        }
+        else {
+            node = factory.createElement( name );
+        }
+*/        
+        Element node = factory.createElement( name );
+        add( node );
+        return node;
     }
     
     public Entity addEntity(String name) {
@@ -594,6 +610,11 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         return node;
     }
 
+    public void addText(String text) {
+        Text node = getDocumentFactory().createText(text);
+        add(node);
+    }
+    
 
     // polymorphic node methods    
     public void add(Node node) {
