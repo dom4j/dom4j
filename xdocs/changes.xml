@@ -8,6 +8,10 @@
   <body>
 
     <release version="1.5-dev" date="in CVS">
+      <action dev="maartenc" type="remove">
+        Removed the <code>DocumentHelper.parseText(String xml, String encoding)</code>
+        method that was introduced in dom4j-1.5-beta2.
+      </action>
       <action dev="maartenc" type="update">
         Added the GNU JAXP DOM implementation to the default list of implementations in 
         <code>DOMWriter</code>.
