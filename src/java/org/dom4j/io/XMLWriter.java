@@ -792,13 +792,20 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
             }
             
             if (format.isTrimText()) {
+                boolean first = true;
                 StringTokenizer tokenizer = new StringTokenizer(text);
                 while (tokenizer.hasMoreTokens()) {
                     String token = tokenizer.nextToken();
-                    writer.write(token);
-                    if (tokenizer.hasMoreTokens()) {
+                    if ( first ) {
+                        first = false;
+                        if ( lastOutputNodeType == Node.TEXT_NODE ) { 
+                            writer.write(" ");
+                        }
+                    }
+                    else {
                         writer.write(" ");
                     }
+                    writer.write(token);
                     lastOutputNodeType = Node.TEXT_NODE;
                 }
             } 
