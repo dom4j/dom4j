@@ -236,13 +236,13 @@ public class Foo {
 
     public Document styleDocument(
         Document document, 
-        String xslURL
+        String stylesheet
     ) throws Exception {
 
         // load the transformer using JAXP
         TransformerFactory factory = TransformerFactory.newInstance();
         Transformer transformer = factory.newTransformer( 
-            new StreamSource( xslURL.toString() ) 
+            new StreamSource( stylesheet ) 
         );
 
         // now lets style the given document

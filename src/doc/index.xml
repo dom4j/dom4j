@@ -13,6 +13,9 @@
 
     <section title="News">
       <ul>
+        <li>Read the latest performance <a href="http://www-106.ibm.com/developerworks/xml/library/x-injava/index.html">benchmarks</a> 
+          on IBM's site comparing dom4j against all the other XML document models.
+        </li>
         <li>The new <a href="todo.html">dom4j 1.0</a> release is out featuring better SAX and <a href="http://jaxen.org">Jaxen</a> support,
           some performance tuning and numerous patches.
         </li>
