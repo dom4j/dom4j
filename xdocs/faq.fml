@@ -49,11 +49,10 @@
     <question>How does dom4j relate to DOM?</question>
     <answer>
       <p>DOM is a quite large language independent API.
-        <i>dom4j</i> is a simpler, lightweight API which is optimised for the Java 
-        making extensive use of the Java 2 platform such as the 
-        Java 2 collections.
+        <i>dom4j</i> is a simpler, lightweight API making extensive use of standard Java APIs such as the 
+        Java 2 collections API.
       </p>
-      <p>Though <i>dom4j</i> fully supports the DOM standard allowing both APIs to be 
+      <p>Remark that <i>dom4j</i> fully supports the DOM standard allowing both APIs to be 
         used easily together.
       </p>
     </answer>
