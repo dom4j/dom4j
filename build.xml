@@ -362,7 +362,7 @@
     <mkdir dir="${web.htdocs}"/>
     <mkdir dir="${web.dist}"/>
     <copy todir="${web.htdocs}" overwrite="yes">
-      <fileset dir="${build.doc}" includes="*.html, *.css"/>
+      <fileset dir="${build.doc}" includes="**/*.html, **/*.css"/>
     </copy>
 
     <copy todir="${web.dist}" overwrite="yes">
