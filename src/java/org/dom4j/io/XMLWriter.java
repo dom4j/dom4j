@@ -106,6 +106,10 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     /** buffer used when escaping strings */
     private StringBuffer buffer = new StringBuffer();
+    
+    /** whether we have added characters before from the same chunk of characters */
+    private boolean charactersAdded = false;
+    private char lastChar;
 
     /** Whether a flush should occur after writing a document */
     private boolean autoFlush;
@@ -210,34 +214,32 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         this.indentLevel = indentLevel;
     }
 
-	/**
-	 * Returns the maximum allowed character code that should be allowed
-	 * unescaped which defaults to 127 in US-ASCII (7 bit) or
-	 * 255 in ISO-* (8 bit).
-	 */
-	public int getMaximumAllowedCharacter() {
-		if (maximumAllowedCharacter == 0) {
-			maximumAllowedCharacter = defaultMaximumAllowedCharacter();
-		}
-		return maximumAllowedCharacter;
-	}
-
-	/**
-	 * Sets the maximum allowed character code that should be allowed
-	 * unescaped
-	 * such as 127 in US-ASCII (7 bit) or 255 in ISO-* (8 bit)
-	 * or -1 to not escape any characters (other than the special XML characters like < > &)
-	 *
-	 * If this is not explicitly set then it is defaulted from the encoding.
-	 *
-	 * @param maximumAllowedCharacter The maximumAllowedCharacter to set
-	 */
-	public void setMaximumAllowedCharacter(int maximumAllowedCharacter) {
-		this.maximumAllowedCharacter = maximumAllowedCharacter;
-	}
-
-
-
+    /**
+     * Returns the maximum allowed character code that should be allowed
+     * unescaped which defaults to 127 in US-ASCII (7 bit) or
+     * 255 in ISO-* (8 bit).
+     */
+    public int getMaximumAllowedCharacter() {
+        if (maximumAllowedCharacter == 0) {
+            maximumAllowedCharacter = defaultMaximumAllowedCharacter();
+        }
+        return maximumAllowedCharacter;
+    }
+    
+    /**
+     * Sets the maximum allowed character code that should be allowed
+     * unescaped
+     * such as 127 in US-ASCII (7 bit) or 255 in ISO-* (8 bit)
+     * or -1 to not escape any characters (other than the special XML characters like < > &)
+     *
+     * If this is not explicitly set then it is defaulted from the encoding.
+     *
+     * @param maximumAllowedCharacter The maximumAllowedCharacter to set
+     */
+    public void setMaximumAllowedCharacter(int maximumAllowedCharacter) {
+        this.maximumAllowedCharacter = maximumAllowedCharacter;
+    }
+    
     /** Flushes the underlying Writer */
     public void flush() throws IOException {
         writer.flush();
@@ -551,6 +553,8 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     public void startElement(String namespaceURI, String localName, String qName, Attributes attributes) throws SAXException {
         try {
+            charactersAdded = false;
+            
             writePrintln();
             indent();
             writer.write("<");
@@ -570,6 +574,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
         try {
+            charactersAdded = false;
             --indentLevel;
             if ( lastOutputNodeType == Node.ELEMENT_NODE ) {
                 writePrintln();
@@ -596,7 +601,35 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     public void characters(char[] ch, int start, int length) throws SAXException {
         try {
-            write( new String( ch, start, length ) );
+            /*
+             * we can't use the writeString method here because it's possible
+             * we don't receive all characters at once and calling writeString
+             * would cause unwanted spaces to be added in between these chunks
+             * of character arrays.
+             */
+            String string = new String(ch, start, length);
+            string = escapeElementEntities(string);
+            if (format.isTrimText()) {
+                if ((lastOutputNodeType == Node.TEXT_NODE) && !charactersAdded) {
+                    writer.write(" ");
+                } else if (charactersAdded && Character.isWhitespace(lastChar)) {
+                    writer.write(lastChar);
+                }
+                
+                String delim = "";
+                StringTokenizer tokens = new StringTokenizer(string);
+                while (tokens.hasMoreTokens()) {
+                    writer.write(delim);
+                    writer.write(tokens.nextToken());
+                    delim = " ";
+                }
+            } else {
+                writer.write(string);
+            }
+            
+            charactersAdded = true;
+            lastChar = ch[start + length - 1];
+            lastOutputNodeType = Node.TEXT_NODE;
 
             super.characters(ch, start, length);
         }
@@ -711,6 +744,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     public void comment(char[] ch, int start, int length) throws SAXException {
         if ( showCommentsInDTDs || ! inDTD ) {
             try {
+                charactersAdded = false;
                 writeComment( new String(ch, start, length) );
             }
             catch (IOException e) {

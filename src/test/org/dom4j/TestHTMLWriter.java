@@ -92,6 +92,28 @@ public class TestHTMLWriter extends AbstractTestCase {
         System.out.println("Obtained:"); System.out.println(xml.substring(start, end));
         assertEquals(expected, xml.substring(start, end));
     }
+    
+    public void testBug923882asWriter() throws Exception {
+        // use an the HTMLWriter sax-methods.
+        //
+        StringWriter buffer = new StringWriter();
+        HTMLWriter writer = new HTMLWriter(buffer, OutputFormat.createPrettyPrint());
+        writer.characters("wor".toCharArray(), 0, 3);
+        writer.characters("d-being-cut".toCharArray(), 0, 11);
+                
+        String expected = "word-being-cut";
+        assertEquals(expected, buffer.toString());
+        
+        buffer = new StringWriter();
+        writer = new HTMLWriter(buffer, OutputFormat.createPrettyPrint());
+        writer.characters("    wor".toCharArray(), 0, 7);
+        writer.characters("d being    ".toCharArray(), 0, 11);
+        writer.characters("  cut".toCharArray(), 0, 5);
+                
+        expected = "word being cut";
+        assertEquals(expected, buffer.toString());
+    }
+    
 }
 
 
