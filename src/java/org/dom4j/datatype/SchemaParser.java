@@ -45,6 +45,8 @@ public class SchemaParser {
     private static final QName XSD_COMPLEXTYPE = QName.get( "complexType", XSD_NAMESPACE );
     private static final QName XSD_RESTRICTION = QName.get( "restriction", XSD_NAMESPACE );
     private static final QName XSD_SEQUENCE = QName.get( "sequence", XSD_NAMESPACE );
+    private static final QName XSD_CHOICE = QName.get( "choice", XSD_NAMESPACE );
+    private static final QName XSD_ALL = QName.get( "all", XSD_NAMESPACE );
 
     /** Document factory used to register Element specific factories*/
     private DatatypeDocumentFactory documentFactory;
@@ -175,11 +177,27 @@ public class SchemaParser {
         //handle sequence definition
         Element schemaSequence = schemaComplexType.element( XSD_SEQUENCE );
         if (schemaSequence!=null) {
-            Iterator iter2 = schemaSequence.elementIterator( XSD_ELEMENT );
-            while ( iter2.hasNext() ) {
-                Element xsdElement = (Element) iter2.next();
-                onDatatypeElement(xsdElement,elementFactory);
-            }
+            onChildElements(schemaSequence,elementFactory);
+        }
+
+        //handle choice definition
+        Element schemaChoice = schemaComplexType.element( XSD_CHOICE );
+        if (schemaChoice!=null) {
+            onChildElements(schemaChoice,elementFactory);
+        }
+
+        //handle all definition
+        Element schemaAll = schemaComplexType.element( XSD_ALL );
+        if (schemaAll!=null) {
+            onChildElements(schemaAll,elementFactory);
+        }
+    }
+
+    protected void onChildElements(Element element,DatatypeElementFactory factory) {
+        Iterator iter = element.elementIterator( XSD_ELEMENT );
+        while ( iter.hasNext() ) {
+            Element xsdElement = (Element) iter.next();
+            onDatatypeElement(xsdElement,factory);
         }
     }
 
