@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+﻿<?xml version="1.0" encoding="ISO-8859-1"?>
 <document url="http://www.dom4j.org/status.xml">
 
   <properties>
@@ -7,6 +7,10 @@
  </properties>
  
   <body>
+      <section name="CVS">
+        <p>Improved performance of <code>NamespaceCache</code> in multithreaded environments (contributed by Brett Finnell).</p>
+      </section>
+
       <section name="1.5 beta 2">
         <p>Added flag to <code>OutputFormat</code> that supresses newline after XML declaration.</p>
         <p>Upgraded dependencies to their latest version on ibiblio.</p>
