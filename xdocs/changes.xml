@@ -7,6 +7,26 @@
 
   <body>
 
+    <release version="1.6-dev" date="in CVS">
+      <action dev="maartenc" type="fix">
+        The <code>DefaultNamespace.isReadOnly()</code> method now returns <code>false</code>.
+        This fixes issues with cloning this <code>Node</code>.
+      </action>
+      <action dev="maartenc" type="update" due-to="Brian Topping">
+        Updated <code>DocumentFactory</code> to create the instance untill the
+        first time it is needed.
+      </action>
+      <action dev="maartenc" type="fix" due-to="Brett Porter">
+        Fixed a bug in <code>Stylesheet</code> when an xpath expressions was used
+        to select the nodes.
+      </action>
+      <action dev="ddlucas" type="add">
+        Added a <code>SingletonStrategy</code> class for managing singletons. This 
+        allows to use different strategies for singletons, like: one instance per 
+        VM, one instance per thread, ...
+      </action>
+    </release>
+
     <release version="1.5.2" date="2004-11-15">
       <action dev="maartenc" type="remove">
         Removed the internal Aelfred2 parser due to incompatible license.
