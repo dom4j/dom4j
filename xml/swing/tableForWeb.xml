@@ -1,4 +1,5 @@
 <?xml version='1.0'?>
+<!-- displays the servlets available in a web.xml document -->
 <table select="/web-app/servlet">
   <column select="servlet-name">Name</column>
   <column select="servlet-class">Class</column>

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.dom4j.Attribute;
+import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.QName;
 import org.dom4j.tree.AbstractElement;
@@ -30,14 +31,22 @@ public class ProxyXmlStartTag implements XmlStartTag {
 
     /** The element being constructed */
     private Element element;
+    
+    /** The factory used to create new elements */
+    private DocumentFactory factory = DocumentFactory.getInstance();
 
+    
+    public ProxyXmlStartTag() { 
+    }
     
     public ProxyXmlStartTag(Element element) { 
         this.element = element;
     }
-    
+
+    // XmlStartTag interface 
+    //-------------------------------------------------------------------------                        
     public void resetStartTag() {
-        element = null;
+        this.element = null;
     }
     
     public int getAttributeCount() {
@@ -131,8 +140,6 @@ public class ProxyXmlStartTag implements XmlStartTag {
         return false;
     }
     
-    // -- modfiable
-    
     
     /** parameters modeled after SAX2 attribute approach */
     public void addAttribute(String namespaceURI, String localName, String rawName, String value) throws XmlPullParserException {
@@ -192,10 +199,25 @@ public class ProxyXmlStartTag implements XmlStartTag {
     }
     
     public void modifyTag(String namespaceURI, String localName, String rawName) {
-        // #### should create a new element?
+        this.element = factory.createElement( rawName, namespaceURI );
     }
     
     public void resetTag() {
+        this.element = null;
+    }
+    
+    // Properties
+    //-------------------------------------------------------------------------                        
+    public DocumentFactory getDocumentFactory() {
+        return factory;
+    }
+    
+    public void setDocumentFactory(DocumentFactory factory) {
+        this.factory = factory;
+    }
+    
+    public Element getElement() {
+        return element;
     }
 }
 

@@ -77,7 +77,7 @@ public class BranchTreeNode extends LeafTreeNode {
     }
     
     public boolean isLeaf() {
-        return false;
+        return getXmlBranch().nodeCount() <= 0;
     }
     
     public String toString() {

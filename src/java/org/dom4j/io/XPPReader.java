@@ -28,46 +28,45 @@ import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.ElementHandler;
 import org.dom4j.QName;
+import org.dom4j.xpp.ProxyXmlStartTag;
 
 import org.xml.sax.InputSource;
 
-import xpp.EndTag;
-import xpp.StartTag;
-import xpp.XmlPullParser;
-import xpp.XmlPullParserException;
+import org.gjt.xpp.XmlEndTag;
+import org.gjt.xpp.XmlPullParser;
+import org.gjt.xpp.XmlPullParserFactory;
+import org.gjt.xpp.XmlPullParserException;
+import org.gjt.xpp.XmlStartTag;
 
-/** <p><code>PullParserReader</code> is a Reader of DOM4J documents that 
+/** <p><code>XPPReader</code> is a Reader of DOM4J documents that 
   * uses the fast 
-  * <a href="http://www.extreme.indiana.edu/soap/xpp/">XML Pull Parser</a>.
+  * <a href="http://www.extreme.indiana.edu/soap/xpp/">XML Pull Parser 2.x</a>.
   * It does not currently support comments, CDATA or ProcessingInstructions or
   * validation but it is very fast for use in SOAP style environments.</p>
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class PullParserReader {
+public class XPPReader {
 
     /** <code>DocumentFactory</code> used to create new document objects */
     private DocumentFactory factory;
     
     /** <code>XmlPullParser</code> used to parse XML */
-    private XmlPullParser pullParser = new XmlPullParser();
+    private XmlPullParser xppParser;
     
-    /** <code>StartTag</code> is the start tag */
-    private StartTag startTag = new StartTag();
-    
-    /** <code>EndTag</code> is the start tag */
-    private EndTag endTag = new EndTag();
+    /** <code>XmlPullParser</code> used to parse XML */
+    private XmlPullParserFactory xppFactory;
     
     /** DispatchHandler to call when each <code>Element</code> is encountered */
     private DispatchHandler dispatchHandler;
  
         
     
-    public PullParserReader() {
+    public XPPReader() {
     }
 
-    public PullParserReader(DocumentFactory factory) {
+    public XPPReader(DocumentFactory factory) {
         this.factory = factory;
     }
 
@@ -81,7 +80,7 @@ public class PullParserReader {
       * @throws DocumentException if an error occurs during parsing.
       * @throws MalformedURLException if a URL could not be made for the given File
       */
-    public Document read(File file) throws DocumentException, IOException {
+    public Document read(File file) throws DocumentException, IOException, XmlPullParserException {
         String systemID = file.getAbsolutePath();
         return read( new BufferedReader( new FileReader( file ) ), systemID );
     }
@@ -92,7 +91,7 @@ public class PullParserReader {
       * @return the newly created Document instance
       * @throws DocumentException if an error occurs during parsing.
       */
-    public Document read(URL url) throws DocumentException, IOException {
+    public Document read(URL url) throws DocumentException, IOException, XmlPullParserException {
         String systemID = url.toExternalForm();
         return read( createReader( url.openStream() ), systemID);
     }
@@ -112,7 +111,7 @@ public class PullParserReader {
       * @throws DocumentException if an error occurs during parsing.
       * @throws MalformedURLException if a URL could not be made for the given File
       */
-    public Document read(String systemID) throws DocumentException, IOException {
+    public Document read(String systemID) throws DocumentException, IOException, XmlPullParserException {
         if ( systemID.indexOf( ':' ) >= 0 ) {
             // lets assume its a URL
             return read(new URL(systemID));
@@ -129,7 +128,7 @@ public class PullParserReader {
       * @return the newly created Document instance
       * @throws DocumentException if an error occurs during parsing.
       */
-    public Document read(InputStream in) throws DocumentException, IOException {
+    public Document read(InputStream in) throws DocumentException, IOException, XmlPullParserException {
         return read( createReader( in ) );
     }
 
@@ -139,8 +138,8 @@ public class PullParserReader {
       * @return the newly created Document instance
       * @throws DocumentException if an error occurs during parsing.
       */
-    public Document read(Reader reader) throws DocumentException, IOException {
-        pullParser.setInput(reader);
+    public Document read(Reader reader) throws DocumentException, IOException, XmlPullParserException {
+        getXPPParser().setInput(reader);
         return parseDocument();
     }
 
@@ -150,8 +149,8 @@ public class PullParserReader {
       * @return the newly created Document instance
       * @throws DocumentException if an error occurs during parsing.
       */
-    public Document read(char[] text) throws DocumentException, IOException {
-        pullParser.setInput(text);
+    public Document read(char[] text) throws DocumentException, IOException, XmlPullParserException {
+        getXPPParser().setInput(text);
         return parseDocument();
     }
 
@@ -162,7 +161,7 @@ public class PullParserReader {
       * @return the newly created Document instance
       * @throws DocumentException if an error occurs during parsing.
       */
-    public Document read(InputStream in, String systemID) throws DocumentException, IOException {
+    public Document read(InputStream in, String systemID) throws DocumentException, IOException, XmlPullParserException {
         return read( createReader( in ), systemID );
     }
 
@@ -173,7 +172,7 @@ public class PullParserReader {
       * @return the newly created Document instance
       * @throws DocumentException if an error occurs during parsing.
       */
-    public Document read(Reader reader, String systemID) throws DocumentException, IOException {
+    public Document read(Reader reader, String systemID) throws DocumentException, IOException, XmlPullParserException {
         Document document = read( reader );
         document.setName( systemID );
         return document;
@@ -182,7 +181,25 @@ public class PullParserReader {
     
     // Properties
     //-------------------------------------------------------------------------                
-        
+
+    public XmlPullParser getXPPParser() throws XmlPullParserException {
+        if ( xppParser == null ) {
+            xppParser = getXPPFactory().newPullParser();
+        }
+        return xppParser;
+    }
+    
+    public XmlPullParserFactory getXPPFactory() throws XmlPullParserException {
+        if ( xppFactory == null ) {
+            xppFactory = XmlPullParserFactory.newInstance();
+        }
+        return xppFactory;
+    }
+
+    public void setXPPFactory(XmlPullParserFactory xppFactory) {
+        this.xppFactory = xppFactory;
+    }
+    
     /** @return the <code>DocumentFactory</code> used to create document objects
       */
     public DocumentFactory getDocumentFactory() {
@@ -236,75 +253,55 @@ public class PullParserReader {
     
     // Implementation methods    
     //-------------------------------------------------------------------------                    
-    protected Document parseDocument() throws DocumentException, IOException {
+    protected Document parseDocument() throws DocumentException, IOException, XmlPullParserException {
         Document document = getDocumentFactory().createDocument();
-        try {
-            Branch branch = document;
-            while (true) {
-                int type = pullParser.next();
-                switch (type) {
-                    case XmlPullParser.END_DOCUMENT: {
-                        return document;
+        Element parent = null;
+        XmlPullParser xppParser = getXPPParser();
+        xppParser.setNamespaceAware(true);
+        ProxyXmlStartTag startTag = new ProxyXmlStartTag();
+        XmlEndTag endTag = xppFactory.newEndTag();
+        while (true) {
+            int type = xppParser.next();
+            switch (type) {
+                case XmlPullParser.END_DOCUMENT: {
+                    return document;
+                }
+                case XmlPullParser.START_TAG: {
+                    xppParser.readStartTag( startTag );
+                    Element newElement = startTag.getElement();
+                    if ( parent != null ) {
+                        parent.add( newElement );
                     }
-                    case XmlPullParser.CONTENT: {
-                        String text = pullParser.readContent();
-                        addText( branch, text );
-                        break;
+                    else {
+                        document.add( newElement );
                     }
-                    case XmlPullParser.START_TAG: {
-                        pullParser.readStartTag( startTag );
-                        branch = addElement( branch, startTag );
-                        break;
+                    parent = newElement;
+                    break;
+                }
+                case XmlPullParser.END_TAG: {
+                    xppParser.readEndTag( endTag );
+                    if (parent != null) {
+                        parent = parent.getParent();
                     }
-                    case XmlPullParser.END_TAG: {
-                        pullParser.readEndTag( endTag );
-                        branch = branch.getParent();
-                        if ( branch == null ) {
-                            branch = document;
-                        }
-                        break;
+                    break;
+                }
+                case XmlPullParser.CONTENT: {
+                    String text = xppParser.readContent();
+                    if ( parent != null ) {
+                        parent.addText( text );
                     }
-                    default: {
-                        throw new DocumentException( "Error: unknown PullParser type: " + type );
+                    else {
+                        throw new DocumentException( "Cannot have text content outside of the root document" );
                     }
+                    break;
+                }
+                default: {
+                    throw new DocumentException( "Error: unknown PullParser type: " + type );
                 }
             }
         }
-        catch (XmlPullParserException e) {
-            throw new DocumentException(e.getMessage(), e);
-        }
     }
-    
-    protected Element addElement( Branch branch, StartTag startTag ) {
-        QName qname = getQName( startTag.getQName(), startTag.getUri() );
-        int attributeCount = startTag.getLength();
-        //Element element = factory.createElement( qname, attributeCount );
-        Element element = factory.createElement( qname );
-        for ( int i = 0; i < attributeCount; i++ ) {
-            String name = startTag.getRawName(i);
-            String uri = startTag.getURI(i);
-            String value = startTag.getValue(i);
-            QName attributeQname = getQName( name, uri );
-            element.addAttribute( attributeQname, value );
-        }
-        branch.add( element );
-        return element;
-    }
-    
-    protected void addText( Branch branch, String text ) throws DocumentException {
-        if ( branch instanceof Element ) {
-            Element element = (Element) branch;
-            element.addText( text );
-        }
-        else {
-            throw new DocumentException( "Cannot have text content outside of the root document" );
-        }
-    }
-    
-    protected QName getQName( String qname, String uri) {
-        return factory.createQName( qname, uri );
-    }
-    
+
     protected DispatchHandler getDispatchHandler() {
         if (dispatchHandler == null) {
             dispatchHandler = new DispatchHandler();
@@ -320,8 +317,7 @@ public class PullParserReader {
      */
     protected Reader createReader(InputStream in) throws IOException {
         return new BufferedReader( new InputStreamReader( in ) );
-    }
-    
+    }    
 }
 
 

@@ -311,15 +311,14 @@ public interface Node extends Cloneable {
     
     /** <p><code>selectObject</code> evaluates an XPath expression and returns 
       * the result as an {@link Object}. The object returned can
-      * either be a {@link List} of {@link Node} instances, a {@link Node} 
-      * instance, a {@link String} or a {@link Number} instance depending on 
-      * the XPath expression. 
+      * either be a {@link List} of one or more {@link Node} instances
+      * or a scalar object like a {@link String} or a {@link Number} 
+      * instance depending on the XPath expression. 
       *
       * @param xpathExpression is the XPath expression to be evaluated
       * @return the value of the XPath expression as a
-      * {@link List} of {@link Node} instances, a {@link Node} 
-      * instance, a {@link String} or a {@link Number} instance depending on 
-      * the XPath expression. 
+      * {@link List} of {@link Node} instances, a {@link String} or 
+      * a {@link Number} instance depending on the XPath expression. 
       */
     public Object selectObject(String xpathExpression);
     

@@ -9,7 +9,7 @@
 
 import org.dom4j.Document;
 import org.dom4j.io.OutputFormat;
-import org.dom4j.io.PullParserReader;
+import org.dom4j.io.XPPReader;
 import org.dom4j.io.XMLWriter;
 
 /** A sample program that demonstrates using the XML Pull Parser to create a dom4j Document
@@ -27,7 +27,7 @@ public class PullParserDemo extends AbstractDemo {
     }
     
     protected Document parse( String xmlFile ) throws Exception {
-        PullParserReader reader = new PullParserReader();
+        XPPReader reader = new XPPReader();
         return reader.read(xmlFile);
     }
     

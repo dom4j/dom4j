@@ -36,9 +36,9 @@ public class JTableTool {
     public void run(String[] args) throws Exception {
         if ( args.length <= 1 ) {
             System.out.println( "Usage: <tableXMLDescription> <xmlFileName>" );
-            System.out.println():
+            System.out.println();
             System.out.println( "This program displays a document in a Swing JTable given a table description" );
-            System.out.println():
+            System.out.println();
             System.out.println( "For example running this program as follows will display the servlets of a web.xml" );
             System.out.println( "    java swing.JTableTool xml/swing/tableForWeb.xml xml/web.xml" );
             System.out.println( "This example will display the periodic table in a JTable" );

@@ -18,7 +18,7 @@ import java.io.StringReader;
 import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
 import org.dom4j.DocumentException;
-import org.dom4j.io.PullParserReader;
+import org.dom4j.io.XPPReader;
 
 /** Tests the performance of parsing a Document with the XML Pull Parser
   * 
@@ -29,7 +29,7 @@ public class PullParseTest extends PerformanceSupport {
     
     private int bufferSize = 128 * 1024;
     private Document document;
-    private PullParserReader xmlReader;
+    private XPPReader xmlReader;
     private String text;
     
     public static void main(String[] args) {
@@ -40,7 +40,7 @@ public class PullParseTest extends PerformanceSupport {
     }
     
     protected void setUp() throws Exception {
-        xmlReader = new PullParserReader();        
+        xmlReader = new XPPReader();        
 
         StringBuffer buffer = new StringBuffer( 64 * 1024 );
         BufferedReader reader = new BufferedReader( new FileReader( xmlFile ) );
