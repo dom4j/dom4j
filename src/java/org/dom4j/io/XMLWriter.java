@@ -259,8 +259,11 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
             Node node = element.node(i);
             if ( node instanceof Namespace ) {
                 Namespace additional = (Namespace) node;
-                namespaces.push(additional);
-                write(additional);
+                String prefix = additional.getPrefix();
+                if ( ! namespaces.containsPrefix( prefix ) ) {
+                    namespaces.push(additional);
+                    write(additional);
+                }
             }
             else if ( node instanceof Element) {
                 textOnly = false;
