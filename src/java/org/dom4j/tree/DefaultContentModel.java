@@ -25,12 +25,32 @@ import org.dom4j.Text;
   */
 public class DefaultContentModel extends AbstractContentModel {
 
-    protected static final List EMTPY_LIST = Collections.EMPTY_LIST;
-    protected static final Iterator EMPTY_ITERATOR = EMTPY_LIST.iterator();
+    protected static final List EMPTY_LIST = Collections.EMPTY_LIST;
+    protected static final Iterator EMPTY_ITERATOR = EMPTY_LIST.iterator();
     
     /** Store the contents of the element as a lazily created <code>List</code> */
     private List contents;
     
+    /** Cache the first Text node to delay creating the content list for 
+      * elements with no other content other than a single text node */
+    private Text firstTextNode;
+    
+    public String getText() {
+        if ( firstTextNode != null ) {
+            return firstTextNode.getText();
+        }
+        return super.getText();
+    }
+    
+    public Text addText(ContentFactory factory, String text) {
+        Text node = factory.createText( text );
+        if ( contents != null ) {
+            addNode( node );
+        }
+        firstTextNode = ( firstTextNode != null ) ? null : node;
+        return node;
+    }
+
     public Namespace getNamespaceForPrefix(String prefix) {
         List source = contents;
         if ( source != null ) {
@@ -66,17 +86,18 @@ public class DefaultContentModel extends AbstractContentModel {
     }
     
     public List getAdditionalNamespaces(String defaultNamespaceURI) {
-        List answer = createResultList();
         List source = contents;
-        if ( source != null ) {
-            int size = source.size();
-            for ( int i = 0; i < size; i++ ) {
-                Object object = source.get(i);
-                if ( object instanceof Namespace ) {
-                    Namespace namespace = (Namespace) object;
-                    if ( ! defaultNamespaceURI.equals( namespace.getURI() ) ) {
-                        answer.add( namespace );
-                    }
+        if ( source == null ) {
+            return EMPTY_LIST;
+        }
+        List answer = createResultList();
+        int size = source.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = source.get(i);
+            if ( object instanceof Namespace ) {
+                Namespace namespace = (Namespace) object;
+                if ( ! defaultNamespaceURI.equals( namespace.getURI() ) ) {
+                    answer.add( namespace );
                 }
             }
         }
@@ -87,32 +108,34 @@ public class DefaultContentModel extends AbstractContentModel {
     // Processing instruction API
     
     public List getProcessingInstructions() {
-        List answer = createResultList();
         List source = contents;
-        if ( source != null ) {
-            int size = source.size();
-            for ( int i = 0; i < size; i++ ) {
-                Object object = source.get(i);
-                if ( object instanceof ProcessingInstruction ) {
-                    answer.add( object );
-                }
+        if ( source == null ) {
+            return EMPTY_LIST;
+        }
+        List answer = createResultList();
+        int size = source.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = source.get(i);
+            if ( object instanceof ProcessingInstruction ) {
+                answer.add( object );
             }
         }
         return answer;
     }
     
     public List getProcessingInstructions(String target) {
-        List answer = createResultList();
         List source = contents;
-        if ( source != null ) {
-            int size = source.size();
-            for ( int i = 0; i < size; i++ ) {
-                Object object = source.get(i);
-                if ( object instanceof ProcessingInstruction ) {
-                    ProcessingInstruction pi = (ProcessingInstruction) object;
-                    if ( target.equals( pi.getName() ) ) {                  
-                        answer.add( pi );
-                    }
+        if ( source == null ) {
+            return EMPTY_LIST;
+        }
+        List answer = createResultList();
+        int size = source.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = source.get(i);
+            if ( object instanceof ProcessingInstruction ) {
+                ProcessingInstruction pi = (ProcessingInstruction) object;
+                if ( target.equals( pi.getName() ) ) {                  
+                    answer.add( pi );
                 }
             }
         }
@@ -191,19 +214,20 @@ public class DefaultContentModel extends AbstractContentModel {
     }
     
     public List getElements(String name, Namespace namespace) {
-        List answer = createResultList();
         List source = contents;
-        if ( source != null ) {
-            String uri = namespace.getURI();
-            int size = source.size();
-            for ( int i = 0; i < size; i++ ) {
-                Object object = source.get(i);
-                if ( object instanceof Element ) {
-                    Element element = (Element) object;
-                    if ( name.equals( element.getName() )
-                        && uri.equals( element.getNamespaceURI() ) ) {
-                        answer.add( element );
-                    }
+        if ( source == null ) {
+            return EMPTY_LIST;
+        }
+        List answer = createResultList();
+        String uri = namespace.getURI();
+        int size = source.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = source.get(i);
+            if ( object instanceof Element ) {
+                Element element = (Element) object;
+                if ( name.equals( element.getName() )
+                    && uri.equals( element.getNamespaceURI() ) ) {
+                    answer.add( element );
                 }
             }
         }
@@ -211,15 +235,16 @@ public class DefaultContentModel extends AbstractContentModel {
     }
     
     public List getElements() {
-        List answer = createResultList();
         List source = contents;
-        if ( source != null ) {
-            int size = source.size();
-            for ( int i = 0; i < size; i++ ) {
-                Object object = source.get(i);
-                if ( object instanceof Element ) {
-                    answer.add( object );
-                }
+        if ( source == null ) {
+            return EMPTY_LIST;
+        }
+        List answer = createResultList();
+        int size = source.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = source.get(i);
+            if ( object instanceof Element ) {
+                answer.add( object );
             }
         }
         return answer;
@@ -246,6 +271,9 @@ public class DefaultContentModel extends AbstractContentModel {
     public List getContent() {
         if (contents == null) {
             contents = createContentList();
+            if ( firstTextNode != null ) {
+                contents.add( firstTextNode );
+            }
         }
         return contents;
     }
@@ -256,6 +284,7 @@ public class DefaultContentModel extends AbstractContentModel {
     
     public void clearContent() {
         contents = null;
+        firstTextNode = null;
     }
     
     
@@ -286,6 +315,9 @@ public class DefaultContentModel extends AbstractContentModel {
     public void addNode(Node node) {
         if (contents == null) {
             contents = createContentList();
+            if ( firstTextNode != null ) {
+                contents.add( firstTextNode );
+            }
         }
         contents.add(node);
     }

@@ -13,6 +13,7 @@ import org.dom4j.CDATA;
 import org.dom4j.Comment;
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.dom4j.ElementHandler;
 import org.dom4j.Entity;
 import org.dom4j.TreeException;
 import org.dom4j.Namespace;
@@ -37,6 +38,9 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     /** stack of <code>Element</code> objects */
     private ElementStack elementStack;
 
+    /** the <code>ElementHandler</code> called as the elements are complete */
+    private ElementHandler elementHandler;
+
     /** Used when inside an entity block */
     private Entity entity;
     
@@ -59,12 +63,14 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     public SAXContentHandler() {
     }
     
-    public SAXContentHandler(Document document) {
+    public SAXContentHandler(Document document, ElementHandler elementHandler) {
         this.document = document;
+        this.elementHandler = elementHandler;
     }
 
-    public SAXContentHandler(Document document, ElementStack elementStack) {
+    public SAXContentHandler(Document document, ElementHandler elementHandler, ElementStack elementStack) {
         this.document = document;
+        this.elementHandler = elementHandler;
         this.elementStack = elementStack;
     }
 
@@ -145,9 +151,17 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     public void endElement(String namespaceURI, String localName, String qName) {
         Element element = elementStack.popElement();
         if (element != null) {
+            
+            // fire handler if we have one
+            if ( elementHandler != null ) {
+                elementHandler.handle( element );
+            }
+            
+            // remove namespaces defined by the element
             List list = element.getAdditionalNamespaces();
-            for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
-                Namespace namespace = (Namespace) iter.next();
+            int size = list.size();
+            for ( int i = 0; i < size; i++ ) {
+                Namespace namespace = (Namespace) list.get(i);
                 removeAvailableNamespace(namespace);
             }
         }
@@ -269,8 +283,9 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
       * element available to other elements and attributes
       */
     protected void addDeclaredNamespaces(Element element) {        
-        for ( Iterator iter = declaredNamespaceList.iterator(); iter.hasNext(); ) {
-            Namespace namespace = (Namespace) iter.next();
+        int size = declaredNamespaceList.size();
+        for ( int i = 0; i < size; i++ ) {
+            Namespace namespace = (Namespace) declaredNamespaceList.get(i);
             addAvailableNamespace(namespace);
             element.addAdditionalNamespace(namespace.getPrefix(), namespace.getURI());
         }

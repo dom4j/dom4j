@@ -18,7 +18,7 @@ public class PerformanceTest extends SAXDemo {
     protected static boolean VERBOSE = false;
     
     /** Default number of loops */
-    protected static final int DEFAULT_LOOP_COUNT = 100;
+    protected static final int DEFAULT_LOOP_COUNT = 40;
     
     /** Number of loops to perform */
     protected int loopCount = DEFAULT_LOOP_COUNT;

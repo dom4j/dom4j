@@ -41,14 +41,17 @@ public class SAXReader extends TreeReader {
     /** Whether validation should occur */
     private boolean validating;
 
-    /** ElementHandler to use */
+    /** ElementHandler to call when each <code>Element</code> is complete */
     private ElementHandler elementHandler;
+ 
+    /** ElementHandler to call before pruning occurs */
+    private ElementHandler pruningElementHandler;
  
     /** ErrorHandler class to use */
     private ErrorHandler errorHandler;
  
     /** The pruning path to use if any */
-    private String[] pruningPath;
+    private String pruningPath;
  
     
     
@@ -140,13 +143,31 @@ public class SAXReader extends TreeReader {
         setXMLReader( XMLReaderFactory.createXMLReader(xmlReaderClassName) );
     }
 
+    /** Returns the <code>ElementHandler</code> which is called as 
+      * <code>Element</code> objects are built.
+      *
+      * @return the handler of elements 
+      */
+    public ElementHandler getElementHandler() {
+        return elementHandler;
+    }
+
+    /** Sets the <code>ElementHandler</code> which is called as 
+      * <code>Element</code> objects are built.
+      *
+      * @param elementHandler is the handler of elements 
+      */
+    public void setElementHandler(ElementHandler elementHandler) {
+        this.elementHandler = elementHandler;
+    }
+
     /** Returns the <code>ElementHandler</code> called when pruning 
       * large documents.
       *
       * @return the handler of elements which are about to be pruned
       */
-    public ElementHandler getElementHandler() {
-        return elementHandler;
+    public ElementHandler getPruningElementHandler() {
+        return pruningElementHandler;
     }
 
     /** Sets the <code>ElementHandler</code> called when pruning 
@@ -154,8 +175,8 @@ public class SAXReader extends TreeReader {
       *
       * @param elementHandler is the handler of elements to use when pruning
       */
-    public void setElementHandler(ElementHandler elementHandler) {
-        this.elementHandler = elementHandler;
+    public void getPruningElementHandler(ElementHandler pruningElementHandler) {
+        this.pruningElementHandler = pruningElementHandler;
     }
 
     /** Returns the pruning patch used when parsing SAX events. The pruning path
@@ -163,7 +184,7 @@ public class SAXReader extends TreeReader {
       *
       * @return the pruningPath to use when reading documents
       */
-    public String[] getPruningPath() {
+    public String getPruningPath() {
         return pruningPath;
     }
 
@@ -172,7 +193,7 @@ public class SAXReader extends TreeReader {
       *
       * @param pruningPath is the pruningPath to use
       */
-    public void setPruningPath(String[] pruningPath) {
+    public void setPruningPath(String pruningPath) {
         this.pruningPath = pruningPath;
     }
 
@@ -180,21 +201,13 @@ public class SAXReader extends TreeReader {
       * allows large documents to be parsed. It should contain the '/' character
       * to seperate paths such as "A/B/C".
       *
-      * @param pruningPath is the pruningPath to use
+      * @param pruningPath is the path expression for the nodes to call the handler and to prune 
       */
-    public void setPruningPath(String path) {
-        ArrayList list = new ArrayList();
-        if ( path.charAt(0) == '/' ) {
-            path = path.substring(1);
-        }
-        for ( StringTokenizer enum = new StringTokenizer( path, "/" ); enum.hasMoreTokens(); ) {
-            list.add( enum.nextToken() );
-        }
-        System.out.println( "Parsed: " + path + " into: " + list );
-        pruningPath = new String[ list.size() ];
-        list.toArray( pruningPath );
+    public void setPruningMode(String pruningPath, ElementHandler pruningElementHandler) {
+        this.pruningPath = pruningPath;
+        this.pruningElementHandler = pruningElementHandler;
     }
-
+    
 
     
     
@@ -393,13 +406,29 @@ public class SAXReader extends TreeReader {
       */
     protected DefaultHandler createContentHandler( Document document ) {
         if ( pruningPath != null ) {
-            return new SAXContentHandler(document, new PruningElementStack( pruningPath, elementHandler ));
+            // NOTE: should handle full XPath patterns sometime
+            String[] path = tokenizePath( pruningPath );
+            ElementStack stack = new PruningElementStack( path, getPruningElementHandler() );
+            return new SAXContentHandler(document, getElementHandler(), stack);
         }
         else {
-            return new SAXContentHandler(document);
+            return new SAXContentHandler(document, getElementHandler());
         }
     }
     
+    protected String[] tokenizePath(String path) {
+        ArrayList list = new ArrayList();
+        if ( path.charAt(0) == '/' ) {
+            path = path.substring(1);
+        }
+        for ( StringTokenizer enum = new StringTokenizer( path, "/" ); enum.hasMoreTokens(); ) {
+            list.add( enum.nextToken() );
+        }
+        String[] answer = new String[ list.size() ];
+        list.toArray( answer );
+        return answer;
+    }
+
     /** Factory Method to allow alternate methods of 
       * creating and configuring XMLReader objects
       */
