@@ -5,30 +5,13 @@
     
     <section title="Urgent tasks">
       <ul>
-        <li>Should Element be the factory?
-        </li>
         <li>Resolve the addAdditionalNamespace / add(Namespace) / setNamespace() 
             inconsistency, like addText(text), setText(text).
         </li>
-        <li>Does the Node's a getText() method which Attribute, Element, CDATA 
-            et al implement, cause confusion?
-        </li>
-        <li>Should an entity just have a name and text? 
-            JDOM has mixed content - a bug? 
-            Why does an entity have an element / content model in JDOM?
-        </li>
-        <li>Sort out namespaces...; store namespaces like any other?
-        </li>
-        <li>Document is-a Element?
-        </li>
         <li>Add function/variable/namespace contexts to XPath?
         </li>
-        <li>Rename xxxMixedContent() methods to xxxContent()
-        </li>
-        <li>Have getNamespace(String prefix) and getNamespaces()) and getAllNamespaces() 
+        <li>Have getNamespaces() and getAllNamespaces() 
           which would walk up the tree finding all namespaces;
-        </li>
-        <li>Rename $Version:$ -> $Revision$
         </li>
       </ul>
     </section>
@@ -44,8 +27,6 @@
         <li>Add properties file for the default parser class names, factories, 
         XPathEngine et al as an alternative to using system properties or 
         embedding class names in code.
-        </li>
-        <li>Create a suit of useful samples
         </li>
       </ul>
     </section>
