@@ -71,19 +71,22 @@ import org.xml.sax.ext.LexicalHandler;
 public class XMLWriter implements ContentHandler, LexicalHandler {
 
     protected static final OutputFormat DEFAULT_FORMAT = new OutputFormat();
-    
-    /** The Writer used to output to */
-    protected Writer writer;
-    
-    /** The format used by this writer */
-    protected OutputFormat format;
-    /** The initial number of indentations (so you can print a whole
-        document indented, if you like) **/
-    protected int indentLevel = 0;
 
     /** Stores the last type of node written so algorithms can refer to the 
       * previous node type */
     protected int lastOutputNodeType;
+
+    /** The Writer used to output to */
+    protected Writer writer;
+    
+    /** The Stack of namespaces written so far */
+    private NamespaceStack namespaces = new NamespaceStack();
+    
+    /** The format used by this writer */
+    private OutputFormat format;
+    /** The initial number of indentations (so you can print a whole
+        document indented, if you like) **/
+    private int indentLevel = 0;
 
     
 
@@ -203,7 +206,78 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
       * @param element <code>Element</code> to output.
       */
     public void write(Element element) throws IOException {
-        write(element, new NamespaceStack());
+        int size = element.nodeCount();
+        
+        writePrintln();
+        indent();
+        
+        writer.write("<");
+        writer.write(element.getQualifiedName());
+        
+        int previouslyDeclaredNamespaces = namespaces.size();
+        Namespace ns = element.getNamespace();
+        if (ns != null && ns != Namespace.NO_NAMESPACE && ns != Namespace.XML_NAMESPACE) {
+            String prefix = ns.getPrefix();        
+            if ( ! namespaces.containsPrefix( prefix ) ) {
+                namespaces.push(ns);
+                write(ns);
+            }
+        }
+
+        // Print out additional namespace declarations
+        List additionalNamespaces = element.additionalNamespaces();
+        if (additionalNamespaces != null) {
+            for (int i=0; i<additionalNamespaces.size(); i++) {
+                Namespace additional = (Namespace)additionalNamespaces.get(i);
+                namespaces.push(additional);
+                write(additional);
+            }
+        }
+
+        writeAttributes(element);
+
+        lastOutputNodeType = Node.ELEMENT_NODE;
+        
+        if ( size <= 0 ) {
+            writeEmptyElementClose(element);
+        }
+        else {
+            if ( element.isTextOnly() ) {
+                String text = format.isTrimText() ? element.getTextTrim() : element.getText();
+                if (text == null || text.length() <= 0 ) {
+                    writeEmptyElementClose(element);
+                }
+                else {
+                    // we know it's not null or empty from above
+                    writer.write(">");
+                    writer.write( text );
+                    writeClose(element);
+                }
+            }
+            else {
+                // we know it's not null or empty from above
+                writer.write(">");        
+                ++indentLevel;
+                
+                for ( int i = 0; i < size; i++ ) {
+                    Node node = element.node(i);
+                    write(node);
+                }
+                --indentLevel;                
+
+                writePrintln();
+                indent();
+
+                writeClose(element);
+            }
+        }
+
+        // remove declared namespaces from stack
+        while (namespaces.size() > previouslyDeclaredNamespaces) {
+            namespaces.pop();
+        }
+        
+        lastOutputNodeType = Node.ELEMENT_NODE;
     }
     
     /** Writes the given {@link CDATA}.
@@ -424,7 +498,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
     public void writeOpen(Element element) throws IOException {
         writer.write("<");
         writer.write( element.getQualifiedName() );
-        writeAttributes(element, new NamespaceStack());
+        writeAttributes(element);
         writer.write(">");
     }
     
@@ -601,93 +675,10 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
     // Implementation methods
     //-------------------------------------------------------------------------
     
-    /** Writes an {@link Element}</code>, its {@link Attribute}'s and its content.
-     *
-     * @param element <code>Element</code> to output.
-     * @param namespaces <code>List</code> stack of Namespaces in scope.
-     */
-    protected void write(Element element, NamespaceStack namespaces) throws IOException {
-        int size = element.nodeCount();
-        
-        writePrintln();
-        indent();
-        
-        writer.write("<");
-        writer.write(element.getQualifiedName());
-        
-        int previouslyDeclaredNamespaces = namespaces.size();
-        Namespace ns = element.getNamespace();
-        if (ns != null && ns != Namespace.NO_NAMESPACE && ns != Namespace.XML_NAMESPACE) {
-            String prefix = ns.getPrefix();        
-            if ( ! namespaces.containsPrefix( prefix ) ) {
-                namespaces.push(ns);
-                write(ns);
-            }
-        }
-
-        // Print out additional namespace declarations
-        List additionalNamespaces = element.additionalNamespaces();
-        if (additionalNamespaces != null) {
-            for (int i=0; i<additionalNamespaces.size(); i++) {
-                Namespace additional = (Namespace)additionalNamespaces.get(i);
-                namespaces.push(additional);
-                write(additional);
-            }
-        }
-
-        writeAttributes(element, namespaces);
-
-        lastOutputNodeType = Node.ELEMENT_NODE;
-        
-        if ( size <= 0 ) {
-            writeEmptyElementClose(element);
-        }
-        else {
-            if ( element.isTextOnly() ) {
-                String text = format.isTrimText() ? element.getTextTrim() : element.getText();
-                if (text == null || text.length() <= 0 ) {
-                    writeEmptyElementClose(element);
-                }
-                else {
-                    // we know it's not null or empty from above
-                    writer.write(">");
-                    writer.write( text );
-                    writeClose(element);
-                }
-            }
-            else {
-                // we know it's not null or empty from above
-                writer.write(">");        
-                ++indentLevel;
-                
-                for ( int i = 0; i < size; i++ ) {
-                    Node node = element.node(i);
-                    write(node);
-                }
-                --indentLevel;                
-
-                writePrintln();
-                indent();
-
-                writeClose(element);
-            }
-        }
-
-        // remove declared namespaces from stack
-        while (namespaces.size() > previouslyDeclaredNamespaces) {
-            namespaces.pop();
-        }
-        
-        lastOutputNodeType = Node.ELEMENT_NODE;
-    }
-
-
     /** Writes the attributes of the given element
       *
       */
-    protected void writeAttributes(
-        Element element, NamespaceStack namespaces
-    ) throws IOException {
+    protected void writeAttributes( Element element ) throws IOException {
 
         // I do not yet handle the case where the same prefix maps to
         // two different URIs. For attributes on the same element
