@@ -4,7 +4,7 @@
     <title>Status</title>
     
     <section title="Change History">
-        <section title="Patches in CVS since last release">
+        <section title="0.8 release">
           <section title="New methods">
             <pre>hasContent()</pre>
             <p> has been added to the Node interface

@@ -7,8 +7,8 @@
     <tstamp/>
     <property name="Name" value="dom4j"/>
     <property name="name" value="dom4j"/>
-    <property name="version" value="patched-0.7"/>
-    <property name="current.version" value="0.7"/>
+    <property name="version" value="0.8"/>
+    <property name="current.version" value="0.8"/>
     <property name="year" value="2001"/>
 
     <echo message="----------- ${Name} ${version} [${year}] ------------"/>
@@ -195,8 +195,13 @@
     -->
 
      <!-- add dependent JARs -->
-    <unjar src="${lib.dir}/org.saxpath.jar" dest="${build.dest}"/>
+    <unjar src="${lib.dir}/saxpath.jar" dest="${build.dest}"/>
+    <unjar src="${lib.dir}/jaxen.jar" dest="${build.dest}"/>
     <delete dir="${build.dest}/META-INF"/>
+
+    <jar jarfile="${build.dir}/${name}-core.jar"
+         basedir="${build.dest}"
+         includes="org/dom4j/**"/>
 
     <jar jarfile="${build.dir}/${name}.jar"
          basedir="${build.dest}"
