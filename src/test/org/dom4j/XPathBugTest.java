@@ -13,8 +13,6 @@ import java.util.List;
 
 import junit.textui.TestRunner;
 
-import org.dom4j.io.SAXReader;
-
 /** 
  * A test harness to test XPath expression evaluation in DOM4J
  *
@@ -30,8 +28,7 @@ public class XPathBugTest extends AbstractTestCase {
     // Test case(s)
     //-------------------------------------------------------------------------                    
     public void testXPaths() throws Exception {        
-        SAXReader reader = new SAXReader();
-        Document document = reader.read(getClass().getResource("/xml/rabo1ae.xml"));
+        Document document = getDocument("/xml/rabo1ae.xml");
         Element root = (Element) document.selectSingleNode( "/m:Msg/m:Contents/m:Content" );
         
         assertTrue( "root is not null", root != null );

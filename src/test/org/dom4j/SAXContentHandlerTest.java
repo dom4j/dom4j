@@ -9,8 +9,6 @@
 
 package org.dom4j;
 
-import java.io.File;
-import java.net.URL;
 import java.util.List;
 
 import javax.xml.parsers.SAXParser;
@@ -19,7 +17,6 @@ import javax.xml.parsers.SAXParserFactory;
 import junit.textui.TestRunner;
 
 import org.dom4j.io.SAXContentHandler;
-import org.dom4j.io.SAXReader;
 import org.xml.sax.XMLReader;
 
 public class SAXContentHandlerTest extends AbstractTestCase {
@@ -27,10 +24,10 @@ public class SAXContentHandlerTest extends AbstractTestCase {
 
     protected String[] testDocuments = {
         "/xml/test/test_schema.xml",
-        //"xml/test/encode.xml",
+        "/xml/test/encode.xml",
         "/xml/fibo.xml",
         "/xml/test/schema/personal-prefix.xsd",
-        //"xml/test/soap2.xml",
+        "/xml/test/soap2.xml",
     };
 
 	public static void main(String[] args) {
@@ -53,16 +50,10 @@ public class SAXContentHandlerTest extends AbstractTestCase {
         xmlReader.setProperty("http://xml.org/sax/properties/lexical-handler", contentHandler);
 
         for ( int i = 0, size = testDocuments.length; i < size; i++ ) {
-            SAXReader reader = new SAXReader();
-            File file = new File(testDocuments[i]);
-            URL url = getClass().getResource(testDocuments[i]);
-            Document docFromSAXReader = reader.read(url);
+            Document docFromSAXReader = getDocument(testDocuments[i]);
 
-            xmlReader.parse(url.toString());
+            xmlReader.parse(getFile(testDocuments[i]).toString());
             Document docFromSAXContentHandler = contentHandler.getDocument();
-
-            //System.out.println("docFromSAXReader = " + docFromSAXReader.asXML());
-            //System.out.println("docFromSAXContentHandler = " + docFromSAXContentHandler.asXML());
 
             docFromSAXContentHandler.setName(docFromSAXReader.getName());
 
@@ -72,10 +63,7 @@ public class SAXContentHandlerTest extends AbstractTestCase {
     }
     
     public void testBug926713() throws Exception {
-        URL url = getClass().getResource("/xml/test/cdata.xml");
-        SAXReader reader = new SAXReader();
-        
-        Document doc = reader.read(url);
+        Document doc = getDocument("/xml/test/cdata.xml");
         Element foo = doc.getRootElement();
         Element bar = foo.element("bar");
         List content = bar.content();

@@ -32,7 +32,7 @@ public class IteratorTest extends AbstractTestCase {
 
     protected void setUp() throws Exception {
     	super.setUp();
-        iterDocument = createDocument();
+        iterDocument = DocumentHelper.createDocument();
         
         Element root = iterDocument.addElement( "root" );
 

@@ -15,7 +15,6 @@ import org.dom4j.AbstractTestCase;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
-import org.dom4j.io.SAXReader;
 
 /** 
  * Tests the selectSingleNode method
@@ -32,6 +31,7 @@ public class SelectSingleNodeTest extends AbstractTestCase {
     // Test case(s)
     //-------------------------------------------------------------------------                    
     public void testSelectSingleNode() throws Exception {        
+    	Document document = getDocument("/xml/test/jimBrain.xml");
         Node node = document.selectSingleNode("/properties/client/threadsafe");
         assertTrue( "Found a valid node", node != null );
         
@@ -52,7 +52,7 @@ public class SelectSingleNodeTest extends AbstractTestCase {
 
     /** Test out Steen's bug */
     public void testSteensBug() throws Exception {        
-        Document document = new SAXReader().read(getClass().getResource("/xml/schema/personal.xsd"));
+        Document document = getDocument("/xml/schema/personal.xsd");
         
         assertNotNull( document.selectSingleNode( "/xs:schema/xs:element[@name='person']" ) );
         
@@ -61,12 +61,6 @@ public class SelectSingleNodeTest extends AbstractTestCase {
         assertNotNull( root.selectSingleNode( "/xs:schema/xs:element[@name='person']" ) );        
     }
     
-    // Implementation methods
-    //-------------------------------------------------------------------------                    
-    protected void setUp() throws Exception {
-    	super.setUp();
-        document = new SAXReader().read(getClass().getResource("/xml/test/jimBrain.xml"));
-    }
 }
 
 

@@ -9,7 +9,6 @@
 
 package org.dom4j;
 
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -59,7 +58,6 @@ public class NamespaceTest extends AbstractTestCase {
     public void testGetElement() throws Exception {
         Element root = getRootElement();
         
-        
         Element firstTemplate = root.element( XSL_TEMPLATE );
         assertTrue( "Root element contains at least one <xsl:template/> element", firstTemplate != null );
         
@@ -100,8 +98,7 @@ public class NamespaceTest extends AbstractTestCase {
         // parse or create a document
         SAXReader reader = new SAXReader();
         reader.setDocumentFactory( factory );
-        URL url = getClass().getResource("/xml/test/nestedNamespaces.xml");
-        Document doc = reader.read(url);
+        Document doc = getDocument("/xml/test/nestedNamespaces.xml", reader);
         
         // evaluate XPath using registered namespace prefixes
         // which do not appear in the document (though the URIs do!)
@@ -116,9 +113,7 @@ public class NamespaceTest extends AbstractTestCase {
     //-------------------------------------------------------------------------                    
     protected void setUp() throws Exception {
     	super.setUp();
-        SAXReader reader = new SAXReader();
-        URL url = getClass().getResource(INPUT_XML_FILE);
-        document = reader.read(url);
+        document = getDocument(INPUT_XML_FILE);
     }
 
     /** @return the root element of the document */

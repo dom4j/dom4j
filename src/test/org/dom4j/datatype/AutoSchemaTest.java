@@ -10,7 +10,6 @@
 package org.dom4j.datatype;
 
 import java.math.BigInteger;
-import java.net.URL;
 import java.util.Calendar;
 
 import junit.textui.TestRunner;
@@ -63,13 +62,10 @@ public class AutoSchemaTest extends AbstractDataTypeTestCase {
     //-------------------------------------------------------------------------                    
     protected void setUp() throws Exception {
     	super.setUp();
-        DocumentFactory factory = loadDocumentFactory();
-        
+
+    	DocumentFactory factory = loadDocumentFactory();
         SAXReader reader = new SAXReader(factory);
-        String uri = getDocumentURI();
-        
-        URL url = getClass().getResource(uri);
-        document = reader.read(url);
+        document = getDocument(getDocumentURI(), reader);
     }
     
     protected String getDocumentURI() {

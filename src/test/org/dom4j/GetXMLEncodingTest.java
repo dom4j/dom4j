@@ -11,7 +11,6 @@ package org.dom4j;
 
 import java.io.ByteArrayInputStream;
 import java.io.StringReader;
-import java.net.URL;
 
 import junit.textui.TestRunner;
 
@@ -25,8 +24,6 @@ import org.xml.sax.InputSource;
  */
 public class GetXMLEncodingTest extends AbstractTestCase {
     
-    private DocumentFactory factory = new DocumentFactory();
-    
 	public static void main(String[] args) {
 		TestRunner.run(GetXMLEncodingTest.class);
 	}
@@ -36,7 +33,7 @@ public class GetXMLEncodingTest extends AbstractTestCase {
     public void testXMLEncodingFromString() throws Exception {
         String xmlEnc = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root/>";
        
-        SAXReader reader = new SAXReader("org.apache.xerces.parsers.SAXParser");
+        SAXReader reader = new SAXReader();
         InputSource source = new InputSource(new ByteArrayInputStream(xmlEnc.getBytes("UTF-8")));
         Document doc = reader.read(source);
         assertEquals("UTF-8", doc.getXMLEncoding());
@@ -46,15 +43,10 @@ public class GetXMLEncodingTest extends AbstractTestCase {
     }
     
     public void testXMLEncodingFromURL() throws Exception {
-    	URL url1 = getClass().getResource("/xml/test/encode.xml");
-    	URL url2 = getClass().getResource("/xml/russArticle.xml");
-    	
-        SAXReader reader = new SAXReader("org.apache.xerces.parsers.SAXParser");
-        
-    	Document doc = reader.read(url1);
+    	Document doc = getDocument("/xml/test/encode.xml");
     	assertEquals("UTF-8", doc.getXMLEncoding());
     	
-    	doc = reader.read(url2);
+    	doc = getDocument("/xml/russArticle.xml");
     	assertEquals("koi8-r", doc.getXMLEncoding());
     }
 
@@ -62,18 +54,11 @@ public class GetXMLEncodingTest extends AbstractTestCase {
         String xmlEnc = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root/>";
         String xmlNoEnc = "<root/>";
 
-    	String defaultParser = System.getProperty("javax.xml.parsers.SAXParserFactory");
-        try {
-        	System.setProperty("javax.xml.parsers.SAXParserFactory", "org.apache.xerces.jaxp.SAXParserFactoryImpl");
-
-        	Document doc = DocumentHelper.parseText(xmlEnc);
-        	assertEquals("UTF-8", doc.getXMLEncoding());
+       	Document doc = DocumentHelper.parseText(xmlEnc);
+       	assertEquals("UTF-8", doc.getXMLEncoding());
         
-        	doc = DocumentHelper.parseText(xmlNoEnc);
-        	assertNull(doc.getXMLEncoding());
-        } finally {
-        	System.setProperty("javax.xml.parsers.SAXParserFactory", defaultParser);
-        }
+       	doc = DocumentHelper.parseText(xmlNoEnc);
+       	assertNull(doc.getXMLEncoding());
     }
     
 }

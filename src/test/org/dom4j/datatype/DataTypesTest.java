@@ -11,7 +11,6 @@ package org.dom4j.datatype;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.net.URL;
 import java.util.Calendar;
 
 import junit.textui.TestRunner;
@@ -35,18 +34,18 @@ public class DataTypesTest extends AbstractDataTypeTestCase {
 
     // Test case(s)
     //-------------------------------------------------------------------------                    
-    
     public void testgMonthDay() throws Exception {        
         testNodes( "//gMonthDayTag", Calendar.class );
     }
+    
     public void testgDay() throws Exception {        
         testNodes( "//gDayTag", Calendar.class );
     }
+    
     public void testgMonth() throws Exception {        
         testNodes( "//gMonthTag", Calendar.class );
     }
 
-    
     public void testDate() throws Exception {        
         testNodes( "//dateTag", Calendar.class );
     }
@@ -54,6 +53,7 @@ public class DataTypesTest extends AbstractDataTypeTestCase {
     public void testTime() throws Exception {        
         testNodes( "//timeTag", Calendar.class );
     }
+    
     public void testDateTime() throws Exception {        
         testNodes( "//dateTimeTag", Calendar.class );
     }
@@ -61,11 +61,11 @@ public class DataTypesTest extends AbstractDataTypeTestCase {
     public void testgYearMonth() throws Exception {        
         testNodes( "//gYearMonthTag", Calendar.class );
     }
+    
     public void testgYear() throws Exception {        
         testNodes( "//gYearTag", Calendar.class );
     }
     
-
     public void testBoolean() throws Exception {        
         testNodes( "//booleanTag", Boolean.class );
     }
@@ -73,23 +73,21 @@ public class DataTypesTest extends AbstractDataTypeTestCase {
     public void testBase64Binary() throws Exception {        
         testNodes( "//base64BinaryTag", byte[].class );
     }
+
     public void testHexBinary() throws Exception {        
         testNodes( "//hexBinaryTag", byte[].class  );
     }
 
-    
-    
-    
     // Number types
     
     public void testFloat() throws Exception {        
         testNodes( "//floatTag", Float.class );
     }
+
     public void testDouble() throws Exception {        
         testNodes( "//doubleTag", Double.class );
     }
 
-    
     public void testDecimal() throws Exception {        
         testNodes( "//decimalTag", BigDecimal.class );
     }
@@ -98,7 +96,6 @@ public class DataTypesTest extends AbstractDataTypeTestCase {
         testNodes( "//integerTag", BigInteger.class );
     }
 
-    
     public void testNonPositiveInteger() throws Exception {        
         testNodes( "//nonPositiveIntegerTag", BigInteger.class );
     }
@@ -110,6 +107,7 @@ public class DataTypesTest extends AbstractDataTypeTestCase {
     public void testLong() throws Exception {        
         testNodes( "//longTag", Long.class );
     }
+    
     public void testInt() throws Exception {        
         testNodes( "//intTag", Integer.class );
     }
@@ -147,9 +145,8 @@ public class DataTypesTest extends AbstractDataTypeTestCase {
     protected void setUp() throws Exception {
     	super.setUp();
         DocumentFactory factory = DatatypeDocumentFactory.getInstance();
-        SAXReader reader = new SAXReader( factory );
-        URL url = getClass().getResource("/xml/test/schema/test.xml");
-        document = reader.read(url);
+        SAXReader reader = new SAXReader(factory);
+        document = getDocument("/xml/test/schema/test.xml", reader);
     }
 }
 

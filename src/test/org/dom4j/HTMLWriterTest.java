@@ -10,13 +10,11 @@
 package org.dom4j;
 
 import java.io.StringWriter;
-import java.net.URL;
 
 import junit.textui.TestRunner;
 
 import org.dom4j.io.HTMLWriter;
 import org.dom4j.io.OutputFormat;
-import org.dom4j.io.SAXReader;
 
 /** 
  * Test harness for the HTMLWriter
@@ -25,8 +23,6 @@ import org.dom4j.io.SAXReader;
  * @version $Revision$
  */
 public class HTMLWriterTest extends AbstractTestCase {
-
-    protected static final boolean VERBOSE = false;
 
 	public static void main(String[] args) {
 		TestRunner.run(HTMLWriterTest.class);
@@ -120,9 +116,7 @@ public class HTMLWriterTest extends AbstractTestCase {
     }
     
     public void testBug619415() throws Exception {
-        URL url = getClass().getResource("/xml/test/dosLineFeeds.xml");
-        SAXReader reader = new SAXReader();
-        Document doc = reader.read(url);
+        Document doc = getDocument("/xml/test/dosLineFeeds.xml");
         
         StringWriter wr = new StringWriter();
         HTMLWriter writer = new HTMLWriter(wr, new OutputFormat("", false));

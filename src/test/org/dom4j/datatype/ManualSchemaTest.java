@@ -9,13 +9,10 @@
 
 package org.dom4j.datatype;
 
-import java.net.URL;
-
 import junit.textui.TestRunner;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
-import org.dom4j.io.SAXReader;
 
 
 /** 
@@ -27,8 +24,6 @@ import org.dom4j.io.SAXReader;
  */
 public class ManualSchemaTest extends AutoSchemaTest {
 
-    protected static boolean VERBOSE = true;
-    
 	public static void main(String[] args) {
 		TestRunner.run(ManualSchemaTest.class);
 	}
@@ -42,10 +37,7 @@ public class ManualSchemaTest extends AutoSchemaTest {
     protected DocumentFactory loadDocumentFactory() throws Exception {
         DatatypeDocumentFactory factory = new DatatypeDocumentFactory();
         
-        SAXReader reader = new SAXReader();
-        
-        URL url = getClass().getResource("/xml/test/schema/personal.xsd");
-        Document schemaDocument = reader.read(url);
+        Document schemaDocument = getDocument("/xml/test/schema/personal.xsd");
         factory.loadSchema(schemaDocument);
         return factory;
     }

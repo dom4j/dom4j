@@ -20,7 +20,6 @@ import junit.textui.TestRunner;
 
 import org.dom4j.io.DocumentResult;
 import org.dom4j.io.DocumentSource;
-import org.dom4j.io.SAXReader;
 
 /** 
  * Tests that XSLT works correctly
@@ -56,8 +55,7 @@ public class XSLTTest extends AbstractTestCase {
     //-------------------------------------------------------------------------                    
     protected void setUp() throws Exception {
     	super.setUp();
-        SAXReader reader = new SAXReader();
-        document = reader.read(getClass().getResource("/xml/nitf/sample.xml"));
+        document = getDocument("/xml/nitf/sample.xml");
     }
         
     protected Document transform(String xsl) throws Exception {   
@@ -66,7 +64,7 @@ public class XSLTTest extends AbstractTestCase {
         // load the transformer
         TransformerFactory factory = TransformerFactory.newInstance();
         Transformer transformer = factory.newTransformer( 
-            new StreamSource(getClass().getResourceAsStream(xsl))
+            new StreamSource(getFile(xsl))
         );
         
         // now lets create the TrAX source and result

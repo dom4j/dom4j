@@ -10,7 +10,6 @@
 package org.dom4j.io;
 
 import java.io.StringWriter;
-import java.net.URL;
 
 import junit.textui.TestRunner;
 
@@ -28,7 +27,7 @@ public class DOMWriterTest extends AbstractTestCase {
 	}
 
     public void testNamespaceBug() throws Exception {
-        org.dom4j.Document doc = parseDocument("/xml/namespaces.xml");
+        org.dom4j.Document doc = getDocument("/xml/namespaces.xml");
         DOMWriter writer = new DOMWriter(org.dom4j.dom.DOMDocument.class);
         org.w3c.dom.Document result = writer.write(doc);
         
@@ -41,7 +40,7 @@ public class DOMWriterTest extends AbstractTestCase {
     }
     
     public void testBug905745() throws Exception {
-        org.dom4j.Document doc = parseDocument("/xml/namespaces.xml");
+        org.dom4j.Document doc = getDocument("/xml/namespaces.xml");
         DOMWriter writer = new DOMWriter();
         org.w3c.dom.Document result = writer.write(doc);
         
@@ -54,7 +53,7 @@ public class DOMWriterTest extends AbstractTestCase {
     }
     
     public void testBug926752() throws Exception {
-        org.dom4j.Document doc = parseDocument("/xml/test/defaultNamespace.xml");
+        org.dom4j.Document doc = getDocument("/xml/test/defaultNamespace.xml");
         DOMWriter writer = new DOMWriter(org.dom4j.dom.DOMDocument.class);
         org.w3c.dom.Document result = writer.write(doc);
         
@@ -68,12 +67,6 @@ public class DOMWriterTest extends AbstractTestCase {
         wr.setWriter(strWriter);
         wr.write((org.dom4j.Document) result);
         assertEquals("<a xmlns=\"dummyNamespace\"><b><c>Hello</c></b></a>", strWriter.toString());
-    }
-
-    protected org.dom4j.Document parseDocument(String file) throws Exception {
-        URL url = getClass().getResource(file);
-        SAXReader reader = new SAXReader();
-        return reader.read(url);
     }
 
 }

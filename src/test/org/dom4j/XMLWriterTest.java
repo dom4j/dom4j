@@ -274,7 +274,7 @@ public class XMLWriterTest extends AbstractTestCase {
     }
     
     public void testBug868408() throws Exception {
-        Document doc = parseDocument("/xml/web.xml");
+        Document doc = getDocument("/xml/web.xml");
         Document doc2 = DocumentHelper.parseText(doc.asXML());
         assertEquals(doc.asXML(), doc2.asXML());
     }
@@ -400,12 +400,6 @@ public class XMLWriterTest extends AbstractTestCase {
         System.out.println(e.asXML());
         System.out.println(doc.asXML());
     }
-    
-    protected org.dom4j.Document parseDocument(String file) throws Exception {
-        SAXReader reader = new SAXReader();
-        return reader.read(getClass().getResource(file));
-    }
-
     
     protected void generateXML(ContentHandler handler) throws SAXException {
         handler.startDocument();

@@ -9,8 +9,6 @@
 
 package org.dom4j.bean;
 
-import java.net.URL;
-
 import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
@@ -29,9 +27,8 @@ public class BeansTest extends AbstractTestCase {
     // Test case(s)
     //-------------------------------------------------------------------------                    
     public void testReadXML() throws Exception {
-        URL url = getClass().getResource("/xml/bean/gui.xml");
-        SAXReader reader = new SAXReader( BeanDocumentFactory.getInstance() );
-        reader.read(url);
+        SAXReader reader = new SAXReader(BeanDocumentFactory.getInstance());
+        getDocument("/xml/bean/gui.xml", reader);
     }
     
 }

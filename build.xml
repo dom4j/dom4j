@@ -16,9 +16,8 @@
         </fileset>
         <fileset dir="./lib/tools">
             <include name="xalan*.jar" />
-            <include name="xerces*.jar" /> <!-- required by msv -->
+            <include name="xerces*.jar" />
         </fileset>
-        <pathelement location="."/>
     </path>
 
     <path id="samples.classpath">

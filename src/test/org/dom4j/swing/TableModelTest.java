@@ -15,7 +15,6 @@ import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Document;
-import org.dom4j.io.SAXReader;
 
 /** 
  * Tests the Swing TableModel using a dom4j document.
@@ -30,8 +29,7 @@ public class TableModelTest extends AbstractTestCase {
 	}
 
 	public void testServletTable() throws Exception {
-        SAXReader reader = new SAXReader();
-        Document document = reader.read(getClass().getResource("/xml/web.xml"));
+        Document document = getDocument("/xml/web.xml");
         
         XMLTableDefinition tableDefinition = new XMLTableDefinition();
         tableDefinition.setRowExpression( "/web-app/servlet" );
@@ -58,9 +56,8 @@ public class TableModelTest extends AbstractTestCase {
     }
     
     public void testServletTableViaXMLDescription() throws Exception {
-        SAXReader reader = new SAXReader();
-        Document definition = reader.read(getClass().getResource("/xml/swing/tableForWeb.xml"));
-        Document document = reader.read(getClass().getResource("/xml/web.xml"));
+        Document definition = getDocument("/xml/swing/tableForWeb.xml");
+        Document document = getDocument("/xml/web.xml");
         
         XMLTableModel tableModel = new XMLTableModel( definition, document );
         

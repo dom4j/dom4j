@@ -9,7 +9,6 @@
 
 package org.dom4j;
 
-import java.net.URL;
 import java.util.List;
 
 import junit.textui.TestRunner;
@@ -35,7 +34,11 @@ public class DocTypeTest extends AbstractTestCase {
     // Test case(s)
     //-------------------------------------------------------------------------                    
     public void testDocType() throws Exception {
-        DocumentType docType = document.getDocType();
+        SAXReader reader = new SAXReader();
+        reader.setIncludeInternalDTDDeclarations(true);
+    	Document document = getDocument(INPUT_XML_FILE, reader);
+
+    	DocumentType docType = document.getDocType();
         assertTrue("Has DOCTYPE", docType!= null);
         
         List declarations = docType.getInternalDeclarations();
@@ -44,32 +47,12 @@ public class DocTypeTest extends AbstractTestCase {
         ElementDecl decl = (ElementDecl) declarations.get(0);
         
         assertEquals("name is correct", "greeting", decl.getName() );
-        assertEquals("model is correct", "(#PCDATA)", normalize(decl.getModel()));
+        assertEquals("model is correct", "(#PCDATA)", decl.getModel());
         
         String expected = "<!ELEMENT " + decl.getName() + " " + decl.getModel() + ">";
         assertEquals("toString() is correct", expected, decl.toString());
     }
     
-    /**
-     * Removes the optional * at the end of (#PCDATA)
-     */
-    private String normalize(String model) {
-        if ("(#PCDATA)*".equals(model)) {
-            return ("(#PCDATA)");
-        }
-        return model;
-    }
-        
-    // Implementation methods
-    //-------------------------------------------------------------------------                    
-    protected void setUp() throws Exception {
-    	super.setUp();
-        SAXReader reader = new SAXReader();
-        reader.setIncludeInternalDTDDeclarations(true);
-        
-        URL url = getClass().getResource(INPUT_XML_FILE);
-        document = reader.read(url);
-    }
 }
 
 

@@ -9,8 +9,6 @@
 
 package org.dom4j.datatype;
 
-import java.net.URL;
-
 import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
@@ -38,9 +36,7 @@ public class SchemaParseTest extends AbstractTestCase {
 
         SAXReader reader = new SAXReader();
         reader.setDocumentFactory( factory );
-        
-        URL url = getClass().getResource("/xml/test/LuisSchema.xsd");
-        Document schema = reader.read(url);
+        Document schema = getDocument("/xml/test/LuisSchema.xsd", reader);
         factory.loadSchema(schema);
      
         log( "Loaded the schema" );

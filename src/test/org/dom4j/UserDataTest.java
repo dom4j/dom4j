@@ -9,8 +9,6 @@
 
 package org.dom4j;
 
-import java.io.File;
-
 import junit.textui.TestRunner;
 
 import org.dom4j.io.SAXReader;
@@ -27,7 +25,7 @@ import org.dom4j.util.UserDataElement;
 public class UserDataTest extends AbstractTestCase {
 
     /** Input XML file to read */
-    protected static String INPUT_XML_FILE = "xml/web.xml";
+    protected static String INPUT_XML_FILE = "/xml/web.xml";
     
     private Object userData = new Double( 1.23456 );
 
@@ -114,7 +112,7 @@ public class UserDataTest extends AbstractTestCase {
     	super.setUp();
         SAXReader reader = new SAXReader();
         reader.setDocumentFactory( UserDataDocumentFactory.getInstance() );
-        document = reader.read( new File( INPUT_XML_FILE ) );
+        document = getDocument(INPUT_XML_FILE, reader);
     }
 }
 

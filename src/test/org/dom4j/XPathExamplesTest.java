@@ -46,7 +46,7 @@ public class XPathExamplesTest extends AbstractTestCase {
     // Test case(s)
     //-------------------------------------------------------------------------                    
     public void testXPaths() throws Exception {
-        Document document = xmlReader.read(getClass().getResource("/xml/test/xpath/tests.xml"));
+        Document document = getDocument("/xml/test/xpath/tests.xml");
         Element root = document.getRootElement();
         for ( Iterator iter = root.elementIterator( "document" ); iter.hasNext(); ) {
             Element documentTest = (Element) iter.next();
@@ -58,7 +58,7 @@ public class XPathExamplesTest extends AbstractTestCase {
     //-------------------------------------------------------------------------                    
     protected void testDocument(Element documentTest) throws Exception {
         String url = documentTest.attributeValue( "url" );
-        testDocument = xmlReader.read(getClass().getResource("/" + url));
+        testDocument = xmlReader.read(getFile(url));
         assertTrue( "Loaded test document: " + url, testDocument != null );
         
         log( "Loaded document: " + url );

@@ -30,11 +30,11 @@ public class DispatchHandlerTest extends AbstractTestCase {
         
         SAXReader reader = new SAXReader();
         reader.addHandler("/products/product/colour", handler);
-        reader.read(getClass().getResource("/xml/test/sample.xml"));
+        reader.read(getFile("/xml/test/sample.xml"));
         
         assertEquals(3, handler.getCount());
         
-        reader.read(getClass().getResource("/xml/test/sample.xml"));
+        reader.read(getFile("/xml/test/sample.xml"));
         assertEquals(6, handler.getCount());
     }
     

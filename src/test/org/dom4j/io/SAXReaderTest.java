@@ -12,7 +12,6 @@ package org.dom4j.io;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.StringWriter;
-import java.net.URL;
 import java.util.List;
 
 import junit.textui.TestRunner;
@@ -21,7 +20,6 @@ import org.dom4j.AbstractTestCase;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.dom4j.io.XMLWriter;
 
 /** 
  * A test harness to test the content API in DOM4J
@@ -40,81 +38,42 @@ public class SAXReaderTest extends AbstractTestCase {
      * Test bug reported by Christian Oetterli
      * http://sourceforge.net/tracker/index.php?func=detail&aid=681658&group_id=16035&atid=116035
      */
-    public void testReadFile() {
-        try {
-            URL location = SAXReaderTest.class.getResource("/xml/#.xml");
-            String fileName = location.getPath();
-            if (fileName.endsWith("%23.xml")) {
-                // since JDK 1.5 beta2 the path contains the #.xml file as "%23.xml"
-                fileName = fileName.substring(0, fileName.indexOf("%23.xml"));
-            }
-            
-            if (!fileName.endsWith("#.xml")) {
-                fileName += "/#.xml";
-            }
-            File file = new File(fileName);
-            new SAXReader().read(file);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail(e.getMessage());
-        }
+    public void testReadFile() throws Exception {
+        File file = getFile("/xml/#.xml");
+        new SAXReader().read(file);
     }
     
-    public void testRussian() {
-        try {
-            URL location = SAXReaderTest.class.getResource("/xml/russArticle.xml");
-            File file = new File(location.toString()); 
-            SAXReader xmlReader = new SAXReader(); 
-            Document doc = xmlReader.read( location ); 
-            Element el = doc.getRootElement();
-            
-            StringWriter writer = new StringWriter();
-            XMLWriter xmlWriter = new XMLWriter(writer);
-            OutputFormat format = OutputFormat.createPrettyPrint();
-            format.setEncoding("koi8-r");
-            xmlWriter.write(doc);
-            System.out.println(writer.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail(e.getMessage());
-        }
+    public void testRussian() throws Exception {
+        Document doc = getDocument("/xml/russArticle.xml"); 
+        Element el = doc.getRootElement();
+        
+        StringWriter writer = new StringWriter();
+        XMLWriter xmlWriter = new XMLWriter(writer);
+        OutputFormat format = OutputFormat.createPrettyPrint();
+        format.setEncoding("koi8-r");
+        xmlWriter.write(doc);
+        log(writer.toString());
     }
     
-    public void testRussian2() {
-        try {
-            URL location = SAXReaderTest.class.getResource("/xml/russArticle.xml");
-            File file = new File(location.toString()); 
-            SAXReader xmlReader = new SAXReader();
-            Document doc = xmlReader.read( location );
-            XMLWriter xmlWriter = new XMLWriter( new OutputFormat ( "", false, "koi8-r" ) );
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            xmlWriter.setOutputStream(out);
-            xmlWriter.write( doc );
-            xmlWriter.flush();
-            xmlWriter.close();
-            System.out.println(out.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail(e.getMessage());
-        }
+    public void testRussian2() throws Exception {
+        Document doc = getDocument("/xml/russArticle.xml"); 
+        XMLWriter xmlWriter = new XMLWriter( new OutputFormat ( "", false, "koi8-r" ) );
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        xmlWriter.setOutputStream(out);
+        xmlWriter.write( doc );
+        xmlWriter.flush();
+        xmlWriter.close();
+        log(out.toString());
     }
     
-    public void testBug833765() {
-        try {
-            URL location = SAXReaderTest.class.getResource("/xml/dtd/external.xml");
-            File file = new File(location.getPath()); 
-            SAXReader xmlReader = new SAXReader();
-            xmlReader.setIncludeExternalDTDDeclarations(true);
-            Document doc = xmlReader.read(file);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail(e.getMessage());
-        }
+    public void testBug833765() throws Exception {
+        SAXReader reader = new SAXReader();
+        reader.setIncludeExternalDTDDeclarations(true);
+        getDocument("/xml/dtd/external.xml", reader);
     }
     
     public void testBug527062() throws Exception {
-        SAXReader reader = new SAXReader();
-        Document doc = reader.read(SAXReaderTest.class.getResource("/xml/test/test.xml"));
+        Document doc = getDocument("/xml/test/test.xml");
         List l = doc.selectNodes("//broked/junk");
         for (int i = 0; i < l.size(); i++) {
             System.out.println("Found node: " + ((Element)l.get(i)).getStringValue());

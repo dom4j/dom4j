@@ -23,7 +23,6 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.QName;
-import org.dom4j.io.SAXReader;
 
 /** 
  * Test harness for the GetPath() method
@@ -78,8 +77,7 @@ public class GetPathTest extends AbstractTestCase {
     }
 
     public void testDefaultNamespace() throws Exception {
-        SAXReader reader = new SAXReader();
-        Document doc = reader.read(getClass().getResource("/xml/test/defaultNamespace.xml"));
+        Document doc = getDocument("/xml/test/defaultNamespace.xml");
         Element root = doc.getRootElement();
         testPath( root, "/*[name()='a']" ); 
         

@@ -9,15 +9,16 @@
 
 package org.dom4j.io;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.StringWriter;
-import java.net.URL;
+
 import javax.xml.stream.XMLInputFactory;
 
 import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Document;
-import org.dom4j.io.STAXEventReader;
 
 /** 
  * Tests STAX->DOM4J functionality.
@@ -51,9 +52,9 @@ public class StaxTest extends AbstractTestCase {
         }
 
         try {
-            URL location = StaxTest.class.getResource("/xml/russArticle.xml");
+            File file = getFile("/xml/russArticle.xml");
             STAXEventReader xmlReader = new STAXEventReader(); 
-            Document doc = xmlReader.readDocument(location.openStream(), location.toString() );
+            Document doc = xmlReader.readDocument(new FileReader(file));
 
             assertEquals("russArticle.xml encoding wasn't correct", "koi8-r", doc.getXMLEncoding());
             

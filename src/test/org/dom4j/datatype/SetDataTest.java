@@ -10,7 +10,6 @@
 package org.dom4j.datatype;
 
 import java.math.BigInteger;
-import java.net.URL;
 
 import junit.textui.TestRunner;
 
@@ -20,7 +19,6 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
-import org.dom4j.io.SAXReader;
 
 
 /** 
@@ -173,10 +171,8 @@ public class SetDataTest extends AbstractTestCase {
     //-------------------------------------------------------------------------                    
     protected void setUp() throws Exception {
     	super.setUp();
-        SAXReader reader = new SAXReader();
-        
-        URL url = getClass().getResource("/xml/test/schema/personal.xsd");
-        Document schema = reader.read(url);
+
+    	Document schema = getDocument("/xml/test/schema/personal.xsd");
         factory.loadSchema(schema);
         Namespace ns = new Namespace( "t", "urn://testing" );
         factory.loadSchema( schema, ns );

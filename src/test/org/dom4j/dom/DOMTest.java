@@ -9,8 +9,6 @@
 
 package org.dom4j.dom;
 
-import java.io.File;
-import java.io.InputStream;
 import java.io.StringReader;
 
 import junit.textui.TestRunner;
@@ -31,8 +29,6 @@ import org.w3c.dom.NodeList;
  */
 public class DOMTest extends AbstractTestCase {
 
-    protected static boolean VERBOSE = false;
-    
     /** Elements. */
     private long elements;
 
@@ -124,17 +120,12 @@ public class DOMTest extends AbstractTestCase {
         
     // Implementation methods
     //-------------------------------------------------------------------------                    
-    
     protected void setUp() throws Exception {
     	super.setUp();
         SAXReader reader = new SAXReader( DOMDocumentFactory.getInstance() );
-        InputStream testDocument = getClass().getResourceAsStream("/xml/contents.xml");
-        if (testDocument == null) {
-            document = reader.read( new File( "xml/contents.xml" ) );
-        } else {
-            document = reader.read( testDocument );
-        }
+        document = getDocument("/xml/contents.xml", reader);
     }
+    
     /** Traverses the specified node, recursively. */
     protected void traverse(Node node) {
 

@@ -9,12 +9,9 @@
 
 package org.dom4j;
 
-import java.net.URL;
 import java.util.Iterator;
 
 import junit.textui.TestRunner;
-
-import org.dom4j.io.SAXReader;
 
 /** 
  * Tests the getNodeNameType() method
@@ -31,7 +28,7 @@ public class NodeTypeNameTest extends AbstractTestCase {
     // Test case(s)
     //-------------------------------------------------------------------------                    
     public void testDocument() throws Exception {
-        testDocument(document);
+        testDocument(getDocument());
     }
     
     public void testCDATA() throws Exception {
@@ -53,9 +50,7 @@ public class NodeTypeNameTest extends AbstractTestCase {
     // Implementation methods
     //-------------------------------------------------------------------------                    
     protected void testDocument(String fileName) throws Exception {
-        SAXReader reader = new SAXReader();
-        URL url = getClass().getResource(fileName);
-        Document document = reader.read(url);
+        Document document = getDocument(fileName);
         testDocument(document);
     }
 

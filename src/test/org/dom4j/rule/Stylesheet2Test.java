@@ -9,12 +9,9 @@
 
 package org.dom4j.rule;
 
-import java.net.URL;
-
 import junit.textui.TestRunner;
 
 import org.dom4j.Node;
-import org.dom4j.io.SAXReader;
 
 /**
  * A test harness to test the use of the Stylesheet and the
@@ -58,9 +55,7 @@ public class Stylesheet2Test extends StylesheetTest {
     //-------------------------------------------------------------------------                    
     public void setUp() throws Exception {
     	super.setUp();
-        SAXReader reader = new SAXReader();
-        URL url = getClass().getResource("/xml/test/littledoc.xml");
-        document = reader.read(url);
+        document = getDocument("/xml/test/littledoc.xml");
         
         stylesheet = new Stylesheet();
         stylesheet.setValueOfAction(

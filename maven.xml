@@ -47,18 +47,6 @@
         </ant:copy>
     </postGoal>
 
-    <preGoal name="test:test">
-        <ant:property name="test.dest"
-            value="${pom.getPluginContext('maven-test-plugin').getVariable('maven.test.dest')}"/>
-
-        <ant:path id="test.extra.classpath">
-            <pathelement location="."/>
-        </ant:path>
-
-        <maven:addPath id="maven.dependency.classpath"
-                       refid="test.extra.classpath"/>
-    </preGoal>
-
     <preGoal name="site">
         <attainGoal name="docbook:transform"/>
     </preGoal>

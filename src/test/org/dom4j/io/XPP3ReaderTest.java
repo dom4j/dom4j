@@ -12,14 +12,12 @@ package org.dom4j.io;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.StringWriter;
-import java.net.URL;
 
 import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Document;
 import org.dom4j.Element;
-import org.dom4j.io.XMLWriter;
 
 /** 
  * Test class for the XPP3Reader. This is based on the TestSaxReader class.
@@ -35,67 +33,31 @@ public class XPP3ReaderTest extends AbstractTestCase {
 
     // Test case(s)
     //-------------------------------------------------------------------------
-    /**
-     * Test bug reported by Christian Oetterli
-     * http://sourceforge.net/tracker/index.php?func=detail&aid=681658&group_id=16035&atid=116035
-     */
-    public void testReadFile() {
-        try {
-            URL location = XPP3ReaderTest.class.getResource("/xml/#.xml");
-            String fileName = location.getPath();
-            if (fileName.endsWith("%23.xml")) {
-                // since JDK 1.5 beta2 the path contains the #.xml file as "%23.xml"
-                fileName = fileName.substring(0, fileName.indexOf("%23.xml"));
-            }
-            
-            if (!fileName.endsWith("#.xml")) {
-                fileName += "/#.xml";
-            }
-            File file = new File(fileName);
-            new XPP3Reader().read(file);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail(e.getMessage());
-        }
+    public void testRussian() throws Exception {
+        File file = getFile("/xml/russArticle.xml");
+        XPP3Reader xmlReader = new XPP3Reader(); 
+        Document doc = xmlReader.read(file); 
+        Element el = doc.getRootElement();
+        
+        StringWriter writer = new StringWriter();
+        XMLWriter xmlWriter = new XMLWriter(writer);
+        OutputFormat format = OutputFormat.createPrettyPrint();
+        format.setEncoding("koi8-r");
+        xmlWriter.write(doc);
+        log(writer.toString());
     }
     
-    public void testRussian() {
-        try {
-            URL location = XPP3ReaderTest.class.getResource("/xml/russArticle.xml");
-            File file = new File(location.toString()); 
-            XPP3Reader xmlReader = new XPP3Reader(); 
-            Document doc = xmlReader.read( location ); 
-            Element el = doc.getRootElement();
-            
-            StringWriter writer = new StringWriter();
-            XMLWriter xmlWriter = new XMLWriter(writer);
-            OutputFormat format = OutputFormat.createPrettyPrint();
-            format.setEncoding("koi8-r");
-            xmlWriter.write(doc);
-            System.out.println(writer.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail(e.getMessage());
-        }
-    }
-    
-    public void testRussian2() {
-        try {
-            URL location = XPP3ReaderTest.class.getResource("/xml/russArticle.xml");
-            File file = new File(location.toString()); 
-            XPP3Reader xmlReader = new XPP3Reader();
-            Document doc = xmlReader.read( location );
-            XMLWriter xmlWriter = new XMLWriter( new OutputFormat ( "", false, "koi8-r" ) );
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            xmlWriter.setOutputStream(out);
-            xmlWriter.write( doc );
-            xmlWriter.flush();
-            xmlWriter.close();
-            System.out.println(out.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail(e.getMessage());
-        }
+    public void testRussian2() throws Exception {
+        File file = getFile("/xml/russArticle.xml");
+        XPP3Reader xmlReader = new XPP3Reader();
+        Document doc = xmlReader.read(file);
+        XMLWriter xmlWriter = new XMLWriter( new OutputFormat ( "", false, "koi8-r" ) );
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        xmlWriter.setOutputStream(out);
+        xmlWriter.write( doc );
+        xmlWriter.flush();
+        xmlWriter.close();
+        log(out.toString());
     }
 
 }

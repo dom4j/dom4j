@@ -15,165 +15,164 @@ import junit.textui.TestRunner;
 
 import org.dom4j.io.SAXReader;
 
-/** 
- * TestEmbeddedHandler     
+/**
+ * TestEmbeddedHandler
  * 
- * @author <a href="mailto:franz.beil@temis-group.com">FB</a>
+ * @author <a href="mailto:franz.beil@temis-group.com">FB </a>
  */
 public class EmbeddedHandlerTest extends AbstractTestCase {
 
-   protected String[] testDocuments = { "xml/test/FranzBeilMain.xml", };
-   final int MAIN_READER = 0;
-   final int ON_END_READER = 1;
-   private StringBuffer[] _results =
-      { new StringBuffer(), new StringBuffer()};
-   protected int _test;
+	protected String[] testDocuments = { "xml/test/FranzBeilMain.xml", };
 
-   // Handler classes
-   //---------------------------------------------
+	final int MAIN_READER = 0;
 
-   class MainHandler implements ElementHandler {
+	final int ON_END_READER = 1;
 
-      SAXReader _mainReader;
-      String _mainDir;
+	private StringBuffer[] _results = { new StringBuffer(), new StringBuffer() };
 
-      public MainHandler(String dir) {
-         _mainReader = new SAXReader();
-         _mainDir = dir;
-         _mainReader.addHandler("/import/stuff", new EmbeddedHandler());
-      }
+	protected int _test;
 
-      public void onStart(ElementPath path) {}
+	// Handler classes
+	//---------------------------------------------
 
-      public void onEnd(ElementPath path) {
-         String href = path.getCurrent().attribute("href").getValue();
-         Element importRef = path.getCurrent();
-         Element parentElement = importRef.getParent();
-         SAXReader onEndReader = new SAXReader();
-         onEndReader.addHandler("/import/stuff", new EmbeddedHandler());
+	class MainHandler implements ElementHandler {
 
-         File file = new File(_mainDir + File.separator + href);
-         Element importElement = null;
-         try {
-            if (_test == MAIN_READER)
-               importElement = _mainReader.read(file).getRootElement();
-            else if (_test == ON_END_READER)
-               importElement = onEndReader.read(file).getRootElement();
-         } catch (Exception e) {
-            // too bad that it's not possible to throw the exception at the caller
-            e.printStackTrace();
-         }
+		SAXReader _mainReader;
 
-         // prune and replace
-         importRef.detach();
-         parentElement.add(importElement);
-      }
-   }
+		String _mainDir;
 
-   public class EmbeddedHandler implements ElementHandler {
-      public void onStart(ElementPath path) {
-         _results[_test].append(
-            path.getCurrent().attribute("name").getValue() + "\n");
-      }
-      public void onEnd(ElementPath path) {}
-   }
+		public MainHandler(String dir) {
+			_mainReader = new SAXReader();
+			_mainDir = dir;
+			_mainReader.addHandler("/import/stuff", new EmbeddedHandler());
+		}
+
+		public void onStart(ElementPath path) {
+		}
+
+		public void onEnd(ElementPath path) {
+			String href = path.getCurrent().attribute("href").getValue();
+			Element importRef = path.getCurrent();
+			Element parentElement = importRef.getParent();
+			SAXReader onEndReader = new SAXReader();
+			onEndReader.addHandler("/import/stuff", new EmbeddedHandler());
+
+			File file = new File(_mainDir + File.separator + href);
+			Element importElement = null;
+			try {
+				if (_test == MAIN_READER)
+					importElement = _mainReader.read(file).getRootElement();
+				else if (_test == ON_END_READER)
+					importElement = onEndReader.read(file).getRootElement();
+			} catch (Exception e) {
+				// too bad that it's not possible to throw the exception at the
+				// caller
+				e.printStackTrace();
+			}
+
+			// prune and replace
+			importRef.detach();
+			parentElement.add(importElement);
+		}
+	}
+
+	public class EmbeddedHandler implements ElementHandler {
+		public void onStart(ElementPath path) {
+			_results[_test].append(path.getCurrent().attribute("name")
+					.getValue()
+					+ "\n");
+		}
+
+		public void onEnd(ElementPath path) {
+		}
+	}
 
 	public static void main(String[] args) {
 		TestRunner.run(EmbeddedHandlerTest.class);
 	}
 
-   //---------------------------------------------
-   // Test case(s)
-   //---------------------------------------------
+	//---------------------------------------------
+	// Test case(s)
+	//---------------------------------------------
 
-   public void testMainReader() throws Exception {
-      _test = MAIN_READER;
-      readDocuments();
-      //        System.out.println("testMainReader()\n"+_results[_test].toString());
-   }
+	public void testMainReader() throws Exception {
+		_test = MAIN_READER;
+		readDocuments();
+		//        System.out.println("testMainReader()\n"+_results[_test].toString());
+	}
 
-   public void testOnEndReader() throws Exception {
-      _test = ON_END_READER;
-      readDocuments();
-   }
+	public void testOnEndReader() throws Exception {
+		_test = ON_END_READER;
+		readDocuments();
+	}
 
-   public void testBothReaders() throws Exception {
-      testMainReader();
-      testOnEndReader();
-      if (!_results[MAIN_READER]
-         .toString()
-         .equals(_results[ON_END_READER].toString())) {
-         StringBuffer msg = new StringBuffer();
-         msg.append("Results of tests should be equal!\n");
-         msg.append("Results testMainReader():\n" + _results[MAIN_READER].toString());
-         msg.append(
-            "Results testOnEndReader():\n" + _results[ON_END_READER].toString());
-         throw new Exception(msg.toString());
-      }
-   }
+	public void testBothReaders() throws Exception {
+		testMainReader();
+		testOnEndReader();
+		if (!_results[MAIN_READER].toString().equals(
+				_results[ON_END_READER].toString())) {
+			StringBuffer msg = new StringBuffer();
+			msg.append("Results of tests should be equal!\n");
+			msg.append("Results testMainReader():\n"
+					+ _results[MAIN_READER].toString());
+			msg.append("Results testOnEndReader():\n"
+					+ _results[ON_END_READER].toString());
+			throw new Exception(msg.toString());
+		}
+	}
 
+	//---------------------------------------------
+	// Implementation methods
+	//---------------------------------------------
 
-      //---------------------------------------------
-      // Implementation methods
-      //---------------------------------------------
-
-    private void readDocuments() throws Exception {
-        for (int i = 0; i < testDocuments.length; i++) {
-            File testDoc = new File(testDocuments[i]);
-            String mainDir = testDoc.getParent();
-            SAXReader reader = new SAXReader();
-            ElementHandler mainHandler = new MainHandler(mainDir);
-            reader.addHandler("/main/import", mainHandler);
-            reader.read(testDoc);
-         }
-    }
+	private void readDocuments() throws Exception {
+		for (int i = 0; i < testDocuments.length; i++) {
+			File testDoc = getFile(testDocuments[i]);
+			String mainDir = testDoc.getParent();
+			SAXReader reader = new SAXReader();
+			ElementHandler mainHandler = new MainHandler(mainDir);
+			reader.addHandler("/main/import", mainHandler);
+			getDocument(testDocuments[i], reader);
+		}
+	}
 
 }
 
-
-
-
 /*
  * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided
- * that the following conditions are met:
- *
- * 1. Redistributions of source code must retain copyright
- *    statements and notices.  Redistributions must also contain a
- *    copy of this document.
- *
- * 2. Redistributions in binary form must reproduce the
- *    above copyright notice, this list of conditions and the
- *    following disclaimer in the documentation and/or other
- *    materials provided with the distribution.
- *
- * 3. The name "DOM4J" must not be used to endorse or promote
- *    products derived from this Software without prior written
- *    permission of MetaStuff, Ltd.  For written permission,
- *    please contact dom4j-info@metastuff.com.
- *
- * 4. Products derived from this Software may not be called "DOM4J"
- *    nor may "DOM4J" appear in their names without prior written
- *    permission of MetaStuff, Ltd. DOM4J is a registered
- *    trademark of MetaStuff, Ltd.
- *
- * 5. Due credit should be given to the DOM4J Project - 
- *    http://www.dom4j.org
- *
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
- * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
- * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
- * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
- * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * ("Software"), with or without modification, are permitted provided that the
+ * following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain copyright statements and
+ * notices. Redistributions must also contain a copy of this document.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * 
+ * 3. The name "DOM4J" must not be used to endorse or promote products derived
+ * from this Software without prior written permission of MetaStuff, Ltd. For
+ * written permission, please contact dom4j-info@metastuff.com.
+ * 
+ * 4. Products derived from this Software may not be called "DOM4J" nor may
+ * "DOM4J" appear in their names without prior written permission of MetaStuff,
+ * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
+ * 
+ * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
+ * 
+ * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
  * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
+ * 
  * $Id$
  */
