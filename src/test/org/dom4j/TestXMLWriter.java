@@ -236,6 +236,18 @@ public class TestXMLWriter extends AbstractTestCase {
         assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root test=\"text with ' in it\"/>", out.toString());
     }
     
+    public void testBug868408() throws Exception {
+        Document doc = parseDocument("xml/web.xml");
+        Document doc2 = DocumentHelper.parseText(doc.asXML());
+        assertEquals(doc.asXML(), doc2.asXML());
+    }
+    
+    protected org.dom4j.Document parseDocument(String file) throws Exception {
+        SAXReader reader = new SAXReader();
+        return reader.read( file );
+    }
+
+    
     protected void generateXML(ContentHandler handler) throws SAXException {
         handler.startDocument();
         AttributesImpl attrs = new AttributesImpl();
