@@ -9,6 +9,7 @@
 package org.dom4j.tree;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
@@ -18,6 +19,8 @@ import org.dom4j.DocumentFactory;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.IllegalAddException;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
 
 /** A test harness to test the addAttribute() methods on attributes
   *
@@ -62,4 +65,23 @@ public class TestDefaultDocument extends AbstractTestCase {
         
         DocumentHelper.parseText(document.asXML());
     }
+    
+    public void testEncoding() throws Exception {
+        Document document = DocumentFactory.getInstance().createDocument();
+        Element el = document.addElement("root");
+        el.setText("text with an \u00FC in it");  // u00FC is umlaut
+        
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        OutputFormat of = OutputFormat.createPrettyPrint();
+        of.setEncoding("koi8-r");
+        XMLWriter writer = new XMLWriter(out, of);
+        writer.write(document);
+        
+        String result = out.toString();
+        
+        System.out.println(result);
+        
+        DocumentHelper.parseText(result);
+    }
+    
 }
