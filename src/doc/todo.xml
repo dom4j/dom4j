@@ -6,12 +6,24 @@
     <section title="Change History">
         <section title="Patches in CVS since release">
           <section title="Patches and bug fixes">
+            <p>Fixed bug in IndexedElement reported by Kerstin Grünefeld that was causing
+              a null pointer exception when using XPath on an IndexedElement.
+            </p>
             <p>Applied the patch supplied by Mike Skells that fix problems with the
               getUniquePath() method not returning properly indexed elements
             </p>
             <p>Applied a fix to the problem found by Dane Foster when using dom4j with JTidy.
               JTidy returns null for getLocalName() so DOMReader has been patched to handle
               nulls returned from either getLocalName() or getName().
+            </p>
+            <p>Fixed bug reported anonymously to the Sourceforge Site
+              <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=436670&amp;group_id=16035&amp;atid=116035">
+              here
+              </a>
+              that explicitly creating a Document from an existing Element could cause problems when
+              using XMLWriter.
+            </p>
+            <p>Assorted performance tunings of SAX parsing, avoiding unnecessary repeated code paths.
             </p>
             <p>Tidied factory and construction of Element code such that there are no longer
             dependencies on the SAX Attributes class. This was originally added as a performance

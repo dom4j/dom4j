@@ -15,46 +15,72 @@ import java.util.List;
 import junit.framework.*;
 import junit.textui.TestRunner;
 
-/** An abstract base class for some DOM4J test cases
+import org.dom4j.util.IndexedDocumentFactory;
+
+/** A test harness for the IndexedElement implementation
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class AbstractTestCase extends TestCase {
+public class TestIndexedElement extends AbstractTestCase {
 
-    protected Document document;
+    protected static boolean VERBOSE = true;
     
+    public static void main( String[] args ) {
+        TestRunner.run( suite() );
+    }
     
-    public AbstractTestCase(String name) {
+    public static Test suite() {
+        return new TestSuite( TestIndexedElement.class );
+    }
+    
+    public TestIndexedElement(String name) {
         super(name);
     }
 
-    public void log(String text) {
-        System.out.println(text);
+    // Test case(s)
+    //-------------------------------------------------------------------------                    
+    public void testXPaths() throws Exception {        
+        testXPath( "//author" );
     }
-
+        
     // Implementation methods
     //-------------------------------------------------------------------------                    
-    protected void setUp() throws Exception {
-        document = createDocument();
+    protected void testXPath(String xpath) {
+        List list = document.selectNodes( xpath );
         
-        Element root = document.addElement( "root" );
+        log( "Searched path: " + xpath );
+        log( "Found        : " + list.size() + " result(s)" );
         
-        Element author1 = root.addElement( "author" )
-            .addAttribute( "name", "James" )
-            .addAttribute( "location", "UK" )
-            .addText("James Strachan");
+        log( "Results" );
+        if ( list == null ) {
+            log( "null" );
+        }
+        else {
+            log( "[" );
+            for ( int i = 0, size = list.size(); i < size; i++ ) {
+                Object object = list.get(i);
+                String text = "null";
+                if ( object instanceof Node ) {
+                    Node node = (Node) object;
+                    text = node.asXML();
+                }
+                else if ( object != null ) {
+                    text = object.toString();
+                }
+                log( "    " + text );
+            }
+            log( "]" );
+        }
+        log( "..........................................." );
         
-        Element author2 = root.addElement( "author" )
-            .addAttribute( "name", "Bob" )
-            .addAttribute( "location", "Canada" )
-            .addText("Bob McWhirter");
+        assert( "Found some results", list.size() > 0 );
     }
+            
 
     protected Document createDocument() {
-        return DocumentHelper.createDocument();
+        return IndexedDocumentFactory.getInstance().createDocument();
     }
-        
 }
 
 

@@ -256,6 +256,29 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     }
         
     
+    public Node node(int index) {
+        Object object = contentList().get(index);
+        if (object instanceof Node) {
+            return (Node) object;
+        }
+        if (object instanceof String) {
+            return getDocumentFactory().createText(object.toString());
+        }
+        return null;
+    }
+    
+    public int nodeCount() {
+        return contentList().size();
+    }
+    
+    public int indexOf(Node node) {
+        return contentList().indexOf( node );
+    }
+    
+    public Iterator nodeIterator() {
+        return contentList().iterator();
+    }
+
     
     // Implementation methods
     

@@ -64,12 +64,12 @@ public class IndexedElement extends DefaultElement {
         super(qname, attributeCount);
     }
     
-    public Attribute getAttribute(String name) {
-        return (Attribute) getAttributeIndex().get(name);
+    public Attribute attribute(String name) {
+        return (Attribute) attributeIndex().get(name);
     }
 
-    public Attribute getAttribute(QName qName) {
-        return (Attribute) getAttributeIndex().get(qName);
+    public Attribute attribute(QName qName) {
+        return (Attribute) attributeIndex().get(qName);
     }
 
     public Element element(String name) {
@@ -165,9 +165,12 @@ public class IndexedElement extends DefaultElement {
         return false;
     }
 
-    protected Map getAttributeIndex() {
+    protected Map attributeIndex() {
         if ( attributeIndex == null ) {
             attributeIndex = createAttributeIndex();
+            for (Iterator iter = attributeIterator(); iter.hasNext(); ) {
+                addToAttributeIndex( (Attribute) iter.next() );
+            }
         }
         return attributeIndex;
     }
@@ -175,6 +178,9 @@ public class IndexedElement extends DefaultElement {
     protected Map elementIndex() {
         if ( elementIndex == null ) {
             elementIndex = createElementIndex();
+            for (Iterator iter = elementIterator(); iter.hasNext(); ) {
+                addToElementIndex( (Element) iter.next() );
+            }
         }
         return elementIndex;
     }
@@ -183,9 +189,6 @@ public class IndexedElement extends DefaultElement {
       */
     protected Map createAttributeIndex() {
         Map answer = createIndex();
-        for (Iterator iter = attributeIterator(); iter.hasNext(); ) {
-            addToAttributeIndex( (Attribute) iter.next() );
-        }
         return answer;
     }
     
@@ -193,9 +196,6 @@ public class IndexedElement extends DefaultElement {
       */
     protected Map createElementIndex() {
         Map answer = createIndex();
-        for (Iterator iter = elementIterator(); iter.hasNext(); ) {
-            addToElementIndex( (Element) iter.next() );
-        }
         return answer;
     }
 
