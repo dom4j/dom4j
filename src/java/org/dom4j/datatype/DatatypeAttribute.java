@@ -16,7 +16,9 @@ import org.dom4j.Namespace;
 import org.dom4j.QName;
 import org.dom4j.tree.AbstractAttribute;
 
+import com.sun.msv.datatype.SerializationContext;
 import com.sun.msv.datatype.xsd.XSDatatype;
+import org.relaxng.datatype.DatatypeException;
 import org.relaxng.datatype.ValidationContext;
 
 /** <p><code>DatatypeAttribute</code> represents an Attribute which supports the
@@ -26,7 +28,7 @@ import org.relaxng.datatype.ValidationContext;
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class DatatypeAttribute extends AbstractAttribute implements ValidationContext {
+public class DatatypeAttribute extends AbstractAttribute implements SerializationContext, ValidationContext {
 
     /** The parent <code>Element</code> of the <code>Attribute</code> */
     private Element parent;
@@ -59,12 +61,26 @@ public class DatatypeAttribute extends AbstractAttribute implements ValidationCo
         this.qname = qname;
         this.datatype = datatype;
         this.text = text;
-        this.data = validate(text);
+        this.data = convertToValue(text);
     }
     
-    
+
+    /** Returns the MSV XSDatatype for this node */
     public XSDatatype getXSDatatype() {
         return datatype;
+    }
+    
+    // SerializationContext interface
+    //-------------------------------------------------------------------------  
+    public String getNamespacePrefix(String uri) {
+        Element parent = getParent();
+        if (parent != null) {
+            Namespace namespace = parent.getNamespaceForURI(uri);
+            if ( namespace != null ) {
+                return namespace.getPrefix();
+            }
+        }
+        return null;
     }
     
     // ValidationContext interface
@@ -107,17 +123,14 @@ public class DatatypeAttribute extends AbstractAttribute implements ValidationCo
     }
     
     public String getValue() {
-        if ( text == null ) {
-            // XXXX: when the library supports this
-            // text = datatype.convertValueToString( data );
-            text = ( data == null ) ? "" : data.toString();
-        }
         return text;
     }
     
     public void setValue(String text) {
-        this.text = text;
-        this.data = validate(text);
+        validate(text);
+        
+        this.text = text;        
+        this.data = convertToValue(text);
     }
     
     public Object getData() {
@@ -125,11 +138,10 @@ public class DatatypeAttribute extends AbstractAttribute implements ValidationCo
     }
     
     public void setData(Object data) {
+        String s = datatype.convertToLexicalValue( data, this );
+        validate(s);
+        this.text = s;        
         this.data = data;
-        this.text = null;
-        
-        // XXXX: when the library supports this
-        // datatype.verify( data, this );
     }
     
     public Element getParent() {
@@ -150,11 +162,17 @@ public class DatatypeAttribute extends AbstractAttribute implements ValidationCo
     
     
     // Implementation methods
-    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------       
+    protected void validate(String text) throws IllegalArgumentException {
+        try {
+            datatype.checkValid(text, this);
+        }
+        catch (DatatypeException e) {
+            throw new IllegalArgumentException( e.getMessage() );
+        }
+    }
     
-    
-    /** Validates the given text */
-    protected Object validate(String text) {
+    protected Object convertToValue(String text) {
         if ( datatype instanceof DatabindableDatatype ) {
             DatabindableDatatype bindable = (DatabindableDatatype) datatype;
             return bindable.createJavaObject( text, this );
@@ -163,7 +181,6 @@ public class DatatypeAttribute extends AbstractAttribute implements ValidationCo
             return datatype.createValue( text, this );
         }
     }
-    
 }
 
 

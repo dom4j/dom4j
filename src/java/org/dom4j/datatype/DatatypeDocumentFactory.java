@@ -102,7 +102,15 @@ public class DatatypeDocumentFactory extends DocumentFactory {
         
     // DocumentFactory methods
     //-------------------------------------------------------------------------
-    
+/*    
+    public Element createElement(QName qname) {
+        DocumentFactory elementFactory = qname.getDocumentFactory();
+        if ( elementFactory != null ) {
+            return elementFactory.createElement(qname);
+        }
+        return super.createElement(qname);
+    }
+*/    
     public Attribute createAttribute(Element owner, QName qname, String value) {
         if ( autoLoadSchema && qname.equals( XSI_NO_SCHEMA_LOCATION ) ) {
             Document document = (owner != null) ? owner.getDocument() : null;

@@ -147,7 +147,10 @@ public class SchemaParser {
         if (nameAttr==null) return;
         String name=nameAttr.getText();
         QName qname=getQName(name);
-        DatatypeElementFactory elementFactory=new DatatypeElementFactory(qname);
+        
+        DatatypeElementFactory elementFactory = getDatatypeElementFactory( qname );        
+        //DatatypeElementFactory elementFactory=new DatatypeElementFactory(qname);
+        
         onSchemaComplexType(schemaComplexType,elementFactory);
         namedTypeResolver.registerComplexType(qname,elementFactory);
     }
@@ -204,9 +207,9 @@ public class SchemaParser {
     /** processes an XML Schema &lt;attribute&gt; tag
      */
     protected void onDatatypeAttribute(
-    Element xsdElement,
-    DatatypeElementFactory elementFactory,
-    Element xsdAttribute
+        Element xsdElement,
+        DatatypeElementFactory elementFactory,
+        Element xsdAttribute
     ) {
         String name = xsdAttribute.attributeValue( "name" );
         QName qname = getQName( name );

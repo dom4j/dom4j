@@ -13,10 +13,13 @@ import com.sun.msv.datatype.DatabindableDatatype;
 
 import org.dom4j.Element;
 import org.dom4j.Namespace;
+import org.dom4j.Node;
 import org.dom4j.QName;
 import org.dom4j.tree.DefaultElement;
 
+import com.sun.msv.datatype.SerializationContext;
 import com.sun.msv.datatype.xsd.XSDatatype;
+import org.relaxng.datatype.DatatypeException;
 import org.relaxng.datatype.ValidationContext;
 
 import org.xml.sax.Attributes;
@@ -28,7 +31,7 @@ import org.xml.sax.Attributes;
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class DatatypeElement extends DefaultElement implements ValidationContext {
+public class DatatypeElement extends DefaultElement implements SerializationContext, ValidationContext {
 
     /** The <code>XSDatatype</code> of the <code>Attribute</code> */
     private XSDatatype datatype;
@@ -53,6 +56,18 @@ public class DatatypeElement extends DefaultElement implements ValidationContext
             + " [Element: <" + getQualifiedName() 
             + " attributes: " + attributeList() 
             + " data: " + getData() + " />]";
+    }
+    
+    /** Returns the MSV XSDatatype for this node */
+    public XSDatatype getXSDatatype() {
+        return datatype;
+    }
+    
+    // SerializationContext interface
+    //-------------------------------------------------------------------------  
+    public String getNamespacePrefix(String uri) {
+        Namespace namespace = getNamespaceForURI(uri);
+        return (namespace != null) ? namespace.getPrefix() : null;
     }
     
     // ValidationContext interface
@@ -95,14 +110,43 @@ public class DatatypeElement extends DefaultElement implements ValidationContext
     }
     
     public void setData(Object data) {
+        String s = datatype.convertToLexicalValue( data, this );
+        validate(s);
         this.data = data;
-        
-        // XXXX: when the library supports this
-        // datatype.convertToText( data, this );
-        if ( data != null ) {
-            setText( data.toString() );
-        }
+        setText( s );
     }    
+
+    public Element addText(String text) {
+        validate(text);
+        return super.addText(text);
+    }
+    
+    public void setText(String text) {
+        validate(text);
+        super.setText(text);
+    }
+    // Implementation methods
+    //-------------------------------------------------------------------------    
+    /** Override to force lazy recreation of data object */
+    protected void childAdded(Node node) {
+        data = null;
+        super.childAdded(node);
+    }
+    
+    /** Override to force lazy recreation of data object */    
+    protected void childRemoved(Node node) {
+        data = null;
+        super.childRemoved(node);
+    }
+
+    protected void validate(String text) throws IllegalArgumentException {
+        try {
+            datatype.checkValid(text, this);
+        }
+        catch (DatatypeException e) {
+            throw new IllegalArgumentException( e.getMessage() );
+        }
+    }
 }
 
 

@@ -496,6 +496,10 @@
     <java classname="org.dom4j.TestSetContent"/>
   </target>
 
+  <target name="test-setdata" depends="compile-test">
+    <java classname="org.dom4j.datatype.TestSetData"/>
+  </target>
+
   <!-- =================================================================== -->
   <!-- Helper targets                                                      -->
   <!-- =================================================================== -->

@@ -31,6 +31,7 @@
   <complexType>
    <sequence>
      <element ref="name"/>
+     <element ref="numberOfCars"/>
      <element ref="email" minOccurs='0' maxOccurs='unbounded'/>
      <element ref="url"   minOccurs='0' maxOccurs='unbounded'/>
      <element ref="link"  minOccurs='0' maxOccurs='1'/>
@@ -67,6 +68,8 @@
  <element name="given" type='string'/>
 
  <element name="email" type='string'/>
+
+ <element name="numberOfCars" type='short'/>
 
  <element name="url">
   <complexType>
