@@ -69,13 +69,13 @@ import org.xml.sax.helpers.XMLFilterImpl;
   * @version $Revision$
   */
 public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
+    
+    private static final String PAD_TEXT = " ";
 
     protected static final String[] LEXICAL_HANDLER_NAMES = {
         "http://xml.org/sax/properties/lexical-handler",
         "http://xml.org/sax/handlers/LexicalHandler"
     };
-
-    private static final boolean SUPPORT_PAD_TEXT = false;
 
     protected static final OutputFormat DEFAULT_FORMAT = new OutputFormat();
 
@@ -122,12 +122,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     /** The namespaces used for the current element when consuming SAX events */
     private Map namespacesMap;
 
-	/**
-	 * what is the maximum allowed character code
-	 * such as 127 in US-ASCII (7 bit) or 255 in ISO-* (8 bit)
-	 * or -1 to not escape any characters (other than the special XML characters like < > &)
-	 */
-	private int maximumAllowedCharacter;
+    /**
+     * what is the maximum allowed character code
+     * such as 127 in US-ASCII (7 bit) or 255 in ISO-* (8 bit)
+     * or -1 to not escape any characters (other than the special XML characters like < > &)
+     */
+    private int maximumAllowedCharacter;
 
 
     public XMLWriter(Writer writer) {
@@ -838,6 +838,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
             // so that whitespace trimming works properly
             Text lastTextNode = null;
             StringBuffer buffer = null;
+            boolean textOnly = true;
             for ( int i = 0, size = element.nodeCount(); i < size; i++ ) {
                 Node node = element.node(i);
                 if ( node instanceof Text ) {
@@ -852,6 +853,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                     }
                 }
                 else {
+                    if (!textOnly && format.isPadText()) {
+                        writer.write(PAD_TEXT);
+                    }
+                    
+                    textOnly = false;
+                    
                     if ( lastTextNode != null ) {
                         if ( buffer != null ) {
                             writeString( buffer.toString() );
@@ -861,11 +868,19 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                             writeString( lastTextNode.getText() );
                         }
                         lastTextNode = null;
+                        
+                        if (format.isPadText()) {
+                            System.out.println("writing pad");
+                            writer.write(PAD_TEXT);
+                        }
                     }
                     writeNode(node);
                 }
             }
             if ( lastTextNode != null ) {
+                if (!textOnly && format.isPadText()) {
+                    writer.write(PAD_TEXT);
+                }
                 if ( buffer != null ) {
                     writeString( buffer.toString() );
                     buffer = null;
@@ -877,9 +892,22 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
             }
         }
         else {
+            Node lastTextNode = null;
             for ( int i = 0, size = element.nodeCount(); i < size; i++ ) {
                 Node node = element.node(i);
-                writeNode(node);
+                if (node instanceof Text) {
+                    writeNode(node);
+                    lastTextNode = node;
+                } else {
+                    if ((lastTextNode != null) && format.isPadText()) {
+                        writer.write(PAD_TEXT);
+                    }
+                    writeNode(node);
+                    if ((lastTextNode != null) && format.isPadText()) {
+                        writer.write(PAD_TEXT);
+                    }
+                    lastTextNode = null;
+                }
             }
         }
         preserve=oldPreserve;
@@ -956,14 +984,11 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                 text = escapeElementEntities(text);
             }
 
-            if ( SUPPORT_PAD_TEXT ) {
-                if (lastOutputNodeType == Node.ELEMENT_NODE) {
-                    String padText = getPadText();
-                    if ( padText != null ) {
-                        writer.write(padText);
-                    }
-                }
-            }
+//            if (format.isPadText()) {
+//                if (lastOutputNodeType == Node.ELEMENT_NODE) {
+//                    writer.write(PAD_TEXT);
+//                }
+//            }
 
             if (format.isTrimText()) {
                 boolean first = true;
@@ -996,23 +1021,15 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
      *
      */
     protected void writeNodeText(Node node) throws IOException {
-      String text = node.getText();
-      if (text != null && text.length() > 0) {
-        if (escapeText) {
-          text = escapeElementEntities(text);
-        }
-        if (!preserve && SUPPORT_PAD_TEXT) {
-          if (lastOutputNodeType == Node.ELEMENT_NODE) {
-            String padText = getPadText();
-            if (padText != null) {
-              writer.write(padText);
+        String text = node.getText();
+        if (text != null && text.length() > 0) {
+            if (escapeText) {
+                text = escapeElementEntities(text);
             }
-          }
+            
+            lastOutputNodeType = Node.TEXT_NODE;
+            writer.write(text);
         }
-
-        lastOutputNodeType = Node.TEXT_NODE;
-        writer.write(text);
-      }
     }
 
     protected void writeNode(Node node) throws IOException {
@@ -1462,10 +1479,6 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     protected void handleException(IOException e) throws SAXException {
         throw new SAXException(e);
-    }
-
-    protected String getPadText() {
-        return null;
     }
 
     //Laramie Crocker 4/8/2002 10:38AM

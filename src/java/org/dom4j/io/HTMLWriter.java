@@ -415,11 +415,6 @@ public class HTMLWriter extends XMLWriter {
         }
     }
 
-
-    protected String getPadText() {
-        return " ";
-    }
-
     /** @see #setPreformattedTags(java.util.Set) setPreformattedTags
      */
     public Set getPreformattedTags(){
