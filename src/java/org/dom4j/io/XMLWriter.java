@@ -1150,11 +1150,13 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                 }
             }
 
+            char quote = format.getAttributeQuoteCharacter();
             writer.write(" ");
             writer.write(attribute.getQualifiedName());
-            writer.write("=\"");
+            writer.write("=");
+            writer.write(quote);
             writeEscapeAttributeEntities(attribute.getValue());
-            writer.write("\"");
+            writer.write(quote);
         }
     }
 
@@ -1163,11 +1165,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         writer.write(attribute.getQualifiedName());
         writer.write("=");
 
-        writer.write("\"");
+        char quote = format.getAttributeQuoteCharacter();
+        writer.write(quote);
 
         writeEscapeAttributeEntities(attribute.getValue());
 
-        writer.write("\"");
+        writer.write(quote);
         lastOutputNodeType = Node.ATTRIBUTE_NODE;
     }
 
@@ -1178,11 +1181,13 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
 
     protected void writeAttribute(Attributes attributes, int index) throws IOException {
+        char quote = format.getAttributeQuoteCharacter();
         writer.write(" ");
         writer.write(attributes.getQName(index));
-        writer.write("=\"");
+        writer.write("=");
+        writer.write(quote);
         writeEscapeAttributeEntities(attributes.getValue(index));
-        writer.write("\"");
+        writer.write(quote);
     }
 
 
@@ -1336,6 +1341,8 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
       * entity reference, suitable for XML attributes.
       */
     protected String escapeAttributeEntities(String text) {
+        char quote = format.getAttributeQuoteCharacter();
+    	
         char[] block = null;
         int i, last = 0, size = text.length();
         for ( i = 0; i < size; i++ ) {
@@ -1349,10 +1356,14 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                     entity = "&gt;";
                     break;
                 case '\'' :
-                    entity = "&apos;";
+                    if (quote == '\'') {
+                        entity = "&apos;";
+                    }
                     break;
                 case '\"' :
-                    entity = "&quot;";
+                    if (quote == '\"') {
+                        entity = "&quot;";
+                    }
                     break;
                 case '&' :
                     entity = "&amp;";

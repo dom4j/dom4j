@@ -52,6 +52,9 @@ public class OutputFormat implements Cloneable {
 
     /** Controls when to output a line.separtor every so many tags in case of no lines and total text trimming.*/
     private int newLineAfterNTags = 0;  //zero means don't bother.
+    
+    /** Quote character to use when writing attributes. */
+    private char attributeQuoteChar = '\"';
 
 
     /** Creates an <code>OutputFormat</code> with
@@ -308,6 +311,28 @@ public class OutputFormat implements Cloneable {
      *  produce a line.separator in the output after 10 close tags (including single tags).*/
     public void setNewLineAfterNTags(int tagCount){
         newLineAfterNTags = tagCount;
+    }
+
+    public char getAttributeQuoteCharacter() {
+        return attributeQuoteChar;
+    }
+
+    /**
+     * Sets the character used to quote attribute values. The specified
+     * character must be a valid XML attribute quote character, otherwise an
+     * <code>IllegalArgumentException</code> will be thrown.
+     * 
+     * @param quoteChar The character to use when quoting attribute values.
+     * @throws IllegalArgumentException If the specified character is not a
+     *         valid XML attribute quote character.
+     */
+    public void setAttributeQuoteCharacter(char quoteChar) {
+        if (quoteChar == '\'' || quoteChar == '"') {
+            attributeQuoteChar = quoteChar;
+        } else {
+            throw new IllegalArgumentException(
+                    "Invalid attribute quote character (" + quoteChar + ")");
+        }
     }
 
     /** Parses command line arguments of the form
