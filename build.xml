@@ -332,6 +332,9 @@
     <copy todir="${dist.dir}/lib">
       <fileset dir="./lib" />
     </copy>
+    <copy todir="${dist.dir}/doc">
+      <fileset dir="${build.doc}" />
+    </copy>
 
     <copy todir="${dist.dir}">
       <fileset dir="." includes="build.sh, build.bat, cp.bat, run.bat, run.sh, runnojit.bat, *.xml, *.html" />
