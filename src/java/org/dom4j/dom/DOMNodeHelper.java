@@ -383,7 +383,16 @@ public class DOMNodeHelper {
     public static NodeList createNodeList( final List list ) {
         return new NodeList() {
             public org.w3c.dom.Node item(int index) {
-                return DOMNodeHelper.asDOMNode( (Node) list.get( index ) );
+                if (index >= getLength()) {
+                    /*
+                     * From the NodeList specification:
+                     * If index is greater than or equal to the number of nodes
+                     * in the list, this returns null.
+                     */
+                    return null;
+                } else {
+                    return DOMNodeHelper.asDOMNode( (Node) list.get( index ) );
+                }
             }
             public int getLength() {
                 return list.size();
