@@ -16,6 +16,20 @@
           </p>
           <p>Ported the data type support to work with the latest MSV library from Sun
           </p>
+          <p>Added new helper method <code>DocumentHelper.makeElement(doc, "a/b/c")</code> which will
+            navigate from a document or element to the given simple path, creating new elements along the way if need be.
+            This allows elements to be found or created using a simple path expression mechansim.
+          </p>
+          <p>Fixed bug spotted by Stefan Graeber that was causing a DocumentException to be thrown with Xerces
+            when turning validation mode on.
+          </p>
+          <p>Patched bug in QName which was using the qualified name rather than the local name along with the namespace URI
+            to determine equality.
+          </p>
+          <p>Patched methods on Element, addElement(String) and element(String) and elements(String) and elementIterator(String)
+            to compare qualified names rather than local names. This allows simple string based adding and filtering to be done in namespace aware documents.
+            For exact fine grained control where comparison is only by local name and namespace URI then the equivalent methods taking a QName should be used.
+          </p>
         </section>
         <section title="0.9 release">
           <section title="Full support for the Jaxen XPath engine">

@@ -1,68 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
 
- <xsd:element name="personnel">
+ <xsd:element xsd:name="personnel">
   <xsd:complexType>
    <xsd:sequence>
-     <xsd:element ref="person" minOccurs='1' maxOccurs='unbounded'/>
+     <xsd:element xsd:ref="person" xsd:minOccurs='1' xsd:maxOccurs='unbounded'/>
    </xsd:sequence>
   </xsd:complexType>
  </xsd:element>
 
- <xsd:element name="person">
+ <xsd:element xsd:name="person">
   <xsd:complexType>
    <xsd:sequence>
-     <xsd:element ref="name"/>
-     <xsd:element ref="email" minOccurs='0' maxOccurs='unbounded'/>
-     <xsd:element ref="url"   minOccurs='0' maxOccurs='unbounded'/>
-     <xsd:element ref="link"  minOccurs='0' maxOccurs='1'/>
+     <xsd:element xsd:ref="name"/>
+     <xsd:element xsd:ref="email" xsd:minOccurs='0' xsd:maxOccurs='unbounded'/>
+     <xsd:element xsd:ref="url"   xsd:minOccurs='0' xsd:maxOccurs='unbounded'/>
+     <xsd:element xsd:ref="link"  xsd:minOccurs='0' xsd:maxOccurs='1'/>
    </xsd:sequence>
-   <xsd:attribute name="id"  type="ID" use='required'/>
-   <xsd:attribute name="note" type="xsd:string"/>
-   <xsd:attribute name="contr" default="false">
+   <xsd:attribute xsd:name="id"  xsd:type="ID" use='required'/>
+   <xsd:attribute xsd:name="note" xsd:type="xsd:string"/>
+   <xsd:attribute xsd:name="contr" xsd:default="false">
     <xsd:simpleType>
-     <restriction base = "xsd:string">
-       <enumeration value="true"/>
-       <enumeration value="false"/>
-     </restriction>
+     <xsd:restriction xsd:base="xsd:string">
+       <xsd:enumeration xsd:value="true"/>
+       <xsd:enumeration xsd:value="false"/>
+     </xsd:restriction>
     </xsd:simpleType>
    </xsd:attribute>
-   <xsd:attribute name="salary" type="xsd:int"/>
+   <xsd:attribute xsd:name="salary" xsd:type="xsd:int"/>
   </xsd:complexType>
-  <xsd:attribute name="age" type="xsd:integer"/>
-  <xsd:attribute name="x" type="xsd:int"/>
-  <xsd:attribute name="d" type="xsd:date"/>
-  <xsd:attribute name="dt" type="xsd:dateTime"/>
+  <xsd:attribute xsd:name="age" xsd:type="xsd:integer"/>
+  <xsd:attribute xsd:name="x" xsd:type="xsd:int"/>
+  <xsd:attribute xsd:name="d" xsd:type="xsd:date"/>
+  <xsd:attribute xsd:name="dt" xsd:type="xsd:dateTime"/>
  </xsd:element>
 
- <xsd:element name="name">
+ <xsd:element xsd:name="name">
   <xsd:complexType>
    <xsd:all>
-    <xsd:element ref="family"/>
-    <xsd:element ref="given"/>
+    <xsd:element xsd:ref="family"/>
+    <xsd:element xsd:ref="given"/>
    </xsd:all>
   </xsd:complexType>
  </xsd:element>
 
- <xsd:element name="family" type='xsd:string'/>
+ <xsd:element xsd:name="family" xsd:type='xsd:string'/>
 
- <xsd:element name="given" type='xsd:string'/>
+ <xsd:element xsd:name="given" xsd:type='xsd:string'/>
 
- <xsd:element name="email" type='xsd:string'/>
+ <xsd:element xsd:name="email" xsd:type='xsd:string'/>
 
- <xsd:element name="url">
+ <xsd:element xsd:name="url">
   <xsd:complexType>
-   <xsd:attribute name="href" type="xsd:string" default="http://"/>
+   <xsd:attribute xsd:name="href" xsd:type="xsd:string" xsd:default="http://"/>
   </xsd:complexType>
  </xsd:element>
 
- <xsd:element name="link">
+ <xsd:element xsd:name="link">
   <xsd:complexType>
-   <xsd:attribute name="manager" type="IDREF"/>
-   <xsd:attribute name="subordinates" type="IDREFS"/>
+   <xsd:attribute xsd:name="manager" xsd:type="IDREF"/>
+   <xsd:attribute xsd:name="subordinates" xsd:type="IDREFS"/>
   </xsd:complexType>
  </xsd:element>
 
- <xsd:notation name='gif' public='-//APP/Photoshop/4.0' system='photoshop.exe'/>
+ <xsd:notation xsd:name='gif' public='-//APP/Photoshop/4.0' system='photoshop.exe'/>
 
 </xsd:schema>

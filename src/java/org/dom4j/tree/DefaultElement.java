@@ -446,7 +446,7 @@ public class DefaultElement extends AbstractElement {
                 Object object = list.get(i);
                 if ( object instanceof Element ) {
                     Element element = (Element) object;
-                    if ( name.equals( element.getName() ) ) {
+                    if ( name.equals( element.getQualifiedName() ) ) {
                         return element;
                     }
                 }
@@ -455,7 +455,7 @@ public class DefaultElement extends AbstractElement {
         else {
             if ( content instanceof Element ) {
                 Element element = (Element) content;
-                if ( name.equals( element.getName() ) ) {
+                if ( name.equals( element.getQualifiedName() ) ) {
                     return element;
                 }
             }
@@ -525,7 +525,7 @@ public class DefaultElement extends AbstractElement {
                 Object object = list.get(i);
                 if ( object instanceof Element ) {
                     Element element = (Element) object;
-                    if ( name.equals( element.getName() ) ) {
+                    if ( name.equals( element.getQualifiedName() ) ) {
                         answer.addLocal( element );
                     }
                 }
@@ -535,7 +535,7 @@ public class DefaultElement extends AbstractElement {
         else {
             if ( content instanceof Element ) {
                 Element element = (Element) content;
-                if ( name.equals( element.getName() ) ) {
+                if ( name.equals( element.getQualifiedName() ) ) {
                     return createSingleResultList( element );
                 }
             }
@@ -596,7 +596,7 @@ public class DefaultElement extends AbstractElement {
         else {
             if ( content instanceof Element ) {
                 Element element = (Element) content;
-                if ( name.equals( element.getName() ) ) {
+                if ( name.equals( element.getQualifiedName() ) ) {
                     return createSingleIterator( element );
                 }
             }
@@ -776,14 +776,14 @@ public class DefaultElement extends AbstractElement {
             int size = list.size();
             for ( int i = 0; i < size; i++ ) {
                 Attribute attribute = (Attribute) list.get(i);
-                if ( name.equals( attribute.getName() ) ) {
+                if ( name.equals( attribute.getQualifiedName() ) ) {
                     return attribute;
                 }
             }
         }
         else if ( attributes != null ) {
             Attribute attribute = (Attribute) attributes;
-            if ( name.equals( attribute.getName() ) ) {
+            if ( name.equals( attribute.getQualifiedName() ) ) {
                 return attribute;
             }
         }

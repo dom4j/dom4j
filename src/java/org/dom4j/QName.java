@@ -131,7 +131,7 @@ public class QName implements Serializable {
       */
     public int hashCode() {
         if ( hashCode == 0 ) {
-            hashCode = getQualifiedName().hashCode() 
+            hashCode = getName().hashCode() 
                 ^ getNamespaceURI().hashCode();
             if ( hashCode == 0 ) {
                 hashCode = 0xbabe;
@@ -148,7 +148,7 @@ public class QName implements Serializable {
             QName that = (QName) object;
             // we cache hash codes so this should be quick
             if ( hashCode() == that.hashCode() ) {
-                return getQualifiedName().equals( that.getQualifiedName() )
+                return getName().equals( that.getName() )
                     && getNamespaceURI().equals( that.getNamespaceURI());
             }
         }

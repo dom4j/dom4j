@@ -20,6 +20,7 @@ import java.util.Map;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.dom4j.Namespace;
 import org.dom4j.QName;
 import org.dom4j.util.AttributeHelper;
 
@@ -33,15 +34,18 @@ import org.relaxng.datatype.ValidationContext;
   */
 public class SchemaBuilder {
     
-    // XXXX: might want to use QName instances for these literals...
-    private static final String XSD_ELEMENT = "element";
-    private static final String XSD_ATTRIBUTE = "attribute";
-    private static final String XSD_SIMPLETYPE = "simpleType";
-    private static final String XSD_COMPLEXTYPE = "complexType";
-    private static final String XSD_RESTRICTION = "restriction";
-    private static final String XSD_BASE = "base";
-    private static final String XSD_VALUE = "value";
-    private static final String XSD_FIXED = "fixed";
+    private static final Namespace XSD_NAMESPACE = Namespace.get( "xsd", "http://www.w3.org/2001/XMLSchema" );
+    
+    private static final QName XSD_ELEMENT = QName.get( "element", XSD_NAMESPACE );
+    private static final QName XSD_ATTRIBUTE = QName.get( "attribute", XSD_NAMESPACE );
+    private static final QName XSD_SIMPLETYPE = QName.get( "simpleType", XSD_NAMESPACE );
+    private static final QName XSD_COMPLEXTYPE = QName.get( "complexType", XSD_NAMESPACE );
+    private static final QName XSD_RESTRICTION = QName.get( "restriction", XSD_NAMESPACE );
+    private static final QName XSD_BASE = QName.get( "base", XSD_NAMESPACE );
+    private static final QName XSD_VALUE = QName.get( "value", XSD_NAMESPACE );
+    private static final QName XSD_FIXED = QName.get( "fixed", XSD_NAMESPACE );
+    private static final QName XSD_NAME = QName.get( "name", XSD_NAMESPACE );
+    private static final QName XSD_TYPE = QName.get( "type", XSD_NAMESPACE );
     
     
     /** Document factory used to register Element specific factories*/
@@ -81,8 +85,8 @@ public class SchemaBuilder {
     /** processes an XML Schema &lt;element&gt; tag 
       */
     protected void onSchemaElement( Element xsdElement ) {
-        String name = xsdElement.attributeValue( "name" );
-        String type = xsdElement.attributeValue( "type" );
+        String name = xsdElement.attributeValue( XSD_NAME );
+        String type = xsdElement.attributeValue( XSD_TYPE );
         QName qname = getQName( name );
         
         if ( type != null ) {
@@ -114,7 +118,7 @@ public class SchemaBuilder {
         Iterator iter = schemaComplexType.elementIterator( XSD_ATTRIBUTE );
         while ( iter.hasNext() ) {
             Element xsdAttribute = (Element) iter.next();
-            String name = xsdAttribute.attributeValue( "name" );
+            String name = xsdAttribute.attributeValue( XSD_NAME );
             QName qname = getQName( name );
             
             XSDatatype dataType = dataTypeForXsdAttribute( xsdAttribute );
@@ -123,7 +127,7 @@ public class SchemaBuilder {
                 elementFactory.setChildElementXSDatatype( qname, dataType );
             }
             else {
-                String type = xsdAttribute.attributeValue( "type" );
+                String type = xsdAttribute.attributeValue( XSD_TYPE );
                 System.out.println( "Warning: Couldn't find XSDatatype for type: " + type + " attribute: " + name );
             }
         }
@@ -136,7 +140,7 @@ public class SchemaBuilder {
         SchemaElementFactory elementFactory, 
         Element xsdAttribute 
     ) {
-        String name = xsdAttribute.attributeValue( "name" );
+        String name = xsdAttribute.attributeValue( XSD_NAME );
         QName qname = getQName( name );
         XSDatatype dataType = dataTypeForXsdAttribute( xsdAttribute );
         if ( dataType != null ) {
@@ -144,7 +148,7 @@ public class SchemaBuilder {
             elementFactory.setAttributeXSDatatype( qname, dataType );
         }
         else {
-            String type = xsdAttribute.attributeValue( "type" );
+            String type = xsdAttribute.attributeValue( XSD_TYPE );
             System.out.println( "Warning: Couldn't find XSDatatype for type: " + type + " attribute: " + name );
         }
     }
@@ -152,7 +156,7 @@ public class SchemaBuilder {
     /** processes an XML Schema &lt;attribute&gt; tag 
       */
     protected XSDatatype dataTypeForXsdAttribute( Element xsdAttribute ) {
-        String type = xsdAttribute.attributeValue( "type" );
+        String type = xsdAttribute.attributeValue( XSD_TYPE );
         XSDatatype dataType = null;
         if ( type != null ) {
             dataType = getTypeByName( type );
@@ -161,7 +165,7 @@ public class SchemaBuilder {
             // must parse the <simpleType> element
             Element xsdSimpleType = xsdAttribute.element( XSD_SIMPLETYPE );
             if ( xsdSimpleType == null ) {
-                String name = xsdAttribute.attributeValue( "name" );
+                String name = xsdAttribute.attributeValue( XSD_NAME );
                 throw new InvalidSchemaException( 
                     "The attribute: " + name + " has no type attribute and does not contain a <simpleType/> element" 
                 );

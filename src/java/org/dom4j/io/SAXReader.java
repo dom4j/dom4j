@@ -537,10 +537,16 @@ public class SAXReader {
                 "http://xml.org/sax/features/namespace-prefixes", 
                 false
             );
-            reader.setFeature(
-                "http://xml.org/sax/features/string-intern", 
-                isStringInternEnabled()
-            );
+            
+            try {
+                reader.setFeature(
+                    "http://xml.org/sax/features/string-intern", 
+                    isStringInternEnabled()
+                );
+            }
+            catch (SAXException e) {
+                // ignore
+            }
 
             // configure validation support
             reader.setFeature(
