@@ -7,7 +7,9 @@
 
 package org.dom4j.io;
 
+import java.net.URL;
 import junit.framework.*;
+import junit.textui.TestRunner;
 import org.dom4j.AbstractTestCase;
 import org.w3c.dom.NamedNodeMap;
 
@@ -21,6 +23,10 @@ public class TestDOMWriter extends AbstractTestCase {
         super(testName);
     }
     
+    public static void main( String[] args ) {
+        TestRunner.run( suite() );
+    }
+
     public static Test suite() {
         TestSuite suite = new TestSuite(TestDOMWriter.class);
         return suite;
@@ -30,7 +36,7 @@ public class TestDOMWriter extends AbstractTestCase {
     // for example:
     // public void testHello() {}
     public void testNamespaceBug() throws Exception {
-        org.dom4j.Document doc = parseDocument("xml/namespaces.xml");
+        org.dom4j.Document doc = parseDocument("/xml/namespaces.xml");
         DOMWriter writer = new DOMWriter(org.dom4j.dom.DOMDocument.class);
         org.w3c.dom.Document result = writer.write(doc);
         
@@ -43,7 +49,7 @@ public class TestDOMWriter extends AbstractTestCase {
     }
     
     public void testBug905745() throws Exception {
-        org.dom4j.Document doc = parseDocument("xml/namespaces.xml");
+        org.dom4j.Document doc = parseDocument("/xml/namespaces.xml");
         DOMWriter writer = new DOMWriter();
         org.w3c.dom.Document result = writer.write(doc);
         
@@ -56,8 +62,9 @@ public class TestDOMWriter extends AbstractTestCase {
     }
     
     protected org.dom4j.Document parseDocument(String file) throws Exception {
+        URL url = getClass().getResource(file);
         SAXReader reader = new SAXReader();
-        return reader.read( file );
+        return reader.read(url);
     }
 
 }
