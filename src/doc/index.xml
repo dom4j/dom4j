@@ -13,6 +13,9 @@
 
     <section title="News">
       <ul>
+        <li>The new <a href="todo.html">dom4j 1.0</a> release is out featuring better SAX and <a href="http://jaxen.org">Jaxen</a> support,
+          some performance tuning and numerous patches.
+        </li>
         <li>Sun's reference implementation of <a href="http://developer.java.sun.com/developer/earlyAccess/xml/jaxm/">JAXM</a>
           (Java API for XML Messaging) is based on dom4j!
         </li>

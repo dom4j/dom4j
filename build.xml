@@ -7,8 +7,8 @@
     <tstamp/>
     <property name="Name" value="dom4j"/>
     <property name="name" value="dom4j"/>
-    <property name="version" value="patched-0.9"/>
-    <property name="current.version" value="0.9"/>
+    <property name="version" value="1.0"/>
+    <property name="current.version" value="1.0"/>
     <property name="year" value="2001"/>
 
     <echo message="----------- ${Name} ${version} [${year}] ------------"/>
@@ -19,6 +19,7 @@
     <property name="deprecation" value="off"/>
 
     <property name="src.dir" value="./src/java"/>
+    <property name="conf.dir" value="./src/conf"/>
     <property name="doc.dir" value="./src/doc"/>
     <property name="samples.dir" value="./src/samples"/>
     <property name="test.dir" value="./src/test"/>
@@ -64,7 +65,7 @@
   <target name="usage">
     <echo message=""/>
     <echo message=""/>
-    <echo message="DOM4J Build file"/>
+    <echo message="dom4j build file"/>
     <echo message="-------------------------------------------------------------"/>
     <echo message=""/>
     <echo message=" available targets are:"/>
@@ -206,11 +207,13 @@
     <jar jarfile="${build.dir}/${name}.jar"
          basedir="${build.dest}"
          includes="org/dom4j/**,org/saxpath/**,org/jaxen/**,com/werken/**"
-         excludes="org/jaxen/dom/**,org/jaxen/exml/**,org/jaxen/jdom/**"/>
+         excludes="org/jaxen/dom/**,org/jaxen/exml/**,org/jaxen/jdom/**"
+         manifest="${conf.dir}/MANIFEST.MF"/>
 
     <jar jarfile="${build.dir}/${name}-full.jar"
          basedir="${build.dest}"
-         includes="**"/>
+         includes="**"
+         manifest="${conf.dir}/MANIFEST.MF"/>
   </target>
 
   <!-- =================================================================== -->
@@ -350,7 +353,8 @@
     <fixcrlf srcdir="${dist.dir}" includes="build.sh"     cr="remove"/>
     <fixcrlf srcdir="${dist.dir}" includes="build.bat"    cr="add"/>
 
-    <chmod perm="ugo+rx" file="${dist.dir}/*.sh"/>
+    <chmod perm="ugo+rx" file="${dist.dir}/run.sh"/>
+    <chmod perm="ugo+rx" file="${dist.dir}/build.sh"/>
   </target>
 
   <!-- =================================================================== -->
@@ -363,9 +367,11 @@
   <!-- =================================================================== -->
   <!-- Packages the distribution as .jar                                   -->
   <!-- =================================================================== -->
+<!--
   <target name="dist-jar" depends="dist">
     <jar jarfile="${dist.target}/${name}-daily.jar" basedir="${dist.jar.dir}"/>
   </target>
+-->
 
   <!-- =================================================================== -->
   <!-- Packages the distribution with .tar.gzip                            -->
@@ -379,9 +385,12 @@
   <!-- =================================================================== -->
   <!-- Performs a release on the website                                   -->
   <!-- =================================================================== -->
-  <target name="release" depends="clean,compile,release-javadoc,doc-cookbook,dist-zip,dist-tgz,dist-jar">
+  <target name="release" depends="clean,compile,release-javadoc,doc-cookbook,dist-zip,dist-tgz">
     <mkdir dir="${web.htdocs}"/>
     <mkdir dir="${web.dist}"/>
+
+    <copy todir="${web.dist}" file="${build.dir}/${name}.jar"/>
+
     <copy todir="${web.htdocs}" overwrite="yes">
       <fileset dir="${build.doc}" includes="**/*.html, **/*.css"/>
     </copy>
@@ -399,7 +408,7 @@
   </target>
 
 
-  <target name="ftp" depends="dist-zip,dist-tgz,dist-jar">
+  <target name="ftp" depends="dist-zip,dist-tgz">
     <mkdir dir="${web.ftp}"/>
     <copy todir="${web.ftp}" overwrite="yes">
       <fileset dir="${dist.root}" includes="*.jar, *.zip, *.tar, *.gz"/>
