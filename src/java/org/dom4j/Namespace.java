@@ -130,20 +130,33 @@ public class Namespace extends AbstractNode {
     }
 
 
+    public String getXPathNameStep() {
+        if (prefix != null && !"".equals( prefix )) {
+            return "namespace::" + prefix;
+        }
+        return "namespace::*[name()='']";
+    }
+    
     public String getPath(Element context) {
-        String match = ( prefix != null ) ? prefix : "*";
+        StringBuffer path = new StringBuffer(10);
         Element parent = getParent();
-        return ( parent != null && parent != context ) 
-            ? parent.getPath( context ) + "/namespace::" + match
-            : "namespace::" + match;
+        if (parent != null && parent != context) {
+            path.append( parent.getPath( context ) );
+            path.append( '/' );
+        }
+        path.append( getXPathNameStep() );
+        return path.toString();
     }
     
     public String getUniquePath(Element context) {
-        String match = ( prefix != null ) ? prefix : "*";
+        StringBuffer path = new StringBuffer(10);
         Element parent = getParent();
-        return ( parent != null && parent != context ) 
-            ? parent.getUniquePath( context ) + "/namespace::" + match
-            : "namespace::" + match;
+        if (parent != null && parent != context) {
+            path.append( parent.getUniquePath( context ) );
+            path.append( '/' );
+        }
+        path.append( getXPathNameStep() );
+        return path.toString();
     }
     
     public String toString() {
