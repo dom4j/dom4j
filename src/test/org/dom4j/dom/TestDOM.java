@@ -10,6 +10,7 @@
 package org.dom4j.dom;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,6 +26,7 @@ import org.dom4j.io.DOMWriter;
 import org.dom4j.io.SAXReader;
 
 import org.w3c.dom.Attr;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -91,13 +93,52 @@ public class TestDOM extends AbstractTestCase {
 
         oDocument.appendChild(oParent); //<-- Fails here, Error message is below
     }
+    
+    public void testReplaceChild() throws Exception {
+        DOMDocument document = new DOMDocument("Root");
+        org.w3c.dom.Element parent = document.createElement("Parent");
+        org.w3c.dom.Element first = document.createElement("FirstChild");
+        org.w3c.dom.Element second = document.createElement("SecondChild");
+        org.w3c.dom.Element third = document.createElement("ThirdChild");
+        
+        document.appendChild(parent);
+        parent.appendChild(first);
+        parent.appendChild(second);
+        parent.appendChild(third);
+        
+        org.w3c.dom.Element newFirst = document.createElement("NewFirst");
+        org.w3c.dom.Element oldFirst = (org.w3c.dom.Element) parent.replaceChild(newFirst, first);
+        
+        /* check the return value of replaceChild */
+        assertEquals(oldFirst, first);
+        
+        /* make sure the old node has been replaced */
+        NodeList children = parent.getChildNodes();
+        Node firstChild = children.item(0);
+        assertEquals(Node.ELEMENT_NODE, firstChild.getNodeType());
+        assertEquals(newFirst, firstChild);
+        
+        /* try to replace a node that doesn't exist */
+        org.w3c.dom.Element badNode = document.createElement("No Child");
+        try {
+            parent.replaceChild(newFirst, badNode);
+            fail("DOMException should be throwed when trying to replace non existing child");
+        } catch (DOMException e) {
+            assertEquals(DOMException.NOT_FOUND_ERR, e.code);
+        }
+    }
         
     // Implementation methods
     //-------------------------------------------------------------------------                    
     
     protected void setUp() throws Exception {
         SAXReader reader = new SAXReader( DOMDocumentFactory.getInstance() );
-        document = reader.read( new File( "xml/contents.xml" ) );
+        InputStream testDocument = getClass().getResourceAsStream("/xml/contents.xml");
+        if (testDocument == null) {
+            document = reader.read( new File( "xml/contents.xml" ) );
+        } else {
+            document = reader.read( testDocument );
+        }
     }
     /** Traverses the specified node, recursively. */
     protected void traverse(Node node) {

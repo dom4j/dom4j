@@ -157,10 +157,10 @@ public class DOMNodeHelper {
             List list = branch.content();
             int index = list.indexOf(oldChild);
             if ( index < 0 ) {
-                index = 0;
+                throw new DOMException( DOMException.NOT_FOUND_ERR, "Tried to replace a non existing child for node: " + node );
             }
             list.set(index, newChild);
-            return newChild;
+            return oldChild;
         }
         else {        
             throw new DOMException( DOMException.HIERARCHY_REQUEST_ERR, "Children not allowed for this node: " + node );
