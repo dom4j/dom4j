@@ -34,9 +34,9 @@ import org.relaxng.datatype.ValidationContext;
  * @version $Revision$
  */
 public class SchemaParser {
-    
+
     private static final Namespace XSD_NAMESPACE = Namespace.get( "xsd", "http://www.w3.org/2001/XMLSchema" );
-    
+
     // Use QNames for the elements
     private static final QName XSD_ELEMENT = QName.get( "element", XSD_NAMESPACE );
     private static final QName XSD_ATTRIBUTE = QName.get( "attribute", XSD_NAMESPACE );
@@ -44,23 +44,29 @@ public class SchemaParser {
     private static final QName XSD_COMPLEXTYPE = QName.get( "complexType", XSD_NAMESPACE );
     private static final QName XSD_RESTRICTION = QName.get( "restriction", XSD_NAMESPACE );
     private static final QName XSD_SEQUENCE = QName.get( "sequence", XSD_NAMESPACE );
-    
+
     /** Document factory used to register Element specific factories*/
     private DatatypeDocumentFactory documentFactory;
-    
+
     /** Cache of <code>XSDatatype</code> instances loaded or created during this build */
     private Map dataTypeCache = new HashMap();
-    
-    
+
+    /**  map of names types */
+    private Map namedDatatypeElementFactoryMap = new HashMap();
+
+    /**  map of Elements with unresolved types */
+    private Map elementWithUnresolvedTypeMap = new HashMap();
+
+
     public SchemaParser() {
         this.documentFactory = DatatypeDocumentFactory.singleton;
     }
-    
+
     public SchemaParser(DatatypeDocumentFactory documentFactory) {
         this.documentFactory = documentFactory;
     }
-    
-    
+
+
     /** Parses the given schema document
      *
      * @param schemaDocument is the document of the XML Schema
@@ -68,34 +74,70 @@ public class SchemaParser {
     public void build( Document schemaDocument ) {
         Element root = schemaDocument.getRootElement();
         if ( root != null ) {
+            //handle elements
             Iterator iter = root.elementIterator( XSD_ELEMENT );
             while ( iter.hasNext() ) {
                 onDatatypeElement( (Element) iter.next() );
             }
+
+            //hanlde named complex types
+            iter = root.elementIterator( XSD_COMPLEXTYPE );
+            while ( iter.hasNext() ) {
+                onNamedSchemaComplexType((Element) iter.next());
+            }
+            resolveNamedTypes();
+
         }
     }
-    
-    
+
+    /** Resolved named types
+     *
+     */
+    private void resolveNamedTypes() {
+        Iterator iter=elementWithUnresolvedTypeMap.keySet().iterator();
+        while (iter.hasNext()) {
+            Element element=(Element)iter.next();
+
+            QName type=(QName)elementWithUnresolvedTypeMap.get(element);
+            //QName typeQName=getQName(type);
+
+            DatatypeElementFactory factory=
+                (DatatypeElementFactory)namedDatatypeElementFactoryMap.get(type);
+
+            String name=element.attributeValue("name");
+            if (name!=null) {
+                QName qname=getQName(name);
+                qname.setDocumentFactory(factory);
+            }
+
+        }
+    }
+
+
     // Implementation methods
     //-------------------------------------------------------------------------
-    
+
     /** processes an XML Schema &lt;element&gt; tag
      */
     protected void onDatatypeElement( Element xsdElement ) {
         String name = xsdElement.attributeValue( "name" );
         String type = xsdElement.attributeValue( "type" );
         QName qname = getQName( name );
-        
+
         DatatypeElementFactory elementFactory = getDatatypeElementFactory( qname );
-        
+
         if ( type != null ) {
             // register type with this element name
             XSDatatype dataType=getTypeByName(type);
             if (dataType!=null) {
                 elementFactory.setChildElementXSDatatype( qname, dataType );
+            } else {
+                QName typeQName=getQName(type);
+                elementWithUnresolvedTypeMap.put(xsdElement,typeQName);
             }
+            return;
         }
-        
+
         Element schemaComplexType = xsdElement.element( XSD_COMPLEXTYPE );
         if ( schemaComplexType != null ) {
             onSchemaComplexType( schemaComplexType, elementFactory );
@@ -112,7 +154,19 @@ public class SchemaParser {
             while ( iter.hasNext() );
         }
     }
-    
+
+    /** processes an named XML Schema &lt;complexTypegt; tag
+      */
+    protected void onNamedSchemaComplexType(Element schemaComplexType) {
+        Attribute nameAttr=schemaComplexType.attribute("name");
+        if (nameAttr==null) return;
+        String name=nameAttr.getText();
+        QName qname=getQName(name);
+        DatatypeElementFactory elementFactory=new DatatypeElementFactory(qname);
+        onSchemaComplexType(schemaComplexType,elementFactory);
+        namedDatatypeElementFactoryMap.put(qname,elementFactory);
+    }
+
     /** processes an XML Schema &lt;complexTypegt; tag
      */
     protected void onSchemaComplexType( Element schemaComplexType, DatatypeElementFactory elementFactory ) {
@@ -121,7 +175,7 @@ public class SchemaParser {
             Element xsdAttribute = (Element) iter.next();
             String name = xsdAttribute.attributeValue( "name" );
             QName qname = getQName( name );
-            
+
             XSDatatype dataType = dataTypeForXsdAttribute( xsdAttribute );
             if ( dataType != null ) {
                 // register the XSDatatype for the given Attribute
@@ -134,7 +188,7 @@ public class SchemaParser {
                 System.out.println( "Warning: Couldn't find XSDatatype for type: " + type + " attribute: " + name );
             }
         }
-        
+
         //handle sequence definition
         Element schemaSequence = schemaComplexType.element( XSD_SEQUENCE );
         if (schemaSequence!=null) {
@@ -145,7 +199,7 @@ public class SchemaParser {
             }
         }
     }
-    
+
     /** processes an XML Schema &lt;attribute&gt; tag
      */
     protected void onDatatypeAttribute(
@@ -165,7 +219,7 @@ public class SchemaParser {
             System.out.println( "Warning: Couldn't find XSDatatype for type: " + type + " attribute: " + name );
         }
     }
-    
+
     /** processes an XML Schema &lt;attribute&gt; tag
      */
     protected XSDatatype dataTypeForXsdAttribute( Element xsdAttribute ) {
@@ -187,7 +241,7 @@ public class SchemaParser {
         }
         return dataType;
     }
-    
+
     /** Loads a XSDatatype object from a <simpleType> attribute schema element */
     protected XSDatatype loadXSDatatypeFromSimpleType( Element xsdSimpleType ) {
         Element xsdRestriction = xsdSimpleType.element( XSD_RESTRICTION );
@@ -228,19 +282,19 @@ public class SchemaParser {
         }
         return null;
     }
-    
+
     /** Derives a new type from a base type and a set of restrictions */
     protected XSDatatype deriveSimpleType( XSDatatype baseType, Element xsdRestriction ) {
         TypeIncubator incubator = new TypeIncubator(baseType);
         ValidationContext context = null;
-        
+
         try {
             for ( Iterator iter = xsdRestriction.elementIterator(); iter.hasNext(); ) {
                 Element element = (Element) iter.next();
                 String name = element.getName();
                 String value = element.attributeValue( "value" );
                 boolean fixed = AttributeHelper.booleanValue( element, "fixed" );
-                
+
                 // add facet
                 incubator.add( name, value, fixed, context );
             }
@@ -256,7 +310,7 @@ public class SchemaParser {
             return null;
         }
     }
-    
+
     /** @return the <code>DatatypeElementFactory</code> for the given
      * element QName, creating one if it does not already exist
      */
@@ -268,7 +322,7 @@ public class SchemaParser {
         }
         return factory;
     }
-    
+
     protected XSDatatype getTypeByName( String type ) {
         XSDatatype dataType = (XSDatatype) dataTypeCache.get( type );
         if ( dataType == null ) {
@@ -286,11 +340,11 @@ public class SchemaParser {
         }
         return dataType;
     }
-    
+
     protected QName getQName( String name ) {
         return documentFactory.createQName(name);
     }
-    
+
     /** Called when there is a problem with the schema and the builder cannot
      * handle the XML Schema Data Types correctly
      */
@@ -298,7 +352,7 @@ public class SchemaParser {
         // Some users may wish to disable exception throwing
         // and instead use some kind of listener for errors and continue
         //System.out.println( "WARNING: " + message );
-        
+
         throw new InvalidSchemaException( message );
     }
 }
