@@ -25,6 +25,12 @@
 
     <h2>Here is some CDATA</h2>
     <p></p>
-    <p></p>
+    <p/>
+    <form method="post">
+      <input type="text" value="foo"/>
+      <img src="images/something.gif"/>
+      <textarea></textarea>
+    </form>
+    <hr/>
   </body>
 </html>

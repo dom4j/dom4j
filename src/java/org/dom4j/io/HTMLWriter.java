@@ -37,22 +37,27 @@ public class HTMLWriter extends XMLWriter {
     private Set omitElementCloseSet;
 
     public HTMLWriter() {
+        init();
     }
 
     public HTMLWriter(String indent) {
        super( indent );
+        init();
     }
 
     public HTMLWriter(String indent, boolean newlines) {
        super( indent, newlines );
+        init();
     }
 
     public HTMLWriter(String indent,boolean newlines,String encoding) {
        super( indent, newlines, encoding );
+        init();
     }
     
     public HTMLWriter(XMLWriter that) {
         super( that );
+        init();
     }
 
     /** @return true to suppress the output of the XML declaration 
@@ -90,7 +95,7 @@ public class HTMLWriter extends XMLWriter {
     protected void printEmptyElementClose(Element element, Writer out) throws IOException {
         String name = element.getQualifiedName();
         if ( ! getOmitElementCloseSet().contains( name ) ) {
-            super.printElementClose(element, out);
+            super.printEmptyElementClose(element, out);
         }
         else {
             out.write(">");
@@ -110,6 +115,20 @@ public class HTMLWriter extends XMLWriter {
         set.add( "P" );
         set.add( "br" );
         set.add( "BR" );
+        set.add( "input" );
+        set.add( "INPUT" );
+        set.add( "hr" );
+        set.add( "HR" );
+        set.add( "img" );
+        set.add( "IMG" );
+    }
+    
+    /** Called by all constructors, be careful of calling
+      * any lazy construction methods before this object
+      * is properly constructed
+      */
+    private void init() {
+        setExpandEmptyElements(true);
     }
 }
 
