@@ -53,6 +53,8 @@ public class TestDocType extends AbstractTestCase {
         
         assertEquals( "name is correct", "greeting", decl.getName() );
         assertEquals( "model is correct", "(#PCDATA)", decl.getModel() );
+        
+        assertEquals( "getText() is correct", "<!ELEMENT greeting (#PCDATA)>", docType.getText() );
     }
         
     // Implementation methods
