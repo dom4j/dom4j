@@ -123,6 +123,8 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     /** Is the writer curerntly inside a DTD definition? */
     private boolean inDTD;
 
+    /** The namespaces used for the current element when consuming SAX events */
+    private Map namespacesMap;
 
     public XMLWriter(Writer writer) {
         this( writer, DEFAULT_FORMAT );
@@ -494,6 +496,10 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
 
     public void startPrefixMapping(String prefix, String uri) throws SAXException {
+        if ( namespacesMap == null ) {
+            namespacesMap = new HashMap();
+        }
+        namespacesMap.put(prefix, uri);
         super.startPrefixMapping(prefix, uri);
     }
 
@@ -501,13 +507,13 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         super.endPrefixMapping(prefix);
     }
 
-
     public void startElement(String namespaceURI, String localName, String qName, Attributes attributes) throws SAXException {
         try {
             writePrintln();
             indent();
             writer.write("<");
             writer.write(qName);
+            writeNamespaces();
             writeAttributes( attributes );
             writer.write(">");
             ++indentLevel;
@@ -825,14 +831,39 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     protected void writeNamespace(Namespace namespace) throws IOException {
         if ( namespace != null ) {
             String prefix = namespace.getPrefix();
-            writer.write(" xmlns");
-            if (prefix != null && prefix.length() > 0) {
-                writer.write(":");
+            if ( prefix != null && prefix.length() > 0 ) {
+                writer.write(" xmlns:");
                 writer.write(prefix);
+                writer.write("=\"");
             }
-            writer.write("=\"");
+            else {
+                writer.write(" xmlns=\"");
+            }
             writer.write(namespace.getURI());
             writer.write("\"");
+        }
+    }
+
+    /**
+     * Writes the SAX namepsaces
+     */
+    protected void writeNamespaces() throws IOException {
+        if ( namespacesMap != null ) {
+            for ( Iterator iter = namespacesMap.entrySet().iterator(); iter.hasNext(); ) {
+                Map.Entry entry = (Map.Entry) iter.next();
+                String prefix = (String) entry.getKey();
+                String uri = (String) entry.getValue();
+                if ( prefix != null && prefix.length() > 0 ) {
+                    writer.write(" xmlns:");
+                    writer.write(prefix);
+                    writer.write("=\"");
+                }
+                else {
+                    writer.write(" xmlns=\"");
+                }
+                writer.write(uri);
+            }
+            namespacesMap = null;
         }
     }
 
