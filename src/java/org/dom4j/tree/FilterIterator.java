@@ -46,10 +46,14 @@ public abstract class FilterIterator implements Iterator {
         return answer;
     }
 
+    /**
+     * Always throws UnsupportedOperationException as this class 
+     * does look-ahead with its internal iterator.
+     *
+     * @throws UnsupportedOperationException  always
+     */
     public void remove() {
-        if (proxy != null) {
-            proxy.remove();
-        }
+        throw new UnsupportedOperationException();
     }
     
     /** Filter method to perform some matching on the given element.
