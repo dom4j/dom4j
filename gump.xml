@@ -41,7 +41,7 @@
     <depend project="jaxen-from-packaged-dom4j"/>
     <depend project="xsdlib"/>
     <depend project="relaxng"/>
-    <depend project="stax" ids="api"/>
+    <depend project="stax"/>
     <depend project="jtidy"/>
     <depend project="junitperf"/>
 
