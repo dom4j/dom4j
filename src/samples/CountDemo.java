@@ -24,17 +24,13 @@ public class CountDemo extends SAXDemo {
     private int numProcessingInstructions;
     
     
-    public CountDemo() {
-    }
-        
-    /** The program entry point.
-      *
-      * @param args the command line arguments
-      */
     public static void main(String[] args) {
         run( new CountDemo(), args );
     }    
     
+    public CountDemo() {
+    }
+        
     protected void process(Document document) throws Exception {
         numCharacters = 0;
         numComments = 0;

@@ -9,6 +9,7 @@
 
 package org.dom4j.tree;
 
+import java.util.Collections;
 import java.util.Map;
 
 import org.dom4j.Element;
@@ -26,37 +27,37 @@ public class DefaultProcessingInstruction extends AbstractProcessingInstruction 
     /** The target of the PI */
     protected String target;
 
-    /** The data for the PI as a String */
-    protected String rawData;
+    /** The values for the PI as a String */
+    protected String text;
 
-    /** The data for the PI in name/value pairs */
-    protected Map mapData;
+    /** The values for the PI in name/value pairs */
+    protected Map values;
 
     /** A default constructor for implementors to use.
       */
     public DefaultProcessingInstruction() { 
     }
 
-    /** <p>This will create a new PI with the given target and data</p>
+    /** <p>This will create a new PI with the given target and values</p>
       *
       * @param target is the name of the PI
-      * @param data is the <code>Map</code> data for the PI
+      * @param values is the <code>Map</code> of the values for the PI
       */
-    public DefaultProcessingInstruction(String target, Map data) {
+    public DefaultProcessingInstruction(String target, Map values) {
         this.target = target;
-        this.mapData = data;
-        this.rawData = toString(data);
+        this.values = values;
+        this.text = toString(values);
     }
 
-    /** <p>This will create a new PI with the given target and data</p>
+    /** <p>This will create a new PI with the given target and values</p>
       *
       * @param target is the name of the PI
-      * @param data is the data for the PI
+      * @param text is the values for the PI as text
       */
-    public DefaultProcessingInstruction(String target, String data) {
+    public DefaultProcessingInstruction(String target, String text) {
         this.target = target;
-        this.rawData = data;
-        this.mapData = parseData(data);
+        this.text = text;
+        this.values = parseValues(text);
     }
 
     public String getTarget() {
@@ -68,15 +69,19 @@ public class DefaultProcessingInstruction extends AbstractProcessingInstruction 
     }
 
     public String getText() {
-        return rawData;
+        return text;
     }
     
     public String getValue(String name) {
-        String answer = (String) mapData.get(name);
+        String answer = (String) values.get(name);
         if (answer == null) {
             return "";
         }
         return answer;
+    }
+    
+    public Map getValues() {
+        return Collections.unmodifiableMap( values );
     }
     
     protected Node createXPathNode(Element parent) {

@@ -17,17 +17,13 @@ import org.dom4j.*;
   */
 public class VisitorDemo extends SAXDemo {
     
-    public VisitorDemo() {
-    }
-        
-    /** The program entry point.
-      *
-      * @param args the command line arguments
-      */
     public static void main(String[] args) {
         run( new VisitorDemo(), args );
     }    
     
+    public VisitorDemo() {
+    }
+        
     protected void process(Document document) throws Exception {
         Visitor visitor = new VisitorSupport() {
             

@@ -22,13 +22,13 @@ import org.dom4j.io.XMLWriter;
   */
 public class LinkChecker extends SAXDemo {
     
-    public LinkChecker() {
-    }
-        
     public static void main(String[] args) {
         run( new LinkChecker(), args );
     }    
     
+    public LinkChecker() {
+    }
+        
     public void run(String[] args) throws Exception {    
         if ( args.length < 1 ) {
             printUsage( "<XML document URL>" );

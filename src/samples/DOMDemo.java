@@ -7,88 +7,76 @@
  * $Id$
  */
 
-package org.dom4j.tree;
 
-import java.util.Map;
+import java.net.MalformedURLException;
+import java.net.URL;
 
-import org.dom4j.Node;
-import org.dom4j.Element;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
-/** <p><code>XPathProcessingInstruction</code> implements a doubly linked node which 
-  * supports the parent relationship and is mutable.
-  * It is useful when evalutating XPath expressions.</p>
+import org.dom4j.Document;
+import org.dom4j.io.DOMReader;
+import org.dom4j.io.XMLWriter;
+
+/** A simple test program to demonstrate using W3C DOM and JAXP to load a DOM
+  * XML tree then converting it to a DOM4J tree.
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class XPathProcessingInstruction extends DefaultProcessingInstruction {
+public class DOMDemo extends AbstractDemo {
+    
+    public static void main(String[] args) {
+        run( new DOMDemo(), args );
+    }    
+    
+    public DOMDemo() {
+    }
+    
+    public void run(String[] args) throws Exception {    
+        if ( args.length < 1) {
+            printUsage( "<XML document URL>" );
+            return;
+        }
 
-    /** The parent of this node */
-    private Element parent;
+        parse( args[0] );
+    }
+    
+    protected void parse( String xmlFile ) throws Exception {
+        // parse a DOM tree
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        
+        println( "Loading document with JAXP builder: " + builder );
+        
+        org.w3c.dom.Document domDocument = builder.parse( getURL( xmlFile ).toExternalForm() );
+        
+        println( "Created W3C DOM document: " + domDocument );
+        
+        // now convert to DOM4J model
+        DOMReader reader = new DOMReader();
+        Document document = reader.read(domDocument);
+        
+        println( "Created DOM4J document: " + document );
+        
+        process(document);
+    }
+    
+    protected void process(Document document) throws Exception {
+        XMLWriter writer = createXMLWriter();
+        writer.write(document, System.out);                
+    }
 
-    /** <p>This will create a new PI with the given target and values</p>
-      *
-      * @param target is the name of the PI
-      * @param values is the <code>Map</code> values for the PI
+    /** A Factory Method to create an <code>XMLWriter</code>
+      * instance allowing derived classes to change this behaviour
       */
-    public XPathProcessingInstruction(String target, Map values) {
-        super(target, values);
-    }
-
-    /** <p>This will create a new PI with the given target and values</p>
-      *
-      * @param target is the name of the PI
-      * @param values is the values for the PI
-      */
-    public XPathProcessingInstruction(String target, String values) {
-        super(target, values);
-    }
-
-    /** <p>This will create a new PI with the given target and values</p>
-      *
-      * @param parent is the parent element
-      * @param target is the name of the PI
-      * @param values is the values for the PI
-      */
-    public XPathProcessingInstruction(Element parent, String target, String values) {
-        super(target, values);
-        this.parent = parent;
+    protected XMLWriter createXMLWriter() {
+        XMLWriter writer = new XMLWriter("  ", true);
+        writer.setTrimText(true);
+        writer.setExpandEmptyElements(false);
+        return writer;
     }
     
-    public void setTarget(String target) {
-        this.target = target;
-    }
-    
-    public void setText(String text) {
-        this.text = text;
-        this.values = parseValues(text);
-    }
-    
-    public void setValues(Map values) {
-        this.values = values;
-        this.text = toString(values);
-    }
-    
-    public void setValue(String name, String value) {
-        values.put(name, value);
-    }
-    
-
-    public Element getParent() {
-        return parent;
-    }
-
-    public void setParent(Element parent) {
-        this.parent = parent;
-    }
-    
-    public boolean supportsParent() {
-        return true;
-    }
-    
-    public boolean isReadOnly() {
-        return false;
-    }
 }
 
 

@@ -28,6 +28,10 @@ import org.dom4j.io.XMLWriter;
   */
 public class CreateXMLDemo extends AbstractDemo {
     
+    public static void main(String[] args) {
+        run( new CreateXMLDemo(), args );
+    }    
+    
     public CreateXMLDemo() {
     }
     
@@ -60,16 +64,7 @@ public class CreateXMLDemo extends AbstractDemo {
             element.addText( value );
         }
         return document;
-    }
-    
-    
-    /** The program entry point.
-      *
-      * @param args the command line arguments
-      */
-    public static void main(String[] args) {
-        run( new CreateXMLDemo(), args );
-    }    
+    }       
 }
 
 

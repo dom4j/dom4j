@@ -24,17 +24,13 @@ public class XPathDemo extends SAXDemo {
     protected String xpath = "*";
     
     
-    public XPathDemo() {
-    }
-        
-    /** The program entry point.
-      *
-      * @param args the command line arguments
-      */
     public static void main(String[] args) {
         run( new XPathDemo(), args );
     }    
     
+    public XPathDemo() {
+    }
+        
     public void run(String[] args) throws Exception {    
         if ( args.length < 2 ) {
             printUsage( "<XML document URL> <XPath expression>" );

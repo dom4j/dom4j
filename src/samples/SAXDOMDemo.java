@@ -7,88 +7,86 @@
  * $Id$
  */
 
-package org.dom4j.tree;
 
-import java.util.Map;
+import java.net.URL;
 
-import org.dom4j.Node;
-import org.dom4j.Element;
+import org.dom4j.Document;
+import org.dom4j.io.DOMReader;
+import org.dom4j.io.DOMWriter;
+import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
 
-/** <p><code>XPathProcessingInstruction</code> implements a doubly linked node which 
-  * supports the parent relationship and is mutable.
-  * It is useful when evalutating XPath expressions.</p>
+/** This sample program parses an XML document as a DOM4J tree using
+  * SAX, it then creates a W3C DOM tree which is then used as input for
+  * creating a new DOM4J tree which is then output. 
+  * This is clearly not terribly useful but demonstrates how to convert from 
+  * text <-> DOM4J and DOM4J <-> DOM
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class XPathProcessingInstruction extends DefaultProcessingInstruction {
+public class SAXDOMDemo extends AbstractDemo {
+    
+    public static void main(String[] args) {
+        run( new SAXDOMDemo(), args );
+    }    
+    
+    public SAXDOMDemo() {
+    }
+    
+    public void run(String[] args) throws Exception {    
+        if ( args.length < 1) {
+            printUsage( "<XML document URL>" );
+            return;
+        }
+        
+        parse( args[0] );
+    }
+    
+    protected void parse( String xmlFile ) throws Exception {
+        URL url = getURL( xmlFile );
+        if ( url != null ) {
+            parse( url );
+        }
+    }
+    
+    protected void parse( URL url ) throws Exception {
+        SAXReader reader = new SAXReader();
+        Document document = reader.read(url);
+        
+        println( "Parsed to DOM4J tree using SAX: " + document );
+        
+        // now lets make a DOM object
+        DOMWriter domWriter = new DOMWriter();
+        org.w3c.dom.Document domDocument = domWriter.write(document);
+        
+        println( "Converted to DOM tree: " + domDocument );
+        
+        // now lets read it back as a DOM4J object
+        DOMReader domReader = new DOMReader();        
+        document = domReader.read( domDocument );
+        
+        println( "Converted to DOM4J tree using DOM: " + document );
+        
+        process( document );
+    }
+    
+    
+    protected void process(Document document) throws Exception {
+        XMLWriter writer = createXMLWriter();
+        writer.write(document, System.out);                
+    }
 
-    /** The parent of this node */
-    private Element parent;
-
-    /** <p>This will create a new PI with the given target and values</p>
-      *
-      * @param target is the name of the PI
-      * @param values is the <code>Map</code> values for the PI
+    /** A Factory Method to create an <code>XMLWriter</code>
+      * instance allowing derived classes to change this behaviour
       */
-    public XPathProcessingInstruction(String target, Map values) {
-        super(target, values);
-    }
-
-    /** <p>This will create a new PI with the given target and values</p>
-      *
-      * @param target is the name of the PI
-      * @param values is the values for the PI
-      */
-    public XPathProcessingInstruction(String target, String values) {
-        super(target, values);
-    }
-
-    /** <p>This will create a new PI with the given target and values</p>
-      *
-      * @param parent is the parent element
-      * @param target is the name of the PI
-      * @param values is the values for the PI
-      */
-    public XPathProcessingInstruction(Element parent, String target, String values) {
-        super(target, values);
-        this.parent = parent;
+    protected XMLWriter createXMLWriter() {
+        XMLWriter writer = new XMLWriter("  ", true);
+        writer.setTrimText(true);
+        writer.setExpandEmptyElements(true);
+        return writer;
     }
     
-    public void setTarget(String target) {
-        this.target = target;
-    }
-    
-    public void setText(String text) {
-        this.text = text;
-        this.values = parseValues(text);
-    }
-    
-    public void setValues(Map values) {
-        this.values = values;
-        this.text = toString(values);
-    }
-    
-    public void setValue(String name, String value) {
-        values.put(name, value);
-    }
-    
-
-    public Element getParent() {
-        return parent;
-    }
-
-    public void setParent(Element parent) {
-        this.parent = parent;
-    }
-    
-    public boolean supportsParent() {
-        return true;
-    }
-    
-    public boolean isReadOnly() {
-        return false;
-    }
 }
 
 

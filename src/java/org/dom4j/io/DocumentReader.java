@@ -47,7 +47,7 @@ public abstract class DocumentReader {
         return factory;
     }
 
-    /** <p>This sets the <code>DocumentFactory</code> for the <code>Builder</code>.
+    /** <p>This sets the <code>DocumentFactory</code> used to create new documents.
       * This method allows the building of custom DOM4J tree objects to be implemented
       * easily using a custom derivation of {@link DocumentFactory}</p>
       *

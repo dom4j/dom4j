@@ -53,6 +53,9 @@ public class XPathCDATA extends DefaultCDATA {
         return true;
     }
 
+    public boolean isReadOnly() {
+        return false;
+    }
 }
 
 

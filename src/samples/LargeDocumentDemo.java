@@ -23,17 +23,13 @@ public class LargeDocumentDemo extends SAXDemo implements ElementHandler {
     
     protected String pruningPath;
     
-    public LargeDocumentDemo() {
-    }
-        
-    /** The program entry point.
-      *
-      * @param args the command line arguments
-      */
     public static void main(String[] args) {
         run( new LargeDocumentDemo(), args );
     }    
     
+    public LargeDocumentDemo() {
+    }
+        
     public void run(String[] args) throws Exception {    
         if ( args.length < 2 ) {
             printUsage( "<XML document URL> <pruningPath>" );

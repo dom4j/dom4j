@@ -26,17 +26,13 @@ public class VisitorDemo2 extends VisitorDemo {
     /** The DocumentFactory class name to use */
     protected String documentFactoryClassName;
     
-    public VisitorDemo2() {
-    }
-        
-    /** The program entry point.
-      *
-      * @param args the command line arguments
-      */
     public static void main(String[] args) {
         run( new VisitorDemo2(), args );
     }    
     
+    public VisitorDemo2() {
+    }
+        
     public void run(String[] args) throws Exception {    
         if ( args.length < 1 ) {
             printUsage( "<XML document URL> [<Document Factory Class Name>]" );

@@ -9,6 +9,10 @@
 
 import org.dom4j.DocumentException;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 /** An abstract base class for the demo programs.
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
@@ -40,6 +44,27 @@ public abstract class AbstractDemo {
         catch (Throwable t) {
             System.out.println( "Exception occurred: " + t );
             t.printStackTrace();
+        }
+    }
+
+    /** @return the {@link URL} for the given file
+      * where the given file name can be either a name of a file or a URL
+      */
+    protected URL getURL( String xmlFile ) throws Exception {
+        try {
+            return new URL( xmlFile );
+        }
+        catch (MalformedURLException e) {
+            // try create the URL from a File object
+            try {
+                File file = new File( xmlFile );
+                return file.toURL();
+            }
+            catch (MalformedURLException e2) {
+                println( "Couldn't create a valid URL or File from: " + xmlFile );
+                println( "Caught: " + e.getMessage() + " and " + e2.getMessage() );
+                return null;
+            }
         }
     }
     

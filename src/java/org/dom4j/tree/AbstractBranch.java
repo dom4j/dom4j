@@ -53,6 +53,10 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     }
 
     
+    public boolean isReadOnly() {
+        return false;
+    }    
+    
     public List getContent() {
         List backingList = getContentList();
         return new ContentListFacade(this, backingList);

@@ -69,12 +69,12 @@ public abstract class AbstractProcessingInstruction extends AbstractNode impleme
     
     /** <p>This will convert the Map to a string representation.</p>
       *
-      * @param mapData is a <code>Map</code> of PI data to convert
+      * @param values is a <code>Map</code> of PI data to convert
       */
-    protected String toString(Map mapData) {
+    protected String toString(Map values) {
         StringBuffer buffer = new StringBuffer();
         
-        for ( Iterator iter = mapData.entrySet().iterator(); iter.hasNext(); ) {
+        for ( Iterator iter = values.entrySet().iterator(); iter.hasNext(); ) {
             Map.Entry entry = (Map.Entry) iter.next();
             String name = (String) entry.getKey();
             String value = (String) entry.getValue();
@@ -91,14 +91,14 @@ public abstract class AbstractProcessingInstruction extends AbstractNode impleme
 
     /**<p>Parses the raw data of PI as a <code>Map</code>.</p>
       *
-      * @param rawData <code>String</code> PI data to parse
+      * @param text <code>String</code> PI data to parse
       */
-    protected Map parseData(String rawData) {
+    protected Map parseValues(String text) {
         Map data = new HashMap();
 
         // Break up name/value pairs
         StringTokenizer s =
-            new StringTokenizer(rawData);
+            new StringTokenizer(text);
 
         // Iterate through the pairs
         while (s.hasMoreTokens()) {

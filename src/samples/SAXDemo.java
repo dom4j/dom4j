@@ -8,8 +8,6 @@
  */
 
 
-import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.dom4j.Document;
@@ -23,6 +21,10 @@ import org.dom4j.io.XMLWriter;
   */
 public class SAXDemo extends AbstractDemo {
     
+    public static void main(String[] args) {
+        run( new SAXDemo(), args );
+    }    
+    
     public SAXDemo() {
     }
     
@@ -31,28 +33,15 @@ public class SAXDemo extends AbstractDemo {
             printUsage( "<XML document URL>" );
             return;
         }
-
+        
         parse( args[0] );
     }
     
     protected void parse( String xmlFile ) throws Exception {
-        URL url = null;
-        try {
-            url = new URL( xmlFile );
+        URL url = getURL( xmlFile );
+        if ( url != null ) {
+            parse( url );
         }
-        catch (MalformedURLException e) {
-            // try create the URL from a File object
-            try {
-                File file = new File( xmlFile );
-                url = file.toURL();
-            }
-            catch (MalformedURLException e2) {
-                println( "Couldn't create a valid URL or File from: " + xmlFile );
-                println( "Caught: " + e.getMessage() + " and " + e2.getMessage() );
-                return;
-            }
-        }
-        parse( url );
     }
     
     protected void parse( URL url ) throws Exception {
@@ -76,13 +65,6 @@ public class SAXDemo extends AbstractDemo {
         return writer;
     }
     
-    /** The program entry point.
-      *
-      * @param args the command line arguments
-      */
-    public static void main(String[] args) {
-        run( new SAXDemo(), args );
-    }    
 }
 
 

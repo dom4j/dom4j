@@ -417,6 +417,14 @@
     <java classname="SAXDemo" args="xml/inline.xml"/>
   </target>
 
+  <target name="demo-dom" depends="samples">
+    <java classname="DOMDemo" args="xml/contents.xml"/>
+  </target>
+
+  <target name="demo-saxdom" depends="samples">
+    <java classname="SAXDOMDemo" args="xml/contents.xml"/>
+  </target>
+
   <target name="demo-visitor" depends="samples">
     <java classname="VisitorDemo" args="xml/web.xml"/>
   </target>

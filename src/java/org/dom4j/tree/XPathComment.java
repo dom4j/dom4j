@@ -53,6 +53,9 @@ public class XPathComment extends DefaultComment {
         return true;
     }
 
+    public boolean isReadOnly() {
+        return false;
+    }
 }
 
 

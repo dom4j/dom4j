@@ -49,8 +49,8 @@ public class QName {
     }
     
     public QName(String name, Namespace namespace) {
-        this.name = name;
-        this.namespace = namespace;
+        this.name = (name == null) ? "" : name;
+        this.namespace = (namespace == null) ? Namespace.NO_NAMESPACE : namespace;
     }
 
     
@@ -84,12 +84,18 @@ public class QName {
     /** @return the namespace URI of this QName
       */
     public String getNamespacePrefix() {
+        if ( namespace == null ) {
+            return "";
+        }
         return namespace.getPrefix();
     }
         
     /** @return the namespace URI of this QName
       */
     public String getNamespaceURI() {
+        if ( namespace == null ) {
+            return "";
+        }
         return namespace.getURI();
     }
         

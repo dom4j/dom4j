@@ -20,16 +20,12 @@ import org.dom4j.io.XMLWriter;
   */
 public class HTMLWriterDemo extends SAXDemo {
     
-    public HTMLWriterDemo() {
-    }
-    
-    /** The program entry point.
-      *
-      * @param args the command line arguments
-      */
     public static void main(String[] args) {
         run( new HTMLWriterDemo(), args );
     }    
+    
+    public HTMLWriterDemo() {
+    }
     
     /** A Factory Method to create an <code>XMLWriter</code>
       * instance allowing derived classes to change this behaviour

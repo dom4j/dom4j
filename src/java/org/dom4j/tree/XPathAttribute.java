@@ -84,6 +84,10 @@ public class XPathAttribute extends DefaultAttribute {
     public boolean supportsParent() {
         return true;
     }
+    
+    public boolean isReadOnly() {
+        return false;
+    }
 
 }
 

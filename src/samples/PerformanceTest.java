@@ -37,16 +37,12 @@ public class PerformanceTest extends SAXDemo {
     protected String documentFactoryClassName;
     
     
-    public PerformanceTest() {
-    }
-    
-    /** The program entry point.
-      *
-      * @param args the command line arguments
-      */
     public static void main(String[] args) {
         run( new PerformanceTest(), args );
     }    
+    
+    public PerformanceTest() {
+    }
     
     public void run(String[] args) throws Exception {    
         if ( args.length < 1 ) {

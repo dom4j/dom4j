@@ -77,6 +77,10 @@ public class XPathEntity extends DefaultEntity {
     public boolean supportsParent() {
         return true;
     }
+    
+    public boolean isReadOnly() {
+        return false;
+    }
 
 }
 

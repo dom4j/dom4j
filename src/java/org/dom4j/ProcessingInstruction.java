@@ -32,6 +32,11 @@ public interface ProcessingInstruction extends Node {
       * method. It is added for clarity.
       */
     public void setTarget(String target);
+
+    /** @return the text for all the data associated with
+      * the processing instruction
+      */
+    public String getText();
     
     /** <p>Returns the value of a specific name in the PI.</p>
       *
@@ -39,6 +44,11 @@ public interface ProcessingInstruction extends Node {
       * @return the value of the named attribute
       */
     public String getValue(String name);
+    
+    /** @return the values for this processing instruction as 
+      * a Map
+      */
+    public Map getValues();
 
     public void setValue(String name, String value);    
     public void setValues(Map data);

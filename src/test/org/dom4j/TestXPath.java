@@ -36,7 +36,8 @@ public class TestXPath extends AbstractTestCase {
         "//namespace::*",
         "normalize-space(/root)",
         "normalize-space(/root/author)",
-        "normalize-space(' a  b  c  d ')"
+        "normalize-space(' a  b  c  d ')",
+        "root|author"
     };
     
     
