@@ -25,7 +25,7 @@ import org.dom4j.io.SAXReader;
   */
 public class TestXPathExamples extends TestCase {
 
-    protected static boolean VERBOSE = false;
+    protected static boolean VERBOSE = true;
 
     protected SAXReader xmlReader = new SAXReader();
     
@@ -34,6 +34,9 @@ public class TestXPathExamples extends TestCase {
     
     /** The context node on which the tests are being run */
     protected Node testContext;
+
+    /** factory for XPath, Patterns and nodes */
+    protected DocumentFactory factory = DocumentFactory.getInstance();
     
     
     public static void main( String[] args ) {
@@ -109,6 +112,10 @@ public class TestXPathExamples extends TestCase {
             Element valueOf = (Element) iter.next();
             testValueOf( documentTest, context, valueOf );
         }
+        for ( Iterator iter = context.elementIterator( "pattern" ); iter.hasNext(); ) {
+            Element pattern = (Element) iter.next();
+            testPattern( documentTest, context, pattern );
+        }
     }
         
     protected void runTest(Element documentTest, Element context, Element test) throws Exception {
@@ -163,6 +170,21 @@ public class TestXPathExamples extends TestCase {
         log( "\texpected: " + expected + " result: " + result );
 
         assertEquals( description, expected, result );
+    }
+    
+    protected void testPattern(Element documentTest, Element context, Element pattern) throws Exception {
+        String match = pattern.attributeValue( "match" );
+        String description = "match: " + match;
+        
+        log( "" );
+        log( description );
+
+        if ( VERBOSE ) {
+            log( "Pattern: " + factory.createPattern( match ) );
+        }
+        
+        assertTrue( description, testContext.matches( match ) );
+        
     }
 }
 

@@ -21,6 +21,7 @@ import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.Visitor;
 import org.dom4j.XPath;
+import org.dom4j.rule.Pattern;
 
 /** <p><code>AbstractNode</code> is an abstract base class for 
   * tree implementors to use for implementation inheritence.</p>
@@ -195,8 +196,17 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
         return xpath.numberValueOf(this);
     }
     
+    public boolean matches(String patternText) {        
+        Pattern pattern = createPattern(patternText);
+        return pattern.matches(this);
+    }
+    
     public XPath createXPath(String xpathExpression) {
         return getDocumentFactory().createXPath(xpathExpression);
+    }
+    
+    public Pattern createPattern(String patternText) {
+        return getDocumentFactory().createPattern(patternText);
     }
     
     

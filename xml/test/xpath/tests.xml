@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tests>
 
+  <!-- test Patterns -->
+  <document url="xml/web.xml">
+    <context select="/">
+      <pattern match="*"/>
+      <pattern match="/"/>
+    </context>
+    <context select="//servlet[1]">
+      <pattern match="*"/>
+      <pattern match="servlet"/>
+      <pattern match="servlet[servlet-name='snoop']"/>
+      <pattern match="web-app/servlet"/>
+      <pattern match="*/servlet"/>
+      <pattern match="/*/servlet"/>
+    </context>
+  </document>
+
+
   <!-- test name -->
 
   <document url="xml/web.xml">

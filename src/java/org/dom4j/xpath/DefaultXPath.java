@@ -88,7 +88,7 @@ public class DefaultXPath implements org.dom4j.XPath {
             xpath.setVariableContext( 
                 new org.jaxen.VariableContext() {
                     public Object getVariableValue(String prefix, String localName) {
-                        return variableContext.getVariableValue( localName );
+                        return variableContext.getVariableValue( prefix, localName );
                     }
                 }
             );

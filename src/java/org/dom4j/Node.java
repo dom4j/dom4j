@@ -385,6 +385,18 @@ public interface Node extends Cloneable {
       */
     public Number numberValueOf(String xpathExpression);
 
+        
+    /** <p><code>matches</code> returns true if the given node matches 
+      * the given XSLT pattern expression. XSLT patterns are a subset of
+      * XPath expressions used in XSLT in the 
+      * <code>&lt;xsl:template match="pattern"/&gt;</code>
+      * template matching.</p>
+      *
+      * @param pattern is the XSLT pattern to match this node to
+      * @return true if the given node matches this XSLT Pattern
+      */
+    public boolean matches(String pattern);
+
     /** <p><code>createXPath</code> creates an XPath object for
       * the given xpathExpression.
       * The XPath object allows the variable context to be specified.</p>
