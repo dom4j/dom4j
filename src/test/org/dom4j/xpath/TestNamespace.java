@@ -29,11 +29,12 @@ import org.dom4j.io.SAXReader;
   */
 public class TestNamespace extends AbstractTestCase {
 
-    protected static boolean VERBOSE = true;
+    protected static boolean VERBOSE = false;
     
     protected static String[] paths = {
         "namespace::*",
-        "/Template/Application1/namespace::*"
+        "/Template/Application1/namespace::*",
+        "/Template/Application1/namespace::xplt"
     };
     
     

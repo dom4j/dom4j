@@ -9,6 +9,10 @@
 
 package org.dom4j;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /** <p><code>XPathHelper</code> contains some helper methods for using 
   * and creating {@link XPathEngine} instances.</p>
   *
@@ -109,6 +113,40 @@ public class XPathHelper {
       */
     public static NodeFilter createXPathFilter(String xpathFilterExpression) {
         return getInstance().createXPathFilter(xpathFilterExpression);
+    }
+    
+    /** <p><code>selectNodes</code> performs the given XPath
+      * expression on the {@link List} of {@link Node} instances appending
+      * all the results together into a single list.</p>
+      *
+      * @param xpathFilterExpression is the XPath filter expression 
+      * to evaluate
+      * @param nodes is the list of nodes on which to evalute the XPath
+      * @return the results of all the XPath evaluations as a single list
+      */
+    public static List selectNodes(XPath xpath, List nodes) {
+        ArrayList answer = new ArrayList();
+        for ( Iterator iter = nodes.iterator(); iter.hasNext(); ) {
+            Object object = iter.next();
+            if ( object instanceof Node ) {
+                Node node = (Node) object;
+                answer.addAll( node.selectNodes( xpath ) );
+            }
+        }
+        return answer;
+    }
+    
+    /** <p><code>selectNodes</code> performs the given XPath
+      * expression on the {@link List} of {@link Node} instances appending
+      * all the results together into a single list.</p>
+      *
+      * @param xpathFilterExpression is the XPath filter expression 
+      * to evaluate
+      * @param nodes is the list of nodes on which to evalute the XPath
+      * @return the results of all the XPath evaluations as a single list
+      */
+    public static List selectNodes(String xpathFilterExpression, List nodes) {
+        return selectNodes( createXPath(xpathFilterExpression), nodes );
     }
     
     
