@@ -209,6 +209,9 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     }
 
     public void characters(char[] ch, int start, int end) throws SAXException {
+        if ( end == 0 ) {
+            return;
+        }
         String text = new String(ch, start, end);
         if ( currentElement != null ) {
             if (entity != null) {
