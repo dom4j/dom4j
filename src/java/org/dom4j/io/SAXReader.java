@@ -10,8 +10,8 @@
 package org.dom4j.io;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.Serializable;
@@ -205,7 +205,7 @@ public class SAXReader {
              * http://myhost.com/index)
              * Thanks to Christian Oetterli
              */
-            return read( new InputSource(new FileReader(file)) );
+            return read( new InputSource(new FileInputStream(file)) );
         } catch (FileNotFoundException e) {
             throw new MalformedURLException(e.getMessage());
         }
