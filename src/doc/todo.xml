@@ -33,6 +33,9 @@
           <p>
             Added an EntityResolver property to SAXReader to make it easier to configure a specific EntityResolver.
           </p>
+          <p>
+            Added patch kindly supplied by Michal Palicka that SAXReader was passing in the wrong name for the SAX string-interning feature. Thanks Michal!
+          </p>
         </section>
         <section title="0.9 release">
           <section title="Full support for the Jaxen XPath engine">
@@ -672,6 +675,7 @@ while ( iter2.hasNext() ) {
         <li>Rashmi Mathew</li>
         <li>Jonathan Doughty</li>
         <li>Joseph Bowbeer</li>
+        <li>Michal Palicka</li>
       </ul>
     </section>
 

@@ -562,7 +562,7 @@ public class SAXReader {
             
             try {
                 reader.setFeature(
-                    "http://xml.org/sax/features/string-intern", 
+                    "http://xml.org/sax/features/string-interning", 
                     isStringInternEnabled()
                 );
             }
