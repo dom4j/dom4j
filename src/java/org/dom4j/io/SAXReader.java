@@ -135,7 +135,41 @@ public class SAXReader {
         this.validating = validating;
     }
 
+
     
+    /** Allows a SAX property to be set on the underlying SAX parser.
+      * This can be useful to set parser-specific properties
+      * such as the location of schema or DTD resources. 
+      * Though use this method with caution as it has the possibility
+      * of breaking the standard behaviour.
+      * An alternative to calling this method is to correctly configure an 
+      * XMLReader object instance and call the {@link #setXMLReader(XMLReader)} method
+      *
+      * @name is the SAX property name
+      * @value is the value of the SAX property
+      * @throws SAXException if the XMLReader could not be created or
+      * the property could not be changed. 
+      */
+    public void setProperty(String name, Object value) throws SAXException {
+        getXMLReader().setProperty(name, value);
+    }
+    
+    
+    /** Allows a SAX featuer on the underlying SAX parser.
+      * This can be useful to set parser-specific features. 
+      * Though use this method with caution as it has the possibility
+      * of breaking the standard behaviour.
+      * An alternative to calling this method is to correctly configure an 
+      * XMLReader object instance and call the {@link #setXMLReader(XMLReader)} method
+      *
+      * @name is the SAX feature name
+      * @value is the value of the SAX feature
+      * @throws SAXException if the XMLReader could not be created or
+      * the feature could not be changed. 
+      */
+    public void setFeature(String name, boolean value) throws SAXException {
+        getXMLReader().setFeature(name, value);
+    }
     
         
     /** <p>Reads a Document from the given <code>File</code></p>

@@ -51,6 +51,10 @@
                behaviour of the FilterIterator. Also added Jonathan's JUnit test case
                to the distribution so that this problem should not come back. 
             </p>
+            <p>Added setProperty() and setFeature() methods to SAXReader to allow
+              the easy configuration of custom parser properties via SAXReader, such
+              as being able to specify the location of schema or DTD resources.
+            </p>
           </section>
         </section>
         <section title="0.8 release">
