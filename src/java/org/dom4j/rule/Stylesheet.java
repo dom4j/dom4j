@@ -85,6 +85,16 @@ public class Stylesheet {
         }
     }
     
+    public void applyTemplates( Object input, org.jaxen.XPath xpath ) throws Exception {
+        List list = xpath.selectNodes( input );
+        for ( int i = 0, size = list.size(); i < size; i++ ) {
+            Object object = list.get(i);
+            if ( object != input && object instanceof Node ) {
+                run( (Node) object );
+            }
+        }
+    }
+    
     public void applyTemplates( Object input ) throws Exception {
         // iterate through all children
         Mode mode = getMode();
