@@ -132,8 +132,4 @@
         <attainGoal name="docbook:transform"/>
     </preGoal>
 
-    <preGoal name="xdoc:jelly-transform">
-        <attainGoal name="faq"/>
-    </preGoal>
-
 </project>
