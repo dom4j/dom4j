@@ -7,7 +7,6 @@ import org.dom4j.Document;
  * Beschreibung:
  * Copyright:     Copyright (c) 2001
  * Organisation:  ceyoniq healthcare
- * @author
  * @version 1.0
  */
 

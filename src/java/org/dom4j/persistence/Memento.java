@@ -4,7 +4,6 @@ import org.dom4j.Node;
 
 /**
  *
- * @author
  * @version 1.0
  */
 

@@ -241,7 +241,7 @@ public class SAXModifier {
     * when the specified element path is encounted while parsing the source.
     *
     * @param path The element path to be handled
-    * @param handler The {@link ElementModifier} to be called by the event based processor.
+    * @param modifier The {@link ElementModifier} to be called by the event based processor.
     */
    public void addModifier(String path, ElementModifier modifier) {
       this.modifiers.put(path, modifier);

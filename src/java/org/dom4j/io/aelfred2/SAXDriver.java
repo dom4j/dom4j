@@ -217,7 +217,7 @@ final public class SAXDriver
 
     /**
      * <b>SAX1, SAX2</b>: Set the entity resolver for this parser.
-     * @param handler The object to receive entity events.
+     * @param resolver The object to receive entity events.
      */
     public void setEntityResolver (EntityResolver resolver)
     {

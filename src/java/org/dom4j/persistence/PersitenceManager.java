@@ -8,7 +8,6 @@ import org.dom4j.Document;
 
 /**
  *
- * @author
  * @version 1.0
  */
 
