@@ -100,13 +100,22 @@ public class SAXWriter implements XMLReader {
 
     public SAXWriter(
         ContentHandler contentHandler, 
-        EntityResolver entityResolver, 
         LexicalHandler lexicalHandler
     ) {
         this();
         this.contentHandler = contentHandler;
-        this.entityResolver = entityResolver;
         this.lexicalHandler = lexicalHandler;
+    }
+
+    public SAXWriter(
+        ContentHandler contentHandler, 
+        LexicalHandler lexicalHandler,
+        EntityResolver entityResolver
+    ) {
+        this();
+        this.contentHandler = contentHandler;
+        this.lexicalHandler = lexicalHandler;
+        this.entityResolver = entityResolver;
     }
 
     
