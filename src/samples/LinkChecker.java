@@ -31,17 +31,14 @@ public class LinkChecker extends SAXDemo {
         
     protected void process(Document document) throws Exception {
         
-        List list = document.selectNodes( "//a" );
+        List list = document.selectNodes( "//a/@href" );
         
-        println( "Found: " + list.size() + " links(s)" );        
-        println( "Results:" );
+        System.out.println( "Found: " + list.size() + " links(s)" );        
         
         for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
-            Object object = iter.next();
-            writer.write( object );
-        }
-        
-        writer.flush();
+            Attribute attribute = (Attribute) iter.next();
+            System.out.println( "href = "  + attribute.getValue() );
+        }        
     }
 }
 

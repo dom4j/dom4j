@@ -64,7 +64,7 @@ public class Foo {
         line of code. For example.
       </p>
 <pre>
-    public void bar(Document document) throws DocumentException {
+    public void bar(Document document) {
         List list = document.selectNodes( "//foo/bar" );
 
         Node node = document.selectSingleNode( "//foo/bar/author" );
@@ -72,6 +72,24 @@ public class Foo {
         String name = node.valueOf( "@name" );
     }
 </pre>
+      <p>For example if you wish to find all the hypertext links in an XHTML document
+        the following code would do the trick.
+      </p>
+<pre>
+    public void findLinks(Document document) throws DocumentException {
+
+        List list = document.selectNodes( "//a/@href" );
+
+        for (Iterator iter = list.iterator(); iter.hasNext(); ) {
+            Attribute attribute = (Attribute) iter.next();
+            String url = attribute.getValue();
+        }
+    }
+</pre>
+      <p>If you need any help learning the XPath language we highly recommend
+        the <a href="http://www.zvon.org/xxl/XPathTutorial/General/examples.html">zvon tutorial</a> 
+        which allows you to learn by example.
+      </p>
     </section>
 
 

@@ -320,8 +320,8 @@
     <mkdir dir="${dist.dir}"/>
     <mkdir dir="${dist.dir}/lib"/>
     <mkdir dir="${dist.dir}/src"/>
-    <mkdir dir="${dist.dir}/docs"/>
-    <mkdir dir="${dist.dir}/docs/apidocs"/>
+    <mkdir dir="${dist.dir}/doc"/>
+    <mkdir dir="${dist.dir}/doc/apidocs"/>
 
     <copy file="${build.dir}/${name}.jar" tofile="${dist.dir}/${name}.jar"/>
     <copy file="${build.dir}/${name}-all.jar" tofile="${dist.dir}/${name}-full.jar"/>
