@@ -33,8 +33,8 @@ public class TestVariable extends AbstractTestCase {
     protected static boolean VERBOSE = true;
     
     protected static String[] paths = {
-/*        
         "$author",
+/*        
         "$root/author",
         "$root/author[1]",
         "$root/author[1]/@name",
