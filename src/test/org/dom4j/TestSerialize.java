@@ -15,12 +15,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import junit.framework.*;
 import junit.textui.TestRunner;
 
+import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 
 /** Tests that a dom4j document is Serializable
@@ -57,6 +60,43 @@ public class TestSerialize extends AbstractTestCase {
     
     public void testSerializeTestSchema() throws Exception {
         testSerialize( "xml/test/schema/personal.xsd" );
+    }
+    
+    public void testSerializeXPath() throws Exception {
+        Map uris = new HashMap();
+        uris.put( "SOAP-ENV", "http://schemas.xmlsoap.org/soap/envelope/" );
+        uris.put( "m", "urn:xmethodsBabelFish" );        
+
+        DocumentFactory factory = new DocumentFactory();
+        factory.setXPathNamespaceURIs( uris );
+
+        // now parse a document using my factory
+        SAXReader reader = new SAXReader();
+        reader.setDocumentFactory( factory );
+        Document doc = reader.read( "xml/soap.xml" );
+
+        // now lets use the prefixes
+        Node element = doc.selectSingleNode( "/SOAP-ENV:Envelope/SOAP-ENV:Body/m:BabelFish" );
+        assertTrue( "Found valid element", element != null );
+        
+        XPath xpath = factory.createXPath( "/SOAP-ENV:Envelope/SOAP-ENV:Body/m:BabelFish" );
+        element = xpath.selectSingleNode( doc );
+        assertTrue( "Found valid element", element != null );
+        
+        // now serialize
+        ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+        ObjectOutputStream out = new ObjectOutputStream( bytesOut );
+        out.writeObject( xpath );
+        out.close();
+        
+        byte[] data = bytesOut.toByteArray();
+        
+        ObjectInputStream in = new ObjectInputStream( new ByteArrayInputStream( data ) );
+        XPath xpath2 = (XPath) in.readObject();
+        in.close();        
+        
+        element = xpath2.selectSingleNode( doc );
+        assertTrue( "Found valid element", element != null );        
     }
     
     // Implementation methods

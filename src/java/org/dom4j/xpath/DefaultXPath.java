@@ -30,6 +30,7 @@ import org.saxpath.XPathReader;
 import org.saxpath.SAXPathException;
 import org.saxpath.helpers.XPathReaderFactory;
 
+import java.io.Serializable;
 import java.io.StringReader;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ import java.util.Map;
  *  @author bob mcwhirter (bob @ werken.com)
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  */
-public class DefaultXPath implements org.dom4j.XPath, NodeFilter {
+public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
 
     private String text;
     private BaseXPath xpath;

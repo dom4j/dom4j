@@ -5,10 +5,13 @@
 
     <section title="Change History">
 
-<!--
       <section title="Changes in CVS since last release">
+        <section title="Patches">
+        <p>Applied patch suggested by Frank Walinsky, that XPath objects are now Serializable. 
+        </p>
+        </section>
       </section>
--->
+
       <section title="1.2 Release">
         <section title="New Swing TableModel for displaying XML">
 
