@@ -246,7 +246,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
         }
     }
 
-    public void endElement(String namespaceURI, String localName, String qName) {
+    public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
         if ( mergeAdjacentText && textInTextBuffer ) {
             completeCurrentTextNode();
         }
