@@ -41,7 +41,7 @@ public abstract class AbstractEntity extends AbstractNode implements Entity {
         return super.toString() + " [Entity: &" + getName() + ";]";
     }
 
-    public String getString() {
+    public String getStringValue() {
         return "&" + getName() + ";";
     }
     

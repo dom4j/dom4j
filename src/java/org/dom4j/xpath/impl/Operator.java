@@ -88,7 +88,7 @@ class Operator {
     protected static String convertToString(Object obj) {
         if (obj instanceof Node) {
             Node node = (Node) obj;
-            return node.getString();
+            return node.getStringValue();
         }
         else {
             return (obj != null ) ? obj.toString() : "";

@@ -83,7 +83,7 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
         }
         
         // visit content
-        List content = getContent();
+        List content = content();
         if (content != null) {
             for ( Iterator iter = content.iterator(); iter.hasNext(); ) {
                 Object object = iter.next();
@@ -139,7 +139,7 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
         return answer;
     }
         
-    public Node asXPathNode(Element parent) {
+    public Node asXPathResult(Element parent) {
         return this;
     }
     

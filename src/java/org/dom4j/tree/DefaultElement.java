@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.dom4j.Attribute;
+import org.dom4j.Branch;
 import org.dom4j.CDATA;
 import org.dom4j.CharacterData;
 import org.dom4j.Comment;
@@ -45,21 +46,20 @@ public class DefaultElement extends AbstractElement {
     protected static final List EMPTY_LIST = Collections.EMPTY_LIST;
     protected static final Iterator EMPTY_ITERATOR = EMPTY_LIST.iterator();
     
-    /** The parent of this node */
-    private Element parent;
-
-    /** The document of this node */
-    private Document document;
-
     /** The <code>QName</code> for this element */
     private QName qname;
     
-    /** Store the contents of the element as a lazily created <code>List</code> */
-    private List contents;
-    
-    /** Cache the first Text node to delay creating the content list for 
-      * elements with no other content other than a single text node */
-    private Node firstNode;
+    /** Stores the parent branch of this node which is either a Document 
+      * if this element is the root element in a document, or another Element 
+      * if it is a child of the root document, or null if it has not been added
+      * to a document yet. 
+       */
+    private Branch parentBranch;
+
+    /** Stores null for no content, a Node for a single content node
+      * or a List for multiple content nodes. 
+      * The List will be lazily constructed when required. */
+    private Object content;
     
     /** Lazily constructes list of attributes */
     private List attributes;
@@ -79,25 +79,31 @@ public class DefaultElement extends AbstractElement {
     }
 
     public Element getParent() {
-        return parent;
+        return ( parentBranch instanceof Element ) 
+            ? (Element) parentBranch : null;
     }
 
     public void setParent(Element parent) {
-        this.parent = parent;
+        if ( parentBranch instanceof Element || parent != null ) {
+            parentBranch = parent;
+        }
     }
 
     public Document getDocument() {
-        if ( document != null ) {
-            return document;
+        if ( parentBranch instanceof Document ) {
+            return (Document) parentBranch;
         }
-        if ( parent != null ) {
+        else if ( parentBranch instanceof Element ) {
+            Element parent = (Element) parentBranch;
             return parent.getDocument();
         }
         return null;
     }
     
     public void setDocument(Document document) {
-        this.document = document;
+        if ( parentBranch instanceof Document || document != null ) {
+            parentBranch = document;
+        }
     }
     
     public boolean supportsParent() {
@@ -110,34 +116,32 @@ public class DefaultElement extends AbstractElement {
     
     
     public String getText() {
-        if ( contents == null ) {
-            if ( firstNode != null ) {
-                return getContentAsText( firstNode );
-            }
-            return "";
+        if ( content instanceof List ) {
+            return super.getText();
         }
         else {
-            return super.getText();
+            if ( content != null ) {
+                return getContentAsText( content );
+            }
+            else {
+                return "";
+            }
         }
     }
     
-    public String getString() {
-        if ( contents == null ) {
-            if ( firstNode != null ) {
-                return getContentAsStringValue( firstNode );
-            }
-        }
-        else {
-            int size = contents.size();
+    public String getStringValue() {
+        if ( content instanceof List ) {
+            List list = (List) content;
+            int size = list.size();
             if ( size > 0 ) {
                 if ( size == 1 ) {
                     // optimised to avoid StringBuffer creation
-                    return getContentAsStringValue( contents.get(0) );
+                    return getContentAsStringValue( list.get(0) );
                 }
                 else {
                     StringBuffer buffer = new StringBuffer();
                     for ( int i = 0; i < size; i++ ) {
-                        Object node = contents.get(i);
+                        Object node = list.get(i);
                         String string = getContentAsStringValue( node ); 
                         if ( string.length() > 0 ) {
                             if ( buffer.length() > 0 ) {
@@ -148,6 +152,11 @@ public class DefaultElement extends AbstractElement {
                     }
                     return buffer.toString();
                 }
+            }
+        }
+        else {
+            if ( content != null ) {
+                return getContentAsStringValue( content );
             }
         }
         return "";
@@ -165,11 +174,11 @@ public class DefaultElement extends AbstractElement {
             return Namespace.XML_NAMESPACE;
         }
         else {
-            List source = contents;
-            if ( source != null ) {
-                int size = source.size();
+            if ( content instanceof List ) {
+                List list = (List) content;
+                int size = list.size();
                 for ( int i = 0; i < size; i++ ) {
-                    Object object = source.get(i);
+                    Object object = list.get(i);
                     if ( object instanceof Namespace ) {
                         Namespace namespace = (Namespace) object;
                         if ( prefix.equals( namespace.getPrefix() ) ) {
@@ -179,8 +188,8 @@ public class DefaultElement extends AbstractElement {
                 }
             }
             else 
-            if ( firstNode instanceof Namespace ) {
-                Namespace namespace = (Namespace) firstNode;
+            if ( content instanceof Namespace ) {
+                Namespace namespace = (Namespace) content;
                 if ( prefix.equals( namespace.getPrefix() ) ) {
                     return namespace;
                 }
@@ -201,11 +210,11 @@ public class DefaultElement extends AbstractElement {
             return getNamespace();
         }
         else {
-            List source = contents;
-            if ( source != null ) {
-                int size = source.size();
+            if ( content instanceof List ) {
+                List list = (List) content;
+                int size = list.size();
                 for ( int i = 0; i < size; i++ ) {
-                    Object object = source.get(i);
+                    Object object = list.get(i);
                     if ( object instanceof Namespace ) {
                         Namespace namespace = (Namespace) object;
                         if ( uri.equals( namespace.getURI() ) ) {
@@ -215,8 +224,8 @@ public class DefaultElement extends AbstractElement {
                 }
             }
             else 
-            if ( firstNode instanceof Namespace ) {
-                Namespace namespace = (Namespace) firstNode;
+            if ( content instanceof Namespace ) {
+                Namespace namespace = (Namespace) content;
                 if ( uri.equals( namespace.getURI() ) ) {
                     return namespace;
                 }
@@ -229,140 +238,138 @@ public class DefaultElement extends AbstractElement {
         }
     }
     
-    public List getDeclaredNamespaces() {
+    public List declaredNamespaces() {
         BackedList answer = createResultList();
         if ( getNamespaceURI().length() > 0 ) {
             answer.addLocal( getNamespace() );
         }
-        List source = contents;
-        if ( source == null ) {
-            if ( firstNode instanceof Namespace ) {
-                answer.addLocal( firstNode );
-            }
-        }
-        else {
-            int size = source.size();
+        if ( content instanceof List ) {
+            List list = (List) content;
+            int size = list.size();
             for ( int i = 0; i < size; i++ ) {
-                Object object = source.get(i);
+                Object object = list.get(i);
                 if ( object instanceof Namespace ) {
                     answer.addLocal( object );
                 }
             }
         }
+        else {
+            if ( content instanceof Namespace ) {
+                answer.addLocal( content );
+            }
+        }
         return answer;
     }
     
-    public List getAdditionalNamespaces() {
-        List source = contents;
-        if ( source == null ) {
-            if ( firstNode instanceof Namespace ) {
-                Namespace namespace = (Namespace) firstNode;
+    public List additionalNamespaces() {
+        if ( content instanceof List ) {
+            List list = (List) content;
+            int size = list.size();
+            BackedList answer = createResultList();
+            for ( int i = 0; i < size; i++ ) {
+                Object object = list.get(i);
+                if ( object instanceof Namespace ) {
+                    Namespace namespace = (Namespace) object;
+                    answer.addLocal( namespace );
+                }
+            }
+            return answer;
+        }
+        else {
+            if ( content instanceof Namespace ) {
+                Namespace namespace = (Namespace) content;
                 return createSingleResultList( namespace );
             }
             else {
                 return createEmptyList();
             }
         }
-        BackedList answer = createResultList();
-        int size = source.size();
-        for ( int i = 0; i < size; i++ ) {
-            Object object = source.get(i);
-            if ( object instanceof Namespace ) {
-                Namespace namespace = (Namespace) object;
-                answer.addLocal( namespace );
-            }
-        }
-        return answer;
     }
     
-    public List getAdditionalNamespaces(String defaultNamespaceURI) {
-        List source = contents;
-        if ( source == null ) {
-            if ( firstNode instanceof Namespace ) {
-                Namespace namespace = (Namespace) firstNode;
+    public List additionalNamespaces(String defaultNamespaceURI) {
+        if ( content instanceof List ) {
+            List list = (List) content;
+            BackedList answer = createResultList();
+            int size = list.size();
+            for ( int i = 0; i < size; i++ ) {
+                Object object = list.get(i);
+                if ( object instanceof Namespace ) {
+                    Namespace namespace = (Namespace) object;
+                    if ( ! defaultNamespaceURI.equals( namespace.getURI() ) ) {
+                        answer.addLocal( namespace );
+                    }
+                }
+            }
+            return answer;
+        }
+        else {
+            if ( content instanceof Namespace ) {
+                Namespace namespace = (Namespace) content;
                 if ( ! defaultNamespaceURI.equals( namespace.getURI() ) ) {
                     return createSingleResultList( namespace );
                 }
             }
-            else {
-                return createEmptyList();
-            }
         }
-        BackedList answer = createResultList();
-        int size = source.size();
-        for ( int i = 0; i < size; i++ ) {
-            Object object = source.get(i);
-            if ( object instanceof Namespace ) {
-                Namespace namespace = (Namespace) object;
-                if ( ! defaultNamespaceURI.equals( namespace.getURI() ) ) {
-                    answer.addLocal( namespace );
-                }
-            }
-        }
-        return answer;
+        return createEmptyList();
     }
     
     
     // Processing instruction API
     
-    public List getProcessingInstructions() {
-        List source = contents;
-        if ( source == null ) {
-            if ( firstNode instanceof ProcessingInstruction ) {
-                return createSingleResultList( firstNode );
+    public List processingInstructions() {
+        if ( content instanceof List ) {
+            List list = (List) content;
+            BackedList answer = createResultList();
+            int size = list.size();
+            for ( int i = 0; i < size; i++ ) {
+                Object object = list.get(i);
+                if ( object instanceof ProcessingInstruction ) {
+                    answer.addLocal( object );
+                }
+            }
+            return answer;
+        }
+        else {
+            if ( content instanceof ProcessingInstruction ) {
+                return createSingleResultList( content );
             }
             return createEmptyList();
         }
-        BackedList answer = createResultList();
-        int size = source.size();
-        for ( int i = 0; i < size; i++ ) {
-            Object object = source.get(i);
-            if ( object instanceof ProcessingInstruction ) {
-                answer.addLocal( object );
-            }
-        }
-        return answer;
     }
     
-    public List getProcessingInstructions(String target) {
-        List source = contents;
-        if ( source == null ) {
-            if ( firstNode instanceof ProcessingInstruction ) {
-                ProcessingInstruction pi = (ProcessingInstruction) firstNode;
+    public List processingInstructions(String target) {
+        if ( content instanceof List ) {
+            List list = (List) content;
+            BackedList answer = createResultList();
+            int size = list.size();
+            for ( int i = 0; i < size; i++ ) {
+                Object object = list.get(i);
+                if ( object instanceof ProcessingInstruction ) {
+                    ProcessingInstruction pi = (ProcessingInstruction) object;
+                    if ( target.equals( pi.getName() ) ) {                  
+                        answer.addLocal( pi );
+                    }
+                }
+            }
+            return answer;
+        }
+        else {
+            if ( content instanceof ProcessingInstruction ) {
+                ProcessingInstruction pi = (ProcessingInstruction) content;
                 if ( target.equals( pi.getName() ) ) {                  
                     return createSingleResultList( pi );
                 }
             }
             return createEmptyList();
         }
-        BackedList answer = createResultList();
-        int size = source.size();
-        for ( int i = 0; i < size; i++ ) {
-            Object object = source.get(i);
-            if ( object instanceof ProcessingInstruction ) {
-                ProcessingInstruction pi = (ProcessingInstruction) object;
-                if ( target.equals( pi.getName() ) ) {                  
-                    answer.addLocal( pi );
-                }
-            }
-        }
-        return answer;
     }
     
-    public ProcessingInstruction getProcessingInstruction(String target) {
-        List source = contents;
-        if ( source == null ) {
-            if ( firstNode instanceof ProcessingInstruction ) {
-                ProcessingInstruction pi = (ProcessingInstruction) firstNode;
-                if ( target.equals( pi.getName() ) ) {                  
-                    return pi;
-                }
-            }
-        }
-        else {
-            int size = source.size();
+    public ProcessingInstruction processingInstruction(String target) {
+        if ( content instanceof List ) {
+            List list = (List) content;
+            int size = list.size();
             for ( int i = 0; i < size; i++ ) {
-                Object object = source.get(i);
+                Object object = list.get(i);
                 if ( object instanceof ProcessingInstruction ) {
                     ProcessingInstruction pi = (ProcessingInstruction) object;
                     if ( target.equals( pi.getName() ) ) {                  
@@ -371,22 +378,21 @@ public class DefaultElement extends AbstractElement {
                 }
             }
         }
+        else {
+            if ( content instanceof ProcessingInstruction ) {
+                ProcessingInstruction pi = (ProcessingInstruction) content;
+                if ( target.equals( pi.getName() ) ) {                  
+                    return pi;
+                }
+            }
+        }
         return null;
     }
     
     public boolean removeProcessingInstruction(String target) {
-        List source = contents;
-        if ( source == null ) {
-            if ( firstNode instanceof ProcessingInstruction ) {
-                ProcessingInstruction pi = (ProcessingInstruction) firstNode;
-                if ( target.equals( pi.getName() ) ) {                  
-                    firstNode = null;
-                    return true;
-                }
-            }
-        }
-        else {
-            for ( Iterator iter = source.iterator(); iter.hasNext(); ) {
+        if ( content instanceof List ) {
+            List list = (List) content;
+            for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
                 Object object = iter.next();
                 if ( object instanceof ProcessingInstruction ) {
                     ProcessingInstruction pi = (ProcessingInstruction) object;
@@ -397,24 +403,24 @@ public class DefaultElement extends AbstractElement {
                 }
             }
         }
+        else {
+            if ( content instanceof ProcessingInstruction ) {
+                ProcessingInstruction pi = (ProcessingInstruction) content;
+                if ( target.equals( pi.getName() ) ) {                  
+                    content = null;
+                    return true;
+                }
+            }
+        }
         return false;
     }
     
     public Element elementByID(String elementID) {
-        List source = contents;
-        if ( source == null ) {
-            if ( firstNode instanceof Element ) {
-                Element element = (Element) firstNode;
-                String id = elementID(element);
-                if ( id != null && id.equals( elementID ) ) {
-                    return element;
-                }
-            }
-        }
-        else {
-            int size = source.size();
+        if ( content instanceof List ) {
+            List list = (List) content;
+            int size = list.size();
             for ( int i = 0; i < size; i++ ) {
-                Object object = source.get(i);
+                Object object = list.get(i);
                 if ( object instanceof Element ) {
                     Element element = (Element) object;
                     String id = elementID(element);
@@ -424,23 +430,24 @@ public class DefaultElement extends AbstractElement {
                 }
             }
         }
-        return null;
-    }
-    
-    public Element element(String name) {
-        List source = contents;
-        if ( source == null ) {
-            if ( firstNode instanceof Element ) {
-                Element element = (Element) firstNode;
-                if ( name.equals( element.getName() ) ) {
+        else {
+            if ( content instanceof Element ) {
+                Element element = (Element) content;
+                String id = elementID(element);
+                if ( id != null && id.equals( elementID ) ) {
                     return element;
                 }
             }
         }
-        else {
-            int size = source.size();
+        return null;
+    }
+    
+    public Element element(String name) {
+        if ( content instanceof List ) {
+            List list = (List) content;
+            int size = list.size();
             for ( int i = 0; i < size; i++ ) {
-                Object object = source.get(i);
+                Object object = list.get(i);
                 if ( object instanceof Element ) {
                     Element element = (Element) object;
                     if ( name.equals( element.getName() ) ) {
@@ -449,28 +456,36 @@ public class DefaultElement extends AbstractElement {
                 }
             }
         }
-        return null;
-    }
-    
-    public Element element(QName qName) {
-        List source = contents;
-        if ( source == null ) {
-            if ( firstNode instanceof Element ) {
-                Element element = (Element) firstNode;
-                if ( qName.equals( element.getQName() ) ) {
+        else {
+            if ( content instanceof Element ) {
+                Element element = (Element) content;
+                if ( name.equals( element.getName() ) ) {
                     return element;
                 }
             }
         }
-        else {
-            int size = source.size();
+        return null;
+    }
+    
+    public Element element(QName qName) {
+        if ( content instanceof List ) {
+            List list = (List) content;
+            int size = list.size();
             for ( int i = 0; i < size; i++ ) {
-                Object object = source.get(i);
+                Object object = list.get(i);
                 if ( object instanceof Element ) {
                     Element element = (Element) object;
                     if ( qName.equals( element.getQName() ) ) {
                         return element;
                     }
+                }
+            }
+        }
+        else {
+            if ( content instanceof Element ) {
+                Element element = (Element) content;
+                if ( qName.equals( element.getQName() ) ) {
+                    return element;
                 }
             }
         }
@@ -484,73 +499,79 @@ public class DefaultElement extends AbstractElement {
     
     
     public List elements() {
-        List source = contents;
-        if ( source == null ) {
-            if ( firstNode instanceof Element ) {
-                Element element = (Element) firstNode;
+        if ( content instanceof List ) {
+            List list = (List) content;
+            BackedList answer = createResultList();
+            int size = list.size();
+            for ( int i = 0; i < size; i++ ) {
+                Object object = list.get(i);
+                if ( object instanceof Element ) {
+                    answer.addLocal( object );
+                }
+            }
+            return answer;
+        }
+        else {
+            if ( content instanceof Element ) {
+                Element element = (Element) content;
                 return createSingleResultList( element );
             }
             return createEmptyList();
         }
-        BackedList answer = createResultList();
-        int size = source.size();
-        for ( int i = 0; i < size; i++ ) {
-            Object object = source.get(i);
-            if ( object instanceof Element ) {
-                answer.addLocal( object );
-            }
-        }
-        return answer;
     }
     
     public List elements(String name) {
-        List source = contents;
-        if ( source == null ) {
-            if ( firstNode instanceof Element ) {
-                Element element = (Element) firstNode;
+        if ( content instanceof List ) {
+            List list = (List) content;
+            BackedList answer = createResultList();
+            int size = list.size();
+            for ( int i = 0; i < size; i++ ) {
+                Object object = list.get(i);
+                if ( object instanceof Element ) {
+                    Element element = (Element) object;
+                    if ( name.equals( element.getName() ) ) {
+                        answer.addLocal( element );
+                    }
+                }
+            }
+            return answer;
+        }
+        else {
+            if ( content instanceof Element ) {
+                Element element = (Element) content;
                 if ( name.equals( element.getName() ) ) {
                     return createSingleResultList( element );
                 }
             }
             return createEmptyList();
         }
-        BackedList answer = createResultList();
-        int size = source.size();
-        for ( int i = 0; i < size; i++ ) {
-            Object object = source.get(i);
-            if ( object instanceof Element ) {
-                Element element = (Element) object;
-                if ( name.equals( element.getName() ) ) {
-                    answer.addLocal( element );
-                }
-            }
-        }
-        return answer;
     }
     
     public List elements(QName qName) {
-        List source = contents;
-        if ( source == null ) {
-            if ( firstNode instanceof Element ) {
-                Element element = (Element) firstNode;
+        if ( content instanceof List ) {
+            List list = (List) content;
+            BackedList answer = createResultList();
+            int size = list.size();
+            for ( int i = 0; i < size; i++ ) {
+                Object object = list.get(i);
+                if ( object instanceof Element ) {
+                    Element element = (Element) object;
+                    if ( qName.equals( element.getQName() ) ) {
+                        answer.addLocal( element );
+                    }
+                }
+            }
+            return answer;
+        }
+        else {
+            if ( content instanceof Element ) {
+                Element element = (Element) content;
                 if ( qName.equals( element.getQName() ) ) {
                     return createSingleResultList( element );
                 }
             }
             return createEmptyList();
         }
-        BackedList answer = createResultList();
-        int size = source.size();
-        for ( int i = 0; i < size; i++ ) {
-            Object object = source.get(i);
-            if ( object instanceof Element ) {
-                Element element = (Element) object;
-                if ( qName.equals( element.getQName() ) ) {
-                    answer.addLocal( element );
-                }
-            }
-        }
-        return answer;
     }
     
     public List elements(String name, Namespace namespace) {
@@ -558,48 +579,48 @@ public class DefaultElement extends AbstractElement {
     }
     
     public Iterator elementIterator() {
-        List source = contents;
-        if ( source == null ) {
-            if ( firstNode instanceof Element ) {
-                Element element = (Element) firstNode;
+        if ( content instanceof List ) {
+            List list = (List) content;
+            return new ElementIterator(list.iterator());
+        }
+        else {
+            if ( content instanceof Element ) {
+                Element element = (Element) content;
                 return createSingleIterator( element );
             }
             return EMPTY_ITERATOR;
         }
-        else {
-            return new ElementIterator(source.iterator());
-        }
     }
         
     public Iterator elementIterator(String name) {
-        List source = contents;
-        if ( source == null ) {
-            if ( firstNode instanceof Element ) {
-                Element element = (Element) firstNode;
+        if ( content instanceof List ) {
+            List list = (List) content;
+            return new ElementNameIterator(list.iterator(), name);
+        }
+        else {
+            if ( content instanceof Element ) {
+                Element element = (Element) content;
                 if ( name.equals( element.getName() ) ) {
                     return createSingleIterator( element );
                 }
             }
             return EMPTY_ITERATOR;
         }
-        else {
-            return new ElementNameIterator(source.iterator(), name);
-        }
     }
     
     public Iterator elementIterator(QName qName) {
-        List source = contents;
-        if ( source == null ) {
-            if ( firstNode instanceof Element ) {
-                Element element = (Element) firstNode;
+        if ( content instanceof List ) {
+            List list = (List) content;
+            return new ElementQNameIterator(list.iterator(), qName);
+        }
+        else {
+            if ( content instanceof Element ) {
+                Element element = (Element) content;
                 if ( qName.equals( element.getQName() ) ) {
                     return createSingleIterator( element );
                 }
             }
             return EMPTY_ITERATOR;
-        }
-        else {
-            return new ElementQNameIterator(source.iterator(), qName);
         }
     }
     
@@ -607,63 +628,76 @@ public class DefaultElement extends AbstractElement {
         return elementIterator( QName.get( name, namespace ) );
     }
     
-    public void setContent(List contents) {
-        this.contents = contents;
-        if ( contents instanceof ContentListFacade ) {
-            this.contents = ((ContentListFacade) contents).getBackingList();
+    public void setContent(List content) {
+        this.content = content;
+        if ( content instanceof ContentListFacade ) {
+            this.content = ((ContentListFacade) content).getBackingList();
         }
     }
     
     public void clearContent() {
-        contents = null;
-        firstNode = null;
+        content = null;
     }
     
     
     // node navigation API - return content as nodes
     // such as Text etc.
     public Node getNode(int index) {
-        if (contents == null) {
-            return firstNode;
-        }
-        Object object = contents.get(index);
-        if (object instanceof Node) {
-            return (Node) object;
-        }
-        if (object instanceof String) {
-            return new DefaultText((String) object);
+        if ( index >= 0 ) {
+            Object node = content;
+            if ( content instanceof List ) {
+                List list = (List) content;
+                if ( index >= list.size() ) {
+                    return null;
+                }
+                node = list.get(index);
+            }
+            if (node != null) {
+                if (node instanceof Node) {
+                    return (Node) node;
+                }
+                else {
+                    return new DefaultText(node.toString());
+                }
+            }
         }
         return null;
     }
     
     public int indexOf(Node node) {
-        if (contents == null) {
-            return ( firstNode != null && firstNode.equals( node ) ) ? 0 : -1;
+        if ( content instanceof List ) {
+            List list = (List) content;
+            return list.indexOf( node );
         }
         else {
-            return contents.indexOf( node );
+            return ( content != null && content.equals( node ) ) 
+                ? 0 : -1;
         }
     }
     
     public int getNodeCount() {
-        if ( contents == null ) {
-            return ( firstNode != null ) ? 1 : 0;
+        if ( content instanceof List ) {
+            List list = (List) content;
+            return list.size();
         }
-        return contents.size();
+        else {
+            return ( content != null ) ? 1 : 0;
+        }
     }
     
     public Iterator nodeIterator() {
-        if ( contents == null ) {
-            if ( firstNode != null ) {
-                return createSingleIterator( firstNode );
-            }
+        if ( content instanceof List ) {
+            List list = (List) content;
+            return list.iterator();
         }
         else {
-            if (contents != null) {
-                return contents.iterator();
+            if ( content != null ) {
+                return createSingleIterator( content );
+            }
+            else {
+                return EMPTY_ITERATOR;
             }
         }
-        return EMPTY_ITERATOR;
     }
 
     public List attributes() {
@@ -723,32 +757,35 @@ public class DefaultElement extends AbstractElement {
                 + node.getParent().getQualifiedName() + "\"";
             throw new IllegalAddException(this, node, message);
         }
-        if (contents == null) {
-            if ( firstNode == null ) {
-                firstNode = node;
-            }
-            else {
-                contents = createContentList();
-                contents.add( firstNode );
-                contents.add( node );
-            }
+        if (content == null) {
+            content = node;
         }
         else {
-            contents.add(node);
-        }        
+            if (content instanceof List) {
+                List list = (List) content;
+                list.add( node );
+            }
+            else {
+                List list = createContentList();
+                list.add( content );
+                list.add( node );
+                content = list;
+            }
+        }
         childAdded(node);
     }
 
     protected boolean removeNode(Node node) {
         boolean answer = false;
-        if (contents == null) {
-            if ( firstNode == node ) {
-                firstNode = null;
+        if (content != null) {
+            if ( content == node ) {
+                content = null;
                 answer = true;
             }
-        }
-        else {
-            answer = contents.remove(node);
+            else if ( content instanceof List ) {
+                List list = (List) content;
+                answer = list.remove(node);
+            }
         }
         if (answer) {
             childRemoved(node);
@@ -759,13 +796,17 @@ public class DefaultElement extends AbstractElement {
     // Implementation methods
     
     protected List getContentList() {
-        if ( contents == null ) {
-            contents = createContentList();
-            if ( firstNode != null ) {
-                contents.add( firstNode );
-            }
+        if ( content instanceof List ) {
+            return (List) content;
         }
-        return contents;
+        else {
+            List list = createContentList();
+            if ( content != null ) {
+                list.add( content );
+            }
+            content = list;
+            return list;
+        }
     }
 
     protected List attributeList() {
@@ -797,7 +838,7 @@ public class DefaultElement extends AbstractElement {
     /** A Factory Method pattern which creates 
       * a BackedList implementation used to store results of 
       * a filtered content query such as 
-      * {@link #getProcessingInstructions} or
+      * {@link #processingInstructions} or
       * {@link #elements} which changes are reflected in the content
       */
     protected BackedList createResultList() {

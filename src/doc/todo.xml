@@ -44,7 +44,7 @@ List customers
   = document.selectNodes( "//CUSTOMER", "@name", true );
               </pre>
             </li>
-            <li>The getText() and getString() methods of Element now return
+            <li>The getText() and getStringValue() methods of Element now return
               the textual values of CDATA, Entity and Text nodes. 
               The previous version only returned Text node values.
             </li>

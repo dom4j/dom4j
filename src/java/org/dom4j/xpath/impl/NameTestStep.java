@@ -97,7 +97,7 @@ public class NameTestStep extends UnAbbrStep {
                 
                 if ( attr != null ) {
                     if ( ! attr.supportsParent() ) {
-                        attr = (Attribute) attr.asXPathNode(element);
+                        attr = (Attribute) attr.asXPathResult(element);
                     }
                     List results = new ArrayList();
                     results.add( attr );
@@ -119,7 +119,7 @@ public class NameTestStep extends UnAbbrStep {
                 Namespace namespace = element.getNamespaceForPrefix( _localName );
                 if ( namespace != null ) {
                     if ( ! namespace.supportsParent() ) {
-                        namespace = (Namespace) namespace.asXPathNode( element );
+                        namespace = (Namespace) namespace.asXPathResult( element );
                     }
                     List results = new ArrayList();
                     results.add( namespace );

@@ -35,7 +35,7 @@ public class DefaultComment extends AbstractComment implements Comment {
 	return text;
     }
     
-    protected Node createXPathNode(Element parent) {
+    protected Node createXPathResult(Element parent) {
         return new XPathComment( parent, getText() );
     }
 }

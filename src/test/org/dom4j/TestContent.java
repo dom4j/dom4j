@@ -28,7 +28,7 @@ public class TestContent extends AbstractTestCase {
 
     // Test case(s)
     //-------------------------------------------------------------------------                    
-    public void testContent() throws Exception {
+    public void testRoot() throws Exception {
         Element root = document.getRootElement();
         assert( "Has root element", root != null );
         
@@ -45,11 +45,11 @@ public class TestContent extends AbstractTestCase {
         testGetAttributes(author2);
     }
         
-    public void testGetContents() throws Exception {
+    public void testContent() throws Exception {
         Element root = document.getRootElement();
         assert( "Has root element", root != null );
         
-        List content = root.getContent();
+        List content = root.content();
         assert( "Root has content", content != null && content.size() >= 2 );
 
         boolean iterated = false;
@@ -88,7 +88,7 @@ public class TestContent extends AbstractTestCase {
         
         boolean iterated = false;
         for ( int i = 0; i < count; i++ ) {
-            Node node = root.getXPathNode(i);
+            Node node = root.getXPathResult(i);
             assert( "Valid node returned from getNode()", node != null );
             assert( "Node supports the parent relationship", node.supportsParent() );
             iterated = true;

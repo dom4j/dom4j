@@ -268,10 +268,10 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     
     // Content Model methods
     
-    public Node getXPathNode(int index) {
+    public Node getXPathResult(int index) {
         Node answer = getNode(index);
         if (answer != null && !answer.supportsParent()) {
-            return answer.asXPathNode(this);
+            return answer.asXPathResult(this);
         }
         return answer;
     }
@@ -487,7 +487,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     }
         
     public void appendAddtionalNamespaces(Element element) {
-        for (Iterator i = element.getAdditionalNamespaces().iterator(); i.hasNext(); ) {
+        for (Iterator i = element.additionalNamespaces().iterator(); i.hasNext(); ) {
             Namespace namespace = (Namespace) i.next();
             add( namespace );
         }

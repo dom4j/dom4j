@@ -73,7 +73,7 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     //public short getNodeType();
     
 
-    // delegate common functionality to SaxonNodeHelper
+    
     public String getNodeValue() throws DOMException {
         return DOMNodeHelper.getNodeValue(this);
     }
@@ -88,7 +88,7 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     }
     
     public NodeList getChildNodes() {
-        return DOMNodeHelper.getChildNodes(this);
+        return createNodeList( content() );
     }
 
     public org.w3c.dom.Node getFirstChild() {
@@ -160,7 +160,6 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     
     // org.w3c.dom.Element interface
     //-------------------------------------------------------------------------            
-    
     public String getTagName() {
         return getName();
     }
@@ -175,6 +174,9 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
 
     public void removeAttribute(String name) throws DOMException {
         Attribute attribute = attribute(name);
+        if ( attribute != null ) {
+            remove(attribute);
+        }
     }
 
     public org.w3c.dom.Attr getAttributeNode(String name) {
@@ -264,38 +266,20 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
 
     public NodeList getElementsByTagName(String name) {
         ArrayList list = new ArrayList();
-        for ( int i = 0, size = getNodeCount(); i < size; i++ ) {
-            Node node = getNode(i);
-            if ( node instanceof Element ) {
-                Element element = (Element) node;
-                if ( name.equals( element.getName() ) ) {
-                    list.add( element );
-                }
-            }
-        }
+        appendElementsByTagName( list, this, name );
         return createNodeList( list );
     }
-
+    
     public NodeList getElementsByTagNameNS(
-        String namespaceURI,  
-        String localName
+        String namespaceURI, String localName
     ) {
         ArrayList list = new ArrayList();
-        for ( int i = 0, size = getNodeCount(); i < size; i++ ) {
-            Node node = getNode(i);
-            if ( node instanceof Element ) {
-                Element element = (Element) node;
-                if ( namespaceURI.equals( element.getNamespaceURI() ) 
-                        && localName.equals( element.getName() ) ) {
-                    list.add( element );
-                }
-            }
-        }
+        appendElementsByTagNameNS(list, this, namespaceURI, localName );
         return createNodeList( list );
     }
 
     public boolean hasAttribute(String name) {
-        return getAttribute(name) != null;
+        return attribute(name) != null;
     }
 
     public boolean hasAttributeNS(String namespaceURI, String localName) {
@@ -305,7 +289,37 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     
     // Implementation methods
     //-------------------------------------------------------------------------            
-    
+    protected void appendElementsByTagName(
+        List list, Element parent, String name
+    ) {
+        for ( int i = 0, size = parent.getNodeCount(); i < size; i++ ) {
+            Node node = parent.getNode(i);
+            if ( node instanceof Element ) {
+                Element element = (Element) node;
+                if ( name.equals( element.getName() ) ) {
+                    list.add( element );
+                }
+                appendElementsByTagName(list, element, name);
+            }
+        }
+    }
+
+    protected void appendElementsByTagNameNS(
+        List list, Element parent, String namespaceURI, String localName
+    ) {
+        for ( int i = 0, size = parent.getNodeCount(); i < size; i++ ) {
+            Node node = parent.getNode(i);
+            if ( node instanceof Element ) {
+                Element element = (Element) node;
+                if ( namespaceURI.equals( element.getNamespaceURI() ) 
+                        && localName.equals( element.getName() ) ) {
+                    list.add( element );
+                }
+                appendElementsByTagNameNS(list, element, namespaceURI, localName);
+            }
+        }
+    }
+
     protected Attribute attribute(org.w3c.dom.Attr attr) {
         return attribute( 
             QName.get( 

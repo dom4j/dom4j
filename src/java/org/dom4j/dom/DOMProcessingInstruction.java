@@ -69,7 +69,7 @@ public class DOMProcessingInstruction extends XPathProcessingInstruction impleme
     //public short getNodeType();
     
 
-    // delegate common functionality to SaxonNodeHelper
+    
     public String getNodeValue() throws DOMException {
         return DOMNodeHelper.getNodeValue(this);
     }

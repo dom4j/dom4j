@@ -222,13 +222,13 @@ public abstract class UnAbbrStep extends Step {
         results.addAll( applyToChild( node, support ) );
         
         if ( node instanceof Element ) {
-            List children = ((Element)node).getContent();            
+            List children = ((Element)node).content();            
             results.addAll( 
                 applyTo( children, support, AXIS_DESCENDANT ) 
             );
         }
         else if ( node instanceof Document ) {
-            List children = ((Document)node).getContent();            
+            List children = ((Document)node).content();            
             results.addAll( 
                 applyTo( children, support, AXIS_DESCENDANT ) 
             );
@@ -259,11 +259,11 @@ public abstract class UnAbbrStep extends Step {
         results.addAll( applyToSelf( node, support ) );
         
         if ( node instanceof Element ) {
-            List children = ((Element)node).getContent();            
+            List children = ((Element)node).content();            
             results.addAll( applyTo( children, support, AXIS_DESCENDANT_OR_SELF ) );
         }
         else if ( node instanceof Document ) {
-            List children = ((Document)node).getContent();            
+            List children = ((Document)node).content();            
             results.addAll( applyTo( children, support, AXIS_DESCENDANT_OR_SELF ) );
         }
         return results;
@@ -424,7 +424,7 @@ public abstract class UnAbbrStep extends Step {
    * support the parent relationship
    */
     protected List getNamespaces(Element element) {
-        List results = element.getDeclaredNamespaces();
+        List results = element.declaredNamespaces();
         supportsParentList(element, results);
         return results;
     }
@@ -437,7 +437,7 @@ public abstract class UnAbbrStep extends Step {
         Namespace namespace = attribute.getNamespace();
         if ( namespace.getURI().length() > 0 ) {
             if ( ! namespace.supportsParent() ) {
-                namespace = (Namespace) namespace.asXPathNode(attribute.getParent());
+                namespace = (Namespace) namespace.asXPathResult(attribute.getParent());
             }
             return namespace;
         }
@@ -460,7 +460,7 @@ public abstract class UnAbbrStep extends Step {
         for ( int i = 0; i < size; i++ ) {
             Node node = (Node) list.get(i);
             if ( ! node.supportsParent() ) {
-                node = node.asXPathNode(element);
+                node = node.asXPathResult(element);
                 list.set(i, node);
             }
         }

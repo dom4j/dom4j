@@ -64,7 +64,7 @@ public class DOMComment extends XPathComment implements org.w3c.dom.Comment {
     //public short getNodeType();
     
 
-    // delegate common functionality to SaxonNodeHelper
+    
     public String getNodeValue() throws DOMException {
         return DOMNodeHelper.getNodeValue(this);
     }

@@ -35,7 +35,7 @@ public class DefaultCDATA extends AbstractCDATA implements CDATA {
 	return text;
     }
     
-    protected Node createXPathNode(Element parent) {
+    protected Node createXPathResult(Element parent) {
         return new XPathCDATA( parent, getText() );
     }
 }

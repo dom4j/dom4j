@@ -68,7 +68,7 @@ public class DOMDocumentType extends DefaultDocumentType implements org.w3c.dom.
     //public short getNodeType();
     
 
-    // delegate common functionality to SaxonNodeHelper
+    
     public String getNodeValue() throws DOMException {
         return DOMNodeHelper.getNodeValue(this);
     }

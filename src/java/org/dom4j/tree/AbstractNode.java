@@ -109,7 +109,7 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
         return null;
     }
     
-    public String getString() {
+    public String getStringValue() {
         return getText();
     }
     
@@ -164,19 +164,19 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
     }
     
     
-    public Node asXPathNode(Element parent) {
+    public Node asXPathResult(Element parent) {
         if (supportsParent()) {
             return this;
         }
-        return createXPathNode(parent);
+        return createXPathResult(parent);
     }
     
     protected DocumentFactory getDocumentFactory() {
         return DOCUMENT_FACTORY;
     }
     
-    protected Node createXPathNode(Element parent) {
-        throw new RuntimeException("asXPathNode() not yet implemented fully for: " + this );
+    protected Node createXPathResult(Element parent) {
+        throw new RuntimeException("asXPathResult() not yet implemented fully for: " + this );
     }
     
 }

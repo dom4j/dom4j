@@ -57,7 +57,7 @@ public class NodeTypeStep extends UnAbbrStep {
             List results = new ArrayList(1);
             if ( node instanceof Node ) {
                 Node aNode = (Node) node;
-                results.add( aNode.asXPathNode( null ) );
+                results.add( aNode.asXPathResult( null ) );
             }
             return results;
         }
@@ -74,7 +74,7 @@ public class NodeTypeStep extends UnAbbrStep {
                 Node node = (Node) each;
                 Element parent = (owner instanceof Element)
                     ? (Element) owner : null;
-                results.add( node.asXPathNode( parent ) );
+                results.add( node.asXPathResult( parent ) );
             }
         }
     }

@@ -65,7 +65,7 @@ public class DOMCDATA extends XPathCDATA implements org.w3c.dom.CDATASection {
     //public short getNodeType();
     
 
-    // delegate common functionality to SaxonNodeHelper
+    
     public String getNodeValue() throws DOMException {
         return DOMNodeHelper.getNodeValue(this);
     }

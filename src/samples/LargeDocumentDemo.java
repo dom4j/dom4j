@@ -45,7 +45,7 @@ public class LargeDocumentDemo extends SAXDemo implements ElementHandler {
     // ElementHandler interface     
     public void handle(Element element) {
         println( "Called during parsing with element: " + element 
-            + " with: " + element.getContent().size() + " content node(s)" 
+            + " with: " + element.content().size() + " content node(s)" 
         );
     }
     

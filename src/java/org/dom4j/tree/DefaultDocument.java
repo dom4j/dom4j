@@ -101,7 +101,7 @@ public class DefaultDocument extends AbstractDocument {
         return new DefaultDocumentType( name, publicId, systemId );
     }
     
-    public List getProcessingInstructions() {
+    public List processingInstructions() {
         List source = contents;
         if ( source == null ) {
             return createEmptyList();
@@ -117,7 +117,7 @@ public class DefaultDocument extends AbstractDocument {
         return answer;
     }
     
-    public List getProcessingInstructions(String target) {
+    public List processingInstructions(String target) {
         List source = contents;
         if ( source == null ) {
             return createEmptyList();
@@ -136,7 +136,7 @@ public class DefaultDocument extends AbstractDocument {
         return answer;
     }
     
-    public ProcessingInstruction getProcessingInstruction(String target) {
+    public ProcessingInstruction processingInstruction(String target) {
         List source = contents;
         if ( source != null ) {
             int size = source.size();
@@ -256,7 +256,7 @@ public class DefaultDocument extends AbstractDocument {
     /** A Factory Method pattern which creates 
       * a BackedList implementation used to store results of 
       * a filtered content query such as 
-      * {@link #getProcessingInstructions}
+      * {@link #processingInstructions}
       */
     protected BackedList createResultList() {
         return new BackedList( this, getContentList() );

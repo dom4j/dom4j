@@ -35,7 +35,7 @@ public class DefaultText extends AbstractText implements Text {
 	return text;
     }
     
-    protected Node createXPathNode(Element parent) {
+    protected Node createXPathResult(Element parent) {
         return new XPathText( parent, getText() );
     }
 }

@@ -87,7 +87,7 @@ public class ElementNamespaceContext implements NamespaceContext
             {
                 elem = (Element) lineage.pop();
 
-                nsList = elem.getAdditionalNamespaces();
+                nsList = elem.additionalNamespaces();
 
                 if ( ! nsList.isEmpty() )
                 {

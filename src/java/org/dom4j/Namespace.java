@@ -98,7 +98,7 @@ public class Namespace extends AbstractNode {
         return uri;
     }
     
-    public String getString() {
+    public String getStringValue() {
         return uri;
     }
     
@@ -136,7 +136,7 @@ public class Namespace extends AbstractNode {
         visitor.visit(this);
     }
     
-    protected Node createXPathNode(Element parent) {
+    protected Node createXPathResult(Element parent) {
         return new XPathNamespace( parent, getPrefix(), getURI() );
     }    
     

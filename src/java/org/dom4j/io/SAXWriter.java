@@ -339,7 +339,7 @@ public class SAXWriter {
       * which have just come into scope
       */
     protected void startPrefixMapping( Element element, NamespaceStack namespaces ) throws SAXException {
-        List declaredNamespaces = element.getDeclaredNamespaces();
+        List declaredNamespaces = element.declaredNamespaces();
         for ( int i = 0, size = declaredNamespaces.size(); i < size ; i++ ) {
             Namespace namespace = (Namespace) declaredNamespaces.get(i);
             if ( ! isIgnoreableNamespace( namespace, namespaces ) ) {

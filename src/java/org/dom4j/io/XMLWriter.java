@@ -538,9 +538,8 @@ public class XMLWriter implements Cloneable {
         // Print out root element, as well as any root level
         // comments and processing instructions, 
         // starting with no indentation
-        Iterator i = doc.getContent().iterator();
-        while (i.hasNext()) {
-            Object obj = i.next();
+        for ( Iterator iter = doc.nodeIterator(); iter.hasNext(); ) {
+            Object obj = iter.next();
             if (obj instanceof Element) {
                 write(doc.getRootElement(), writer);   // outputs at initial indentLevel
             } else if (obj instanceof Comment) {
@@ -604,7 +603,7 @@ public class XMLWriter implements Cloneable {
     public void writeElementContent(Element element, Writer out)
         throws IOException
     {
-        List mixedContent = element.getContent();
+        List mixedContent = element.content();
         printElementContent(element, out, indentLevel,
                             new NamespaceStack(),
                             mixedContent);
@@ -1041,7 +1040,7 @@ public class XMLWriter implements Cloneable {
       * which is a string
       */
     protected boolean isStringOnly(Element element) {
-        List mixedContent = element.getContent();
+        List mixedContent = element.content();
         int size = mixedContent.size();
         if ( mixedContent.size() == 1 ) {
             Object first = mixedContent.get(0);
@@ -1066,7 +1065,7 @@ public class XMLWriter implements Cloneable {
     protected void printElement(Element element, Writer out,
                                 int indentLevel, NamespaceStack namespaces)  throws IOException {
 
-        List mixedContent = element.getContent();
+        List mixedContent = element.content();
 
         boolean empty = mixedContent.size() == 0;
         boolean stringOnly = isStringOnly(element);
@@ -1094,7 +1093,7 @@ public class XMLWriter implements Cloneable {
         }
 
         // Print out additional namespace declarations
-        List additionalNamespaces = element.getAdditionalNamespaces();
+        List additionalNamespaces = element.additionalNamespaces();
         if (additionalNamespaces != null) {
             for (int i=0; i<additionalNamespaces.size(); i++) {
                 Namespace additional = (Namespace)additionalNamespaces.get(i);

@@ -81,7 +81,7 @@ public class DefaultEntity extends AbstractEntity {
         }
     }
     
-    protected Node createXPathNode(Element parent) {
+    protected Node createXPathResult(Element parent) {
         return new XPathEntity( parent, getName(), getText() );
     }
 }

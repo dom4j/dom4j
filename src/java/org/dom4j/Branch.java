@@ -62,7 +62,7 @@ public interface Branch extends Node {
       *
       * @return the nodes that this branch contains as a <code>List</code>
       */    
-    public List getContent();    
+    public List content();    
 
     /** Returns an iterator through the content nodes of this branch
       * 
@@ -89,7 +89,7 @@ public interface Branch extends Node {
       *
       * @return a backed list of the processing instructions
       */
-    public List getProcessingInstructions();
+    public List processingInstructions();
     
     /** <p>Returns a list of the processing instructions for the given target.
       * The list is backed by this branch so that changes to the list will
@@ -97,11 +97,11 @@ public interface Branch extends Node {
       *
       * @return a backed list of the processing instructions
       */
-    public List getProcessingInstructions(String target);
+    public List processingInstructions(String target);
 
     /** @return the processing instruction for the given target
       */
-    public ProcessingInstruction getProcessingInstruction(String target);    
+    public ProcessingInstruction processingInstruction(String target);    
     
     /** Sets all the processing instructions for this branch
       */

@@ -84,7 +84,7 @@ public class DefaultProcessingInstruction extends AbstractProcessingInstruction 
         return Collections.unmodifiableMap( values );
     }
     
-    protected Node createXPathNode(Element parent) {
+    protected Node createXPathResult(Element parent) {
         return new XPathProcessingInstruction( parent, getTarget(), getText() );
     }
 }

@@ -44,7 +44,7 @@ public class StringFunction implements Function {
         }
         else if (obj instanceof Node) {
             Node node = (Node) obj;
-            return node.getString();
+            return node.getStringValue();
         }
         else if (obj instanceof List) {
             List list = (List) obj;

@@ -16,7 +16,7 @@ import junit.framework.*;
 import junit.textui.TestRunner;
 
 /** A test harness to test the parent relationship and use of the
-  * {@link Node#asXPathNode} method.
+  * {@link Node#asXPathResult} method.
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
@@ -68,7 +68,7 @@ public class TestParent extends AbstractTestCase {
     
     protected void testParentRelationship( Element element ) {
         testParentRelationship( element, element.attributes() );
-        testParentRelationship( element, element.getContent() );
+        testParentRelationship( element, element.content() );
     }    
     
     
@@ -82,7 +82,7 @@ public class TestParent extends AbstractTestCase {
         }
         else {
             // lets create an XPath node
-            Node xpathNode = node.asXPathNode( parent );
+            Node xpathNode = node.asXPathResult( parent );
             assert( "XPath Node supports parent for: " + xpathNode, xpathNode.supportsParent() );
             assert( "getParent() returns parent for: " + xpathNode, xpathNode.getParent() == parent );
         }

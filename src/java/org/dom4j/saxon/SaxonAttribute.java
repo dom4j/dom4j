@@ -80,7 +80,7 @@ public abstract class SaxonAttribute extends DOMAttribute implements AttributeIn
  */
     
 
-    // delegate common functionality to SaxonNodeHelper
+    
     
     public boolean isSameNode(NodeInfo other) {
         return SaxonNodeHelper.isSameNode(this, other);

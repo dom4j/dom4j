@@ -55,7 +55,7 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
         return false;
     }    
     
-    public List getContent() {
+    public List content() {
         List backingList = getContentList();
         return new ContentListFacade(this, backingList);
     }
@@ -115,7 +115,7 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
                 case ENTITY_REFERENCE_NODE:
                 case TEXT_NODE:
                 case ELEMENT_NODE:
-                    return node.getString();
+                    return node.getStringValue();
             }
         }
         else if ( content instanceof String) {
