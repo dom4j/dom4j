@@ -7,6 +7,16 @@
 
   <body>
 
+    <release version="1.5.2" date="current">
+      <action dev="maartenc" type="remove">
+        Removed the internal Aelfred2 parser due to incompatible license.
+      </action>
+      <action dev="wolfftw" type="add">
+        Added a <code>SAXEventRecorder</code> that can replay SAX events at a later
+        time. This provides an alternative serialization approach.
+      </action>
+    </release>
+
     <release version="1.5.1" date="2004-10-29">
       <action dev="maartenc" type="fix" due-to="Ara Vartanian">
         Fixed problem where the namespace prefix was lost using <code>DOMDocument</code>.
