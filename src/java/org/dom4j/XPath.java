@@ -27,70 +27,65 @@ public interface XPath {
       */
     public String getText();
         
-    /** <p><code>selectNodes</code> performs this XPath
-      * expression on the {@link List} of {@link Node} instances appending
-      * all the results together into a single list.</p>
+    /** <p><code>selectNodes</code> performs this XPath expression
+      * on the given {@link Node} or {@link List} of {@link Node}s 
+      * instances appending all the results together into a single list.</p>
       *
-      * @param nodes is the list of nodes on which to evalute the XPath
+      * @param context is either a node or a list of nodes on which to 
+      *    evalute the XPath
       * @return the results of all the XPath evaluations as a single list
       */
-    public List selectNodes(List nodes);
+    public List selectNodes(Object context);
     
-    /** <p><code>selectNodes</code> evaluates an XPath expression
-      * on the current node and returns the result as a <code>List</code> of 
-      * <code>Node</code> instances.</p>
-      *
-      * @param node is the context node on which to 
-      *     process the XPath expression
-      * @param xpath is the XPath expression to evaluate
-      * @return a list of <code>Node</code> instances 
-      */
-    public List selectNodes(Node node);
     
     /** <p><code>selectNodes</code> evaluates the XPath expression
-      * on the current node and returns the result as a <code>List</code> of 
-      * <code>Node</code> instances sorted by another XPath expression.</p>
+      * on the given {@link Node} or {@link List} of {@link Node}s 
+      * and returns the result as a <code>List</code> of 
+      * <code>Node</code>s sorted by the sort XPath expression.</p>
       *
-      * @param node is the context node on which to 
-      *     process the XPath expression
+      * @param context is either a node or a list of nodes on which to 
+      *    evalute the XPath
+      * @param sortXPath is the XPath expression to sort by
+      * @return a list of <code>Node</code> instances 
+      */
+    public List selectNodes(Object context, XPath sortXPath);
+    
+    /** <p><code>selectNodes</code> evaluates the XPath expression
+      * on the given {@link Node} or {@link List} of {@link Node}s 
+      * and returns the result as a <code>List</code> of 
+      * <code>Node</code>s sorted by the sort XPath expression.</p>
+      *
+      * @param context is either a node or a list of nodes on which to 
+      *    evalute the XPath
       * @param sortXPath is the XPath expression to sort by
       * @param distinct specifies whether or not duplicate values of the 
       *     sort expression are allowed. If this parameter is true then only 
       *     distinct sort expressions values are included in the result
       * @return a list of <code>Node</code> instances 
       */
-    public List selectNodes(Node node, XPath sortXPath, boolean distinct);
+    public List selectNodes(Object context, XPath sortXPath, boolean distinct);
+    
     
     /** <p><code>selectSingleNode</code> evaluates this XPath expression
-      * on a given node and returns the result as a single
-      * <code>Node</code> instance.</p>
+      * on the given {@link Node} or {@link List} of {@link Node}s 
+      * and returns the result as a single <code>Node</code> instance.</p>
       *
-      * @param node is the context node on which to 
-      *     process the XPath expression
+      * @param context is either a node or a list of nodes on which to 
+      *    evalute the XPath
       * @return a single matching <code>Node</code> instance
       */
-    public Node selectSingleNode(Node node);
+    public Node selectSingleNode(Object context);
     
-    /** <p><code>selectSingleNode</code> evaluates this XPath expression
-      * on a given node and returns the result as a single
-      * <code>Node</code> instance.</p>
-      *
-      * @param nodes is the list of nodes on which to evalute the XPath
-      * @return a single matching <code>Node</code> instance
-      */
-    public Node selectSingleNode(List nodes);
-    
-
     
     /** <p><code>valueOf</code> evaluates this XPath expression
       * and returns the textual representation of the results using the 
       * XPath string() function.</p>
       *
-      * @param node is the context node on which to 
-      *     process the XPath expression
+      * @param context is either a node or a list of nodes on which to 
+      *    evalute the XPath
       * @return the string representation of the results of the XPath expression
       */
-    public String valueOf(Node node);
+    public String valueOf(Object context);
     
     /** <p><code>sort</code> sorts the given List of Nodes
       * using this XPath expression as a {@link Comparator}.</p>
