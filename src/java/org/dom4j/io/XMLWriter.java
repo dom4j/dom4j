@@ -600,6 +600,10 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
 
     public void characters(char[] ch, int start, int length) throws SAXException {
+        if (ch == null || ch.length == 0) {
+            return;
+        }
+        
         try {
             /*
              * we can't use the writeString method here because it's possible

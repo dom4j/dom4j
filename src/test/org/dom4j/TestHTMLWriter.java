@@ -114,6 +114,19 @@ public class TestHTMLWriter extends AbstractTestCase {
         assertEquals(expected, buffer.toString());
     }
     
+    public void testBug923882asWriterWithEmptyCharArray() throws Exception {
+        // use an the HTMLWriter sax-methods.
+        //
+        StringWriter buffer = new StringWriter();
+        HTMLWriter writer = new HTMLWriter(buffer, OutputFormat.createPrettyPrint());
+        writer.characters("wor".toCharArray(), 0, 3);
+        writer.characters(new char[0], 0, 0);
+        writer.characters("d-being-cut".toCharArray(), 0, 11);
+                
+        String expected = "word-being-cut";
+        assertEquals(expected, buffer.toString());
+    }
+    
 }
 
 
