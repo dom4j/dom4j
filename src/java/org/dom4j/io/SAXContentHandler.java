@@ -1,9 +1,9 @@
 /*
  * Copyright 2001 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -74,13 +74,13 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
 
     /** The name of the current entity */
     private String entity;
-    
+
     /** Flag used to indicate that we are inside a DTD section */
     private boolean insideDTDSection;
 
     /** Flag used to indicate that we are inside a CDATA section */
     private boolean insideCDATASection;
-    
+
     /** namespaces that are available for use */
     private Map availableNamespaceMap = new HashMap();
 
@@ -89,50 +89,50 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
 
     /** internal DTD declarations */
     private List internalDTDDeclarations;
-    
+
     /** external DTD declarations */
     private List externalDTDDeclarations;
-    
+
     /** The number of namespaces that are declared in the current scope */
     private int declaredNamespaceIndex;
 
     /** The entity resolver */
     private EntityResolver entityResolver;
-    
+
     private InputSource inputSource;
-    
+
     /** The current element we are on */
     private Element currentElement;
-    
+
     /** Should internal DTD declarations be expanded into a List in the DTD */
     private boolean includeInternalDTDDeclarations = false;
-    
+
     /** Should external DTD declarations be expanded into a List in the DTD */
     private boolean includeExternalDTDDeclarations = false;
 
     /** The number of levels deep we are inside a startEntity / endEntity call */
     private int entityLevel;
-    
+
     /** Are we in an internal DTD subset? */
     private boolean internalDTDsubset = false;
 
     /** Whether adjacent text nodes should be merged */
-    private boolean mergeAdjacentText = false;    
+    private boolean mergeAdjacentText = false;
 
     /** Have we added text to the buffer */
-    private boolean textInTextBuffer = false;    
-    
+    private boolean textInTextBuffer = false;
+
     /** Buffer used to concatenate text together */
     private StringBuffer textBuffer;
 
     /** Holds value of property stripWhitespaceText. */
     private boolean stripWhitespaceText = false;
 
-    
+
     public SAXContentHandler() {
         this( DocumentFactory.getInstance() );
     }
-    
+
     public SAXContentHandler(DocumentFactory documentFactory) {
         this.documentFactory = documentFactory;
         this.namespaceStack = new NamespaceStack(documentFactory);
@@ -151,7 +151,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
         this.namespaceStack = new NamespaceStack(documentFactory);
     }
 
-    /** @return the document that has been or is being built 
+    /** @return the document that has been or is being built
       */
     public Document getDocument() {
         if ( document == null ) {
@@ -159,14 +159,14 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
         }
         return document;
     }
-    
+
     // ContentHandler interface
     //-------------------------------------------------------------------------
-    
+
     public void processingInstruction(String target, String data) throws SAXException {
         if ( mergeAdjacentText && textInTextBuffer ) {
             completeCurrentTextNode();
-        }                
+        }
         if ( currentElement != null ) {
             currentElement.addProcessingInstruction(target, data);
         }
@@ -174,7 +174,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
             document.addProcessingInstruction(target, data);
         }
     }
-    
+
     public void startPrefixMapping(String prefix, String uri) throws SAXException {
         namespaceStack.push( prefix, uri );
     }
@@ -187,7 +187,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     public void startDocument() throws SAXException {
         document = createDocument();
         currentElement = null;
-        
+
         if ( elementStack == null ) {
             elementStack = createElementStack();
         }
@@ -196,52 +196,52 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
         }
         if ( (elementHandler != null) &&
              (elementHandler instanceof DispatchHandler) ) {
-            elementStack.setDispatchHandler((DispatchHandler)elementHandler);   
+            elementStack.setDispatchHandler((DispatchHandler)elementHandler);
         }
-        
+
         namespaceStack.clear();
         declaredNamespaceIndex = 0;
-        
-        if ( mergeAdjacentText && textBuffer == null ) {            
+
+        if ( mergeAdjacentText && textBuffer == null ) {
             textBuffer = new StringBuffer();
         }
         textInTextBuffer = false;
     }
-    
+
     public void endDocument() throws SAXException {
         namespaceStack.clear();
         elementStack.clear();
-        currentElement = null;        
+        currentElement = null;
         textBuffer = null;
     }
-    
+
     public void startElement(String namespaceURI, String localName, String qualifiedName, Attributes attributes) throws SAXException {
         if ( mergeAdjacentText && textInTextBuffer ) {
             completeCurrentTextNode();
         }
-        
-        QName qName = namespaceStack.getQName( 
-            namespaceURI, localName, qualifiedName 
+
+        QName qName = namespaceStack.getQName(
+            namespaceURI, localName, qualifiedName
         );
-        
+
         Branch branch = currentElement;
         if ( branch == null ) {
             branch = document;
         }
         Element element = branch.addElement(qName);
-        
+
         // add all declared namespaces
         addDeclaredNamespaces(element);
 
         // now lets add all attribute values
         addAttributes( element, attributes );
-        
+
         elementStack.pushElement(element);
         currentElement = element;
 
-        
+
         if ( elementHandler != null ) {
-            elementHandler.onStart(elementStack);   
+            elementHandler.onStart(elementStack);
         }
     }
 
@@ -249,7 +249,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
         if ( mergeAdjacentText && textInTextBuffer ) {
             completeCurrentTextNode();
         }
-        
+
         if ( elementHandler != null && currentElement != null ) {
             elementHandler.onEnd(elementStack);
         }
@@ -266,14 +266,14 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
             if (entity != null) {
                 if ( mergeAdjacentText && textInTextBuffer ) {
                     completeCurrentTextNode();
-                }                
+                }
                 currentElement.addEntity(entity, new String(ch, start, end));
                 entity = null;
             }
             else if (insideCDATASection) {
                 if ( mergeAdjacentText && textInTextBuffer ) {
                     completeCurrentTextNode();
-                }                
+                }
                 currentElement.addCDATA(new String(ch, start, end));
             }
             else {
@@ -290,9 +290,9 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
 
     // ErrorHandler interface
     //-------------------------------------------------------------------------
-    
+
     /** This method is called when a warning occurs during the parsing
-      * of the document. 
+      * of the document.
       * This method does nothing.
       */
     public void warning(SAXParseException exception) throws SAXException {
@@ -316,7 +316,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
 
     // LexicalHandler interface
     //-------------------------------------------------------------------------
-    
+
     public void startDTD(String name, String publicId, String systemId) throws SAXException {
         if (document != null) {
             document.addDocType(name, publicId, systemId);
@@ -329,7 +329,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
         insideDTDSection = false;
         if ( document != null ) {
             DocumentType docType = document.getDocType();
-            if ( docType != null ) {                
+            if ( docType != null ) {
                 if ( internalDTDDeclarations != null ) {
                     docType.setInternalDeclarations( internalDTDDeclarations );
                 }
@@ -344,7 +344,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
 
     public void startEntity(String name) throws SAXException {
         ++entityLevel;
-        
+
         // Ignore DTD references
         entity = null;
         if (! insideDTDSection ) {
@@ -352,7 +352,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
                 entity = name;
             }
         }
-        
+
         // internal DTD subsets can only appear outside of a
         // startEntity/endEntity block
         // see the startDTD method in
@@ -377,11 +377,11 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     public void endCDATA() throws SAXException {
         insideCDATASection = false;
     }
-    
+
     public void comment(char[] ch, int start, int end) throws SAXException {
         if ( mergeAdjacentText && textInTextBuffer ) {
             completeCurrentTextNode();
-        }                
+        }
         String text = new String(ch, start, end);
         if (!insideDTDSection && text.length() > 0) {
             if ( currentElement != null ) {
@@ -395,16 +395,16 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
 
     // DeclHandler interface
     //-------------------------------------------------------------------------
-    
+
     /**
      * Report an element type declaration.
      *
      * <p>The content model will consist of the string "EMPTY", the
      * string "ANY", or a parenthesised group, optionally followed
      * by an occurrence indicator.  The model will be normalized so
-     * that all parameter entities are fully resolved and all whitespace 
+     * that all parameter entities are fully resolved and all whitespace
      * is removed,and will include the enclosing parentheses.  Other
-     * normalization (such as removing redundant parentheses or 
+     * normalization (such as removing redundant parentheses or
      * simplifying occurrence indicators) is at the discretion of the
      * parser.</p>
      *
@@ -431,7 +431,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
      * <p>Only the effective (first) declaration for an attribute will
      * be reported.  The type will be one of the strings "CDATA",
      * "ID", "IDREF", "IDREFS", "NMTOKEN", "NMTOKENS", "ENTITY",
-     * "ENTITIES", a parenthesized token group with 
+     * "ENTITIES", a parenthesized token group with
      * the separator "|" and all whitespace removed, or the word
      * "NOTATION" followed by a space followed by a parenthesized
      * token group with all whitespace removed.</p>
@@ -461,7 +461,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
             }
         }
     }
-    
+
     /**
      * Report an internal entity declaration.
      *
@@ -488,7 +488,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
             }
         }
     }
-    
+
     /**
      * Report a parsed external entity declaration.
      *
@@ -517,10 +517,10 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
         }
     }
 
-    
+
     // DTDHandler interface
     //-------------------------------------------------------------------------
-    
+
     /**
      * Receive notification of a notation declaration event.
      *
@@ -548,13 +548,13 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     public void notationDecl(String name,String publicId,String systemId) throws SAXException {
         // #### not supported yet!
     }
-    
+
     /**
      * Receive notification of an unparsed entity declaration event.
      *
      * <p>Note that the notation name corresponds to a notation
-     * reported by the {@link #notationDecl notationDecl} event.  
-     * It is up to the application to record the entity for later 
+     * reported by the {@link #notationDecl notationDecl} event.
+     * It is up to the application to record the entity for later
      * reference, if necessary.</p>
      *
      * <p>If the system identifier is a URL, the parser must resolve it
@@ -573,22 +573,22 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     public void unparsedEntityDecl(String name,String publicId,String systemId,String notationName) throws SAXException {
         // #### not supported yet!
     }
-    
-    
+
+
     // Properties
     //-------------------------------------------------------------------------
     public ElementStack getElementStack() {
         return elementStack;
     }
-    
+
     public void setElementStack(ElementStack elementStack) {
         this.elementStack = elementStack;
     }
-    
+
     public EntityResolver getEntityResolver() {
         return entityResolver;
     }
-    
+
     public void setEntityResolver(EntityResolver entityResolver) {
         this.entityResolver = entityResolver;
     }
@@ -596,18 +596,18 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     public InputSource getInputSource() {
         return inputSource;
     }
-    
+
     public void setInputSource(InputSource inputSource) {
         this.inputSource = inputSource;
     }
 
     /** @return whether internal DTD declarations should be expanded into the DocumentType
-      * object or not. 
+      * object or not.
       */
     public boolean isIncludeInternalDTDDeclarations() {
         return includeInternalDTDDeclarations;
     }
-    
+
     /** Sets whether internal DTD declarations should be expanded into the DocumentType
       * object or not.
       *
@@ -617,14 +617,14 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     public void setIncludeInternalDTDDeclarations(boolean includeInternalDTDDeclarations) {
         this.includeInternalDTDDeclarations = includeInternalDTDDeclarations;
     }
-    
+
     /** @return whether external DTD declarations should be expanded into the DocumentType
-      * object or not. 
+      * object or not.
       */
     public boolean isIncludeExternalDTDDeclarations() {
         return includeExternalDTDDeclarations;
     }
-    
+
     /** Sets whether DTD external declarations should be expanded into the DocumentType
       * object or not.
       *
@@ -634,14 +634,14 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     public void setIncludeExternalDTDDeclarations(boolean includeExternalDTDDeclarations) {
         this.includeExternalDTDDeclarations = includeExternalDTDDeclarations;
     }
-    
+
     /** Returns whether adjacent text nodes should be merged together.
       * @return Value of property mergeAdjacentText.
       */
     public boolean isMergeAdjacentText() {
         return mergeAdjacentText;
     }
-    
+
     /** Sets whether or not adjacent text nodes should be merged
       * together when parsing.
       * @param mergeAdjacentText New value of property mergeAdjacentText.
@@ -649,16 +649,16 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     public void setMergeAdjacentText(boolean mergeAdjacentText) {
         this.mergeAdjacentText = mergeAdjacentText;
     }
-    
-       
+
+
     /** Sets whether whitespace between element start and end tags should be ignored
-      * 
+      *
       * @return Value of property stripWhitespaceText.
       */
     public boolean isStripWhitespaceText() {
         return stripWhitespaceText;
     }
-    
+
     /** Sets whether whitespace between element start and end tags should be ignored.
       *
       * @param stripWhitespaceText New value of property stripWhitespaceText.
@@ -666,12 +666,12 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     public void setStripWhitespaceText(boolean stripWhitespaceText) {
         this.stripWhitespaceText = stripWhitespaceText;
     }
-    
+
     // Implementation methods
     //-------------------------------------------------------------------------
 
     /** If the current text buffer contains any text then create a new
-      * text node with it and add it to the current element 
+      * text node with it and add it to the current element
       */
     protected void completeCurrentTextNode() {
         if ( stripWhitespaceText ) {
@@ -688,49 +688,46 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
         }
         else {
             currentElement.addText( textBuffer.toString() );
-        }        
+        }
         textBuffer.setLength(0);
         textInTextBuffer = false;
     }
-    
-    /** @return the current document 
+
+    /** @return the current document
       */
     protected Document createDocument() {
         Document document = documentFactory.createDocument();
-        
+
         // set the EntityResolver
         document.setEntityResolver(entityResolver);
         if ( inputSource != null ) {
             document.setName( inputSource.getSystemId() );
         }
-            
+
         return document;
     }
-    
+
     /** a Strategy Method to determine if a given entity name is ignorable
       */
     protected boolean isIgnorableEntity(String name) {
-        return "amp".equals( name ) 
-            || "apos".equals( name ) 
-            || "gt".equals( name ) 
-            || "lt".equals( name ) 
+        return "amp".equals( name )
+            || "apos".equals( name )
+            || "gt".equals( name )
+            || "lt".equals( name )
             || "quot".equals( name );
     }
-    
+
 
     /** Add all namespaces declared before the startElement() SAX event
-      * to the current element so that they are available to child elements 
+      * to the current element so that they are available to child elements
       * and attributes
       */
-    protected void addDeclaredNamespaces(Element element) {        
+    protected void addDeclaredNamespaces(Element element) {
         Namespace elementNamespace = element.getNamespace();
         for ( int size = namespaceStack.size(); declaredNamespaceIndex < size; declaredNamespaceIndex++ ) {
             Namespace namespace = namespaceStack.getNamespace(declaredNamespaceIndex);
             if ( namespace != elementNamespace ) {
-                String prefix = namespace.getPrefix();
-                if ( prefix != null && prefix.length() > 0 ) {
-                    element.add( namespace );
-                }
+                element.add( namespace );
             }
         }
     }
@@ -740,7 +737,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     protected void addAttributes( Element element, Attributes attributes ) {
         // XXXX: as an optimisation, we could deduce this value from the current
         // SAX parser settings, the SAX namespaces-prefixes feature
-        
+
         boolean noNamespaceAttributes = false;
         if ( element instanceof AbstractElement ) {
             // optimised method
@@ -756,8 +753,8 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
                     String attributeLocalName = attributes.getLocalName(i);
                     String attributeValue = attributes.getValue(i);
 
-                    QName attributeQName = namespaceStack.getAttributeQName( 
-                        attributeURI, attributeLocalName, attributeQualifiedName 
+                    QName attributeQName = namespaceStack.getAttributeQName(
+                        attributeURI, attributeLocalName, attributeQualifiedName
                     );
                     element.addAttribute(attributeQName, attributeValue);
                 }
@@ -773,7 +770,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
         }
         internalDTDDeclarations.add( declaration );
     }
-    
+
     /** Adds an external DTD declaration to the list of declarations */
     protected void addExternalDTDDeclaration(Object declaration) {
         if ( externalDTDDeclarations == null ) {
@@ -781,10 +778,10 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
         }
         externalDTDDeclarations.add( declaration );
     }
-    
+
     protected ElementStack createElementStack() {
         return new ElementStack();
-    }    
+    }
 }
 
 

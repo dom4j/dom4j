@@ -1,9 +1,9 @@
 /*
  * Copyright 2001 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-   
+
 import org.dom4j.Attribute;
 import org.dom4j.Branch;
 import org.dom4j.CDATA;
@@ -43,21 +43,21 @@ public class DOMReader {
 
     /** <code>DocumentFactory</code> used to create new document objects */
     private DocumentFactory factory;
-    
+
     /** stack of <code>Namespace</code> and <code>QName</code> objects */
     private NamespaceStack namespaceStack;
 
-    
+
     public DOMReader() {
         this.factory = DocumentFactory.getInstance();
         this.namespaceStack = new NamespaceStack(factory);
     }
-    
+
     public DOMReader(DocumentFactory factory) {
         this.factory = factory;
         this.namespaceStack = new NamespaceStack(factory);
     }
-    
+
     /** @return the <code>DocumentFactory</code> used to create document objects
       */
     public DocumentFactory getDocumentFactory() {
@@ -80,19 +80,19 @@ public class DOMReader {
             return (Document) domDocument;
         }
         Document document = createDocument();
-        
+
         clearNamespaceStack();
-        
+
         org.w3c.dom.NodeList nodeList = domDocument.getChildNodes();
         for ( int i = 0, size = nodeList.getLength(); i < size; i++ ) {
             readTree( nodeList.item(i), document );
         }
         return document;
     }
-    
-    
+
+
     // Implementation methods
-    protected void readTree(org.w3c.dom.Node node, Branch current) {    
+    protected void readTree(org.w3c.dom.Node node, Branch current) {
         Element element = null;
         Document document = null;
         if ( current instanceof Element ) {
@@ -108,13 +108,13 @@ public class DOMReader {
 
             case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
                 if ( current instanceof Element ) {
-                    ((Element) current).addProcessingInstruction( 
-                        node.getNodeName(), node.getNodeValue() 
+                    ((Element) current).addProcessingInstruction(
+                        node.getNodeName(), node.getNodeValue()
                     );
                 }
                 else {
-                    ((Document) current).addProcessingInstruction( 
-                        node.getNodeName(), node.getNodeValue() 
+                    ((Document) current).addProcessingInstruction(
+                        node.getNodeName(), node.getNodeValue()
                     );
                 }
                 break;
@@ -129,13 +129,13 @@ public class DOMReader {
                 break;
 
             case org.w3c.dom.Node.DOCUMENT_TYPE_NODE:
-                org.w3c.dom.DocumentType domDocType 
+                org.w3c.dom.DocumentType domDocType
                     = (org.w3c.dom.DocumentType) node;
-                
-                document.addDocType( 
-                    domDocType.getName(), 
-                    domDocType.getPublicId(), 
-                    domDocType.getSystemId() 
+
+                document.addDocType(
+                    domDocType.getName(),
+                    domDocType.getPublicId(),
+                    domDocType.getSystemId()
                 );
                 break;
 
@@ -153,7 +153,7 @@ public class DOMReader {
                     org.w3c.dom.Node firstChild = node.getFirstChild();
                     if ( firstChild != null ) {
                         element.addEntity(
-                            node.getNodeName(), 
+                            node.getNodeName(),
                             firstChild.getNodeValue()
                         );
                     }
@@ -165,16 +165,16 @@ public class DOMReader {
 
             case org.w3c.dom.Node.ENTITY_NODE:
                 element.addEntity(
-                    node.getNodeName(), 
+                    node.getNodeName(),
                     node.getNodeValue()
                 );
                 break;
-                
+
             default:
                 System.out.println( "WARNING: Unknown DOM node type: " + node.getNodeType() );
         }
     }
-    
+
     protected void readElement(org.w3c.dom.Node node, Branch current) {
         int previouslyDeclaredNamespaces = namespaceStack.size();
 
@@ -187,7 +187,7 @@ public class DOMReader {
                 namespaceUri = attribute.getNodeValue();
             }
         }
-        
+
         QName qName = namespaceStack.getQName( namespaceUri, node.getLocalName(), node.getNodeName() );
         Element element = current.addElement(qName);
 
@@ -199,30 +199,34 @@ public class DOMReader {
 
                 // Define all namespaces first then process attributes later
                 String name = attribute.getNodeName();
-                if (name.startsWith("xmlns")) {                        
+                if (name.startsWith("xmlns")) {
                     int index = name.indexOf( ':', 5 );
-                    if ( index > 0 ) {
-                        String uri = attribute.getNodeValue();                        
-                        if ( namespaceUri == null || ! namespaceUri.equals( uri ) ) {
+                    String uri = attribute.getNodeValue();
+                    if ( namespaceUri == null || ! namespaceUri.equals( uri ) ) {
+                        Namespace namespace = null;
+                        if ( index > 0 ) {
                             String prefix = name.substring(index + 1);
-                            Namespace namespace = namespaceStack.addNamespace( prefix, uri );
-                            element.add( namespace );
+                            namespace = namespaceStack.addNamespace( prefix, uri );
                         }
+                        else {
+                            namespace = namespaceStack.addNamespace( "", uri );
+                        }
+                        element.add( namespace );
                     }
-                } 
+                }
                 else {
                     attributes.add( attribute );
                 }
             }
-            
+
             // now add the attributes, the namespaces should be available
             size = attributes.size();
             for ( int i = 0; i < size; i++ ) {
-                org.w3c.dom.Node attribute = (org.w3c.dom.Node) attributes.get(i);                
-                QName attributeQName = namespaceStack.getQName( 
-                    attribute.getNamespaceURI(), 
-                    attribute.getLocalName(), 
-                    attribute.getNodeName() 
+                org.w3c.dom.Node attribute = (org.w3c.dom.Node) attributes.get(i);
+                QName attributeQName = namespaceStack.getQName(
+                    attribute.getNamespaceURI(),
+                    attribute.getLocalName(),
+                    attribute.getNodeName()
                 );
                 element.addAttribute( attributeQName, attribute.getNodeValue() );
             }
@@ -234,21 +238,21 @@ public class DOMReader {
             org.w3c.dom.Node child = children.item(i);
             readTree( child, element );
         }
-        
+
         // pop namespaces from the stack
         while (namespaceStack.size() > previouslyDeclaredNamespaces) {
             namespaceStack.pop();
         }
     }
-    
+
     protected Namespace getNamespace(String prefix, String uri) {
         return getDocumentFactory().createNamespace(prefix, uri);
     }
-    
+
     protected Document createDocument() {
         return getDocumentFactory().createDocument();
     }
-    
+
     protected void clearNamespaceStack() {
         namespaceStack.clear();
         if ( ! namespaceStack.contains( Namespace.XML_NAMESPACE ) ) {
