@@ -239,7 +239,7 @@
              noindex="false"
              windowtitle="${Name} API"
              doctitle="${Name}"
-             bottom="Copyright &#169; ${year} MetaStuff Ltd. All Rights Reserved."
+             bottom="Copyright &#169; ${year} MetaStuff Ltd. All Rights Reserved. Hosted by &lt;p&gt; &lt;img src='http://sourceforge.net/sflogo.php?group_id=16035' width='88' height='31' border='0' alt='SourceForge Logo' /&gt;"
              stylesheetfile="${doc.dir}/style/javadoc.css">
       <link href="http://java.sun.com/products/jdk/1.3/docs/api"/>
       <link href="http://java.sun.com/xml/jaxp-docs-1.1/docs/api"/>
@@ -259,7 +259,7 @@
              noindex="false"
              windowtitle="${Name} Full JavaDoc"
              doctitle="${Name}"
-             bottom="Copyright &#169; ${year} MetaStuff Ltd. All Rights Reserved."
+             bottom="Copyright &#169; ${year} MetaStuff Ltd. All Rights Reserved. Hosted by &lt;p&gt; &lt;img src='http://sourceforge.net/sflogo.php?group_id=16035' width='88' height='31' border='0' alt='SourceForge Logo' /&gt;"
              stylesheetfile="${doc.dir}/style/javadoc.css">
       <link href="http://java.sun.com/products/jdk/1.3/docs/api"/>
       <link href="http://java.sun.com/xml/jaxp-docs-1.1/docs/api"/>
