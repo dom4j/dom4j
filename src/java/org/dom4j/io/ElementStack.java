@@ -22,7 +22,7 @@ import org.dom4j.ElementPath;
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-class ElementStack implements ElementPath {
+public class ElementStack implements ElementPath {
 
     /** stack of <code>Element</code> objects */
     protected Element[] stack;
@@ -140,6 +140,13 @@ class ElementStack implements ElementPath {
         this.handler.removeHandler(getHandlerPath(path));
     }
     
+    /** @return true when an <code>ElementHandler</code> is registered for
+      * the specified path.
+      */
+    public boolean containsHandler(String path) {
+        return this.handler.containsHandler(path);
+    }
+
     private String getHandlerPath(String path) {
         String handlerPath;
         if (this.handler == null) {

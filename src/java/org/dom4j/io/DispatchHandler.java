@@ -79,6 +79,13 @@ class DispatchHandler implements ElementHandler
         return (ElementHandler)handlers.remove(path);   
     }
     
+     /** @return true when an <code>ElementHandler</code> is registered for
+       * the specified path.
+       */
+     public boolean containsHandler(String path) {
+        return handlers.containsKey(path);
+     }
+
     /** When multiple <code>ElementHandler</code> instances have been 
       * registered, this will set a default <code>ElementHandler</code>
       * to be called for any path which does <b>NOT</b> have a handler
