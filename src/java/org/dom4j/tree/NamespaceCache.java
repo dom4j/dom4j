@@ -9,8 +9,9 @@
 
 package org.dom4j.tree;
 
-import java.util.Hashtable;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.Collections;
 
 import org.dom4j.Namespace;
 
@@ -86,14 +87,14 @@ public class NamespaceCache {
       * @return a newly created {@link Map} instance.
       */
     protected Map createPrefixMap() {
-        return new Hashtable();
+        return Collections.synchronizedMap(new HashMap());
     }
 
     /** A factory method to create URI caches
       * @return a newly created {@link Map} instance.
       */
     protected Map createURIMap() {
-        return new Hashtable();
+        return Collections.synchronizedMap(new HashMap());
     }
 }
 

@@ -10,7 +10,6 @@
 package org.dom4j.tree;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -163,7 +162,7 @@ public class QNameCache {
       * @return a newly created {@link Map} instance.
       */
     protected Map createMap() {
-        return new Hashtable();
+        return Collections.synchronizedMap(new HashMap());
     }
 
     /** Factory method to create a new QName object
