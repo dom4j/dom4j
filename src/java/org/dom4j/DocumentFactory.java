@@ -20,9 +20,9 @@ import org.dom4j.tree.DefaultDocumentType;
 import org.dom4j.tree.DefaultElement;
 import org.dom4j.tree.DefaultEntity;
 import org.dom4j.tree.DefaultProcessingInstruction;
-import org.dom4j.tree.DefaultText;
 import org.dom4j.tree.QNameCache;
 import org.dom4j.tree.XPathEntity;
+import org.dom4j.tree.XPathText;
 import org.dom4j.xpath.DefaultXPath;
 import org.dom4j.xpath.XPathPattern;
 
@@ -115,12 +115,13 @@ public class DocumentFactory {
     }
     
     public Text createText(String text) {
-        return new DefaultText(text);
+        // allow editing in place by default
+        return new XPathText(text);
     }
     
     
     public Entity createEntity(String name) {
-        // allow this entity to be modified in place
+        // allow editing in place by default
         return new XPathEntity(name);
     }
     
