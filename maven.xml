@@ -1,4 +1,4 @@
-<project default="java:jar" 
+<project default="jar:jar" 
          xmlns:ant="jelly:ant"
          xmlns:maven="jelly:maven" >
 
