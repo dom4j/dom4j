@@ -248,7 +248,12 @@ public class DocumentHelper {
         Element element = null;
         while ( enum.hasMoreTokens() ) {
             String name = enum.nextToken();
-            element = parent.element( name );
+            if ( name.indexOf( ':' ) > 0 ) {
+                element = parent.element( parent.getQName( name ) );
+            }
+            else {
+                element = parent.element( name );
+            }
             if ( element == null ) {
                 element = parent.addElement( name );
             }

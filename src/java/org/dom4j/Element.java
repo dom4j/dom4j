@@ -49,6 +49,15 @@ public interface Element extends Branch {
 
     
  
+    /** <p>Returns the <code>QName</code> for the given qualified name, using
+      * the namespace URI in scope for the given prefix of the qualified name
+      * or the default namespace if the qualified name has no prefix.</p>
+      *
+      * @return the <code>QName</code> for the given qualified name
+      */
+    public QName getQName(String qualifiedName);
+
+ 
     /** <p>Returns the <code>Namespace</code> which is mapped to the given
       * prefix or null if it could not be found.</p>
       *

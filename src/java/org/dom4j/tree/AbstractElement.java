@@ -286,7 +286,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
             Object object = list.get(i);
             if ( object instanceof Element ) {
                 Element element = (Element) object;
-                if ( name.equals( element.getQualifiedName() ) ) {
+                if ( name.equals( element.getName() ) ) {
                     return element;
                 }
             }
@@ -336,7 +336,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
             Object object = list.get(i);
             if ( object instanceof Element ) {
                 Element element = (Element) object;
-                if ( name.equals( element.getQualifiedName() ) ) {
+                if ( name.equals( element.getName() ) ) {
                     answer.addLocal( element );
                 }
             }
@@ -414,7 +414,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         int size = list.size();
         for ( int i = 0; i < size; i++ ) {
             Attribute attribute = (Attribute) list.get(i);
-            if ( name.equals( attribute.getQualifiedName() ) ) {
+            if ( name.equals( attribute.getName() ) ) {
                 return attribute;
             }
         }
@@ -1061,6 +1061,23 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     }
 
     
+    
+    public QName getQName(String qualifiedName) {
+        String prefix = "";
+        String localName = qualifiedName;
+        int index = qualifiedName.indexOf(":");
+        if (index > 0) {
+            prefix = qualifiedName.substring(0, index);
+            localName = qualifiedName.substring(index+1);
+        }
+        Namespace namespace = getNamespaceForPrefix(prefix);
+        if ( namespace != null ) {
+            return getDocumentFactory().createQName( localName, namespace );
+        }
+        else {
+            return getDocumentFactory().createQName( localName );
+        }
+    }
     
     public Namespace getNamespaceForPrefix(String prefix) {
         if ( prefix == null ) {

@@ -26,15 +26,26 @@
           <p>Patched bug in QName which was using the qualified name rather than the local name along with the namespace URI
             to determine equality.
           </p>
-          <p>Patched methods on Element, addElement(String) and element(String) and elements(String) and elementIterator(String)
-            to compare qualified names rather than local names. This allows simple string based adding and filtering to be done in namespace aware documents.
-            For exact fine grained control where comparison is only by local name and namespace URI then the equivalent methods taking a QName should be used.
-          </p>
           <p>
             Added an EntityResolver property to SAXReader to make it easier to configure a specific EntityResolver.
           </p>
           <p>
             Added patch kindly supplied by Michal Palicka that SAXReader was passing in the wrong name for the SAX string-interning feature. Thanks Michal!
+          </p>
+          <p>Added helper method getQName(String qualifiedName) to Element so that easier element name matching can be done. Here are some examples of it in use.
+<pre>
+// find all elements with a local name of "foo" 
+// in any namespace
+List list = element.elements( "foo" );
+
+// find all elements with a local name "foo" 
+// and the default namespace URI
+List list = element.elements( element.getQName( "foo" ) );
+
+// find all elements which match the local name "foo" 
+// and the namespace URI mapped to the "x" prefix
+List list = element.elements( element.getQName( "x:foo" ) );
+</pre>
           </p>
         </section>
         <section title="0.9 release">
