@@ -53,6 +53,24 @@
               /foo[@a='1' and @b='2'] was no longer working correctly. This is now fixed
               and many tests of this nature have been added to the JUnit test harness.
             </p>
+            <p>Fixed some namespace related bugs found by Steen Lehmann.
+              It appears that for a document of:-
+
+           </p>
+<pre>
+&lt;a xmlns="dummyNamespace"&gt;
+  &lt;b&gt;
+    &lt;c&gt;Hello&lt;/c&gt;
+  &lt;/b&gt;
+&lt;/a&gt;
+</pre>
+           <p>Then the path /a/b/c will not find anything - this is correct according to the XPath spec.
+              Instead the path /*[name()='a']/*[name()='b']/*[name()='c'] is required.
+              These changes have been applied to getPath() and getUniquePath() such that
+              these methods now work, irrespectively of the namespaces used in a document.
+              Finally many new test cases have been added to validate a variety of XPath
+              expressions with various uses of namespaces.
+            </p>
           </section>
         </section>
         <section title="0.7 release">

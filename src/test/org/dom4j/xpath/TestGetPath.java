@@ -19,8 +19,10 @@ import junit.textui.TestRunner;
 import org.dom4j.Attribute;
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Branch;
+import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
+import org.dom4j.io.SAXReader;
 
 /** Test harness for the GetPath() method
   *
@@ -80,6 +82,18 @@ public class TestGetPath extends AbstractTestCase {
             testRelativePath( root, child, pathRel + "/url", uniquePathRel + "/url" );
         }
     }
+
+    public void testDefaultNamespace() throws Exception {
+        SAXReader reader = new SAXReader();
+        Document doc = reader.read( "xml/test/defaultNamespace.xml" );
+        Element root = doc.getRootElement();
+        testPath( root, "/*[name()='a']" ); 
+        
+        Element child = (Element) root.elements().get(0);
+        testPath( child, "/*[name()='a']/*[name()='b']" ); 
+        testRelativePath( root, child, "*[name()='b']" ); 
+    }
+    
         
     protected void testPath(Node node, String value) {
         testPath( node, value, value );
@@ -88,6 +102,10 @@ public class TestGetPath extends AbstractTestCase {
     protected void testPath(Node node, String path, String uniquePath) {
         assertEquals( "getPath expression should be what is expected", path, node.getPath() );
         assertEquals( "getUniquePath expression should be what is expected", uniquePath, node.getUniquePath() );
+    }
+    
+    protected void testRelativePath( Element context, Node node, String pathRel ) {
+        testRelativePath( context, node, pathRel, pathRel );
     }
     
     protected void testRelativePath( Element context, Node node, String pathRel, String uniquePathRel ) {

@@ -45,7 +45,7 @@ public class NameTestStep extends UnAbbrStep {
         _namespacePrefix = namespacePrefix;
         _localName = localName;
         matchesAnyName = "*".equals( _localName );
-        matchesAnyNamespace = _namespacePrefix != null && _namespacePrefix.equals( "*" );        
+        matchesAnyNamespace = matchesAnyName || _namespacePrefix.equals( "*" );        
     }
     
     public List applyToSelf(Object node, ContextSupport support) {
@@ -145,48 +145,36 @@ public class NameTestStep extends UnAbbrStep {
             }
         }
         else if ( node instanceof Element ) {
-            Element element = (Element) node;            
-            Iterator iter = null;
-            
+            Element element = (Element) node;                        
             if ( matchesAnyNamespace ) {
+                Iterator iter = null;
                 if ( matchesAnyName ) {
                     iter = element.elementIterator();
                 }
                 else {
                     iter = element.elementIterator( _localName );
                 }
-            }
-            else {
-                Namespace ns = element.getNamespaceForPrefix( _namespacePrefix );
-                if ( ns != null ) {
-                    if ( matchesAnyName ) {
-                        ArrayList results = new ArrayList();
-                        String uri = ns.getURI();
-                        for ( int i = 0, size = element.nodeCount(); i < size; i++ ) {
-                            Node nodeChild = element.node(i);
-                            if ( nodeChild instanceof Element ) {
-                                Element elementChild = (Element) nodeChild;
-                                if ( uri.equals( elementChild.getNamespaceURI() ) ) {
-                                    results.add( nodeChild );
-                                }
-                            }
-                        }
-                        return results;
-                    }
-                    else {
-                        QName qname = QName.get( _localName, ns );
-                        iter = element.elementIterator( qname );
-                    }
-                }
-            }
-            
-            if ( iter != null ) {
                 ArrayList results = new ArrayList();
                 while ( iter.hasNext() ) {
                     results.add( iter.next() );
                 }
                 return results;
             }
+            else {
+                ArrayList results = new ArrayList();
+                for ( Iterator iter = element.elementIterator(); iter.hasNext(); ) {
+                    Element childElement = (Element) iter.next();
+                    if ( matchesAnyName || _localName.equals( childElement.getName() ) ) {
+                        Namespace ns = childElement.getNamespaceForPrefix( _namespacePrefix );
+                        if ( ns != null ) {
+                            if ( matchesNamespaceURIs( ns.getURI(), childElement.getNamespaceURI() ) ) {
+                                results.add( childElement );
+                            }
+                        }
+                    }
+                }
+                return results;
+            }            
 /*            
             Namespace ns = null;
             if ( _namespacePrefix != null ) {
@@ -320,6 +308,18 @@ public class NameTestStep extends UnAbbrStep {
 */
     }
 
+    /** @return true if the two namespace URIs are equal
+     */
+    protected boolean matchesNamespaceURIs( String u1, String u2 ) {
+        if ( u1 == u2 ) {
+            return true;
+        }
+        if ( u1 != null && u2 != null ) {
+            return u1.equals( u2 );
+        }
+        return false;
+    }
+        
     public String toString() {
         return "[NameTestStep [ name: " + _namespacePrefix + ":" + _localName + " " + super.toString() + " ]]";
     }
