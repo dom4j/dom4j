@@ -82,9 +82,27 @@ class DispatchHandler implements ElementHandler
      /** @return true when an <code>ElementHandler</code> is registered for
        * the specified path.
        */
-     public boolean containsHandler(String path) {
+    public boolean containsHandler(String path) {
         return handlers.containsKey(path);
-     }
+    }
+     
+    /**
+     * Get the registered {@link ElementHandler} for the specified path.
+     * @param path XML path to get the handler for
+     * @return the registered handler
+     */
+    public ElementHandler getHandler(String path){
+        return (ElementHandler)handlers.get(path);
+    }
+    
+    /**
+     * Returns the number of {@link ElementHandler} objects that are waiting for their elements
+     * closing tag.
+     * @return number of active handlers
+     */
+    public int getActiveHandlerCount(){
+       return handlerStack.size();
+    }
 
     /** When multiple <code>ElementHandler</code> instances have been 
       * registered, this will set a default <code>ElementHandler</code>

@@ -177,6 +177,13 @@
     <!-- compilation dependencies -->
 
     <dependency>
+      <groupId>jaxme</groupId>
+      <artifactId>jaxme-api</artifactId>
+      <version>0.3</version>
+      <url>http://ws.apache.org/jaxme/index.html</url>
+    </dependency>
+
+    <dependency>
       <groupId>jaxen</groupId>
       <artifactId>jaxen</artifactId>
       <version>1.1-beta-4</version>

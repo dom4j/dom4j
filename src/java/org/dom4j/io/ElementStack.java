@@ -22,7 +22,7 @@ import org.dom4j.ElementPath;
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class ElementStack implements ElementPath {
+class ElementStack implements ElementPath {
 
     /** stack of <code>Element</code> objects */
     protected Element[] stack;
@@ -44,6 +44,10 @@ public class ElementStack implements ElementPath {
     public void setDispatchHandler(DispatchHandler handler)
     {
         this.handler = handler;   
+    }
+    
+    public DispatchHandler getDispatchHandler(){
+       return this.handler;
     }
     
     /** Peeks at the top element on the stack without changing the contents

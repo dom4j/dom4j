@@ -8,6 +8,9 @@
   <body>
 
     <release version="1.5-dev" date="in CVS">
+      <action dev="maartenc" type="add" due-to="Wonne Keysers">
+        Added initial JAXB support.
+      </action>
       <action dev="maartenc" type="update" due-to="Christian Niles">
         Updated the STAX classes to provide document encoding.
       </action>

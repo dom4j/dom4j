@@ -20,6 +20,11 @@
             <include name="xerces*.jar" /> <!-- required by msv -->
         </fileset>
         <pathelement location="."/>
+<!--
+    	<fileset dir="./lib/jaxb-ri">
+            <include name="*.jar" />
+        </fileset>
+-->
     </path>
 
     <path id="samples.classpath">
@@ -327,6 +332,50 @@
       <classpath>
         <pathelement location="${build.dest}" />
         <path refid="samples.classpath" />
+      </classpath>
+    </java>
+  </target>
+	
+  <target name="prepare-jaxb" depends="prepare-samples">
+    <path id="classpath.jaxb">
+      <pathelement location="./lib/tools/jaxme-0.3.jar"/>
+      <pathelement location="./lib/tools/jaxme-js-0.3.jar"/>
+      <pathelement location="./lib/tools/jaxme-xs-0.3.jar"/>
+      <pathelement location="./lib/jaxme-api-0.3.jar"/>
+    </path>
+
+    <taskdef name="xjc" classname="org.apache.ws.jaxme.generator.XJCTask">
+      <classpath refid="classpath.jaxb" />
+    </taskdef>
+  	
+    <mkdir dir="${build.generated.src}"/>
+  	  		
+    <xjc schema="xml/jaxb/primer.xsd" target="${build.generated.src}" package="org.dom4j.test.primer">
+      <produces dir="${build.generated.src}" />
+    </xjc>
+  	
+    <javac destdir="${build.dest}">
+      <src path="${build.generated.src}"/>
+      <classpath>
+        <path refid="classpath.jaxb"/>
+        <!--path refid="test.classpath"/-->
+      </classpath>
+    </javac>
+  	
+    <copy todir="${build.dest}">
+      <fileset dir="${build.generated.src}">
+        <include name="**/jaxb.properties" />
+        <include name="**/Configuration.xml" />
+      </fileset>
+    </copy>
+  </target>
+	
+  <target name="demo-jaxb" depends="prepare-jaxb, samples">	  	
+    <java classname="org.dom4j.samples.jaxb.JAXBDemo" >
+      <classpath>
+        <path refid="classpath.jaxb" />
+        <path refid="samples.classpath" />
+      	<pathelement location="${build.dest}" />
       </classpath>
     </java>
   </target>
