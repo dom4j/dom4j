@@ -11,6 +11,7 @@ package validate;
 
 import com.sun.msv.grammar.Grammar;
 import com.sun.msv.reader.util.GrammarLoader;
+import com.sun.msv.reader.util.IgnoreController;
 import com.sun.msv.verifier.DocumentDeclaration;
 import com.sun.msv.verifier.ValidityViolation;
 import com.sun.msv.verifier.Verifier;
@@ -25,6 +26,7 @@ import org.dom4j.io.SAXWriter;
 
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ErrorHandler;
+import org.xml.sax.Locator;
 import org.xml.sax.SAXParseException;
 
 /** A sample program which validates an already existing dom4j Document
@@ -78,9 +80,18 @@ public class MSVDemo {
         
         DocumentDeclaration docDeclaration = GrammarLoader.loadVGM(
             schema,
-            new com.sun.msv.reader.util.IgnoreController(),
+            new IgnoreController() {
+                public void error(Locator[] locations, String message, Exception e) {
+                    System.out.println( "ERROR: " + message );
+                }
+                public void warning(Locator[] locations, String message) {
+                    System.out.println( "WARNING: " + message );
+                }
+            },
             saxFactory 
         );
+        
+        System.out.println( "Loaded schema document: " + docDeclaration );
         
         Verifier verifier = new Verifier( 
             docDeclaration, 
@@ -93,6 +104,8 @@ public class MSVDemo {
                 }
             }
         );
+        
+        System.out.println( "Validating XML document" );
         
         SAXWriter writer = new SAXWriter( (ContentHandler) verifier );
         writer.setErrorHandler(
