@@ -39,6 +39,11 @@ public class ElementNameIterator extends FilterIterator {
         this(proxy, name, namespace.getPrefix(), namespace.getURI());
     }
 
+    public ElementNameIterator(Iterator proxy, String name) {
+        super(proxy);
+        this.name = name;
+    }
+
 
     /** @return true if the given element implements the {@link Element} 
       * interface
@@ -47,6 +52,9 @@ public class ElementNameIterator extends FilterIterator {
         if (object instanceof Element) {
             Element element = (Element) object;
             if ( name.equals( element.getName() ) ) {
+                if ( namespaceURI == null ) {
+                    return true;
+                }
                 if ( namespaceURI.equals( element.getNamespaceURI() ) 
                     && namespacePrefix.equals( element.getNamespacePrefix() ) ) {
                     return true;

@@ -42,7 +42,7 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
     public String asXML() {
         try {
             StringWriter out = new StringWriter();
-            writer.output(this, out);
+            writer.write(this, out);
             return out.toString();
         } 
         catch (IOException e) {
@@ -52,7 +52,7 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
 
     public void writeXML(PrintWriter out) {
         try {
-            writer.output(this, out);
+            writer.write(this, out);
         }
         catch (IOException e) {
             throw new RuntimeException("Wierd IOException while generating textual representation: " + e.getMessage());

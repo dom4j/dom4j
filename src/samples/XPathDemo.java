@@ -60,10 +60,10 @@ public class XPathDemo extends SAXDemo {
         for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
             Object object = iter.next();
             if ( object instanceof Node ) {
-                writer.outputNode( (Node) object, System.out  );
+                writer.write( (Node) object, System.out  );
             }
             else {
-                writer.output( object.toString(), System.out );
+                writer.write( object.toString(), System.out );
             }
         }
     }

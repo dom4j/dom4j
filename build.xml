@@ -204,6 +204,7 @@
              windowtitle="${Name} API"
              doctitle="${Name}"
              bottom="Copyright &#169; ${year} MetaStuff Ltd. All Rights Reserved."
+             stylesheetfile="${doc.dir}/style/javadoc.css"
     />
   </target>
 

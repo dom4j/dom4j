@@ -140,12 +140,18 @@ public interface Element extends Branch {
     public Iterator attributeIterator();
     public void setAttributes(List attributes);
 
-
+    /** @return the attribute for the given local name in any namespace.
+      * If there are more than one attributes with the given local name 
+      * in different namespaces then the first one is returned.
+      */
     public Attribute getAttribute(String name);
+    
+    /** @return the attribute for the given local name and namespace.
+      */
     public Attribute getAttribute(String name, Namespace ns);
 
     /** <p>This returns the attribute value for the attribute with the 
-      * given name and within no namespace or null if there is no such 
+      * given name and any namespace or null if there is no such 
       * attribute or the empty string if the attribute value is empty.</p>
       *
       * @param name is the name of the attribute value to be returnd
@@ -155,7 +161,7 @@ public interface Element extends Branch {
     public String getAttributeValue(String name);
 
     /** <p>This returns the attribute value for the attribute with the 
-      * given name and within no namespace or the default value if there is 
+      * given name and any namespace or the default value if there is 
       * no such attribute value.</p>
       *
       * @param name is the name of the attribute value to be returnd
@@ -190,7 +196,7 @@ public interface Element extends Branch {
     public String getAttributeValue(String name, Namespace namespace, String defaultValue);
 
     
-    /** <p>Sets the attribute value of the given name.</p>
+    /** <p>Sets the attribute value of the given local name.</p>
       *
       * @param name is the name of the attribute whose value is to be added 
       * or updated
@@ -207,22 +213,20 @@ public interface Element extends Branch {
       */
     public void setAttributeValue(String name, String value, Namespace namespace);
 
-    /** <p>Removes the attribute with the given name.</p>
+    /** <p>Removes the first attribute with the given name and any namespace.</p>
       *
       * @param name is the name of the attribute to be removed
-      * @return true if the attribute was successfully removed or false 
-      *    if the attribute did not exist
+      * @return the attribute that was removed or null if none was removed
       */
-    public boolean removeAttribute(String name);
+    public Attribute removeAttribute(String name);
     
     /** <p>Removes the attribute with the given name and namespace.</p>
       *
       * @param name is the name of the attribute to be removed
       * @param namespace is the <code>Namespace</code> of the attribute
-      * @return true if the attribute was successfully removed or false 
-      *    if the attribute did not exist
+      * @return the attribute that was removed or null if none was removed
       */
-    public boolean removeAttribute(String name, Namespace namespace);
+    public Attribute removeAttribute(String name, Namespace namespace);
     
 
     
@@ -237,7 +241,18 @@ public interface Element extends Branch {
     
     // return the child elements
     public Element getElementByID(String elementID);
+    
+    
+    /** Returns the first element for the given local name and any namespace.
+      * 
+      * @return the first element with the given local name 
+      */
     public Element getElement(String name);
+    
+    /** Returns the first element for the given local name and namespace.
+      * 
+      * @return the first element with the given local name and namespace 
+      */
     public Element getElement(String name, Namespace namespace);
 
     /** <p>Returns the elements contained in this element. 
@@ -251,14 +266,15 @@ public interface Element extends Branch {
       */
     public List getElements();
     
-    /** <p>Returns the elements contained in this element with the given name
-      * and no namespace.
+    /** <p>Returns the elements contained in this element with the given 
+      * local name and any namespace.
       * If no elements are found then this method returns an empty list.
       *
       * The list is backed by the element such that changes to the list will
       * be reflected in the element though the reverse is not the case.</p>
       *
-      * @return a list of all the elements in this element for the given name
+      * @return a list of all the elements in this element for the given 
+      * local name
       */
     public List getElements(String name);
     
@@ -275,7 +291,15 @@ public interface Element extends Branch {
     public List getElements(String name, Namespace namespace);
 
     public Iterator elementIterator();
+    
+    /** Returns an iterator over the elements contained in this element
+      * which match the given local name and any namespace.
+      *
+      * @return an iterator over the contained elements matching the given 
+      * local name
+      */
     public Iterator elementIterator(String name);
+    
     public Iterator elementIterator(String name, Namespace namespace);
     
     
@@ -424,6 +448,23 @@ public interface Element extends Branch {
     public Element createCopy();
     public Element createCopy(String name);
     public Element createCopy(String name, Namespace namespace);
+    
+    
+    /** <p>Removes this element from its parent if there is one. 
+      * If this element is the root element of a document then it is removed
+      * from the document as well.</p>
+      *
+      * <p>This method is useful if you want to remove
+      * an element from its source document and add it to another document.
+      * For example</p>
+      *
+      * <code>
+      *     Element element = ...;
+      *     element.detach();
+      *     Document document = DocumentFactory.newDocument( element );
+      * </code>
+      */
+    public void detach();
 }
 
 

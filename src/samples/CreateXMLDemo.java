@@ -36,13 +36,13 @@ public class CreateXMLDemo extends AbstractDemo {
         XMLWriter writer = new XMLWriter( "  ", true );
         
         if ( args.length < 1 ) {
-            writer.output( document, System.out );
+            writer.write( document, System.out );
         }
         else {
             String fileName = args[0];
             println( "Writing file: " + fileName );
             FileWriter out = new FileWriter( args[0] );
-            writer.output( document, out );
+            writer.write( document, out );
             out.close();
         }
     }

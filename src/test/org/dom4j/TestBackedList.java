@@ -61,7 +61,7 @@ public class TestBackedList extends AbstractTestCase {
         XMLWriter writer = new XMLWriter( "  ", true );
         
         log( "Element content is now: " + element.getContent() );
-        writer.output( element, System.out );
+        writer.write( element, System.out );
     }
 
 }

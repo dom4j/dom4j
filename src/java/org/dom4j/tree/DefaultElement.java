@@ -396,6 +396,31 @@ public class DefaultElement extends AbstractElement {
         return null;
     }
     
+    public Element getElement(String name) {
+        List source = contents;
+        if ( source == null ) {
+            if ( firstNode instanceof Element ) {
+                Element element = (Element) firstNode;
+                if ( name.equals( element.getName() ) ) {
+                    return element;
+                }
+            }
+        }
+        else {
+            int size = source.size();
+            for ( int i = 0; i < size; i++ ) {
+                Object object = source.get(i);
+                if ( object instanceof Element ) {
+                    Element element = (Element) object;
+                    if ( name.equals( element.getName() ) ) {
+                        return element;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
     public Element getElement(String name, Namespace namespace) {
         List source = contents;
         if ( source == null ) {
@@ -454,6 +479,31 @@ public class DefaultElement extends AbstractElement {
         return answer;
     }
     
+    public List getElements(String name) {
+        List source = contents;
+        if ( source == null ) {
+            if ( firstNode instanceof Element ) {
+                Element element = (Element) firstNode;
+                if ( name.equals( element.getName() ) ) {
+                    return createSingleResultList( element );
+                }
+            }
+            return createEmptyList();
+        }
+        BackedList answer = createResultList();
+        int size = source.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = source.get(i);
+            if ( object instanceof Element ) {
+                Element element = (Element) object;
+                if ( name.equals( element.getName() ) ) {
+                    answer.addLocal( element );
+                }
+            }
+        }
+        return answer;
+    }
+    
     public List getElements() {
         List source = contents;
         if ( source == null ) {
@@ -488,6 +538,22 @@ public class DefaultElement extends AbstractElement {
         }
     }
         
+    public Iterator elementIterator(String name) {
+        List source = contents;
+        if ( source == null ) {
+            if ( firstNode instanceof Element ) {
+                Element element = (Element) firstNode;
+                if ( name.equals( element.getName() ) ) {
+                    return createSingleIterator( element );
+                }
+            }
+            return EMPTY_ITERATOR;
+        }
+        else {
+            return new ElementNameIterator(source.iterator(), name);
+        }
+    }
+    
     public Iterator elementIterator(String name, Namespace namespace) {
         List source = contents;
         if ( source == null ) {
@@ -570,6 +636,20 @@ public class DefaultElement extends AbstractElement {
         this.attributes = attributes;
     }
     
+    public Attribute getAttribute(String name) {
+        if ( attributes != null ) {
+            int size = attributes.size();
+            for ( int i = 0; i < size; i++ ) {
+                Attribute attribute = (Attribute) attributes.get(i);
+                if ( name.equals( attribute.getName() ) ) {
+                    childRemoved(attribute);
+                    return attribute;
+                }
+            }
+        }
+        return null;
+    }
+
     public Attribute getAttribute(String name, Namespace namespace) {
         if ( attributes != null ) {
             String uri = namespace.getURI();
@@ -586,7 +666,21 @@ public class DefaultElement extends AbstractElement {
         return null;
     }
 
-    public boolean removeAttribute(String name, Namespace namespace) {
+    public Attribute removeAttribute(String name) {
+        if ( attributes != null ) {
+            for ( Iterator iter = attributes.iterator(); iter.hasNext(); ) {
+                Attribute attribute = (Attribute) iter.next();
+                if ( name.equals( attribute.getName() ) ) {
+                    iter.remove();
+                    childRemoved(attribute);
+                    return attribute;
+                }
+            }
+        }
+        return null;
+    }
+    
+    public Attribute removeAttribute(String name, Namespace namespace) {
         if ( attributes != null ) {
             String uri = namespace.getURI();
             for ( Iterator iter = attributes.iterator(); iter.hasNext(); ) {
@@ -595,11 +689,11 @@ public class DefaultElement extends AbstractElement {
                     && uri.equals( attribute.getNamespaceURI() ) ) {
                     iter.remove();
                     childRemoved(attribute);
-                    return true;
+                    return attribute;
                 }
             }
         }
-        return false;
+        return null;
     }
     
     public boolean remove(Attribute attribute) {

@@ -63,7 +63,7 @@ public class SAXDemo extends AbstractDemo {
     
     protected void process(Document document) throws Exception {
         XMLWriter writer = createXMLWriter();
-        writer.output(document, System.out);                
+        writer.write(document, System.out);                
     }
 
     /** A Factory Method to create an <code>XMLWriter</code>

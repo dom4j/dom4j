@@ -7,6 +7,9 @@
  * $Id$
  */
 
+// This is a port of a file from the JDOM project
+// The original file was org.jdom.output.XMLOutputter
+
 /*-- 
 
  Copyright (C) 2000 Brett McLaughlin & Jason Hunter.
@@ -61,9 +64,6 @@
  
  */
 
-// This is a port of a file from the JDOM project
-// The original file was org.jdom.output.XMLOutputter
-
 package org.dom4j.io;
 
 import java.io.BufferedOutputStream;
@@ -109,17 +109,17 @@ import org.dom4j.Text;
  * XMLWriter and call setTrimText(true) to strip any whitespace
  * that was preserved from the source.  </p>
  *
- * <p> There are <code>output(...)</code> methods to print any of the
+ * <p> There are <code>write(...)</code> methods to print any of the
  * standard DOM4J classes, including <code>Document</code> and
  * <code>Element</code>, to either a <code>Writer</code> or an
  * <code>OutputStream</code>.  Warning: using your own
- * <code>Writer</code> may cause the outputter's preferred character
+ * <code>Writer</code> may cause the writer's preferred character
  * encoding to be ignored.  If you use encodings other than UTF8, we
  * recommend using the method that takes an OutputStream instead.
  * </p>
  *
- * <p> The methods <code>outputString(...)</code> are for convenience
- * only; for top performance you should call <code>output(...)</code>
+ * <p> The methods <code>writeString(...)</code> are for convenience
+ * only; for top performance you should call <code>write(...)</code>
  * and pass in your own <code>Writer</code> or
  * <code>OutputStream</code> to if possible.  </p>
  *
@@ -490,10 +490,10 @@ public class XMLWriter implements Cloneable {
      * @param out <code>OutputStream</code> to write to.
      * @throws <code>IOException</code> - if there's any problem writing.
      */
-    public void output(Document doc, OutputStream out)
+    public void write(Document doc, OutputStream out)
                                            throws IOException {
         Writer writer = makeWriter(out);
-        output(doc, writer);
+        write(doc, writer);
         writer.flush();
     }
 
@@ -502,7 +502,7 @@ public class XMLWriter implements Cloneable {
      * Writer.
      * </p>
      *
-     * <p> Warning: using your own Writer may cause the outputter's
+     * <p> Warning: using your own Writer may cause the writer's
      * preferred character encoding to be ignored.  If you use
      * encodings other than UTF8, we recommend using the method that
      * takes an OutputStream instead.  </p>
@@ -514,7 +514,7 @@ public class XMLWriter implements Cloneable {
      * @param out <code>Writer</code> to write to.
      * @throws <code>IOException</code> - if there's any problem writing.
      **/
-    public void output(Document doc, Writer writer)
+    public void write(Document doc, Writer writer)
                                            throws IOException {
         // Print out XML declaration
         if (indentLevel>0)
@@ -535,7 +535,7 @@ public class XMLWriter implements Cloneable {
         while (i.hasNext()) {
             Object obj = i.next();
             if (obj instanceof Element) {
-                output(doc.getRootElement(), writer);   // outputs at initial indentLevel
+                write(doc.getRootElement(), writer);   // outputs at initial indentLevel
             } else if (obj instanceof Comment) {
                 printComment((Comment) obj, writer, indentLevel);
             } else if (obj instanceof ProcessingInstruction) {
@@ -558,7 +558,7 @@ public class XMLWriter implements Cloneable {
      * @param element <code>Element</code> to output.
      * @param out <code>Writer</code> to write to.
      **/
-    public void output(Element element, Writer out)
+    public void write(Element element, Writer out)
         throws IOException
     {
         // if this is the root element we could pre-initialize the namespace stack
@@ -576,11 +576,11 @@ public class XMLWriter implements Cloneable {
      * @param element <code>Element</code> to output.
      * @param out <code>Writer</code> to write to.
      **/
-    public void output(Element element, OutputStream out)
+    public void write(Element element, OutputStream out)
         throws IOException
     {
         Writer writer = makeWriter(out);
-        output(element, writer);
+        write(element, writer);
         writer.flush();         // Flush the output to the underlying stream
     }
 
@@ -594,7 +594,7 @@ public class XMLWriter implements Cloneable {
      * @param element <code>Element</code> to output.
      * @param out <code>Writer</code> to write to.
      * @param indent <code>int</code> level of indention.  */
-    public void outputElementContent(Element element, Writer out)
+    public void writeElementContent(Element element, Writer out)
         throws IOException
     {
         List mixedContent = element.getContent();
@@ -613,7 +613,7 @@ public class XMLWriter implements Cloneable {
      * @param cdata <code>CDATA</code> to output.
      * @param out <code>Writer</code> to write to.
      **/
-    public void output(CDATA cdata, Writer out)
+    public void write(CDATA cdata, Writer out)
         throws IOException
     {
         printCDATASection(cdata, out, indentLevel);
@@ -627,11 +627,11 @@ public class XMLWriter implements Cloneable {
      * @param cdata <code>CDATA</code> to output.
      * @param out <code>OutputStream</code> to write to.
      **/
-    public void output(CDATA cdata, OutputStream out)
+    public void write(CDATA cdata, OutputStream out)
         throws IOException
     {
         Writer writer = makeWriter(out);
-        output(cdata, writer);
+        write(cdata, writer);
         writer.flush();         // Flush the output to the underlying stream
     }
 
@@ -645,7 +645,7 @@ public class XMLWriter implements Cloneable {
      * @param comment <code>Comment</code> to output.
      * @param out <code>Writer</code> to write to.
      **/
-    public void output(Comment comment, Writer out)
+    public void write(Comment comment, Writer out)
         throws IOException
     {
         printComment(comment, out, indentLevel);
@@ -659,11 +659,11 @@ public class XMLWriter implements Cloneable {
      * @param comment <code>Comment</code> to output.
      * @param out <code>OutputStream</code> to write to.
      **/
-    public void output(Comment comment, OutputStream out)
+    public void write(Comment comment, OutputStream out)
         throws IOException
     {
         Writer writer = makeWriter(out);
-        output(comment, writer);
+        write(comment, writer);
         writer.flush();         // Flush the output to the underlying stream
     }
     
@@ -677,7 +677,7 @@ public class XMLWriter implements Cloneable {
      * @param string <code>String</code> to output.
      * @param out <code>Writer</code> to write to.
      **/
-    public void output(String string, Writer out)
+    public void write(String string, Writer out)
         throws IOException
     {
         printString(string, out);
@@ -692,7 +692,7 @@ public class XMLWriter implements Cloneable {
      * @param cdata <code>CDATA</code> to output.
      * @param out <code>OutputStream</code> to write to.
      **/
-    public void output(String string, OutputStream out)
+    public void write(String string, OutputStream out)
         throws IOException
     {
         Writer writer = makeWriter(out);
@@ -709,7 +709,7 @@ public class XMLWriter implements Cloneable {
      * @param entity <code>Entity</code> to output.
      * @param out <code>Writer</code> to write to.
      **/
-    public void output(Entity entity, Writer out)
+    public void write(Entity entity, Writer out)
         throws IOException
     {
         printEntity(entity, out);
@@ -723,7 +723,7 @@ public class XMLWriter implements Cloneable {
      * @param cdata <code>CDATA</code> to output.
      * @param out <code>OutputStream</code> to write to.
      **/
-    public void output(Entity entity, OutputStream out)
+    public void write(Entity entity, OutputStream out)
         throws IOException
     {
         Writer writer = makeWriter(out);
@@ -742,7 +742,7 @@ public class XMLWriter implements Cloneable {
      * @param element <code>ProcessingInstruction</code> to output.
      * @param out <code>Writer</code> to write to.
      **/
-    public void output(ProcessingInstruction processingInstruction, Writer out)
+    public void write(ProcessingInstruction processingInstruction, Writer out)
         throws IOException
     {
         printProcessingInstruction(processingInstruction, out, indentLevel);
@@ -756,11 +756,11 @@ public class XMLWriter implements Cloneable {
      * @param processingInstruction <code>ProcessingInstruction</code> to output.
      * @param out <code>OutputStream</code> to write to.
      **/
-    public void output(ProcessingInstruction processingInstruction, OutputStream out)
+    public void write(ProcessingInstruction processingInstruction, OutputStream out)
         throws IOException
     {
         Writer writer = makeWriter(out);
-        output(processingInstruction, writer);
+        write(processingInstruction, writer);
         writer.flush();         // Flush the output to the underlying stream
     }
     
@@ -773,36 +773,36 @@ public class XMLWriter implements Cloneable {
      * @param node <code>Node</code> to output.
      * @param out <code>Writer</code> to write to.
      **/
-    public void outputNode(Node node, Writer out)
+    public void write(Node node, Writer out)
         throws IOException
     {
         if (node instanceof Element) {
-            output((Element) node, out);
+            write((Element) node, out);
         }
         else if (node instanceof Attribute) {
             printAttribute((Attribute) node, out);
         }
         else if (node instanceof Document) {
-            output((Document) node, out);
+            write((Document) node, out);
         }
         else if (node instanceof Text) {
             Text text = (Text) node;
-            output(text.getText(), out);
+            write(text.getText(), out);
         }
         else if (node instanceof Namespace) {
             printNamespace((Namespace) node, out);
         }
         else if (node instanceof CDATA) {
-            output((CDATA) node, out);
+            write((CDATA) node, out);
         }
         else if (node instanceof Comment) {
-            output((Comment) node, out);
+            write((Comment) node, out);
         }
         else if (node instanceof Entity) {
-            output((Entity) node, out);
+            write((Entity) node, out);
         }
         else if (node instanceof ProcessingInstruction) {
-            output((ProcessingInstruction) node, out);
+            write((ProcessingInstruction) node, out);
         }
         else if (node instanceof DocumentType) {
             printDocType((DocumentType) node, out);
@@ -817,11 +817,11 @@ public class XMLWriter implements Cloneable {
      * @param node <code>Node</code> to output.
      * @param out <code>OutputStream</code> to write to.
      **/
-    public void outputNode(Node node, OutputStream out)
+    public void write(Node node, OutputStream out)
         throws IOException
     {
         Writer writer = makeWriter(out);
-        outputNode(node, writer);
+        write(node, writer);
         writer.flush();         // Flush the output to the underlying stream
     }
     
@@ -832,27 +832,27 @@ public class XMLWriter implements Cloneable {
     /**
      * Return a string representing a document.  Uses an internal
      * StringWriter. Warning: a String is Unicode, which may not match
-     * the outputter's specified encoding.
+     * the writer's specified encoding.
      *
      * @param doc <code>Document</code> to format.
      **/
-    public String outputString(Document doc) throws IOException {
+    public String writeString(Document doc) throws IOException {
         StringWriter out = new StringWriter();
-        output(doc, out);
+        write(doc, out);
         out.flush();
         return out.toString();
     }
 
     /**
      * Return a string representing an element. Warning: a String is
-     * Unicode, which may not match the outputter's specified
+     * Unicode, which may not match the writer's specified
      * encoding.
      *
      * @param doc <code>Element</code> to format.
      **/
-    public String outputString(Element element) throws IOException {
+    public String writeString(Element element) throws IOException {
         StringWriter out = new StringWriter();
-        output(element, out);
+        write(element, out);
         out.flush();
         return out.toString();
     }

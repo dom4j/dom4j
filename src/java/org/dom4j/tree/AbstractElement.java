@@ -66,7 +66,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     public String asXML() {
         try {
             StringWriter out = new StringWriter();
-            writer.output(this, out);
+            writer.write(this, out);
             return out.toString();
         } 
         catch (IOException e) {
@@ -76,7 +76,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
 
     public void writeXML(PrintWriter out) {
         try {
-            writer.output(this, out);
+            writer.write(this, out);
         }
         catch (IOException e) {
             throw new RuntimeException("Wierd IOException while generating textual representation: " + e.getMessage());
@@ -167,17 +167,14 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         return getAttributes().iterator();
     }
     
-    public Attribute getAttribute(String name) {
-        return getAttribute(name, Namespace.NO_NAMESPACE);
-    }
-    
-    public boolean removeAttribute(String name) {
-        return removeAttribute(name, Namespace.NO_NAMESPACE);
-    }
-    
-
     public String getAttributeValue(String name) {
-        return getAttributeValue(name, Namespace.NO_NAMESPACE);
+        Attribute attrib = getAttribute(name);
+        if (attrib == null) {
+            return null;
+        } 
+        else {
+            return attrib.getValue();
+        }
     }
     
     public String getAttributeValue(String name, Namespace ns) {
@@ -190,6 +187,16 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         }
     }
 
+    public String getAttributeValue(String name, String defaultValue) {
+        String answer = getAttributeValue(name);
+        return (answer != null) ? answer : defaultValue;
+    }
+
+    public String getAttributeValue(String name, Namespace namespace, String defaultValue) {
+        String answer = getAttributeValue(name, namespace);
+        return (answer != null) ? answer : defaultValue;
+    }
+    
     public void setAttributeValue(String name, String value) {
         Attribute attribute = getAttribute(name);
         if (attribute == null ) {
@@ -304,28 +311,6 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         addText(text);
     }
 
-    public Element getElement(String name) {
-        return getElement(name, Namespace.NO_NAMESPACE);
-    }
-    
-    public List getElements(String name) {
-        return getElements(name, Namespace.NO_NAMESPACE);
-    }
-    
-    public Iterator elementIterator(String name) {
-        return elementIterator(name, Namespace.NO_NAMESPACE);
-    }
-        
-    public String getAttributeValue(String name, String defaultValue) {
-        String answer = getAttributeValue(name);
-        return (answer != null) ? answer : defaultValue;
-    }
-
-    public String getAttributeValue(String name, Namespace namespace, String defaultValue) {
-        String answer = getAttributeValue(name, namespace);
-        return (answer != null) ? answer : defaultValue;
-    }
-    
     public String getElementText(String name) {
         Element element = getElement(name);
         return (element != null) ? element.getText() : null;
@@ -436,6 +421,18 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         return clone;
     }
 
+    public void detach() {
+        Element parent = getParent();
+        if ( parent != null ) {
+            parent.remove( this );
+        }
+        Document document = getDocument();
+        if ( document != null ) {
+            document.remove( this );
+        }
+        setParent(null);
+        setDocument(null);
+    }
     
     protected Element createElement(String name) {
         return getDocumentFactory().createElement(name);
