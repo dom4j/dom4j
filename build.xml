@@ -207,7 +207,7 @@
          basedir="${build.dest}"
          includes="org/dom4j/**,org/saxpath/**,org/jaxen/**,com/werken/**"/>
 
-    <jar jarfile="${build.dir}/${name}-all.jar"
+    <jar jarfile="${build.dir}/${name}-full.jar"
          basedir="${build.dest}"
          includes="**"/>
   </target>
@@ -277,7 +277,7 @@
     <mkdir    dir="${doc.dir}/images"/>
     <mkdir    dir="${build.doc}"/>
     <style    basedir="${doc.dir}" destdir="${build.doc}" style="style/style.xsl"
-              includes="**/*.xml" excludes="style/**,project.xml,cookbook/**"/>
+              includes="**/*.xml" excludes="style/**,project.xml,cookbook/**,docbook/**"/>
     <copy todir="${build.doc}" overwrite="yes"> 
       <fileset dir="${doc.dir}" includes="license.txt,document.dtd"/>
     </copy>
@@ -295,6 +295,24 @@
     <replace file="${build.doc}/download.html" token="$$VERSION$$" value="${current.version}"/>
   </target>
 
+  <target name="doc-cookbook" depends="prepare">
+    <mkdir dir="${build.doc}/cookbook"/>
+<!-- cannot get the DocBook stylesheets to work with Xalan  -->
+<!-- so lets call Saxon explicitly -->
+    <java classname="com.icl.saxon.StyleSheet" classpath="${lib.dir}/tool/saxon.jar" fork="true">
+      <arg value="-o"/>
+      <arg value="${build.doc}/cookbook/cookbook.html"/>
+      <arg value="-w0"/>
+      <arg value="${doc.dir}/cookbook/cookbook.xml"/>
+      <arg value="${doc.dir}/docbook/html/docbook.xsl"/>
+    </java>
+<!--
+    <style basedir="${doc.dir}/cookbook" 
+        destdir="${build.doc}/cookbook" style="docbook/html/docbook.xsl"
+        includes="**/*.xml"/>
+-->
+  </target>
+
 
   <!-- =================================================================== -->
   <!-- Creates the distribution                                            -->
@@ -307,7 +325,7 @@
     <mkdir dir="${dist.dir}/doc/apidocs"/>
 
     <copy file="${build.dir}/${name}.jar" tofile="${dist.dir}/${name}.jar"/>
-    <copy file="${build.dir}/${name}-all.jar" tofile="${dist.dir}/${name}-full.jar"/>
+    <copy file="${build.dir}/${name}-full.jar" tofile="${dist.dir}/${name}-full.jar"/>
 
     <copy todir="${dist.dir}/src">
       <fileset dir="./src" includes="**/*.java,**/*.xml,**/*.xsl,**/*.properties,**/*.mf,**/*.css,**/*.gif,**/*.g"/>
@@ -360,7 +378,7 @@
   <!-- =================================================================== -->
   <!-- Performs a release on the website                                   -->
   <!-- =================================================================== -->
-  <target name="release" depends="clean,compile,release-javadoc,dist-zip,dist-tgz,dist-jar">
+  <target name="release" depends="clean,compile,release-javadoc,doc-cookbook,dist-zip,dist-tgz,dist-jar">
     <mkdir dir="${web.htdocs}"/>
     <mkdir dir="${web.dist}"/>
     <copy todir="${web.htdocs}" overwrite="yes">
