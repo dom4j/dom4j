@@ -18,7 +18,7 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
 /**
- * DOCUMENT ME!
+ * JUnit tests for <code>DefaultElement</code>.
  * 
  * @author Maarten Coene
  */
