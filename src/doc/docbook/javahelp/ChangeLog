@@ -1,8 +1,0 @@
-2000-10-14  Norman Walsh  <ndw@nwalsh.com>
-
-	* docbook.xsl: Support saxon/xalan for chunking
-
-2000-10-09  Norman Walsh  <ndw@nwalsh.com>
-
-	* LostLog, docbook.xsl: New file.
-

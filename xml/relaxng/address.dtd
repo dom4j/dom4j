@@ -1,4 +1,0 @@
-<!ELEMENT addressBook (card*)>
-<!ELEMENT card (name, email)>
-<!ELEMENT name (#PCDATA)>
-<!ELEMENT email (#PCDATA)>
