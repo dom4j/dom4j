@@ -30,7 +30,7 @@ public class NamespaceCache {
 
     /** @return the name model for the given name and namepsace 
       */
-    public Namespace get(String prefix, String uri) {
+    public synchronized Namespace get(String prefix, String uri) {
         Map cache = getURICache(uri);
         Namespace answer = (Namespace) cache.get(prefix);
         if (answer == null) {
@@ -60,7 +60,7 @@ public class NamespaceCache {
       * @return a newly created {@link Namespace} instance.
       */
     protected Namespace createNamespace(String prefix, String uri) {
-        return new DefaultNamespace(prefix, uri);
+        return new Namespace(prefix, uri);
     }
     /** A factory method to create prefix caches
       * @return a newly created {@link Map} instance.

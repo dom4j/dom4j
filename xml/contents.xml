@@ -7,9 +7,9 @@
 
 <!-- Java and XML -->
 <JavaXML:Book xmlns:JavaXML="http://www.oreilly.com/catalog/javaxml/" 
-              ora:category="Java" 
               xmlns:ora="http://www.oreilly.com"
               xmlns:unused="http://www.unused.com"
+              ora:category="Java" 
 > 
  <JavaXML:Title>Java and XML</JavaXML:Title>
  <JavaXML:Contents xmlns:topic="http://www.oreilly.com/topics">

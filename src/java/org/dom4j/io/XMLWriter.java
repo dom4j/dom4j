@@ -1041,8 +1041,7 @@ public class XMLWriter implements Cloneable {
         Namespace ns = element.getNamespace();
         if (ns != null && ns != Namespace.NO_NAMESPACE && ns != Namespace.XML_NAMESPACE) {
             String prefix = ns.getPrefix();        
-            String uri = namespaces.getURI(prefix);
-            if (!ns.getURI().equals(uri)) { // output a new namespace declaration
+            if ( ! namespaces.containsPrefix( prefix ) ) {
                 namespaces.push(ns);
                 printNamespace(ns, out);
             }

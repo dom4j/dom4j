@@ -9,17 +9,18 @@
 
 package org.dom4j.tree;
 
-import org.dom4j.Node;
 import org.dom4j.Element;
+import org.dom4j.Node;
+import org.dom4j.Namespace;
 
 /** <p><code>XPathNamespace</code> implements a doubly linked node which 
   * supports the parent relationship and is mutable.
-  * It is useful when evalutating XPath expressions.</p>
+  * It is useful when returning results from XPath expressions.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class XPathNamespace extends DefaultNamespace {
+public class XPathNamespace extends Namespace {
 
     /** The parent of this node */
     private Element parent;

@@ -44,12 +44,26 @@ public class QName {
         return cache.get(name, namespace);
     }
     
+    public static synchronized QName get(String name, String prefix, String uri) {
+        return cache.get(name, Namespace.get( prefix, uri ));
+    }
+    
+    public static synchronized QName get(String localName, Namespace namespace, String qualifiedName) {
+        return cache.get(localName, namespace, qualifiedName);
+    }
+    
     public QName(String name) {
         this( name, Namespace.NO_NAMESPACE );
     }
     
     public QName(String name, Namespace namespace) {
         this.name = (name == null) ? "" : name;
+        this.namespace = (namespace == null) ? Namespace.NO_NAMESPACE : namespace;
+    }
+
+    public QName(String name, Namespace namespace, String qualifiedName) {
+        this.name = (name == null) ? "" : name;
+        this.qualifiedName = qualifiedName;
         this.namespace = (namespace == null) ? Namespace.NO_NAMESPACE : namespace;
     }
 

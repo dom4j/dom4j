@@ -356,8 +356,10 @@ public class SAXWriter {
       */
     protected void endPrefixMapping( NamespaceStack namespaces, int stackSize ) throws SAXException {                       
         while ( namespaces.size() > stackSize ) {
-            String prefix = namespaces.pop();
-            contentHandler.endPrefixMapping(prefix);            
+            Namespace namespace = namespaces.pop();
+            if ( namespace != null ) {
+                contentHandler.endPrefixMapping( namespace.getPrefix() );            
+            }
         }
     }
     
@@ -403,7 +405,7 @@ public class SAXWriter {
         if ( namespace.equals( Namespace.NO_NAMESPACE ) || namespace.equals( Namespace.XML_NAMESPACE ) ) {
             return true;
         }
-        return namespaces.getURI( namespace.getPrefix() ) != null;
+        return namespaces.containsPrefix( namespace.getPrefix() );
     }
     
 }

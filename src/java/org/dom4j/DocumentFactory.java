@@ -18,7 +18,6 @@ import org.dom4j.tree.DefaultDocument;
 import org.dom4j.tree.DefaultDocumentType;
 import org.dom4j.tree.DefaultElement;
 import org.dom4j.tree.DefaultEntity;
-import org.dom4j.tree.DefaultNamespace;
 import org.dom4j.tree.DefaultProcessingInstruction;
 import org.dom4j.tree.DefaultText;
 import org.dom4j.tree.XPathEntity;
@@ -98,14 +97,6 @@ public class DocumentFactory {
         return singleton.createElement(name);
     }
     
-    public static Element newElement(String name, String prefix, String uri) {
-        return singleton.createElement(name, prefix, uri);
-    }
-    
-    public static Element newElement(String name, Namespace namespace) {
-        return singleton.createElement(name, namespace);
-    }
-    
     
     public static Attribute newAttribute(QName qname, String value) {
         return singleton.createAttribute(qname, value);
@@ -115,10 +106,6 @@ public class DocumentFactory {
         return singleton.createAttribute(name, value);
     }
     
-    public static Attribute newAttribute(String name, String value, Namespace namespace) {
-        return singleton.createAttribute(name, value, namespace);
-    }
-
     public static CDATA newCDATA(String text) {
         return singleton.createCDATA(text);
     }
@@ -186,15 +173,7 @@ public class DocumentFactory {
     public Element createElement(String name) {
         return createElement(createQName(name));
     }
-    
-    public Element createElement(String name, String prefix, String uri) {
-        return createElement(createQName(name, createNamespace(prefix, uri)));
-    }
-    
-    public Element createElement(String name, Namespace namespace) {
-        return createElement(createQName(name, namespace));
-    }
-    
+
     
     public Attribute createAttribute(QName qname, String value) {
         return new DefaultAttribute(qname, value);
@@ -204,10 +183,6 @@ public class DocumentFactory {
         return createAttribute(createQName(name), value);
     }
     
-    public Attribute createAttribute(String name, String value, Namespace namespace) {
-        return createAttribute(createQName(name, namespace), value);
-    }
-
     public CDATA createCDATA(String text) {
         return new DefaultCDATA(text);
     }
@@ -231,7 +206,7 @@ public class DocumentFactory {
     }
     
     public Namespace createNamespace(String prefix, String uri) {
-        return DefaultNamespace.get(prefix, uri);
+        return Namespace.get(prefix, uri);
     }
     
     public ProcessingInstruction createProcessingInstruction(String target, String data) {

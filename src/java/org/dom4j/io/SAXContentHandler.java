@@ -53,6 +53,9 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     /** stack of <code>Element</code> objects */
     private ElementStack elementStack;
 
+    /** stack of <code>Namespace</code> and <code>QName</code> objects */
+    private NamespaceStack namespaceStack = new NamespaceStack();
+
     /** the <code>ElementHandler</code> called as the elements are complete */
     private ElementHandler elementHandler;
 
@@ -73,6 +76,9 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
 
     /** A <code>Set</code> of the entity names we should ignore */
     private Set ignoreEntityNames;
+
+    /** The number of namespaces that are declared in the current scope */
+    private int declaredNamespaceIndex;
     
     
     public SAXContentHandler() {
@@ -107,11 +113,12 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     }
     
     public void startPrefixMapping(String prefix, String uri) throws SAXException {
-        addDeclaredNamespace( getNamespace(prefix, uri) );
+        namespaceStack.push( prefix, uri );
     }
 
-    public void endPrefixMapping(String prefix, String uri) throws SAXException {
-        removeDeclaredNamespace( getNamespace(prefix, uri) );
+    public void endPrefixMapping(String prefix) throws SAXException {
+        namespaceStack.pop( prefix );
+        declaredNamespaceIndex = namespaceStack.size();
     }
 
     public void startDocument() throws SAXException {
@@ -123,26 +130,22 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
         else {
             elementStack.clear();
         }
+        
+        namespaceStack.clear();
+        declaredNamespaceIndex = 0;
     }
     
-    public void startElement(String namespaceURI, String localName, String qName, Attributes attributes) throws SAXException {
-        Namespace namespace = null;
-        if (namespaceURI != null && namespaceURI.length() > 0) {
-            String prefix = "";
-            if (localName != qName) {
-                int index = qName.indexOf(":");
-                if (index > 0) {
-                    prefix = qName.substring(0, index);
-                }
-            }
-            namespace = getNamespace(prefix, namespaceURI);
-            removeDeclaredNamespace(namespace);
-            addAvailableNamespace(namespace);
-        }
-            
-        Element element = (namespace != null) 
-            ? createElement(localName, namespace)
-            : createElement(localName);
+    public void endDocument() throws SAXException {
+        namespaceStack.clear();
+        elementStack.clear();
+    }
+    
+    public void startElement(String namespaceURI, String localName, String qualifiedName, Attributes attributes) throws SAXException {
+        QName qName = namespaceStack.getQName( 
+            namespaceURI, localName, qualifiedName 
+        );
+        
+        Element element = createElement(qName);
 
         // add all declared namespaces
         addDeclaredNamespaces(element);
@@ -150,47 +153,24 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
         // now lets add all attribute values
         int size = attributes.getLength();
         for ( int i = 0; i < size; i++ ) {
+            String attributeURI = attributes.getURI(i);
             String attributeLocalName = attributes.getLocalName(i);
-            String attributeQName = attributes.getQName(i);
+            String attributeQualifiedName = attributes.getQName(i);
             String attributeValue = attributes.getValue(i);
             
-            namespace = null;
-            if (attributeLocalName != attributeQName) {
-                String attributePrefix = "";
-                int index = attributeQName.indexOf(":");
-                if ( index > 1 ) {
-                    attributePrefix = attributeQName.substring(0, index);
-                }
-                namespace = getAvailableNamespace(attributePrefix);
-            }
-            if (namespace != null) {
-                element.setAttributeValue(attributeLocalName, attributeValue, namespace);
-            }
-            else {
-                element.setAttributeValue(attributeLocalName, attributeValue);
-            }
+            QName attributeQName = namespaceStack.getQName( 
+                attributeURI, attributeLocalName, attributeQualifiedName 
+            );
+            element.setAttributeValue(attributeQName, attributeValue);
         }
 
         elementStack.pushElement(element);
     }
 
-    
     public void endElement(String namespaceURI, String localName, String qName) {
         Element element = elementStack.popElement();
-        if (element != null) {
-            
-            // fire handler if we have one
-            if ( elementHandler != null ) {
-                elementHandler.handle( element );
-            }
-            
-            // remove namespaces defined by the element
-            List list = element.getAdditionalNamespaces();
-            int size = list.size();
-            for ( int i = 0; i < size; i++ ) {
-                Namespace namespace = (Namespace) list.get(i);
-                removeAvailableNamespace(namespace);
-            }
+        if ( element != null && elementHandler != null ) {
+            elementHandler.handle( element );
         }
     }
 
@@ -298,68 +278,20 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     
     
 
-    /** Make all of the additional namepaces in the given 
-      * element available to other elements and attributes
+    /** Add all namespaces declared before the startElement() SAX event
+      * to the current element so that they are available to child elements 
+      * and attributes
       */
     protected void addDeclaredNamespaces(Element element) {        
-        int size = declaredNamespaceList.size();
-        for ( int i = 0; i < size; i++ ) {
-            Namespace namespace = (Namespace) declaredNamespaceList.get(i);
-            addAvailableNamespace(namespace);
-            element.addAdditionalNamespace(namespace.getPrefix(), namespace.getURI());
-        }
-        declaredNamespaceList.clear();
-    }
-
-    protected void addDeclaredNamespace(Namespace namespace) {        
-        if ( namespace != null ) {
-            declaredNamespaceList.add(namespace);
+        for ( int size = namespaceStack.size(); declaredNamespaceIndex < size; declaredNamespaceIndex++ ) {
+            Namespace namespace = namespaceStack.getNamespace(declaredNamespaceIndex);
+            element.add( namespace );
         }
     }
 
-    protected void removeDeclaredNamespace(Namespace namespace) {        
-        if ( namespace != null ) {
-            declaredNamespaceList.remove(namespace);
-        }
-    }
 
-    protected void addAvailableNamespace(Namespace namespace) {
-        if ( namespace != null ) {
-            availableNamespaceMap.put(namespace.getPrefix(), namespace);
-        }
-    }
-    
-    protected void removeAvailableNamespace(Namespace namespace) {
-        if ( namespace != null ) {
-            availableNamespaceMap.remove(namespace.getPrefix());
-        }
-    }
-    
-    protected Namespace getAvailableNamespace(String prefix) {
-        return (Namespace) availableNamespaceMap.get(prefix);
-    }
-
-
-    protected QName getQName(String localName, Namespace namespace) {
-        return QName.get(localName, namespace);
-    }
-    
-    protected QName getQName(String localName) {
-        return QName.get(localName);
-    }
-    
-    protected Namespace getNamespace(String prefix, String uri) {
-        return DocumentFactory.newNamespace(prefix, uri);
-    }
-
-    protected Element createElement(String localName, Namespace namespace) {
-        QName qname = getQName(localName, namespace);
-        return peekBranch().addElement(qname);
-    }
-    
-    protected Element createElement(String localName) {
-        QName qname = getQName(localName);
-        return peekBranch().addElement(qname);
+    protected Element createElement(QName qName) {
+        return peekBranch().addElement(qName);
     }
     
     protected ElementStack createElementStack() {

@@ -9,34 +9,125 @@
 
 package org.dom4j;
 
-import org.dom4j.tree.DefaultNamespace;
+import org.dom4j.tree.AbstractNode;
+import org.dom4j.tree.NamespaceCache;
+import org.dom4j.tree.XPathNamespace;
 
-/** <p><code>Namespace</code> defines an XML namespace.</p>
+/** <p><code>Namespace</code> defines the standard behaviour for an XML namespace.</p>
   * 
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public interface Namespace extends Node {
-
-    /** <p>Returns the prefix for this namespace</p>
-      *
-      * @return the prefix which is mapped to this namespace
-      */
-    public String getPrefix();
+public class Namespace extends AbstractNode {
     
-    /** <p>Returns the URI for this namespace</p>
-      *
-      * @return the URI for this namespace
-      */
-    public String getURI();    
+    /** Cache of Namespace instances */
+    protected static final NamespaceCache cache = new NamespaceCache();
     
     /** XML Namespace */
     public static final Namespace XML_NAMESPACE 
-        = new DefaultNamespace("xml", "http://www.w3.org/XML/1998/namespace");
+        = cache.get("xml", "http://www.w3.org/XML/1998/namespace");
     
     /** No Namespace present */
     public static final Namespace NO_NAMESPACE 
-        = new DefaultNamespace("", "");
+        = cache.get("", "");
+
+    
+    /** The prefix mapped to this namespace */
+    private String prefix;
+
+    /** The URI for this namespace */
+    private String uri;
+
+    /** A cached version of the hashcode for efficiency */
+    private int hashCode;
+
+    
+    /** A helper method to return the Namespace instance
+      * for the given prefix and URI
+      *
+      * @return an interned Namespace object
+      */
+    public static Namespace get(String prefix, String uri) {
+        return cache.get(prefix, uri);
+    }
+    
+    /** @param prefix is the prefix for this namespace
+      * @param uri is the URI for this namespace
+      */
+    public Namespace(String prefix, String uri) {
+        this.prefix = (prefix != null) ? prefix : "";
+        this.uri = (uri != null) ? uri : "";;
+    }
+
+    
+    /** @return the hash code based on the qualified name and the URI of the 
+      * namespace.
+      */
+    public int hashCode() {
+        if ( hashCode == 0 ) {
+            hashCode = uri.hashCode() 
+                ^ prefix.hashCode();
+            if ( hashCode == 0 ) {
+                hashCode = 0xbabe;
+            }
+        }
+        return hashCode;
+    }
+  
+    public boolean equals(Object object) {
+        if ( this == object ) {
+            return true;
+        }
+        else if ( object instanceof Namespace ) {
+            Namespace that = (Namespace) object;
+            
+            // we cache hash codes so this should be quick
+            if ( hashCode() == that.hashCode() ) {
+                return uri.equals( that.getURI() ) 
+                    && prefix.equals( that.getPrefix() );
+            }
+        }
+        return false;
+    }
+    
+    public String getText() {
+        return uri;
+    }
+    
+    public String getString() {
+        return uri;
+    }
+    
+    /** @return the prefix for this <code>Namespace</code>.
+      */
+    public String getPrefix() {
+        return prefix;
+    }
+
+    /** @return the URI for this <code>Namespace</code>.
+      */
+    public String getURI() {
+        return uri;
+    }
+
+
+    public String toString() {
+        return super.toString() + " [Namespace: prefix " + getPrefix() 
+            + " mapped to URI \"" + getURI() + "\"]";
+    }
+
+    public String asXML() {
+        return "xmlns:" + getPrefix() + "=\"" + getURI() + "\"";
+    }
+    
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+    }
+    
+    protected Node createXPathNode(Element parent) {
+        return new XPathNamespace( parent, getPrefix(), getURI() );
+    }    
+    
 }
 
 

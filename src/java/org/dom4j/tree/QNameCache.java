@@ -43,7 +43,7 @@ public class QNameCache {
         return answer;
     }
     
-    /** @return the QName for the given name and namepsace 
+    /** @return the QName for the given local name and namepsace 
       */
     public QName get(String name, Namespace namespace) {
         Map cache = getNamespaceCache(namespace);
@@ -51,6 +51,19 @@ public class QNameCache {
         if (answer == null) {
             answer = new QName(name, namespace);
             cache.put(name, answer);
+        }
+        return answer;
+    }
+    
+
+    /** @return the QName for the given local name, qualified name and namepsace 
+      */
+    public QName get(String localName, Namespace namespace, String qualifiedName) {
+        Map cache = getNamespaceCache(namespace);
+        QName answer = (QName) cache.get(localName);
+        if (answer == null) {
+            answer = new QName(localName, namespace, qualifiedName);
+            cache.put(localName, answer);
         }
         return answer;
     }

@@ -28,6 +28,7 @@ import org.dom4j.Entity;
 import org.dom4j.Namespace;
 import org.dom4j.Node;
 import org.dom4j.ProcessingInstruction;
+import org.dom4j.QName;
 import org.dom4j.Text;
 
 /** <p><code>DOMReader</code> navigates a W3C DOM tree and creates
@@ -158,7 +159,8 @@ public class DOMReader {
                 prefix = qualifiedName.substring(0, index);
                 localName = qualifiedName.substring(index + 1);
             }
-            element = current.addElement(localName, prefix, namespaceUri);
+            QName qName = QName.get(localName, prefix, namespaceUri);
+            element = current.addElement(qName);
         }
         else {
             element = current.addElement(qualifiedName);
@@ -180,7 +182,7 @@ public class DOMReader {
                         String uri = attribute.getNodeValue();
                         if ( namespaceUri == null || ! namespaceUri.equals( uri ) ) {
                             String prefix = name.substring(index + 1);
-                            Namespace namespace = element.addAdditionalNamespace( prefix, uri );
+                            Namespace namespace = element.addNamespace( prefix, uri );
                             if ( localNamespaces == declaredNamespaces ) {
                                 localNamespaces = (HashMap) declaredNamespaces.clone();
                             }
@@ -201,7 +203,7 @@ public class DOMReader {
                 String value = attribute.getNodeValue();
                 if ( prefix != null && prefix.length() > 0 ) {
                     Namespace namespace = (Namespace) localNamespaces.get(prefix);
-                    element.setAttributeValue( attribute.getLocalName(), value, namespace );
+                    element.setAttributeValue( QName.get( attribute.getLocalName(), namespace ), value  );
                 }
                 else {
                     element.setAttributeValue( attribute.getNodeName(), value );

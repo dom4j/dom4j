@@ -118,28 +118,6 @@ public interface Branch extends Node {
       */    
     public Element addElement(QName qname);
     
-    /** Adds a new <code>Element</code> node with the given name and namespace
-      * prefix and URI to this branch and returns a reference to the new node.
-      *
-      * @param name is the name for the <code>Element</code> node.
-      * @param prefix is the namespace prefix for the 
-      *   <code>Element</code> node.
-      * @param uri is the namespace URI for the 
-      *   <code>Element</code> node.
-      * @return the newly added <code>Element</code> node.
-      */    
-    public Element addElement(String name, String prefix, String uri);
-    
-    /** Adds a new <code>Element</code> node with the given name and namespace
-      * to this branch and returns a reference to the new node.
-      *
-      * @param name is the name for the <code>Element</code> node.
-      * @param namespace is the <code>Namespace</code> for the 
-      *   <code>Element</code> node.
-      * @return the newly added <code>Element</code> node.
-      */    
-    public Element addElement(String name, Namespace namespace);
-    
     /** Adds a processing instruction for the given target
       *
       * @param target is the target of the processing instruction

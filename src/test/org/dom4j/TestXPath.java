@@ -22,7 +22,7 @@ import junit.textui.TestRunner;
   */
 public class TestXPath extends AbstractTestCase {
 
-    protected static boolean VERBOSE = false;
+    protected static boolean VERBOSE = true;
     
     protected static String[] paths = {
         "root",
@@ -38,7 +38,10 @@ public class TestXPath extends AbstractTestCase {
         "normalize-space(/root/author)",
         "normalize-space(' a  b  c  d ')",
         "root|author",
-        "//root|//author"
+        "//root|//author[1]|//author[2]",
+        "//root/author[1]",
+        "//root/author[2]",
+        "//root/author[3]"
     };
     
     

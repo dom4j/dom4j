@@ -25,6 +25,7 @@ import org.dom4j.IllegalAddException;
 import org.dom4j.Node;
 import org.dom4j.Namespace;
 import org.dom4j.ProcessingInstruction;
+import org.dom4j.QName;
 import org.dom4j.Text;
 import org.dom4j.Visitor;
 
@@ -100,16 +101,9 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
         return node;
     }
     
-    public Element addElement(String name, String prefix, String uri) {
+    public Element addElement(QName qName) {
         checkAddElementAllowed();
-        Element node = super.addElement(name, prefix, uri);
-        rootElementAdded(node);
-        return node;
-    }
-    
-    public Element addElement(String name, Namespace namespace) {
-        checkAddElementAllowed();
-        Element node = super.addElement(name, namespace);
+        Element node = super.addElement(qName);
         rootElementAdded(node);
         return node;
     }

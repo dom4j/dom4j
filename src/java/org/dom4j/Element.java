@@ -179,11 +179,6 @@ public interface Element extends Branch {
     public Attribute getAttribute(String name);
     
     /** @param qName is the fully qualified name
-      * @return the attribute for the given fully qualified name.
-      */
-    public Attribute getAttribute(String name, Namespace ns);
-    
-    /** @param qName is the fully qualified name
       * @return the attribute for the given fully qualified name or null if 
       * it could not be found.
       */
@@ -212,16 +207,6 @@ public interface Element extends Branch {
     public String getAttributeValue(String name, String defaultValue);
 
     /** <p>This returns the attribute value for the attribute with the 
-      * given name and within the given namespace or null if there is no such 
-      * attribute or the empty string if the attribute value is empty.</p>
-      *
-      * @param name is the name of the attribute value to be returnd
-      * @return the value of the attribute, null if the attribute does 
-      * not exist or the empty string
-      */
-    public String getAttributeValue(String name, Namespace namespace);
-
-    /** <p>This returns the attribute value for the attribute with the 
       * given fully qualified name or null if there is no such 
       * attribute or the empty string if the attribute value is empty.</p>
       *
@@ -243,19 +228,6 @@ public interface Element extends Branch {
       */
     public String getAttributeValue(QName qName, String defaultValue);
 
-    /** <p>This returns the attribute value for the attribute with the 
-      * given name and within the given namespace or the default value if 
-      * there is no such attribute value.</p>
-      *
-      * @param name is the name of the attribute value to be returnd
-      * @param namespace is the <code>Namespace</code> of the attribute
-      * @param defaultValue is the default value to be returned if the 
-      *    attribute has no value defined.
-      * @return the value of the attribute or the defaultValue if the 
-      *    attribute has no value defined.
-      */
-    public String getAttributeValue(String name, Namespace namespace, String defaultValue);
-
     
     /** <p>Sets the attribute value of the given local name.</p>
       *
@@ -265,14 +237,13 @@ public interface Element extends Branch {
       */
     public void setAttributeValue(String name, String value);
     
-    /** <p>Sets the attribute value of the given name.</p>
+    /** <p>Sets the attribute value of the given fully qualified name.</p>
       *
-      * @param name is the name of the attribute whose value is to be added 
-      * or updated
+      * @param qName is the fully qualified name of the attribute 
+      * whose value is to be added or updated
       * @param value is the attribute's value
-      * @param namespace is the <code>Namespace</code> of the attribute
       */
-    public void setAttributeValue(String name, String value, Namespace namespace);
+    public void setAttributeValue(QName qName, String value);
 
     /** <p>Removes the first attribute with the given name and any namespace.</p>
       *
@@ -287,15 +258,6 @@ public interface Element extends Branch {
       * @return the attribute that was removed or null if none was removed
       */
     public Attribute removeAttribute(QName qName);
-    
-    /** <p>Removes the attribute with the given name and namespace.</p>
-      *
-      * @param name is the name of the attribute to be removed
-      * @param namespace is the <code>Namespace</code> of the attribute
-      * @return the attribute that was removed or null if none was removed
-      */
-    public Attribute removeAttribute(String name, Namespace namespace);
-    
 
     
     
@@ -329,12 +291,6 @@ public interface Element extends Branch {
       */
     public Element getElement(String name);
     
-    /** Returns the first element for the given local name and namespace.
-      * 
-      * @return the first element with the given local name and namespace 
-      */
-    public Element getElement(String name, Namespace namespace);
-
     /** Returns the first element for the given fully qualified name.
       * 
       * @param qName is the fully qualified name to search for
@@ -378,18 +334,6 @@ public interface Element extends Branch {
       */
     public List getElements(QName qName);
     
-    /** <p>Returns the elements contained in this element with the given name
-      * and namespace.
-      * If no elements are found then this method returns an empty list.
-      *
-      * The list is backed by the element such that changes to the list will
-      * be reflected in the element though the reverse is not the case.</p>
-      *
-      * @return a list of all the elements in this element for the 
-      * given name and namespace.
-      */
-    //public List getElements(String name, Namespace namespace);
-
     /** Returns an iterator over all this elements child elements.
       *
       * @return an iterator over the contained elements
@@ -412,23 +356,13 @@ public interface Element extends Branch {
       * fully qualified name
       */
     public Iterator elementIterator(QName qname);
-    
-    /** Returns an iterator over the elements contained in this element
-      * which match the given local name and namespace.
-      *
-      * @return an iterator over the contained elements matching the given 
-      * local name and namespace
-      */
-    public Iterator elementIterator(String name, Namespace namespace);
-    
+        
     
     // helper methods
     public String getElementText(String name);
     public String getElementText(QName qname);
-    public String getElementText(String name, Namespace namespace);
     public String getElementTextTrim(String name);
     public String getElementTextTrim(QName qname);
-    public String getElementTextTrim(String name, Namespace namespace);
     
 
     // builder methods 
@@ -462,7 +396,7 @@ public interface Element extends Branch {
       */    
     public Entity addEntity(String name, String text);
     
-    public Namespace addAdditionalNamespace(String prefix, String uri);
+    public Namespace addNamespace(String prefix, String uri);
 
     // typesafe versions using node classes
     
