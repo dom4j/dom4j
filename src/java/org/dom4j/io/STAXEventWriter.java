@@ -9,12 +9,17 @@
 
 package org.dom4j.io;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventFactory;
+import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.DTD;
@@ -53,7 +58,46 @@ public class STAXEventWriter {
     /** The event factory used to construct events. */
     private XMLEventFactory factory = XMLEventFactory.newInstance();
     
+    private XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
+    
     public STAXEventWriter() {
+    }
+
+    /**
+     * Constructs a <code>STAXEventWriter</code> that writes events to the
+     * provided file.
+     *
+     * @param file The file to which events will be written.
+     * @throws XMLStreamException If an error occurs creating an event writer from
+     *     the file.
+     * @throws IOException If an error occurs openin the file for writing.
+     */
+    public STAXEventWriter(File file) throws XMLStreamException, IOException {
+        consumer = outputFactory.createXMLEventWriter(new FileWriter(file));
+    }
+    
+    /**
+     * Constructs a <code>STAXEventWriter</code> that writes events to the
+     * provided character stream.
+     *
+     * @param writer The character stream to which events will be written.
+     * @throws XMLStreamException If an error occurs constructing an event writer
+     *     from the character stream.
+     */
+    public STAXEventWriter(Writer writer) throws XMLStreamException {
+        consumer = outputFactory.createXMLEventWriter(writer);
+    }
+
+    /**
+     * Constructs a <code>STAXEventWriter</code> that writes events to the
+     * provided stream.
+     *
+     * @param stream The output stream to which events will be written.
+     * @throws XMLStreamException If an error occurs constructing an event writer
+     *     from the stream.
+     */
+    public STAXEventWriter(OutputStream stream) throws XMLStreamException {
+        consumer = outputFactory.createXMLEventWriter(stream);
     }
     
     /**
@@ -430,7 +474,12 @@ public class STAXEventWriter {
      * @return The constructed {@link StartDocument} event.
      */
     public StartDocument createStartDocument(Document doc) {
-        return factory.createStartDocument();
+        String encoding = doc.getXMLEncoding();
+        if (encoding != null) {
+            return factory.createStartDocument(encoding);
+        } else {
+            return factory.createStartDocument();
+        }
     }
     
     /**

@@ -235,6 +235,13 @@
     </dependency>
 
     <dependency>
+      <groupId>stax</groupId>
+      <artifactId>stax-ri</artifactId>
+      <version>1.0</version>
+      <url>http://dev2dev.bea.com/technologies/stax/index.jsp</url>
+    </dependency>
+
+    <dependency>
       <groupId>xerces</groupId>
       <artifactId>xercesImpl</artifactId>
       <version>2.6.2</version>

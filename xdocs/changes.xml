@@ -8,6 +8,9 @@
   <body>
 
     <release version="1.5-dev" date="in CVS">
+      <action dev="maartenc" type="update" due-to="Christian Niles">
+        Updated the STAX classes to provide document encoding.
+      </action>
       <action dev="maartenc" type="add">
         Added <code>getXMLEncoding()</code> method to <code>org.dom4j.Document</code>
         which returns the encoding of the document.
