@@ -1,20 +1,34 @@
-2001-01-28  Norman Walsh  <ndw@nwalsh.com>
+2002-03-25  Norman Walsh <nwalsh@users.sourceforge.net>
 
-	* lib.xsl: Moved string.subst to lib; added length-magnitude and length-units templates for parsing lengths
+	* .cvsignore: Ignore lib.xsl too
 
-2000-10-19  Norman Walsh  <ndw@nwalsh.com>
+	* .cvsignore, Makefile, lib.xsl, lib.xweb: Use Literate XML to generate lib.xsl
 
-	* lib.xsl: Documentation changes
+	* Makefile: Update documentation build to reflect use of lib.xweb
 
-2000-10-17  Norman Walsh  <ndw@nwalsh.com>
+2002-03-18  Norman Walsh <nwalsh@users.sourceforge.net>
 
-	* lib.xsl: Updated documentation
+	* lib.xsl: Replace generate.*.toc and generate.*.lot with single generate.toc parameter.
 
-2000-10-16  Norman Walsh  <ndw@nwalsh.com>
+2002-03-14  Norman Walsh <nwalsh@users.sourceforge.net>
 
-	* lib.xsl: Added doc:reference
+	* lib.xsl: Whitespace only: change CR/LF back to LF. Norm was a total moron.
 
-2000-10-09  Norman Walsh  <ndw@nwalsh.com>
+	* lib.xsl: Whitespace changes only: use PC-style CR/LF because Unix clients choke on this far less often than PC clients choke on the reverse. Grrr.
 
-	* LostLog, lib.xsl: New file.
+2002-01-09  Norman Walsh <nwalsh@users.sourceforge.net>
+
+	* lib.xsl: Added length-units template to extract units from lengths
+
+2001-11-28  Norman Walsh <nwalsh@users.sourceforge.net>
+
+	* lib.xsl: Added pi-attribute template
+
+2001-04-03  Norman Walsh <nwalsh@users.sourceforge.net>
+
+	* lib.xsl: Documentation fixes
+
+2001-04-02  Norman Walsh <nwalsh@users.sourceforge.net>
+
+	* lib.xsl: New file.
 
