@@ -116,10 +116,11 @@
     </section>
 
     <section title="Performance">
-      <p>Dennis Sosnoski has recently published a set of benchmarks against a 
+      <p>Dennis Sosnoski has published an interesting article on IBM's developerWorks 
+        which compares the performance of a 
         variety of XML document models for the Java platform including dom4j.
-        You can find the results 
-        <a href="http://www.sosnoski.com/opensrc/xmlbench/index.html">here</a>.
+        You can find the very interesting results 
+        <a href="http://www-106.ibm.com/developerworks/xml/library/x-injava/index.html">here</a>.
       </p>
     </section>
 
