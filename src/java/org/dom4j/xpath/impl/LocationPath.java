@@ -16,6 +16,7 @@ import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.XPath;
 import org.dom4j.rule.Pattern;
+import org.dom4j.xpath.impl.Context;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -23,28 +24,38 @@ import java.util.Collections;
 import java.util.Iterator;
 
 
-public class LocationPath extends PathExpr {
+public class LocationPath extends PathExpr implements org.jaxpath.expr.LocationPath {
     
-    private boolean _isAbsolute  = false;
-    private List    _steps       = null;
+    private boolean _isAbsolute;
+    private List    _steps;
     
     public LocationPath() {        
     }
     
-    public void setIsAbsolute(boolean isAbsolute) {
+    public LocationPath(boolean isAbsolute) {
+        _isAbsolute = isAbsolute;
+    }
+    
+    public void setAbsolute(boolean isAbsolute) {
         _isAbsolute = isAbsolute;
     }
     
     public boolean isAbsolute() {
         return _isAbsolute;
     }
-    
-    public LocationPath addStep(Step step) {
+
+    public void addStep(org.jaxpath.expr.Step step) {
         if ( _steps == null ) {
             _steps = new ArrayList();
         }
         _steps.add(step);        
-        return this;
+    }
+    
+    public void addStep(Step step) {
+        if ( _steps == null ) {
+            _steps = new ArrayList();
+        }
+        _steps.add(step);        
     }
     
     public List getSteps() {

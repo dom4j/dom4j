@@ -80,6 +80,11 @@ public class TestXPathExamples extends TestCase {
         
     protected void testContext(Element documentTest, Element context) throws Exception {
         String xpath = context.attributeValue( "select" );        
+        
+        if ( VERBOSE ) {
+            log( "Selecting nodes for XPath: " + testDocument.createXPath( xpath ) );
+        }
+        
         List list = testDocument.selectNodes( xpath );
         
         assertTrue( "Found at least one context nodes to test for path: " + xpath, list != null && list.size() > 0 );
@@ -113,7 +118,8 @@ public class TestXPathExamples extends TestCase {
         
         if ( VERBOSE ) {
             log( "" );
-            log( "XPath is: " + testContext.createXPath( xpath ) );
+            log( "XPath for: " + xpath );
+            log( "is: " + testContext.createXPath( xpath ) );
             log( "" );
         }
         
@@ -145,15 +151,17 @@ public class TestXPathExamples extends TestCase {
     protected void testValueOf(Element documentTest, Element context, Element valueOf) throws Exception {
         String xpath = valueOf.attributeValue( "select" );
         String description = "valueOf: " + xpath;
+        
+        if ( VERBOSE ) {
+            log( "XPath: " + testContext.createXPath( xpath ) );
+        }
+        
         String expected = valueOf.getText();
         String result = testContext.valueOf( xpath );            
 
         log( description );
         log( "\texpected: " + expected + " result: " + result );
 
-        if ( VERBOSE ) {
-            log( "XPath: " + testContext.createXPath( xpath ) );
-        }
         assertEquals( description, expected, result );
     }
 }

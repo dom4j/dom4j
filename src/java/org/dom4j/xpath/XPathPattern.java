@@ -15,14 +15,17 @@ import org.antlr.*;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
-
+import org.dom4j.InvalidXPathException;
 import org.dom4j.rule.Pattern;
-
 import org.dom4j.xpath.impl.Context;
 import org.dom4j.xpath.impl.Expr;
+import org.dom4j.xpath.impl.DefaultXPathFactory;
 
-import org.dom4j.xpath.parser.XPathLexer;
-import org.dom4j.xpath.parser.XPathRecognizer;
+import org.saxpath.XPathReader;
+import org.saxpath.SAXPathException;
+import org.saxpath.helpers.XPathReaderFactory;
+
+import org.jaxpath.JAXPathHandler;
 
 import java.io.StringReader;
 
@@ -112,24 +115,28 @@ public class XPathPattern implements Pattern {
     
 
     private Expr parse( String text ) {
-        StringReader reader = new StringReader(text);
-        InputBuffer buffer = new CharBuffer(reader);
-
-        XPathLexer lexer = new XPathLexer(buffer);
-        XPathRecognizer recog = new XPathRecognizer(lexer);
-        
+	  Expr expr = null;
         try {
-            return recog.xpath();
+            XPathReader reader = XPathReaderFactory.createReader();
+            
+            JAXPathHandler handler = new JAXPathHandler();
+            
+            handler.setXPathFactory( new DefaultXPathFactory() );
+            
+            reader.setXPathHandler( handler );
+            
+            reader.parse( text );
+            
+            org.jaxpath.expr.XPath xpath = handler.getXPath(true);
+            expr = (Expr) xpath.getRootExpr();
         }
-        catch (RecognitionException e) {
-            System.out.println( "Could not parse: " + text );
-            e.printStackTrace();
+        catch (SAXPathException e) {
+            throw new InvalidXPathException( text, e.getMessage() );
         }
-        catch (TokenStreamException e) {
-            System.out.println( "Could not parse: " + text );
-            e.printStackTrace();
+        if ( expr == null ) {
+            throw new InvalidXPathException( text );
         }
-        return null;
+        return expr;
     }
     
 }

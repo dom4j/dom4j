@@ -14,31 +14,73 @@ import java.util.List;
 import java.util.ArrayList;
 
 import org.dom4j.Node;
+import org.dom4j.xpath.impl.Context;
 
-public class FilterExpr extends PathExpr {
+public class FilterExpr extends PathExpr implements org.jaxpath.expr.PathExpr, org.jaxpath.expr.FilterExpr  {
     
-    private Expr _expr       = null;
-    private List _predicates = null;
+    private Expr _expr;
+    private List _predicates;
     
-    private LocationPath _path = null;
+    private LocationPath _path;
+    
+    public FilterExpr(org.jaxpath.expr.FilterExpr expr, org.jaxpath.expr.LocationPath path) {
+        _expr = (Expr) expr;
+        _path = (LocationPath) path;
+    }
     
     public FilterExpr(Expr expr) {
         _expr = expr;
     }
     
-    public void addPredicate(Predicate pred) {
+    
+    public org.jaxpath.expr.Expr simplify() {
+        if ( _predicates == null || _predicates.size() <= 0 ) {
+            if ( _expr == null ) {
+                return _path.simplify();
+            }
+            else if ( _path == null ) {
+                return _expr.simplify();
+            }
+        }
+        return this;
+    }
+    
+    public void addPredicate(org.jaxpath.expr.Predicate pred) {
         if ( _predicates == null ) {
             _predicates = new ArrayList();
         }        
         _predicates.add(pred);
     }
     
+    public List getPredicates() {
+        return _predicates;
+    }
+    
+    public org.jaxpath.expr.LocationPath getLocationPath() {
+        return _path;
+    }
+
+    public org.jaxpath.expr.Expr getFilterExpr() {
+        return _expr;
+    }
+    
+    public void setFilterExpr(org.jaxpath.expr.Expr expr) {
+        _expr = (Expr) expr;
+    }
+    
     public void setLocationPath(LocationPath path) {
         _path = path;
-        _path.setIsAbsolute(false);
+        //_path.setAbsolute(false);
     }
     
     public Object evaluate(Context context) {
+        if ( _expr == null ) {
+            //System.out.println( "Warning: null expression: " + toString() );
+            if ( _path != null ) {
+                return _path.evaluate( context );
+            }
+            return null;
+        }
         Object answer = _expr.evaluate( context );
         if ( _path != null ) {
             if ( answer instanceof List ) {

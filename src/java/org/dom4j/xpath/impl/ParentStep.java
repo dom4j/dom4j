@@ -11,6 +11,7 @@ package org.dom4j.xpath.impl;
 import org.dom4j.Document;
 import org.dom4j.Node;
 import org.dom4j.Element;
+import org.dom4j.xpath.impl.Context;
 
 import java.util.Set;
 import java.util.HashSet;

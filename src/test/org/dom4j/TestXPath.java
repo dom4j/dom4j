@@ -22,24 +22,35 @@ import junit.textui.TestRunner;
   */
 public class TestXPath extends AbstractTestCase {
 
-    protected static boolean VERBOSE = false;
+    protected static boolean VERBOSE = true;
     
     protected static String[] paths = {
+        ".",
+        "*",
+        "/",
+        "/.",
+        "/*",
+        "/node()",
+        "/child::node()",
+        "/self::node()",
         "root",
+        "/root",
+        "/root/author",
         "text()",
         "//author",
-        "//author[@location='UK']",
         "//author/text()",
-        "//*[.='James Strachan']",
         "//@location",
         "//attribute::*",
         "//namespace::*",
         "normalize-space(/root)",
+        "//author[@location]",
+        "//author[@location='UK']",
+        "root|author",
+        "//*[.='James Strachan']",
+        "//root/author[1]",
         "normalize-space(/root/author)",
         "normalize-space(' a  b  c  d ')",
-        "root|author",
         "//root|//author[1]|//author[2]",
-        "//root/author[1]",
         "//root/author[2]",
         "//root/author[3]"
     };
@@ -69,11 +80,12 @@ public class TestXPath extends AbstractTestCase {
     // Implementation methods
     //-------------------------------------------------------------------------                    
     protected void testXPath(String xpathExpression) {
+        log( "Searched path: " + xpathExpression );
+        
         XPath xpath = DocumentHelper.createXPath(xpathExpression);
         
         List list = xpath.selectNodes( document );
         
-        log( "Searched path: " + xpathExpression );
         log( "Found        : " + list.size() + " result(s)" );
         
         if ( VERBOSE ) {

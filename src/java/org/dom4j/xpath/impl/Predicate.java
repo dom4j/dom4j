@@ -13,21 +13,39 @@ package org.dom4j.xpath.impl;
 import org.dom4j.Node;
 import org.dom4j.xpath.ContextSupport;
 import org.dom4j.xpath.function.BooleanFunction;
+import org.dom4j.xpath.impl.Context;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Collections;
 
-public class Predicate {
+public class Predicate implements org.jaxpath.expr.Predicate {
     
     private Expr _expr = null;
+    
+    public String getText() {
+        return "[N/I]";
+    }
+
+    public org.jaxpath.expr.Expr simplify() {
+        return this;
+    }
     
     public Predicate(Expr expr) {
         _expr = expr;
     }
     
-    public List evaluateOn(List nodeSet, ContextSupport support, String axis) {
+    public org.jaxpath.expr.Expr getExpr() {
+        return _expr;
+    }
+    
+    public void setExpr(org.jaxpath.expr.Expr expr) {
+        _expr = (Expr) expr;
+    }
+        
+    
+    public List evaluateOn(List nodeSet, ContextSupport support, int axis) {
         Context context = new Context( nodeSet, support );
         int max = context.getSize();
         List results = new ArrayList();        
@@ -43,7 +61,7 @@ public class Predicate {
         return results;
     }
     
-    public boolean evaluateOnNode(Context context, String axis) {
+    public boolean evaluateOnNode(Context context, int axis) {
         Object exprResult = _expr.evaluate( context );
         
         //System.err.println("pred-expr == " + _expr);

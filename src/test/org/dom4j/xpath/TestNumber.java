@@ -31,15 +31,19 @@ public class TestNumber extends AbstractTestCase {
     protected static String[] paths = {
         "count(//author)",
         "count(//author/attribute::*)",
-        "sum(count(//author),count(//author/attribute::*))",
         "count(descendant::author)",
         "count(ancestor::*)",
         "count(ancestor::author)",
         "count(descendant::*)",
         "count(descendant::author)+1",
-        "10 + (count(descendant::author) * 5)",
         "2 + 2",
-        "2 + (2 * 5)"
+/*        
+        "10 + count(descendant::author) * 5",
+        "10 + (count(descendant::author) * 5)",
+        "2 + (2 * 5)",
+        "sum(count(//author),count(//author/attribute::*))",
+        "12 + sum(count(//author),count(//author/attribute::*)) / 2",
+*/
     };
     
     

@@ -19,6 +19,9 @@ import org.dom4j.Namespace;
 import org.dom4j.Node;
 import org.dom4j.QName;
 import org.dom4j.rule.Pattern;
+import org.dom4j.xpath.impl.Context;
+
+import org.saxpath.Axis;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -34,7 +37,7 @@ public class NameTestStep extends UnAbbrStep {
     
     
     public NameTestStep( 
-        String axis, 
+        Axis axis, 
         String namespacePrefix, 
         String localName 
     ) {

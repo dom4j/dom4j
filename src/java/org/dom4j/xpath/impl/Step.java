@@ -10,6 +10,8 @@
 
 package org.dom4j.xpath.impl;
 
+import org.dom4j.xpath.impl.Context;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +21,7 @@ import java.util.HashSet;
 
 import org.dom4j.Node;
 
-public abstract class Step extends Expr {
+public abstract class Step extends Expr implements org.jaxpath.expr.Step {
     
     private boolean _isAbsolute = false;
     

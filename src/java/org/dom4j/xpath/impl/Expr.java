@@ -13,12 +13,22 @@ package org.dom4j.xpath.impl;
 import org.dom4j.Node;
 import org.dom4j.rule.Pattern;
 import org.dom4j.xpath.function.StringFunction;
+import org.dom4j.xpath.impl.Context;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Expr 
-{
+public abstract class Expr implements org.jaxpath.expr.Expr {    
+    
+    public String getText() {
+        return "[N/I]";
+    }
+    
+    public org.jaxpath.expr.Expr simplify() {
+        return this;
+    }
+    
+    
     public abstract Object evaluate(Context context);
   
     public String valueOf(Context context)  {

@@ -10,7 +10,9 @@
 
 package org.dom4j.xpath.impl;
 
-public class VariableExpr extends Expr {
+import org.dom4j.xpath.impl.Context;
+
+public class VariableExpr extends Expr implements org.jaxpath.expr.VariableReferenceExpr {
     
     private String _name = null;
     

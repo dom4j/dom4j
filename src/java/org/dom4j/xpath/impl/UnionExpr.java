@@ -13,6 +13,7 @@ package org.dom4j.xpath.impl;
 import org.dom4j.xpath.ContextSupport;
 
 import org.dom4j.xpath.function.BooleanFunction;
+import org.dom4j.xpath.impl.Context;
 
 import org.dom4j.Element;
 import org.dom4j.Attribute;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Collections;
 
-public class UnionExpr extends Expr {
+public class UnionExpr extends Expr implements org.jaxpath.expr.UnionExpr {
     
     private Expr  _lhs  = null;
     private Expr  _rhs  = null;
@@ -32,6 +33,14 @@ public class UnionExpr extends Expr {
         _rhs = rhs;
     }
     
+    public org.jaxpath.expr.Expr getLHS() {
+        return _lhs;
+    }
+    
+    public org.jaxpath.expr.Expr getRHS() {
+        return _rhs;
+    }
+
     public Object evaluate(Context context) {        
         Object lhsValue = null;
         Object rhsValue = null;

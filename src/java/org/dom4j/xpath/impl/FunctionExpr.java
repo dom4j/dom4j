@@ -11,20 +11,48 @@
 package org.dom4j.xpath.impl;
 
 import org.dom4j.xpath.function.Function;
+import org.dom4j.xpath.impl.Context;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-public class FunctionExpr extends Expr {
+public class FunctionExpr extends Expr implements org.jaxpath.expr.FunctionCallExpr {
     
     private String _name = null;
     private List   _args = null;
     
+    public FunctionExpr(String name) {
+        _name = name;
+    }
+    
     public FunctionExpr(String name, List args) {
         _name = name;
         _args = args;
+    }
+    
+    public org.jaxpath.expr.Expr simplify() {
+        if ( _args != null ) {
+            for ( int i = 0, size = _args.size(); i < size; i++ ) {
+                Object object = _args.get(i);
+                if ( object instanceof org.jaxpath.expr.Expr ) { 
+                    org.jaxpath.expr.Expr expr = (org.jaxpath.expr.Expr) object;
+                    org.jaxpath.expr.Expr expr2 = expr.simplify();
+                    if ( expr2 != expr ) {
+                        _args.set(i, expr2);
+                    }
+                }
+            }
+        }
+        return this;
+    }
+
+    public void addParameter(org.jaxpath.expr.Expr expr) {
+        if ( _args == null ) {
+            _args = new ArrayList();
+        }
+        _args.add( expr );
     }
     
     public Object evaluate(Context context) {

@@ -11,6 +11,7 @@
 package org.dom4j.xpath.impl;
 
 import org.dom4j.xpath.ContextSupport;
+import org.dom4j.xpath.impl.Context;
 
 import java.util.List;
 import java.util.ArrayList;

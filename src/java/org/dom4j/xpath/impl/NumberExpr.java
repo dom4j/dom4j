@@ -11,11 +11,15 @@
 package org.dom4j.xpath.impl;
 
 import org.dom4j.Element;
+import org.dom4j.xpath.impl.Context;
 
-public class NumberExpr extends Expr {
+public class NumberExpr extends Expr implements org.jaxpath.expr.NumberExpr {
     
-    private Double _number = null;
+    private Number _number = null;
     
+    public NumberExpr(Number number) {
+        _number = number;
+    }
     public NumberExpr(String number) {
         _number = new Double( number );
     }

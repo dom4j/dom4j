@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-
-<!--
-<!DOCTYPE web-app
-  PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
-  "http://java.sun.com/j2ee/dtds/web-app_2.2.dtd">
--->
-
 <web-app>
   <servlet>
-
-
-
     <servlet-name>snoop</servlet-name>
     <servlet-class>SnoopServlet</servlet-class>
   </servlet>
@@ -49,6 +39,4 @@
      president
     </role-name>
   </security-role>
-
-
 </web-app>

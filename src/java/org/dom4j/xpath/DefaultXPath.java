@@ -20,12 +20,13 @@ import org.dom4j.rule.Pattern;
 
 import org.dom4j.xpath.impl.Context;
 import org.dom4j.xpath.impl.Expr;
+import org.dom4j.xpath.impl.DefaultXPathFactory;
 
-import org.dom4j.xpath.parser.XPathLexer;
-import org.dom4j.xpath.parser.XPathRecognizer;
+import org.saxpath.XPathReader;
+import org.saxpath.SAXPathException;
+import org.saxpath.helpers.XPathReaderFactory;
 
-import org.antlr.CharBuffer;
-import org.antlr.*;
+import org.jaxpath.JAXPathHandler;
 
 import java.io.StringReader;
 
@@ -331,32 +332,25 @@ public class DefaultXPath implements org.dom4j.XPath {
     
     
     private void parse() {
-
-        StringReader reader   = new StringReader(_xpath);
-        InputBuffer  buf      = new CharBuffer(reader);
-
-        XPathLexer      lexer = new XPathLexer(buf);
-        XPathRecognizer recog = new XPathRecognizer(lexer);
-
         try {
-            _expr = recog.xpath();
+            XPathReader reader = XPathReaderFactory.createReader();
+            
+            JAXPathHandler handler = new JAXPathHandler();
+            
+            handler.setXPathFactory( new DefaultXPathFactory() );
+            
+            reader.setXPathHandler( handler );
+            
+            reader.parse( _xpath );
+            
+            org.jaxpath.expr.XPath xpath = handler.getXPath(true);
+            _expr = (Expr) xpath.getRootExpr();
         }
-        catch (RecognitionException e) {
-            String message = e.toString() + " at column " + e.getColumn();
-            throw new InvalidXPathException( _xpath, message );
-        }
-        catch (TokenStreamException e) {
+        catch (SAXPathException e) {
             throw new InvalidXPathException( _xpath, e.getMessage() );
         }
         if ( _expr == null ) {
             throw new InvalidXPathException( _xpath );
-        }
-        else {            
-            RecognitionException e = recog.getRecognitionException();
-            if ( e != null )  {
-                String message = e.toString() + " at column " + e.getColumn();
-                throw new InvalidXPathException( _xpath, message );
-            }
         }
     }
     

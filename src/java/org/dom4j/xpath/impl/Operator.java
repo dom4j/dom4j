@@ -14,6 +14,8 @@ import org.dom4j.Attribute;
 import org.dom4j.Element;
 import org.dom4j.Node;
 
+import org.dom4j.xpath.impl.Context;
+
 import java.util.List;
 
 class Operator {

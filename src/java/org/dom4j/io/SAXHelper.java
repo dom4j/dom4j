@@ -73,6 +73,7 @@ class SAXHelper {
         }
         catch (Exception e) {
             // JAXP is not loaded so continue, its probably not in the CLASSPATH
+            return null;
         }
         
         // try use JAXP to load the XMLReader...

@@ -105,35 +105,13 @@
     </copy>
   </target>
 
-  <target name="prepare-grammars" depends="prepare-src">
-    <java fork="yes"
-          classname="org.antlr.Tool">
-        <classpath>
-            <pathelement path="${java.class.path}"/>
-        </classpath>
-        <arg value="-o"/> 
-        <arg value="${xpath.parser.dir}"/>
-        <arg value="${xpath.parser.dir}/xpath.g"/>
-    </java>
-
-    <java fork="yes"
-          classname="org.antlr.Tool">
-        <classpath>
-            <pathelement path="${java.class.path}"/>
-        </classpath> 
-        <arg value="-o"/> 
-        <arg value="${xpath.parser.dir}"/>
-        <arg value="${xpath.parser.dir}/xpath_lexer.g"/>
-    </java>
-  </target>
-
   <!-- =================================================================== -->
   <!-- Does replacement on files for dealing with collections.             -->
   <!-- XXX The efficiency could be improved here; all replacements should  -->
   <!-- XXX happen during one read/write phase and only for files that have -->
   <!-- XXX changed.                                                        -->
   <!-- =================================================================== -->
-  <target name="collections" if="coll.present" depends="prepare-grammars">
+  <target name="collections" if="coll.present" depends="prepare-src">
     <replace dir="${build.src}" includes="**"
              token="java.util.Collection" value="${coll.import}.Collection"/>
     <replace dir="${build.src}" includes="**"
@@ -217,12 +195,12 @@
     -->
 
      <!-- add dependent JARs -->
-    <unjar src="${lib.dir}/antlr-runtime.jar" dest="${build.dest}"/>
+    <unjar src="${lib.dir}/org.saxpath.jar" dest="${build.dest}"/>
     <delete dir="${build.dest}/META-INF"/>
 
     <jar jarfile="${build.dir}/${name}.jar"
          basedir="${build.dest}"
-         includes="org/dom4j/**,org/antlr/**"/>
+         includes="org/dom4j/**,org/saxpath/**,org/jaxpath/**"/>
 
     <jar jarfile="${build.dir}/${name}-all.jar"
          basedir="${build.dest}"
@@ -469,6 +447,10 @@
 
   <target name="test-serialize" depends="compile-test">
     <java classname="org.dom4j.TestSerialize"/>
+  </target>
+
+  <target name="test-setcontent" depends="compile-test">
+    <java classname="org.dom4j.TestSetContent"/>
   </target>
 
   <!-- =================================================================== -->

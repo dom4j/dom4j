@@ -12,12 +12,15 @@ package org.dom4j.xpath.impl;
 
 import org.dom4j.xpath.ContextSupport;
 import org.dom4j.xpath.util.Partition;
+import org.dom4j.xpath.impl.Context;
 
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.Node;
+
+import org.saxpath.Axis;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -26,84 +29,28 @@ import java.util.Iterator;
 
 public abstract class UnAbbrStep extends Step {
     
-    public static final short AXIS_UNKNOWN = 0;
-    public static final short AXIS_SELF = 1;
-    public static final short AXIS_ANCESTOR = 2;
-    public static final short AXIS_ANCESTOR_OR_SELF = 3;
-    public static final short AXIS_ATTRIBUTE = 4;
-    public static final short AXIS_CHILD = 5;
-    public static final short AXIS_DESCENDANT = 6;
-    public static final short AXIS_DESCENDANT_OR_SELF = 7;
-    public static final short AXIS_FOLLOWING = 8;
-    public static final short AXIS_FOLLOWING_SIBLING = 9;
-    public static final short AXIS_NAMESPACE = 10;
-    public static final short AXIS_PARENT = 11;
-    public static final short AXIS_PRECEDING = 12;
-    public static final short AXIS_PRECEDING_SIBLING = 13;
-    
-    private String _axis;
-    private short _axisCode;
+    private Axis _axis;
+    private int _axisCode;
     private List _predicates;
     
-    public UnAbbrStep(String axis) {
-        _axis = axis.trim();
-        _axisCode = AXIS_UNKNOWN;
-        
-        if ( "self".equals(axis) ) {
-            _axisCode = AXIS_SELF;
-        }
-        else if ( "ancestor".equals(axis) ) {
-            _axisCode = AXIS_ANCESTOR;
-        }
-        else if ( "ancestor-or-self".equals(axis) ) {
-            _axisCode = AXIS_ANCESTOR_OR_SELF;
-        }
-        else if ( "attribute".equals(axis) ) {
-            _axisCode = AXIS_ATTRIBUTE;
-        }
-        else if ( "child".equals(axis) ) {
-            _axisCode = AXIS_CHILD;
-        }
-        else if ( "descendant".equals(axis) ) {
-            _axisCode = AXIS_DESCENDANT;
-        }
-        else if ( "descendant-or-self".equals(axis) ) {
-            _axisCode = AXIS_DESCENDANT_OR_SELF;
-        }
-        else if ( "following".equals(axis) ) {
-            _axisCode = AXIS_FOLLOWING;
-        }
-        else if ( "following-sibling".equals(axis) ) {
-            _axisCode = AXIS_FOLLOWING_SIBLING;
-        }
-        else if ( "namespace".equals(axis) ) {
-            _axisCode = AXIS_NAMESPACE;
-        }
-        else if ( "parent".equals(axis) ) {
-            _axisCode = AXIS_PARENT;
-        }
-        else if ( "preceding".equals(axis) ) {
-            _axisCode = AXIS_PRECEDING;
-        }
-        else if ( "preceding-sibling".equals(axis) ) {
-            _axisCode = AXIS_PRECEDING_SIBLING;
-        }
-    }
+    public UnAbbrStep(Axis axis) {
+        _axis = axis;
+        _axisCode = axis.getEnumValue();
+    }    
     
-    public String getAxis() {
+    public Axis getAxis() {
         return _axis;
     }
     
-    public short getAxisCode() {
+    public int getAxisCode() {
         return _axisCode;
     }
     
-    public Step addPredicate(Predicate pred) {
+    public void addPredicate(org.jaxpath.expr.Predicate pred) {
         if ( _predicates == null ) {
             _predicates = new ArrayList();
         }        
         _predicates.add(pred);        
-        return this;
     }
     
     public List getPredicates() {
@@ -119,17 +66,17 @@ public abstract class UnAbbrStep extends Step {
             return context;
         }
         List results = applyTo(
-            context.getNodeSet(), context.getContextSupport(), getAxisCode(), true
+            context.getNodeSet(), context.getContextSupport(), _axisCode, true
         );        
         context.setNodeSet(results);
         return context;
     }
     
-    public List applyTo(List nodeSet, ContextSupport support, short axis) {
+    public List applyTo(List nodeSet, ContextSupport support, int axis) {
         return applyTo(nodeSet, support, axis, false);
     }
     
-    public List applyTo(List nodeSet, ContextSupport support, short axisCode, boolean doPreds) {
+    public List applyTo(List nodeSet, ContextSupport support, int axisCode, boolean doPreds) {
         List aggregateResults = new ArrayList();
         
         for ( int i = 0, size = nodeSet.size(); i < size; i++ ) {
@@ -137,43 +84,43 @@ public abstract class UnAbbrStep extends Step {
             List results = null;            
             
             switch ( axisCode ) {
-                case AXIS_SELF:
+                case Axis.Enum.SELF:
                     results = applyToSelf( each, support );
                     break;
-                case AXIS_ANCESTOR:
+                case Axis.Enum.ANCESTOR:
                     results = applyToAncestor( each, support );
                     break;
-                case AXIS_ANCESTOR_OR_SELF:
+                case Axis.Enum.ANCESTOR_OR_SELF:
                     results = applyToAncestorOrSelf( each, support );
                     break;
-                case AXIS_ATTRIBUTE:
+                case Axis.Enum.ATTRIBUTE:
                     results = applyToAttribute( each, support );
                     break;
-                case AXIS_CHILD:
+                case Axis.Enum.CHILD:
                     results = applyToChild( each, support );
                     break;
-                case AXIS_DESCENDANT:
+                case Axis.Enum.DESCENDANT:
                     results = applyToDescendant( each, support );
                     break;
-                case AXIS_DESCENDANT_OR_SELF:
+                case Axis.Enum.DESCENDANT_OR_SELF:
                     results = applyToDescendantOrSelf( each, support );
                     break;
-                case AXIS_FOLLOWING:
+                case Axis.Enum.FOLLOWING:
                     results = applyToFollowing( each, support );
                     break;
-                case AXIS_FOLLOWING_SIBLING:
+                case Axis.Enum.FOLLOWING_SIBLING:
                     results = applyToFollowingSibling( each, support );
                     break;
-                case AXIS_NAMESPACE:
+                case Axis.Enum.NAMESPACE:
                     results = applyToNamespace( each, support );
                     break;
-                case AXIS_PARENT:
+                case Axis.Enum.PARENT:
                     results = applyToParent( each, support );
                     break;
-                case AXIS_PRECEDING:
+                case Axis.Enum.PRECEDING:
                     results = applyToPreceeding( each, support );
                     break;
-                case AXIS_PRECEDING_SIBLING:
+                case Axis.Enum.PRECEDING_SIBLING:
                     results = applyToPreceedingSibling( each, support );
                     break;
             }
@@ -203,7 +150,7 @@ public abstract class UnAbbrStep extends Step {
         while ( predIter.hasNext() ) {
             Predicate eachPred = (Predicate) predIter.next();
             
-            results = eachPred.evaluateOn( results, support, _axis );
+            results = eachPred.evaluateOn( results, support, _axisCode );
         }
         return results;
     }
@@ -224,13 +171,13 @@ public abstract class UnAbbrStep extends Step {
         if ( node instanceof Element ) {
             List children = ((Element)node).content();            
             results.addAll( 
-                applyTo( children, support, AXIS_DESCENDANT ) 
+                applyTo( children, support, Axis.Enum.DESCENDANT ) 
             );
         }
         else if ( node instanceof Document ) {
             List children = ((Document)node).content();            
             results.addAll( 
-                applyTo( children, support, AXIS_DESCENDANT ) 
+                applyTo( children, support, Axis.Enum.DESCENDANT ) 
             );
         }        
         return results;
@@ -240,14 +187,14 @@ public abstract class UnAbbrStep extends Step {
         if ( node instanceof Element ) {
             Element element = (Element) node;
             List namespaces = getNamespaces((Element) node);
-            return applyTo( namespaces, support, AXIS_NAMESPACE );
+            return applyTo( namespaces, support, Axis.Enum.NAMESPACE );
         }
         else if ( node instanceof Attribute ) {
             Namespace namespace = getNamespace((Attribute) node);
             if ( namespace != null ) {
                 List namespaces = new ArrayList(1);
                 namespaces.add(namespace);
-                return applyTo( namespaces, support, AXIS_NAMESPACE );
+                return applyTo( namespaces, support, Axis.Enum.NAMESPACE );
             }
         }
         return Collections.EMPTY_LIST;
@@ -260,11 +207,11 @@ public abstract class UnAbbrStep extends Step {
         
         if ( node instanceof Element ) {
             List children = ((Element)node).content();            
-            results.addAll( applyTo( children, support, AXIS_DESCENDANT_OR_SELF ) );
+            results.addAll( applyTo( children, support, Axis.Enum.DESCENDANT_OR_SELF ) );
         }
         else if ( node instanceof Document ) {
             List children = ((Document)node).content();            
-            results.addAll( applyTo( children, support, AXIS_DESCENDANT_OR_SELF ) );
+            results.addAll( applyTo( children, support, Axis.Enum.DESCENDANT_OR_SELF ) );
         }
         return results;
     }
@@ -309,7 +256,7 @@ public abstract class UnAbbrStep extends Step {
         if ( node instanceof Element) {
             List preceeding = Partition.preceeding( (Element)node );
             
-            results.addAll( applyTo( preceeding, support, AXIS_SELF ) );
+            results.addAll( applyTo( preceeding, support, Axis.Enum.SELF ) );
         }        
         return results;
     }
@@ -320,7 +267,7 @@ public abstract class UnAbbrStep extends Step {
         if ( node instanceof Element) {
             List following = Partition.following( (Element)node );
             
-            results.addAll( applyTo( following, support, AXIS_SELF ) );
+            results.addAll( applyTo( following, support, Axis.Enum.SELF ) );
         }        
         return results;
     }
@@ -332,7 +279,7 @@ public abstract class UnAbbrStep extends Step {
             
             List preceedingSiblings = Partition.preceedingSiblings( (Element)node );
             
-            results.addAll( applyTo( preceedingSiblings, support, AXIS_SELF ) );
+            results.addAll( applyTo( preceedingSiblings, support, Axis.Enum.SELF ) );
         }
         return results;
     }
@@ -344,7 +291,7 @@ public abstract class UnAbbrStep extends Step {
             
             List followingSiblings = Partition.followingSiblings( (Element)node );
             
-            results.addAll( applyTo( followingSiblings, support, AXIS_SELF ) );
+            results.addAll( applyTo( followingSiblings, support, Axis.Enum.SELF ) );
         }        
         return results;
     }
@@ -372,11 +319,11 @@ public abstract class UnAbbrStep extends Step {
         Element parent = null;
         
         switch ( _axisCode ) {
-            case AXIS_SELF:
-            case AXIS_ATTRIBUTE:
+            case Axis.Enum.SELF:
+            case Axis.Enum.ATTRIBUTE:
                 return null;
                 
-            case AXIS_CHILD:
+            case Axis.Enum.CHILD:
                 parent = node.getParent();
                 if ( parent == null ) {
                     return null;
@@ -384,8 +331,8 @@ public abstract class UnAbbrStep extends Step {
                 context.setNodeSet( parent );
                 return context;
                 
-            case AXIS_DESCENDANT: 
-            case AXIS_DESCENDANT_OR_SELF: 
+            case Axis.Enum.DESCENDANT: 
+            case Axis.Enum.DESCENDANT_OR_SELF: 
                 parent = node.getParent(); 
                 if ( parent != null ) {
                     List parents = new ArrayList();
@@ -400,14 +347,14 @@ public abstract class UnAbbrStep extends Step {
                 }
                 return null;
                 
-            case AXIS_FOLLOWING:
-            case AXIS_FOLLOWING_SIBLING:
-            case AXIS_NAMESPACE:
-            case AXIS_PARENT:
-            case AXIS_PRECEDING:
-            case AXIS_PRECEDING_SIBLING:
-            case AXIS_ANCESTOR:
-            case AXIS_ANCESTOR_OR_SELF:
+            case Axis.Enum.FOLLOWING:
+            case Axis.Enum.FOLLOWING_SIBLING:
+            case Axis.Enum.NAMESPACE:
+            case Axis.Enum.PARENT:
+            case Axis.Enum.PRECEDING:
+            case Axis.Enum.PRECEDING_SIBLING:
+            case Axis.Enum.ANCESTOR:
+            case Axis.Enum.ANCESTOR_OR_SELF:
                 // not implemented yet
                 break;
         }

@@ -1,5 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tests>
+
+  <!-- test name -->
+
+  <document url="xml/web.xml">
+    <context select="/">
+ 
+      <test select="*" count="1">
+        <valueOf select="name()">web-app</valueOf>
+      </test>
+
+      <!-- NOTE that the child::node() tests only work if the
+           XML document does not comments or PIs
+      -->
+ 
+      <test select="./*" count="1">
+        <valueOf select="name()">web-app</valueOf>
+      </test>
+      <test select="child::*" count="1">
+        <valueOf select="name()">web-app</valueOf>
+      </test>
+      <test select="/*" count="1">
+        <valueOf select="name()">web-app</valueOf>
+      </test>
+      <test select="/child::node()" count="1">
+        <valueOf select="name(.)">web-app</valueOf>
+      </test>
+      <test select="child::node()" count="1">
+        <valueOf select="name(.)">web-app</valueOf>
+      </test>
+
+      <!-- empty names -->
+
+      <valueOf select="name()"></valueOf>
+      <valueOf select="name(.)"></valueOf>
+      <valueOf select="name(parent::*)"></valueOf>
+      <valueOf select="name(/)"></valueOf>
+      <valueOf select="name(/.)"></valueOf>
+      <valueOf select="name(/self::node())"></valueOf>
+
+      <!-- name of root elemet -->
+      <valueOf select="name(node())">web-app</valueOf>
+      <valueOf select="name(/node())">web-app</valueOf>
+      <valueOf select="name(/*)">web-app</valueOf>
+      <valueOf select="name(/child::*)">web-app</valueOf>
+      <valueOf select="name(/child::node())">web-app</valueOf>
+      <valueOf select="name(/child::node())">web-app</valueOf>
+      <valueOf select="name(child::node())">web-app</valueOf>
+      <valueOf select="name(./*)">web-app</valueOf>
+<!--
+      <valueOf select="name(*)">web-app</valueOf>
+-->
+    </context>
+
+    <context select="/*">
+      <!-- empty names -->
+      <valueOf select="name(..)"></valueOf>
+      <valueOf select="name(parent::node())"></valueOf>
+      <valueOf select="name(parent::*)"></valueOf>
+
+      <!-- name of root elemet -->
+      <valueOf select="name()">web-app</valueOf>
+      <valueOf select="name(.)">web-app</valueOf>
+      <valueOf select="name(../*)">web-app</valueOf>
+      <valueOf select="name(../child::node())">web-app</valueOf>
+    </context>
+  </document>
+
+  
   <document url="xml/moreover/sample.xml">
     <context select="/">
       <test select="/child::node()" count="1"/>
@@ -34,5 +102,4 @@
       <test select="/*/fibonacci[position() &lt; 10]" count="9"/>
     </context>
   </document>
-
 </tests>

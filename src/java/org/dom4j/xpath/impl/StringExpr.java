@@ -10,7 +10,9 @@
 
 package org.dom4j.xpath.impl;
 
-public class StringExpr extends Expr {
+import org.dom4j.xpath.impl.Context;
+
+public class StringExpr extends Expr implements org.jaxpath.expr.LiteralExpr {
     
     private String _text = null;
     

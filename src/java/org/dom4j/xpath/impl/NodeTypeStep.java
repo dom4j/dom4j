@@ -17,6 +17,9 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.rule.Pattern;
+import org.dom4j.xpath.impl.Context;
+
+import org.saxpath.Axis;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -27,6 +30,11 @@ public class NodeTypeStep extends UnAbbrStep {
     
     private int _nodeType = Pattern.ANY_NODE;
     
+    public NodeTypeStep(int nodeType, Axis axis) {
+        super(axis);
+        _nodeType = nodeType;
+    }
+/*    
     public NodeTypeStep(String axis, String nodeType) {
         super(axis);
         nodeType = nodeType.trim();                
@@ -51,6 +59,7 @@ public class NodeTypeStep extends UnAbbrStep {
         super(axis);
         _nodeType = nodeType;
     }
+*/
     
     public List applyToNode(Object node) {
         if ( matches( node ) ) {
