@@ -6,7 +6,7 @@
     <header>
       <p>
       <i>dom4j</i> is an easy to use, open source library for working with XML, XPath and
-      XSLT on the Java platform using the Java Collections Framework and will full
+      XSLT on the Java platform using the Java Collections Framework and with full
       support for DOM, SAX and JAXP.
       </p>
     </header>
