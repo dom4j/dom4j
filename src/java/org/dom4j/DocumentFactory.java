@@ -11,6 +11,7 @@ package org.dom4j;
 
 import java.util.Map;
 
+import org.dom4j.rule.Pattern;
 import org.dom4j.tree.DefaultAttribute;
 import org.dom4j.tree.DefaultCDATA;
 import org.dom4j.tree.DefaultComment;
@@ -21,6 +22,8 @@ import org.dom4j.tree.DefaultEntity;
 import org.dom4j.tree.DefaultProcessingInstruction;
 import org.dom4j.tree.DefaultText;
 import org.dom4j.tree.XPathEntity;
+import org.dom4j.xpath.DefaultXPath;
+import org.dom4j.xpath.XPathPattern;
 
 /** <p><code>DocumentFactory</code> is a collection of factory methods to allow
   * easy custom building of DOM4J trees. The default tree that is built uses
@@ -35,12 +38,15 @@ import org.dom4j.tree.XPathEntity;
 public class DocumentFactory {
 
     /** The Singleton instance */
-    protected static DocumentFactory singleton = new DocumentFactory();
- 
-    /** The <code>{@link XPathEngine}</code> used to resolve XPath expressions */
-    protected XPathEngine XPathEngine;
-    
-    // Some static helper methods
+    private static DocumentFactory singleton;
+
+    static {
+        String className = System.getProperty( 
+            "org.dom4j.factory", 
+            "org.dom4j.DocumentFactory" 
+        );
+        singleton = createSingleton( className );
+    }
     
     /** <p>Access to singleton implementation of DocumentFactory which 
       * is used if no DocumentFactory is specified when building using the 
@@ -53,107 +59,10 @@ public class DocumentFactory {
     }
     
     
-    
-    /** <p>This will return the <code>{@link XPathEngine}</code>
-      * instance which will be used for all <code>Document</code>
-      * instances created by this factory.</p>
-      *
-      * @return the resolver of XPath expressions
-      */
-    public XPathEngine getXPathEngine() {
-        if ( XPathEngine == null ) {
-            XPathEngine = createXPathEngine();
-        }
-        return XPathEngine;
-    }
-
-    /** <p>This will set the <code>{@link XPathEngine}</code>
-      * instance which will be used for all <code>Document</code>
-      * instances created by this factory.</p>
-      *
-      * @param XPathEngine <code>XPathEngine</code> - the resolver of XPath expressions
-      */
-    public void setXPathEngine(XPathEngine XPathEngine) {
-        this.XPathEngine = XPathEngine;
-    }
-
-
-    // Static helper methods
-    
-    public static Document newDocument() {
-        return singleton.createDocument();
-    }
-    
-    public static Document newDocument(Element rootElement) {
-        return singleton.createDocument(rootElement);
-    }
-
-    
-    public static Element newElement(QName qname) {
-        return singleton.createElement(qname);
-    }
-    
-    public static Element newElement(String name) {
-        return singleton.createElement(name);
-    }
-    
-    
-    public static Attribute newAttribute(QName qname, String value) {
-        return singleton.createAttribute(qname, value);
-    }
-    
-    public static Attribute newAttribute(String name, String value) {
-        return singleton.createAttribute(name, value);
-    }
-    
-    public static CDATA newCDATA(String text) {
-        return singleton.createCDATA(text);
-    }
-    
-    public static Comment newComment(String text) {
-        return singleton.createComment(text);
-    }
-    
-    public static Text newText(String text) {
-        return singleton.createText(text);
-    }
-    
-    
-    public static Entity newEntity(String name) {
-        return singleton.createEntity(name);
-    }
-    
-    public static Entity newEntity(String name, String text) {
-        return singleton.createEntity(name, text);
-    }
-    
-    public static Namespace newNamespace(String prefix, String uri) {
-        return singleton.createNamespace(prefix, uri);
-    }
-    
-    public static ProcessingInstruction newProcessingInstruction(String target, String data) {
-        return singleton.createProcessingInstruction(target, data);
-    }
-    
-    public static ProcessingInstruction newProcessingInstruction(String target, Map data) {
-        return singleton.createProcessingInstruction(target, data);
-    }
-    
-    public static QName newQName(String localName, Namespace namespace) {
-        return singleton.createQName(localName, namespace);
-    }
-    
-    public static QName newQName(String localName) {
-        return singleton.createQName(localName);
-    }
-    
-    
-    
     // Factory methods
     
     public Document createDocument() {
         Document answer = new DefaultDocument();
-        answer.setXPathEngine( getXPathEngine() );
         return answer;
     }
     
@@ -225,18 +134,67 @@ public class DocumentFactory {
         return QName.get(localName);
     }
     
-    /** <p>A Factory Method pattern to create the default 
-      * <code>{@link XPathEngine}</code> instance which will be used for 
-      * all <code>Document</code> instances created by this factory.</p>
+    /** <p><code>createXPath</code> parses an XPath expression
+      * and creates a new XPath <code>XPath</code> instance.</p>
       *
-      * @return the new resolver of XPath expressions
+      * @param xpathExpression is the XPath expression to create
+      * @return a new <code>XPath</code> instance
       */
-    protected XPathEngine createXPathEngine() {
-        // use the default
-        return XPathHelper.getInstance();
+    public XPath createXPath(String xpathExpression) {
+        return new DefaultXPath( xpathExpression );
     }
 
+    /** <p><code>createXPathFilter</code> parses a NodeFilter
+      * from the given XPath filter expression.
+      * XPath filter expressions occur within XPath expressions such as
+      * <code>self::node()[ filterExpression ]</code></p>
+      *
+      * @param xpathFilterExpression is the XPath filter expression 
+      * to create
+      * @return a new <code>NodeFilter</code> instance
+      */
+    public NodeFilter createXPathFilter(String xpathFilterExpression) {
+        return new DefaultXPath( ".[" + xpathFilterExpression + "]" );        
+    }
     
+    /** <p><code>createPattern</code> parses the given 
+      * XPath expression to create an XSLT style {@link Pattern} instance
+      * which can then be used in an XSLT processing model.</p>
+      *
+      * @param xpathPattern is the XPath pattern expression 
+      * to create
+      * @return a new <code>Pattern</code> instance
+      */
+    public Pattern createPattern(String xpathPattern) {
+        return new XPathPattern( xpathPattern );
+    }
+    
+    
+    // Implementation methods
+    
+    /** <p><code>createSingleton</code> creates the singleton instance
+      * from the given class name.</p>
+      *
+      * @param className is the name of the DocumentFactory class to use
+      * @return a new singleton instance.
+      */
+    protected static DocumentFactory createSingleton(String className) {
+        // let's try and class load an implementation?
+        try {
+            // I'll use the current class loader
+            // that loaded me to avoid problems in J2EE and web apps
+            Class theClass = Class.forName( 
+                className, 
+                true, 
+                DocumentHelper.class.getClassLoader() 
+            );
+            return (DocumentFactory) theClass.newInstance();
+        }
+        catch (Throwable e) {
+            System.out.println( "WARNING: Cannot load DocumentFactory: " + className );
+            return new DocumentFactory();
+        }
+    }        
 }
 
 

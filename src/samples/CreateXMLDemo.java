@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.dom4j.Document;
-import org.dom4j.DocumentFactory;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.XMLWriter;
 
@@ -52,7 +52,7 @@ public class CreateXMLDemo extends AbstractDemo {
     }
     
     protected Document createDocument() throws Exception {
-        Document document = DocumentFactory.newDocument();
+        Document document = DocumentHelper.createDocument();
         Element root = document.addElement( "system" );
         
         Properties properties = System.getProperties();

@@ -1,5 +1,6 @@
 package org.dom4j.xpath;
 
+import org.dom4j.XPath;
 import org.dom4j.rule.Pattern;
 
 import org.dom4j.xpath.parser.XPathLexer;
@@ -57,14 +58,14 @@ import java.util.Map;
  *
  *  @author bob mcwhirter (bob @ werken.com)
  */
-public class XPath implements org.dom4j.XPath {
+public class DefaultXPath implements org.dom4j.XPath {
 
     private String      _xpath = "";
     private Expr        _expr  = null;
 
     /** Construct an XPath
      */
-    public XPath(String xpath) {
+    public DefaultXPath(String xpath) {
         _xpath = xpath;
         parse();
     }

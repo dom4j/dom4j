@@ -16,9 +16,9 @@ import junit.framework.*;
 import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Node;
 import org.dom4j.XPath;
-import org.dom4j.XPathHelper;
 
 /** Test harness for the boolean expressions
   *
@@ -65,7 +65,7 @@ public class TestBoolean extends AbstractTestCase {
     }
     
     protected void testXPath(String xpathExpression) {
-        XPath xpath = XPathHelper.createXPath( xpathExpression );
+        XPath xpath = DocumentHelper.createXPath( xpathExpression );
         assert( "No xpath object was created", xpath != null );
         
         log( "Evaluating xpath: " + xpath );

@@ -29,7 +29,7 @@ public class TestNamespace extends AbstractTestCase {
     protected static String INPUT_XML_FILE = "xml/namespaces.xml";
     
     /** Namespace to use in tests */
-    protected static Namespace XSL_NAMESPACE = DocumentFactory.newNamespace( 
+    protected static Namespace XSL_NAMESPACE = Namespace.get( 
         "xsl", "http://www.w3.org/1999/XSL/Transform" 
     );
     

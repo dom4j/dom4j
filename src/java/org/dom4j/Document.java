@@ -9,8 +9,6 @@
 
 package org.dom4j;
 
-import org.dom4j.XPathEngine;
-
 /** <p><code>Document</code> defines an XML Document.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
@@ -35,9 +33,6 @@ public interface Document extends Branch {
     
     public void setDocType(String name, String publicId, String systemId);    
     public DocumentType createDocType(String name, String publicId, String systemId);
-    
-    public XPathEngine getXPathEngine();
-    public void setXPathEngine(XPathEngine xpathEngine);
 
 }
 

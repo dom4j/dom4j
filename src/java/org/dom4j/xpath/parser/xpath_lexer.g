@@ -11,7 +11,7 @@ class XPathLexer extends Lexer;
 	{
 		charVocabulary='\3'..'\377';
 		k = 3;
-		importVocab=XPath;
+		importVocab=DefaultXPath;
 	}
 
 	tokens

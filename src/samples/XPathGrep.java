@@ -61,7 +61,7 @@ public class XPathGrep extends AbstractDemo {
     }
 
     public void setXPath(String xpathExpression) {
-        xpath = XPathHelper.createXPath( xpathExpression );
+        xpath = DocumentHelper.createXPath( xpathExpression );
     }
     
     protected void processFile(String fileName) throws Exception {

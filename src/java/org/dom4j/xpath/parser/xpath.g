@@ -24,7 +24,7 @@ header
 {
 	package org.dom4j.xpath.parser;
 
-	import org.dom4j.xpath.XPath;
+	import org.dom4j.xpath.DefaultXPath;
 	import org.dom4j.xpath.impl.*;
 
 	import java.util.List;
@@ -38,7 +38,7 @@ class XPathRecognizer extends Parser;
 	options
 	{
 		k = 2;
-		exportVocab=XPath;
+		exportVocab=DefaultXPath;
 	}
 
 	// ----------------------------------------

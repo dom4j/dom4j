@@ -23,7 +23,6 @@ import org.dom4j.Branch;
 import org.dom4j.CDATA;
 import org.dom4j.CharacterData;
 import org.dom4j.Comment;
-import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.Entity;
 import org.dom4j.IllegalAddException;
@@ -44,9 +43,6 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
 
     /** The XML writer used by default */
     protected static final XMLWriter writer = new XMLWriter( "  ", false );
-
-    /** The <code>DocumentFactory</code> instance used by default */
-    private static final DocumentFactory CONTENT_FACTORY = DocumentFactory.getInstance();
 
     
     public AbstractBranch() { 
@@ -296,10 +292,6 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
         throw new IllegalAddException( "Invalid node type. Cannot add node: " + node + " to this branch: " + this );
     }
     
-    /** Allows derived classes to override the factory behaviour */
-    protected DocumentFactory getDocumentFactory() {
-        return CONTENT_FACTORY;
-    }
 
 }
 

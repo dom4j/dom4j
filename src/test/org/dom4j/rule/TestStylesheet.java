@@ -90,7 +90,7 @@ public class TestStylesheet extends AbstractTestCase {
     protected void addTemplate( final String match ) {
         log( "Adding template match: " + match );
         
-        Pattern pattern = XPathHelper.createPattern( match );
+        Pattern pattern = DocumentHelper.createPattern( match );
         
         log( "Pattern: " + pattern );
         log( "........................................" );

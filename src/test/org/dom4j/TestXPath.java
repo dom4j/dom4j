@@ -69,7 +69,7 @@ public class TestXPath extends AbstractTestCase {
     }
     
     protected void testXPath(String xpathExpression) {
-        XPath xpath = XPathHelper.createXPath(xpathExpression);
+        XPath xpath = DocumentHelper.createXPath(xpathExpression);
         
         List list = xpath.selectNodes( document );
         

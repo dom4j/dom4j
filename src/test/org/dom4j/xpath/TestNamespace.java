@@ -17,9 +17,9 @@ import junit.framework.*;
 import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Namespace;
 import org.dom4j.XPath;
-import org.dom4j.XPathHelper;
 import org.dom4j.io.SAXReader;
 
 /** Test harness for the namespace axis 
@@ -62,7 +62,7 @@ public class TestNamespace extends AbstractTestCase {
     }
     
     protected void testXPath(String xpathText) {
-        XPath xpath = XPathHelper.createXPath(xpathText);
+        XPath xpath = DocumentHelper.createXPath(xpathText);
         List list = xpath.selectNodes( document );
         
         log( "Searched path: " + xpathText + " found: " + list.size() + " result(s)" );

@@ -17,10 +17,10 @@ import junit.framework.*;
 import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Namespace;
 import org.dom4j.Node;
 import org.dom4j.XPath;
-import org.dom4j.XPathHelper;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 

@@ -36,7 +36,7 @@ public class AbstractTestCase extends TestCase {
     // Implementation methods
     //-------------------------------------------------------------------------                    
     protected void setUp() throws Exception {
-        document = DocumentFactory.newDocument();
+        document = DocumentHelper.createDocument();
         
         Element root = document.addElement( "root" );
         Element author1 = root.addElement( "author" );
