@@ -7,9 +7,9 @@
  * $Id$
  */
 
-package swing;
+package samples.swing;
 
-import SAXDemo;
+import samples.SAXDemo;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;

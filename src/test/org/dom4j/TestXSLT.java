@@ -46,7 +46,7 @@ public class TestXSLT extends AbstractTestCase {
     // Test case(s)
     //-------------------------------------------------------------------------                    
     public void testTransform() throws Exception {   
-        Document transformedDoc = transform( "xml/nitf/ashtml.xsl" );
+        Document transformedDoc = transform( "/xml/nitf/ashtml.xsl" );
         
         //log( transformedDoc.asXML() );
         
@@ -65,7 +65,7 @@ public class TestXSLT extends AbstractTestCase {
     //-------------------------------------------------------------------------                    
     protected void setUp() throws Exception {
         SAXReader reader = new SAXReader();
-        document = reader.read( "xml/nitf/sample.xml" );
+        document = reader.read(getClass().getResource("/xml/nitf/sample.xml"));
     }
         
     protected Document transform(String xsl) throws Exception {   
@@ -74,7 +74,7 @@ public class TestXSLT extends AbstractTestCase {
         // load the transformer
         TransformerFactory factory = TransformerFactory.newInstance();
         Transformer transformer = factory.newTransformer( 
-            new StreamSource( xsl ) 
+            new StreamSource(getClass().getResourceAsStream(xsl))
         );
         
         // now lets create the TrAX source and result

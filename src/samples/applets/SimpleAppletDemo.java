@@ -6,7 +6,7 @@
  *
  * $Id$
  */
-package applets;
+package samples.applets;
 
 import java.applet.Applet;
 import java.awt.Graphics;

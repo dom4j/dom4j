@@ -8,9 +8,9 @@
  */
 
 
-package dom;
+package samples.dom;
 
-import AbstractDemo;
+import samples.AbstractDemo;
 
 import org.dom4j.Document;
 import org.dom4j.dom.DOMDocumentFactory;

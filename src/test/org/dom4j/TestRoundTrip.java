@@ -44,11 +44,11 @@ import org.w3c.tidy.Tidy;
 public class TestRoundTrip extends AbstractTestCase {
     
     protected String[] testDocuments = {
-        //"xml/test/encode.xml",
-        "xml/fibo.xml",
-        "xml/test/schema/personal-prefix.xsd",
-        //"xml/test/soap2.xml",
-        "xml/test/test_schema.xml",
+        "/xml/test/encode.xml",
+        "/xml/fibo.xml",
+        "/xml/test/schema/personal-prefix.xsd",
+        "/xml/test/soap2.xml",
+        "/xml/test/test_schema.xml",
     };
     
     public static void main( String[] args ) {
@@ -101,7 +101,7 @@ public class TestRoundTrip extends AbstractTestCase {
     }
 
     public void testJTidyRoundTrip() throws Exception {
-        Document document = loadHTML( "readme.html" );
+        Document document = loadHTML("/readme.html");
   
         //Document doc1 = roundTripText( document );
         Document doc1 = roundTripSAX( document );
@@ -121,11 +121,12 @@ public class TestRoundTrip extends AbstractTestCase {
 
     protected Document parseDocument(String file) throws Exception {
         SAXReader reader = new SAXReader();
-        return reader.read( file );
+        URL  url = getClass().getResource(file);
+        return reader.read(url);
     }
     
     protected Document loadHTML( String xmlFile ) throws Exception {
-        InputStream in = openStream( xmlFile );
+        InputStream in = getClass().getResourceAsStream(xmlFile);
         Tidy tidy = new Tidy();
         tidy.setXHTML(true);
         tidy.setDocType("omit");
@@ -133,14 +134,6 @@ public class TestRoundTrip extends AbstractTestCase {
         
         DOMReader domReader = new DOMReader();
         return domReader.read( domDocument );
-    }
-    
-    protected InputStream openStream(String xmlFile) throws Exception {
-        File file = new File( xmlFile );
-        if ( file.exists() ) {
-            return new BufferedInputStream( new FileInputStream( file ) );
-        }
-        return new URL( xmlFile ).openStream();
     }
     
     protected Document roundTripDOM(Document document) throws Exception {
@@ -192,7 +185,7 @@ public class TestRoundTrip extends AbstractTestCase {
         // now lets write it back as SAX events to
         // a SAX ContentHandler which should build up a new document
         SAXContentHandler contentHandler = new SAXContentHandler();
-        SAXWriter saxWriter = new SAXWriter( contentHandler, null, contentHandler );
+        SAXWriter saxWriter = new SAXWriter( contentHandler, contentHandler, contentHandler );
         
         saxWriter.write( document );
         Document newDocument = contentHandler.getDocument();

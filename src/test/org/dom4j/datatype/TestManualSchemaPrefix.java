@@ -9,6 +9,7 @@
 
 package org.dom4j.datatype;
 
+import java.net.URL;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
@@ -45,8 +46,9 @@ public class TestManualSchemaPrefix extends TestAutoSchema {
         DatatypeDocumentFactory factory = new DatatypeDocumentFactory();
         
         SAXReader reader = new SAXReader();
-        Document schemaDocument = reader.read( "xml/test/schema/personal-prefix.xsd" );
-        factory.loadSchema( schemaDocument );
+        URL url = getClass().getResource("/xml/test/schema/personal-prefix.xsd");
+        Document schemaDocument = reader.read(url);
+        factory.loadSchema(schemaDocument);
         return factory;
     }
 }

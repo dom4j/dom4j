@@ -62,7 +62,7 @@ public class TestSelectSingleNode extends AbstractTestCase {
 
     /** Test out Steen's bug */
     public void testSteensBug() throws Exception {        
-        Document document = new SAXReader().read( "xml/schema/personal.xsd" );
+        Document document = new SAXReader().read(getClass().getResource("/xml/schema/personal.xsd"));
         
         assertNotNull( document.selectSingleNode( "/xs:schema/xs:element[@name='person']" ) );
         
@@ -74,7 +74,7 @@ public class TestSelectSingleNode extends AbstractTestCase {
     // Implementation methods
     //-------------------------------------------------------------------------                    
     protected void setUp() throws Exception {
-        document = new SAXReader().read( "xml/test/jimBrain.xml" );
+        document = new SAXReader().read(getClass().getResource("/xml/test/jimBrain.xml"));
     }
 }
 

@@ -14,6 +14,7 @@ import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.dom4j.io.SAXReader;
+import org.xml.sax.SAXException;
 
 /** A test harness for validation when using SAXReader
   *
@@ -37,11 +38,13 @@ public class TestValidation extends AbstractTestCase {
     // Test case(s)
     //-------------------------------------------------------------------------                    
     public void testValidation() throws Exception {
-        SAXReader reader = new SAXReader( true );
-        Document document = reader.read( "xml/nitf/valid.xml" );
-        assertTrue( "Found valid document", document != null );
-        
-        log( "Validated document: " + document );
+        try {
+            SAXReader reader = new SAXReader("org.dom4j.io.aelfred2.SAXDriver", true);
+            reader.read("test");
+            fail();
+        } catch (DocumentException e) {
+            ; // internal parser is non validating, so OK
+        }
     }
 }
 

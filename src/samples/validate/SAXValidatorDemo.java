@@ -7,9 +7,9 @@
  * $Id$
  */
 
-package validate;
+package samples.validate;
 
-import AbstractDemo;
+import samples.AbstractDemo;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;

@@ -7,7 +7,7 @@
  * $Id$
  */
 
-package performance;
+package samples.performance;
 
 /** An interface for some task which may throw an exception
   * 

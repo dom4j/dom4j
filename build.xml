@@ -1,4 +1,29 @@
-<project default="all" basedir=".">
+<project default="usage" basedir=".">
+
+    <path id="compile.classpath">
+        <fileset dir="./lib">
+            <include name="**/*.jar" />
+        </fileset>
+    </path>
+
+    <path id="test.classpath">
+        <path refid="compile.classpath" />
+        <fileset dir="./lib/test">
+            <include name="**/*.jar" />
+        </fileset>
+        <fileset dir="./lib/tools">
+            <include name="**/jtidy*.jar" />
+        </fileset>
+        <pathelement location="."/>
+    </path>
+
+    <path id="samples.classpath">
+        <fileset dir="./lib/tools">
+            <include name="**/*.jar" />
+        </fileset>
+        <path refid="test.classpath" />
+        <pathelement location="."/>
+    </path>
 
   <!-- =================================================================== -->
   <!-- Initialization target                                               -->
@@ -9,7 +34,7 @@
     <property name="name" value="dom4j"/>
     <property name="version" value="1.5-beta-1"/>
     <property name="current.version" value="1.4"/>
-    <property name="year" value="2003"/>
+    <property name="year" value="2004"/>
 
     <echo message="----------- ${Name} ${version} [${year}] ------------"/>
 
@@ -54,30 +79,8 @@
     <filter token="log" value="true"/>
     <filter token="verbose" value="true"/>
 
-    <!-- JDK1.1 collections -->
-    <property name="coll.import" value="com.sun.java.util.collections"/>
-    <available classname="${coll.import}.Collection" property="coll.present"/>
-
     <!-- Gump support -->
     <property name="jaxen.src" value="../jaxen/jaxen/src/java/main"/>
-
-    <!-- Activate support for fop in Ant (tradem) / Must be in classpath -->
-    <!-- Construct classpaths -->
-    <path id="fop.classpath">
-      <fileset dir="${lib.dir}/fop">
-        <include name="*.jar"/>
-      </fileset>
-    </path>
-  
-    <path id="saxon.classpath">
-      <fileset dir="${lib.dir}/tool">
-        <include name="*.jar"/>
-      </fileset>
-    </path>
-  
-    <taskdef name="fop" classname="org.apache.fop.tools.anttasks.Fop">
-    	<classpath refid="fop.classpath"/>
-    </taskdef>
   </target>
 
   <!-- =================================================================== -->
@@ -94,14 +97,11 @@
     <echo message="   all      --> cleans then builds everything (default)"/>
     <echo message="   package  --> generates the dom4j.jar file"/>
     <echo message="   compile  --> compiles the source code"/>
-    <echo message="   doc      --> generates the website documentation"/>
-    <echo message="   cookbook --> generates the cookbook documentation"/>
     <echo message="   api      --> generates the API documentation"/>
     <echo message="   javadoc  --> generates the full JavaDoc documentation"/>
     <echo message="   clean    --> cleans up the directory"/>
     <echo message="   test     --> builds and runs the unit tests"/>
     <echo message="   demo-all --> runs the main standard sample programs"/>
-    <echo message="   release  --> builds a release distribution and updates the local website"/>
     <echo message=""/>
     <echo message="-------------------------------------------------------------"/>
     <echo message=""/>
@@ -130,37 +130,6 @@
   </target>
 
   <!-- =================================================================== -->
-  <!-- Does replacement on files for dealing with collections.             -->
-  <!-- XXX The efficiency could be improved here; all replacements should  -->
-  <!-- XXX happen during one read/write phase and only for files that have -->
-  <!-- XXX changed.                                                        -->
-  <!-- =================================================================== -->
-  <target name="collections" if="coll.present" depends="prepare-src">
-    <replace dir="${build.src}" includes="**"
-             token="java.util.Collection" value="${coll.import}.Collection"/>
-    <replace dir="${build.src}" includes="**"
-             token="java.util.Map" value="${coll.import}.Map"/>
-    <replace dir="${build.src}" includes="**"
-             token="java.util.HashMap" value="${coll.import}.HashMap"/>
-    <replace dir="${build.src}" includes="**"
-             token="java.util.List" value="${coll.import}.List"/>
-    <replace dir="${build.src}" includes="**"
-             token="java.util.LinkedList" value="${coll.import}.LinkedList"/>
-    <replace dir="${build.src}" includes="**"
-             token="java.util.Set" value="${coll.import}.Set"/>
-    <replace dir="${build.src}" includes="**"
-             token="java.util.HashSet" value="${coll.import}.HashSet"/>
-    <replace dir="${build.src}" includes="**"
-             token="java.util.Iterator" value="${coll.import}.Iterator"/>
-    <!-- The following replace handles the "import java.util.*" case by    -->
-    <!-- adding an "import com.sun.java.util.collections.*" after it.      -->
-    <!-- BTW, \u000a is the Unicode escape for a new line. (jhunter)       -->
-    <replace dir="${build.src}" includes="**"
-             token="java.util.*"
-             value="java.util.*;\u000aimport ${coll.import}.*"/>
-  </target>
-
-  <!-- =================================================================== -->
   <!-- Prepares the example code                                           -->
   <!-- =================================================================== -->
   <target name="prepare-samples" depends="prepare">
@@ -172,71 +141,58 @@
   <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
-  <target name="compile" depends="collections">
+  <target name="compile" depends="prepare-src">
     <javac srcdir="${build.src}"
            destdir="${build.dest}"
            debug="${debug}"
            optimize="${optimize}"
-           deprecation="${deprecation}"/>
+           deprecation="${deprecation}"
+           classpathref="compile.classpath">
+      <compilerarg line="-endorseddirs ./lib/endorsed/" />
+    </javac>
   </target>
 
   <!-- =================================================================== -->
-  <!-- Compiles the source directory                                       -->
+  <!-- Compiles the test directory                                         -->
   <!-- =================================================================== -->
   <target name="compile-test" depends="compile">
     <javac srcdir="${test.dir}"
            destdir="${build.dest}"
            debug="${debug}"
            optimize="${optimize}"
-           deprecation="${deprecation}"/>
-    <copy  todir="${build.dest}">
-      <fileset dir="${test.dir}" excludes="**/*.java"/>
-    </copy>
+           deprecation="${deprecation}"
+           classpathref="test.classpath">
+      <compilerarg line="-endorseddirs ./lib/endorsed/" />
+    </javac>
   </target>
 
   <!-- =================================================================== -->
   <!-- Compiles the samples directory                                       -->
   <!-- =================================================================== -->
   <target name="samples" depends="compile,prepare-samples">
-    <javac srcdir="${samples.dir}"
+    <javac srcdir="src"
+           includes="samples/**"
            destdir="${build.dest}"
            debug="${debug}"
-           optimize="${optimize}"/>
+           optimize="${optimize}"
+           classpathref="samples.classpath">
+      <compilerarg line="-endorseddirs ./lib/endorsed/" />
+    </javac>
   </target>
 
   <!-- =================================================================== -->
   <!-- Creates the class package                                           -->
   <!-- =================================================================== -->
   <target name="package" depends="compile">
-    <!--
-    <fixcrlf srcdir="." includes="*.bat" cr="add"/>
-    <fixcrlf srcdir="." includes="*.sh" cr="remove"/>
-    -->
-
-     <!-- add dependent JARs -->
-    <unjar src="${lib.dir}/jaxen.jar" dest="${build.dest}"/>
-    <delete dir="${build.dest}/META-INF"/>
-
-    <jar jarfile="${build.dir}/${name}-core.jar"
-         basedir="${build.dest}"
-         includes="org/dom4j/**"/>
-
     <jar jarfile="${build.dir}/${name}.jar"
          basedir="${build.dest}"
-         includes="org/dom4j/**,org/saxpath/**,org/jaxen/**,com/werken/**"
-         excludes="org/jaxen/dom/**,org/jaxen/exml/**,org/jaxen/jdom/**"
-         manifest="${conf.dir}/MANIFEST.MF"/>
-
-    <jar jarfile="${build.dir}/${name}-full.jar"
-         basedir="${build.dest}"
-         includes="**"
-         manifest="${conf.dir}/MANIFEST.MF"/>
+         includes="org/dom4j/**"/>
   </target>
 
   <!-- =================================================================== -->
   <!-- Creates the API documentation                                       -->
   <!-- =================================================================== -->
-  <target name="javadoc" depends="prepare-src,collections">
+  <target name="javadoc" depends="prepare-src">
     <mkdir dir="${build.javadocs}"/>
     <javadoc packagenames="${packages}"
              sourcepath="${build.src}"
@@ -255,7 +211,7 @@
 
 
   <!-- JavaDoc generated by a release which links to JDK and JAXP Javadoc -->
-  <target name="release-javadoc" depends="prepare-src,collections,doc">
+  <target name="release-javadoc" depends="prepare-src">
     <mkdir dir="${build.javadocs}"/>
     <javadoc packagenames="${packages}"
              sourcepath="${build.src}"
@@ -269,7 +225,7 @@
              doctitle="${Name}"
              bottom="Copyright &#169; ${year} MetaStuff Ltd. All Rights Reserved. Hosted by &lt;p&gt; &lt;img src='http://sourceforge.net/sflogo.php?group_id=16035' width='88' height='31' border='0' alt='SourceForge Logo' /&gt;"
              stylesheetfile="${doc.dir}/style/javadoc.css">
-      <link href="http://java.sun.com/products/jdk/1.3/docs/api"/>
+      <link href="http://java.sun.com/j2se/1.4.2/docs/api"/>
       <link href="http://java.sun.com/xml/jaxp-docs-1.1/docs/api"/>
     </javadoc>
 
@@ -286,156 +242,16 @@
              doctitle="${Name}"
              bottom="Copyright &#169; ${year} MetaStuff Ltd. All Rights Reserved. Hosted by &lt;p&gt; &lt;img src='http://sourceforge.net/sflogo.php?group_id=16035' width='88' height='31' border='0' alt='SourceForge Logo' /&gt;"
              stylesheetfile="${doc.dir}/style/javadoc.css">
-      <link href="http://java.sun.com/products/jdk/1.3/docs/api"/>
+      <link href="http://java.sun.com/j2se/1.4.2/docs/api"/>
       <link href="http://java.sun.com/xml/jaxp-docs-1.1/docs/api"/>
       <link href="${build.javadocs}"/>
     </javadoc>
   </target>
 
-
-  <!-- Build the documentation -->
-  <target name="doc" depends="prepare">
-    <mkdir    dir="${doc.dir}/images"/>
-    <mkdir    dir="${build.doc}"/>
-    <style basedir="${doc.dir}"
-           destdir="${build.doc}"
-           style="${doc.dir}/style/style.xsl"
-           classpathref="saxon.classpath"
-           
-           processor="trax"
-           includes="**/*.xml"
-           excludes="style/**,project.xml,cookbook/**,docbook/**, benchmarks/**"
-    />
-    <!-- **** comment out by tradem on 02-02-08  ****
-
-    <style    basedir="${doc.dir}" destdir="${build.doc}" style="${doc.dir}/style/style.xsl"
-              includes="**/*.xml" excludes="style/**,project.xml,cookbook/**,docbook/**"/>
-
-    -->
-    <copy todir="${build.doc}" overwrite="yes"> 
-      <fileset dir="${doc.dir}" includes="license.txt,document.dtd"/>
-    </copy>
-    <copy todir="${build.doc}/images" overwrite="yes">
-      <fileset dir="${doc.dir}/images"/>
-    </copy>
-    <copy todir="${build.doc}" overwrite="yes">
-      <fileset dir="${doc.dir}" includes="*.css"/>
-    </copy>
-    <copy todir="${build.doc}/style" overwrite="yes">
-      <fileset dir="${doc.dir}/style" includes="images/**"/>
-    </copy>
-
-    <replace file="${build.doc}/index.html" token="$$VERSION$$" value="${current.version}"/>
-    <replace file="${build.doc}/download.html" token="$$VERSION$$" value="${current.version}"/>
-  </target>
-
-  <target name="doc-cookbook" depends="prepare">
-<!--
-	disabled for now as the docbook XSLT isn't working
-	  
-    <copy todir="${build.doc}/cookbook" overwrite="yes">
-      <fileset dir="${doc.dir}/cookbook" includes="*.css"/>
-    </copy>
-    <mkdir dir="${build.doc}/cookbook"/>
-    <style basedir="${doc.dir}/cookbook"
-           destdir="${build.doc}/cookbook"
-           style="src/doc/docbook/html/docbook.xsl"
-           classpathref="saxon.classpath"
-           processor="trax"
-           includes="**/*.xml"
-     >
-      <param name="html.stylesheet" expression="cookbook.css"/>
-     </style>
-    <copy todir="${build.doc}" overwrite="yes">
-      <fileset dir="${doc.dir}/cookbook" includes="images/**"/>
-    </copy>    
-     <style basedir="${doc.dir}/cookbook"
-            destdir="${build.doc}/cookbook"
-            extension=".fo"
-            style="src/doc/docbook/fo/docbook.xsl"
-            classpathref="saxon.classpath"
-            processor="trax"
-            includes="**/*.xml"
-      />
-      <fop fofile="${build.doc}/cookbook/cookbook.fo"
-           outfile="${build.doc}/cookbook/cookbook.pfd"
-      />
-      <fop fofile="${build.doc}/cookbook/cookbook.fo"
-           format="application/postscript"
-           outfile="${build.doc}/cookbook/cookbook.ps"
-      />
--->      
-  </target>
-
-
-  <!-- =================================================================== -->
-  <!-- Creates the distribution                                            -->
-  <!-- =================================================================== -->
-  <target name="dist" depends="package, doc">
-    <mkdir dir="${dist.dir}"/>
-    <mkdir dir="${dist.dir}/lib"/>
-    <mkdir dir="${dist.dir}/src"/>
-    <mkdir dir="${dist.dir}/doc"/>
-    <mkdir dir="${dist.dir}/doc/apidocs"/>
-
-    <copy file="${build.dir}/${name}.jar" tofile="${dist.dir}/${name}.jar"/>
-    <copy file="${build.dir}/${name}-full.jar" tofile="${dist.dir}/${name}-full.jar"/>
-
-    <copy todir="${dist.dir}/src">
-      <fileset dir="./src" includes="conf/*,**/*.java,**/*.xml,**/*.xsl,**/*.properties,**/*.mf,**/*.css,**/*.gif,**/*.g"/>
-    </copy>
-    <copy todir="${dist.dir}/xml">
-      <fileset dir="./xml" />
-    </copy>
-    <copy todir="${dist.dir}/lib">
-      <fileset dir="./lib" />
-    </copy>
-    <copy todir="${dist.dir}/doc">
-      <fileset dir="${build.doc}" />
-    </copy>
-
-    <copy todir="${dist.dir}">
-      <fileset dir="." includes="build.sh, build.bat, cp.bat, run.bat, run.sh, runnojit.bat, *.xml, *.html" />
-    </copy>
-
-    <fixcrlf srcdir="${dist.dir}" includes="run.sh"       cr="remove"/>
-    <fixcrlf srcdir="${dist.dir}" includes="run.bat"      cr="add"/>
-    <fixcrlf srcdir="${dist.dir}" includes="build.sh"     cr="remove"/>
-    <fixcrlf srcdir="${dist.dir}" includes="build.bat"    cr="add"/>
-
-    <chmod perm="ugo+rx" file="${dist.dir}/run.sh"/>
-    <chmod perm="ugo+rx" file="${dist.dir}/build.sh"/>
-  </target>
-
-  <!-- =================================================================== -->
-  <!-- Packages the distribution as .zip                                   -->
-  <!-- =================================================================== -->
-  <target name="dist-zip" depends="dist">
-    <zip zipfile="${dist.target}/${name}-${version}.zip" basedir="${dist.jar.dir}"/>
-  </target>
-
-  <!-- =================================================================== -->
-  <!-- Packages the distribution as .jar                                   -->
-  <!-- =================================================================== -->
-<!--
-  <target name="dist-jar" depends="dist">
-    <jar jarfile="${dist.target}/${name}-${version}.jar" basedir="${dist.jar.dir}"/>
-  </target>
--->
-
-  <!-- =================================================================== -->
-  <!-- Packages the distribution with .tar.gzip                            -->
-  <!-- =================================================================== -->
-  <target name="dist-tgz" depends="dist">
-    <tar tarfile="${dist.target}/${name}-${version}.tar" basedir="${dist.jar.dir}"/>
-    <gzip zipfile="${dist.target}/${name}-${version}.tar.gz" src="${dist.target}/${name}-${version}.tar"/>
-  </target>
-
-
   <!-- =================================================================== -->
   <!-- Support for a Gump build                                            -->
   <!-- =================================================================== -->
-  <target name="gump" depends="prepare-gump,package">
+  <target name="gump" depends="prepare-gump, package">
   </target>
 
   <target name="prepare-gump" depends="init">
@@ -447,40 +263,6 @@
       <fileset dir="${jaxen.src}" includes="org/jaxen/dom4j/**"/>
     </copy>
   </target>
-
-  <!-- =================================================================== -->
-  <!-- Performs a release on the website                                   -->
-  <!-- =================================================================== -->
-  <target name="release" depends="clean,compile,release-javadoc,doc-cookbook,dist-zip,dist-tgz">
-    <mkdir dir="${web.htdocs}"/>
-    <mkdir dir="${web.dist}"/>
-
-    <copy todir="${web.dist}" file="${build.dir}/${name}.jar"/>
-
-    <copy todir="${web.htdocs}" overwrite="yes">
-      <fileset dir="${build.doc}" includes="**/*.html, **/*.css"/>
-    </copy>
-
-    <copy todir="${web.dist}" overwrite="yes">
-      <fileset dir="${dist.root}" includes="*.jar, *.zip, *.gz"/>
-    </copy>
-
-<!--
-    <jar jarfile="${build.dir}/${name}-website.jar"
-         basedir="${web.htdocs}"/>
-    <tar tarfile="${build.dir}/${name}-website.tar" basedir="${web.htdocs}"/>
-    <gzip zipfile="${build.dir}/${name}-website.tar.gz" src="${build.dir}/${name}-website.tar"/>
--->
-  </target>
-
-
-  <target name="ftp" depends="dist-zip,dist-tgz">
-    <mkdir dir="${web.ftp}"/>
-    <copy todir="${web.ftp}" overwrite="yes">
-      <fileset dir="${dist.root}" includes="*.jar, *.zip, *.tar, *.gz"/>
-    </copy>
-  </target>
-
 
   <!-- =================================================================== -->
   <!-- Clean targets                                                       -->
@@ -502,14 +284,15 @@
   <!-- =================================================================== -->
   <target name="test" depends="compile-test">
     <mkdir dir="${build.dir}/test-results/xml"/>
-    <junit printsummary="yes" haltonfailure="no">
+    <junit printsummary="yes" haltonfailure="yes">
       <formatter type="xml"/>
 
       <classpath>
         <pathelement location="${build.dest}" />
-        <pathelement path="${java.class.path}" />
-        <pathelement path="." />
+        <path refid="test.classpath" />
       </classpath>
+
+      <jvmarg value="-Djavax.xml.parsers.SAXParserFactory=org.dom4j.JAXPFactory" />
 
       <batchtest fork="yes" todir="${build.dir}/test-results/xml">
         <fileset dir="${test.dir}">
@@ -530,228 +313,373 @@
     </junitreport>
   </target>
 
-  <target name="test-clone" depends="compile-test">
-    <java classname="org.dom4j.TestClone"/>
-  </target>
-
-  <target name="test-roundtrip" depends="compile-test">
-    <java classname="org.dom4j.TestRoundTrip"/>
-  </target>
-
-  <target name="test-schema" depends="compile-test">
-    <java classname="org.dom4j.datatype.TestManualSchema"/>
-    <java classname="org.dom4j.datatype.TestDataTypes"/>
-    <java classname="org.dom4j.datatype.TestAutoSchema"/>
-<!--
--->
-  </target>
-
-  <target name="test-detach" depends="compile-test">
-    <java classname="org.dom4j.TestAttributeDetach"/>
-    <java classname="org.dom4j.TestDetach"/>
-  </target>
-
-  <target name="test-xpath" depends="compile-test">
-    <java classname="org.dom4j.TestXPathExamples"/>
-  </target>
-
-  <target name="test-serialize" depends="compile-test">
-    <java classname="org.dom4j.TestSerialize"/>
-  </target>
-
-  <target name="test-setcontent" depends="compile-test">
-    <java classname="org.dom4j.TestSetContent"/>
-  </target>
-
-  <target name="test-setdata" depends="compile-test">
-    <java classname="org.dom4j.datatype.TestSetData"/>
-  </target>
-
-  <target name="test-table" depends="compile-test">
-    <java classname="org.dom4j.swing.TestTableModel"/>
-  </target>
-
   <!-- =================================================================== -->
   <!-- Helper targets                                                      -->
   <!-- =================================================================== -->
-  <target name="all" depends="clean,package,doc,javadoc">
+  <target name="all" depends="clean,package,javadoc">
   </target>
 
   <!-- =================================================================== -->
   <!-- Run sample programs                                                 -->
   <!-- =================================================================== -->
   <target name="demo-sax" depends="samples">
-    <java classname="SAXDemo" args="${xml.format.options} xml/web.xml"/>
-    <java classname="SAXDemo" args="${xml.format.options} xml/cdata.xml"/>
-    <java classname="SAXDemo" args="${xml.format.options} xml/testPI.xml"/>
-    <java classname="SAXDemo" args="${xml.format.options} xml/test/test_schema.xml"/>
+    <java classname="samples.SAXDemo" args="${xml.format.options} xml/web.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
+    <java classname="samples.SAXDemo" args="${xml.format.options} xml/cdata.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
+    <java classname="samples.SAXDemo" args="${xml.format.options} xml/testPI.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
+    <java classname="samples.SAXDemo" args="${xml.format.options} xml/test/test_schema.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
 
   <target name="demo-pull" depends="samples">
-    <java classname="PullParserDemo" args="${xml.format.options} xml/web.xml"/>
-    <java classname="PullParserDemo" args="${xml.format.options} xml/fibo.xml"/>
+    <java classname="samples.PullParserDemo" args="${xml.format.options} xml/web.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
+    <java classname="samples.PullParserDemo" args="${xml.format.options} xml/fibo.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
 
   <target name="demo-sax2" depends="samples">
-    <java classname="SAXDemo" args="${xml.format.options} xml/xhtml/xhtml-basic.xml"/>
+    <java classname="samples.SAXDemo" args="${xml.format.options} xml/xhtml/xhtml-basic.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
 
   <target name="demo-sax-contents" depends="samples">
-    <java classname="SAXDemo" args="${xml.format.options} xml/contents.xml"/>
+    <java classname="samples.SAXDemo" args="${xml.format.options} xml/contents.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
 
   <target name="demo-sax-cdata" depends="samples">
-    <java classname="SAXDemo" args="${xml.format.options} xml/cdata.xml"/>
-    <java classname="SAXDemo" args="${xml.format.options} xml/cdata.xml">
+    <java classname="samples.SAXDemo" args="${xml.format.options} xml/cdata.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
+    <java classname="samples.SAXDemo" args="${xml.format.options} xml/cdata.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
       <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/> 
     </java>
-    <java classname="SAXDemo" args="${xml.format.options} xml/cdata.xml">
+    <java classname="samples.SAXDemo" args="${xml.format.options} xml/cdata.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
       <sysproperty key="org.xml.sax.driver" value="xml.aelfred2.SAXDriver"/> 
     </java>
   </target>
 
   <target name="demo-sax-pi" depends="samples">
-    <java classname="SAXDemo" args="${xml.format.options} xml/testPI.xml"/>
+    <java classname="samples.SAXDemo" args="${xml.format.options} xml/testPI.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
 
   <target name="demo-sax-ns" depends="samples">
-    <java classname="SAXDemo" args="${xml.format.options} xml/namespaces.xml"/>
-    <java classname="SAXDemo" args="${xml.format.options} xml/testNamespaces.xml"/>
+    <java classname="samples.SAXDemo" args="${xml.format.options} xml/namespaces.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
+    <java classname="samples.SAXDemo" args="${xml.format.options} xml/testNamespaces.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
 
   <target name="demo-saxall" depends="demo-sax,demo-sax-contents,demo-sax-cdata,demo-sax-pi,demo-sax-ns">
-    <java classname="SAXDemo" args="${xml.format.options} xml/inline.xml"/>
+    <java classname="samples.SAXDemo" args="${xml.format.options} xml/inline.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
 
   <target name="demo-dom" depends="samples">
-    <java classname="dom.DOMDemo" args="xml/contents.xml"/>
+    <java classname="samples.dom.DOMDemo" args="xml/contents.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
 
   <target name="demo-saxdom" depends="samples">
-    <java classname="dom.SAXDOMDemo" args="xml/contents.xml"/>
+    <java classname="samples.dom.SAXDOMDemo" args="xml/contents.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
 
   <target name="demo-jtidy" depends="samples">
-    <java classname="JTidyDemo" args="${xml.format.options} readme.html"/>
+    <java classname="samples.JTidyDemo" args="${xml.format.options} readme.html">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
 
   <target name="demo-visitor" depends="samples">
-    <java classname="VisitorDemo" args="xml/cdata.xml"/>
+    <java classname="samples.VisitorDemo" args="xml/cdata.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
 
   <target name="demo-count" depends="samples">
-    <java classname="CountDemo" args="xml/fibo.xml"/>
+    <java classname="samples.CountDemo" args="xml/fibo.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
 
   <target name="demo-create" depends="samples">
-    <java classname="CreateXMLDemo"/>
+    <java classname="samples.CreateXMLDemo">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
 
   <target name="demo-html" depends="samples">
-    <java classname="HTMLWriterDemo" args="xml/xhtml.xml"/>
+    <java classname="samples.HTMLWriterDemo" args="xml/xhtml.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
 
   <target name="test-performance" depends="samples">
-    <java classname="PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10"/>
+    <java classname="samples.PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
 
-    <java classname="PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10">
+    <java classname="samples.PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
       <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/> 
     </java>
 
-    <java classname="PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10">
+    <java classname="samples.PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
       <sysproperty key="org.xml.sax.driver" value="xml.aelfred2.SAXDriver"/> 
     </java>
 
+    <java classname="samples.PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory 10">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
 
-    <java classname="PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory 10"/>
-
-    <java classname="PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory 10">
+    <java classname="samples.PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory 10">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
       <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/> 
     </java>
 
-    <java classname="PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory 10">
+    <java classname="samples.PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory 10">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
       <sysproperty key="org.xml.sax.driver" value="xml.aelfred2.SAXDriver"/> 
     </java>
   </target>
 
-
   <target name="demo-xpath" depends="samples">
-    <java classname="XPathDemo" args="xml/web.xml //servlet/servlet-class"/>
-    <java classname="XPathDemo" args="xml/much_ado.xml //ACT/TITLE"/>
+    <java classname="samples.XPathDemo" args="xml/web.xml //servlet/servlet-class">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
+    <java classname="samples.XPathDemo" args="xml/much_ado.xml //ACT/TITLE">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
 
   <target name="demo-xslt" depends="samples">
-    <java classname="XSLTDemo" args="xml/nitf/sample.xml xml/nitf/ashtml.xsl"/>
+    <java classname="samples.XSLTDemo" args="xml/nitf/sample.xml xml/nitf/ashtml.xsl">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
 
   <target name="demo-domxslt" depends="samples">
-    <java classname="dom.XSLTNativeDOMDemo" args="xml/nitf/sample.xml xml/nitf/ashtml.xsl"/>
+    <java classname="samples.dom.XSLTNativeDOMDemo" args="xml/nitf/sample.xml xml/nitf/ashtml.xsl">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
 
   <target name="demo-bigdoc" depends="samples">
-    <java classname="LargeDocumentDemo" args="xml/much_ado.xml /PLAY/ACT"/>
+    <java classname="samples.LargeDocumentDemo" args="xml/much_ado.xml /PLAY/ACT">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
   
   <target name="demo-bigdoc2" depends="samples">
-    <java classname="LargeDocumentDemo2" args="xml/much_ado.xml"/>
+    <java classname="samples.LargeDocumentDemo2" args="xml/much_ado.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
 
   <target name="demo-link" depends="samples">
-    <java classname="LinkChecker" args="xml/xhtml/xhtml-basic.xml"/>
+    <java classname="samples.LinkChecker" args="xml/xhtml/xhtml-basic.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
 
   <target name="demo-bean" depends="samples">
-    <java classname="bean.BeanDemo" args="xml/bean/gui.xml"/>
+    <java classname="samples.bean.BeanDemo" args="xml/bean/gui.xml">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
 
   <target name="demo-validate" depends="samples">
-    <java classname="validate.ValidatorDemo" fork="yes">
+    <java classname="samples.validate.XercesDemo" fork="yes">
       <arg value="xml/schema/invalid.xml"/>
-     <classpath>
-       <pathelement location="lib/tool/xerces.jar"/>
-       <pathelement path="${build.dest}"/>
-     </classpath>
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
     </java>
   </target>
 
   <target name="demo-saxvalidate" depends="samples">
-    <java classname="validate.SAXValidatorDemo" fork="yes">
+    <java classname="samples.validate.SAXValidatorDemo" fork="yes">
       <arg value="xml/nitf/invalid.xml"/>
-     <classpath>
-       <pathelement location="lib/tool/xerces.jar"/>
-       <pathelement path="${build.dest}"/>
-     </classpath>
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
     </java>
   </target>
 
   <target name="demo-schema" depends="samples">
-    <java classname="SchemaDemo" args="xml/schema/personal-schema.xml"/>
-    <java classname="VisitorDemo">
+    <java classname="samples.VisitorDemo">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
       <sysproperty key="org.dom4j.factory" value="org.dom4j.datatype.DatatypeDocumentFactory"/>
       <arg line="xml/schema/personal-schema.xml"/>
     </java>
   </target>
 
   <target name="demo-table" depends="samples">
-    <java classname="swing.JTableDemo" args="xml/web.xml"/>
+    <java classname="samples.swing.JTableDemo" args="xml/web.xml" fork="yes">
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
+    </java>
   </target>
 
   <target name="demo-tabletool" depends="samples">
-    <java classname="swing.JTableTool" fork="yes">
+    <java classname="samples.swing.JTableTool" fork="yes">
       <arg line="xml/swing/tableForAtoms.xml"/>
       <arg line="xml/periodic_table.xml"/>
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
     </java>
   </target>
 
 
   <target name="demo-swing" depends="samples">
-    <java classname="swing.JTreeDemo" fork="true">
+    <java classname="samples.swing.JTreeDemo" fork="true">
       <arg line="xml/web.xml"/>
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <path refid="samples.classpath" />
+      </classpath>
     </java>
   </target>
 
 
   <target name="demo-all" depends="demo-sax,demo-visitor,demo-count,demo-xpath,demo-html,demo-schema"/>
 </project>
-
-<!-- End of file -->

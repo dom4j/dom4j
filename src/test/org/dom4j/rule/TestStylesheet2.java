@@ -9,6 +9,7 @@
 
 package org.dom4j.rule;
 
+import java.net.URL;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
@@ -67,7 +68,8 @@ public class TestStylesheet2 extends TestStylesheet {
     //-------------------------------------------------------------------------                    
     public void setUp() throws Exception {
         SAXReader reader = new SAXReader();
-        document = reader.read( "xml/test/littledoc.xml" );
+        URL url = getClass().getResource("/xml/test/littledoc.xml");
+        document = reader.read(url);
         
         stylesheet = new Stylesheet();
         stylesheet.setValueOfAction(

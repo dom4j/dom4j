@@ -7,7 +7,7 @@
  * $Id$
  */
 
-package performance;
+package samples.performance;
 
 /** A timer for use in performance monitoring 
   * 

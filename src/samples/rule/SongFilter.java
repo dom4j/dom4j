@@ -7,7 +7,7 @@
  * $Id$
  */
 
-package rule;
+package samples.rule;
 
 import java.io.File;
 

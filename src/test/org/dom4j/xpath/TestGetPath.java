@@ -85,7 +85,7 @@ public class TestGetPath extends AbstractTestCase {
 
     public void testDefaultNamespace() throws Exception {
         SAXReader reader = new SAXReader();
-        Document doc = reader.read( "xml/test/defaultNamespace.xml" );
+        Document doc = reader.read(getClass().getResource("/xml/test/defaultNamespace.xml"));
         Element root = doc.getRootElement();
         testPath( root, "/*[name()='a']" ); 
         

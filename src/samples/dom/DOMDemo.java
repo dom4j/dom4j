@@ -8,9 +8,9 @@
  */
 
 
-package dom;
+package samples.dom;
 
-import AbstractDemo;
+import samples.AbstractDemo;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

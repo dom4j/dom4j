@@ -10,6 +10,7 @@
 package org.dom4j;
 
 import java.io.StringReader;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
@@ -130,7 +131,8 @@ public class TestNamespaces extends AbstractTestCase {
 
     public void testNamespaceForDefaultPrefix() throws Exception {
         SAXReader reader = new SAXReader();
-        Document document = reader.read("xml/test/defaultNamespace.xml");
+        URL url = getClass().getResource("/xml/test/defaultNamespace.xml");
+        Document document = reader.read(url);
 
         testNamespaceForDefaultPrefix( document );
         testNamespaceForDefaultPrefix( saxRoundTrip( document ) );
@@ -152,7 +154,8 @@ public class TestNamespaces extends AbstractTestCase {
 
     public void testAttributeDefaultPrefix() throws Exception {
         SAXReader reader = new SAXReader();
-        Document document = reader.read("xml/test/soap3.xml");
+        URL url = getClass().getResource("/xml/test/soap3.xml");
+        Document document = reader.read(url);
 
         testAttributeDefaultPrefix( document );
         testAttributeDefaultPrefix( saxRoundTrip( document ) );
@@ -210,7 +213,8 @@ public class TestNamespaces extends AbstractTestCase {
 
     public void testRedeclareNamespaces() throws Exception {
         SAXReader reader = new SAXReader();
-        Document document = reader.read("xml/test/soap2.xml");
+        URL url = getClass().getResource("/xml/test/soap2.xml");
+        Document document = reader.read(url);
         testRedeclareNamespaces( document );
         testRedeclareNamespaces( saxRoundTrip( document ) );
         testRedeclareNamespaces( domRoundTrip( document ) );
@@ -245,7 +249,8 @@ public class TestNamespaces extends AbstractTestCase {
 
     public void testDefaultNamespaceIssue() throws Exception {
         SAXReader reader = new SAXReader();
-        Document document = reader.read("xml/test/defaultNamespaceIssue.xsd");
+        URL url = getClass().getResource("/xml/test/defaultNamespaceIssue.xsd");
+        Document document = reader.read(url);
         testDefaultNamespaceIssue( document );
         testDefaultNamespaceIssue( saxRoundTrip( document ) );
         testDefaultNamespaceIssue( domRoundTrip( document ) );
@@ -278,7 +283,8 @@ public class TestNamespaces extends AbstractTestCase {
     //-------------------------------------------------------------------------
     protected void setUp() throws Exception {
         SAXReader reader = new SAXReader();
-        document = reader.read( "xml/test/test_schema.xml" );
+        URL url = getClass().getResource("/xml/test/test_schema.xml");
+        document = reader.read(url);
     }
 
     protected Document saxRoundTrip(Document document) throws Exception {

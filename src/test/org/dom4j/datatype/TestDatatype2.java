@@ -12,6 +12,8 @@ package org.dom4j.datatype;
 import java.io.StringReader;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -91,13 +93,13 @@ public class TestDatatype2 extends TestCase {
     }
 
     private void validateDateElement(Element root) throws Exception {
-        Element elem=root.element("dateElement");
-        Object elemData=elem.getData();
-        validateData("testFloatElement",elemData,getDate());
-        System.out.println("retrieved element:"+getDate().getTime());
+        Element elem = root.element("dateElement");
+        Object elemData = elem.getData();
+        validateData("testDateElement", elemData, getDate());
+        System.out.println("retrieved element:" + getDate().getTime());
     }
 
-    private void validateData(String testName,Object retrieved,Object expected)
+    private void validateData(String testName, Object retrieved, Object expected)
             throws Exception {
         Class retrievedClass=retrieved.getClass();
         Class expectedClass=expected.getClass();
@@ -229,15 +231,17 @@ public class TestDatatype2 extends TestCase {
         String yyyy=Integer.toString(year);
         String mm=Integer.toString(month);
         String dd=Integer.toString(date);
-        return yyyy+"-"+mm+"-"+dd;
+        return yyyy+"-"+mm+"-"+dd+"Z";
     }
 
     private static Calendar getDate() {
         Calendar calendar=new GregorianCalendar();
         calendar.clear();
-        calendar.set( Calendar.YEAR, year );
-        calendar.set( Calendar.MONTH, month-1 );
-        calendar.set( Calendar.DAY_OF_MONTH, date );
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month - 1);
+        calendar.set(Calendar.DAY_OF_MONTH, date);
+        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
+        calendar.setTimeZone(new SimpleTimeZone(0, "XSD 'Z' timezone"));
         return calendar;
     }
 

@@ -9,6 +9,7 @@
 
 package org.dom4j;
 
+import java.net.URL;
 import java.util.Iterator;
 
 import junit.framework.Test;
@@ -43,26 +44,27 @@ public class TestNodeTypeName extends AbstractTestCase {
     }
     
     public void testCDATA() throws Exception {
-        testDocument( "xml/cdata.xml" );
+        testDocument( "/xml/cdata.xml" );
     }
     
     public void testNamespaces() throws Exception {
-        testDocument( "xml/namespaces.xml" );
-        testDocument( "xml/testNamespaces.xml" );
+        testDocument( "/xml/namespaces.xml" );
+        testDocument( "/xml/testNamespaces.xml" );
     }
     public void testPI() throws Exception {
-        testDocument( "xml/testPI.xml" );
+        testDocument( "/xml/testPI.xml" );
     }
 
     public void testInline() throws Exception {
-        testDocument( "xml/inline.xml" );
+        testDocument( "/xml/inline.xml" );
     }
         
     // Implementation methods
     //-------------------------------------------------------------------------                    
     protected void testDocument(String fileName) throws Exception {
         SAXReader reader = new SAXReader();
-        Document document = reader.read( fileName );
+        URL url = getClass().getResource(fileName);
+        Document document = reader.read(url);
         testDocument(document);
     }
 

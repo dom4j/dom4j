@@ -9,6 +9,7 @@
 
 package org.dom4j;
 
+import java.net.URL;
 import java.util.List;
 
 import junit.framework.Test;
@@ -71,7 +72,8 @@ public class TestGetQNames extends AbstractTestCase {
     protected void setUp() throws Exception {
         SAXReader reader = new SAXReader();
         reader.setDocumentFactory( factory );
-        document = reader.read( "xml/test/soap2.xml" );
+        URL url = getClass().getResource("/xml/test/soap2.xml");
+        document = reader.read(url);
     }
 }
 

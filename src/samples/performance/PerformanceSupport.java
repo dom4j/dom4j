@@ -7,9 +7,9 @@
  * $Id$
  */
 
-package performance;
+package samples.performance;
 
-import SAXDemo;
+import samples.SAXDemo;
 
 /** Base class for all simple performance tests
   * 

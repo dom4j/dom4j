@@ -261,7 +261,7 @@ public class TestXMLWriter extends AbstractTestCase {
     }
     
     public void testBug868408() throws Exception {
-        Document doc = parseDocument("xml/web.xml");
+        Document doc = parseDocument("/xml/web.xml");
         Document doc2 = DocumentHelper.parseText(doc.asXML());
         assertEquals(doc.asXML(), doc2.asXML());
     }
@@ -302,7 +302,7 @@ public class TestXMLWriter extends AbstractTestCase {
     
     protected org.dom4j.Document parseDocument(String file) throws Exception {
         SAXReader reader = new SAXReader();
-        return reader.read( file );
+        return reader.read(getClass().getResource(file));
     }
 
     

@@ -11,6 +11,7 @@ package org.dom4j.datatype;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.URL;
 import java.util.Calendar;
 
 import junit.framework.Test;
@@ -44,10 +45,6 @@ public class TestDataTypes extends AbstractDataTypeTest {
     // Test case(s)
     //-------------------------------------------------------------------------                    
     
-/*    
-    public void testDuration() throws Exception {        
-        testNodes( "//durationTag", Calendar.class );
-    }
     public void testgMonthDay() throws Exception {        
         testNodes( "//gMonthDayTag", Calendar.class );
     }
@@ -57,7 +54,7 @@ public class TestDataTypes extends AbstractDataTypeTest {
     public void testgMonth() throws Exception {        
         testNodes( "//gMonthTag", Calendar.class );
     }
-*/
+
     
     public void testDate() throws Exception {        
         testNodes( "//dateTag", Calendar.class );
@@ -159,7 +156,8 @@ public class TestDataTypes extends AbstractDataTypeTest {
     protected void setUp() throws Exception {
         DocumentFactory factory = DatatypeDocumentFactory.getInstance();
         SAXReader reader = new SAXReader( factory );
-        document = reader.read( "xml/test/schema/test.xml" );
+        URL url = getClass().getResource("/xml/test/schema/test.xml");
+        document = reader.read(url);
     }
 }
 

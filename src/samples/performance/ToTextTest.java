@@ -7,7 +7,7 @@
  * $Id$
  */
 
-package performance;
+package samples.performance;
 
 import java.io.StringWriter;
 

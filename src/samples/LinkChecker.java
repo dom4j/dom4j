@@ -32,7 +32,7 @@ public class LinkChecker extends SAXDemo {
         
     protected void process(Document document) throws Exception {
         
-        List list = document.selectNodes( "//a/@href" );
+        List list = document.selectNodes( "//*[local-name()='a']/@href" );
         
         System.out.println( "Found: " + list.size() + " links(s)" );        
         

@@ -163,29 +163,28 @@
   
   <dependencies>
 
-    <dependency>
-      <id>xml-apis</id>
-      <version>1.0.b2</version>
-    </dependency>
+    <!-- compilation dependencies -->
 
     <dependency>
       <id>jaxen</id>
-      <version>1.1-beta-2</version>
+      <version>1.1-beta-3</version>
     </dependency>
 
     <dependency>
-      <id>msv</id>
-      <version>20020414</version>
+      <groupId>msv</groupId>
+      <artifactId>xsdlib</artifactId>
+      <version>20030807</version>
     </dependency>
 
     <dependency>
-      <id>xsdlib</id>
-      <version>20030225</version>
+      <groupId>msv</groupId>
+      <artifactId>relaxngDatatype</artifactId>
+      <version>20030807</version>
     </dependency>
 
     <dependency>
-      <id>relaxngDatatype</id>
-      <version>20020414</version>
+      <id>pull-parser</id>
+      <version>2</version>
     </dependency>
 
     <dependency>
@@ -193,18 +192,12 @@
       <version>1.0</version>
     </dependency>
 
-	<!-- ### still required? -->
     <dependency>
-      <id>isorelax</id>
-      <version>20020414</version>
+      <id>xml-apis</id>
+      <version>2.0.2</version>
     </dependency>
 
-	<!-- testing dependencies -->
-	
-    <dependency>
-      <id>junit</id>
-      <version>3.8.1</version>
-    </dependency>
+    <!-- testing dependencies -->
     
     <dependency>
       <id>junitperf</id>
@@ -212,24 +205,8 @@
     </dependency>
     
     <dependency>
-      <id>xerces</id>
-      <version>2.0.2</version>
-    </dependency>
-
-    <dependency>
-      <id>xalan</id>
-      <version>2.3.1</version>
-    </dependency>
-
-    <dependency>
       <id>jtidy</id>
       <version>4aug2000r7-dev</version>
-    </dependency>
-
-	<!-- ### move to XPP 3 ASAP -->
-    <dependency>
-      <id>pull-parser</id>
-      <version>2</version>
     </dependency>
 
   </dependencies>
@@ -240,7 +217,7 @@
 
     <!-- Resources that are packaged up inside the JAR file -->
     <resources>    	
-    	<directory>src/java</directory>
+      <directory>src/java</directory>
       <includes>
         <include>**/*.properties</include>
       </includes>
@@ -251,17 +228,6 @@
       <includes>
         <include>**/Test*.java</include>
       </includes>
-		<resources>
-			<resource>
-				<directory>src/test</directory>
-				<includes>
-					<include>**/*.xml</include>
-					<include>**/*.xsl</include>
-					<include>**/*.rng</include>
-					<include>**/*.dtd</include>
-				</includes>
-			</resource>
-		</resources>
     </unitTest>
     
     <nagEmailAddress>dom4j-dev@lists.sourceforge.net</nagEmailAddress>

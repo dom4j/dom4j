@@ -7,9 +7,9 @@
  * $Id$
  */
 
-package sax;
+package samples.sax;
 
-import SAXDemo;
+import samples.SAXDemo;
 
 import org.dom4j.Document;
 import org.dom4j.io.SAXReader;

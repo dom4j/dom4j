@@ -7,9 +7,9 @@
  * $Id$
  */
 
-package jaxp;
+package samples.jaxp;
 
-import SAXDemo;
+import samples.SAXDemo;
 
 import java.io.Reader;
 import java.io.StringReader;

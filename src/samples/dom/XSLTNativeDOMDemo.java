@@ -7,9 +7,9 @@
  * $Id$
  */
 
-package dom;
+package samples.dom;
 
-import XSLTDemo;
+import samples.XSLTDemo;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;

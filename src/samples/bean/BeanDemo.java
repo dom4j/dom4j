@@ -8,9 +8,9 @@
  */
 
 
-package bean;
+package samples.bean;
 
-import SAXDemo;
+import samples.SAXDemo;
 
 import java.awt.Component;
 import java.util.Iterator;

@@ -9,6 +9,7 @@
 
 package org.dom4j.datatype;
 
+import java.net.URL;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
@@ -44,15 +45,17 @@ public class TestManualSchema extends TestAutoSchema {
     // Implementation methods
     //-------------------------------------------------------------------------                    
     protected String getDocumentURI() {
-        return "xml/test/schema/personal.xml";
+        return "/xml/test/schema/personal.xml";
     }
     
     protected DocumentFactory loadDocumentFactory() throws Exception {
         DatatypeDocumentFactory factory = new DatatypeDocumentFactory();
         
         SAXReader reader = new SAXReader();
-        Document schemaDocument = reader.read( "xml/test/schema/personal.xsd" );
-        factory.loadSchema( schemaDocument );
+        
+        URL url = getClass().getResource("/xml/test/schema/personal.xsd");
+        Document schemaDocument = reader.read(url);
+        factory.loadSchema(schemaDocument);
         return factory;
     }
 }

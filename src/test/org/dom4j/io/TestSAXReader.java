@@ -22,6 +22,8 @@ import junit.textui.TestRunner;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.XMLWriter;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 
 /** A test harness to test the content API in DOM4J
   *
@@ -49,7 +51,7 @@ public class TestSAXReader extends TestCase {
      */
     public void testReadFile() {
         try {
-            URL location = TestSAXReader.class.getResource("/#.xml");
+            URL location = TestSAXReader.class.getResource("/xml/#.xml");
             File file = new File(location.getPath() + "/#.xml");
             new SAXReader().read(file);
         } catch (Exception e) {
@@ -60,7 +62,7 @@ public class TestSAXReader extends TestCase {
     
     public void testRussian() {
         try {
-            URL location = TestSAXReader.class.getResource("/russArticle.xml");
+            URL location = TestSAXReader.class.getResource("/xml/russArticle.xml");
             File file = new File(location.toString()); 
             SAXReader xmlReader = new SAXReader(); 
             Document doc = xmlReader.read( location ); 
@@ -80,7 +82,7 @@ public class TestSAXReader extends TestCase {
     
     public void testRussian2() {
         try {
-            URL location = TestSAXReader.class.getResource("/russArticle.xml");
+            URL location = TestSAXReader.class.getResource("/xml/russArticle.xml");
             File file = new File(location.toString()); 
             SAXReader xmlReader = new SAXReader();
             Document doc = xmlReader.read( location );
@@ -112,7 +114,6 @@ public class TestSAXReader extends TestCase {
     
     public void testBug527062() throws Exception {
         SAXReader reader = new SAXReader();
-        reader.setValidation(true);
         Document doc = reader.read(TestSAXReader.class.getResource("/xml/test/test.xml"));
         List l = doc.selectNodes("//broked/junk");
         for (int i = 0; i < l.size(); i++) {

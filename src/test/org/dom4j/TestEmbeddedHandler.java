@@ -109,13 +109,8 @@ public class TestEmbeddedHandler extends AbstractTestCase {
    public void testOnEndReader() throws Exception {
       _test = ON_END_READER;
       readDocuments();
-      //        System.out.println("testOnEndReader()\n"+_results[_test].toString());
    }
 
-/* 
-  
-   TEMPORARILY DISABLED UNTIL THE BUG IS FIXED-----
- 
    public void testBothReaders() throws Exception {
       testMainReader();
       testOnEndReader();
@@ -130,20 +125,21 @@ public class TestEmbeddedHandler extends AbstractTestCase {
          throw new Exception(msg.toString());
       }
    }
-*/
+
 
       //---------------------------------------------
       // Implementation methods
       //---------------------------------------------
 
-      private void readDocuments() throws Exception {
-         for (int i = 0; i < testDocuments.length; i++) {
-            String mainDir = new File(testDocuments[i]).getParent();
+    private void readDocuments() throws Exception {
+        for (int i = 0; i < testDocuments.length; i++) {
+            File testDoc = new File(testDocuments[i]);
+            String mainDir = testDoc.getParent();
             SAXReader reader = new SAXReader();
             ElementHandler mainHandler = new MainHandler(mainDir);
             reader.addHandler("/main/import", mainHandler);
-            reader.read(testDocuments[i]);
+            reader.read(testDoc);
          }
-      }
+    }
 
-   }
+}

@@ -54,6 +54,9 @@ public class TestHTMLWriter extends AbstractTestCase {
         
         String expects = "\n<html>\n  <body>First&nbsp;test</body>\n</html>\n";
         
+        System.out.println("expects: " + expects);
+        System.out.println("output: " + output);
+        
         assertEquals( "Output is correct", expects, output );
     }
     

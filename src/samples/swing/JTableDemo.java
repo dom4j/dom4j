@@ -7,7 +7,7 @@
  * $Id$
  */
 
-package swing;
+package samples.swing;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;

@@ -47,15 +47,15 @@ public class TestSerialize extends AbstractTestCase {
     // Test case(s)
     //-------------------------------------------------------------------------                    
     public void testSerializePeriodicTable() throws Exception {
-        testSerialize( "xml/periodic_table.xml" );
+        testSerialize( "/xml/periodic_table.xml" );
     }
     
     public void testSerializeMuchAdo() throws Exception {
-        testSerialize( "xml/much_ado.xml" );
+        testSerialize( "/xml/much_ado.xml" );
     }
     
     public void testSerializeTestSchema() throws Exception {
-        testSerialize( "xml/test/schema/personal.xsd" );
+        testSerialize( "/xml/test/schema/personal.xsd" );
     }
     
     public void testSerializeXPath() throws Exception {
@@ -69,7 +69,7 @@ public class TestSerialize extends AbstractTestCase {
         // now parse a document using my factory
         SAXReader reader = new SAXReader();
         reader.setDocumentFactory( factory );
-        Document doc = reader.read( "xml/soap.xml" );
+        Document doc = reader.read(getClass().getResource("/xml/soap.xml"));
 
         // now lets use the prefixes
         Node element = doc.selectSingleNode( "/SOAP-ENV:Envelope/SOAP-ENV:Body/m:BabelFish" );
@@ -99,7 +99,7 @@ public class TestSerialize extends AbstractTestCase {
     //-------------------------------------------------------------------------                    
     protected void testSerialize(String xmlFile) throws Exception {
         SAXReader reader = new SAXReader();
-        Document document = reader.read( xmlFile );
+        Document document = reader.read(getClass().getResource(xmlFile));
         String text = document.asXML();
         
         ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();

@@ -40,7 +40,7 @@ public class TestXPathBug extends AbstractTestCase {
     //-------------------------------------------------------------------------                    
     public void testXPaths() throws Exception {        
         SAXReader reader = new SAXReader();
-        Document document = reader.read( "xml/rabo1ae.xml" );
+        Document document = reader.read(getClass().getResource("/xml/rabo1ae.xml"));
         Element root = (Element) document.selectSingleNode( "/m:Msg/m:Contents/m:Content" );
         
         assertTrue( "root is not null", root != null );
@@ -50,15 +50,14 @@ public class TestXPathBug extends AbstractTestCase {
         assertTrue( "Found namespace", ns != null );
         
         System.out.println( "Found: " + ns.getURI() );
-/*        
-        Element element = (Element) root.selectSingleNode( "ab:RaboPayLoad" );
+
+        Element element = (Element) root.selectSingleNode( "ab:RaboPayLoad[@id='1234123']" );
         
         assertTrue( "element is not null", element != null );
         
-        String value = element.valueOf( "ab:RateType" );
+        String value = element.valueOf( "ab:AccountingEntry/ab:RateType" );
         
         assertEquals( "RateType is correct", "CRRNT", value );
-*/
     }
     
     /** A bug found by Rob Lebowitz

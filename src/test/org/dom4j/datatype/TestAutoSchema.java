@@ -10,6 +10,7 @@
 package org.dom4j.datatype;
 
 import java.math.BigInteger;
+import java.net.URL;
 import java.util.Calendar;
 
 import junit.framework.Test;
@@ -72,16 +73,15 @@ public class TestAutoSchema extends AbstractDataTypeTest {
     protected void setUp() throws Exception {
         DocumentFactory factory = loadDocumentFactory();
         
-        SAXReader reader = new SAXReader( factory );
+        SAXReader reader = new SAXReader(factory);
         String uri = getDocumentURI();
         
-        log( "Parsing: " + uri );
-        
-        document = reader.read( uri );
+        URL url = getClass().getResource(uri);
+        document = reader.read(url);
     }
     
     protected String getDocumentURI() {
-        return "xml/test/schema/personal-schema.xml";
+        return "/xml/test/schema/personal-schema.xml";
     }
     
     protected DocumentFactory loadDocumentFactory() throws Exception {
