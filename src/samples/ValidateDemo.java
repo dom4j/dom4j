@@ -7,8 +7,6 @@
  * $Id$
  */
 
-import java.net.URL;
-
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentType;
@@ -45,13 +43,11 @@ public class ValidateDemo extends AbstractDemo {
             }
         }
         
-        URL url = getURL( fileName );
-        
-        validate( url, validateOnParse );
+        validate( fileName, validateOnParse );
     }
     
     
-    protected void validate( URL url, boolean validateOnParse ) throws Exception {        
+    protected void validate( String url, boolean validateOnParse ) throws Exception {        
         println( "Parsing: " + url + " with validation mode: " + validateOnParse );
         
         if ( validateOnParse ) {

@@ -13,7 +13,6 @@ package bean;
 import SAXDemo;
 
 import java.awt.Component;
-import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
@@ -50,7 +49,7 @@ public class BeanDemo extends SAXDemo {
     }
     
     
-    protected Document parse( URL url ) throws Exception {
+    protected Document parse( String url ) throws Exception {
         SAXReader reader = new SAXReader( BeanDocumentFactory.getInstance() );
         return reader.read(url);
     }

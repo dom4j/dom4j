@@ -7,9 +7,6 @@
  * $Id$
  */
 
-
-import java.net.URL;
-
 import org.dom4j.Document;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
@@ -29,9 +26,9 @@ public class SAXDemo extends AbstractDemo {
     public SAXDemo() {
     }
     
-    protected Document parse( URL url ) throws Exception {
+    protected Document parse( String xmlFile ) throws Exception {
         SAXReader reader = new SAXReader();
-        return reader.read(url);
+        return reader.read(xmlFile);
     }
     
 }

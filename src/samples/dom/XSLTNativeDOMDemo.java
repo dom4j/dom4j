@@ -9,8 +9,6 @@
 
 package dom;
 
-import java.net.URL;
-
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -45,7 +43,7 @@ public class XSLTNativeDOMDemo extends XSLTDemo {
     public XSLTNativeDOMDemo() {
     }
     
-    protected Document parse( URL url ) throws Exception {
+    protected Document parse( String url ) throws Exception {
         SAXReader reader = new SAXReader( DOMDocumentFactory.getInstance() );
         return reader.read(url);
     }

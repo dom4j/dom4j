@@ -10,9 +10,6 @@
 
 package dom;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -37,14 +34,14 @@ public class DOMDemo extends AbstractDemo {
     public DOMDemo() {
     }
     
-    protected Document parse( URL url ) throws Exception {
+    protected Document parse( String url ) throws Exception {
         // parse a DOM tree
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         
         println( "Loading document with JAXP builder: " + builder );
         
-        org.w3c.dom.Document domDocument = builder.parse( url.toExternalForm() );
+        org.w3c.dom.Document domDocument = builder.parse( url );
         
         println( "Created W3C DOM document: " + domDocument );
         

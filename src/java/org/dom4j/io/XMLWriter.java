@@ -410,6 +410,27 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
     }
     
     
+    /** <p>Writes the opening tag of an {@link Element}, 
+      * including its {@link Attribute}s
+      * but without its content.</p>
+      *
+      * @param element <code>Element</code> to output.
+      */
+    public void writeOpen(Element element) throws IOException {
+        writer.write("<");
+        writer.write( element.getQualifiedName() );
+        writeAttributes(element, new NamespaceStack());
+        writer.write(">");
+    }
+    
+    /** <p>Writes the closing tag of an {@link Element}</p>
+      *
+      * @param element <code>Element</code> to output.
+      */
+    public void writeClose(Element element) throws IOException {
+        writeClose( element.getQualifiedName() );
+    }
+
     
     // ContentHandler interface
     //-------------------------------------------------------------------------
@@ -797,14 +818,6 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         }
     }
     
-    /** Writes the close of an {@link Element}.
-      *
-      * @param element <code>Element</code> to close.
-      */
-    protected void writeClose(Element element) throws IOException {
-        writeClose( element.getQualifiedName() );
-    }
-
     /** Writes the empty close of an {@link Element}.
       *
       * @param element <code>Element</code> to close.

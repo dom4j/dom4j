@@ -8,8 +8,6 @@
  */
 
 
-import java.net.URL;
-
 import org.dom4j.*;
 import org.dom4j.io.SAXReader;
 

@@ -7,10 +7,6 @@
  * $Id$
  */
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.OutputFormat;
@@ -27,6 +23,7 @@ public abstract class AbstractDemo {
     protected OutputFormat format = new OutputFormat();
     /** The writer of XML */
     protected XMLWriter writer;
+
     
     public AbstractDemo() {
     }
@@ -73,43 +70,16 @@ public abstract class AbstractDemo {
     
     
     protected Document parse( String xmlFile ) throws Exception {
-        URL url = getURL( xmlFile );
-        if ( url != null ) {
-            return parse( url );
-        }
-        return null;
+        throw new RuntimeException( "parse(String xmlFile) not implemented in this demo" );
     }
     
-    protected Document parse( URL url ) throws Exception {
-        throw new RuntimeException( "parse(URL url) not implemented in this demo" );
-    }
 
     protected void process(Document document) throws Exception {
-        if ( writer == null ) {
-            writer = createXMLWriter();
-        }
-        writer.write(document);
+        getXMLWriter().write(document);
     }
         
-    /** @return the {@link URL} for the given file
-      * where the given file name can be either a name of a file or a URL
-      */
-    protected URL getURL( String xmlFile ) throws Exception {
-        try {
-            return new URL( xmlFile );
-        }
-        catch (MalformedURLException e) {
-            // try create the URL from a File object
-            try {
-                File file = new File( xmlFile );
-                return file.toURL();
-            }
-            catch (MalformedURLException e2) {
-                println( "Couldn't create a valid URL or File from: " + xmlFile );
-                println( "Caught: " + e.getMessage() + " and " + e2.getMessage() );
-                return null;
-            }
-        }
+    protected void print( String text ) {
+        System.out.print( text );
     }
     
     protected void println( String text ) {

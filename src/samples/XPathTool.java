@@ -7,37 +7,41 @@
  * $Id$
  */
 
-
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
 
-import org.dom4j.*;
+import org.dom4j.Document;
+import org.dom4j.Node;
+import org.dom4j.Element;
+import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
-/** A utility program which performs XPath expressions on one or more XML
-  * files and outputs the matches. It is similar to the <code>grep</code>
-  * command on Unix but uses XPath expressions for matching
+/** A simple program that parsers a document and allows XPath expressions to be
+  * evaluated on the document.
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class XPathGrep extends SAXDemo {
+public class XPathTool extends SAXDemo {
     
-    protected XPath xpath;    
+    protected Document document;
+    protected XMLWriter xmlWriter;
     protected boolean verbose;
     
     
     public static void main(String[] args) {
-        run( new XPathGrep(), args );
+        run( new XPathTool(), args );
     }    
     
-    public XPathGrep() {
+    public XPathTool() {
     }
         
     public void run(String[] args) throws Exception {    
-        if ( args.length < 2 ) {
-            printUsage( "{options} <XPath expression> <xml file(s)>" );
+        if ( args.length < 1 ) {
+            printUsage( "{options} <xml file>" );
             return;
         }
 
@@ -47,40 +51,78 @@ public class XPathGrep extends SAXDemo {
                 readOptions( arg );
             }
             else {
-                if ( xpath == null ) {
-                    setXPath( arg );
-                }
-                else {
-                    Document document = parse( arg );
-                    process(document);
-                }
+                println( "Parsing: " + arg );
+                document = parse( arg );
+                break;
             }
         }
+        
+        xmlWriter = new XMLWriter( System.out, new OutputFormat( "  ", true ) );
+        userLoop();
     }
 
-    public void setXPath(String xpathExpression) {
-        xpath = DocumentHelper.createXPath( xpathExpression );
+    protected void userLoop() throws Exception {
+        println( "Enter XPath expressions to evaluate or 'quit' to stop" );
+        
+        BufferedReader reader = new BufferedReader( 
+            new InputStreamReader( System.in ) 
+        );
+        
+        while (true) {
+            print( "XPath> " );
+            String line = reader.readLine();
+            if ( line == null ) {
+                break;
+            }
+            line = line.trim();
+            if ( line.equalsIgnoreCase( "quit" ) ) {
+                break;
+            }
+            evaluateCommand( line );
+        }
+
+        println( "Bye" );
     }
     
-    protected void process(Document document) throws Exception {
-        // perform XPath
-        if ( verbose ) {
-            println( "About to evalute: " + xpath );
-            println( "Results:" );
+    protected void evaluateCommand( String xpath ) throws Exception {
+        println( "Results..." );
+        Object results = document.selectObject( xpath );
+        printResult( results );
+        xmlWriter.flush();
+    }
+    
+    protected void printResult( Object results ) throws Exception {
+        if ( results instanceof Node ) {
+            Node node = (Node) results;
+            if ( node instanceof Document ) {
+                Document document = (Document) node;
+                println( "Document: " + document.getName() );
+            }
+            else 
+            if ( node instanceof Element ) {
+                Element element = (Element) node;
+                xmlWriter.writeOpen( element );
+                xmlWriter.println();
+            }
+            else {
+                xmlWriter.write( node );
+                xmlWriter.println();
+            }
         }
-        
-        Object object = xpath.selectObject( document );
-
-        if ( object instanceof List ) {
-            List list = (List) object;
+        else if ( results instanceof List ) {
+            List list = (List) results;
+            println( "List of " + list.size() + " item(s)" );
             for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
-                getXMLWriter().write( iter.next() );
-                getXMLWriter().println();
-            }        
-            getXMLWriter().flush();
+                printResult( iter.next() );
+            }
         }
         else {
-            println( (object != null) ? object.toString() : "null" );
+            if ( results == null ) {
+                println( "null" );
+            }
+            else {
+                println( results + " (" + results.getClass().getName() + ")" );
+            }
         }
     }
     

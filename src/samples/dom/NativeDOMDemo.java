@@ -10,9 +10,6 @@
 
 package dom;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import org.dom4j.Document;
 import org.dom4j.dom.DOMDocumentFactory;
 import org.dom4j.io.SAXReader;
@@ -47,7 +44,7 @@ public class NativeDOMDemo extends AbstractDemo {
         println( "Loading document: " + xmlFile );
         
         SAXReader reader = new SAXReader( DOMDocumentFactory.getInstance() );
-        Document document = reader.read( getURL( xmlFile ) );
+        Document document = reader.read( xmlFile );
         
         println( "Created <dom4j> document: " + document );
         

@@ -7,8 +7,6 @@
  * $Id$
  */
 
-import java.net.URL;
-
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -28,7 +26,7 @@ import org.dom4j.io.XMLWriter;
   */
 public class XSLTDemo extends SAXDemo {
     
-    protected URL xsl;
+    protected String xsl;
     
     
     public static void main(String[] args) {
@@ -54,7 +52,7 @@ public class XSLTDemo extends SAXDemo {
             
             Document document = parse( args[idx++] );
             
-            xsl = getURL( args[idx++] );
+            xsl = args[idx++];
             
             process(document);
         }
@@ -70,7 +68,7 @@ public class XSLTDemo extends SAXDemo {
         // load the transformer
         TransformerFactory factory = TransformerFactory.newInstance();
         Transformer transformer = factory.newTransformer( 
-            new StreamSource( xsl.toString() ) 
+            new StreamSource( xsl ) 
         );
         
         // now lets create the TRaX source and result

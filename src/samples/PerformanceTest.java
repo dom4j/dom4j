@@ -7,7 +7,6 @@
  * $Id$
  */
 
-import java.net.URL;
 import java.io.IOException;
 
 import org.dom4j.Document;
@@ -59,15 +58,15 @@ public class PerformanceTest extends SAXDemo {
             loopCount = Integer.parseInt(args[2]);
         }        
 
-        loopParse( getURL( xmlFile ) );
+        loopParse( xmlFile );
     }
     
     /** Parses the XML document at the given <code>URL</code> 
       * a number of times and outputs the timing results
       *
-      * @param url is the <code>URL</code> to read 
+      * @param url is the URL or filename to read 
       */
-    protected void loopParse( URL url ) throws Exception {
+    protected void loopParse( String url ) throws Exception {
         SAXReader reader = createSAXReader();
                     
         println( "Parsing url:      " + url );
@@ -138,7 +137,7 @@ public class PerformanceTest extends SAXDemo {
       * @param reader is the <code>SAXReader</code> to use for the parsing
       * @return the time taken in milliseconds
       */
-    protected long timeParse(URL url, SAXReader reader) 
+    protected long timeParse(String url, SAXReader reader) 
         throws IOException, DocumentException {
 
         // Build the DOM4J Document

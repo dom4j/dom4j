@@ -11,8 +11,6 @@ package swing;
 
 import SAXDemo;
 
-import java.net.URL;
-
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;

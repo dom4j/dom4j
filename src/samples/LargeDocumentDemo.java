@@ -7,9 +7,6 @@
  * $Id$
  */
 
-
-import java.net.URL;
-
 import org.dom4j.*;
 import org.dom4j.io.SAXReader;
 
@@ -50,7 +47,7 @@ public class LargeDocumentDemo extends SAXDemo implements ElementHandler {
         );
     }
     
-    protected Document parse( URL url ) throws Exception {
+    protected Document parse( String url ) throws Exception {
         SAXReader reader = new SAXReader();        
 
         println( "Parsing document:   " + url );
