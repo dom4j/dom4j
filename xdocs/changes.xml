@@ -7,7 +7,7 @@
 
   <body>
 
-    <release version="1.5-dev" date="in CVS">
+    <release version="1.5-rc1" date="in CVS">
       <action dev="maartenc" type="remove">
         Removed the <code>DocumentHelper.parseText(String xml, String encoding)</code>
         method that was introduced in dom4j-1.5-beta2.
