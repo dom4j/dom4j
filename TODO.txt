@@ -62,19 +62,20 @@ mechansism
 
 Documentation
 =============
-* the section headings are not working correctly in the DocBook stylesheets
-used for the cookbook (in dom4j/src/doc/cookbook/style/html).
-
-* does Avalon have some nice DocBook stylesheets we can use to get better 
-  output? e.g.
-  http://jakarta.apache.org/avalon/
-
 
 * document the org.dom4j.rule package which allows declarative rule processing
   of XML documents using Java code.
 
+* make cookbook fit for dom4j 1.2
 
+* adding UML diagramms into cookbook
 
+* add a easier instruction for programmers that starts to use xml and
+  a instruction for programmers that came form jdom world
+
+* add the test-suite html output created by junit-report to project page.
+
+* improve FOP output for source code samples
 
 Test completed
 ==============
@@ -102,3 +103,4 @@ determine that they are complete...
   </customer>
   would only contain 1 child <name> element and not 2 whilespace nodes.
 
+* support of XMLDB native database (org.dom4j.persistence)
