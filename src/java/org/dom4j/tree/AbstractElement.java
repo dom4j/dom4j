@@ -154,11 +154,13 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     public String toString() {
         if ( VERBOSE_TOSTRING ) {
             return super.toString() + " [Element: <" + getQualifiedName() 
+                + " uri: " + getNamespaceURI()
                 + " attributes: " + attributeList()
                 + " content: " + contentList() + " />]";
         }
         else {
             return super.toString() + " [Element: <" + getQualifiedName() 
+                + " uri: " + getNamespaceURI()
                 + " attributes: " + attributeList() + "/>]";
         }
     }
@@ -782,6 +784,57 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         addText(text);
     }
 
+    /**
+     * Puts all <code>Text</code> nodes in the full depth of the sub-tree 
+     * underneath this <code>Node</code>, including attribute nodes, into a 
+     * "normal" form where only structure (e.g., elements, comments, 
+     * processing instructions, CDATA sections, and entity references) 
+     * separates <code>Text</code> nodes, i.e., there are neither adjacent 
+     * <code>Text</code> nodes nor empty <code>Text</code> nodes. This can 
+     * be used to ensure that the DOM view of a document is the same as if 
+     * it were saved and re-loaded, and is useful when operations (such as 
+     * XPointer  lookups) that depend on a particular document tree 
+     * structure are to be used.In cases where the document contains 
+     * <code>CDATASections</code>, the normalize operation alone may not be 
+     * sufficient, since XPointers do not differentiate between 
+     * <code>Text</code> nodes and <code>CDATASection</code> nodes.
+     * @version DOM Level 2
+     */
+    public void normalize() {
+        List content = contentList();
+        Text previousText = null;
+        int i = 0;
+        while ( i < content.size() ) {
+            Node node = (Node) content.get(i);
+            if ( node instanceof Text ) {
+                Text text = (Text) node;
+                if ( previousText != null ) {
+                    previousText.appendText( text.getText() );
+                    remove(text);
+                }
+                else {
+                    String value = text.getText();
+                    // only remove empty Text nodes, not whitespace nodes
+                    //if ( value == null || value.trim().length() <= 0 ) {
+                    if ( value == null || value.length() <= 0 ) {
+                        remove(text);
+                    }
+                    else {
+                        previousText = text;
+                    }
+                }
+            }
+            else {
+                if ( node instanceof Element ) {
+                    Element element = (Element) node;
+                    element.normalize();
+                }
+                previousText = null;
+                i++;
+            }
+        }
+    }
+    
     public String elementText(String name) {
         Element element = element(name);
         return (element != null) ? element.getText() : null;
@@ -1007,8 +1060,15 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     protected abstract List attributeList();
     
     protected DocumentFactory getDocumentFactory() {
-        DocumentFactory factory = getQName().getDocumentFactory();
-        return ( factory != null ) ? factory : DOCUMENT_FACTORY;
+        QName qName = getQName();
+        // QName might be null as we might not have been constructed yet
+        if ( qName != null ) {            
+            DocumentFactory factory = qName.getDocumentFactory();
+            if ( factory != null ) {
+                return factory;
+            }
+        }
+        return DOCUMENT_FACTORY;
     }
     
     /** A Factory Method pattern which creates 

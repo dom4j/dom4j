@@ -166,6 +166,17 @@ class NamespaceStack {
         return super.toString() + " Stack: " + namespaceStack.toString();
     }
 
+    public DocumentFactory getDocumentFactory() {
+        return documentFactory;
+    }
+    
+    public void setDocumentFactory(DocumentFactory documentFactory) {
+        this.documentFactory = documentFactory;
+    }
+    
+    // Implementation methods
+    //-------------------------------------------------------------------------    
+    
     /** Removes the given namespace from the stack */
     protected void remove( Namespace namespace ) {
         String prefix = namespace.getPrefix();

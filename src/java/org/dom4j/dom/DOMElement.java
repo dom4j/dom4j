@@ -156,10 +156,6 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
         return DOMNodeHelper.cloneNode(this, deep);
     }
 
-    public void normalize() {
-        DOMNodeHelper.normalize(this);
-    }
-
     public boolean isSupported(String feature, String version) {
         return DOMNodeHelper.isSupported(this, feature, version);
     }

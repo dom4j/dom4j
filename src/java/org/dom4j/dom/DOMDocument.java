@@ -161,10 +161,6 @@ public class DOMDocument extends DefaultDocument implements org.w3c.dom.Document
         return DOMNodeHelper.cloneNode(this, deep);
     }
 
-    public void normalize() {
-        DOMNodeHelper.normalize(this);
-    }
-
     public boolean isSupported(String feature, String version) {
         return DOMNodeHelper.isSupported(this, feature, version);
     }

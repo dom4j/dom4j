@@ -112,6 +112,13 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
     public String toString() {
         return super.toString() + " [Document: name " + getName() + "]";
     }
+    
+    public void normalize() {
+        Element element = getRootElement();
+        if ( element != null ) {
+            element.normalize();
+        }
+    }
        
     public Element addElement(String name) {
         checkAddElementAllowed();

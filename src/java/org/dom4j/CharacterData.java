@@ -18,6 +18,12 @@ package org.dom4j;
   */
 public interface CharacterData extends Node {
 
+    /** Appends the given text to this nodes text value. Calling this
+      * method is equivalent of the code <code>node.setText( node.getText() + text )</code>
+      * but allows for possible implementation optimisations (such as a text based node
+      * storing a StringBuffer internally
+      */
+    public void appendText(String text);
 }
 
 

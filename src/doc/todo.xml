@@ -25,6 +25,12 @@
 </pre>
 
           </section>
+          <section title="New Branch.normalize() method">
+            <p>The Branch interface (and so Document and Element interfaces) has 
+              a new normalize() method that has the same semantics as the same method 
+              in the DOM API to remove empty Text nodes and merge adjacent Text nodes.
+            </p>
+          </section>
           <section title="Patches and bug fixes">
             <p>Applied Theo's patch for cloning of Documents correctly 
               together with JUnit test cases to ensure this keeps working.
@@ -35,6 +41,13 @@
             </p>
             <p>Fixed problem found by Nicolas Fonrose that XPath expressions
               using namespace prefixes were not working correcty.
+            </p>
+            <p>Fixed problem found by Thomas Nichols whereby default namespaces
+              with no prefix were not being processed correctly. 
+              As a result of finding this bug we now have a rigorous JUnit round trip test 
+              harness in place which highlighted a number of issues with namespaces when
+              round tripping from dom4j to SAX to DOM to Text and back again.
+              These issues have now been fixed and should not show up again hopefully.
             </p>
             <p>Fixed some detach() bugs that were found with Attributes.
             </p>
@@ -256,6 +269,20 @@ List customers
         </li>
         <li>Implement XML Signature
         </li>
+        <li>Implement XPointer, XLink and XInclude
+        </li>
+        <li>Build a version of XMLC which uses the dom4j API rather than DOM which
+          could also make use of XPath, XSLT and Java 2 Collections support.
+        </li>
+        <li>Build full XML Schema validation
+        </li>
+        <li>Build validators using dom4j API using schema and validation technologies such as:-
+          <ul>
+            <li><a href="http://www.w3.org/XML/Schema">XML Schema</a></li>
+            <li><a href="http://xml.ascc.net/xml/resource/schematron/schematron.html">Schematron</a></li>
+            <li><a href="http://www.thaiopensource.com/trex/">TReX</a></li>
+          </ul>
+        </li>
         <li>
           Consider adding support for 
           <a href="http://developer.java.sun.com/developer/earlyAccess/adding_generics/">Java Generics</a> 
@@ -271,18 +298,6 @@ while ( iter2.hasNext() ) {
     Element foo = iter2.next();
 }
           </pre>
-        </li>
-        <li>Build a version of XMLC which uses the dom4j API rather than DOM and
-          could also make use of XPath, XSLT and Java 2 Collections support.
-        </li>
-        <li>Build full XML Schema validation
-        </li>
-        <li>Build validators using dom4j API using schema and validation technologies such as:-
-          <ul>
-            <li><a href="http://www.w3.org/XML/Schema">XML Schema</a></li>
-            <li><a href="http://xml.ascc.net/xml/resource/schematron/schematron.html">Schematron</a></li>
-            <li><a href="http://www.thaiopensource.com/trex/">TReX</a></li>
-          </ul>
         </li>
         <li>Implement XSLT engine on top of <i>dom4j</i>
         </li>

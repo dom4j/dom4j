@@ -392,16 +392,14 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
     public void write(Namespace namespace) throws IOException {
         if ( namespace != null ) {
             String prefix = namespace.getPrefix();
+            writer.write(" xmlns");
             if (prefix != null && prefix.length() > 0) {
-                writer.write(" xmlns");
-                if (!prefix.equals("")) {
-                    writer.write(":");
-                    writer.write(prefix);
-                }
-                writer.write("=\"");
-                writer.write(namespace.getURI());
-                writer.write("\"");
+                writer.write(":");
+                writer.write(prefix);
             }
+            writer.write("=\"");
+            writer.write(namespace.getURI());
+            writer.write("\"");
         }
     }
 

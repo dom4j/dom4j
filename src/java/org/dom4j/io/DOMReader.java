@@ -42,23 +42,23 @@ public class DOMReader {
     /** <code>DocumentFactory</code> used to create new document objects */
     private DocumentFactory factory;
     
-    /** Stores the default namespace prefix map */
-    private HashMap defaultNamespaces;
-    
+    /** stack of <code>Namespace</code> and <code>QName</code> objects */
+    private NamespaceStack namespaceStack;
+
     
     public DOMReader() {
+        this.factory = DocumentFactory.getInstance();
+        this.namespaceStack = new NamespaceStack(factory);
     }
     
     public DOMReader(DocumentFactory factory) {
         this.factory = factory;
+        this.namespaceStack = new NamespaceStack(factory);
     }
     
     /** @return the <code>DocumentFactory</code> used to create document objects
       */
     public DocumentFactory getDocumentFactory() {
-        if (factory == null) {
-            factory = DocumentFactory.getInstance();
-        }
         return factory;
     }
 
@@ -70,6 +70,7 @@ public class DOMReader {
       */
     public void setDocumentFactory(DocumentFactory factory) {
         this.factory = factory;
+        this.namespaceStack.setDocumentFactory(factory);
     }
 
     public Document read(org.w3c.dom.Document domDocument) {
@@ -77,16 +78,19 @@ public class DOMReader {
             return (Document) domDocument;
         }
         Document document = createDocument();
+        
+        clearNamespaceStack();
+        
         org.w3c.dom.NodeList nodeList = domDocument.getChildNodes();
         for ( int i = 0, size = nodeList.getLength(); i < size; i++ ) {
-            readTree( nodeList.item(i), document, getDefaultNamespaces() );
+            readTree( nodeList.item(i), document );
         }
         return document;
     }
     
     
     // Implementation methods
-    protected void readTree(org.w3c.dom.Node node, Branch current, HashMap declaredNamespaces) {    
+    protected void readTree(org.w3c.dom.Node node, Branch current) {    
         Element element = null;
         Document document = null;
         if ( current instanceof Element ) {
@@ -97,7 +101,7 @@ public class DOMReader {
         }
         switch (node.getNodeType()) {
             case org.w3c.dom.Node.ELEMENT_NODE:
-                readElement(node, current, declaredNamespaces);
+                readElement(node, current);
                 break;
 
             case org.w3c.dom.Node.PROCESSING_INSTRUCTION_NODE:
@@ -151,30 +155,28 @@ public class DOMReader {
                     node.getNodeValue()
                 );
                 break;
+                
+            default:
+                System.out.println( "WARNING: Unknown DOM node type: " + node.getNodeType() );
         }
     }
     
-    protected void readElement(org.w3c.dom.Node node, Branch current, HashMap declaredNamespaces) {
-        Element element = null;
-        String qualifiedName = node.getNodeName();
-        String namespaceUri = node.getNamespaceURI();
-        if ( namespaceUri != null ) {
-            String prefix = "";
-            String localName = qualifiedName;
-            int index = qualifiedName.indexOf( ':' );
-            if ( index >= 0 ) {
-                prefix = qualifiedName.substring(0, index);
-                localName = qualifiedName.substring(index + 1);
-            }
-            QName qName = factory.createQName(localName, prefix, namespaceUri);
-            element = current.addElement(qName);
-        }
-        else {
-            element = current.addElement(qualifiedName);
-        }
+    protected void readElement(org.w3c.dom.Node node, Branch current) {
+        int previouslyDeclaredNamespaces = namespaceStack.size();
 
-        HashMap localNamespaces = declaredNamespaces;
+        String namespaceUri = node.getNamespaceURI();
         org.w3c.dom.NamedNodeMap attributeList = node.getAttributes();
+        if ( namespaceUri == null ) {
+            // test if we have an "xmlns" attribute
+            org.w3c.dom.Node attribute = attributeList.getNamedItem( "xmlns" );
+            if ( attribute != null ) {
+                namespaceUri = attribute.getNodeValue();
+            }
+        }
+        
+        QName qName = namespaceStack.getQName( namespaceUri, node.getLocalName(), node.getNodeName() );
+        Element element = current.addElement(qName);
+
         if ( attributeList != null ) {
             int size = attributeList.getLength();
             List attributes = new ArrayList(size);
@@ -186,14 +188,11 @@ public class DOMReader {
                 if (name.startsWith("xmlns")) {                        
                     int index = name.indexOf( ':', 5 );
                     if ( index > 0 ) {
-                        String uri = attribute.getNodeValue();
+                        String uri = attribute.getNodeValue();                        
                         if ( namespaceUri == null || ! namespaceUri.equals( uri ) ) {
                             String prefix = name.substring(index + 1);
                             Namespace namespace = element.addNamespace( prefix, uri );
-                            if ( localNamespaces == declaredNamespaces ) {
-                                localNamespaces = (HashMap) declaredNamespaces.clone();
-                            }
-                            localNamespaces.put(prefix, namespace);
+                            namespaceStack.push( namespace );
                         }
                     }
                 } 
@@ -206,15 +205,12 @@ public class DOMReader {
             size = attributes.size();
             for ( int i = 0; i < size; i++ ) {
                 org.w3c.dom.Node attribute = (org.w3c.dom.Node) attributes.get(i);                
-                String prefix = attribute.getPrefix();
-                String value = attribute.getNodeValue();
-                if ( prefix != null && prefix.length() > 0 ) {
-                    Namespace namespace = (Namespace) localNamespaces.get(prefix);
-                    element.setAttributeValue( factory.createQName( attribute.getLocalName(), namespace ), value  );
-                }
-                else {
-                    element.setAttributeValue( attribute.getNodeName(), value );
-                }
+                QName attributeQName = namespaceStack.getQName( 
+                    attribute.getNamespaceURI(), 
+                    attribute.getLocalName(), 
+                    attribute.getNodeName() 
+                );
+                element.setAttributeValue( attributeQName, attribute.getNodeValue() );
             }
         }
 
@@ -222,7 +218,12 @@ public class DOMReader {
         org.w3c.dom.NodeList children = node.getChildNodes();
         for ( int i = 0, size = children.getLength(); i < size; i++ ) {
             org.w3c.dom.Node child = children.item(i);
-            readTree( child, element, localNamespaces );
+            readTree( child, element );
+        }
+        
+        // pop namespaces from the stack
+        while (namespaceStack.size() > previouslyDeclaredNamespaces) {
+            namespaceStack.pop();
         }
     }
     
@@ -234,12 +235,11 @@ public class DOMReader {
         return getDocumentFactory().createDocument();
     }
     
-    protected HashMap getDefaultNamespaces() {
-        if ( defaultNamespaces == null ) {
-            defaultNamespaces = new HashMap();
-            defaultNamespaces.put( "xml", Namespace.XML_NAMESPACE );
+    protected void clearNamespaceStack() {
+        namespaceStack.clear();
+        if ( ! namespaceStack.containsPrefix("xml" ) ) {
+            namespaceStack.push( Namespace.XML_NAMESPACE );
         }
-        return defaultNamespaces;        
     }
 }
 

@@ -478,7 +478,7 @@
     <java classname="SAXDemo" args="${xml.format.options} xml/web.xml"/>
     <java classname="SAXDemo" args="${xml.format.options} xml/cdata.xml"/>
     <java classname="SAXDemo" args="${xml.format.options} xml/testPI.xml"/>
-    <java classname="SAXDemo" args="${xml.format.options} xml/fibo.xml"/>
+    <java classname="SAXDemo" args="${xml.format.options} xml/test/test_schema.xml"/>
   </target>
 
   <target name="demo-pull" depends="samples">

@@ -36,7 +36,10 @@ public abstract class AbstractCharacterData extends AbstractNode implements Char
             ? parent.getUniquePath() + "/text()"
             : "text()";
     }
-    
+
+    public void appendText(String text) {
+        setText( getText() + text );
+    }
 }
 
 
