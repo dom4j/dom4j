@@ -6,9 +6,9 @@
     org.dom4j.TestDocType#getInternalDeclarations()
 
 -->
-<!DOCTYPE greeting [ 
+<!DOCTYPE another-greeting SYSTEM "sample.dtd" [ 
   <!ELEMENT greeting (#PCDATA)> 
   <!ATTLIST greeting foo ID #IMPLIED>
   <!ENTITY % boolean "( true | false )">
 ]> 
-<greeting>Hello, world!</greeting> 
+<another-greeting>Hello, world!</another-greeting> 
