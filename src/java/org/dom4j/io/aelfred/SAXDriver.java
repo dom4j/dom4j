@@ -39,7 +39,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Stack;
 
 import org.xml.sax.*;
 import org.xml.sax.ext.*;
@@ -127,7 +126,7 @@ final public class SAXDriver
     private LexicalHandler		lexicalHandler = base;
 
     private String			elementName = null;
-    private Stack			entityStack = new Stack ();
+    private ArrayList			entityStack = new ArrayList ();
 
     private ArrayList  			attributeNames = new ArrayList ();
     private ArrayList  			attributeNamespaces = new ArrayList ();
@@ -308,9 +307,9 @@ final public class SAXDriver
         		// start to get reported by the parser
 
         		if (systemId != null)
-        		    entityStack.push (systemId);
+        		    entityStack.add (systemId);
         		else
-        		    entityStack.push ("illegal:unknown system ID");
+        		    entityStack.add ("illegal:unknown system ID");
 
         		parser.doParse (systemId,
         			      source.getPublicId (),
@@ -563,13 +562,13 @@ final public class SAXDriver
     void startExternalEntity (String systemId)
     throws SAXException
     {
-	    entityStack.push (systemId);
+	    entityStack.add (systemId);
     }
 
     void endExternalEntity (String systemId)
     throws SAXException
     {
-	    entityStack.pop ();
+	    entityStack.remove ( entityStack.size() - 1 );
     }
 
     void doctypeDecl (String name, String publicId, String systemId)
@@ -1187,7 +1186,7 @@ final public class SAXDriver
      */
     public String getSystemId ()
     {
-	    return (String) entityStack.peek ();
+	    return (String) entityStack.get ( entityStack.size() - 1 );
     }
 
     /**

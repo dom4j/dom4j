@@ -9,7 +9,7 @@
 
 package org.dom4j.io;
 
-import java.util.Stack;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.dom4j.Element;
@@ -36,11 +36,11 @@ class DispatchHandler implements ElementHandler
     /** The current path in the XML tree (i.e. /a/b/c) */
     private String         path;
     
-    /** <code>Stack</code> maintains a stack of previously encountered paths */
-    private Stack          pathStack;
+    /** maintains a stack of previously encountered paths */
+    private ArrayList      pathStack;
     
-    /** <code>Stack</code> maintains a stack of previously encountered handlers */
-    private Stack          handlerStack;
+    /** maintains a stack of previously encountered handlers */
+    private ArrayList      handlerStack;
     
     /** <code>HashMap</code> maintains the mapping between element paths and handlers */
     private HashMap        handlers;
@@ -52,8 +52,8 @@ class DispatchHandler implements ElementHandler
     {
         atRoot          = true;
         path            = "/";
-        pathStack       = new Stack();
-        handlerStack    = new Stack();
+        pathStack       = new ArrayList();
+        handlerStack    = new ArrayList();
         handlers        = new HashMap();
     }
     
@@ -100,7 +100,7 @@ class DispatchHandler implements ElementHandler
     {
         Element element = elementPath.getCurrent();
         // Save the location of the last (i.e. parent) path 
-        pathStack.push(path);
+        pathStack.add(path);
         // Calculate the new path
         if (atRoot)
         {
@@ -117,7 +117,7 @@ class DispatchHandler implements ElementHandler
             // The current node has a handler associated with it.
             // Find the handler and save it on the handler stack.
             ElementHandler handler = (ElementHandler)handlers.get(path);
-            handlerStack.push(handler);
+            handlerStack.add(handler);
             // Call the handlers onStart method.
             handler.onStart(elementPath);
         }
@@ -139,7 +139,7 @@ class DispatchHandler implements ElementHandler
             // This node has a handler associated with it.
             // Find the handler and pop it from the handler stack.
             ElementHandler handler = (ElementHandler)handlers.get(path);
-            handlerStack.pop();
+            handlerStack.remove( handlerStack.size() - 1 );
             // Call the handlers onEnd method
             handler.onEnd(elementPath);
         }
@@ -153,7 +153,7 @@ class DispatchHandler implements ElementHandler
             }
         }
         // Set path back to its parent
-        path = (String)pathStack.pop();
+        path = (String)pathStack.remove( pathStack.size() - 1 );
     }   
 }
 
