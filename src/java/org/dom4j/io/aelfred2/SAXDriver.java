@@ -795,8 +795,10 @@ final public class SAXDriver
                  && qname.startsWith ("xmlns")) {
           String		prefix = qname.substring (6);
           
+          if (prefix.equals(""))
+          	fatal ("missing prefix in namespace declaration attribute");	
           if (value.length () == 0) {
-            verror ("missing URI in namespace decl attribute: "
+            verror ("missing URI in namespace declaration attribute: "
                     + qname);
           } else
             declarePrefix (prefix, value);
@@ -893,7 +895,7 @@ final public class SAXDriver
 
 		// it's not a NS decl; patch namespace info items
 		if (prefixStack.processName (qname, nsTemp, true) == null)
-		    verror ("undeclared attribute prefix in: " + qname);
+		    fatal ("undeclared attribute prefix in: " + qname);
 		else {
 		    attribute.nameSpace = nsTemp[0];
 		    attribute.localName = nsTemp[1];
@@ -905,7 +907,7 @@ final public class SAXDriver
 	elementName = elname;
 	if (namespaces) {
 	    if (prefixStack.processName (elname, nsTemp, false) == null) {
-		verror ("undeclared element prefix in: " + elname);
+		fatal ("undeclared element prefix in: " + elname);
 		nsTemp [0] = nsTemp [1] = "";
 	    }
 	    handler.startElement (nsTemp [0], nsTemp [1], elname, this);
