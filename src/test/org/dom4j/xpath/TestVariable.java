@@ -33,6 +33,7 @@ public class TestVariable extends AbstractTestCase {
     protected static boolean VERBOSE = true;
     
     protected static String[] paths = {
+        "$root/author",
         "$root/author[1]",
         "$root/author[1]/@name",
         "$author",
@@ -72,7 +73,9 @@ public class TestVariable extends AbstractTestCase {
         log( "Searched path: " + xpathText + " found: " + list.size() + " result(s)" );
         
         if ( VERBOSE ) {
+            log( "" );
             log( "xpath: " + xpath );
+            log( "" );
             log( "results: " + list );
         }
         

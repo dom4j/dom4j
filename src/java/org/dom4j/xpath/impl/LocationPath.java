@@ -78,8 +78,6 @@ public class LocationPath extends PathExpr {
         while ( stepIter.hasNext() )  {
             Step eachStep = (Step) stepIter.next();
             
-            //System.err.println("STEP: " + eachStep);
-            
             if ( (!stepped) && isAbsolute() ) {
                 eachStep.setIsAbsolute(true);
             }

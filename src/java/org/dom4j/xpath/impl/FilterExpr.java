@@ -4,6 +4,8 @@ package org.dom4j.xpath.impl;
 import java.util.List;
 import java.util.ArrayList;
 
+import org.dom4j.Node;
+
 public class FilterExpr extends PathExpr {
     
     private Expr _expr       = null;
@@ -28,10 +30,20 @@ public class FilterExpr extends PathExpr {
     }
     
     public Object evaluate(Context context) {
-        return _expr.evaluate( context );
+        Object answer = _expr.evaluate( context );
+        if ( _path != null ) {
+            if ( answer instanceof List ) {
+                context.setNodeSet( (List) answer );
+            }
+            else {
+                context.setNodeSet( (Node) answer );
+            }
+            answer = _path.evaluate( context );
+        }
+        return answer;
     }
     
     public String toString() {
-        return "[Filter: " + _expr + " predicates: " + _predicates + "]";
+        return "[Filter: " + _expr + " predicates: " + _predicates + " locationPath: " + _path + "]";
     }
 }
