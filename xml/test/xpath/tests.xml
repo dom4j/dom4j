@@ -289,8 +289,8 @@
   <document url="xml/fibo.xml">
     <context select="/">
       <test select="/*/fibonacci[position() &lt; 10]" count="9"/>
-      <valueOf select="sum(//fibonacci)">196417.0</valueOf>
-      <valueOf select="sum(//fibonacci/@index)">325.0</valueOf>
+      <valueOf select="sum(//fibonacci)">196417</valueOf>
+      <valueOf select="sum(//fibonacci/@index)">325</valueOf>
     </context>
   </document>
 

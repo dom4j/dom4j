@@ -7,6 +7,18 @@
 
       <section title="Changes in CVS since last release">
         <section title="New features">
+        <p>Added a new helper method to make it easier to create namespace contexts for doing
+          namespace aware XPath expressions. The new setNamespaceURIs(Map) method on XPath makes it easier
+          to pass in the prefixes and URIs you wish to use in an XPath expression. Here's an example of it in action
+        </p>
+<pre>
+Map uris = new HashMap();
+uris.put( "SOAP-ENV", "http://schemas.xmlsoap.org/soap/envelope/" );
+uris.put( "m", "urn:xmethodsBabelFish" );        
+XPath xpath = document.createXPath( "/SOAP-ENV:Envelope/SOAP-ENV:Body/m:BabelFish" );
+xpath.setNamespaceURIs( uris );        
+Node element = xpath.selectSingleNode( document );
+</pre>
         <p>There is a new <i>mergeAdjacentText</i> option available on SAXReader 
         to concatenate adjacent text nodes into a single Text node. 
         </p>

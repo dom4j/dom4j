@@ -11,6 +11,7 @@ package org.dom4j;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import org.jaxen.FunctionContext;
 import org.jaxen.NamespaceContext;
@@ -160,6 +161,22 @@ public interface XPath extends NodeFilter {
       * expressions
       */
     public void setNamespaceContext(NamespaceContext namespaceContext);
+    
+    /** Sets the current NamespaceContext from a Map where the keys
+      * are the String namespace prefixes and the values are the namespace
+      * URIs For example.<br>
+      *
+      * <pre>
+      * Map uris = new HashMap();<br/>
+      * uris.put( "SOAP-ENV", "http://schemas.xmlsoap.org/soap/envelope/" );<br/>
+      * uris.put( "m", "urn:xmethodsBabelFish" );<br/>
+      * XPath xpath = document.createXPath( "/SOAP-ENV:Envelope/SOAP-ENV:Body/m:BabelFish" );<br/>
+      * xpath.setNamespaceURIs( uris );<br/>
+      * Node babelfish = xpath.selectSingleNode( document );<br/>
+      * </pre>
+      *
+      */
+    public void setNamespaceURIs(Map map);
     
     /** @return the current variable context
       */

@@ -23,6 +23,7 @@ import org.jaxen.BaseXPath;
 import org.jaxen.FunctionContext;
 import org.jaxen.JaxenException;
 import org.jaxen.NamespaceContext;
+import org.jaxen.SimpleNamespaceContext;
 import org.jaxen.VariableContext;
 
 import org.saxpath.XPathReader;
@@ -86,6 +87,10 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter {
     
     public NamespaceContext getNamespaceContext() {
         return namespaceContext;
+    }
+    
+    public void setNamespaceURIs(Map map) {
+        setNamespaceContext( new SimpleNamespaceContext( map ) );
     }
     
     public void setNamespaceContext(NamespaceContext namespaceContext) {
