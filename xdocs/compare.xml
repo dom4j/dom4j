@@ -21,9 +21,9 @@
         <tr>
             <th align="left">Feature</th>
             <th align="left"><a href="http://www.w3.org/DOM/">WC3 DOM</a></th>
-            <th align="left"><a href="http://dom4j.org"><i>DOM4J</i></a></th>
-            <th align="left"><a href="http://www.jdom.org">JDOM</a></th>
-            <th align="left"><a href="http://www.cafeconleche.org/XOM/">XOM</a></th>
+            <th align="left"><a href="http://www.dom4j.org"><i>DOM4J 1.5</i></a></th>
+            <th align="left"><a href="http://www.jdom.org">JDOM 1.0</a></th>
+            <th align="left"><a href="http://www.cafeconleche.org/XOM/">XOM 1.O</a></th>
         </tr>
         <tr>
             <td>Open Source</td>
@@ -61,7 +61,7 @@
             <td>Yes</td>
         </tr>
         <tr>
-            <td>Can implement DOM interfacs natively</td>
+            <td>Implements DOM interfaces</td>
             <td>Yes</td>
             <td>Yes (optional)</td>
             <td>No</td>
@@ -79,42 +79,49 @@
             <td>No</td>
             <td>Yes</td>
             <td>Optional</td>
-            <td>Optional</td>
+            <td>No</td>
         </tr>
         <tr>
             <td>Support for JAXP/TrAX for XSLT integration</td>
             <td>Yes</td>
             <td>Yes</td>
-            <td>Optional</td>
-            <td>Don't know</td>
-        </tr>
-        <tr>
-            <td>Event based processing support</td>
-            <td>Possible</td>
             <td>Yes</td>
-            <td>No</td>
-            <td>Don't know</td>
+            <td>Yes</td>
         </tr>
         <tr>
             <td>Capable of processing a continuous XML streams</td>
             <td>Don't know</td>
             <td>Yes</td>
             <td>No</td>
-            <td>Don't know</td>
+            <td>Yes</td>
         </tr>
         <tr>
             <td>Capable of processing massive documents</td>
             <td>Don't know</td>
             <td>Yes</td>
             <td>No</td>
-            <td>Don't know</td>
+            <td>Yes</td>
         </tr>
         <tr>
             <td>XML Schema Data Type support</td>
             <td>No</td>
-            <td>Yes (alpha)</td>
+            <td>Yes</td>
             <td>No</td>
             <td>Don't know</td>
+        </tr>
+        <tr>
+            <td>XInclude support</td>
+            <td>Don't know</td>
+            <td>No</td>
+            <td>No</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>Canonical XML support</td>
+            <td>Don't know</td>
+            <td>No</td>
+            <td>No</td>
+            <td>Yes</td>
         </tr>
       </table>
 
