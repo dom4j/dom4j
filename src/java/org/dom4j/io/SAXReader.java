@@ -347,19 +347,17 @@ public class SAXReader extends TreeReader {
     
     protected void configureReader(XMLReader reader, DefaultHandler contentHandler) throws TreeException {                
         // configure lexical handling
-        boolean lexicalReporting = setParserProperty(
+        setParserProperty(
             reader,
             "http://xml.org/sax/handlers/LexicalHandler", 
             contentHandler
         );
-        if ( ! lexicalReporting ) {
-            // try alternate property            
-            setParserProperty(
-                reader,
-                "http://xml.org/sax/properties/lexical-handler", 
-                contentHandler
-            );
-        }
+        // try alternate property just in case
+        setParserProperty(
+            reader,
+            "http://xml.org/sax/properties/lexical-handler", 
+            contentHandler
+        );
         
         try {
             // configure namespace support
