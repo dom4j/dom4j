@@ -9,7 +9,7 @@
     <property name="name" value="dom4j"/>
     <property name="version" value="1.4"/>
     <property name="current.version" value="1.4"/>
-    <property name="year" value="2001"/>
+    <property name="year" value="2003"/>
 
     <echo message="----------- ${Name} ${version} [${year}] ------------"/>
 
