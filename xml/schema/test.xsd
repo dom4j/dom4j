@@ -11,6 +11,21 @@
 
  <element name="record">
   <complexType>
+    <attribute name="durationTag" type="duration"/>
+    <attribute name="dateTag" type="date"/>
+    <attribute name="timeTag" type="time"/>
+    <attribute name="dateTimeTag" type="dateTime"/>
+    <attribute name="gYearMonthTag" type="gYearMonth"/>
+    <attribute name="gYearTag" type="gYear"/>
+    <attribute name="gMonthDayTag" type="gMonthDay"/>
+    <attribute name="gDayTag" type="gDay"/>
+    <attribute name="gMonthTag" type="gMonth"/>
+
+    <attribute name="booleanTag" type="boolean"/>
+    <attribute name="base64BinaryTag" type="base64Binary"/>
+    <attribute name="hexBinaryTag" type="hexBinary"/>
+
+
     <attribute name="floatTag" type="float"/>
     <attribute name="doubleTag" type="double"/>
 
@@ -33,8 +48,6 @@
 
     <attribute name="positiveIntegerTag" type="positiveInteger"/>
 
-    <attribute name="dateTag" type="date"/>
-    <attribute name="dateTimeTag" type="dateTime"/>
   </complexType>
  </element>
 

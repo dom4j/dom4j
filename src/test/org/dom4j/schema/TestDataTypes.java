@@ -53,6 +53,53 @@ public class TestDataTypes extends AbstractDataTypeTest {
 /** The commented tests below are commented out due to current limitations
   * with Sun's xsdlib
   */
+
+/*    
+    public void testDuration() throws Exception {        
+        testNodes( "//durationTag", Object.class );
+    }
+    public void testDate() throws Exception {        
+        testNodes( "//dateTag", Date.class );
+    }
+    public void testTime() throws Exception {        
+        testNodes( "//timeTag", Number.class );
+    }
+    public void testDateTime() throws Exception {        
+        testNodes( "//dateTimeTag", Date.class );
+    }
+    
+    public void testgYearMonth() throws Exception {        
+        testNodes( "//gYearMonthTag", String.class );
+    }
+    public void testgYear() throws Exception {        
+        testNodes( "//gYearTag", Integer.class );
+    }
+    public void testgMonthDay() throws Exception {        
+        testNodes( "//gMonthDayTag", String.class );
+    }
+    public void testgDay() throws Exception {        
+        testNodes( "//gDayTag", Integer.class );
+    }
+    public void testgMonth() throws Exception {        
+        testNodes( "//gMonthTag", Integer.class );
+    }
+*/    
+
+    public void testBoolean() throws Exception {        
+        testNodes( "//booleanTag", Boolean.class );
+    }
+/*    
+    public void testBase64Binary() throws Exception {        
+        testNodes( "//base64BinaryTag", byte[].class );
+    }
+    public void testHexBinary() throws Exception {        
+        testNodes( "//hexBinaryTag", byte[].class  );
+    }
+*/
+    
+    
+    
+    // Number types
     
     public void testFloat() throws Exception {        
         testNodes( "//floatTag", Float.class );

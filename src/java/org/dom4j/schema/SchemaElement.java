@@ -46,6 +46,12 @@ public class SchemaElement extends DefaultElement implements ValidationContextPr
         this.dataType = dataType;
     }
 
+    public String toString() {
+        return getClass().getName() + hashCode() 
+            + " [Element: <" + getQualifiedName() 
+            + " attributes: " + attributeList() 
+            + " data: " + getData() + " />]";
+    }
     
     // ValidationContextProvider interface
     //-------------------------------------------------------------------------    
