@@ -151,6 +151,9 @@ public class TestXPathExamples extends TestCase {
         log( description );
         log( "\texpected: " + expected + " result: " + result );
 
+        if ( VERBOSE ) {
+            log( "XPath: " + testContext.createXPath( xpath ) );
+        }
         assertEquals( description, expected, result );
     }
 }

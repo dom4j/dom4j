@@ -66,15 +66,34 @@ public class NodeTypeStep extends UnAbbrStep {
         }
     }
     
+/*    
     public void applyToNodes(List results, Branch owner) {
         Iterator nodeIter = owner.nodeIterator();
         while ( nodeIter.hasNext() ) {
             Object each = nodeIter.next();
-            if ( matches( each ) ) {
-                Node node = (Node) each;
+            Node node = (Node) each;
+            if ( matches( node) ) {
                 Element parent = (owner instanceof Element)
                     ? (Element) owner : null;
                 results.add( node.asXPathResult( parent ) );
+            }
+        }
+    }
+*/    
+    public void applyToDocument(List results, Document doc) {
+        for ( int i = 0, size = doc.nodeCount(); i < size; i++ ) {
+            Node node = doc.node(i);
+            if ( matches( node ) ) {
+                results.add( node );
+            }
+        }
+    }
+    
+    public void applyToElement(List results, Element element) {
+        for ( int i = 0, size = element.nodeCount(); i < size; i++ ) {
+            Node node = element.node(i);
+            if ( matches( node ) ) {
+                results.add( node.asXPathResult( element ) );
             }
         }
     }
@@ -83,14 +102,14 @@ public class NodeTypeStep extends UnAbbrStep {
         List results = new ArrayList();        
         if ( node instanceof Element ) {
             if ( isAbsolute() ) {
-                applyToNodes( results, ((Element)node).getDocument() );
+                applyToDocument( results, ((Element)node).getDocument() );
             }
             else {
-                applyToNodes( results, (Element)node );
+                applyToElement( results, (Element)node );
             }
         }
         else if ( node instanceof Document ) {
-            applyToNodes( results, (Document)node );
+            applyToDocument( results, (Document)node );
         }        
         return results;
     }
@@ -99,6 +118,7 @@ public class NodeTypeStep extends UnAbbrStep {
         return applyToNode( node );
     }
 
+    
     // Pattern methods
     
     public boolean matches( Context context, Node node ) {
@@ -126,7 +146,7 @@ public class NodeTypeStep extends UnAbbrStep {
     
     protected boolean matches(Node node) {
         if ( _nodeType == Pattern.ANY_NODE ) {
-            return true;
+            return node.getNodeType() != Node.DOCUMENT_TYPE_NODE;
         }
         else {
             return _nodeType == node.getNodeType();

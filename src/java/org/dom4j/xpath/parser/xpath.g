@@ -177,6 +177,7 @@ step returns [Step step]
 								{
 									localName = id.getText();
 								}
+
 							|		STAR
 								{
 									localName = "*";
@@ -298,7 +299,8 @@ abbr_step returns [Step step]
 			{
 				step = new NodeTypeStep("self", "node");
 			}
-		|	DOT_DOT
+		|	
+                        DOT_DOT
 			{
 				step = new ParentStep();
 			}
