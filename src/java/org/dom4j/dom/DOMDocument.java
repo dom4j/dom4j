@@ -39,28 +39,37 @@ public class DOMDocument extends DefaultDocument implements org.w3c.dom.Document
     
 
     public DOMDocument() { 
+        init();
     }
 
     public DOMDocument(String name) { 
         super(name);
+        init();
     }
 
     public DOMDocument(DOMElement rootElement) { 
         super(rootElement);
+        init();
     }
 
     public DOMDocument(DOMDocumentType docType) { 
         super(docType);
+        init();
     }
 
     public DOMDocument(DOMElement rootElement, DOMDocumentType docType) { 
         super(rootElement, docType);
+        init();
     }
 
     public DOMDocument(String name, DOMElement rootElement, DOMDocumentType docType) { 
         super(name, rootElement, docType);
+        init();
     }
 
+    private void init() {
+        setDocumentFactory(DOCUMENT_FACTORY);
+    }
     
     // org.w3c.dom.Node interface
     //-------------------------------------------------------------------------        

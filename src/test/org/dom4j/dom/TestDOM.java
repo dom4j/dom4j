@@ -18,6 +18,8 @@ import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.dom.DOMDocument;
 import org.dom4j.dom.DOMDocumentFactory;
 import org.dom4j.io.DOMWriter;
 import org.dom4j.io.SAXReader;
@@ -76,6 +78,13 @@ public class TestDOM extends AbstractTestCase {
             + " attributes: " + attributes 
             + " characters: " + characters 
         );
+    }
+
+    /** Tests the bug found by Soumanjoy */
+    public void testClassCastBug() throws Exception {
+        DOMDocument oDocument = new DOMDocument("Root");
+        oDocument.createElement("Parent"); 
+        //<-- Fails here when the code is broken.
     }
         
     // Implementation methods

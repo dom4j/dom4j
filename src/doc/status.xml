@@ -9,6 +9,9 @@
         <p>Applied patch to bug found by Tom Oehser that XPath expressions using elements or attributes whose name starts 
         with '_' were not being handled correctly. It turns out this was a SAXPath issue.
         </p>
+        <p>Applied patch to bug found by Soumanjoy Das that creating a new DOMDocument then calling createElement() would generate
+          a ClassCastException.
+        </p>
         <p>Applied patch to fix bug found by David Frankson. Adding attributes with null values causes problems in XSLT engines
             so now adding a null valued attribute is equivalent to removing the attribute. So null attribute values are silently ignored.
             e.g.
