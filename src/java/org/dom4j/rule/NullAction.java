@@ -22,7 +22,7 @@ public class NullAction implements Action {
     /** Singleton instance */
     public static final NullAction SINGLETON = new NullAction();
     
-    public void run(Node node) {
+    public void run(Node node) throws Exception {
     }
 }
 

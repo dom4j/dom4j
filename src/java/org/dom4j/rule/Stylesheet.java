@@ -49,7 +49,7 @@ public class Stylesheet {
     /** Runs this stylesheet on the given input which should be 
       * either a Node or a List of Node objects.
       */
-    public void run( Object input ) {
+    public void run( Object input ) throws Exception {
         if ( input instanceof Node ) {
             run ( (Node) input );
         }
@@ -58,7 +58,7 @@ public class Stylesheet {
         }
     }
     
-    public void run( List list ) {
+    public void run( List list ) throws Exception {
         for ( int i = 0, size = list.size(); i < size; i++ ) {
             Object object = list.get(i);
             if ( object instanceof Node ) {
@@ -67,7 +67,7 @@ public class Stylesheet {
         }
     }
     
-    public void run( Node node ) {
+    public void run( Node node ) throws Exception {
         Mode mode = getMode();
         if ( mode != null ) {
             mode.fireRule( node );
@@ -75,12 +75,12 @@ public class Stylesheet {
     }
     
     
-    public void applyTemplates( Object input, XPath xpath ) {
+    public void applyTemplates( Object input, XPath xpath ) throws Exception {
         List list = xpath.selectNodes( input );
         run( list );
     }
     
-    public void applyTemplates( Object input ) {
+    public void applyTemplates( Object input ) throws Exception {
         // iterate through all children
         Mode mode = getMode();
         if ( mode != null ) {

@@ -96,7 +96,7 @@ public class TestStylesheet extends AbstractTestCase {
         log( "........................................" );
         
         Action action = new Action() {
-            public void run(Node node) {
+            public void run(Node node) throws Exception {
                 log( "Matched pattern: " + match );
                 log( "Node: " + node.asXML() );
                 log( "........................................" );

@@ -140,7 +140,7 @@ public class RuleManager {
     protected void addDefaultRules(final Mode mode) {
         // add an apply templates rule
         Action applyTemplates = new Action() {
-            public void run( Node node ) {
+            public void run( Node node ) throws Exception {
                 if ( node instanceof Element ) {
                     mode.applyTemplates( (Element) node );
                 }

@@ -42,7 +42,7 @@ public class Mode {
 
     /** Runs the actions associated with the given node 
       */
-    public void fireRule( Node node ) {
+    public void fireRule( Node node ) throws Exception {
         if ( node != null ) {
             Rule rule = getMatchingRule( node );
             if ( rule != null ) {
@@ -54,7 +54,7 @@ public class Mode {
         }
     }
     
-    public void applyTemplates( Element element ) {
+    public void applyTemplates( Element element ) throws Exception {
         for ( int i = 0, size = element.getAttributeCount(); i < size; i++ ) {
             Attribute attribute = element.getAttribute(i);
             fireRule( attribute );
@@ -65,7 +65,7 @@ public class Mode {
         }
     }
     
-    public void applyTemplates( Document document ) {
+    public void applyTemplates( Document document ) throws Exception {
         for ( int i = 0, size = document.getNodeCount(); i < size; i++ ) {
             Node node = document.getNode(i);
             fireRule( node );

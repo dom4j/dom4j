@@ -20,12 +20,7 @@ import org.dom4j.Node;
   */
 public interface Action {
 
-    public void run(Node node);
-
-
-    /** An action which does nothing.
-      */
-    public static final Action NULL_ACTION = NullAction.SINGLETON;
+    public void run(Node node) throws Exception;
 }
 
 
