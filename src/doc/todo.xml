@@ -63,6 +63,11 @@ List list = element.elements( element.getQName( "x:foo" ) );
             Patched bug in XRule implementation in org.dom4j.rule that was causing ordering problems
             when using stylesheets - the Rule precendence order was not being correctly used.
           </p>
+          <p>
+            Backed out a previous patch added to 0.9 such that attributes with no namespace prefix are in
+            no namespace. An attribute does not inherit the default namespace - the only way to put an attribute
+            into a namespace is via a namespace prefix.
+          </p>
         </section>
         <section title="0.9 release">
           <section title="Full support for the Jaxen XPath engine">

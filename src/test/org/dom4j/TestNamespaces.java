@@ -144,6 +144,7 @@ public class TestNamespaces extends AbstractTestCase {
         
         assertTrue( "Matched at least one 'actor' attribute", list.size() > 0 );
 
+        
         for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
             Attribute attribute = (Attribute) iter.next();
             
@@ -158,8 +159,9 @@ public class TestNamespaces extends AbstractTestCase {
             
             Namespace ns2 = attribute.getNamespace();
             
-            assertNamespace( ns2, "", "http://schemas.xmlsoap.org/soap/envelope/" );
-            
+            // Note that namespaces do not inherit the default namespace!
+            assertNamespace( ns2, "", "" );
+            //assertNamespace( ns2, "", "http://schemas.xmlsoap.org/soap/envelope/" );
         }
     }
     

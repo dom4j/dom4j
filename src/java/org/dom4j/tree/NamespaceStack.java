@@ -166,15 +166,11 @@ public class NamespaceStack {
         int index = qualifiedName.indexOf(":");
         if (index > 0) {
             prefix = qualifiedName.substring(0, index);
+            namespace = createNamespace( prefix, namespaceURI );
         }
         else {
-            // patch for namespaceURI not being passed through for attributes
-            if ( namespaceURI.length() == 0 ) {
-                namespace = getDefaultNamespace();
-            }
-        }
-        if ( namespace == null ) {
-            namespace = createNamespace( prefix, namespaceURI );
+            // attributes with no prefix have no namespace
+            namespace = Namespace.NO_NAMESPACE;
         }
         answer = pushQName( localName, qualifiedName, namespace, prefix );
         map.put( qualifiedName, answer );
