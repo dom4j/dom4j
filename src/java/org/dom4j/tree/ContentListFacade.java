@@ -18,12 +18,11 @@ import org.dom4j.Node;
 /**
  * <p>
  * <code>ContentListFacade</code> represents a facade of the content of a
- * {@link org.dom4j.Branch}which is returned via calls to the {@link
- * org.dom4j.Branch#content} method to allow users to modify the content of a
- * {@link org.dom4j.Branch}directly using the {@link List}interface. This list
+ * {@link org.dom4j.Branch} which is returned via calls to the {@link
+ * org.dom4j.Branch#content}  method to allow users to modify the content of a
+ * {@link org.dom4j.Branch} directly using the {@link List} interface. This list
  * is backed by the branch such that changes to the list will be reflected in
- * the branch and changes to the branch will be reflected be reflected in this
- * list.
+ * the branch and changes to the branch will be reflected in this list.
  * </p>
  * 
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
