@@ -5,7 +5,6 @@
   <!-- patterns are used in XSLT <xsl:template match="pattern"/> tags -->
   <document url="xml/web.xml">
     <context select="/">
-      <pattern match="*"/>
       <pattern match="/"/>
     </context>
     <context select="//servlet[1]">

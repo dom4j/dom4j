@@ -205,7 +205,8 @@
 
     <jar jarfile="${build.dir}/${name}.jar"
          basedir="${build.dest}"
-         includes="org/dom4j/**,org/saxpath/**,org/jaxen/**,com/werken/**"/>
+         includes="org/dom4j/**,org/saxpath/**,org/jaxen/**,com/werken/**"
+         excludes="org/jaxen/dom/**,org/jaxen/exml/**,org/jaxen/jdom/**"/>
 
     <jar jarfile="${build.dir}/${name}-full.jar"
          basedir="${build.dest}"

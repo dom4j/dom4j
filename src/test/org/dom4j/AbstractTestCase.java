@@ -239,10 +239,11 @@ public class AbstractTestCase extends TestCase {
             .addText( "http://sourceforge.net/users/werken/" );
     }
 
-    protected Document createDocument() {
+    protected Document createDocument() throws Exception {
         return DocumentHelper.createDocument();
     }
-    
+        
+        
     /** @return the root element of the document */
     protected Element getRootElement() {
         Element root = document.getRootElement();

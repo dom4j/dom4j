@@ -17,6 +17,7 @@ import junit.framework.*;
 import junit.textui.TestRunner;
 
 import org.dom4j.*;
+import org.dom4j.io.SAXReader;
 
 /** A test harness to test the use of the Stylesheet and the
   * XSLT rule engine.
@@ -24,24 +25,14 @@ import org.dom4j.*;
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class TestStylesheet extends AbstractTestCase {
+public class TestStylesheet2 extends TestStylesheet {
 
     protected String[] templates = {
         "/",
         "*",
-        "root",
-        "author",
-        "@name",
-        "root/author",
-        "author[@location='UK']",
-        "root/author[@location='UK']",
-        "root//author[@location='UK']",
-/*        
-        "text()[.='James Strachan']"
-*/
+        "title",
+        "para",
     };
-    
-    protected Stylesheet stylesheet;
     
     // JUnit stuff
     //-------------------------------------------------------------------------                    
@@ -50,10 +41,10 @@ public class TestStylesheet extends AbstractTestCase {
     }
     
     public static Test suite() {
-        return new TestSuite( TestStylesheet.class );
+        return new TestSuite( TestStylesheet2.class );
     }
     
-    public TestStylesheet(String name) {
+    public TestStylesheet2(String name) {
         super(name);
     }
 
@@ -77,8 +68,9 @@ public class TestStylesheet extends AbstractTestCase {
         
     // Implementation methods
     //-------------------------------------------------------------------------                    
-    protected void setUp() throws Exception {
-        super.setUp();
+    public void setUp() throws Exception {
+        SAXReader reader = new SAXReader();
+        document = reader.read( "xml/test/littledoc.xml" );
         
         stylesheet = new Stylesheet();
         stylesheet.setValueOfAction(
@@ -90,28 +82,6 @@ public class TestStylesheet extends AbstractTestCase {
             }
         );
     }
-    protected void addTemplate( final String match ) {
-        log( "Adding template match: " + match );
-        
-        Pattern pattern = DocumentHelper.createPattern( match );
-        
-        log( "Pattern: " + pattern );
-        log( "........................................" );
-        
-        Action action = new Action() {
-            public void run(Node node) throws Exception {
-                log( "Matched pattern: " + match );
-                log( "Node: " + node.asXML() );
-                log( "........................................" );
-                
-                // apply any child templates
-                stylesheet.applyTemplates(node);
-            }
-        };
-        Rule rule = new Rule( pattern, action );
-        stylesheet.addRule( rule );
-    }
-    
 }
 
 
