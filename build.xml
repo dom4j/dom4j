@@ -326,13 +326,12 @@
       <fileset dir="." includes="build.sh, build.bat, cp.bat, run.bat, run.sh, runnojit.bat, *.xml, *.html" />
     </copy>
 
-    <chmod perm="+x" file="${dist.dir}/run.sh"/>
-    <chmod perm="+x" file="${dist.dir}/build.sh"/>
-
     <fixcrlf srcdir="${dist.dir}" includes="run.sh"       cr="remove"/>
     <fixcrlf srcdir="${dist.dir}" includes="run.bat"      cr="add"/>
     <fixcrlf srcdir="${dist.dir}" includes="build.sh"     cr="remove"/>
     <fixcrlf srcdir="${dist.dir}" includes="build.bat"    cr="add"/>
+
+    <chmod perm="ugo+rx" file="${dist.dir}/**/*.sh"/>
   </target>
 
   <!-- =================================================================== -->
