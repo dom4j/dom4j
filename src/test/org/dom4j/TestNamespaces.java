@@ -278,13 +278,29 @@ public class TestNamespaces extends AbstractTestCase {
             }
         fail("Default namespace declaration not present on root element");
     }
+    
+    public void testDefaultNamespace() throws Exception {
+    	Document doc = DocumentHelper.createDocument(); 	
+    	Element processDef = doc.addElement("process-definition", "http://jbpm.org/statedefinition-2.0-beta3");
+    	Element startState = processDef.addElement("start-state");
+    	startState.addAttribute("name", "start");
+    	Element transition = startState.addElement("transition");
+    	transition.addAttribute("to", "first");
+    	
+    	assertEquals("http://jbpm.org/statedefinition-2.0-beta3", startState.getNamespace().getURI());
+    	assertEquals("", startState.getNamespace().getPrefix());
+    	
+    	System.out.println(doc.asXML());
+    }
 
     // Implementation methods
     //-------------------------------------------------------------------------
     protected void setUp() throws Exception {
         SAXReader reader = new SAXReader();
         URL url = getClass().getResource("/xml/test/test_schema.xml");
-        document = reader.read(url);
+        if (url != null) {
+        	document = reader.read(url);
+        }
     }
 
     protected Document saxRoundTrip(Document document) throws Exception {

@@ -348,6 +348,19 @@ public class TestXMLWriter extends AbstractTestCase {
         assertNodesEqual(doc, doc2);
     }
     
+    public void testEscapeChars() throws Exception {
+    	Document document = DocumentFactory.getInstance().createDocument();
+    	Element root = document.addElement("root");
+    	root.setText("blahblah " + '\u008f');
+    	
+    	XMLWriter writer = new XMLWriter();
+    	StringWriter strWriter = new StringWriter();
+    	writer.setWriter(strWriter);
+    	writer.setMaximumAllowedCharacter(127);
+    	writer.write(document);
+    	String xml = strWriter.toString();
+    }
+    
     protected org.dom4j.Document parseDocument(String file) throws Exception {
         SAXReader reader = new SAXReader();
         return reader.read(getClass().getResource(file));
