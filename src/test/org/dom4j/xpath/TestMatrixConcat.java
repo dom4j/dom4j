@@ -46,7 +46,6 @@ public class TestMatrixConcat extends AbstractTestCase {
     public void testDummy() throws Exception {
     }
     
-/*    
     public void testMatrixConcat() throws Exception {          
         String[] results1 = {
             "EQUITY_CF1",
@@ -65,7 +64,6 @@ public class TestMatrixConcat extends AbstractTestCase {
         testMatrixConcat( "matrix-concat(/product/equity/IDENTIFIER,/product/cashflows/CashFlow/XREF)", results1 );
     }
  
-*/
     
     // Implementation methods
     //-------------------------------------------------------------------------                    

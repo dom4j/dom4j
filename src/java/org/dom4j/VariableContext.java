@@ -13,6 +13,7 @@ package org.dom4j;
   * which is used by an {@link XPath} instance to resolve variable values.</p>
   *
   *  @author bob mcwhirter (bob @ werken.com)
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   */
 
 public interface VariableContext {
@@ -29,6 +30,20 @@ public interface VariableContext {
       *  @see org.dom4j.XPath#setVariableContext
       */
     public Object getVariableValue(String name);
+
+    /** Resolve a variable binding
+      *
+      *  <p>Retrieve the currently bound value of the named
+      *  variable, or null if no such binding exists. 
+      *
+      *  @param prefix The prefix of the variable sought.
+      *  @param name The name of the variable sought.
+      *
+      *  @return The currently bound value of the variable, or null.
+      *
+      *  @see org.dom4j.XPath#setVariableContext
+      */
+    public Object getVariableValue(String prefix, String name);
 }
 
 

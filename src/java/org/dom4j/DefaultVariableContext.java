@@ -19,6 +19,7 @@ import org.dom4j.VariableContext;
  *  name-value mappings.</p>
  *
  *  @author bob mcwhirter (bob @ werken.com)
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  */
 
 public class DefaultVariableContext implements VariableContext, org.jaxen.VariableContext {
@@ -48,7 +49,7 @@ public class DefaultVariableContext implements VariableContext, org.jaxen.Variab
     }
 
     public Object getVariableValue(String prefix, String name) {
-        return map.get(name);
+        return getVariableValue( prefix + ": " + name );
     }
 
     /** Set a variable finding
@@ -58,8 +59,20 @@ public class DefaultVariableContext implements VariableContext, org.jaxen.Variab
     *  @param name The name of the variable to bind to the value
     *  @param value The value to bind to the variable name.
     */
-    public void setVariableValue(String name, Object value) {
+    public void setVariableValue(String name, Object value) {        
         map.put(name, value);
+    }
+    
+    /** Set a variable finding
+    *
+    *  <p>Set the value of a named variable.
+    *
+    *  @param prefix The prefix name of the variable to bind to the value
+    *  @param name The name of the variable to bind to the value
+    *  @param value The value to bind to the variable name.
+    */
+    public void setVariableValue(String prefix, String name, Object value) {
+        setVariableValue( prefix + ":" + name, value );
     }
     
     /** @return the {@link Map} instance used to resolve variable values
