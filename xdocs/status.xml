@@ -195,7 +195,7 @@ Document doc = reader.read( "soap.xml" );
           In addition the MSVDemo.java in dom4j/src/samples/validate has been replaced by
           JARVDemo.java which now uses the <a href="http://iso-relax.sourceforge.net/JARV/">JARV</a> API 
           to validate a dom4j 
-          document using the <a href="http://www.sun.com/xml/">MSV</a> implementation.
+          document using the <a href="http://wwws.sun.com/software/xml/developers/multischema/index.html/">MSV</a> implementation.
           This demo can validate any XML document against any DTD, XML Schema, Relax NG, Relax or Trex
           schema - thanks to the excellent JARV API and MSV library.
         </p>
