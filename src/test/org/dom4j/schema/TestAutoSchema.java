@@ -81,9 +81,22 @@ public class TestAutoSchema extends AbstractDataTypeTest {
     // Implementation methods
     //-------------------------------------------------------------------------                    
     protected void setUp() throws Exception {
-        DocumentFactory factory = SchemaDocumentFactory.getInstance();
+        DocumentFactory factory = loadDocumentFactory();
+        
         SAXReader reader = new SAXReader( factory );
-        document = reader.read( "xml/schema/personal-schema.xml" );
+        String uri = getDocumentURI();
+        
+        log( "Parsing: " + uri );
+        
+        document = reader.read( uri );
+    }
+    
+    protected String getDocumentURI() {
+        return "xml/schema/personal-schema.xml";
+    }
+    
+    protected DocumentFactory loadDocumentFactory() throws Exception {
+        return SchemaDocumentFactory.getInstance();
     }
     
 }

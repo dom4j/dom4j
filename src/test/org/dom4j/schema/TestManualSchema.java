@@ -51,13 +51,8 @@ public class TestManualSchema extends TestAutoSchema {
     
     // Implementation methods
     //-------------------------------------------------------------------------                    
-    protected void setUp() throws Exception {
-        super.setUp();
-
-        DocumentFactory factory = loadDocumentFactory();
-        
-        SAXReader reader = new SAXReader( factory );
-        document = reader.read( "xml/schema/personal.xml" );
+    protected String getDocumentURI() {
+        return "xml/schema/personal.xml";
     }
     
     protected DocumentFactory loadDocumentFactory() throws Exception {

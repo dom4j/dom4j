@@ -255,6 +255,14 @@ public class SchemaBuilder {
         DataType dataType = (DataType) dataTypeCache.get( type );
         if ( dataType == null ) {
             dataType = DataTypeFactory.getTypeByName( type );
+            if ( dataType == null ) {
+                // maybe a prefix is being used
+                int idx = type.indexOf(':');
+                if (idx >= 0 ) {
+                    String localName = type.substring(idx + 1);
+                    dataType = DataTypeFactory.getTypeByName( localName );
+                }
+            }
             // store in cache for later
             dataTypeCache.put( type, dataType );
         }
