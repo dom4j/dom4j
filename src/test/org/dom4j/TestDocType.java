@@ -9,6 +9,7 @@
 
 package org.dom4j;
 
+import java.net.URL;
 import java.util.List;
 
 import junit.framework.Test;
@@ -26,7 +27,7 @@ import org.dom4j.io.SAXReader;
 public class TestDocType extends AbstractTestCase {
 
     /** Input XML file to read */
-    protected static String INPUT_XML_FILE = "xml/dtd/internal.xml";
+    protected static String INPUT_XML_FILE = "/xml/dtd/internal.xml";
     
     public static void main( String[] args ) {
         TestRunner.run( suite() );
@@ -44,37 +45,38 @@ public class TestDocType extends AbstractTestCase {
     //-------------------------------------------------------------------------                    
     public void testDocType() throws Exception {
         DocumentType docType = document.getDocType();
-        assertTrue( "Has DOCTYPE", docType!= null );
+        assertTrue("Has DOCTYPE", docType!= null);
         
         List declarations = docType.getInternalDeclarations();
-        assertTrue( "DOCTYPE has declarations", declarations != null && !declarations.isEmpty() );
+        assertTrue("DOCTYPE has declarations", declarations != null && !declarations.isEmpty());
         
         ElementDecl decl = (ElementDecl) declarations.get(0);
         
-        assertEquals( "name is correct", "greeting", decl.getName() );
-        assertEquals( "model is correct", "(#PCDATA)", normalize(decl.getModel()));
+        assertEquals("name is correct", "greeting", decl.getName() );
+        assertEquals("model is correct", "(#PCDATA)", normalize(decl.getModel()));
         
-        assertEquals( "getText() is correct", "<!ELEMENT greeting (#PCDATA)>", decl.toString() );
+        String expected = "<!ELEMENT " + decl.getName() + " " + decl.getModel() + ">";
+        assertEquals("toString() is correct", expected, decl.toString());
     }
     
     /**
      * Removes the optional * at the end of (#PCDATA)
      */
     private String normalize(String model) {
-        if (model.endsWith("*")) {
-            return model.substring(0, model.length() - 1);
-        } else {
-            return model;
+        if ("(#PCDATA)*".equals(model)) {
+            return ("(#PCDATA)");
         }
-        
+        return model;
     }
         
     // Implementation methods
     //-------------------------------------------------------------------------                    
     protected void setUp() throws Exception {
-        SAXReader reader = new SAXReader();
+        SAXReader reader = new SAXReader("org.dom4j.io.aelfred2.SAXDriver");
         reader.setIncludeInternalDTDDeclarations(true);
-        document = reader.read( INPUT_XML_FILE );
+        
+        URL url = getClass().getResource(INPUT_XML_FILE);
+        document = reader.read(url);
     }
 }
 
