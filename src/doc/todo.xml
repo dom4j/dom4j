@@ -7,6 +7,9 @@
       <section title="Changes in CVS since last release">
 
         <section title="Patches">
+        <p>Applied patch submitted by Lari Hotari that was causing the XMLWriter to fail when used as a 
+        SAX XMLFilter or ContentHandler to turn SAX events into XML text. Thanks Lari!
+        </p>
         <p>Fixed bug found by Kohsuke Kawaguchi that there was a problem in XMLWriter during its serialization of
         a document which redeclared the default namespace prefix. It turned out to be a bug in
         org.dom4j.tree.NamespaceStack where redeclarations of namespace prefixes were not being handled properly
