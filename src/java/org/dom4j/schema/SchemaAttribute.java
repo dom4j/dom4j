@@ -47,6 +47,12 @@ public class SchemaAttribute extends AbstractAttribute implements ValidationCont
         this.dataType = dataType;
     }
 
+    public String toString() {
+        return getClass().getName() + hashCode() 
+            + " [Attribute: name " + getQualifiedName() 
+            + " value \"" + getValue() + "\" data: " + getData() + "]";
+    }
+
     public SchemaAttribute(QName qname, DataType dataType, String text) { 
         this.qname = qname;
         this.dataType = dataType;

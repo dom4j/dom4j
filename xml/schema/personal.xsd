@@ -47,7 +47,8 @@
   </complexType>
   <attribute name="age" type="integer"/>
   <attribute name="x" type="int"/>
-  <attribute name="d" type="dateTime"/>
+  <attribute name="d" type="date"/>
+  <attribute name="dt" type="dateTime"/>
  </element>
 
  <element name="name">

@@ -58,20 +58,22 @@ public class TestManualSchema extends AbstractTestCase {
         testSchema( "//person/salary", Integer.class );
     }
     
-/*        
+    public void testString() throws Exception {        
+        testSchema( "//person/note", String.class );
+    }
+
+/*
+ * these don't yet work due to a bug in Sun's xsdlib 
+ *
+ 
     public void testDate() throws Exception {        
         testSchema( "//person/@d", Date.class );
     }
     
-    public void testString() throws Exception {        
-        testSchema( "//person/@note", String.class );
-    }
-        
     public void testInteger() throws Exception {        
         testSchema( "//person/@age", Integer.class );
     }
-        
-*/    
+*/
         
     // Implementation methods
     //-------------------------------------------------------------------------                        
@@ -114,7 +116,12 @@ public class TestManualSchema extends AbstractTestCase {
             log( "node: " + node );
         }
         
-        assert( "Data object is of the correct type: " + type.getName(), type.isAssignableFrom( data.getClass() ) );
+        assert( 
+            "Data object is of the correct type. Expected: " 
+                + type.getName() 
+                + " and found: " + data.getClass().getName(), 
+            type.isAssignableFrom( data.getClass() ) 
+        );
     }
 
     
