@@ -331,6 +331,9 @@
   </target>
 
   <target name="doc-cookbook" depends="prepare">
+<!--
+	disabled for now as the docbook XSLT isn't working
+	  
     <copy todir="${build.doc}/cookbook" overwrite="yes">
       <fileset dir="${doc.dir}/cookbook" includes="*.css"/>
     </copy>
@@ -362,6 +365,7 @@
            format="application/postscript"
            outfile="${build.doc}/cookbook/cookbook.ps"
       />
+-->      
   </target>
 
 
@@ -684,10 +688,6 @@
     <java classname="dom.XSLTNativeDOMDemo" args="xml/nitf/sample.xml xml/nitf/ashtml.xsl"/>
   </target>
 
-  <target name="demo-swing" depends="samples">
-    <java classname="swing.JTreeDemo" args="xml/web.xml"/>
-  </target>
-
   <target name="demo-bigdoc" depends="samples">
     <java classname="LargeDocumentDemo" args="xml/much_ado.xml /PLAY/ACT"/>
   </target>
@@ -743,6 +743,12 @@
     </java>
   </target>
 
+
+  <target name="demo-swing" depends="samples">
+    <java classname="swing.JTreeDemo" fork="true">
+      <arg line="xml/web.xml"/>
+    </java>
+  </target>
 
 
   <target name="demo-all" depends="demo-sax,demo-visitor,demo-count,demo-xpath,demo-html,demo-schema"/>
