@@ -113,6 +113,9 @@ public class DefaultDocument extends AbstractDocument {
     
     public void setXMLEncoding(String encoding) {
         this.encoding = encoding;
+        if (encoding != null) {
+        	outputFormat.setEncoding(encoding);
+        }
     }
     
     public EntityResolver getEntityResolver() {

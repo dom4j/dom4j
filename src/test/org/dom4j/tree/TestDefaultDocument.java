@@ -70,6 +70,20 @@ public class TestDefaultDocument extends AbstractTestCase {
         DocumentHelper.parseText(document.asXML());
     }
     
+    public void testAsXMLWithEncoding() throws Exception {
+    	DefaultDocument document = new DefaultDocument();
+    	document.addElement("root");
+    	document.setXMLEncoding("ISO-8859-1");
+    	
+    	Document doc = DocumentHelper.parseText("<?xml version='1.0' encoding='ISO-8859-1'?><root/>");
+    	
+    	String xml1 = document.asXML();
+    	String xml2 = doc.asXML();
+    	
+    	assertTrue(xml1.indexOf("ISO-8859-1") != -1);
+    	assertTrue(xml2.indexOf("ISO-8859-1") != -1);
+    }
+    
     public void testEncoding() throws Exception {
         Document document = DocumentFactory.getInstance().createDocument();
         Element el = document.addElement("root");
