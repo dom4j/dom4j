@@ -119,8 +119,8 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 import org.dom4j.Document;
-import org.dom4j.DocumentResult;
-import org.dom4j.DocumentSource;
+import org.dom4j.io.DocumentResult;
+import org.dom4j.io.DocumentSource;
 ...
 
 TransformerFactory factory 
