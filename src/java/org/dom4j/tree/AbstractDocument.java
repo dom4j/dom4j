@@ -9,8 +9,8 @@
 
 package org.dom4j.tree;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
@@ -62,13 +62,13 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
     
     public String asXML() {
         try {
-            StringWriter out = new StringWriter();
-            XMLWriter writer = new XMLWriter( out, outputFormat );
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            XMLWriter writer = new XMLWriter(out, outputFormat);
             writer.write(this);
             return out.toString();
         } 
         catch (IOException e) {
-            throw new RuntimeException("Wierd IOException while generating textual representation: " + e.getMessage());
+            throw new RuntimeException("IOException while generating textual representation: " + e.getMessage());
         }
     }
 
