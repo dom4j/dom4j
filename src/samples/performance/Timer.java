@@ -7,19 +7,14 @@
  * $Id$
  */
 
-import java.io.IOException;
+package performance;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentFactory;
-import org.dom4j.DocumentException;
-import org.dom4j.io.SAXReader;
-
-/** Perform some DOM4J parsing peformance test cases.
+/** A timer for use in performance monitoring 
   * 
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class PerformanceTest extends SAXDemo {
+public class Timer {
     
     /** Whether the performance of each run is printed */
     protected static boolean VERBOSE = false;
@@ -27,65 +22,72 @@ public class PerformanceTest extends SAXDemo {
     /** Default number of loops */
     protected static final int DEFAULT_LOOP_COUNT = 40;
     
+    
+    /** The number of the first loops to display */
+    private int displayCount = 4;
+    
     /** Number of loops to perform */
-    protected int loopCount = DEFAULT_LOOP_COUNT;
+    private int loopCount = DEFAULT_LOOP_COUNT;
+
+    private Task task;
     
     
-    /** The DocumentFactory class name to use */
-    protected String documentFactoryClassName;
-    
-    
-    public static void main(String[] args) {
-        run( new PerformanceTest(), args );
-    }    
-    
-    public PerformanceTest() {
+    public Timer() {
     }
     
-    public void run(String[] args) throws Exception {    
-        if ( args.length < 1 ) {
-            printUsage( "<XML document URL> [<Document Factory Class Name>] [<loopCount>]" );
-            return;
-        }
-
-        String xmlFile = args[0];
-        
-        documentFactoryClassName = (args.length > 1) 
-            ? args[1] : null;
-            
-        loopCount = DEFAULT_LOOP_COUNT;
-        if (args.length > 2) {
-            loopCount = Integer.parseInt(args[2]);
-        }        
-
-        loopParse( xmlFile );
+    public Timer(Task task) {
+        this.task = task;
     }
     
-    /** Parses the XML document at the given <code>URL</code> 
-      * a number of times and outputs the timing results
+    /** Performs a piece of code a number of times in a loop
       *
-      * @param url is the URL or filename to read 
+      * @param loopCount is the number of loops to perform
       */
-    protected void loopParse( String url ) throws Exception {
-        SAXReader reader = createSAXReader();
-                    
-        println( "Parsing url:      " + url );
-        println( "Looping:          " + loopCount + " time(s)" );        
-        println( "Using SAX parser: " + System.getProperty( "org.xml.sax.driver", "default" ) );
-        println( "DocumentFactory:  " + reader.getDocumentFactory() );
-        
-        if ( loopCount <= 0 ) {
+    public void run() throws Exception {
+        Task task = getTask();
+        int size = getLoopCount();
+        if ( size <= 0 || task == null) {
             return;
         }
         
-        long[] times = new long[loopCount];
-        for ( int i = 0; i < loopCount; i++ ) {
-            times[i] = timeParse(url, reader);
+        long[] times = new long[size];
+        for ( int i = 0; i < size; i++ ) {
+            long start = System.currentTimeMillis();
+            
+            task.run();
+            
+            long end = System.currentTimeMillis();
+            times[i] = end - start;
         }
+        
+        printSummary(times);
+    }
+    
+    // Properties
+    //-------------------------------------------------------------------------
+    public Task getTask() {
+        return task;
+    }
+    
+    public void setTask(Task task) {
+        this.task = task;
+    }
 
+    public int getLoopCount() {
+        return loopCount;
+    }
+    
+    public void setLoopCount(int loopCount) {
+        this.loopCount = loopCount;
+    }
+    
+    // Implementation methods
+    //-------------------------------------------------------------------------
+    protected void printSummary(long[] times) {
         println( "Performance summary" );
+        
+        println( "Number of runs: " + loopCount );
 
-        int displayCount = 4;
         if ( VERBOSE || loopCount < displayCount ) {
             displayCount = loopCount;
         }
@@ -116,56 +118,30 @@ public class PerformanceTest extends SAXDemo {
         if ( loopCount == 1 ) {
             return;
         }
-        total -= times[0];
-        average = total / (loopCount - 1);
+        long total_1 = total - times[0];
+        average = total_1 / (loopCount - 1);
         
         println( "Average (excluding first run)         : " + average + " (ms)" );
         
         if ( loopCount == 2 ) {
             return;
         }
-        total -= times[1];
-        average = total / (loopCount - 2);
+        long total_2 = total_1 - times[1];
+        average = total_2 / (loopCount - 2);
         
         println( "Average (excluding first & second run): " + average + " (ms)" );
+        
+        println( "Total time of run                     : " + total + " (ms)" );
+        println( "Total (excluding first run)           : " + total_1 + " (ms)" );
+        println( "Total (excluding first & second run)  : " + total_2 + " (ms)" );
+        
         return;
     }
+    
 
-    /** Parses the XML document at the given URL and times how long it takes.
-      *
-      * @param url is the <code>URL</code> to read 
-      * @param reader is the <code>SAXReader</code> to use for the parsing
-      * @return the time taken in milliseconds
-      */
-    protected long timeParse(String url, SAXReader reader) 
-        throws IOException, DocumentException {
-
-        // Build the DOM4J Document
-        long start = System.currentTimeMillis();
-        
-        Document document = reader.read(url);
-        
-        long end = System.currentTimeMillis();
-        return end - start;
-    }
-
-    protected SAXReader createSAXReader() throws Exception {
-        SAXReader answer = new SAXReader();        
-        if ( documentFactoryClassName != null ) {
-            try {
-                Class theClass = Class.forName( documentFactoryClassName );
-                DocumentFactory factory = (DocumentFactory) theClass.newInstance();
-                if ( factory != null ) {
-                    answer.setDocumentFactory( factory );
-                }
-            }
-            catch (Exception e) {
-                println( "ERROR: Failed to create an instance of DocumentFactory: " + documentFactoryClassName );
-                println( "Exception: " + e );
-                e.printStackTrace();
-            }
-        }
-        return answer;
+    
+    protected void println( String text ) {
+        System.out.println( text );
     }
 }
 
