@@ -222,27 +222,27 @@ public class TestNamespaces extends AbstractTestCase {
 
     public void testRedeclareNamespaces(Document document) throws Exception {
         assertNamespaces(
-            document.selectNodes( "//*[local-name()='Envelope'" ),
+            document.selectNodes( "//*[local-name()='Envelope']" ),
             "SOAP-ENV", "http://schemas.xmlsoap.org/soap/envelope/"
         );
         assertNamespaces(
-            document.selectNodes( "//*[local-name()='Body'" ),
+            document.selectNodes( "//*[local-name()='Body']" ),
             "SOAP-ENV", "http://schemas.xmlsoap.org/soap/envelope/"
         );
         assertNamespaces(
-            document.selectNodes( "//*[local-name()='bar'" ),
+            document.selectNodes( "//*[local-name()='bar']" ),
             "a", "barURI"
         );
         assertNamespaces(
-            document.selectNodes( "//*[local-name()='newBar'" ),
+            document.selectNodes( "//*[local-name()='newBar']" ),
             "a", "newBarURI"
         );
         assertNamespaces(
-            document.selectNodes( "//*[local-name()='foo'" ),
+            document.selectNodes( "//*[local-name()='foo']" ),
             "", "fooURI"
         );
         assertNamespaces(
-            document.selectNodes( "//*[local-name()='newFoo'" ),
+            document.selectNodes( "//*[local-name()='newFoo']" ),
             "", "newFooURI"
         );
     }
