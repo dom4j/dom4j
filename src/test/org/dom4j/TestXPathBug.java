@@ -100,6 +100,34 @@ public class TestXPathBug extends AbstractTestCase {
         XPath xpath = DocumentHelper.createXPath( "/x" );
         Object value = xpath.evaluate( document );
     }
+    
+
+    /** Test found by Mike Skells 
+     */
+    public void testMikeSkells() throws Exception {
+        Document top = DocumentFactory.getInstance().createDocument();
+        Element root = top.addElement("root");
+        root.addElement("child1").addElement("child11");
+        root.addElement("child2").addElement("child21");
+        System.out.println(top.asXML());
+        XPath test1 = top.createXPath("/root/child1/child11");
+        XPath test2 = top.createXPath("/root/child2/child21");
+        Node position1 = test1.selectSingleNode(root);
+        Node position2 = test2.selectSingleNode(root);
+        
+        System.out.println("test1= "+test1);
+        System.out.println("test2= "+test2);
+        System.out.println("Position1 Xpath = "+position1.getUniquePath());
+        System.out.println("Position2 Xpath = "+position2.getUniquePath());
+        
+        System.out.println("test2.matches(position1) : "+test2.matches(position1));
+        
+        assertTrue( "test1.matches(position1)", test1.matches(position1) );
+        assertTrue( "test2.matches(position2)", test2.matches(position2) );
+        
+        assertTrue( "test2.matches(position1) should be false", ! test2.matches(position1) );
+    }
+
 }
 
 

@@ -241,7 +241,7 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
                 if ( item instanceof Boolean ) {
                     return ((Boolean) item).booleanValue();
                 }
-                return true;
+                return answer.contains( node );
             }
             return false;
         }

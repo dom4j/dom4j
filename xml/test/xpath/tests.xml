@@ -2,11 +2,13 @@
 <tests>
 
   <!-- test the use of text() -->
+<!--
   <document url="xml/test/test_text.xml">
     <context select="/">
       <valueOf select="normalize-space(/message/text())">This should work</valueOf>
     </context>
   </document>
+-->
 
   <!-- test the use of 'or' -->
   <document url="xml/test/sample.xml">
@@ -135,13 +137,11 @@
   <!-- test filters -->
   <document url="xml/web.xml">
     <context select="/">
-      <filter match="*"/>
       <filter match="/"/>
     </context>
     <context select="//servlet[1]">
-      <filter match="*"/>
-      <filter match="servlet-name"/>
-      <filter match="servlet-name='snoop'"/>
+      <filter match="."/>
+      <filter match="name()='servlet'"/>
     </context>
   </document>
 

@@ -34,7 +34,8 @@ public interface XPath extends NodeFilter {
 
     
     /** <p><code>matches</code> returns true if the given node matches 
-      * the XPath expression.</p>
+      * the XPath expression. To be more precise when evaluating this XPath
+      * expression on the given node the result set must include the node.</p>
       *
       * @return true if the given node matches this XPath expression
       */
