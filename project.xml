@@ -89,14 +89,71 @@
   
   <developers>
     <developer>
+      <name>David Lucas</name>
+      <id>ddlucas</id>
+      <email>ddlucas@users.sourceforge.net</email>
+    </developer>
+    <developer>
+      <name>David White</name>
+      <id>drwhite</id>
+      <email>drwhite@users.sourceforge.net</email>
+    </developer>
+    <developer>
+      <name>Jakob Jenkov</name>
+      <id>jjenkov</id>
+      <email>jjenkov@users.sourceforge.net</email>
+    </developer>
+    <developer>
       <name>James Strachan</name>
       <id>jstrachan</id>
       <email>jstrachan@apache.org</email>
       <organization>SpiritSoft, Inc.</organization>
     </developer>
-    
-    <!-- ### need to fill in the rest of the details from the documentation... -->
-    
+    <developer>
+      <name>Laramie Crocker</name>
+      <id>laramiec</id>
+      <email>laramiec@users.sourceforge.net</email>
+    </developer>
+    <developer>
+      <name>Maarten Coene</name>
+      <id>maartenc</id>
+      <email>maartenc@users.sourceforge.net</email>
+    </developer>
+    <developer>
+      <name>Michael Skells</name>
+      <id>mskells</id>
+      <email>mskells@users.sourceforge.net</email>
+    </developer>
+    <developer>
+      <name>Nick Sanderson</name>
+      <id>nicksanderson</id>
+      <email>nicksanderson@users.sourceforge.net</email>
+    </developer>
+    <developer>
+      <name>Steen Lehmann</name>
+      <id>slehmann</id>
+      <email>slehmann@users.sourceforge.net</email>
+    </developer>
+    <developer>
+      <name>Tobias Rademacher</name>
+      <id>tradem</id>
+      <email>tradem@users.sourceforge.net</email>
+    </developer>
+    <developer>
+      <name>Bob McWhirter</name>
+      <id>werken</id>
+      <email>werken@users.sourceforge.net</email>
+    </developer>
+    <developer>
+      <name>OuYang Chen</name>
+      <id>yeekee</id>
+      <email>yeekee@users.sourceforge.net</email>
+    </developer>
+    <developer>
+      <name>Yuxin Ruan</name>
+      <id>yruan2</id>
+      <email>yruan2@users.sourceforge.net</email>
+    </developer>
   </developers>
   
   <dependencies>
