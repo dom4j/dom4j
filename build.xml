@@ -190,7 +190,7 @@
            optimize="${optimize}"
            deprecation="${deprecation}"/>
     <copy  todir="${build.dest}">
-      <fileset dir="${test.dir}" includes="**/*.properties"/>
+      <fileset dir="${test.dir}" excludes="**/*.java"/>
     </copy>
   </target>
 
