@@ -183,6 +183,17 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
         }
     }
     
+    public boolean booleanValueOf(Object context) {
+        try {
+            setNSContext(context);
+            return xpath.booleanValueOf(context);
+        }
+        catch(JaxenException e) {
+            handleJaxenException(e);
+            return false;
+        }
+    }
+
     /** <p><code>sort</code> sorts the given List of Nodes
       * using this XPath expression as a {@link Comparator}.</p>
       *

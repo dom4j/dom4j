@@ -135,7 +135,7 @@ public interface XPath extends NodeFilter {
     
     /** <p><code>numberValueOf</code> evaluates an XPath expression
       * and returns the numeric value of the XPath expression if the XPath
-      * expression results in a number, or null if the result is not a number.
+      * expression results is a number, or null if the result is not a number.
       *
       * @param context is either a node or a list of nodes on which to 
       *    evalute the XPath
@@ -143,6 +143,25 @@ public interface XPath extends NodeFilter {
       * if the result is not a number.
       */
     public Number numberValueOf(Object context);
+
+    /** 
+     * Retrieve a boolean-value interpretation of this XPath
+     * expression when evaluated against a given context.
+     *
+     * <p>
+     * The boolean-value of the expression is determined per
+     * the <code>boolean(..)</code> core function as defined
+     * in the XPath specification.  This means that an expression
+     * that selects zero nodes will return <code>false</code>,
+     * while an expression that selects one-or-more nodes will
+     * return <code>true</code>.
+     * </p>
+     *
+     * @param context The node, nodeset or Context object for evaluation. This value can be null
+     * @return The boolean-value interpretation of this expression.
+     * @since 1.5
+     */
+    public boolean booleanValueOf(Object context);
 
     /** <p><code>sort</code> sorts the given List of Nodes
       * using this XPath expression as a {@link Comparator}.</p>

@@ -16,6 +16,7 @@ import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.dom4j.tree.DefaultElement;
+import org.dom4j.xpath.DefaultXPath;
 
 /** A test harness to test XPath expression evaluation in DOM4J
   *
@@ -103,6 +104,16 @@ public class TestXPath extends AbstractTestCase {
     public void testBug857704() throws Exception {
         Document doc = DocumentHelper.parseText("<foo xmlns:bar='http://blort'/>");
         doc.selectNodes("//*[preceding-sibling::*]");       // shouldn't throw NPE
+    }
+
+    public void testBooleanValueOf() throws Exception {
+        Document doc = DocumentHelper.parseText("<root><foo>blah</foo></root>");
+        
+        XPath path = new DefaultXPath("//root");
+        assertTrue(path.booleanValueOf(doc));
+        
+        path = new DefaultXPath("//root2");
+        assertFalse(path.booleanValueOf(doc));
     }
 
     // Implementation methods

@@ -8,6 +8,9 @@
   <body>
 
     <release version="1.5 dev" date="in CVS">
+      <action dev="maartenc" type="add" due-to="Ben Scarlet">
+        Added a <code>booleanValueOf(Object node)</code> method to <code>XPath</code>.
+      </action>
       <action dev="maartenc" type="fix" due-to="Wonne Keysers">
         Fixed bug in <code>BeanElement</code> which prevented proper execution of the bean samples.
       </action>
