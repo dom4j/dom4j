@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.dom4j.Attribute;
+import org.dom4j.Branch;
 import org.dom4j.CDATA;
 import org.dom4j.Comment;
 import org.dom4j.ContentFactory;
@@ -79,9 +80,9 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     // ContentHandler interface
     
     public void processingInstruction(String target, String data) throws SAXException {
-        elementStack.peekElement().addProcessingInstruction(target, data);
+        peekBranch().addProcessingInstruction(target, data);
     }
-
+    
     public void startPrefixMapping(String prefix, String uri) throws SAXException {
         addDeclaredNamespace( getNamespace(prefix, uri) );
     }
@@ -233,8 +234,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     public void comment(char[] ch, int start, int end) throws SAXException {
         String text = new String(ch, start, end);
         if (!insideDTDSection && text.length() > 0) {
-            Element element = elementStack.peekElement();
-            element.addComment(text);
+            peekBranch().addComment(text);
         }
     }
 
@@ -327,21 +327,23 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     }
 
     protected Element createElement(String localName, Namespace namespace) {
-        Element parent = elementStack.peekElement();
-        return (parent != null)
-            ? parent.addElement(localName, namespace)
-            : getDocument().addElement(localName, namespace);
+        return peekBranch().addElement(localName, namespace);
     }
     
     protected Element createElement(String localName) {
-        Element parent = elementStack.peekElement();
-        return (parent != null)
-            ? parent.addElement(localName)
-            : getDocument().addElement(localName);
+        return peekBranch().addElement(localName);
     }
     
     protected ElementStack createElementStack() {
         return new ElementStack();
     }
     
+    protected Branch peekBranch() {
+        Branch branch = elementStack.peekElement();
+        if ( branch == null ) {
+            branch = getDocument();
+        }
+        return branch;
+    }
+
 }

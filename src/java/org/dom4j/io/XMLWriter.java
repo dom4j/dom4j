@@ -934,7 +934,7 @@ public class XMLWriter implements Cloneable {
                              Writer out, int indentLevel) throws IOException
     {
         indent(out, indentLevel);
-        out.write(comment.toString());  //XXX
+        out.write(comment.asXML());  //XXX
         maybePrintln(out);
     }
       
@@ -951,7 +951,7 @@ public class XMLWriter implements Cloneable {
                                     Writer out, int indentLevel) throws IOException {
                                         
         indent(out, indentLevel);
-        out.write(pi.toString());
+        out.write(pi.asXML());
         maybePrintln(out);
 
     }
@@ -970,7 +970,7 @@ public class XMLWriter implements Cloneable {
                               Writer out, int indentLevel) throws IOException {
         
         indent(out, indentLevel);
-        out.write(cdata.toString());
+        out.write(cdata.asXML());
         maybePrintln(out);
 
     }
@@ -1225,7 +1225,7 @@ public class XMLWriter implements Cloneable {
      * @param entity <code>Entity</code> to output.
      * @param out <code>Writer</code> to write to.  */
     protected void printEntity(Entity entity, Writer out) throws IOException {
-        out.write(entity.toString());
+        out.write(entity.asXML());
     }
     
 

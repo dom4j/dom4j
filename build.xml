@@ -377,6 +377,33 @@
     <java classname="SAXDemo" args="xml/xhtml/xhtml-basic.xml"/>
   </target>
 
+  <target name="demo-sax-contents" depends="samples">
+    <java classname="SAXDemo" args="xml/contents.xml"/>
+  </target>
+
+  <target name="demo-sax-cdata" depends="samples">
+    <java classname="SAXDemo" args="xml/cdata.xml"/>
+    <java classname="SAXDemo" args="xml/cdata.xml">
+      <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/> 
+    </java>
+    <java classname="SAXDemo" args="xml/cdata.xml">
+      <sysproperty key="org.xml.sax.driver" value="xml.aelfred2.SAXDriver"/> 
+    </java>
+  </target>
+
+  <target name="demo-sax-pi" depends="samples">
+    <java classname="SAXDemo" args="xml/testPI.xml"/>
+  </target>
+
+  <target name="demo-sax-ns" depends="samples">
+    <java classname="SAXDemo" args="xml/namespaces.xml"/>
+    <java classname="SAXDemo" args="xml/testNamespaces.xml"/>
+  </target>
+
+  <target name="demo-saxall" depends="demo-sax,demo-sax-contents,demo-sax-cdata,demo-sax-pi,demo-sax-ns">
+    <java classname="SAXDemo" args="xml/inline.xml"/>
+  </target>
+
   <target name="demo-visitor" depends="samples">
     <java classname="VisitorDemo" args="xml/web.xml"/>
   </target>
