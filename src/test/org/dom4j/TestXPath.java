@@ -29,6 +29,7 @@ public class TestXPath extends AbstractTestCase {
         "text()",
         "//author",
         "//author[@location='UK']",
+        "//author/text()",
         "//@location"
     };
     

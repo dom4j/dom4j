@@ -42,6 +42,9 @@ public class DefaultElement extends AbstractElement {
     /** The parent of this node */
     private Element parent;
 
+    /** The document of this node */
+    private Document document;
+
     /** The <code>NameModel</code> for this element */
     private NameModel nameModel;
     
@@ -82,6 +85,20 @@ public class DefaultElement extends AbstractElement {
 
     public void setParent(Element parent) {
         this.parent = parent;
+    }
+
+    public Document getDocument() {
+        if ( document != null ) {
+            return document;
+        }
+        if ( parent != null ) {
+            return parent.getDocument();
+        }
+        return null;
+    }
+    
+    public void setDocument(Document document) {
+        this.document = document;
     }
     
     public boolean supportsParent() {

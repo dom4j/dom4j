@@ -38,10 +38,12 @@ public class AbstractTestCase extends TestCase {
         Element author1 = root.addElement( "author" );
         author1.setAttributeValue( "name", "James" );
         author1.setAttributeValue( "location", "UK" );
+        author1.addText("James Strachan");
         
         Element author2 = root.addElement( "author" );
         author2.setAttributeValue( "name", "Bob" );
         author2.setAttributeValue( "location", "Canada" );
+        author2.addText("Bob McWhirter");
     }
 
     protected void log(String text) {
