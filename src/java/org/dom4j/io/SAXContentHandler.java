@@ -242,6 +242,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
         elementStack.pushElement(element);
         currentElement = element;
 
+        entity = null;      // fixes bug527062
 
         if ( elementHandler != null ) {
             elementHandler.onStart(elementStack);
@@ -264,6 +265,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
         if ( end == 0 ) {
             return;
         }
+        
         if ( currentElement != null ) {
             if (entity != null) {
                 if ( mergeAdjacentText && textInTextBuffer ) {
