@@ -10,6 +10,7 @@
 package org.dom4j;
 
 import java.io.ByteArrayInputStream;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
@@ -209,7 +210,7 @@ public class DocumentHelper {
       */
     public static Document parseText(String text) throws DocumentException {
         SAXReader reader = new SAXReader();
-        return reader.read(new ByteArrayInputStream(text.getBytes()));
+        return reader.read(new StringReader(text));
     }
 
     /** <p><code>parseText</code> parses the given text as an XML document
