@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
+  <Header>
+    <t:Transaction xmlns:t="some-uri" mustUnderstand="1" actor="http://wombat.org/next">5</t:Transaction>
+  </Header>
+  <Body>
+    <m:GetLastTradePrice xmlns:m="some-other-uri">
+      <m:symbol xmlns:m="some-other-URI">DEF</m:symbol>
+    </m:GetLastTradePrice>
+  </Body>
+</Envelope>

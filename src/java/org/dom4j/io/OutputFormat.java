@@ -328,6 +328,18 @@ public class OutputFormat implements Cloneable {
         format.setTrimText(true);
         return format;
     }
+
+    /** A static helper method to create the default compact format.
+      * This format does not have any indentation or newlines after an alement 
+      * and all other whitespace trimmed 
+      */    
+    public static OutputFormat createCompactFormat() {
+        OutputFormat format = new OutputFormat();
+        format.setIndent(false);
+        format.setNewlines(false);
+        format.setTrimText(true);
+        return format;
+    }
     
 }
 

@@ -93,7 +93,9 @@ public class SAXReader {
  
     /** ErrorHandler class to use */
     private ErrorHandler errorHandler;
- 
+
+    /** Should element & attribute names and namespace URIs be interned? */
+    private boolean stringInternEnabled = true;
     
     
     
@@ -334,6 +336,21 @@ public class SAXReader {
         this.validating = validating;
     }
     
+    /** Sets whether String interning
+      * is enabled or disabled for element & attribute names and namespace URIs.
+      * This proprety is enabled by default.
+      */
+    public boolean isStringInternEnabled() {
+        return stringInternEnabled;
+    }
+    
+    /** Sets whether String interning 
+      * is enabled or disabled for element & attribute names and namespace URIs
+      */
+    public void setStringInternEnabled(boolean stringInternEnabled) {
+        this.stringInternEnabled = stringInternEnabled;
+    }
+    
     /** @return the <code>DocumentFactory</code> used to create document objects
       */
     public DocumentFactory getDocumentFactory() {
@@ -471,6 +488,10 @@ public class SAXReader {
             reader.setFeature(
                 "http://xml.org/sax/features/namespace-prefixes", 
                 false
+            );
+            reader.setFeature(
+                "http://xml.org/sax/features/string-intern", 
+                isStringInternEnabled()
             );
 
             // configure validation support

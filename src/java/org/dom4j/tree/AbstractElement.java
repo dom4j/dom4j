@@ -453,7 +453,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
                     String attributeLocalName = attributes.getLocalName(0);
                     String attributeValue = attributes.getValue(0);
 
-                    QName attributeQName = namespaceStack.getQName( 
+                    QName attributeQName = namespaceStack.getAttributeQName( 
                         attributeURI, attributeLocalName, attributeQualifiedName 
                     );
                     add(factory.createAttribute(this, attributeQName, attributeValue));
@@ -471,7 +471,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
                         String attributeLocalName = attributes.getLocalName(i);
                         String attributeValue = attributes.getValue(i);
 
-                        QName attributeQName = namespaceStack.getQName( 
+                        QName attributeQName = namespaceStack.getAttributeQName( 
                             attributeURI, attributeLocalName, attributeQualifiedName 
                         );
                         Attribute attribute = factory.createAttribute(

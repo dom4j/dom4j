@@ -136,6 +136,33 @@ public class TestNamespaces extends AbstractTestCase {
         }
     }
     
+    public void testAttributeDefaultPrefix() throws Exception {
+        SAXReader reader = new SAXReader();
+        Document document = reader.read("xml/test/soap3.xml");
+        
+        List list = document.selectNodes( "//@*[local-name()='actor']" );
+        
+        assertTrue( "Matched at least one 'actor' attribute", list.size() > 0 );
+
+        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
+            Attribute attribute = (Attribute) iter.next();
+            
+            log( "found: " + attribute.asXML() );
+            
+            Element element = attribute.getParent();
+            assertTrue( "Attribute has a parent", element != null );
+            
+            Namespace ns = element.getNamespaceForPrefix( "" );
+        
+            assertNamespace( ns, "", "http://schemas.xmlsoap.org/soap/envelope/" );
+            
+            Namespace ns2 = attribute.getNamespace();
+            
+            assertNamespace( ns2, "", "http://schemas.xmlsoap.org/soap/envelope/" );
+            
+        }
+    }
+    
     public void testNamespaceForURI() throws Exception {
         Element root = document.getRootElement();
         

@@ -32,6 +32,10 @@ public class NamespaceStack {
     
     /** The Stack of namespaces */
     private ArrayList namespaceStack = new ArrayList();
+
+    /** Caches the default namespace defined via xmlns="" */
+    private Namespace defaultNamespace;
+    
     
     public NamespaceStack() {
         this.documentFactory = DocumentFactory.getInstance();
@@ -57,6 +61,7 @@ public class NamespaceStack {
       */
     public Namespace pop() {
         Namespace namespace = (Namespace) namespaceStack.remove( namespaceStack.size() - 1 );
+        this.defaultNamespace = null;
         return namespace;
     }
     
@@ -127,6 +132,34 @@ public class NamespaceStack {
         return pushQName( localName, qualifiedName, namespace, prefix );
     }
 
+    public QName getAttributeQName( String namespaceURI, String localName, String qualifiedName ) {
+        if ( localName == null ) {
+            localName = qualifiedName;
+        }
+        else if ( qualifiedName == null ) {
+            qualifiedName = localName;
+        }
+        if ( namespaceURI == null ) {
+            namespaceURI = "";
+        }
+        Namespace namespace = null;
+        String prefix = "";
+        int index = qualifiedName.indexOf(":");
+        if (index > 0) {
+            prefix = qualifiedName.substring(0, index);
+        }
+        else {
+            // patch for namespaceURI not being passed through for attributes
+            if ( namespaceURI.length() == 0 ) {
+                namespace = getDefaultNamespace();
+            }
+        }
+        if ( namespace == null ) {
+            namespace = createNamespace( prefix, namespaceURI );
+        }
+        return pushQName( localName, qualifiedName, namespace, prefix );
+    }
+
     /** Adds a namepace to the stack with the given prefix and URI */
     public void push( String prefix, String uri ) {        
         if ( uri == null ) {
@@ -154,6 +187,7 @@ public class NamespaceStack {
             if ( prefix.equals( ns.getPrefix() ) ) {
                 namespaceStack.remove(i);
                 namespace = ns;
+                this.defaultNamespace = null;
                 break;
             }
         }
@@ -175,12 +209,22 @@ public class NamespaceStack {
         this.documentFactory = documentFactory;
     }
     
+    public Namespace getDefaultNamespace() {
+        if ( defaultNamespace == null ) {
+            defaultNamespace = findDefaultNamespace();
+        }
+        return defaultNamespace;
+    }
+    
     // Implementation methods
     //-------------------------------------------------------------------------    
     
     /** Adds the QName to the stack of available QNames
       */
     protected QName pushQName( String localName, String qualifiedName, Namespace namespace, String prefix ) {
+        if ( prefix == null || prefix.length() == 0 ) {
+            this.defaultNamespace = null;
+        }
         return createQName( localName, qualifiedName, namespace );
     }
 
@@ -196,6 +240,22 @@ public class NamespaceStack {
       */
     protected Namespace createNamespace( String prefix, String namespaceURI ) {
         return documentFactory.createNamespace( prefix, namespaceURI );
+    }
+    
+    /** Attempts to find the current default namespace on the stack right now or returns null if one 
+      * could not be found
+      */
+    protected Namespace findDefaultNamespace() {
+        for ( int i = namespaceStack.size() - 1; i >= 0; i-- ) {
+            Namespace namespace = (Namespace) namespaceStack.get(i);
+            if ( namespace != null ) {
+                String prefix = namespace.getPrefix();
+                if ( prefix == null || namespace.getPrefix().length() == 0 ) {
+                    return namespace;
+                }
+            }
+        }
+        return null;
     }
 }
 

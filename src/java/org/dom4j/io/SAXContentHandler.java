@@ -401,7 +401,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
                     String attributeLocalName = attributes.getLocalName(i);
                     String attributeValue = attributes.getValue(i);
 
-                    QName attributeQName = namespaceStack.getQName( 
+                    QName attributeQName = namespaceStack.getAttributeQName( 
                         attributeURI, attributeLocalName, attributeQualifiedName 
                     );
                     element.addAttribute(attributeQName, attributeValue);

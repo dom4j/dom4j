@@ -38,6 +38,9 @@
               the easy configuration of custom parser properties via SAXReader, such
               as being able to specify the location of schema or DTD resources.
             </p>
+            <p>Added new method OutputFormat.createCompactFormat() for those wishing
+              to output their XML in a compact format, such as in messaging systems.
+            </p>
           </section>
           <section title="Patches and bug fixes">
             <p>Fixed bug in getNamespaceForPrefix() where if the prefix is null or ""
@@ -67,6 +70,10 @@
             <p>Fixed bug that when round tripping into JAXP and back again, sometimes
               additional namespace attributes were appearing.
               Now the TestRoundTrip JUnit test case includes JAXP round tripping.
+            </p>
+            <p>Fixed bug that attributes without a namespace prefix which are inside
+              an element with a default namespace declaration of the form xmlns="theURI", 
+              the attribute now correctly inherits the namespace URI.
             </p>
           </section>
         </section>
