@@ -48,6 +48,8 @@ public class TestSerialize extends AbstractTestCase {
     // Test case(s)
     //-------------------------------------------------------------------------                    
     public void testSerialize() throws Exception {
+        String text = document.asXML();
+        
         ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( bytesOut );
         out.writeObject( document );
@@ -56,12 +58,16 @@ public class TestSerialize extends AbstractTestCase {
         byte[] data = bytesOut.toByteArray();
         
         ObjectInputStream in = new ObjectInputStream( new ByteArrayInputStream( data ) );
-        Object doc2 = in.readObject();
+        Document doc2 = (Document) in.readObject();
         in.close();
         
         assertTrue( "Read back document after serialization", doc2 != null && doc2 instanceof Document );
         
-        assertDocumentsEqual( document, (Document) doc2 );
+        String text2 = doc2.asXML();
+        
+        assertEquals( "Documents text are equal", text, text2 );
+        
+        assertDocumentsEqual( document, (Document) doc2 );        
     }            
     
     protected void setUp() throws Exception {
