@@ -51,11 +51,11 @@ public class BranchTreeNode extends LeafTreeNode {
             int index = -1;
             
             public boolean hasMoreElements() {
-                return index++ < getChildCount();
+                return index + 1 < getChildCount();
             }
             
             public Object nextElement() {
-                return getChildAt( index );
+                return getChildAt( ++index );
             }
         };
     }
