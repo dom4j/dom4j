@@ -440,7 +440,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     /** This method provides a more optimal way of setting all the attributes
      * on an Element particularly for use in {@link org.dom4j.io.SAXReader}.
       */
-    public void setAttributes(Attributes attributes, NamespaceStack namespaceStack) {
+    public void setAttributes(Attributes attributes, NamespaceStack namespaceStack, boolean noNamespaceAttributes) {
         // now lets add all attribute values
         int size = attributes.getLength();
         if ( size > 0 ) {
@@ -448,7 +448,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
             if ( size == 1 ) {
                 // allow lazy construction of the List of Attributes
                 String attributeQualifiedName = attributes.getQName(0);
-                if ( ! attributeQualifiedName.startsWith( "xmlns" ) ) {
+                if ( noNamespaceAttributes || ! attributeQualifiedName.startsWith( "xmlns" ) ) {
                     String attributeURI = attributes.getURI(0);
                     String attributeLocalName = attributes.getLocalName(0);
                     String attributeValue = attributes.getValue(0);
@@ -466,7 +466,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
                     // optimised to avoid the call to attribute(QName) to 
                     // lookup an attribute for a given QName
                     String attributeQualifiedName = attributes.getQName(i);
-                    if ( ! attributeQualifiedName.startsWith( "xmlns" ) ) {
+                    if ( noNamespaceAttributes || ! attributeQualifiedName.startsWith( "xmlns" ) ) {
                         String attributeURI = attributes.getURI(i);
                         String attributeLocalName = attributes.getLocalName(i);
                         String attributeValue = attributes.getValue(i);

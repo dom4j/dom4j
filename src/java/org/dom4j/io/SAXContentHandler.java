@@ -387,16 +387,20 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     /** Add all the attributes to the given elements
       */
     protected void addAttributes( Element element, Attributes attributes ) {
+        // XXXX: as an optimisation, we could deduce this value from the current
+        // SAX parser settings, the SAX namespaces-prefixes feature
+        
+        boolean noNamespaceAttributes = false;
         if ( element instanceof AbstractElement ) {
             // optimised method
             AbstractElement baseElement = (AbstractElement) element;
-            baseElement.setAttributes( attributes, namespaceStack );
+            baseElement.setAttributes( attributes, namespaceStack, noNamespaceAttributes );
         }
         else {
             int size = attributes.getLength();
             for ( int i = 0; i < size; i++ ) {
                 String attributeQualifiedName = attributes.getQName(i);
-                if ( ! attributeQualifiedName.startsWith( "xmlns" ) ) {
+                if ( noNamespaceAttributes || ! attributeQualifiedName.startsWith( "xmlns" ) ) {
                     String attributeURI = attributes.getURI(i);
                     String attributeLocalName = attributes.getLocalName(i);
                     String attributeValue = attributes.getValue(i);

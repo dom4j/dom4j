@@ -11,6 +11,7 @@ package org.dom4j.tree;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 import org.dom4j.DocumentFactory;
@@ -33,6 +34,16 @@ public class NamespaceStack {
     /** The Stack of namespaces */
     private ArrayList namespaceStack = new ArrayList();
 
+    /** The cache of qualifiedNames to QNames per namespace context */
+    private ArrayList namespaceCacheList = new ArrayList();
+
+    /** A cache of current namespace context cache of mapping from qualifiedName to QName */
+    private Map currentNamespaceCache;
+
+    /** A cache of mapping from qualifiedName to QName before any namespaces are declared */
+    private Map rootNamespaceCache = new HashMap();
+
+    
     /** Caches the default namespace defined via xmlns="" */
     private Namespace defaultNamespace;
     
@@ -52,6 +63,8 @@ public class NamespaceStack {
       */
     public void push(Namespace namespace) {
         namespaceStack.add( namespace );
+        namespaceCacheList.add( null );
+        currentNamespaceCache = null;
     }      
     
     /** Pops the most recently used <code>Namespace</code> from
@@ -60,9 +73,7 @@ public class NamespaceStack {
       * @return Namespace popped from the stack
       */
     public Namespace pop() {
-        Namespace namespace = (Namespace) namespaceStack.remove( namespaceStack.size() - 1 );
-        this.defaultNamespace = null;
-        return namespace;
+        return remove( namespaceStack.size() - 1 );
     }
     
     /** @return the number of namespaces on the stackce stack.
@@ -75,6 +86,9 @@ public class NamespaceStack {
       */
     public void clear() {
         namespaceStack.clear();
+        namespaceCacheList.clear();
+        rootNamespaceCache.clear();
+        currentNamespaceCache = null;
     }
     
     /** @return the namespace at the specified index on the stack 
@@ -122,7 +136,7 @@ public class NamespaceStack {
         }
         if ( namespaceURI == null ) {
             namespaceURI = "";
-        }
+        }        
         String prefix = "";
         int index = qualifiedName.indexOf(":");
         if (index > 0) {
@@ -133,11 +147,16 @@ public class NamespaceStack {
     }
 
     public QName getAttributeQName( String namespaceURI, String localName, String qualifiedName ) {
+        if ( qualifiedName == null ) {
+            qualifiedName = localName;
+        }
+        Map map = getNamespaceCache();
+        QName answer = (QName) map.get( qualifiedName );
+        if ( answer != null ) {
+            return answer;
+        }
         if ( localName == null ) {
             localName = qualifiedName;
-        }
-        else if ( qualifiedName == null ) {
-            qualifiedName = localName;
         }
         if ( namespaceURI == null ) {
             namespaceURI = "";
@@ -157,7 +176,9 @@ public class NamespaceStack {
         if ( namespace == null ) {
             namespace = createNamespace( prefix, namespaceURI );
         }
-        return pushQName( localName, qualifiedName, namespace, prefix );
+        answer = pushQName( localName, qualifiedName, namespace, prefix );
+        map.put( qualifiedName, answer );
+        return answer;
     }
 
     /** Adds a namepace to the stack with the given prefix and URI */
@@ -185,9 +206,8 @@ public class NamespaceStack {
         for (int i = namespaceStack.size() - 1; i >= 0; i-- ) {
             Namespace ns = (Namespace) namespaceStack.get(i);            
             if ( prefix.equals( ns.getPrefix() ) ) {
-                namespaceStack.remove(i);
+                remove(i);
                 namespace = ns;
-                this.defaultNamespace = null;
                 break;
             }
         }
@@ -256,6 +276,32 @@ public class NamespaceStack {
             }
         }
         return null;
+    }
+    
+    /** Removes the namespace at the given index of the stack */
+    protected Namespace remove(int index) {
+        Namespace namespace = (Namespace) namespaceStack.remove(index);
+        namespaceCacheList.remove(index);
+        defaultNamespace = null;
+        currentNamespaceCache = null;
+        return namespace;
+    }
+    
+    protected Map getNamespaceCache() {
+        if ( currentNamespaceCache == null ) {
+            int index = namespaceStack.size() - 1;
+            if ( index < 0 ) {
+                currentNamespaceCache = rootNamespaceCache;
+            }
+            else {
+                currentNamespaceCache = (Map) namespaceCacheList.get(index);
+                if ( currentNamespaceCache == null ) {
+                    currentNamespaceCache = new HashMap();
+                    namespaceCacheList.set(index, currentNamespaceCache);
+                }
+            }
+        }
+        return currentNamespaceCache;
     }
 }
 
