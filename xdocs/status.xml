@@ -10,6 +10,7 @@
 
       <section name="Changes in CVS since last release">
       	<p>Maven build of dom4j is now nearly complete. Maven is now used for the website generation.</p>
+        <p>Fixed some bugs in BackedList</p>
       </section>
       
       <section name="1.4 Release">

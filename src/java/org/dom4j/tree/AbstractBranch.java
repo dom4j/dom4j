@@ -332,6 +332,8 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     
     protected abstract void addNode(Node node);
     
+    protected abstract void addNode(int index, Node node);
+    
     protected abstract boolean removeNode(Node node);
     
     

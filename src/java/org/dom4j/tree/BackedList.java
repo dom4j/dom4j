@@ -68,15 +68,14 @@ public class BackedList extends ArrayList {
             realIndex = branchContent.indexOf( get(index) );
         }
         if ( realIndex < 0 ) {
-            realIndex = ( index == 0 ) ? 0 :Integer.MAX_VALUE;
+            realIndex = ( index == 0 ) ? 0 : Integer.MAX_VALUE;
         }
         if ( realIndex < size ) {
-            branchContent.add(realIndex, object);
+            branch.addNode(realIndex, asNode( object ) );
         }
         else {
-            branchContent.add(object);
+            branch.addNode( asNode( object ) );
         }
-        branch.childAdded( asNode( object ) );
         super.add(index, object);
     }
     
@@ -86,10 +85,12 @@ public class BackedList extends ArrayList {
             realIndex = ( index == 0 ) ? 0 : Integer.MAX_VALUE;
         }
         if ( realIndex < branchContent.size() ) {
-            branchContent.set(realIndex, object);
+            branch.removeNode( asNode( get(index) ) );
+            branch.addNode(realIndex, asNode( object ) );
         }
         else {
-            branchContent.add(object);
+            branch.removeNode( asNode( get(index) ) );
+            branch.addNode( asNode( object ) );
         }
         branch.childAdded( asNode( object ) );
         return super.set(index, object);

@@ -831,12 +831,20 @@ public abstract class AbstractElement
 
     }
 
+    /**
+     * @deprecated As of version 0.5. Please use 
+     *    {@link #addAttribute(String,String)} instead.
+     **/
     public void setAttributeValue(String name, String value) {
 
         addAttribute(name, value);
 
     }
 
+    /**
+     * @deprecated As of version 0.5. Please use 
+     *    {@link #addAttribute(String,String)} instead.
+     **/
     public void setAttributeValue(QName qName, String value) {
 
         addAttribute(qName, value);
@@ -2094,12 +2102,39 @@ public abstract class AbstractElement
         addNewNode(node);
 
     }
+    
+    protected void addNode(int index, Node node) {
+        
+        if (node.getParent() != null) {
+
+            // XXX: could clone here
+
+            String message =
+                "The Node already has an existing parent of \""
+                    + node.getParent().getQualifiedName()
+                    + "\"";
+
+            throw new IllegalAddException(this, node, message);
+
+        }
+
+        addNewNode(index, node);
+
+    }
 
     /** Like addNode() but does not require a parent check */
 
     protected void addNewNode(Node node) {
 
         contentList().add(node);
+
+        childAdded(node);
+
+    }
+
+    protected void addNewNode(int index, Node node) {
+
+        contentList().add(index, node);
 
         childAdded(node);
 
