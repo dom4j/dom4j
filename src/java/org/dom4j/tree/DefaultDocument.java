@@ -35,9 +35,6 @@ public class DefaultDocument extends AbstractDocument {
 
     protected static final Iterator EMPTY_ITERATOR = EMPTY_LIST.iterator();
 
-    /** The encoding of this document as stated in the XML declaration */
-    private String encoding;
-
     /** The name of the document */
     private String name;
 
@@ -115,14 +112,6 @@ public class DefaultDocument extends AbstractDocument {
 
     public String getXMLEncoding() {
         return encoding;
-    }
-
-    public void setXMLEncoding(String enc) {
-        this.encoding = enc;
-
-        if (encoding != null) {
-            outputFormat.setEncoding(encoding);
-        }
     }
 
     public EntityResolver getEntityResolver() {

@@ -20,7 +20,6 @@ import org.dom4j.Namespace;
 import org.dom4j.Node;
 import org.dom4j.ProcessingInstruction;
 import org.dom4j.QName;
-import org.dom4j.io.OutputFormat;
 
 /**
  * <p>
@@ -32,9 +31,6 @@ import org.dom4j.io.OutputFormat;
  * @version $Revision$
  */
 public abstract class AbstractBranch extends AbstractNode implements Branch {
-    /** The output format used by default */
-    protected static OutputFormat outputFormat = new OutputFormat();
-
     protected static final int DEFAULT_CONTENT_LIST_SIZE = 5;
 
     public AbstractBranch() {

@@ -180,7 +180,9 @@ public class OutputFormat implements Cloneable {
      *            encoding format
      */
     public void setEncoding(String encoding) {
-        this.encoding = encoding;
+        if (encoding != null) {
+            this.encoding = encoding;
+        }
     }
 
     public boolean isOmitEncoding() {

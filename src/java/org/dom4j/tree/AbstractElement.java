@@ -31,6 +31,7 @@ import org.dom4j.ProcessingInstruction;
 import org.dom4j.QName;
 import org.dom4j.Text;
 import org.dom4j.Visitor;
+import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 
 import org.xml.sax.Attributes;
@@ -164,10 +165,10 @@ public abstract class AbstractElement extends AbstractBranch implements
     public String asXML() {
         try {
             StringWriter out = new StringWriter();
-
-            XMLWriter writer = new XMLWriter(out, outputFormat);
+            XMLWriter writer = new XMLWriter(out, new OutputFormat());
 
             writer.write(this);
+            writer.flush();
 
             return out.toString();
         } catch (IOException e) {
@@ -177,8 +178,7 @@ public abstract class AbstractElement extends AbstractBranch implements
     }
 
     public void write(Writer out) throws IOException {
-        XMLWriter writer = new XMLWriter(out, outputFormat);
-
+        XMLWriter writer = new XMLWriter(out, new OutputFormat());
         writer.write(this);
     }
 

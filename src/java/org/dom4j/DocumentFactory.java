@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.dom4j.rule.Pattern;
+import org.dom4j.tree.AbstractDocument;
 import org.dom4j.tree.DefaultAttribute;
 import org.dom4j.tree.DefaultCDATA;
 import org.dom4j.tree.DefaultComment;
@@ -120,8 +121,8 @@ public class DocumentFactory implements Serializable {
         // createDocument() method.
         Document answer = createDocument();
 
-        if (answer instanceof DefaultDocument) {
-            ((DefaultDocument) answer).setXMLEncoding(encoding);
+        if (answer instanceof AbstractDocument) {
+            ((AbstractDocument) answer).setXMLEncoding(encoding);
         }
 
         return answer;

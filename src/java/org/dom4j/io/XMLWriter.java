@@ -738,7 +738,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
              * would cause unwanted spaces to be added in between these chunks
              * of character arrays.
              */
-            String string = new String(ch, start, length);
+            String string = String.valueOf(ch, start, length);
 
             if (escapeText) {
                 string = escapeElementEntities(string);
@@ -746,9 +746,9 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
             if (format.isTrimText()) {
                 if ((lastOutputNodeType == Node.TEXT_NODE) && !charsAdded) {
-                    writer.write(" ");
+                    writer.write(' ');
                 } else if (charsAdded && Character.isWhitespace(lastChar)) {
-                    writer.write(lastChar);
+                    writer.write(' ');
                 } else if (lastOutputNodeType == Node.ELEMENT_NODE
                         && format.isPadText() && lastElementClosed
                         && Character.isWhitespace(ch[0])) {
@@ -1202,7 +1202,8 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
      * 
      * @throws IOException
      */
-    protected void writeNamespace(String prefix, String uri) throws IOException {
+    protected void writeNamespace(String prefix, String uri) 
+            throws IOException {
         if ((prefix != null) && (prefix.length() > 0)) {
             writer.write(" xmlns:");
             writer.write(prefix);

@@ -7,8 +7,8 @@
 
 package org.dom4j.tree;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
@@ -24,6 +24,7 @@ import org.dom4j.ProcessingInstruction;
 import org.dom4j.QName;
 import org.dom4j.Text;
 import org.dom4j.Visitor;
+import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 
 /**
@@ -37,6 +38,10 @@ import org.dom4j.io.XMLWriter;
  */
 public abstract class AbstractDocument extends AbstractBranch implements
         Document {
+
+    /** The encoding of this document as stated in the XML declaration */
+    protected String encoding;
+
     public AbstractDocument() {
     }
 
@@ -67,12 +72,16 @@ public abstract class AbstractDocument extends AbstractBranch implements
     }
 
     public String asXML() {
+        OutputFormat format = new OutputFormat();
+        format.setEncoding(encoding);
+        
         try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            XMLWriter writer = new XMLWriter(out, outputFormat);
+            StringWriter out = new StringWriter();
+            XMLWriter writer = new XMLWriter(out, format);
             writer.write(this);
+            writer.flush();
 
-            return out.toString(outputFormat.getEncoding());
+            return out.toString();
         } catch (IOException e) {
             throw new RuntimeException("IOException while generating textual "
                     + "representation: " + e.getMessage());
@@ -80,7 +89,10 @@ public abstract class AbstractDocument extends AbstractBranch implements
     }
 
     public void write(Writer out) throws IOException {
-        XMLWriter writer = new XMLWriter(out, outputFormat);
+        OutputFormat format = new OutputFormat();
+        format.setEncoding(encoding);
+        
+        XMLWriter writer = new XMLWriter(out, format);
         writer.write(this);
     }
 
@@ -240,6 +252,10 @@ public abstract class AbstractDocument extends AbstractBranch implements
      *            DOCUMENT ME!
      */
     protected abstract void rootElementAdded(Element rootElement);
+
+    public void setXMLEncoding(String enc) {
+        this.encoding = enc;
+    }
 }
 
 /*
