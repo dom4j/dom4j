@@ -8,13 +8,19 @@
 
 package org.dom4j.io;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.StringWriter;
 import java.net.URL;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.XMLWriter;
 
 /** A test harness to test the content API in DOM4J
   *
@@ -45,6 +51,44 @@ public class TestSAXReader extends TestCase {
             URL location = TestSAXReader.class.getResource("/#.xml");
             File file = new File(location.getPath() + "/#.xml");
             new SAXReader().read(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+    }
+    
+    public void testRussian() {
+        try {
+            File file = new File( "d:/russArticle.xml" ); 
+            SAXReader xmlReader = new SAXReader(); 
+            Document doc = xmlReader.read( file ); 
+            Element el = doc.getRootElement();
+            
+            StringWriter writer = new StringWriter();
+            XMLWriter xmlWriter = new XMLWriter(writer);
+            OutputFormat format = OutputFormat.createPrettyPrint();
+            format.setEncoding("koi8-r");
+            xmlWriter.write(doc);
+            //System.out.println(writer.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+    }
+    
+    public void testRussian2() {
+        try {
+            File file = new File( "d:/russArticle.xml" );
+            SAXReader xmlReader = new SAXReader();
+            Document doc = xmlReader.read( file );
+            XMLWriter xmlWriter = new XMLWriter( new OutputFormat ( "", false, "koi8-r" ) );
+            xmlWriter.setOutputStream( new FileOutputStream( new File ( "d:/russArticle2.xml" ) ) );
+//            ByteArrayOutputStream out = new ByteArrayOutputStream();
+//            xmlWriter.setOutputStream(out);
+            xmlWriter.write( doc );
+            xmlWriter.flush();
+            xmlWriter.close();
+//            System.out.println(out.toString());
         } catch (Exception e) {
             e.printStackTrace();
             fail(e.getMessage());

@@ -19,6 +19,7 @@ import org.dom4j.AbstractTestCase;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.dom4j.Namespace;
 import org.dom4j.QName;
 import org.dom4j.io.SAXReader;
 
@@ -31,7 +32,6 @@ import org.dom4j.io.SAXReader;
 public class TestSetData extends AbstractTestCase {
 
     private DatatypeDocumentFactory factory = new DatatypeDocumentFactory();
-    
     
     public static void main( String[] args ) {
         TestRunner.run( suite() );
@@ -95,6 +95,45 @@ public class TestSetData extends AbstractTestCase {
         }
         catch (IllegalArgumentException e) {
         }
+    }
+    
+    public void testAttributeWithNamespace() throws Exception {        
+/*        
+        QName personName = QName.get( "person", "" );
+        QName ageName = QName.get( "age", "" );
+*/
+        QName personName = factory.createQName( "person" , "t", "urn://testing");
+        QName ageName = factory.createQName( "age", "t", "urn://testing" );
+        
+        Element person = factory.createElement( personName );
+        
+        person.addAttribute( ageName, "10" );
+        Attribute age = person.attribute( ageName );
+        
+        assertTrue( "Created DatatypeAttribute", age instanceof DatatypeAttribute );
+        
+        log( "Found attribute: " + age );
+        
+
+        Object data = age.getData();
+        Object expected = new BigInteger( "10" );
+        
+        assertEquals( "Data is correct type", BigInteger.class, data.getClass() );
+        
+        assertEquals( "Set age correctly", expected, data );
+        
+        age.setValue( "32" );
+        data = age.getData();
+        expected = new BigInteger( "32" );
+        
+        assertEquals( "Set age correctly", expected, data );
+
+        try {
+            age.setValue( "abc" );
+            fail( "Appeared to set an invalid value" );
+        }
+        catch (IllegalArgumentException e) {
+        }
     }    
     
     public void testElement() throws Exception {        
@@ -142,8 +181,10 @@ public class TestSetData extends AbstractTestCase {
     //-------------------------------------------------------------------------                    
     protected void setUp() throws Exception {
         SAXReader reader = new SAXReader();
-        Document schema = reader.read( "xml/test/schema/personal.xsd" );
+        Document schema = reader.read( "d:/projects/dom4j/xml/test/schema/personal.xsd" );
         factory.loadSchema( schema );
+        Namespace ns = new Namespace( "t", "urn://testing" );
+        factory.loadSchema( schema, ns );
     }
 }
 
