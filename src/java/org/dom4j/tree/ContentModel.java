@@ -23,6 +23,10 @@ import org.dom4j.Text;
   */
 public interface ContentModel {
 
+    public Namespace getNamespaceForPrefix(String prefix);
+    
+    public Namespace getNamespaceForURI(String uri);
+    
     /** <p>Returns any additional namespaces declarations for this element 
       * other than namespace returned via the {@link Element#getNamespace()} method. 
       * If no additional namespace declarations are present for this

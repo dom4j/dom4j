@@ -81,5 +81,5 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
     public String toString() {
         return super.toString() + " [Document: name " + getName() + "]";
     }
-    
+       
 }

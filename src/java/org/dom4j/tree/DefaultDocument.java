@@ -88,6 +88,7 @@ public class DefaultDocument extends AbstractDocument {
             );
         }
         super.add(element);
+        this.rootElement = element;
         element.setDocument(this);
     }
     

@@ -27,7 +27,7 @@ public interface Element extends Branch {
     public boolean isRootElement();
 
     /** <p>Returns the <code>Namespace</code> of this element if one exists 
-      * otherwise null is returned returned.</p>
+      * otherwise <code>Namespace.NO_NAMESPACE</code> is returned.</p>
       *
       * @return the <code>Namespace</code> associated with this node
       */
@@ -43,7 +43,22 @@ public interface Element extends Branch {
     public void setNamespace(Namespace namespace);
     
     
-    /** <p>Returns any additional namespaces declarations for this element 
+ 
+    /** <p>Returns the <code>Namespace</code> which is mapped to the given
+      * prefix or null if it could not be found.</p>
+      *
+      * @return the <code>Namespace</code> associated with the given prefix
+      */
+    public Namespace getNamespaceForPrefix(String prefix);
+
+    /** <p>Returns the <code>Namespace</code> which is mapped to the given
+      * URI or null if it could not be found.</p>
+      *
+      * @return the <code>Namespace</code> associated with the given URI
+      */
+    public Namespace getNamespaceForURI(String uri);
+    
+   /** <p>Returns any additional namespaces declarations for this element 
       * other than namespace returned via the {@link #getNamespace()} method. 
       * If no additional namespace declarations are present for this
       * element then {@link Collections.EMPTY_LIST} will be returned.
@@ -234,6 +249,5 @@ public interface Element extends Branch {
 
     public Entity createEntity(String name);
     public Entity createEntity(String name, String text);
-    public Namespace createNamespace(String prefix, String uri);
     
 }

@@ -53,7 +53,9 @@ public interface Branch extends Node {
     
     public Comment createComment(String text);
     public Element createElement(String name);
+    public Element createElement(String name, String prefix, String uri);
     public Element createElement(String name, Namespace namespace);
+    public Namespace createNamespace(String prefix, String uri);
     public ProcessingInstruction createProcessingInstruction(String target, String data);
     public ProcessingInstruction createProcessingInstruction(String target, Map data);
     

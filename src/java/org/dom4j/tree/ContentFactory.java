@@ -31,6 +31,7 @@ public interface ContentFactory {
 
     // elements
     public Element createElement(String name);
+    public Element createElement(String name, String prefix, String uri);
     public Element createElement(String name, Namespace namespace);
     
     

@@ -17,6 +17,8 @@ public class SAXDemo extends AbstractDemo {
     protected static final String DEFAULT_XMLREADER_CLASSNAME = "xml.aelfred2.SAXDriver";
     //protected static final String DEFAULT_XMLREADER_CLASSNAME = "org.apache.xerces.parsers.SAXParser";
     
+    protected String xmlReaderClassName = DEFAULT_XMLREADER_CLASSNAME;
+    
     public SAXDemo() {
     }
     
@@ -27,13 +29,13 @@ public class SAXDemo extends AbstractDemo {
         }
 
         String xmlFile = args[0];
-        String xmlReaderClassName = (args.length > 1) 
+        xmlReaderClassName = (args.length > 1) 
             ? args[1] : DEFAULT_XMLREADER_CLASSNAME;
 
-        parse( xmlFile, xmlReaderClassName );
+        parse( xmlFile );
     }
     
-    protected void parse( String xmlFile, String xmlReaderClassName ) throws Exception {
+    protected void parse( String xmlFile ) throws Exception {
         URL url = null;
         try {
             url = new URL( xmlFile );
@@ -50,10 +52,10 @@ public class SAXDemo extends AbstractDemo {
                 return;
             }
         }
-        parse( url, xmlReaderClassName );
+        parse( url );
     }
     
-    protected void parse( URL url, String xmlReaderClassName ) throws Exception {
+    protected void parse( URL url ) throws Exception {
         SAXReader reader = new SAXReader( xmlReaderClassName );
         Document document = reader.read(url);
         process(document);

@@ -34,10 +34,10 @@ public class XPathDemo extends SAXDemo {
 
         String xmlFile = args[0];
         xpath = args[1];
-        String xmlReaderClassName = (args.length > 2) 
+        xmlReaderClassName = (args.length > 2) 
             ? args[2] : DEFAULT_XMLREADER_CLASSNAME;
         
-        parse( xmlFile, xmlReaderClassName );
+        parse( xmlFile );
     }
     
     protected void process(Document document) throws Exception {

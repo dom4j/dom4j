@@ -156,8 +156,16 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
         return getContentFactory().createElement(name);
     }
     
+    public Element createElement(String name, String prefix, String uri) {
+        return getContentFactory().createElement(name, prefix, uri);
+    }
+    
     public Element createElement(String name, Namespace namespace) {
         return getContentFactory().createElement(name, namespace);
+    }
+    
+    public Namespace createNamespace(String prefix, String uri) {
+        return getContentFactory().createNamespace(prefix, uri);
     }
     
     

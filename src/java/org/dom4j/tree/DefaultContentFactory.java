@@ -57,6 +57,10 @@ public class DefaultContentFactory implements ContentFactory {
         return new DefaultElement(name);
     }
     
+    public Element createElement(String name, String prefix, String uri) {
+        return createElement(name, createNamespace(prefix, uri));
+    }
+    
     public Element createElement(String name, Namespace namespace) {
         return new DefaultElement(name, namespace);
     }

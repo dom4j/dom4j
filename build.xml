@@ -351,6 +351,17 @@
   </target>
 
 
+  <target name="demo-compile" depends="samples">
+    <mkdir dir="${build.dir}/xml"/>
+    <java classname="Compile" args="xml/much_ado.xml ${build.dir}/xml/much_ado.xb"/>
+  </target>
+
+  <target name="demo-decompile" depends="samples">
+    <mkdir dir="${build.dir}/xml"/>
+    <java classname="Decompile" args="${build.dir}/xml/much_ado.xb ${build.dir}/xml/much_ado.xml"/>
+  </target>
+
+
   <target name="demo-all" depends="demo-sax,demo-visitor,demo-count,demo-xpath,demo-html"/>
 
   <!-- copies current dom4j build to the current werken.xpath checkout -->

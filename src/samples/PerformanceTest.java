@@ -41,7 +41,7 @@ public class PerformanceTest extends SAXDemo {
         }
 
         String xmlFile = args[0];
-        String xmlReaderClassName = (args.length > 1) 
+        xmlReaderClassName = (args.length > 1) 
             ? args[1] : DEFAULT_XMLREADER_CLASSNAME;
         
         loopCount = DEFAULT_LOOP_COUNT;
@@ -49,7 +49,7 @@ public class PerformanceTest extends SAXDemo {
             loopCount = Integer.parseInt(args[2]);
         }        
 
-        parse( xmlFile, xmlReaderClassName );
+        parse( xmlFile );
     }
     
     /** Parses the XML document at the given <code>URL</code> 
