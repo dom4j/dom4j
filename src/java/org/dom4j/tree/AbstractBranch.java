@@ -166,12 +166,6 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
         return node;
     }
     
-    public Element addElement(QName qname, Attributes attributes) {
-        Element node = getDocumentFactory().createElement( qname, attributes );
-        add( node );
-        return node;
-    }
-    
     public Element addElement(String name, String prefix, String uri) {
         Namespace namespace = Namespace.get( prefix, uri );
         QName qName = getDocumentFactory().createQName( name, namespace );

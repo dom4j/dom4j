@@ -92,17 +92,7 @@ public class SchemaElementFactory extends DocumentFactory {
             return new SchemaElement(qname, dataType);
         }
     }
-    
-    public Element createElement(QName qname, Attributes attributes) {
-        DataType dataType = getChildElementDataType( qname );
-        if ( dataType == null ) {
-            return super.createElement( qname, attributes );
-        }
-        else {
-            return new SchemaElement(qname, attributes, dataType);
-        }
-    }
-    
+
     public Attribute createAttribute(Element owner, QName qname, String value) {
         DataType dataType = getAttributeDataType(qname);
         if ( dataType == null ) {
@@ -112,9 +102,6 @@ public class SchemaElementFactory extends DocumentFactory {
             return new SchemaAttribute( qname, dataType, value );
         }
     }
-    
-    
-    
 }
 
 

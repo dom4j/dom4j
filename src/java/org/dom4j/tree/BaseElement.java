@@ -35,8 +35,6 @@ import org.dom4j.QName;
 import org.dom4j.ProcessingInstruction;
 import org.dom4j.Text;
 
-import org.xml.sax.Attributes;
-
 /** <p><code>BaseElement</code> is a useful base class for implemementation
   * inheritence of an XML element.</p>
   *
@@ -68,10 +66,6 @@ public class BaseElement extends AbstractElement {
     }
 
     public BaseElement(QName qname) { 
-        this.qname = qname;
-    }
-
-    public BaseElement(QName qname, Attributes attributes) { 
         this.qname = qname;
     }
 
@@ -148,6 +142,13 @@ public class BaseElement extends AbstractElement {
     protected List attributeList() {
         if ( attributes == null ) {
             attributes = createAttributeList();
+        }
+        return attributes;
+    }
+    
+    protected List attributeList(int size) {
+        if ( attributes == null ) {
+            attributes = createAttributeList(size);
         }
         return attributes;
     }

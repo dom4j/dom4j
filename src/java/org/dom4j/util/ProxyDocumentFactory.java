@@ -71,11 +71,7 @@ public abstract class ProxyDocumentFactory {
     public Element createElement(QName qname) {
         return proxy.createElement(qname);
     }
-    
-    public Element createElement(QName qname, Attributes attributes) {
-        return proxy.createElement(qname, attributes);
-    }
-    
+
     public Element createElement(String name) {
         return proxy.createElement(name);
     }

@@ -31,6 +31,9 @@ import org.dom4j.QName;
 import org.dom4j.ProcessingInstruction;
 import org.dom4j.DocumentException;
 
+import org.dom4j.tree.AbstractElement;
+import org.dom4j.tree.NamespaceStack;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
@@ -171,27 +174,17 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
             namespaceURI, localName, qualifiedName 
         );
         
-        Element element = createElement(qName, attributes);
+        Element element = peekBranch().addElement(qName);
 
         // add all declared namespaces
         addDeclaredNamespaces(element);
 
         // now lets add all attribute values
-        int size = attributes.getLength();
-        for ( int i = 0; i < size; i++ ) {
-            String attributeURI = attributes.getURI(i);
-            String attributeLocalName = attributes.getLocalName(i);
-            String attributeQualifiedName = attributes.getQName(i);
-            String attributeValue = attributes.getValue(i);
-            
-            QName attributeQName = namespaceStack.getQName( 
-                attributeURI, attributeLocalName, attributeQualifiedName 
-            );
-            element.addAttribute(attributeQName, attributeValue);
-        }
-
+        addAttributes( element, attributes );
+        
         elementStack.pushElement(element);
-        if ( element != null && elementHandler != null ) {
+        
+        if ( elementHandler != null ) {
             elementHandler.onStart(elementStack);   
         }
     }
@@ -367,10 +360,31 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
         }
     }
 
+    /** Add all the attributes to the given elements
+      */
+    protected void addAttributes( Element element, Attributes attributes ) {
+        if ( element instanceof AbstractElement ) {
+            // optimised method
+            AbstractElement baseElement = (AbstractElement) element;
+            baseElement.setAttributes( attributes, namespaceStack );
+        }
+        else {
+            int size = attributes.getLength();
+            for ( int i = 0; i < size; i++ ) {
+                String attributeURI = attributes.getURI(i);
+                String attributeLocalName = attributes.getLocalName(i);
+                String attributeQualifiedName = attributes.getQName(i);
+                String attributeValue = attributes.getValue(i);
 
-    protected Element createElement(QName qName, Attributes attributes) {
-        return peekBranch().addElement(qName, attributes);
+                QName attributeQName = namespaceStack.getQName( 
+                    attributeURI, attributeLocalName, attributeQualifiedName 
+                );
+                element.addAttribute(attributeQName, attributeValue);
+            }
+        }
     }
+
+
     
     protected ElementStack createElementStack() {
         return new ElementStack();

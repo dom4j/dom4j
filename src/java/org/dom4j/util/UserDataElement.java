@@ -60,11 +60,7 @@ public class UserDataElement extends DefaultElement {
     public UserDataElement(QName qname) { 
         super(qname);
     }
-
-    public UserDataElement(QName qname, Attributes attributes) { 
-        super(qname, attributes);
-    }
-    
+        
     public Object getData() {
         return data;
     }

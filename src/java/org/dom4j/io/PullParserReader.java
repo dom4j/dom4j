@@ -278,7 +278,8 @@ public class PullParserReader {
     protected Element addElement( Branch branch, StartTag startTag ) {
         QName qname = getQName( startTag.getQName(), startTag.getUri() );
         int attributeCount = startTag.getLength();
-        Element element = factory.createElement( qname, attributeCount );
+        //Element element = factory.createElement( qname, attributeCount );
+        Element element = factory.createElement( qname );
         for ( int i = 0; i < attributeCount; i++ ) {
             String name = startTag.getRawName(i);
             String uri = startTag.getURI(i);

@@ -35,8 +35,6 @@ import org.dom4j.QName;
 import org.dom4j.ProcessingInstruction;
 import org.dom4j.Text;
 
-import org.xml.sax.Attributes;
-
 /** <p><code>DefaultElement</code> is the default DOM4J default implementation
   * of an XML element.</p>
   *
@@ -71,14 +69,6 @@ public class DefaultElement extends AbstractElement {
 
     public DefaultElement(QName qname) { 
         this.qname = qname;
-    }
-
-    public DefaultElement(QName qname, Attributes attributes) { 
-        this.qname = qname;
-        int size = attributes.getLength();
-        if ( size > 1 ) {
-            this.attributes = new ArrayList( size );
-        }
     }
 
     public DefaultElement(QName qname, int attributeCount) { 
@@ -908,6 +898,23 @@ public class DefaultElement extends AbstractElement {
         }
         else {
             List list = createAttributeList();
+            attributes = list;
+            return list;
+        }
+    }
+    
+    protected List attributeList(int size) {
+        if ( attributes instanceof List ) {
+            return (List) attributes;
+        }
+        else if ( attributes != null ) {
+            List list = createAttributeList(size);
+            list.add( attributes );
+            attributes = list;
+            return list;
+        }
+        else {
+            List list = createAttributeList(size);
             attributes = list;
             return list;
         }

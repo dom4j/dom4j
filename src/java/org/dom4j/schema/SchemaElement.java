@@ -41,8 +41,8 @@ public class SchemaElement extends DefaultElement implements ValidationContextPr
         this.dataType = dataType;
     }
 
-    public SchemaElement(QName qname, Attributes attributes, DataType dataType) { 
-        super(qname, attributes);
+    public SchemaElement(QName qname, int attributeCount, DataType dataType) { 
+        super(qname, attributeCount);
         this.dataType = dataType;
     }
 

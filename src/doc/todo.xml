@@ -4,6 +4,21 @@
     <title>Status</title>
     
     <section title="Change History">
+        <section title="Patches in CVS since release">
+          <section title="Patches and bug fixes">
+            <p>Applied a fix to the problem found by Dane Foster when using dom4j with JTidy.
+              JTidy returns null for getLocalName() so DOMReader has been patched to handle
+              nulls returned from either getLocalName() or getName().
+            </p>
+            <p>Tidied factory and construction of Element code such that there are no longer
+            dependencies on the SAX Attributes class. This was originally added as a performance
+            enhancement, but after further refactoring this is now no longer needed.
+            This makes the process of creating new Element derivations or DocumentFactory
+            implementations easier.
+            </p>
+          </section>
+        </section>
+
         <section title="0.5 release">
           <section title="NodeComparator available">
             <p>For those wishing to do value based comparisons of Nodes, 

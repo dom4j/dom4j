@@ -22,8 +22,6 @@ import org.dom4j.Namespace;
 import org.dom4j.QName;
 import org.dom4j.io.SAXReader;
 
-import org.xml.sax.Attributes;
-
 /** <p><code>UserDataDocumentFactory</code> is a factory of XML objects which 
   * support the adornment of a user data object on an Element or Attribute
   * instance such that the methods <code>getData()</code> and 
@@ -55,11 +53,7 @@ public class UserDataDocumentFactory extends DocumentFactory {
     public Element createElement(QName qname) {
         return new UserDataElement(qname);
     }
-    
-    public Element createElement(QName qname, Attributes attributes) {
-        return new UserDataElement(qname, attributes);
-    }
-    
+
     public Attribute createAttribute(QName qname, String value) {
         return new UserDataAttribute(qname, value);
     }    

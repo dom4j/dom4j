@@ -16,8 +16,6 @@ import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
 
-import org.xml.sax.Attributes;
-
 /** <p><code>NonLazyDocumentFactory</code> is a factory of XML objects which 
   * avoid using the lazy creation pattern. This results in a slower
   * creation of a Document and uses more memory but it means that the
@@ -47,10 +45,6 @@ public class NonLazyDocumentFactory extends DocumentFactory {
     
     public Element createElement(QName qname) {
         return new NonLazyElement(qname);
-    }
-    
-    public Element createElement(QName qname, Attributes attributes) {
-        return new NonLazyElement(qname, attributes);
     }
 }
 

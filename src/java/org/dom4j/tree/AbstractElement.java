@@ -38,6 +38,8 @@ import org.dom4j.Text;
 import org.dom4j.Visitor;
 import org.dom4j.io.XMLWriter;
 
+import org.xml.sax.Attributes;
+
 /** <p><code>AbstractElement</code> is an abstract base class for 
   * tree implementors to use for implementation inheritence.</p>
   *
@@ -400,6 +402,49 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         return attribute( getDocumentFactory().createQName( name, namespace ) );
     }
 
+    /** This method provides a more optimal way of setting all the attributes
+     * on an Element particularly for use in {@link org.dom4j.io.SAXReader}.
+      */
+    public void setAttributes(Attributes attributes, NamespaceStack namespaceStack) {
+        // now lets add all attribute values
+        int size = attributes.getLength();
+        if ( size > 0 ) {
+            if ( size == 1 ) {
+                // allow lazy construction of the List of Attributes
+                String attributeURI = attributes.getURI(0);
+                String attributeLocalName = attributes.getLocalName(0);
+                String attributeQualifiedName = attributes.getQName(0);
+                String attributeValue = attributes.getValue(0);
+
+                QName attributeQName = namespaceStack.getQName( 
+                    attributeURI, attributeLocalName, attributeQualifiedName 
+                );
+                addAttribute(attributeQName, attributeValue);
+            }
+            else {
+                List list = attributeList(size);
+                list.clear();
+                for ( int i = 0; i < size; i++ ) {
+                    // optimised to avoid the call to attribute(QName) to 
+                    // lookup an attribute for a given QName
+                    String attributeURI = attributes.getURI(i);
+                    String attributeLocalName = attributes.getLocalName(i);
+                    String attributeQualifiedName = attributes.getQName(i);
+                    String attributeValue = attributes.getValue(i);
+
+                    QName attributeQName = namespaceStack.getQName( 
+                        attributeURI, attributeLocalName, attributeQualifiedName 
+                    );
+                    Attribute attribute = getDocumentFactory().createAttribute(
+                        this, attributeQName, attributeValue
+                    );
+                    list.add(attribute);
+                    childAdded(attribute);
+                }
+            }
+        }
+    }
+    
     public String attributeValue(String name) {
         Attribute attrib = attribute(name);
         if (attrib == null) {
@@ -1081,9 +1126,15 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         }
     }
 
-    /** @return the internal List used to store attributes
+    /** @return the internal List used to store attributes or
+      * creates one if one is not available
       */
     protected abstract List attributeList();
+    
+    /** @return the internal List used to store attributes or
+      * creates one with the specified size if one is not available
+      */
+    protected abstract List attributeList(int attributeCount);
     
     protected DocumentFactory getDocumentFactory() {
         QName qName = getQName();
@@ -1108,7 +1159,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
       * a List implementation used to store attributes
       */
     protected List createAttributeList() {
-        return new ArrayList( DEFAULT_CONTENT_LIST_SIZE );
+        return createAttributeList( DEFAULT_CONTENT_LIST_SIZE );
     }
     
     /** A Factory Method pattern which creates 

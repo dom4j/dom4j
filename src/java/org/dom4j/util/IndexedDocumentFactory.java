@@ -18,8 +18,6 @@ import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
 
-import org.xml.sax.Attributes;
-
 /** <p><code>IndexedDocumentFactory</code> is a factory of XML objects which 
   * create indexed Element implementations to allow quicker lookup via name
   * of Element and Attributes though at the expense of more memory used
@@ -49,9 +47,9 @@ public class IndexedDocumentFactory extends DocumentFactory {
     public Element createElement(QName qname) {
         return new IndexedElement(qname);
     }
-    
-    public Element createElement(QName qname, Attributes attributes) {
-        return new IndexedElement(qname, attributes);
+
+    public Element createElement(QName qname, int attributeCount) {
+        return new IndexedElement(qname, attributeCount);
     }
 }
 

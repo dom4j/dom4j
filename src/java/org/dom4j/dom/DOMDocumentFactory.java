@@ -24,8 +24,6 @@ import org.dom4j.ProcessingInstruction;
 import org.dom4j.QName;
 import org.dom4j.Text;
 
-import org.xml.sax.Attributes;
-
 /** <p><code>DOMDocumentFactory</code> is a factory of DOM4J objects
   * which implement the W3C DOM API.</p>
   *
@@ -61,9 +59,9 @@ public class DOMDocumentFactory extends DocumentFactory implements org.w3c.dom.D
     public Element createElement(QName qname) {
         return new DOMElement(qname);
     }
-    
-    public Element createElement(QName qname, Attributes attributes) {
-        return new DOMElement(qname, attributes);
+
+    public Element createElement(QName qname, int attributeCount) {
+        return new DOMElement(qname, attributeCount);
     }
     
     public Attribute createAttribute(Element owner, QName qname, String value) {

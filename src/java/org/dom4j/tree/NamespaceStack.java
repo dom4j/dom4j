@@ -7,7 +7,7 @@
  * $Id$
  */
 
-package org.dom4j.io;
+package org.dom4j.tree;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,13 +19,13 @@ import org.dom4j.QName;
 
 /** NamespaceStack implements a stack of namespaces and optionally
   * maintains a cache of all the fully qualified names (<code>QName</code>)
-  * which are in scope. This is useful when building or navigating a DOM4J 
+  * which are in scope. This is useful when building or navigating a <i>dom4j</i>
   * document.
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-class NamespaceStack {
+public class NamespaceStack {
  
     /** The factory used to create new <code>Namespace</code> instances */
     private DocumentFactory documentFactory;

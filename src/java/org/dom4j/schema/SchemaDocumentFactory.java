@@ -22,7 +22,6 @@ import org.dom4j.Namespace;
 import org.dom4j.QName;
 import org.dom4j.io.SAXReader;
 
-import org.xml.sax.Attributes;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
@@ -46,6 +45,9 @@ public class SchemaDocumentFactory extends DocumentFactory {
     
     private static final Namespace XSI_NAMESPACE
         = Namespace.get( "xsi", "http://www.w3.org/2001/XMLSchema-instance" );
+    
+    private static final QName XSI_SCHEMA_LOCATION
+        = QName.get( "schemaLocation", XSI_NAMESPACE );
     
     private static final QName XSI_NO_SCHEMA_LOCATION
         = QName.get( "noNamespaceSchemaLocation", XSI_NAMESPACE );
@@ -100,10 +102,6 @@ public class SchemaDocumentFactory extends DocumentFactory {
         
     // DocumentFactory methods
     //-------------------------------------------------------------------------
-    
-    public Element createElement(QName qname, Attributes attributes) {
-        return super.createElement(qname, attributes);
-    }
     
     public Attribute createAttribute(Element owner, QName qname, String value) {
         if ( autoLoadSchema && qname.equals( XSI_NO_SCHEMA_LOCATION ) ) {

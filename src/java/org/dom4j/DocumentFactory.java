@@ -90,14 +90,6 @@ public class DocumentFactory {
         return new DefaultElement(qname);
     }
     
-    public Element createElement(QName qname, int attributeCount) {
-        return new DefaultElement(qname, attributeCount);
-    }
-    
-    public Element createElement(QName qname, Attributes attributes) {
-        return new DefaultElement(qname, attributes);
-    }
-    
     public Element createElement(String name) {
         return createElement(createQName(name));
     }

@@ -148,17 +148,6 @@ public interface Branch extends Node {
       */    
     public Element addElement(String qualifiedName, String namespaceURI);
     
-    /** Adds a new <code>Element</code> node with the given {@link QName} 
-      * to this branch and returns a reference to the new node. 
-      * This method is used by {@link org.dom4j.io.SAXReader} to allow
-      * more optimal or more flexible construction of element instances based 
-      * on the available attributes.
-      *
-      * @param qname is the qualified name for the <code>Element</code> node.
-      * @return the newly added <code>Element</code> node.
-      */    
-    public Element addElement(QName qName, Attributes attributes);
-    
     /** Removes the processing instruction for the given target if it exists
       *
       * @return true if a processing instruction was removed else false
