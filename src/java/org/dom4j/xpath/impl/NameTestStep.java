@@ -45,7 +45,7 @@ public class NameTestStep extends UnAbbrStep {
         _namespacePrefix = namespacePrefix;
         _localName = localName;
         matchesAnyName = "*".equals( _localName );
-        matchesAnyNamespace = _namespacePrefix == null || _namespacePrefix.equals( "*" );
+        matchesAnyNamespace = _namespacePrefix != null && _namespacePrefix.equals( "*" );        
     }
     
     public List applyToSelf(Object node, ContextSupport support) {
@@ -83,14 +83,14 @@ public class NameTestStep extends UnAbbrStep {
                 Element element = (Element) node;
                 Attribute attr = null;
                 
-                if ( _namespacePrefix == null ) {
+                if ( matchesAnyNamespace ) {
                     attr = element.attribute( _localName );
                 }
                 else {
                     Namespace namespace = element.getNamespaceForPrefix( _namespacePrefix );
                     if ( namespace == null ) {
                         System.out.println( "WARNING: couldn't find namespace for prefix: " + _namespacePrefix );
-                        attr = element.attribute( _localName );
+                        //attr = element.attribute( _localName );
                     }
                     else {
                         QName qName = QName.get( _localName, namespace );
@@ -134,25 +134,61 @@ public class NameTestStep extends UnAbbrStep {
     }
     
     public List applyToChild(Object node, ContextSupport support) {
-        List results = new ArrayList();
-        String nsURI = null;
-        Namespace ns = null;
         
         if ( node instanceof Document ) {
             Element child = ((Document) node).getRootElement();
             
             if ( matchesAnyName || child.getName().equals( _localName ) ) {
-                if ( ns == null ) {
-                    results.add( child );
-                }
-                else if ( ns.equals( child.getNamespace() ) ) {
-                    results.add( child );
+                if ( matchesAnyNamespace || matchesPrefix( child ) ) {
+                    return Collections.singletonList( child );
                 }
             }
         }
         else if ( node instanceof Element ) {
             Element element = (Element) node;            
-
+            Iterator iter = null;
+            
+            if ( matchesAnyNamespace ) {
+                if ( matchesAnyName ) {
+                    iter = element.elementIterator();
+                }
+                else {
+                    iter = element.elementIterator( _localName );
+                }
+            }
+            else {
+                Namespace ns = element.getNamespaceForPrefix( _namespacePrefix );
+                if ( ns != null ) {
+                    if ( matchesAnyName ) {
+                        ArrayList results = new ArrayList();
+                        String uri = ns.getURI();
+                        for ( int i = 0, size = element.nodeCount(); i < size; i++ ) {
+                            Node nodeChild = element.node(i);
+                            if ( nodeChild instanceof Element ) {
+                                Element elementChild = (Element) nodeChild;
+                                if ( uri.equals( elementChild.getNamespaceURI() ) ) {
+                                    results.add( nodeChild );
+                                }
+                            }
+                        }
+                        return results;
+                    }
+                    else {
+                        QName qname = QName.get( _localName, ns );
+                        iter = element.elementIterator( qname );
+                    }
+                }
+            }
+            
+            if ( iter != null ) {
+                ArrayList results = new ArrayList();
+                while ( iter.hasNext() ) {
+                    results.add( iter.next() );
+                }
+                return results;
+            }
+/*            
+            Namespace ns = null;
             if ( _namespacePrefix != null ) {
                 ns = element.getNamespaceForPrefix( _namespacePrefix );
             }
@@ -181,8 +217,9 @@ public class NameTestStep extends UnAbbrStep {
                     results.add( iter.next() );
                 }
             }
+*/
         }
-        return results;
+        return Collections.EMPTY_LIST;
     }
 
     // Pattern methods
@@ -237,13 +274,50 @@ public class NameTestStep extends UnAbbrStep {
     }
     
     protected boolean matchesPrefix( Element element ) {
+        String uri = element.getNamespaceURI();
+        Namespace ns = element.getNamespaceForPrefix( _namespacePrefix );
+        if ( ns != null ) {
+            return uri.equals( ns.getURI() );
+        }
+        return false;
+/*        
+        String prefix = element.getNamespacePrefix();
+        
         // XXXX: should we map the prefix to a URI and compare that?
-        return element.getNamespacePrefix().equals( _namespacePrefix );
+        
+        //System.out.println( "Matching prefix: " + _namespacePrefix + " to: " + prefix );
+        
+        if ( _namespacePrefix == null || _namespacePrefix.length() == 0 ) {
+            return ( prefix == null || prefix.length() == 0 );
+        }
+        
+        return _namespacePrefix.equals( prefix );
+*/
     }
     
     protected boolean matchesPrefix( Attribute attribute ) {
+        Element parent = attribute.getParent();
+        if ( parent != null ) {
+            String uri = attribute.getNamespaceURI();
+            Namespace ns = parent.getNamespaceForPrefix( _namespacePrefix );
+            if ( ns != null ) {
+                return uri.equals( ns.getURI() );
+            }
+        }
+        return false;
+        
+/*        
+        String prefix = attribute.getNamespacePrefix();
+        
         // XXXX: should we map the prefix to a URI and compare that?
-        return attribute.getNamespacePrefix().equals( _namespacePrefix );
+        
+        //System.out.println( "Matching prefix: " + _namespacePrefix + " to: " + prefix );
+        
+        if ( _namespacePrefix == null || _namespacePrefix.length() == 0 ) {
+            return ( prefix == null || prefix.length() == 0 );
+        }
+        return _namespacePrefix.equals( prefix );
+*/
     }
 
     public String toString() {

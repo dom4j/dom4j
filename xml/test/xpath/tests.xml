@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tests>
 
+  <!-- test namespace -->
+
+
+  <document url="xml/test/defaultNamespace.xml">
+    <context select="/">
+       <test select="/*:a/*:b/*:c" count="1"/>
+      <test select="/x:a/x:b/x:c" count="0"/>
+      <test select="/a/b/c" count="0"/>
+    </context>
+  </document>
+
+
+  <!-- test predicates -->
+
   <document url="xml/nitf/sample.xml">
     <context select="/nitf/head/docdata">
       <test select="doc-id[@regsrc='AP' and @id-string='D76UIMO80']" count="1"/>
@@ -24,6 +38,7 @@
 -->
     </context>
   </document>
+
 
   <!-- test name -->
 
