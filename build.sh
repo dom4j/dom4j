@@ -16,4 +16,7 @@ CLASSPATH=`echo lib/*.jar | tr ' ' ':'`:$CLASSPATH
 CLASSPATH=build/classes:lib/crimson.jar:$CLASSPATH:$JAVA_HOME/lib/tools.jar
 
 
-$JAVA -classpath $CLASSPATH -Dant.home=lib org.apache.tools.ant.Main "$@" -buildfile build.xml
+# $JAVA -classpath $CLASSPATH -Dant.home=lib org.apache.tools.ant.Main "$@" -buildfile build.xml
+
+java -classpath $CLASSPATH -Dant.home=lib org.apache.tools.ant.Main "$@" -buildfile build.xml
+
