@@ -508,14 +508,6 @@ public interface Element extends Branch {
       */
     public void appendContent(Element element);
     
-    /** Appends the additional namespace declarations of the given element to me.
-      * This method behaves like the {@link Collection#addAll(java.util.Collection)} 
-      * method.
-      *
-      * @param element is the element whose additional namespaces will be added to me.
-      */
-    public void appendAddtionalNamespaces(Element element);
-
     // creates a copy
     public Element createCopy();
     public Element createCopy(String name);
