@@ -299,7 +299,8 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     // Implementation methods
     //-------------------------------------------------------------------------            
     protected DocumentFactory getDocumentFactory() {
-        return DOCUMENT_FACTORY;
+        DocumentFactory factory = getQName().getDocumentFactory();
+        return ( factory != null ) ? factory : DOCUMENT_FACTORY;
     }
     
     protected Attribute attribute(org.w3c.dom.Attr attr) {

@@ -92,6 +92,9 @@ Document doc = reader.read( "soap.xml" );
         </section>
 
         <section title="Patches">
+        <p>Applied patches supplied by Maarten Coene that fixes some issues with using the correct
+          DocumentFactory when using the DOM implementation.
+        </p>
         <p>Updated the MSV support to comply with the latest MSV version, 1.12 (Nov 01 2001).
           In addition the MSVDemo.java in dom4j/src/samples/validate has been replaced by
           JARVDemo.java which now uses the <a href="http://iso-relax.sourceforge.net/JARV/">JARV</a> API 
