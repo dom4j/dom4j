@@ -9,15 +9,15 @@
 
 package org.dom4j.xpath;
 
-import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.*;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
-import org.dom4j.Attribute;
 import org.dom4j.AbstractTestCase;
+import org.dom4j.Attribute;
 import org.dom4j.Branch;
 import org.dom4j.Document;
 import org.dom4j.Element;

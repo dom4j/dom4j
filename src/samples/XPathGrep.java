@@ -11,9 +11,9 @@
 import java.util.Iterator;
 import java.util.List;
 
-import org.dom4j.*;
-import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.XPath;
 
 /** A utility program which performs XPath expressions on one or more XML
   * files and outputs the matches. It is similar to the <code>grep</code>

@@ -13,17 +13,13 @@ import SAXDemo;
 
 import java.io.StringWriter;
 
-import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 
 import org.dom4j.Document;
-import org.dom4j.io.DocumentResult;
 import org.dom4j.io.DocumentSource;
-import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
 
 /** A sample program which uses JAXP to write a dom4j Document to a Stream.
   *

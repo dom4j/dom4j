@@ -11,13 +11,6 @@ package performance;
 
 import SAXDemo;
 
-import java.io.IOException;
-
-import org.dom4j.Document;
-import org.dom4j.DocumentFactory;
-import org.dom4j.DocumentException;
-import org.dom4j.io.SAXReader;
-
 /** Base class for all simple performance tests
   * 
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>

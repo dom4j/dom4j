@@ -10,18 +10,16 @@
 package org.dom4j.xpath;
 
 import java.io.File;
-import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.*;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
 import org.dom4j.DocumentHelper;
-import org.dom4j.Namespace;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
-
 import org.jaxen.SimpleNamespaceContext;
 
 /** Tests finding items using a namespace prefix

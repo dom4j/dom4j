@@ -8,7 +8,10 @@
  */
  
  
-import org.dom4j.*;
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.ElementHandler;
+import org.dom4j.ElementPath;
 import org.dom4j.io.SAXReader;
 
 /** A test harness to test the content API in DOM4J

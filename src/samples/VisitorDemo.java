@@ -8,7 +8,18 @@
  */
 
 
-import org.dom4j.*;
+import org.dom4j.Attribute;
+import org.dom4j.CDATA;
+import org.dom4j.Comment;
+import org.dom4j.Document;
+import org.dom4j.DocumentType;
+import org.dom4j.Element;
+import org.dom4j.Entity;
+import org.dom4j.Namespace;
+import org.dom4j.ProcessingInstruction;
+import org.dom4j.Text;
+import org.dom4j.Visitor;
+import org.dom4j.VisitorSupport;
 
 /** A sample program to demonstrate the use of the Visitor Pattern in DOM4J
   *

@@ -11,8 +11,8 @@
 import java.util.Iterator;
 import java.util.List;
 
-import org.dom4j.*;
-import org.dom4j.io.XMLWriter;
+import org.dom4j.Attribute;
+import org.dom4j.Document;
 
 /** A sample program to demonstrate the use of XPath in DOM4J to find
   * all the hypertext links in a source file.

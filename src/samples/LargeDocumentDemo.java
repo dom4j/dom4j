@@ -7,7 +7,10 @@
  * $Id$
  */
 
-import org.dom4j.*;
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.ElementHandler;
+import org.dom4j.ElementPath;
 import org.dom4j.io.SAXReader;
 
 /** This sample parses a big document using the pruning option of the 

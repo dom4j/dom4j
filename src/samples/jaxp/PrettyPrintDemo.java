@@ -21,9 +21,7 @@ import javax.xml.transform.TransformerFactory;
 import org.dom4j.Document;
 import org.dom4j.io.DocumentSource;
 import org.dom4j.io.OutputFormat;
-import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLResult;
-import org.dom4j.io.XMLWriter;
 
 /** A sample program which uses JAXP to write a dom4j Document to a stream
   * using dom4j's pretty printing output format.

@@ -10,9 +10,6 @@
 package org.dom4j.datatype;
 
 import java.io.StringReader;
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.Map;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -21,10 +18,9 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
+import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.Element;
-import org.dom4j.Attribute;
-
 import org.dom4j.io.SAXReader;
 
 /** Test harness for XML Schema Datatypes support

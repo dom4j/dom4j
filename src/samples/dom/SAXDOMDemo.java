@@ -9,15 +9,14 @@
 
 package dom;
 
+import AbstractDemo;
+
 import org.dom4j.Document;
 import org.dom4j.io.DOMReader;
 import org.dom4j.io.DOMWriter;
 import org.dom4j.io.SAXContentHandler;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.SAXWriter;
-import org.dom4j.io.XMLWriter;
-
-import AbstractDemo;
 
 /** This sample program parses an XML document as a DOM4J tree using
   * SAX, it then creates a W3C DOM tree which is then used as input for

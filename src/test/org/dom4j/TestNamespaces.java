@@ -9,23 +9,19 @@
 
 package org.dom4j;
 
-import java.io.File;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import junit.framework.*;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.dom4j.io.DOMReader;
-import org.dom4j.io.DOMWriter;
 import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
-
 import org.xml.sax.InputSource;
 
 /** Test the use of namespaces

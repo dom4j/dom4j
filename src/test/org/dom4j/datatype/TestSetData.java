@@ -10,23 +10,17 @@
 package org.dom4j.datatype;
 
 import java.math.BigInteger;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 
-import junit.framework.*;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
-import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
-import org.dom4j.Node;
 import org.dom4j.QName;
 import org.dom4j.io.SAXReader;
-import org.dom4j.datatype.DatatypeDocumentFactory;
 
 
 /** Tests setting the value of datatype aware element or attribute value

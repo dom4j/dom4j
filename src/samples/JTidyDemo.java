@@ -15,7 +15,6 @@ import java.net.URL;
 
 import org.dom4j.Document;
 import org.dom4j.io.DOMReader;
-
 import org.w3c.tidy.Tidy;
 
 /** A program which uses JTidy to parse some HTML and turn it into a dom4j Document

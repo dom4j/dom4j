@@ -11,13 +11,13 @@ package org.dom4j.swing;
 
 import javax.swing.table.TableModel;
 
-import junit.framework.*;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.dom4j.Document;
 import org.dom4j.io.SAXReader;
-import org.dom4j.swing.XMLTableDefinition;
-import org.dom4j.swing.XMLTableModel;
 
 /** Tests the Swing TableModel using a dom4j document.
   *

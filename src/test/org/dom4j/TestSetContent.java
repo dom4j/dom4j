@@ -9,10 +9,8 @@
 
 package org.dom4j;
 
-import java.util.Iterator;
-import java.util.List;
-
-import junit.framework.*;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 /** Tests the setContent method

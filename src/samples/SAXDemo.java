@@ -8,9 +8,7 @@
  */
 
 import org.dom4j.Document;
-import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
 
 /** A simple test program to demonstrate using SAX to create a DOM4J tree
   *

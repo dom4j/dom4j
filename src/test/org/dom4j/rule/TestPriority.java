@@ -9,15 +9,12 @@
 
 package org.dom4j.rule;
 
-import java.io.File;
-import java.util.Iterator;
-import java.util.List;
-
-import junit.framework.*;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.dom4j.DocumentFactory;
-import org.dom4j.rule.Pattern;
 
 /** Tests the priority behaviour of Pattern.
   *

@@ -9,16 +9,16 @@
 
 package org.dom4j;
 
-import org.dom4j.tree.*;
-import org.dom4j.io.*;
+import com.clarkware.junitperf.LoadTest;
+import com.clarkware.junitperf.TimedTest;
 
-import java.util.*;
-import java.text.*;
+import java.text.FieldPosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-import com.clarkware.junitperf.*;
-import junit.extensions.*;
-import junit.framework.*;
-import junit.textui.TestRunner;
+import junit.extensions.RepeatedTest;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 
 /** A test harness to test the dom4j package in a threaded environment

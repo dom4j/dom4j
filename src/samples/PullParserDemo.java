@@ -8,9 +8,7 @@
  */
 
 import org.dom4j.Document;
-import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XPPReader;
-import org.dom4j.io.XMLWriter;
 
 /** A sample program that demonstrates using the XML Pull Parser to create a dom4j Document
   *

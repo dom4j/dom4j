@@ -9,23 +9,15 @@
 
 package validate;
 
-import com.sun.msv.verifier.jarv.TheFactoryImpl;
-
-import javax.xml.parsers.SAXParserFactory;
-
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
-import org.dom4j.io.SAXWriter;
-
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.XMLFilter;
-
 import org.iso_relax.verifier.Schema;
 import org.iso_relax.verifier.Verifier;
 import org.iso_relax.verifier.VerifierFactory;
 import org.iso_relax.verifier.VerifierFilter;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXParseException;
 
 /** A sample program which validates an XML document as
   * is it being parsed  using the JARV API 

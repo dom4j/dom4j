@@ -11,19 +11,8 @@ package sax;
 
 import SAXDemo;
 
-import java.io.StringWriter;
-
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-
 import org.dom4j.Document;
-import org.dom4j.io.DocumentSource;
-import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLResult;
-import org.dom4j.io.XMLWriter;
 
 /** A sample program which demonstrates how to 
   * use a SAX XMLFilter when parsing an XML document.

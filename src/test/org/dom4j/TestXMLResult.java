@@ -11,18 +11,17 @@ package org.dom4j;
 
 import java.io.StringWriter;
 
-import junit.framework.*;
-import junit.textui.TestRunner;
-
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 
-import org.dom4j.Document;
+import junit.framework.Test;
+import junit.framework.TestSuite;
+import junit.textui.TestRunner;
+
 import org.dom4j.io.DocumentSource;
 import org.dom4j.io.OutputFormat;
-import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLResult;
 import org.dom4j.io.XMLWriter;
 

@@ -10,14 +10,10 @@
 package performance;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.StringReader;
 
 import org.dom4j.Document;
-import org.dom4j.DocumentFactory;
-import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
 
 /** A simple parsing program that loops which makes it easier to profile

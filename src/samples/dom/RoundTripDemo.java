@@ -11,9 +11,6 @@ package dom;
 
 import SAXDemo;
 
-import java.io.StringReader;
-import java.io.StringWriter;
-
 import org.dom4j.Document;
 import org.dom4j.io.DOMReader;
 import org.dom4j.io.DOMWriter;

@@ -20,7 +20,6 @@ import org.dom4j.io.SAXReader;
 import org.dom4j.io.SAXValidator;
 import org.dom4j.io.XMLWriter;
 import org.dom4j.util.XMLErrorHandler;
-
 import org.xml.sax.SAXException;
 
 /** A sample program demonstrating the use of validation using SAXValidator

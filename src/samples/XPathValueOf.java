@@ -7,11 +7,9 @@
  * $Id$
  */
 
-import java.util.Iterator;
-import java.util.List;
-
-import org.dom4j.*;
-import org.dom4j.io.SAXReader;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.XPath;
 
 /** A utility program which performs XPath expressions on one or more XML
   * files and outputs the valueOf the XPath expression. 

@@ -15,7 +15,6 @@ import javax.swing.JTable;
 
 import org.dom4j.Document;
 import org.dom4j.io.SAXReader;
-import org.dom4j.swing.XMLTableDefinition;
 import org.dom4j.swing.XMLTableModel;
 
 

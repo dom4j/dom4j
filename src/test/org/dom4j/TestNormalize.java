@@ -9,14 +9,9 @@
 
 package org.dom4j;
 
-import java.io.File;
-import java.util.Iterator;
-import java.util.List;
-
-import junit.framework.*;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 import junit.textui.TestRunner;
-
-import org.dom4j.io.SAXReader;
 
 /** A test harness for the normalize() method
   *

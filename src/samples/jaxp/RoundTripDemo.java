@@ -16,8 +16,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
@@ -26,9 +24,6 @@ import javax.xml.transform.stream.StreamSource;
 import org.dom4j.Document;
 import org.dom4j.io.DocumentResult;
 import org.dom4j.io.DocumentSource;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLResult;
 import org.dom4j.io.XMLWriter;
 
 /** A program demonstrating a round trip from XML to dom4j to text to dom4j 

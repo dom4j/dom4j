@@ -8,7 +8,6 @@
  */
 
 
-import org.dom4j.*;
 import org.dom4j.io.HTMLWriter;
 import org.dom4j.io.XMLWriter;
 

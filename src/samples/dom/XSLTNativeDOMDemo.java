@@ -9,7 +9,8 @@
 
 package dom;
 
-import javax.xml.transform.Result;
+import XSLTDemo;
+
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -19,12 +20,8 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.dom4j.Document;
 import org.dom4j.dom.DOMDocumentFactory;
-import org.dom4j.io.DocumentResult;
 import org.dom4j.io.DOMWriter;
 import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
-
-import XSLTDemo;
 
 
 /** This sample program peforms XSLT on the native DOM implementation of 

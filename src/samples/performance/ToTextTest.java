@@ -9,12 +9,9 @@
 
 package performance;
 
-import java.io.IOException;
 import java.io.StringWriter;
 
 import org.dom4j.Document;
-import org.dom4j.DocumentFactory;
-import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 

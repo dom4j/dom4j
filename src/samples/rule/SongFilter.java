@@ -11,20 +11,16 @@ package rule;
 
 import java.io.File;
 
-import org.dom4j.DocumentHelper;
 import org.dom4j.Document;
-import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Node;
-
+import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
-import org.dom4j.io.OutputFormat;
-
 import org.dom4j.rule.Action;
-import org.dom4j.rule.Pattern;
-import org.dom4j.rule.Stylesheet;
 import org.dom4j.rule.Rule;
+import org.dom4j.rule.Stylesheet;
 
 /**
  * This class is 1:1 representation of the stlyesheet <code>SongFilter.xsl</code> in package.

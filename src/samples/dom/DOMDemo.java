@@ -10,14 +10,13 @@
 
 package dom;
 
+import AbstractDemo;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.dom4j.Document;
 import org.dom4j.io.DOMReader;
-import org.dom4j.io.XMLWriter;
-
-import AbstractDemo;
 
 /** A simple test program to demonstrate using W3C DOM and JAXP to load a DOM
   * XML tree then converting it to a DOM4J tree.

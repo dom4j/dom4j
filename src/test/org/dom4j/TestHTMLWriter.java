@@ -11,17 +11,11 @@ package org.dom4j;
 
 import java.io.StringWriter;
 
-import junit.framework.*;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.io.OutputFormat;
 import org.dom4j.io.HTMLWriter;
-
-import org.xml.sax.ContentHandler;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
 
 /** Test harness for the HTMLWriter
   *

@@ -8,10 +8,8 @@
  */
 
 import org.dom4j.Document;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
 import org.dom4j.datatype.DatatypeDocumentFactory;
+import org.dom4j.io.SAXReader;
 
 /** A simple test program to demonstrate using XML Schema Data Types
   *

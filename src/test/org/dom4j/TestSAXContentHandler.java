@@ -9,19 +9,18 @@
 
 package org.dom4j;
 
+import java.io.File;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.parsers.SAXParser;
-
-import org.xml.sax.XMLReader;
 import org.dom4j.io.SAXContentHandler;
 import org.dom4j.io.SAXReader;
-import org.dom4j.Document;
-
-import java.io.File;
+import org.xml.sax.XMLReader;
 
 public class TestSAXContentHandler extends AbstractTestCase {
     private XMLReader xmlReader;

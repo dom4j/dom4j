@@ -13,10 +13,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.dom4j.Document;
-import org.dom4j.Node;
 import org.dom4j.Element;
+import org.dom4j.Node;
 import org.dom4j.io.OutputFormat;
-import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
 /** A simple program that parsers a document and allows XPath expressions to be

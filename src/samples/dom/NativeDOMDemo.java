@@ -10,11 +10,11 @@
 
 package dom;
 
+import AbstractDemo;
+
 import org.dom4j.Document;
 import org.dom4j.dom.DOMDocumentFactory;
 import org.dom4j.io.SAXReader;
-
-import AbstractDemo;
 
 /** A simple test program to demonstrate the use of native DOM support.
   *

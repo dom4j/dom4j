@@ -10,14 +10,10 @@
 package performance;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.StringReader;
 
 import org.dom4j.Document;
-import org.dom4j.DocumentFactory;
-import org.dom4j.DocumentException;
 import org.dom4j.io.XPPReader;
 
 /** Tests the performance of parsing a Document with the XML Pull Parser

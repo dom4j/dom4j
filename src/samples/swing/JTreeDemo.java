@@ -18,8 +18,6 @@ import javax.swing.JTree;
 import org.dom4j.Document;
 import org.dom4j.swing.DocumentTreeModel;
 
-import org.xml.sax.InputSource;
-
 
 /** A sample program to build a JTree GUI from a dom4j Document
   *

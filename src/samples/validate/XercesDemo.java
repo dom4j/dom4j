@@ -12,14 +12,10 @@ package validate;
 import AbstractDemo;
 
 import org.dom4j.Document;
-import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 import org.dom4j.util.XMLErrorHandler;
-
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.SAXParseException;
 
 /** Validates a document using Xerces and an XML Schema.
   *

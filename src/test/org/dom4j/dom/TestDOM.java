@@ -11,21 +11,14 @@ package org.dom4j.dom;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.Iterator;
-import java.util.List;
 
-import junit.framework.*;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
-import org.dom4j.Document;
-import org.dom4j.Element;
-import org.dom4j.dom.DOMDocument;
-import org.dom4j.dom.DOMDocumentFactory;
 import org.dom4j.io.DOMWriter;
 import org.dom4j.io.SAXReader;
-
-import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
