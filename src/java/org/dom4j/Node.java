@@ -288,12 +288,14 @@ public interface Node extends Cloneable {
       *
       * <code>
       *     Node node = ...;
-      *     node.detach();
       *     Element someOtherElement = ...;
-      *     someOtherElement.add( node );
+      *     someOtherElement.add( node.detach() );
       * </code>
+      *
+      * @return the node that has been removed from its parent node if 
+      * any and its document if any.
       */
-    public void detach();
+    public Node detach();
     
     
     

@@ -110,7 +110,7 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
         }
     }
 
-    public void detach() {
+    public Node detach() {
         Element parent = getParent();
         if ( parent != null ) {
             parent.remove( this );
@@ -123,6 +123,7 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
         }
         setParent(null);
         setDocument(null);
+        return this;
     }
     
     public String getName() {

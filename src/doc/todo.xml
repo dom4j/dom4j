@@ -7,6 +7,18 @@
       <section title="Changes in CVS since last release">
 
         <section title="Patches">
+        <p>Implemented the suggestion by Kesav Kumar, that the detach() method now returns the node (this) so that moving 
+        nodes from one part of a document to any another can now be one line of code. Here's an example of it in use.
+        </p>
+<pre>
+Document doc1 = ...;
+Document doc2; = ...;
+Element destination = doc2.getRootElement();
+Element source = doc1.selectSingleNode( "//foo[@style='bar']" );
+
+// lets move the source to the destination
+destination.add( source.detach() );
+</pre>
         <p>Added better checking in selectSingleNode() implementation so that XPath expressions which do not
           return a Node throw a meaningful exception (not ClassCastException) informing the user of
           why the XPath expression did not succeed.
