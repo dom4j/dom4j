@@ -8,6 +8,7 @@
     <property name="Name" value="dom4j"/>
     <property name="name" value="dom4j"/>
     <property name="version" value="coming-soon-0.5"/>
+    <property name="current.version" value="0.4"/>
     <property name="year" value="2001"/>
 
     <echo message="----------- ${Name} ${version} [${year}] ------------"/>
@@ -286,8 +287,8 @@
       <fileset dir="${doc.dir}/style" includes="images/**"/>
     </copy>
 
-    <replace file="${build.doc}/index.html" token="$$VERSION$$" value="${version}"/>
-    <replace file="${build.doc}/download.html" token="$$VERSION$$" value="${version}"/>
+    <replace file="${build.doc}/index.html" token="$$VERSION$$" value="${current.version}"/>
+    <replace file="${build.doc}/download.html" token="$$VERSION$$" value="${current.version}"/>
   </target>
 
 
@@ -428,6 +429,11 @@
 
   <target name="test-schema" depends="compile-test">
     <java classname="org.dom4j.schema.TestManualSchema"/>
+  </target>
+
+  <target name="test-detach" depends="compile-test">
+    <java classname="org.dom4j.TestAttributeDetach"/>
+    <java classname="org.dom4j.TestDetach"/>
   </target>
 
   <!-- =================================================================== -->

@@ -15,64 +15,60 @@ import java.util.List;
 import junit.framework.*;
 import junit.textui.TestRunner;
 
-/** A test harness to test the detach() method on root elements
+/** A test harness to test the detach() method on attributes
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class TestDetach extends AbstractTestCase {
+public class TestAttributeDetach extends AbstractTestCase {
 
     public static void main( String[] args ) {
         TestRunner.run( suite() );
     }
     
     public static Test suite() {
-        return new TestSuite( TestDetach.class );
+        return new TestSuite( TestAttributeDetach.class );
     }
     
-    public TestDetach(String name) {
+    public TestAttributeDetach(String name) {
         super(name);
     }
 
     // Test case(s)
     //-------------------------------------------------------------------------                    
-    public void testRoot() throws Exception {
-        document.setName( "doc1" );
+    public void testDetachAttribute() throws Exception {
+        List attributes = document.selectNodes( "//@name" );
         
-        Element root = document.getRootElement();
-        assert( "Has root element", root != null );
-        assert( "Root has no parent", root.getParent() == null );
+        assert( "Found more than one attribute: ", attributes.size() > 0 );
         
-        root.detach();
-        
-        assert( "Detached root now has no document", root.getDocument() == null );
-        assert( "Original doc now has no root element", document.getRootElement() == null );
-        
-        Document doc2 = DocumentHelper.createDocument();
-        doc2.setName( "doc2" );
-        
-        assert( "Doc2 has no root element", doc2.getRootElement() == null );
-        
-        doc2.setRootElement( root );
-        
-        assert( "Doc2 has now has root element", doc2.getRootElement() == root );        
-        assert( "Root element now has document", root.getDocument() == doc2 );
-        
-        
-        Document doc3 = DocumentHelper.createDocument();
-        doc3.setName( "doc3" );
-        doc3.addElement( "foo" );
-        
-        assert( "Doc3 has root element", doc3.getRootElement() != null );
-        
-        root = doc2.getRootElement();
-        root.detach();
-        doc3.setRootElement( root );
-        
-        assert( "Doc3 now has root element", doc3.getRootElement() == root );        
-        assert( "Root element now has a document", root.getDocument() == doc3 );
-        assert( "Doc2 has no root element", doc2.getRootElement() == null );        
+        for ( Iterator iter = attributes.iterator(); iter.hasNext(); ) {
+            Attribute attribute = (Attribute) iter.next();
+            Element element = attribute.getParent();
+            
+            assert( 
+                "Attribute: " + attribute + " has parent: " + element, 
+                attribute.getParent() == element
+            );
+            
+            QName qname = attribute.getQName();
+            
+            Attribute attribute2 = element.attribute( qname );
+            
+            String value = attribute.getValue();
+            String value2 = element.attributeValue( qname );
+            
+            assertEquals( "Attribute and Element have same attrbute value", value, value2 );
+            
+            attribute.detach();
+            
+            attribute2 = element.attribute( qname );
+            value2 = element.attributeValue( qname );
+            
+            assert( "Element now has no value: " + value2, value2 == null );
+            assert( "Element now has no attribute: " + attribute2, attribute2 == null );
+        }
     }
+    
 }
 
 

@@ -5,6 +5,23 @@
     
     <section title="Change History">
         <section title="coming soon, 0.5 release">
+          <section title="NodeComparator available">
+            <p>For those wishing to do value based comparisons of Nodes, 
+              Element, Attributes, Documents or Document fragments
+              there is a new 
+              <a href="apidocs/org/dom4j/util/NodeComparator.html">NodeComparator</a>
+              class which implements the 
+              <a href="http://java.sun.com/j2se/1.3/docs/api/java/util/Comparator.html">Comparator</a>
+              interface from the Java Collections Framework.
+            </p>
+          </section>
+          <section title="Patches and bug fixes">
+            <p>Applied Theo's patch for cloning of Documents correctly 
+              together with JUnit test cases to ensure this keeps working.
+            </p>
+            <p>Fixed some detach() bugs that were found with Attributes.
+            </p>
+          </section>
         </section>
 
         <section title="0.4 release">
@@ -268,6 +285,7 @@ while ( iter2.hasNext() ) {
         <li>Jakob Jenkov</li>
         <li>James Pereira</li>
         <li>David White</li>
+        <li>Tobias Rademacher</li>
       </ul>
     </section>
 

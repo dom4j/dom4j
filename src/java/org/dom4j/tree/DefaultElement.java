@@ -798,11 +798,27 @@ public class DefaultElement extends AbstractElement {
         if ( attributes instanceof List ) {
             List list = (List) attributes;            
             answer = list.remove(attribute);
+            if ( ! answer ) {
+                // we may have a copy of the attribute
+                Attribute copy = attribute( attribute.getQName() );
+                if ( copy != null ) {
+                    list.remove( copy );
+                    answer = true;
+                }
+            }
         }
         else if ( attributes != null ) {
             if ( attribute.equals( attributes ) ) {
                 attributes = null;
                 answer = true;
+            }
+            else {
+                // we may have a copy of the attribute
+                Attribute other = (Attribute) attributes;
+                if ( attribute.getQName().equals( other.getQName() ) ) {
+                    attributes = null;
+                    answer = true;
+                }
             }
         }
         

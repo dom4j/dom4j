@@ -100,9 +100,11 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
         if ( parent != null ) {
             parent.remove( this );
         }
-        Document document = getDocument();
-        if ( document != null ) {
-            document.remove( this );
+        else {
+            Document document = getDocument();
+            if ( document != null ) {
+                document.remove( this );
+            }
         }
         setParent(null);
         setDocument(null);
