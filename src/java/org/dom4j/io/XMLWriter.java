@@ -29,6 +29,7 @@ import org.dom4j.DocumentType;
 import org.dom4j.Element;
 import org.dom4j.Entity;
 import org.dom4j.Namespace;
+import org.dom4j.QName;
 import org.dom4j.Node;
 import org.dom4j.ProcessingInstruction;
 import org.dom4j.Text;
@@ -75,7 +76,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     };
 
     private static final boolean SUPPORT_PAD_TEXT = false;
-    
+
     protected static final OutputFormat DEFAULT_FORMAT = new OutputFormat();
 
     /** Should entityRefs by resolved when writing ? */
@@ -84,6 +85,9 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     /** Stores the last type of node written so algorithms can refer to the
       * previous node type */
     protected int lastOutputNodeType;
+
+    /** Stores the xml:space attribute value of preserve for whitespace flag */
+    protected boolean preserve=false;
 
     /** The Writer used to output to */
     protected Writer writer;
@@ -118,13 +122,13 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     /** The namespaces used for the current element when consuming SAX events */
     private Map namespacesMap;
 
-	/** 
+	/**
 	 * what is the maximum allowed character code
-	 * such as 127 in US-ASCII (7 bit) or 255 in ISO-* (8 bit) 
-	 * or -1 to not escape any characters (other than the special XML characters like < > &) 
+	 * such as 127 in US-ASCII (7 bit) or 255 in ISO-* (8 bit)
+	 * or -1 to not escape any characters (other than the special XML characters like < > &)
 	 */
 	private int maximumAllowedCharacter;
-	
+
 
     public XMLWriter(Writer writer) {
         this( writer, DEFAULT_FORMAT );
@@ -183,7 +187,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     public boolean isEscapeText() {
         return escapeText;
     }
-    
+
     /**
      * Sets whether text output should be escaped or not.
      * This is enabled by default. It could be disabled if
@@ -193,7 +197,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     public void setEscapeText(boolean escapeText) {
         this.escapeText = escapeText;
     }
-    
+
 
     /** Set the initial indentation level.  This can be used to output
       * a document (or, more likely, an element) starting at a given
@@ -208,7 +212,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
 	/**
 	 * Returns the maximum allowed character code that should be allowed
-	 * unescaped which defaults to 127 in US-ASCII (7 bit) or 
+	 * unescaped which defaults to 127 in US-ASCII (7 bit) or
 	 * 255 in ISO-* (8 bit).
 	 */
 	public int getMaximumAllowedCharacter() {
@@ -222,10 +226,10 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 	 * Sets the maximum allowed character code that should be allowed
 	 * unescaped
 	 * such as 127 in US-ASCII (7 bit) or 255 in ISO-* (8 bit)
-	 * or -1 to not escape any characters (other than the special XML characters like < > &) 
-	 * 
+	 * or -1 to not escape any characters (other than the special XML characters like < > &)
+	 *
 	 * If this is not explicitly set then it is defaulted from the encoding.
-	 *  
+	 *
 	 * @param maximumAllowedCharacter The maximumAllowedCharacter to set
 	 */
 	public void setMaximumAllowedCharacter(int maximumAllowedCharacter) {
@@ -525,7 +529,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     public void endDocument() throws SAXException {
         super.endDocument();
-        
+
         if ( autoFlush ) {
             try {
                 flush();
@@ -797,6 +801,25 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         lastOutputNodeType = Node.ELEMENT_NODE;
     }
 
+    /**
+     * Determines if element is a special case of XML elements
+     * where it contains an xml:space attribute of "preserve".
+     * If it does, then retain whitespace.
+     */
+    protected final boolean isElementSpacePreserved(Element element) {
+      final Attribute attr = (Attribute)element.attribute("space");
+      boolean preserveFound=preserve; //default to global state
+      if (attr!=null) {
+        if ("xml".equals(attr.getNamespacePrefix()) &&
+            "preserve".equals(attr.getText())) {
+          preserveFound = true;
+        }
+        else {
+          preserveFound = false;
+        }
+      }
+      return preserveFound;
+    }
     /** Outputs the content of the given element. If whitespace trimming is
      * enabled then all adjacent text nodes are appended together before
      * the whitespace trimming occurs to avoid problems with multiple
@@ -804,7 +827,13 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
      * in a SAX parser.
      */
     protected void writeElementContent(Element element) throws IOException {
-        if (format.isTrimText()) {
+        boolean trim = format.isTrimText();
+        boolean oldPreserve=preserve;
+        if (trim) { //verify we have to before more expensive test
+          preserve=isElementSpacePreserved(element);
+          trim = !preserve;
+        }
+        if (trim) {
             // concatenate adjacent text nodes together
             // so that whitespace trimming works properly
             Text lastTextNode = null;
@@ -853,6 +882,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                 writeNode(node);
             }
         }
+        preserve=oldPreserve;
     }
     protected void writeCDATA(String text) throws IOException {
         writer.write( "<![CDATA[" );
@@ -960,6 +990,30 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         }
     }
 
+    /**
+     * This method is used to write out Nodes that contain text
+     * and still allow for xml:space to be handled properly.
+     *
+     */
+    protected void writeNodeText(Node node) throws IOException {
+      String text = node.getText();
+      if (text != null && text.length() > 0) {
+        if (escapeText) {
+          text = escapeElementEntities(text);
+        }
+        if (!preserve && SUPPORT_PAD_TEXT) {
+          if (lastOutputNodeType == Node.ELEMENT_NODE) {
+            String padText = getPadText();
+            if (padText != null) {
+              writer.write(padText);
+            }
+          }
+        }
+
+        lastOutputNodeType = Node.TEXT_NODE;
+        writer.write(text);
+      }
+    }
 
     protected void writeNode(Node node) throws IOException {
         int nodeType = node.getNodeType();
@@ -971,7 +1025,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                 writeAttribute((Attribute) node);
                 break;
             case Node.TEXT_NODE:
-                writeString(node.getText());
+                writeNodeText(node);
                 //write((Text) node);
                 break;
             case Node.CDATA_SECTION_NODE:
@@ -1237,6 +1291,9 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                     break;
                 case '\t': case '\n': case '\r':
                     // don't encode standard whitespace characters
+                    if (preserve) {
+                      entity=String.valueOf(c);
+                    }
                     break;
                 default:
                 	if (c < 32 || shouldEncodeChar(c)) {
@@ -1335,17 +1392,17 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 	/**
 	 * Should the given character be escaped. This depends on the
 	 * encoding of the document.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	protected boolean shouldEncodeChar(char c) {
 		int max = getMaximumAllowedCharacter();
 		return max > 0 && c > max;
 	}
-	
+
 	/**
 	 * Returns the maximum allowed character code that should be allowed
-	 * unescaped which defaults to 127 in US-ASCII (7 bit) or 
+	 * unescaped which defaults to 127 in US-ASCII (7 bit) or
 	 * 255 in ISO-* (8 bit).
 	 */
 	protected int defaultMaximumAllowedCharacter() {
@@ -1353,7 +1410,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 		if (encoding != null) {
 			if (encoding.equals("US-ASCII")) {
 				return 127;
-			}			
+			}
 		}
 		// no encoding for things like ISO-*, UTF-8 or UTF-16
 		return -1;
@@ -1390,11 +1447,11 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     protected OutputFormat getOutputFormat() {
         return format;
     }
-    
+
     public boolean resolveEntityRefs() {
         return resolveEntityRefs;
     }
-    
+
     public void setResolveEntityRefs(boolean resolve) {
         this.resolveEntityRefs = resolve;
     }
