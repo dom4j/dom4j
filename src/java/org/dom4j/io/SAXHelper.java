@@ -9,7 +9,6 @@
 
 package org.dom4j.io;
 
-import org.dom4j.io.aelfred2.SAXDriver;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
@@ -81,13 +80,11 @@ class SAXHelper {
                      );
                     e.printStackTrace();
                 }
+                throw new SAXException(e);
             }
         }
         if ( reader == null ) {
-            System.out.println(
-                    "Warning: Error occurred using SAX to load a SAXParser. " +
-                    "Will use Aelfred instead");
-            reader = new SAXDriver();
+        	throw new SAXException("Couldn't create SAX reader");
         }
         return reader;
     }
