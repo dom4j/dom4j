@@ -224,6 +224,9 @@ Defaults to the context node.</para>
         <xsl:otherwise>2</xsl:otherwise>
       </xsl:choose>
     </xsl:when>
+    <xsl:when test="name($node)='refsect1'">2</xsl:when>
+    <xsl:when test="name($node)='refsect2'">3</xsl:when>
+    <xsl:when test="name($node)='refsect3'">4</xsl:when>
     <xsl:when test="name($node)='simplesect'">
       <xsl:choose>
         <xsl:when test="$node/../../sect1">3</xsl:when>
@@ -291,6 +294,109 @@ Defaults to the context node.</para>
   <xsl:value-of select="count($anc.divs) + number($section.level)"/>
 </xsl:template>
 
+<xsl:template name="question.answer.label">
+  <xsl:variable name="deflabel">
+    <xsl:choose>
+      <xsl:when test="ancestor-or-self::*[@defaultlabel]">
+        <xsl:value-of select="(ancestor-or-self::*[@defaultlabel])[last()]
+                              /@defaultlabel"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="qanda.defaultlabel"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+
+  <xsl:variable name="label" select="@label"/>
+
+<!--
+	 (hnr      (hierarchical-number-recursive (normalize "qandadiv")
+						  node))
+
+	 (parsect  (ancestor-member node (section-element-list)))
+
+	 (defnum   (if (and %qanda-inherit-numeration% 
+			    %section-autolabel%)
+		       (if (node-list-empty? parsect)
+			   (section-autolabel-prefix node)
+			   (section-autolabel parsect))
+		       ""))
+
+	 (hnumber  (let loop ((numlist hnr) (number defnum) 
+			      (sep (if (equal? defnum "") "" ".")))
+		     (if (null? numlist)
+			 number
+			 (loop (cdr numlist) 
+			       (string-append number
+					      sep
+					      (number->string (car numlist)))
+			       "."))))
+	 (cnumber  (child-number (parent node)))
+	 (number   (string-append hnumber 
+				  (if (equal? hnumber "")
+				      ""
+				      ".")
+				  (number->string cnumber))))
+-->
+
+  <xsl:choose>
+    <xsl:when test="$deflabel = 'qanda'">
+      <xsl:call-template name="gentext">
+        <xsl:with-param name="key">
+          <xsl:choose>
+            <xsl:when test="local-name(.) = 'question'">question</xsl:when>
+            <xsl:when test="local-name(.) = 'answer'">answer</xsl:when>
+            <xsl:when test="local-name(.) = 'qandadiv'">qandadiv</xsl:when>
+            <xsl:otherwise>qandaset</xsl:otherwise>
+          </xsl:choose>
+        </xsl:with-param>
+      </xsl:call-template>
+    </xsl:when>
+    <xsl:when test="$deflabel = 'label'">
+      <xsl:value-of select="$label"/>
+    </xsl:when>
+    <xsl:when test="$deflabel = 'number'
+                    and local-name(.) = 'question'">
+      <xsl:apply-templates select="ancestor::qandaset[1]"
+                           mode="number"/>
+      <xsl:choose>
+        <xsl:when test="ancestor::qandadiv">
+          <xsl:apply-templates select="ancestor::qandadiv[1]"
+                               mode="number"/>
+          <xsl:apply-templates select="ancestor::qandaentry"
+                               mode="number"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="ancestor::qandaentry"
+                               mode="number"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:when>
+    <xsl:otherwise>
+      <!-- nothing -->
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<xsl:template match="qandaset" mode="number">
+  <!-- FIXME: -->
+</xsl:template>
+
+<xsl:template match="qandadiv" mode="number">
+  <xsl:number level="multiple" from="qandaset" format="1."/>
+</xsl:template>
+
+<xsl:template match="qandaentry" mode="number">
+  <xsl:choose>
+    <xsl:when test="ancestor::qandadiv">
+      <xsl:number level="single" from="qandadiv" format="1."/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:number level="single" from="qandaset" format="1."/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
 <!-- ====================================================================== -->
 
 <xsl:template name="object.id">
@@ -316,10 +422,18 @@ Defaults to the context node.</para>
   <xsl:param name="node" select="."/>
 
   <xsl:choose>
+    <!-- the personname element is a specialcase -->
+    <xsl:when test="$node/personname">
+      <xsl:call-template name="person.name">
+        <xsl:with-param name="node" select="$node/personname"/>
+      </xsl:call-template>
+    </xsl:when>
+
     <!-- handle corpauthor as a special case...-->
     <xsl:when test="name($node)='corpauthor'">
       <xsl:apply-templates select="$node"/>
     </xsl:when>
+
     <xsl:otherwise>
       <xsl:variable name="h_nl" select="$node//honorific[1]"/>
       <xsl:variable name="f_nl" select="$node//firstname[1]"/>
@@ -334,31 +448,67 @@ Defaults to the context node.</para>
       <xsl:variable name="has_s" select="$s_nl"/>
       <xsl:variable name="has_l" select="$l_nl"/>
 
-      <xsl:if test="$has_h">
-        <xsl:value-of select="$h_nl"/>.
-      </xsl:if>
+      <xsl:choose>
+        <xsl:when test="$node/@role = 'family-given'">
+          <!-- The family-given style applies a convention for identifying given -->
+          <!-- and family names in locales where it may be ambiguous -->
+          <xsl:if test="$has_h">
+            <xsl:value-of select="$h_nl"/>
+            <xsl:value-of select="$punct.honorific"/>
+          </xsl:if>
 
-      <xsl:if test="$has_f">
-        <xsl:if test="$has_h"><xsl:text> </xsl:text></xsl:if>
-        <xsl:value-of select="$f_nl"/>
-      </xsl:if>
+          <xsl:if test="$has_s">
+            <xsl:if test="$has_h">
+              <xsl:text> </xsl:text>
+            </xsl:if>
+            <xsl:value-of select="$s_nl"/>
+          </xsl:if>
 
-      <xsl:if test="$has_o">
-        <xsl:if test="$has_h or $has_f"><xsl:text> </xsl:text></xsl:if>
-        <xsl:value-of select="$o_nl"/>
-      </xsl:if>
+          <xsl:if test="$has_o">
+            <xsl:if test="$has_h or $has_f"><xsl:text> </xsl:text></xsl:if>
+            <xsl:value-of select="$o_nl"/>
+          </xsl:if>
 
-      <xsl:if test="$has_s">
-        <xsl:if test="$has_h or $has_f or $has_o">
-          <xsl:text> </xsl:text>
-        </xsl:if>
-        <xsl:value-of select="$s_nl"/>
-      </xsl:if>
+          <xsl:if test="$has_f">
+            <xsl:if test="$has_h or $has_s or $has_o"><xsl:text> </xsl:text></xsl:if>
+            <xsl:value-of select="$f_nl"/>
+          </xsl:if>
 
-      <xsl:if test="$has_l">
-        <xsl:text>, </xsl:text>
-        <xsl:value-of select="$l_nl"/>
-      </xsl:if>
+          <xsl:if test="$has_l">
+            <xsl:text>, </xsl:text>
+            <xsl:value-of select="$l_nl"/>
+          </xsl:if>
+
+          <xsl:text> [FAMILY Given]</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:if test="$has_h">
+            <xsl:value-of select="$h_nl"/>.
+          </xsl:if>
+
+          <xsl:if test="$has_f">
+            <xsl:if test="$has_h"><xsl:text> </xsl:text></xsl:if>
+            <xsl:value-of select="$f_nl"/>
+          </xsl:if>
+
+          <xsl:if test="$has_o">
+            <xsl:if test="$has_h or $has_f"><xsl:text> </xsl:text></xsl:if>
+            <xsl:value-of select="$o_nl"/>
+          </xsl:if>
+
+          <xsl:if test="$has_s">
+            <xsl:if test="$has_h or $has_f or $has_o">
+              <xsl:text> </xsl:text>
+            </xsl:if>
+            <xsl:value-of select="$s_nl"/>
+          </xsl:if>
+
+          <xsl:if test="$has_l">
+            <xsl:text>, </xsl:text>
+            <xsl:value-of select="$l_nl"/>
+          </xsl:if>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:otherwise>
   </xsl:choose>
 </xsl:template> <!-- person.name -->
@@ -374,21 +524,39 @@ Defaults to the context node.</para>
      or
        John Doe, Jane Doe, and A. Nonymous
   -->
-  <xsl:param name="person.list" select="./author|./corpauthor|./othercredit|./editor"/>
+  <xsl:param name="person.list"
+             select="./author|./corpauthor|./othercredit|./editor"/>
   <xsl:param name="person.count" select="count($person.list)"/>
   <xsl:param name="count" select="1"/>
 
   <xsl:choose>
-    <xsl:when test="$count>$person.count"></xsl:when>
+    <xsl:when test="$count &gt; $person.count"></xsl:when>
     <xsl:otherwise>
       <xsl:call-template name="person.name">
         <xsl:with-param name="node" select="$person.list[position()=$count]"/>
       </xsl:call-template>
-      <xsl:if test="$count&lt;$person.count">
-        <xsl:if test="$person.count>2">,</xsl:if>
-        <xsl:text> </xsl:text>
-      </xsl:if>
-      <xsl:if test="$count+1=$person.count">and </xsl:if>
+
+      <xsl:choose>
+        <xsl:when test="$person.count = 2 and $count = 1">
+          <xsl:call-template name="gentext.template">
+            <xsl:with-param name="context" select="'authorgroup'"/>
+            <xsl:with-param name="name" select="'sep2'"/>
+          </xsl:call-template>
+        </xsl:when>
+        <xsl:when test="$person.count &gt; 2 and $count+1 = $person.count">
+          <xsl:call-template name="gentext.template">
+            <xsl:with-param name="context" select="'authorgroup'"/>
+            <xsl:with-param name="name" select="'seplast'"/>
+          </xsl:call-template>
+        </xsl:when>
+        <xsl:when test="$count &lt; $person.count">
+          <xsl:call-template name="gentext.template">
+            <xsl:with-param name="context" select="'authorgroup'"/>
+            <xsl:with-param name="name" select="'sep'"/>
+          </xsl:call-template>
+        </xsl:when>
+      </xsl:choose>
+
       <xsl:call-template name="person.name.list">
         <xsl:with-param name="person.list" select="$person.list"/>
         <xsl:with-param name="person.count" select="$person.count"/>
@@ -418,1043 +586,8 @@ Defaults to the context node.</para>
 <xsl:variable name="cmdsynopsis.hanging.indent">4pi</xsl:variable>
 
 <!-- ====================================================================== -->
-<!-- label content -->
 
-<doc:mode mode="label.content" xmlns="">
-<refpurpose>Provides access to element labels</refpurpose>
-<refdescription>
-<para>Processing an element in the
-<literal role="mode">label.content</literal> mode produces the
-element label.</para>
-<para>If the label is non-null, either because the
-<sgmltag class="attribute">label</sgmltag> attribute was present on the
-element or the stylesheet automatically generated a label, trailing
-punctuation is automatically added.</para>
-</refdescription>
-</doc:mode>
-
-<xsl:template match="*" mode="label.content">
-  <xsl:message>
-    <xsl:text>Request for label of unexpected element: </xsl:text>
-    <xsl:value-of select="name(.)"/>
-  </xsl:message>
-</xsl:template>
-
-<xsl:template match="set|book" mode="label.content">
-  <xsl:param name="punct">.</xsl:param>
-  <xsl:if test="@label">
-    <xsl:value-of select="@label"/>
-    <xsl:value-of select="$punct"/>
-  </xsl:if>
-</xsl:template>
-
-<xsl:template match="part" mode="label.content">
-  <xsl:param name="punct">.</xsl:param>
-  <xsl:choose>
-    <xsl:when test="@label">
-      <xsl:value-of select="@label"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-    <xsl:when test="$part.autolabel != 0">
-      <xsl:number from="book" count="part" format="I"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="preface" mode="label.content">
-  <xsl:param name="punct">.</xsl:param>
-  <xsl:choose>
-    <xsl:when test="@label">
-      <xsl:value-of select="@label"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-    <xsl:when test="$preface.autolabel != 0">
-      <xsl:number from="book" count="preface" format="1" level="any"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="chapter" mode="label.content">
-  <xsl:param name="punct">.</xsl:param>
-  <xsl:choose>
-    <xsl:when test="@label">
-      <xsl:value-of select="@label"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-    <xsl:when test="$chapter.autolabel != 0">
-      <xsl:number from="book" count="chapter" format="1" level="any"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="appendix" mode="label.content">
-  <xsl:param name="punct">.</xsl:param>
-  <xsl:choose>
-    <xsl:when test="@label">
-      <xsl:value-of select="@label"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-    <xsl:when test="$chapter.autolabel != 0">
-      <xsl:number from="book" count="appendix" format="A" level="any"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="article" mode="label.content">
-  <xsl:param name="punct">.</xsl:param>
-  <xsl:if test="@label">
-    <xsl:value-of select="@label"/>
-    <xsl:value-of select="$punct"/>
-  </xsl:if>
-</xsl:template>
-
-<xsl:template match="dedication|colophon" mode="label.content">
-  <xsl:param name="punct">.</xsl:param>
-  <xsl:if test="@label">
-    <xsl:value-of select="@label"/>
-    <xsl:value-of select="$punct"/>
-  </xsl:if>
-</xsl:template>
-
-<xsl:template match="reference" mode="label.content">
-  <xsl:param name="punct">.</xsl:param>
-  <xsl:choose>
-    <xsl:when test="@label">
-      <xsl:value-of select="@label"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-    <xsl:when test="$part.autolabel != 0">
-      <xsl:number from="book" count="reference" format="I" level="any"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="refentry" mode="label.content">
-  <xsl:param name="punct">.</xsl:param>
-  <xsl:if test="@label">
-    <xsl:value-of select="@label"/>
-    <xsl:value-of select="$punct"/>
-  </xsl:if>
-</xsl:template>
-
-<xsl:template match="section" mode="label.content">
-  <xsl:param name="punct">.</xsl:param>
-
-  <!-- if this is a nested section, label the parent -->
-  <xsl:if test="local-name(..) = 'section'">
-    <xsl:apply-templates select=".." mode="label.content">
-      <xsl:with-param name="punct">.</xsl:with-param>
-    </xsl:apply-templates>
-  </xsl:if>
-
-  <!-- if the parent is a component, maybe label that too -->
-  <xsl:variable name="parent.is.component">
-    <xsl:call-template name="is.component">
-      <xsl:with-param name="node" select=".."/>
-    </xsl:call-template>
-  </xsl:variable>
-
-  <!-- does this section get labelled? -->
-  <xsl:variable name="label">
-    <xsl:call-template name="label.this.section">
-      <xsl:with-param name="section" select="."/>
-    </xsl:call-template>
-  </xsl:variable>
-
-  <xsl:if test="$section.label.includes.component.label != 0
-                and $parent.is.component != 0">
-    <xsl:apply-templates select=".." mode="label.content">
-      <xsl:with-param name="punct">.</xsl:with-param>
-    </xsl:apply-templates>
-  </xsl:if>
-
-  <xsl:choose>
-    <xsl:when test="@label">
-      <xsl:value-of select="@label"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-    <xsl:when test="$label != 0">
-      <xsl:number count="section"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="sect1" mode="label.content">
-  <xsl:param name="punct">.</xsl:param>
-
-  <!-- if the parent is a component, maybe label that too -->
-  <xsl:variable name="parent.is.component">
-    <xsl:call-template name="is.component">
-      <xsl:with-param name="node" select=".."/>
-    </xsl:call-template>
-  </xsl:variable>
-  <xsl:if test="$section.label.includes.component.label != 0
-                and $parent.is.component">
-    <xsl:apply-templates select=".." mode="label.content">
-      <xsl:with-param name="punct">.</xsl:with-param>
-    </xsl:apply-templates>
-  </xsl:if>
-
-  <xsl:choose>
-    <xsl:when test="@label">
-      <xsl:value-of select="@label"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-    <xsl:when test="$section.autolabel != 0">
-      <xsl:number count="sect1"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="sect2|sect3|sect4|sect5" mode="label.content">
-  <xsl:param name="punct">.</xsl:param>
-
-  <!-- label the parent -->
-  <xsl:apply-templates select=".." mode="label.content">
-    <xsl:with-param name="punct">.</xsl:with-param>
-  </xsl:apply-templates>
-
-  <xsl:choose>
-    <xsl:when test="@label">
-      <xsl:value-of select="@label"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-    <xsl:when test="$section.autolabel != 0">
-      <xsl:choose>
-	<xsl:when test="local-name(.) = 'sect2'">
-	  <xsl:number count="sect2"/>
-	</xsl:when>
-	<xsl:when test="local-name(.) = 'sect3'">
-	  <xsl:number count="sect3"/>
-	</xsl:when>
-	<xsl:when test="local-name(.) = 'sect4'">
-	  <xsl:number count="sect4"/>
-	</xsl:when>
-	<xsl:when test="local-name(.) = 'sect5'">
-	  <xsl:number count="sect5"/>
-	</xsl:when>
-	<xsl:otherwise>
-	  <xsl:message>label.content: this can't happen!</xsl:message>
-	</xsl:otherwise>
-      </xsl:choose>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="refsect1|refsect2|refsect3" mode="label.content">
-  <xsl:param name="punct">.</xsl:param>
-  <xsl:choose>
-    <xsl:when test="@label">
-      <xsl:value-of select="@label"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-    <xsl:when test="$section.autolabel != 0">
-      <xsl:number level="multiple" count="refsect1|refsect2|refsect3"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="simplesect" mode="label.content">
-  <xsl:param name="punct">.</xsl:param>
-  <xsl:choose>
-    <xsl:when test="@label">
-      <xsl:value-of select="@label"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-    <xsl:when test="$section.autolabel != 0">
-      <xsl:number level="multiple" count="section
-                                          |sect1|sect2|sect3|sect4|sect5
-                                          |refsect1|refsect2|refsect3
-                                          |simplesect"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="qandadiv" mode="label.content">
-  <xsl:param name="punct">.</xsl:param>
-  <xsl:variable name="prefix">
-    <xsl:if test="$qanda.inherit.numeration != 0">
-      <xsl:variable name="lparent" select="(ancestor::set
-                                            |ancestor::book
-                                            |ancestor::chapter
-                                            |ancestor::appendix
-                                            |ancestor::preface
-                                            |ancestor::section
-                                            |ancestor::simplesect
-                                            |ancestor::sect1
-                                            |ancestor::sect2
-                                            |ancestor::sect3
-                                            |ancestor::sect4
-                                            |ancestor::sect5
-                                            |ancestor::refsect1
-                                            |ancestor::refsect2
-                                            |ancestor::refsect3)[last()]"/>
-      <xsl:if test="count($lparent)>0">
-        <xsl:apply-templates select="$lparent" mode="label.content"/>
-      </xsl:if>
-    </xsl:if>
-  </xsl:variable>
-  <xsl:choose>
-    <xsl:when test="@label">
-      <xsl:value-of select="$prefix"/>
-      <xsl:value-of select="@label"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-    <xsl:when test="$qandadiv.autolabel != 0">
-      <xsl:value-of select="$prefix"/>
-      <xsl:number level="multiple" count="qandadiv" format="1"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="question|answer" mode="label.content">
-  <xsl:param name="punct">.</xsl:param>
-  <xsl:variable name="prefix">
-    <xsl:if test="$qanda.inherit.numeration != 0">
-      <xsl:variable name="lparent" select="(ancestor::set
-                                            |ancestor::book
-                                            |ancestor::chapter
-                                            |ancestor::appendix
-                                            |ancestor::preface
-                                            |ancestor::section
-                                            |ancestor::simplesect
-                                            |ancestor::sect1
-                                            |ancestor::sect2
-                                            |ancestor::sect3
-                                            |ancestor::sect4
-                                            |ancestor::sect5
-                                            |ancestor::refsect1
-                                            |ancestor::refsect2
-                                            |ancestor::refsect3
-                                            |ancestor::qandadiv)[last()]"/>
-      <xsl:if test="count($lparent)>0">
-        <xsl:apply-templates select="$lparent" mode="label.content"/>
-      </xsl:if>
-    </xsl:if>
-  </xsl:variable>
-
-  <xsl:variable name="inhlabel"
-                select="ancestor-or-self::qandaset/@defaultlabel[1]"/>
-
-  <xsl:variable name="deflabel">
-    <xsl:choose>
-      <xsl:when test="$inhlabel != ''">
-        <xsl:value-of select="$inhlabel"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="$qanda.defaultlabel"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:variable>
-
-  <xsl:variable name="label" select="label"/>
-
-  <xsl:choose>
-    <xsl:when test="count($label)>0">
-      <xsl:value-of select="$prefix"/>
-      <xsl:apply-templates select="$label"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-
-    <xsl:when test="$deflabel = 'qanda'">
-      <xsl:call-template name="gentext.element.name"/>
-    </xsl:when>
-
-    <xsl:when test="$deflabel = 'number'">
-      <xsl:if test="name(.) = 'question'">
-        <xsl:value-of select="$prefix"/>
-        <xsl:number level="multiple" count="qandaentry" format="1"/>
-        <xsl:value-of select="$punct"/>
-      </xsl:if>
-    </xsl:when>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="bibliography|glossary|index" mode="label.content">
-  <xsl:param name="punct">.</xsl:param>
-  <xsl:if test="@label">
-    <xsl:value-of select="@label"/>
-    <xsl:value-of select="$punct"/>
-  </xsl:if>
-</xsl:template>
-
-<xsl:template match="figure|table|example|equation" mode="label.content">
-  <xsl:param name="punct">.</xsl:param>
-  <xsl:choose>
-    <xsl:when test="@label">
-      <xsl:value-of select="@label"/>
-      <xsl:value-of select="$punct"/>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:variable name="pchap"
-                    select="ancestor::chapter|ancestor::appendix"/>
-      <xsl:choose>
-        <xsl:when test="count($pchap)>0">
-          <xsl:apply-templates select="$pchap" mode="label.content">
-            <xsl:with-param name="punct">.</xsl:with-param>
-          </xsl:apply-templates>
-          <xsl:number format="1" from="chapter|appendix" level="any"/>
-          <xsl:value-of select="$punct"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:number format="1" from="book|article" level="any"/>
-          <xsl:value-of select="$punct"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="abstract" mode="label.content">
-  <xsl:param name="punct">.</xsl:param>
-</xsl:template>
-
-<!-- ====================================================================== -->
-
-<xsl:template name="label.this.section">
-  <xsl:param name="section" select="."/>
-  <xsl:value-of select="$section.autolabel"/>
-</xsl:template>
-
-<doc:template name="label.this.section" xmlns="">
-<refpurpose>Returns true if $section should be labelled</refpurpose>
-<refdescription>
-<para>Returns true if the specified section should be labelled.
-By default, this template simply returns $section.autolabel, but
-custom stylesheets may override it to get more selective behavior.</para>
-</refdescription>
-</doc:template>
-
-<!-- ====================================================================== -->
-<!-- title content -->
-
-<doc:mode mode="title.content" xmlns="">
-<refpurpose>Provides access to element titles</refpurpose>
-<refdescription>
-<para>Processing an element in the
-<literal role="mode">title.content</literal> mode produces the
-title of the element. This does not include the label. If
-<parameter>text-only</parameter> is true, the text of the title
-is returned, without inline markup, otherwise inline markup is processed
-(in the default mode). By default, <parameter>text-only</parameter>
-is false.
-</para>
-</refdescription>
-</doc:mode>
-
-<xsl:template match="*" mode="title.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:choose>
-    <xsl:when test="title">
-      <xsl:apply-templates select="title[1]" mode="title.content">
-	<xsl:with-param name="text-only" select="$text-only"/>
-	<xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-      </xsl:apply-templates>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:message>
-	<xsl:text>Request for title of unexpected element: </xsl:text>
-	<xsl:value-of select="name(.)"/>
-      </xsl:message>
-      <xsl:text>???TITLE???</xsl:text>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="*" mode="no.anchor.mode">
-  <xsl:apply-templates select="."/>
-</xsl:template>
-
-<xsl:template match="anchor" mode="no.anchor.mode">
-  <!-- nop, suppressed -->
-</xsl:template>
-
-<xsl:template match="title" mode="title.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:choose>
-    <xsl:when test="$text-only != 0">
-      <xsl:value-of select="."/>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:choose>
-        <xsl:when test="$allow-anchors != 0">
-          <xsl:apply-templates/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:apply-templates mode="no.anchor.mode"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="set" mode="title.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:apply-templates select="(setinfo/title|title)[1]"
-                       mode="title.content">
-    <xsl:with-param name="text-only" select="$text-only"/>
-    <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-  </xsl:apply-templates>
-</xsl:template>
-
-<xsl:template match="book" mode="title.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:apply-templates select="(bookinfo/title|title)[1]"
-                       mode="title.content">
-    <xsl:with-param name="text-only" select="$text-only"/>
-    <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-  </xsl:apply-templates>
-</xsl:template>
-
-<xsl:template match="part" mode="title.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:apply-templates select="(partinfo/title|docinfo/title|title)[1]"
-                       mode="title.content">
-    <xsl:with-param name="text-only" select="$text-only"/>
-    <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-  </xsl:apply-templates>
-</xsl:template>
-
-<xsl:template match="preface|chapter|appendix" mode="title.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:variable name="title" select="(docinfo/title
-                                      |prefaceinfo/title
-                                      |chapterinfo/title
-                                      |appendixinfo/title
-                                      |title)[1]"/>
-  <xsl:choose>
-    <xsl:when test="$title">
-      <xsl:apply-templates select="$title" mode="title.content">
-        <xsl:with-param name="text-only" select="$text-only"/>
-        <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-      </xsl:apply-templates>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:call-template name="gentext.element.name">
-        <xsl:with-param name="element.name" select="name(.)"/>
-      </xsl:call-template>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="dedication|colophon" mode="title.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:choose>
-    <xsl:when test="title">
-      <xsl:apply-templates select="title" mode="title.content">
-        <xsl:with-param name="text-only" select="$text-only"/>
-        <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-      </xsl:apply-templates>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:call-template name="gentext.element.name">
-        <xsl:with-param name="element.name" select="name(.)"/>
-      </xsl:call-template>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="article" mode="title.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:variable name="title" select="(artheader/title
-                                      |articleinfo/title
-                                      |title)[1]"/>
-
-  <xsl:apply-templates select="$title" mode="title.content">
-    <xsl:with-param name="text-only" select="$text-only"/>
-    <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-  </xsl:apply-templates>
-</xsl:template>
-
-<xsl:template match="reference" mode="title.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:apply-templates select="(referenceinfo/title|docinfo/title|title)[1]"
-                       mode="title.content">
-    <xsl:with-param name="text-only" select="$text-only"/>
-    <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-  </xsl:apply-templates>
-</xsl:template>
-
-<xsl:template match="refentry" mode="title.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:variable name="refmeta" select=".//refmeta"/>
-  <xsl:variable name="refentrytitle" select="$refmeta//refentrytitle"/>
-  <xsl:variable name="refnamediv" select=".//refnamediv"/>
-  <xsl:variable name="refname" select="$refnamediv//refname"/>
-
-  <xsl:variable name="title">
-    <xsl:choose>
-      <xsl:when test="$refentrytitle">
-        <xsl:apply-templates select="$refentrytitle[1]" mode="title.content"/>
-      </xsl:when>
-      <xsl:when test="$refname">
-        <xsl:apply-templates select="$refname[1]" mode="title.content"/>
-      </xsl:when>
-      <xsl:otherwise>REFENTRY WITHOUT TITLE???</xsl:otherwise>
-    </xsl:choose>
-  </xsl:variable>
-
-  <xsl:choose>
-    <xsl:when test="$text-only != 0">
-      <xsl:value-of select="$title"/>
-    </xsl:when>
-    <xsl:otherwise><xsl:copy-of select="$title"/></xsl:otherwise>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="refentrytitle|refname" mode="title.content">
-  <xsl:apply-templates/>
-</xsl:template>
-
-<xsl:template match="section
-                     |sect1|sect2|sect3|sect4|sect5
-                     |refsect1|refsect2|refsect3
-                     |simplesect"
-              mode="title.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:variable name="title" select="(sectioninfo/title
-                                      |sect1info/title
-                                      |sect2info/title
-                                      |sect3info/title
-                                      |sect4info/title
-                                      |sect5info/title
-                                      |refsect1info/title
-                                      |refsect2info/title
-                                      |refsect3info/title
-                                      |title)[1]"/>
-
-  <xsl:apply-templates select="$title" mode="title.content">
-    <xsl:with-param name="text-only" select="$text-only"/>
-    <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-  </xsl:apply-templates>
-</xsl:template>
-
-<xsl:template match="bibliography|glossary|index" mode="title.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:choose>
-    <xsl:when test="title">
-      <xsl:apply-templates select="title" mode="title.content">
-        <xsl:with-param name="text-only" select="$text-only"/>
-        <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-      </xsl:apply-templates>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:call-template name="gentext.element.name">
-        <xsl:with-param name="element.name" select="name(.)"/>
-      </xsl:call-template>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="figure|table|example|equation" mode="title.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:apply-templates select="title" mode="title.content">
-    <xsl:with-param name="text-only" select="$text-only"/>
-    <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-  </xsl:apply-templates>
-</xsl:template>
-
-<xsl:template match="abstract" mode="title.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:choose>
-    <xsl:when test="title">
-      <xsl:apply-templates select="title" mode="title.content">
-        <xsl:with-param name="text-only" select="$text-only"/>
-        <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-      </xsl:apply-templates>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:call-template name="gentext.element.name">
-        <xsl:with-param name="element.name" select="name(.)"/>
-      </xsl:call-template>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:template>
-
-<!-- ====================================================================== -->
-<!-- subtitle content -->
-
-<doc:mode mode="subtitle.content" xmlns="">
-<refpurpose>Provides access to element subtitles</refpurpose>
-<refdescription>
-<para>Processing an element in the
-<literal role="mode">subtitle.content</literal> mode produces the
-subtitle of the element. If
-<parameter>text-only</parameter> is true, the text of the title
-is returned, without inline markup, otherwise inline markup is processed
-(in the default mode). By default, <parameter>text-only</parameter>
-is false.
-</para>
-</refdescription>
-</doc:mode>
-
-<xsl:template match="*" mode="subtitle.content">
-  <xsl:message>
-    <xsl:text>Request for subtitle of unexpected element: </xsl:text>
-    <xsl:value-of select="name(.)"/>
-  </xsl:message>
-  <xsl:text>???SUBTITLE???</xsl:text>
-</xsl:template>
-
-<xsl:template match="subtitle" mode="subtitle.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:choose>
-    <xsl:when test="$text-only != 0">
-      <xsl:value-of select="."/>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:apply-templates/>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="set" mode="subtitle.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:apply-templates select="(setinfo/subtitle|subtitle)[1]"
-                       mode="subtitle.content">
-    <xsl:with-param name="text-only" select="$text-only"/>
-    <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-  </xsl:apply-templates>
-</xsl:template>
-
-<xsl:template match="book" mode="subtitle.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:apply-templates select="(bookinfo/subtitle|subtitle)[1]"
-                       mode="subtitle.content">
-    <xsl:with-param name="text-only" select="$text-only"/>
-    <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-  </xsl:apply-templates>
-</xsl:template>
-
-<xsl:template match="part" mode="subtitle.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:apply-templates select="(partinfo/subtitle
-                                |docinfo/subtitle
-                                |subtitle)[1]"
-                       mode="subtitle.content">
-    <xsl:with-param name="text-only" select="$text-only"/>
-    <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-  </xsl:apply-templates>
-</xsl:template>
-
-<xsl:template match="preface|chapter|appendix" mode="subtitle.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:apply-templates select="(docinfo/subtitle
-                                |prefaceinfo/subtitle
-                                |chapterinfo/subtitle
-                                |appendixinfo/subtitle
-                                |subtitle)[1]"
-                       mode="subtitle.content">
-    <xsl:with-param name="text-only" select="$text-only"/>
-    <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-  </xsl:apply-templates>
-</xsl:template>
-
-<xsl:template match="dedication|colophon" mode="subtitle.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:apply-templates select="subtitle"
-                       mode="subtitle.content">
-    <xsl:with-param name="text-only" select="$text-only"/>
-    <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-  </xsl:apply-templates>
-</xsl:template>
-
-<xsl:template match="reference" mode="subtitle.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:apply-templates select="(referenceinfo/subtitle
-                                |docinfo/subtitle
-                                |subtitle)[1]"
-                       mode="subtitle.content">
-    <xsl:with-param name="text-only" select="$text-only"/>
-    <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-  </xsl:apply-templates>
-</xsl:template>
-
-<xsl:template match="refentry" mode="subtitle.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:apply-templates select="(refentryinfo/subtitle
-                                |docinfo/subtitle)[1]"
-                       mode="subtitle.content">
-    <xsl:with-param name="text-only" select="$text-only"/>
-    <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-  </xsl:apply-templates>
-</xsl:template>
-
-<xsl:template match="section
-                     |sect1|sect2|sect3|sect4|sect5
-                     |refsect1|refsect2|refsect3
-                     |simplesect"
-              mode="subtitle.content">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:apply-templates select="(sectioninfo/subtitle
-                                |sect1info/subtitle
-                                |sect2info/subtitle
-                                |sect3info/subtitle
-                                |sect4info/subtitle
-                                |sect5info/subtitle
-                                |refsect1info/subtitle
-                                |refsect2info/subtitle
-                                |refsect3info/subtitle
-                                |subtitle)[1]"
-                       mode="subtitle.content">
-    <xsl:with-param name="text-only" select="$text-only"/>
-    <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-  </xsl:apply-templates>
-</xsl:template>
-
-<!-- ====================================================================== -->
-<!-- title reference (label + title) -->
-
-<doc:mode mode="title.ref" xmlns="">
-<refpurpose>Provides reference text for an element</refpurpose>
-<refdescription>
-<para>Processing an element in the
-<literal role="mode">title.ref</literal> mode produces the
-label and title of the element.
-</para>
-</refdescription>
-<refparameter>
-<variablelist>
-<varlistentry><term>text-only</term>
-<listitem>
-<para> If
-<parameter>text-only</parameter> is true, the text of the title
-is returned, without inline markup, otherwise inline markup is processed
-(in the default mode). By default, <parameter>text-only</parameter>
-is false.</para>
-</listitem>
-</varlistentry>
-<varlistentry><term>label-wrapper</term>
-<listitem>
-<para>If <parameter>label-wrapper</parameter> is not the emtpy string,
-it must be the name of an element. The element so named will be wrapped
-around labels on output.</para>
-</listitem>
-</varlistentry>
-<varlistentry><term>title-wrapper</term>
-<listitem>
-<para>If <parameter>title.wrapper</parameter> is not the emtpy string,
-it must be the name of an element. The element so named will be wrapped
-around titles on output.</para>
-</listitem>
-</varlistentry>
-<varlistentry><term>label-wrapper-class</term>
-<listitem>
-<para>If a <parameter>label-wrapper</parameter> is provided and
-<parameter>label-wrapper-class</parameter> is not the emtpy string,
-it be used as the value for a <sgmltag class="attribute">class</sgmltag>
-attribute on the <parameter>label-wrapper</parameter> element.</para>
-<para>This is a dirty hack because it only makes sense for the HTML
-stylesheet (there's no <sgmltag class="attribute">class</sgmltag> attribute
-on the FO elements). What I'd really like to do is pass an attribute
-set as a parameter, but I can't.</para>
-</listitem>
-</varlistentry>
-<varlistentry><term>title-wrapper-class</term>
-<listitem>
-<para>If a <parameter>title-wrapper</parameter> is provided and
-<parameter>title-wrapper-class</parameter> is not the emtpy string,
-it be used as the value for a <sgmltag class="attribute">class</sgmltag>
-attribute on the <parameter>title-wrapper</parameter> element.</para>
-<para>This is a dirty hack because it only makes sense for the HTML
-stylesheet (there's no <sgmltag class="attribute">class</sgmltag> attribute
-on the FO elements). What I'd really like to do is pass an attribute
-set as a parameter, but I can't.</para>
-</listitem>
-</varlistentry>
-</variablelist>
-</refparameter>
-</doc:mode>
-
-<xsl:template match="*" mode="title.ref">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:param name="label-wrapper" select="''"/>
-  <xsl:param name="title-wrapper" select="''"/>
-  <!-- Dirty hack -->
-  <xsl:param name="label-wrapper-class" select="''"/>
-  <xsl:param name="title-wrapper-class" select="''"/>
-
-  <xsl:variable name="label">
-    <xsl:apply-templates select="." mode="label.content"/>
-  </xsl:variable>
-
-  <xsl:if test="$label != ''">
-    <xsl:choose>
-      <xsl:when test="$text-only = 0">
-        <xsl:choose>
-          <xsl:when test="$label-wrapper != ''">
-            <xsl:element name="{$label-wrapper}">
-              <xsl:if test="$label-wrapper-class != ''">
-                <xsl:attribute name="class">
-                  <xsl:value-of select="$label-wrapper-class"/>
-                </xsl:attribute>
-              </xsl:if>
-              <xsl:copy-of select="$label"/>
-            </xsl:element>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:copy-of select="$label"/>
-          </xsl:otherwise>
-        </xsl:choose>
-        <xsl:text> </xsl:text>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="$label"/>
-        <xsl:text> </xsl:text>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:if>
-
-  <xsl:choose>
-    <xsl:when test="$text-only = 0">
-      <xsl:choose>
-        <xsl:when test="$title-wrapper != ''">
-          <xsl:element name="{$title-wrapper}">
-            <xsl:if test="$title-wrapper-class != ''">
-              <xsl:attribute name="class">
-                <xsl:value-of select="$title-wrapper-class"/>
-              </xsl:attribute>
-            </xsl:if>
-            <xsl:apply-templates select="." mode="title.content">
-              <xsl:with-param name="text-only" select="$text-only"/>
-              <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-            </xsl:apply-templates>
-          </xsl:element>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:apply-templates select="." mode="title.content">
-            <xsl:with-param name="text-only" select="$text-only"/>
-            <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-          </xsl:apply-templates>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:apply-templates select="." mode="title.content">
-        <xsl:with-param name="text-only" select="$text-only"/>
-        <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-      </xsl:apply-templates>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:template>
-
-<xsl:template match="figure|table|example|equation
-                     |chapter|appendix" mode="title.ref">
-  <xsl:param name="text-only" select="'0'"/>
-  <xsl:param name="allow-anchors" select="'0'"/>
-  <xsl:param name="label-wrapper" select="''"/>
-  <xsl:param name="title-wrapper" select="''"/>
-  <!-- Dirty hack -->
-  <xsl:param name="label-wrapper-class" select="''"/>
-  <xsl:param name="title-wrapper-class" select="''"/>
-
-  <xsl:variable name="label">
-    <xsl:call-template name="gentext.element.name">
-      <xsl:with-param name="element.name">
-        <xsl:value-of select="name(.)"/>
-      </xsl:with-param>
-    </xsl:call-template>
-    <xsl:call-template name="gentext.space"/>
-    <xsl:apply-templates select="." mode="label.content"/>
-  </xsl:variable>
-
-  <xsl:if test="$label != ''">
-    <xsl:choose>
-      <xsl:when test="$text-only = 0">
-        <xsl:choose>
-          <xsl:when test="$label-wrapper != ''">
-            <xsl:element name="{$label-wrapper}">
-              <xsl:if test="$label-wrapper-class != ''">
-                <xsl:attribute name="class">
-                  <xsl:value-of select="$label-wrapper-class"/>
-                </xsl:attribute>
-              </xsl:if>
-              <xsl:copy-of select="$label"/>
-            </xsl:element>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:copy-of select="$label"/>
-          </xsl:otherwise>
-        </xsl:choose>
-        <xsl:text> </xsl:text>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="$label"/>
-        <xsl:text> </xsl:text>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:if>
-
-  <xsl:choose>
-    <xsl:when test="$text-only = 0">
-      <xsl:choose>
-        <xsl:when test="$title-wrapper != ''">
-          <xsl:element name="{$title-wrapper}">
-            <xsl:if test="$title-wrapper-class != ''">
-              <xsl:attribute name="class">
-                <xsl:value-of select="$title-wrapper-class"/>
-              </xsl:attribute>
-            </xsl:if>
-            <xsl:apply-templates select="." mode="title.content">
-              <xsl:with-param name="text-only" select="$text-only"/>
-              <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-            </xsl:apply-templates>
-          </xsl:element>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:apply-templates select="." mode="title.content">
-            <xsl:with-param name="text-only" select="$text-only"/>
-            <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-          </xsl:apply-templates>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:apply-templates select="." mode="title.content">
-        <xsl:with-param name="text-only" select="$text-only"/>
-        <xsl:with-param name="allow-anchors" select="$allow-anchors"/>
-      </xsl:apply-templates>
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:template>
-
-<!-- ====================================================================== -->
-
+<!--
 <xsl:template name="xref.g.subst">
   <xsl:param name="string"></xsl:param>
   <xsl:param name="target" select="."/>
@@ -1547,6 +680,7 @@ set as a parameter, but I can't.</para>
     <xsl:with-param name="target" select="$target"/>
   </xsl:call-template>
 </xsl:template>
+-->
 
 <!-- ====================================================================== -->
 
@@ -1651,7 +785,7 @@ of media objects is that the first acceptable graphic should be used.
           <xsl:text>0</xsl:text>
         </xsl:when>
 	<!-- The first textobject is a reasonable fallback -->
-        <xsl:when test="name($object)='textobject'">
+        <xsl:when test="name($object)='textobject' and $object[not(@role) or @role!='tex']">
           <xsl:text>1</xsl:text>
         </xsl:when>
 	<!-- If there's only one object, use it -->
@@ -1759,37 +893,13 @@ object is recognized as a graphic.</para>
   </xsl:choose>
 </xsl:template>
 
-<xsl:template name="is.graphic.format">
-  <xsl:param name="format"></xsl:param>
-  <xsl:if test="$format = 'PNG'
-                or $format = 'JPG'
-                or $format = 'JPEG'
-                or $format = 'linespecific'
-                or $format = 'GIF'
-                or $format = 'GIF87a'
-                or $format = 'GIF89a'
-                or $format = 'BMP'">1</xsl:if>
-</xsl:template>
-
-<xsl:template name="is.graphic.extension">
-  <xsl:param name="ext"></xsl:param>
-  <xsl:if test="$ext = 'png'
-                or $ext = 'jpeg'
-                or $ext = 'jpg'
-                or $ext = 'avi'
-                or $ext = 'mpg'
-                or $ext = 'mpeg'
-                or $ext = 'qt'
-                or $ext = 'gif'
-                or $ext = 'bmp'">1</xsl:if>
-</xsl:template>
-
 <xsl:template name="mediaobject.filename">
   <xsl:param name="object"></xsl:param>
 
   <xsl:variable name="data" select="$object/videodata
                                     |$object/imagedata
-                                    |$object/audiodata"/>
+                                    |$object/audiodata
+                                    |$object"/>
 
   <xsl:variable name="filename">
     <xsl:choose>
@@ -1870,7 +980,7 @@ the ID is not unique.</para>
 <xsl:template name="check.id.unique">
   <xsl:param name="linkend"></xsl:param>
   <xsl:if test="$linkend != ''">
-    <xsl:variable name="targets" select="id($linkend)"/>
+    <xsl:variable name="targets" select="key('id',$linkend)"/>
     <xsl:variable name="target" select="$targets[1]"/>
 
     <xsl:if test="count($targets)=0">
@@ -1879,6 +989,12 @@ the ID is not unique.</para>
 	<xsl:value-of select="$linkend"/>
 	<xsl:text>.</xsl:text>
       </xsl:message>
+      <!--
+      <xsl:message>
+	<xsl:text>If the ID exists in your document, did your </xsl:text>
+        <xsl:text>XSLT Processor load the DTD?</xsl:text>
+      </xsl:message>
+      -->
     </xsl:if>
 
     <xsl:if test="count($targets)>1">
@@ -1905,7 +1021,7 @@ pointed to by the link is one of the elements listed in
   <xsl:param name="linkend"></xsl:param>
   <xsl:param name="element-list"></xsl:param>
   <xsl:if test="$linkend != ''">
-    <xsl:variable name="targets" select="id($linkend)"/>
+    <xsl:variable name="targets" select="key('id',$linkend)"/>
     <xsl:variable name="target" select="$targets[1]"/>
 
     <xsl:if test="count($target) &gt; 0">
@@ -1924,6 +1040,360 @@ pointed to by the link is one of the elements listed in
 </xsl:template>
 
 <!-- ====================================================================== -->
+<!-- Procedure Step Numeration -->
+
+<xsl:param name="procedure.step.numeration.formats" select="'1aiAI'"/>
+
+<xsl:template name="procedure.step.numeration">
+  <xsl:param name="context" select="."/>
+  <xsl:variable name="format.length"
+                select="string-length($procedure.step.numeration.formats)"/>
+  <xsl:choose>
+    <xsl:when test="local-name($context) = 'substeps'">
+      <xsl:variable name="ssdepth"
+                    select="count($context/ancestor::substeps)"/>
+      <xsl:variable name="sstype" select="($ssdepth mod $format.length)+2"/>
+      <xsl:choose>
+        <xsl:when test="$sstype &gt; $format.length">
+          <xsl:value-of select="substring($procedure.step.numeration.formats,1,1)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="substring($procedure.step.numeration.formats,$sstype,1)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:when>
+    <xsl:when test="local-name($context) = 'step'">
+      <xsl:variable name="sdepth"
+                    select="count($context/ancestor::substeps)"/>
+      <xsl:variable name="stype" select="($sdepth mod $format.length)+1"/>
+      <xsl:value-of select="substring($procedure.step.numeration.formats,$stype,1)"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:message>
+        <xsl:text>Unexpected context in procedure.step.numeration: </xsl:text>
+        <xsl:value-of select="local-name($context)"/>
+      </xsl:message>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<xsl:template match="step" mode="number">
+  <xsl:param name="rest" select="''"/>
+  <xsl:param name="recursive" select="1"/>
+  <xsl:variable name="format">
+    <xsl:call-template name="procedure.step.numeration"/>
+  </xsl:variable>
+  <xsl:variable name="num">
+    <xsl:number count="step" format="{$format}"/>
+  </xsl:variable>
+  <xsl:choose>
+    <xsl:when test="$recursive != 0 and ancestor::step">
+      <xsl:apply-templates select="ancestor::step[1]" mode="number">
+        <xsl:with-param name="rest" select="concat('.', $num, $rest)"/>
+      </xsl:apply-templates>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="concat($num, $rest)"/>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<!-- ====================================================================== -->
+<!-- OrderedList Numeration -->
+
+<xsl:template name="next.numeration">
+  <xsl:param name="numeration" select="'default'"/>
+  <xsl:choose>
+    <!-- Change this list if you want to change the order of numerations -->
+    <xsl:when test="$numeration = 'arabic'">loweralpha</xsl:when>
+    <xsl:when test="$numeration = 'loweralpha'">lowerroman</xsl:when>
+    <xsl:when test="$numeration = 'lowerroman'">upperalpha</xsl:when>
+    <xsl:when test="$numeration = 'upperalpha'">upperroman</xsl:when>
+    <xsl:when test="$numeration = 'upperroman'">arabic</xsl:when>
+    <xsl:otherwise>arabic</xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<xsl:template name="list.numeration">
+  <xsl:param name="node" select="."/>
+
+  <xsl:choose>
+    <xsl:when test="$node/@numeration">
+      <xsl:value-of select="$node/@numeration"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:choose>
+        <xsl:when test="$node/ancestor::orderedlist">
+          <xsl:call-template name="next.numeration">
+            <xsl:with-param name="numeration">
+              <xsl:call-template name="list.numeration">
+                <xsl:with-param name="node" select="$node/ancestor::orderedlist[1]"/>
+              </xsl:call-template>
+            </xsl:with-param>
+          </xsl:call-template>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:call-template name="next.numeration"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<!-- ====================================================================== -->
+<!-- ItemizedList "Numeration" -->
+
+<xsl:template name="next.itemsymbol">
+  <xsl:param name="itemsymbol" select="'default'"/>
+  <xsl:choose>
+    <!-- Change this list if you want to change the order of symbols -->
+    <xsl:when test="$itemsymbol = 'disc'">round</xsl:when>
+    <xsl:when test="$itemsymbol = 'round'">square</xsl:when>
+    <xsl:otherwise>disc</xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<xsl:template name="list.itemsymbol">
+  <xsl:param name="node" select="."/>
+
+  <xsl:choose>
+    <xsl:when test="$node/@mark">
+      <xsl:value-of select="$node/@mark"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:choose>
+        <xsl:when test="$node/ancestor::itemizedlist">
+          <xsl:call-template name="next.itemsymbol">
+            <xsl:with-param name="itemsymbol">
+              <xsl:call-template name="list.itemsymbol">
+                <xsl:with-param name="node" select="$node/ancestor::itemizedlist[1]"/>
+              </xsl:call-template>
+            </xsl:with-param>
+          </xsl:call-template>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:call-template name="next.itemsymbol"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<!-- ====================================================================== -->
+
+<doc:template name="copyright.years" xmlns="">
+<refpurpose>Print a set of years with collapsed ranges</refpurpose>
+
+<refdescription>
+<para>This template prints a list of year elements with consecutive
+years printed as a range. In other words:</para>
+
+<screen><![CDATA[<year>1992</year>
+<year>1993</year>
+<year>1994</year>]]></screen>
+
+<para>is printed <quote>1992-1994</quote>, whereas:</para>
+
+<screen><![CDATA[<year>1992</year>
+<year>1994</year>]]></screen>
+
+<para>is printed <quote>1992, 1994</quote>.</para>
+
+<para>This template assumes that all the year elements contain only
+decimal year numbers, that the elements are sorted in increasing
+numerical order, that there are no duplicates, and that all the years
+are expressed in full <quote>century+year</quote>
+(<quote>1999</quote> not <quote>99</quote>) notation.</para>
+</refdescription>
+
+<refparameter>
+<variablelist>
+<varlistentry><term>years</term>
+<listitem>
+<para>The initial set of year elements.</para>
+</listitem>
+</varlistentry>
+<varlistentry><term>print.ranges</term>
+<listitem>
+<para>If non-zero, multi-year ranges are collapsed. If zero, all years
+are printed discretely.</para>
+</listitem>
+</varlistentry>
+<varlistentry><term>single.year.ranges</term>
+<listitem>
+<para>If non-zero, two consecutive years will be printed as a range,
+otherwise, they will be printed discretely. In other words, a single
+year range is <quote>1991-1992</quote> but discretely it's
+<quote>1991, 1992</quote>.</para>
+</listitem>
+</varlistentry>
+</variablelist>
+</refparameter>
+
+<refreturn>
+<para>This template returns the formatted list of years.</para>
+</refreturn>
+</doc:template>
+
+<xsl:template name="copyright.years">
+  <xsl:param name="years"/>
+  <xsl:param name="print.ranges" select="1"/>
+  <xsl:param name="single.year.ranges" select="0"/>
+  <xsl:param name="firstyear" select="0"/>
+  <xsl:param name="nextyear" select="0"/>
+
+  <!--
+  <xsl:message terminate="no">
+    <xsl:text>CY: </xsl:text>
+    <xsl:value-of select="count($years)"/>
+    <xsl:text>, </xsl:text>
+    <xsl:value-of select="$firstyear"/>
+    <xsl:text>, </xsl:text>
+    <xsl:value-of select="$nextyear"/>
+    <xsl:text> (</xsl:text>
+    <xsl:value-of select="$years[1]"/>
+    <xsl:text>)</xsl:text>
+  </xsl:message>
+  -->
+
+  <xsl:choose>
+    <xsl:when test="$print.ranges = 0">
+      <xsl:choose>
+        <xsl:when test="count($years) = 1">
+          <xsl:apply-templates select="$years[1]" mode="titlepage.mode"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="$years[1]" mode="titlepage.mode"/>
+          <xsl:text>, </xsl:text>
+          <xsl:call-template name="copyright.years">
+            <xsl:with-param name="years"
+                            select="$years[position() &gt; 1]"/>
+            <xsl:with-param name="print.ranges" select="$print.ranges"/>
+            <xsl:with-param name="single.year.ranges"
+                            select="$single.year.ranges"/>
+          </xsl:call-template>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:when>
+    <xsl:when test="count($years) = 0">
+      <xsl:variable name="lastyear" select="$nextyear - 1"/>
+      <xsl:choose>
+        <xsl:when test="$firstyear = 0">
+          <!-- there weren't any years at all -->
+        </xsl:when>
+        <xsl:when test="$firstyear = $lastyear">
+          <xsl:value-of select="$firstyear"/>
+        </xsl:when>
+        <xsl:when test="$single.year.ranges = 0
+                        and $lastyear = $firstyear + 1">
+          <xsl:value-of select="$firstyear"/>
+          <xsl:text>, </xsl:text>
+          <xsl:value-of select="$lastyear"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$firstyear"/>
+          <xsl:text>-</xsl:text>
+          <xsl:value-of select="$lastyear"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:when>
+    <xsl:when test="$firstyear = 0">
+      <xsl:call-template name="copyright.years">
+        <xsl:with-param name="years"
+                        select="$years[position() &gt; 1]"/>
+        <xsl:with-param name="firstyear" select="$years[1]"/>
+        <xsl:with-param name="nextyear" select="$years[1] + 1"/>
+        <xsl:with-param name="print.ranges" select="$print.ranges"/>
+        <xsl:with-param name="single.year.ranges"
+                        select="$single.year.ranges"/>
+      </xsl:call-template>
+    </xsl:when>
+    <xsl:when test="$nextyear = $years[1]">
+      <xsl:call-template name="copyright.years">
+        <xsl:with-param name="years"
+                        select="$years[position() &gt; 1]"/>
+        <xsl:with-param name="firstyear" select="$firstyear"/>
+        <xsl:with-param name="nextyear" select="$nextyear + 1"/>
+        <xsl:with-param name="print.ranges" select="$print.ranges"/>
+        <xsl:with-param name="single.year.ranges"
+                        select="$single.year.ranges"/>
+      </xsl:call-template>
+    </xsl:when>
+    <xsl:otherwise>
+      <!-- we have years left, but they aren't in the current range -->
+      <xsl:choose>
+        <xsl:when test="$nextyear = $firstyear + 1">
+          <xsl:value-of select="$firstyear"/>
+          <xsl:text>, </xsl:text>
+        </xsl:when>
+        <xsl:when test="$single.year.ranges = 0
+                        and $nextyear = $firstyear + 2">
+          <xsl:value-of select="$firstyear"/>
+          <xsl:text>, </xsl:text>
+          <xsl:value-of select="$nextyear - 1"/>
+          <xsl:text>, </xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$firstyear"/>
+          <xsl:text>-</xsl:text>
+          <xsl:value-of select="$nextyear - 1"/>
+          <xsl:text>, </xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:call-template name="copyright.years">
+        <xsl:with-param name="years"
+                        select="$years[position() &gt; 1]"/>
+        <xsl:with-param name="firstyear" select="$years[1]"/>
+        <xsl:with-param name="nextyear" select="$years[1] + 1"/>
+        <xsl:with-param name="print.ranges" select="$print.ranges"/>
+        <xsl:with-param name="single.year.ranges"
+                        select="$single.year.ranges"/>
+      </xsl:call-template>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<!-- ====================================================================== -->
+
+<doc:template name="find.path.params" xmlns="">
+<refpurpose>Search in a table for the "best" match for the node</refpurpose>
+
+<refdescription>
+<para>This template searches in a table for the value that most-closely
+(in the typical best-match sense of XSLT) matches the current (element)
+node location.</para>
+</refdescription>
+</doc:template>
+
+<xsl:template name="find.path.params">
+  <xsl:param name="node" select="."/>
+  <xsl:param name="table" select="''"/>
+  <xsl:param name="location">
+    <xsl:call-template name="xpath.location">
+      <xsl:with-param name="node" select="$node"/>
+    </xsl:call-template>
+  </xsl:param>
+
+  <xsl:variable name="value">
+    <xsl:call-template name="lookup.key">
+      <xsl:with-param name="key" select="$location"/>
+      <xsl:with-param name="table" select="$table"/>
+    </xsl:call-template>
+  </xsl:variable>
+
+  <xsl:choose>
+    <xsl:when test="$value != ''">
+      <xsl:value-of select="$value"/>
+    </xsl:when>
+    <xsl:when test="contains($location, '/')">
+      <xsl:call-template name="find.path.params">
+        <xsl:with-param name="node" select="$node"/>
+        <xsl:with-param name="table" select="$table"/>
+        <xsl:with-param name="location" select="substring-after($location, '/')"/>
+      </xsl:call-template>
+    </xsl:when>
+  </xsl:choose>
+</xsl:template>
 
 </xsl:stylesheet>
 
