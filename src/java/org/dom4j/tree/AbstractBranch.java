@@ -269,9 +269,34 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     }
     
     
+    public Element elementByID(String elementID) {
+        for ( int i = 0, size = getNodeCount(); i < size; i++ ) {
+            Node node = getNode(i);
+            if ( node instanceof Element ) {
+                Element element = (Element) node;
+                String id = elementID(element);
+                if ( id != null && id.equals( elementID ) ) {
+                    return element;
+                }
+                else {
+                    return element.elementByID( elementID );
+                }
+            }
+        }
+        return null;
+    }
+    
     
     
     // Implementation methods
+    
+    /** @return the ID of the given <code>Element</code>
+      */
+    protected String elementID(Element element) {
+        // XXX: there will be other ways of finding the ID
+        // XXX: should probably have an IDResolver or something
+        return element.attributeValue( "ID" );
+    }
     
     /** @return the internal List used to manage the content */
     protected abstract List getContentList();

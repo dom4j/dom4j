@@ -48,6 +48,18 @@ public class QName {
         return cache.get(name, Namespace.get( prefix, uri ));
     }
     
+    public static synchronized QName get(String qualifiedName, String uri) {
+        int index = qualifiedName.indexOf( ':' );
+        if ( index < 0 ) {
+            return get( qualifiedName, Namespace.get( uri ) );
+        }
+        else {
+            String name = qualifiedName.substring( index + 1 );
+            String prefix = qualifiedName.substring( 0, index );
+            return cache.get(name, Namespace.get( prefix, uri ));
+        }
+    }
+    
     public static synchronized QName get(String localName, Namespace namespace, String qualifiedName) {
         return cache.get(localName, namespace, qualifiedName);
     }

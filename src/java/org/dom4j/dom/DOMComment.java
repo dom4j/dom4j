@@ -52,7 +52,7 @@ public class DOMComment extends XPathComment implements org.w3c.dom.Comment {
     }
 
     public String getLocalName() {
-        return DOMNodeHelper.getPrefix(this);
+        return DOMNodeHelper.getLocalName(this);
     }
 
     public String getNodeName() {

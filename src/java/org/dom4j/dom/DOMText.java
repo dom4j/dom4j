@@ -52,7 +52,7 @@ public class DOMText extends XPathText implements org.w3c.dom.Text {
     }
 
     public String getLocalName() {
-        return DOMNodeHelper.getPrefix(this);
+        return DOMNodeHelper.getLocalName(this);
     }
 
     public String getNodeName() {

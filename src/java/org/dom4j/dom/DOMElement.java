@@ -88,15 +88,15 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     }
     
     public NodeList getChildNodes() {
-        return createNodeList( content() );
+        return DOMNodeHelper.createNodeList( content() );
     }
 
     public org.w3c.dom.Node getFirstChild() {
-        DOMNodeHelper.asDOMNode( getNode(0) );
+        return DOMNodeHelper.asDOMNode( getNode(0) );
     }
 
     public org.w3c.dom.Node getLastChild() {
-        DOMNodeHelper.asDOMNode( getNode( getNodeCount() - 1 ) );
+        return DOMNodeHelper.asDOMNode( getNode( getNodeCount() - 1 ) );
     }
 
     public org.w3c.dom.Node getPreviousSibling() {
@@ -266,16 +266,16 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
 
     public NodeList getElementsByTagName(String name) {
         ArrayList list = new ArrayList();
-        appendElementsByTagName( list, this, name );
-        return createNodeList( list );
+        DOMNodeHelper.appendElementsByTagName( list, this, name );
+        return DOMNodeHelper.createNodeList( list );
     }
     
     public NodeList getElementsByTagNameNS(
         String namespaceURI, String localName
     ) {
         ArrayList list = new ArrayList();
-        appendElementsByTagNameNS(list, this, namespaceURI, localName );
-        return createNodeList( list );
+        DOMNodeHelper.appendElementsByTagNameNS(list, this, namespaceURI, localName );
+        return DOMNodeHelper.createNodeList( list );
     }
 
     public boolean hasAttribute(String name) {
@@ -289,37 +289,6 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     
     // Implementation methods
     //-------------------------------------------------------------------------            
-    protected void appendElementsByTagName(
-        List list, Element parent, String name
-    ) {
-        for ( int i = 0, size = parent.getNodeCount(); i < size; i++ ) {
-            Node node = parent.getNode(i);
-            if ( node instanceof Element ) {
-                Element element = (Element) node;
-                if ( name.equals( element.getName() ) ) {
-                    list.add( element );
-                }
-                appendElementsByTagName(list, element, name);
-            }
-        }
-    }
-
-    protected void appendElementsByTagNameNS(
-        List list, Element parent, String namespaceURI, String localName
-    ) {
-        for ( int i = 0, size = parent.getNodeCount(); i < size; i++ ) {
-            Node node = parent.getNode(i);
-            if ( node instanceof Element ) {
-                Element element = (Element) node;
-                if ( namespaceURI.equals( element.getNamespaceURI() ) 
-                        && localName.equals( element.getName() ) ) {
-                    list.add( element );
-                }
-                appendElementsByTagNameNS(list, element, namespaceURI, localName);
-            }
-        }
-    }
-
     protected Attribute attribute(org.w3c.dom.Attr attr) {
         return attribute( 
             QName.get( 
@@ -341,17 +310,6 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
             }
         }
         return null;
-    }
-
-    protected NodeList createNodeList( final List list ) {
-        return new NodeList() {
-            public org.w3c.dom.Node item(int index) {
-                return DOMNodeHelper.asDOMNode( (Node) list.get( index ) );
-            }
-            public int getLength() {
-                return list.size();
-            }
-        };
     }
 
     protected Attribute createAttribute( org.w3c.dom.Attr newAttr ) {

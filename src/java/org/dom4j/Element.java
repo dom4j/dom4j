@@ -291,11 +291,7 @@ public interface Element extends Branch {
       * @return true if this element contains mixed content.
       */
     public boolean hasMixedContent();    
-    
-    // return the child elements
-    public Element elementByID(String elementID);
-    
-    
+        
     /** Returns the first element for the given local name and any namespace.
       * 
       * @return the first element with the given local name 

@@ -57,7 +57,7 @@ public class DOMProcessingInstruction extends XPathProcessingInstruction impleme
     }
 
     public String getLocalName() {
-        return DOMNodeHelper.getPrefix(this);
+        return DOMNodeHelper.getLocalName(this);
     }
 
     public String getNodeName() {

@@ -7,92 +7,63 @@
  * $Id$
  */
 
-package org.dom4j.tree;
 
-import org.dom4j.Element;
-import org.dom4j.QName;
-import org.dom4j.Namespace;
+package dom;
 
-/** <p><code>XPathAttribute</code> implements a doubly linked node which 
-  * supports the parent relationship and is mutable.
-  * It is useful when evalutating XPath expressions.</p>
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.dom4j.Document;
+import org.dom4j.dom.DOMDocumentFactory;
+import org.dom4j.io.SAXReader;
+
+import AbstractDemo;
+
+/** A simple test program to demonstrate the use of native DOM support.
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class XPathAttribute extends DefaultAttribute {
+public class NativeDOMDemo extends AbstractDemo {
+    
+    public static void main(String[] args) {
+        run( new NativeDOMDemo(), args );
+    }    
+    
+    public NativeDOMDemo() {
+    }
+    
+    public void run(String[] args) throws Exception {    
+        if ( args.length < 1) {
+            printUsage( "<XML document URL>" );
+            return;
+        }
 
-    /** The parent of this node */
-    private Element parent;
+        parse( args[0] );
+    }
+    
+    protected void parse( String xmlFile ) throws Exception {
 
-    
-    public XPathAttribute(QName qname) { 
-        super(qname);
+        println( "Loading document: " + xmlFile );
+        
+        SAXReader reader = new SAXReader( DOMDocumentFactory.getInstance() );
+        Document document = reader.read( getURL( xmlFile ) );
+        
+        println( "Created <dom4j> document: " + document );
+        
+        if ( document instanceof org.w3c.dom.Document ) {
+            org.w3c.dom.Document domDocument = (org.w3c.dom.Document) document;
+            println( "Created W3C DOM document: " + domDocument );
+            process(domDocument);
+        }
+        else {
+            println( "FAILED to make a native W3C DOM document!!" );
+            
+        }
     }
     
-    public XPathAttribute(QName qname, String value) { 
-        super(qname, value);
+    protected void process(org.w3c.dom.Document document) throws Exception {
     }
-    
-    public XPathAttribute(Element parent, QName qname, String value) { 
-        super(qname, value);
-        this.parent = parent;
-    }
-    
-    /** Creates the <code>Attribute</code> with the specified local name
-      * and value.
-      *
-      * @param name is the name of the attribute
-      * @param value is the value of the attribute
-      */
-    public XPathAttribute(String name, String value) {
-        super(name, value);
-    }
-    
-    /** Creates the <code>Attribute</code> with the specified local name,
-      * value and <code>Namespace</code>.
-      *
-      * @param name is the name of the attribute
-      * @param value is the value of the attribute
-      * @param namespace is the namespace of the attribute
-      */
-    public XPathAttribute(String name, String value, Namespace namespace) {
-        super(name, value, namespace);
-    }
-    
-    /** Creates the <code>Attribute</code> with the specified local name,
-      * value and <code>Namespace</code>.
-      *
-      * @param parent is the parent element
-      * @param name is the name of the attribute
-      * @param value is the value of the attribute
-      * @param namespace is the namespace of the attribute
-      */
-    public XPathAttribute(Element parent, String name, String value, Namespace namespace) {
-        super(name, value, namespace);
-        this.parent = parent;
-    }
-
-    public void setValue(String value) {
-	this.value = value;
-    }
-    
-    public Element getParent() {
-        return parent;
-    }
-
-    public void setParent(Element parent) {
-        this.parent = parent;
-    }
-    
-    public boolean supportsParent() {
-        return true;
-    }
-    
-    public boolean isReadOnly() {
-        return false;
-    }
-
 }
 
 

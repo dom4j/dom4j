@@ -9,8 +9,12 @@
 
 package org.dom4j.dom;
 
+import java.util.List;
+
+import org.dom4j.Branch;
 import org.dom4j.CharacterData;
 import org.dom4j.Document;
+import org.dom4j.DocumentType;
 import org.dom4j.Node;
 import org.dom4j.Element;
 import org.dom4j.QName;
@@ -38,7 +42,7 @@ public class DOMNodeHelper {
         public int getLength() {
             return 0;
         }
-    };
+    }
     
     
     // Node API
@@ -302,9 +306,56 @@ public class DOMNodeHelper {
         }
     }
 
+
+    // Branch API
+    //-------------------------------------------------------------------------        
+    
+    public static void appendElementsByTagName(
+        List list, Branch parent, String name
+    ) {
+        for ( int i = 0, size = parent.getNodeCount(); i < size; i++ ) {
+            Node node = parent.getNode(i);
+            if ( node instanceof Element ) {
+                Element element = (Element) node;
+                if ( name.equals( element.getName() ) ) {
+                    list.add( element );
+                }
+                appendElementsByTagName(list, element, name);
+            }
+        }
+    }
+
+    public static void appendElementsByTagNameNS(
+        List list, Branch parent, String namespaceURI, String localName
+    ) {
+        for ( int i = 0, size = parent.getNodeCount(); i < size; i++ ) {
+            Node node = parent.getNode(i);
+            if ( node instanceof Element ) {
+                Element element = (Element) node;
+                if ( namespaceURI.equals( element.getNamespaceURI() ) 
+                        && localName.equals( element.getName() ) ) {
+                    list.add( element );
+                }
+                appendElementsByTagNameNS(list, element, namespaceURI, localName);
+            }
+        }
+    }
+
+    
     // Helper methods
     //-------------------------------------------------------------------------        
     
+    public static NodeList createNodeList( final List list ) {
+        return new NodeList() {
+            public org.w3c.dom.Node item(int index) {
+                return DOMNodeHelper.asDOMNode( (Node) list.get( index ) );
+            }
+            public int getLength() {
+                return list.size();
+            }
+        };
+    }
+
     public static org.w3c.dom.Node asDOMNode(Node node) {
         if ( node instanceof org.w3c.dom.Node ) {
             return (org.w3c.dom.Node) node;
@@ -327,6 +378,17 @@ public class DOMNodeHelper {
         }
     }
     
+    public static org.w3c.dom.DocumentType asDOMDocumentType(DocumentType documentType) {
+        if ( documentType instanceof org.w3c.dom.DocumentType ) {
+            return (org.w3c.dom.DocumentType) documentType;
+        }
+        else {
+            // Use DOMWriter?
+            notSupported();
+            return null;
+        }
+    }
+
     public static org.w3c.dom.Text asDOMText(CharacterData text) {
         if ( text instanceof org.w3c.dom.Text ) {
             return (org.w3c.dom.Text) text;

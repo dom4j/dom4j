@@ -56,7 +56,7 @@ public class DOMDocumentType extends DefaultDocumentType implements org.w3c.dom.
     }
 
     public String getLocalName() {
-        return DOMNodeHelper.getPrefix(this);
+        return DOMNodeHelper.getLocalName(this);
     }
 
     public String getNodeName() {

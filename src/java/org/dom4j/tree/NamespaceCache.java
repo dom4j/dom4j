@@ -27,6 +27,11 @@ public class NamespaceCache {
       */ 
     protected static Map cache;
 
+    /** Cache of {@link Namespace} instances indexed by URI 
+      * for default namespaces with no prefixes
+      */ 
+    protected static Map noPrefixCache;
+
 
     /** @return the name model for the given name and namepsace 
       */
@@ -36,6 +41,21 @@ public class NamespaceCache {
         if (answer == null) {
             answer = createNamespace(prefix, uri);
             cache.put(prefix, answer);
+        }
+        return answer;
+    }
+    
+
+    /** @return the name model for the given name and namepsace 
+      */
+    public synchronized Namespace get(String uri) {
+        if ( noPrefixCache == null ) {
+            noPrefixCache = createURIMap();
+        }
+        Namespace answer = (Namespace) noPrefixCache.get(uri);
+        if (answer == null) {
+            answer = createNamespace("", uri);
+            noPrefixCache.put(uri, answer);
         }
         return answer;
     }

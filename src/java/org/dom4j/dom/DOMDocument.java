@@ -9,38 +9,53 @@
 
 package org.dom4j.dom;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.dom4j.Attribute;
+import org.dom4j.Document;
+import org.dom4j.DocumentType;
 import org.dom4j.Element;
-import org.dom4j.Entity;
+import org.dom4j.Namespace;
+import org.dom4j.Node;
 import org.dom4j.QName;
-import org.dom4j.tree.XPathEntity;
+import org.dom4j.tree.DefaultDocument;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
-/** <p><code>DOMEntity</code> implements a Entity node which 
+/** <p><code>DOMDocument</code> implements an XML document which 
   * supports the W3C DOM API.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class DOMEntityReference extends XPathEntity implements org.w3c.dom.EntityReference {
+public class DOMDocument extends DefaultDocument implements org.w3c.dom.Document {
 
-    public DOMEntityReference(String name) {
-        super( name );
+    public DOMDocument() { 
     }
 
-    public DOMEntityReference(String name, String text) {
-        super( name, text );
+    public DOMDocument(String name) { 
+        super(name);
     }
-    
-    public DOMEntityReference(Element parent, String name, String text) {
-        super( parent, name, text );
+
+    public DOMDocument(Element rootElement) { 
+        super(rootElement);
     }
-    
+
+    public DOMDocument(DocumentType docType) { 
+        super(docType);
+    }
+
+    public DOMDocument(Element rootElement, DocumentType docType) { 
+        super(rootElement, docType);
+    }
+
+    public DOMDocument(String name, Element rootElement, DocumentType docType) { 
+        super(name, rootElement, docType);
+    }
+
     
     // org.w3c.dom.Node interface
     //-------------------------------------------------------------------------        
@@ -84,15 +99,15 @@ public class DOMEntityReference extends XPathEntity implements org.w3c.dom.Entit
     }
     
     public NodeList getChildNodes() {
-        return DOMNodeHelper.getChildNodes(this);
+        return DOMNodeHelper.createNodeList( content() );
     }
 
     public org.w3c.dom.Node getFirstChild() {
-        return DOMNodeHelper.getFirstChild(this);
+        return DOMNodeHelper.asDOMNode( getNode(0) );
     }
 
     public org.w3c.dom.Node getLastChild() {
-        return DOMNodeHelper.getLastChild(this);
+        return DOMNodeHelper.asDOMNode( getNode( getNodeCount() - 1 ) );
     }
 
     public org.w3c.dom.Node getPreviousSibling() {
@@ -106,8 +121,8 @@ public class DOMEntityReference extends XPathEntity implements org.w3c.dom.Entit
     public NamedNodeMap getAttributes() {
         return DOMNodeHelper.getAttributes(this);
     }
-
-    public Document getOwnerDocument() {
+    
+    public org.w3c.dom.Document getOwnerDocument() {
         return DOMNodeHelper.getOwnerDocument(this);
     }
 
@@ -152,6 +167,102 @@ public class DOMEntityReference extends XPathEntity implements org.w3c.dom.Entit
     public boolean hasAttributes() {
         return DOMNodeHelper.hasAttributes(this);
     }
+    
+    
+    // org.w3c.dom.Document interface
+    //-------------------------------------------------------------------------            
+    public NodeList getElementsByTagName(String name) {
+        ArrayList list = new ArrayList();
+        DOMNodeHelper.appendElementsByTagName( list, this, name );
+        return DOMNodeHelper.createNodeList( list );
+    }
+    
+    public NodeList getElementsByTagNameNS(
+        String namespaceURI, String localName
+    ) {
+        ArrayList list = new ArrayList();
+        DOMNodeHelper.appendElementsByTagNameNS(list, this, namespaceURI, localName );
+        return DOMNodeHelper.createNodeList( list );
+    }
+
+    
+    public org.w3c.dom.DocumentType getDoctype() {
+        return DOMNodeHelper.asDOMDocumentType( getDocType() );
+    }
+
+    public org.w3c.dom.DOMImplementation getImplementation() {
+        return DOMDocumentFactory.singleton;
+    }
+
+    public org.w3c.dom.Element getDocumentElement() {
+        return DOMNodeHelper.asDOMElement( getRootElement() );
+    }
+
+    public org.w3c.dom.Element createElement(String tagName) throws DOMException {
+        return new DOMElement(tagName);
+    }
+
+    public org.w3c.dom.DocumentFragment createDocumentFragment() {
+        DOMNodeHelper.notSupported();
+        return null;
+    }
+
+    public org.w3c.dom.Text createTextNode(String data) {
+        return new DOMText(data);
+    }
+
+    public org.w3c.dom.Comment createComment(String data) {
+        return new DOMComment(data);
+    }
+
+    public org.w3c.dom.CDATASection createCDATASection(String data) throws DOMException {
+        return new DOMCDATA(data);
+    }
+
+    public org.w3c.dom.ProcessingInstruction createProcessingInstruction(
+        String target, String data
+    ) throws DOMException {
+        return new DOMProcessingInstruction(target, data);
+    }
+
+    public org.w3c.dom.Attr createAttribute(String name) throws DOMException {
+        return new DOMAttribute( QName.get(name) );
+    }
+    
+    public org.w3c.dom.EntityReference createEntityReference(String name) throws DOMException {
+        return new DOMEntityReference(name);
+    }
+
+    public org.w3c.dom.Node importNode(
+        org.w3c.dom.Node importedNode, boolean deep
+    ) throws DOMException {
+        DOMNodeHelper.notSupported();
+        return null;
+    }
+
+    public org.w3c.dom.Element createElementNS(
+        String namespaceURI, String qualifiedName
+    ) throws DOMException {
+        QName qname = QName.get( qualifiedName, namespaceURI );
+        return new DOMElement( qname );
+    }
+
+    public org.w3c.dom.Attr createAttributeNS(
+        String namespaceURI, String qualifiedName
+    ) throws DOMException {
+        QName qname = QName.get( qualifiedName, namespaceURI );
+        return new DOMAttribute( qname );
+    }
+
+
+    public org.w3c.dom.Element getElementById(String elementId) {
+        return DOMNodeHelper.asDOMElement( elementByID( elementId ) );
+    }
+    
+    
+    
+    // Implementation methods
+    //-------------------------------------------------------------------------            
 }
 
 

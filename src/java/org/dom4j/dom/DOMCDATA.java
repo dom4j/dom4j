@@ -53,7 +53,7 @@ public class DOMCDATA extends XPathCDATA implements org.w3c.dom.CDATASection {
     }
 
     public String getLocalName() {
-        return DOMNodeHelper.getPrefix(this);
+        return DOMNodeHelper.getLocalName(this);
     }
 
     public String getNodeName() {

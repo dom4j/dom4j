@@ -61,6 +61,10 @@ public class DefaultDocument extends AbstractDocument {
         this.rootElement = rootElement;
     }
 
+    public DefaultDocument(DocumentType docType) {
+        this.docType = docType;
+    }
+
     public DefaultDocument(Element rootElement, DocumentType docType) {
         this.rootElement = rootElement;
         this.docType = docType;
@@ -213,6 +217,9 @@ public class DefaultDocument extends AbstractDocument {
     protected List getContentList() {
         if (contents == null) {
             contents = createContentList();
+            if (rootElement != null) {
+                contents.add( rootElement );
+            }
         }
         return contents;
     }

@@ -415,33 +415,6 @@ public class DefaultElement extends AbstractElement {
         return false;
     }
     
-    public Element elementByID(String elementID) {
-        if ( content instanceof List ) {
-            List list = (List) content;
-            int size = list.size();
-            for ( int i = 0; i < size; i++ ) {
-                Object object = list.get(i);
-                if ( object instanceof Element ) {
-                    Element element = (Element) object;
-                    String id = elementID(element);
-                    if ( id != null && id.equals( elementID ) ) {
-                        return element;
-                    }
-                }
-            }
-        }
-        else {
-            if ( content instanceof Element ) {
-                Element element = (Element) content;
-                String id = elementID(element);
-                if ( id != null && id.equals( elementID ) ) {
-                    return element;
-                }
-            }
-        }
-        return null;
-    }
-    
     public Element element(String name) {
         if ( content instanceof List ) {
             List list = (List) content;
@@ -866,13 +839,6 @@ public class DefaultElement extends AbstractElement {
         return new SingleIterator( result );
     }
     
-    /** @return the ID of the given <code>Element</code>
-      */
-    protected String elementID(Element element) {
-        // XXX: there will be other ways of finding the ID
-        // XXX: should probably have an IDResolver or something
-        return element.attributeValue( "id" );
-    }
 }
 
 

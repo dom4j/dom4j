@@ -75,7 +75,9 @@ public class DocumentFactory {
         return answer;
     }
     
-    
+    public DocumentType createDocType(String name, String publicId, String systemId) {
+        return new DefaultDocumentType( name, publicId, systemId );
+    }
     
     public Element createElement(QName qname) {
         return new DefaultElement(qname);

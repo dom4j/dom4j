@@ -51,6 +51,15 @@ public class Namespace extends AbstractNode {
         return cache.get(prefix, uri);
     }
     
+    /** A helper method to return the Namespace instance
+      * for no prefix and the URI
+      *
+      * @return an interned Namespace object
+      */
+    public static Namespace get(String uri) {
+        return cache.get(uri);
+    }
+    
     /** @param prefix is the prefix for this namespace
       * @param uri is the URI for this namespace
       */

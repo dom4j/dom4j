@@ -25,7 +25,10 @@ import org.w3c.dom.NodeList;
   * @version $Revision$
   */
 public class DOMAttribute extends XPathAttribute implements org.w3c.dom.Attr {
-
+    
+    public DOMAttribute(QName qname) { 
+        super(qname);
+    }
     
     public DOMAttribute(QName qname, String value) { 
         super(qname, value);

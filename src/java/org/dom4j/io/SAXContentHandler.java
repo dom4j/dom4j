@@ -103,6 +103,9 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     /** @return the document that has been or is being built 
       */
     public Document getDocument() {
+        if ( document == null ) {
+            document = createDocument();
+        }
         return document;
     }
     
@@ -122,7 +125,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     }
 
     public void startDocument() throws SAXException {
-        document = createDocument();
+        document = null;
         
         if ( elementStack == null ) {
             elementStack = createElementStack();

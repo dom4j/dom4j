@@ -27,7 +27,7 @@ import org.dom4j.Text;
 
 /** <p><code>ContentListFacade</code> represents a facade of the 
   * content of a {@link Branch} which is returned via calls to the
-  * {@link Branch#getContent} method to allow users to modify the content
+  * {@link Branch#content} method to allow users to modify the content
   * of a {@link Branch} directly using the {@link List} interface. 
   * This list is backed by the branch such that changes to the list will
   * be reflected in the branch and changes to the branch will be reflected
