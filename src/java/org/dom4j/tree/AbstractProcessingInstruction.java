@@ -125,24 +125,53 @@ public abstract class AbstractProcessingInstruction extends AbstractNode impleme
     protected Map parseValues(String text) {
         Map data = new HashMap();
 
-        // Break up name/value pairs
-        StringTokenizer s =
-            new StringTokenizer(text);
-
-        // Iterate through the pairs
+        StringTokenizer s = new StringTokenizer(text, " =\'\"", true);
         while (s.hasMoreTokens()) {
-            // Now break up pair on the = and (" or ') characters
-            StringTokenizer t =
-                new StringTokenizer(s.nextToken(), "='\"");
-
-            if (t.countTokens() >= 2) {
-                String name = t.nextToken();
-                String value = t.nextToken();
-
+            String name = getName(s);
+            if (s.hasMoreTokens()) {
+                String value = getValue(s);
                 data.put(name, value);
             }
         }
+        
         return data;
+    }
+    
+    private String getName(StringTokenizer tokenizer) {
+        String token = tokenizer.nextToken();
+        StringBuffer name = new StringBuffer(token);
+        while (tokenizer.hasMoreTokens()) {
+            token = tokenizer.nextToken();
+            if (!token.equals("=")) {
+                name.append(token);
+            } else {
+                break;
+            }
+        }
+        
+        return name.toString().trim();
+    }
+    
+    private String getValue(StringTokenizer tokenizer) {
+        String token = tokenizer.nextToken();
+        StringBuffer value = new StringBuffer();
+        
+        /* get the quote */
+        while (tokenizer.hasMoreTokens() && !token.equals("\'") && !token.equals("\"")) {
+            token = tokenizer.nextToken();
+        }
+        
+        String quote = token;
+        while (tokenizer.hasMoreTokens()) {
+            token = tokenizer.nextToken();
+            if (!quote.equals(token)) {
+                value.append(token);
+            } else {
+                break;
+            }
+        }
+        
+        return value.toString();
     }
 }
 
