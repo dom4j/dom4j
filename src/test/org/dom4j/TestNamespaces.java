@@ -1,9 +1,9 @@
 /*
  * Copyright 2001 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -38,181 +38,181 @@ public class TestNamespaces extends AbstractTestCase {
     public static void main( String[] args ) {
         TestRunner.run( suite() );
     }
-    
+
     public static Test suite() {
         return new TestSuite( TestNamespaces.class );
     }
-    
+
     public TestNamespaces(String name) {
         super(name);
     }
 
     // Test case(s)
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     public void testNamespaces() throws Exception {
-        testNamespaces( document );        
+        testNamespaces( document );
         testNamespaces( saxRoundTrip( document ) );
         testNamespaces( domRoundTrip( document ) );
     }
-    
+
     public void testNamespaces(Document document) throws Exception {
         Document doc2 = (Document) document.clone();
-        
+
         Element root = doc2.getRootElement();
         assertNamespace( root.getNamespace(), "", "http://www.w3.org/2001/XMLSchema" );
-        
+
         List additionalNS = root.additionalNamespaces();
         assertTrue( "at least one additional namespace", additionalNS != null && additionalNS.size() > 0 );
-        
+
         Namespace ns = (Namespace) additionalNS.get(0);
         assertNamespace( ns, "t", "http://www.w3.org/namespace/" );
-        
+
         Node node = root.node(0);
         assertTrue( "First node is a namespace", node instanceof Namespace );
-        
+
         // now lets try change the namespace
         root.remove(ns);
         root.addNamespace( "t", "myNewURI" );
-        
+
         additionalNS = root.additionalNamespaces();
         assertTrue( "at least one additional namespace", additionalNS != null && additionalNS.size() > 0 );
-        
+
         ns = (Namespace) additionalNS.get(0);
         assertNamespace( ns, "t", "myNewURI" );
-        
+
         // lets test the list is backed
         additionalNS.remove(0);
         additionalNS.add( Namespace.get("t", "myNewURI-2" ) );
 
         additionalNS = root.additionalNamespaces();
         assertTrue( "at least one additional namespace", additionalNS != null && additionalNS.size() > 0 );
-        
+
         ns = (Namespace) additionalNS.get(0);
         assertNamespace( ns, "t", "myNewURI-2" );
-        
+
         additionalNS.clear();
         root.addNamespace( "t", "myNewURI" );
-        
+
         additionalNS = root.additionalNamespaces();
         assertTrue( "at least one additional namespace", additionalNS != null && additionalNS.size() > 0 );
-        
+
         ns = (Namespace) additionalNS.get(0);
         assertNamespace( ns, "t", "myNewURI" );
-        
-        
+
+
         log( "Namespaces: " + additionalNS );
         log( "XML is now" );
         log( root.asXML() );
     }
-    
+
     public void testNamespaceForPrefix() throws Exception {
         testNamespaceForPrefix( document );
         testNamespaceForPrefix( saxRoundTrip( document ) );
         testNamespaceForPrefix( domRoundTrip( document ) );
     }
-        
+
     public void testNamespaceForPrefix(Document document) throws Exception {
         Element root = document.getRootElement();
         Namespace ns = root.getNamespaceForPrefix( "t" );
-        
+
         assertNamespace( ns, "t", "http://www.w3.org/namespace/" );
-        
+
         Element element = (Element) root.elements().get(0);
         Namespace ns2 = element.getNamespaceForPrefix( "t" );
-        
+
         assertNamespace( ns2, "t", "http://www.w3.org/namespace/" );
-        
+
         assertTrue( "Same namespace instance returned", ns == ns2 );
-        
+
         log( "found: " + ns.asXML() );
     }
-    
+
     public void testNamespaceForDefaultPrefix() throws Exception {
         SAXReader reader = new SAXReader();
         Document document = reader.read("xml/test/defaultNamespace.xml");
-        
+
         testNamespaceForDefaultPrefix( document );
         testNamespaceForDefaultPrefix( saxRoundTrip( document ) );
         testNamespaceForDefaultPrefix( domRoundTrip( document ) );
     }
-    
+
     public void testNamespaceForDefaultPrefix(Document document) throws Exception {
         List list = document.selectNodes( "//*" );
-        
+
         for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
             Element element = (Element) iter.next();
-            
+
             Namespace ns = element.getNamespaceForPrefix( "" );
-        
+
             assertNamespace( ns, "", "dummyNamespace" );
-            
+
             ns = element.getNamespaceForPrefix( null );
-        
+
             assertNamespace( ns, "", "dummyNamespace" );
-            
+
             log( "found: " + ns.asXML() );
 
         }
     }
-    
+
     public void testAttributeDefaultPrefix() throws Exception {
         SAXReader reader = new SAXReader();
         Document document = reader.read("xml/test/soap3.xml");
-        
+
         testAttributeDefaultPrefix( document );
         testAttributeDefaultPrefix( saxRoundTrip( document ) );
         testAttributeDefaultPrefix( domRoundTrip( document ) );
     }
-        
+
     public void testAttributeDefaultPrefix(Document document) throws Exception {
         List list = document.selectNodes( "//@*[local-name()='actor']" );
-        
+
         assertTrue( "Matched at least one 'actor' attribute", list.size() > 0 );
 
         for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
             Attribute attribute = (Attribute) iter.next();
-            
+
             log( "found: " + attribute.asXML() );
-            
+
             Element element = attribute.getParent();
             assertTrue( "Attribute has a parent", element != null );
-            
+
             Namespace ns = element.getNamespaceForPrefix( "" );
-        
+
             assertNamespace( ns, "", "http://schemas.xmlsoap.org/soap/envelope/" );
-            
+
             Namespace ns2 = attribute.getNamespace();
-            
+
             // Note that namespaces do not inherit the default namespace!
             assertNamespace( ns2, "", "" );
             //assertNamespace( ns2, "", "http://schemas.xmlsoap.org/soap/envelope/" );
         }
     }
-    
+
     public void testNamespaceForURI() throws Exception {
         testNamespaceForURI(document);
         testNamespaceForURI( saxRoundTrip( document ) );
         testNamespaceForURI( domRoundTrip( document ) );
     }
-    
+
     public void testNamespaceForURI(Document document) throws Exception {
         Element root = document.getRootElement();
-        
+
         Namespace ns = root.getNamespaceForURI( "http://www.w3.org/namespace/" );
-        
+
         assertNamespace( ns, "t", "http://www.w3.org/namespace/" );
-        
+
         Element element = (Element) root.elements().get(0);
         Namespace ns2 = element.getNamespaceForURI( "http://www.w3.org/namespace/" );
-        
+
         assertNamespace( ns2, "t", "http://www.w3.org/namespace/" );
-        
+
         assertTrue( "Same namespace instance returned", ns == ns2 );
-        
+
         log( "found: " + ns.asXML() );
     }
-    
-        
+
+
     public void testRedeclareNamespaces() throws Exception {
         SAXReader reader = new SAXReader();
         Document document = reader.read("xml/test/soap2.xml");
@@ -222,35 +222,59 @@ public class TestNamespaces extends AbstractTestCase {
     }
 
     public void testRedeclareNamespaces(Document document) throws Exception {
-        assertNamespaces( 
-            document.selectNodes( "//*[local-name()='Envelope'" ), 
-            "SOAP-ENV", "http://schemas.xmlsoap.org/soap/envelope/" 
+        assertNamespaces(
+            document.selectNodes( "//*[local-name()='Envelope'" ),
+            "SOAP-ENV", "http://schemas.xmlsoap.org/soap/envelope/"
         );
-        assertNamespaces( 
-            document.selectNodes( "//*[local-name()='Body'" ), 
-            "SOAP-ENV", "http://schemas.xmlsoap.org/soap/envelope/" 
+        assertNamespaces(
+            document.selectNodes( "//*[local-name()='Body'" ),
+            "SOAP-ENV", "http://schemas.xmlsoap.org/soap/envelope/"
         );
-        assertNamespaces( 
-            document.selectNodes( "//*[local-name()='bar'" ), 
-            "a", "barURI" 
+        assertNamespaces(
+            document.selectNodes( "//*[local-name()='bar'" ),
+            "a", "barURI"
         );
-        assertNamespaces( 
-            document.selectNodes( "//*[local-name()='newBar'" ), 
-            "a", "newBarURI" 
+        assertNamespaces(
+            document.selectNodes( "//*[local-name()='newBar'" ),
+            "a", "newBarURI"
         );
-        assertNamespaces( 
-            document.selectNodes( "//*[local-name()='foo'" ), 
-            "", "fooURI" 
+        assertNamespaces(
+            document.selectNodes( "//*[local-name()='foo'" ),
+            "", "fooURI"
         );
-        assertNamespaces( 
-            document.selectNodes( "//*[local-name()='newFoo'" ), 
-            "", "newFooURI" 
+        assertNamespaces(
+            document.selectNodes( "//*[local-name()='newFoo'" ),
+            "", "newFooURI"
         );
     }
-    
-    
+
+    public void testDefaultNamespaceIssue() throws Exception {
+        SAXReader reader = new SAXReader();
+        Document document = reader.read("xml/test/defaultNamespaceIssue.xsd");
+        testDefaultNamespaceIssue( document );
+        testDefaultNamespaceIssue( saxRoundTrip( document ) );
+        testDefaultNamespaceIssue( domRoundTrip( document ) );
+    }
+
+    public void testDefaultNamespaceIssue(Document document) throws Exception {
+        // The test document has a default namespace declaration on the root
+        // element ("schema"), but the element itself is not in the default
+        // namespace. Test that declaredNamespaces on the root element also
+        // returns the default namespace declaration.
+        System.out.println("Document: " + document + ", ns: " + document.getRootElement().declaredNamespaces().size());
+        Iterator iter = document.getRootElement().declaredNamespaces().iterator();
+            while (iter.hasNext()) {
+                Namespace ns = (Namespace)iter.next();
+                    if ("urn:wapforum:devicesheet".equals(ns.getURI())
+                        && "".equals(ns.getPrefix())) {
+                        return;
+                    }
+            }
+        fail("Default namespace declaration not present on root element");
+    }
+
     // Implementation methods
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------
     protected void setUp() throws Exception {
         SAXReader reader = new SAXReader();
         document = reader.read( "xml/test/test_schema.xml" );
@@ -259,18 +283,18 @@ public class TestNamespaces extends AbstractTestCase {
     protected Document saxRoundTrip(Document document) throws Exception {
         return DocumentHelper.parseText( document.asXML() );
     }
-    
+
     protected Document domRoundTrip(Document document) throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware( true );
         DocumentBuilder builder = factory.newDocumentBuilder();
         org.w3c.dom.Document domDocument = builder.parse( new InputSource( new StringReader( document.asXML() ) ) );
-        
+
         // now lets read it back as a DOM4J object
-        DOMReader domReader = new DOMReader();        
+        DOMReader domReader = new DOMReader();
         return domReader.read( domDocument );
     }
-        
+
     protected void assertNamespaces( List elements, String prefix, String uri ) throws Exception {
         log( "Validating: " + elements.size() + " element(s) are in URI: " + uri );
         for ( Iterator iter = elements.iterator(); iter.hasNext(); ) {
@@ -278,9 +302,9 @@ public class TestNamespaces extends AbstractTestCase {
             assertNamespace( element.getNamespace(), prefix, uri );
         }
     }
-    
+
     protected void assertNamespace(Namespace ns, String prefix, String uri) throws Exception {
-        assertEquals( "namespace prefix", prefix, ns.getPrefix() );        
+        assertEquals( "namespace prefix", prefix, ns.getPrefix() );
         assertEquals( "namespace URI", uri, ns.getURI() );
     }
 }
