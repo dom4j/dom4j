@@ -1177,7 +1177,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                     namespaceStack.push(prefix, uri);
                     writeNamespace(prefix, uri);
                 }
-            } else if (attName.startsWith("xmlns=")) {
+            } else if (attName.equals("xmlns")) {
                 if (namespaceStack.getDefaultNamespace() == null) {
                     String uri = attribute.getValue();
                     namespaceStack.push(null, uri);
