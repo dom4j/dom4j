@@ -52,7 +52,7 @@ public class DefaultDocument extends AbstractDocument {
     private DocumentFactory documentFactory = DocumentFactory.getInstance();
 
     /** The resolver of URIs */
-    private EntityResolver entityResolver;
+    private transient EntityResolver entityResolver;
     
     
     public DefaultDocument() { 
