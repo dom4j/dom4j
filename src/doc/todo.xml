@@ -760,7 +760,11 @@ List customers
       <ul>
         <li>Better documentation and user guides
         </li>
-        <li>Do detailed performance tests against the other XML object models
+        <li>A lazy parser; implement a special Element implementation (or probably a special List)
+          which allows the XPP (XML Pull Parser) to parse the document as it is navigated rather than
+          all up front.
+        </li>
+        <li>Build a dom4j validator based on top of Suns MSV library
         </li>
         <li>Ensure that the optional DOM implementation passes the DOM compliance tests
         </li>
@@ -780,15 +784,6 @@ List customers
         <li>Build a version of XMLC which uses the dom4j API rather than DOM which
           could also make use of XPath, XSLT and Java 2 Collections support.
         </li>
-        <li>Build full XML Schema validation
-        </li>
-        <li>Build validators using dom4j API using schema and validation technologies such as:-
-          <ul>
-            <li><a href="http://www.w3.org/XML/Schema">XML Schema</a></li>
-            <li><a href="http://xml.ascc.net/xml/resource/schematron/schematron.html">Schematron</a></li>
-            <li><a href="http://www.thaiopensource.com/trex/">TReX</a></li>
-          </ul>
-        </li>
         <li>
           Consider adding support for 
           <a href="http://developer.java.sun.com/developer/earlyAccess/adding_generics/">Java Generics</a> 
@@ -805,9 +800,9 @@ while ( iter2.hasNext() ) {
 }
           </pre>
         </li>
-        <li>Implement XSLT engine on top of <i>dom4j</i>
+        <li>Implement XSLT engine on top of <i>dom4j</i>?
         </li>
-        <li>XML Query implementation on top of <i>dom4j</i>
+        <li>XML Query implementation on top of <i>dom4j</i>?
         </li>
       </ul>
     </section>
