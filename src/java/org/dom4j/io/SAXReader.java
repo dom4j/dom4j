@@ -77,23 +77,18 @@ import org.xml.sax.helpers.XMLReaderFactory;
  * @version $Revision$
  */
 public class SAXReader {
-    private static final String SAX_STRING_INTERNING 
-            = "http://xml.org/sax/features/string-interning";
-
-    private static final String SAX_NAMESPACE_PREFIXES 
-            = "http://xml.org/sax/features/namespace-prefixes";
-
-    private static final String SAX_NAMESPACES 
-            = "http://xml.org/sax/features/namespaces";
-
-    private static final String SAX_DECL_HANDLER 
-            = "http://xml.org/sax/properties/declaration-handler";
-
-    private static final String SAX_LEXICAL_HANDLER 
-            = "http://xml.org/sax/properties/lexical-handler";
-
-    private static final String SAX_LEXICALHANDLER 
-            = "http://xml.org/sax/handlers/LexicalHandler";
+    private static final String SAX_STRING_INTERNING = 
+            "http://xml.org/sax/features/string-interning";
+    private static final String SAX_NAMESPACE_PREFIXES = 
+            "http://xml.org/sax/features/namespace-prefixes";
+    private static final String SAX_NAMESPACES = 
+            "http://xml.org/sax/features/namespaces";
+    private static final String SAX_DECL_HANDLER = 
+            "http://xml.org/sax/properties/declaration-handler";
+    private static final String SAX_LEXICAL_HANDLER = 
+            "http://xml.org/sax/properties/lexical-handler";
+    private static final String SAX_LEXICALHANDLER = 
+            "http://xml.org/sax/handlers/LexicalHandler";
 
     /** <code>DocumentFactory</code> used to create new document objects */
     private DocumentFactory factory;
@@ -130,6 +125,9 @@ public class SAXReader {
 
     /** Should we ignore comments */
     private boolean ignoreComments = false;
+
+    /** Encoding of InputSource - null means system default encoding */
+    private String encoding = null;
 
     // private boolean includeExternalGeneralEntities = false;
     // private boolean includeExternalParameterEntities = false;
@@ -243,6 +241,9 @@ public class SAXReader {
              * http://myhost.com/index) Thanks to Christian Oetterli
              */
             InputSource source = new InputSource(new FileInputStream(file));
+            if (this.encoding != null) {
+                source.setEncoding(this.encoding);
+            }
             String path = file.getAbsolutePath();
 
             if (path != null) {
@@ -282,7 +283,12 @@ public class SAXReader {
     public Document read(URL url) throws DocumentException {
         String systemID = url.toExternalForm();
 
-        return read(new InputSource(systemID));
+        InputSource source = new InputSource(systemID);
+        if (this.encoding != null) {
+            source.setEncoding(this.encoding);
+        }
+
+        return read(source);
     }
 
     /**
@@ -307,7 +313,12 @@ public class SAXReader {
      *             if an error occurs during parsing.
      */
     public Document read(String systemId) throws DocumentException {
-        return read(new InputSource(systemId));
+        InputSource source = new InputSource(systemId);
+        if (this.encoding != null) {
+            source.setEncoding(this.encoding);
+        }
+
+        return read(source);
     }
 
     /**
@@ -324,7 +335,12 @@ public class SAXReader {
      *             if an error occurs during parsing.
      */
     public Document read(InputStream in) throws DocumentException {
-        return read(new InputSource(in));
+        InputSource source = new InputSource(in);
+        if (this.encoding != null) {
+            source.setEncoding(this.encoding);
+        }
+
+        return read(source);
     }
 
     /**
@@ -341,7 +357,12 @@ public class SAXReader {
      *             if an error occurs during parsing.
      */
     public Document read(Reader reader) throws DocumentException {
-        return read(new InputSource(reader));
+        InputSource source = new InputSource(reader);
+        if (this.encoding != null) {
+            source.setEncoding(this.encoding);
+        }
+
+        return read(source);
     }
 
     /**
@@ -363,6 +384,9 @@ public class SAXReader {
             throws DocumentException {
         InputSource source = new InputSource(in);
         source.setSystemId(systemId);
+        if (this.encoding != null) {
+            source.setEncoding(this.encoding);
+        }
 
         return read(source);
     }
@@ -386,6 +410,9 @@ public class SAXReader {
             throws DocumentException {
         InputSource source = new InputSource(reader);
         source.setSystemId(systemId);
+        if (this.encoding != null) {
+            source.setEncoding(this.encoding);
+        }
 
         return read(source);
     }
@@ -699,6 +726,27 @@ public class SAXReader {
      */
     public void setXMLReader(XMLReader reader) {
         this.xmlReader = reader;
+    }
+
+    /**
+     * Returns encoding used for InputSource (null means system default
+     * encoding)
+     * 
+     * @return encoding used for InputSource
+     * 
+     */
+    public String getEncoding() {
+        return encoding;
+    }
+
+    /**
+     * Sets encoding used for InputSource (null means system default encoding)
+     * 
+     * @param encoding
+     *            is encoding used for InputSource
+     */
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
     }
 
     /**

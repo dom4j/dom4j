@@ -11,6 +11,7 @@ import junit.textui.TestRunner;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.List;
 
@@ -42,9 +43,21 @@ public class SAXReaderTest extends AbstractTestCase {
         File file = getFile("/xml/#.xml");
         new SAXReader().read(file);
     }
+    
+    public void testEncoding() throws Exception {
+        String xml = "<?xml version='1.0' encoding='ISO-8859-1'?><root/>";
+        SAXReader reader = new SAXReader();
+        reader.setEncoding("ISO-8859-1");
+        Document doc = reader.read(new StringReader(xml));
+        
+        assertEquals("encoding incorrect", "ISO-8859-1", doc.getXMLEncoding());
+    }
 
     public void testRussian() throws Exception {
         Document doc = getDocument("/xml/russArticle.xml");
+
+        assertEquals("encoding not correct", "koi8-r", doc.getXMLEncoding());
+
         Element el = doc.getRootElement();
 
         StringWriter writer = new StringWriter();

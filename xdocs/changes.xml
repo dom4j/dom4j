@@ -8,6 +8,10 @@
   <body>
 
     <release version="1.6-dev" date="in CVS">
+      <action dev="maartenc" type="add" due-to="Filip Jirsak">
+        Added a methods to <code>SAXReader</code> allowing to specify the encoding
+        used when reading XML sources.
+      </action>
       <action dev="maartenc" type="update">
         Changed the <code>DocumentHelper.parseText(String)</code> method to make sure
         that the XML encoding is always set (if known) on the returned <code>Document</code>,
