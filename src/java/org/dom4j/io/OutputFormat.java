@@ -98,7 +98,7 @@ public class OutputFormat implements Cloneable {
 
     
     /** <p>This will set the new-line separator. The default is
-      * <code>\r\n</code>. Note that if the "newlines" property is
+      * <code>\n</code>. Note that if the "newlines" property is
       * false, this value is irrelevant.  To make it output the system
       * default line ending string, call
       * <code>setLineSeparator(System.getProperty("line.separator"))</code>
