@@ -26,6 +26,7 @@
         <doc:registerReport name="Clover" 
                             pluginName="dom4j-clover" 
                             link="clover/index"
+                            target="_blank"
                             description="Clover test coverage report."/>
     </goal>
   
