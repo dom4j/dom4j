@@ -9,6 +9,12 @@
         </fileset>
     </path>
 
+    <path id="endorsed.classpath">
+        <fileset dir="./lib/endorsed">
+            <include name="*.jar" />
+        </fileset>
+    </path>
+
     <path id="test.classpath">
         <path refid="compile.classpath" />
         <fileset dir="./lib/test">
@@ -40,7 +46,6 @@
 
     <echo message="----------- ${Name} ${version} [${year}] ------------"/>
 
-    <property name="build.compiler" value="classic"/>
     <property name="debug" value="on"/>
     <property name="optimize" value="on"/>
     <property name="deprecation" value="off"/>
@@ -137,6 +142,8 @@
            destdir="${build.dest}"
            debug="${debug}"
            optimize="${optimize}"
+           target="1.3"
+           source="1.3"
            deprecation="${deprecation}"
            classpathref="compile.classpath">
     </javac>
