@@ -132,9 +132,11 @@ public class DOMNodeHelper {
             List list = branch.content();
             int index = list.indexOf(refChild);
             if ( index < 0 ) {
-                index = 0;
+                branch.add((Node) newChild);
             }
-            list.add(index, newChild);
+            else {
+                list.add(index, newChild);
+            }
             return newChild;
         }
         else {
