@@ -63,7 +63,7 @@
 
 
   <repository>
-    <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/dom4j:anonymous</connection>
+    <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/dom4j:dom4j</connection>
     <developerConnection>scm:cvs:ext:${maven.username}@cvs.sourceforge.net:/cvsroot/dom4j:dom4j</developerConnection>
     <url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/dom4j/dom4j/</url>
   </repository>
