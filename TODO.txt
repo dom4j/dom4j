@@ -1,0 +1,35 @@
+TO DO LIST
+==========
+
+By all means help yourself to any of these tasks if you fancy
+rolling your sleeves up and doing some development, tuning, testing or 
+documentation. Any contributions will be greatly received.
+
+
+
+Development Tasks
+=================
+
+* JDBC ResultSet implementation of an Element so that XPath and XSLT can be
+easily done on a JDBC result set.
+
+* Integrate Dennis Sosnoski's XML-Stream work for the default serialization 
+mechansism
+
+* Support XPath and XSLT patterns in the ElementHandler mechansim
+
+* As suggested by Kesav Kumar Kolla, implement a better, mutable Swing TreeModel
+  possibly along with an optional document event mechansim
+
+* get the DOM implementation to pass the DOM conformance tests at
+  http://xmlconf.sourceforge.net/
+
+* a persistent dom4j implementation using XMLDB or some other persistence 
+  mechansim
+
+
+
+Documentation
+=============
+* the section headings are not working correctly in the DocBook stylesheets
+used for the cookbook (in dom4j/src/doc/cookbook/style/html).
