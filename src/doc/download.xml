@@ -36,9 +36,13 @@
 
     <section title="Obtaining the latest CVS snapshot">
       
-      <p>To learn more about CVS go <a href="http://www.cvshome.org/">here</a>.
+      <p>
         You can browse the current CVS repository 
-        <a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/dom4j/">here</a></p>
+        <a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/dom4j/">here</a>
+      </p>
+
+      <p>To learn more about CVS go <a href="http://www.cvshome.org/">here</a>.
+      </p>
 
       <section title="Anonymous CVS Access">
         <p>

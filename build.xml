@@ -24,7 +24,7 @@
     <property name="test.dir" value="./src/test"/>
     <property name="lib.dir" value="./lib"/>
     <property name="packages" value="org.*"/>
-    <property name="api.packages" value="org.dom4j,org.dom4j.io,org.dom4j.rule"/>
+    <property name="api.packages" value="org.dom4j,org.dom4j.io,org.dom4j.rule,org.dom4j.schema,org.dom4j.util"/>
 
     <property name="build.dir" value="./build"/>
     <property name="build.src" value="./build/src"/>
