@@ -9,7 +9,7 @@
 
 package org.dom4j;
 
-import java.io.StringReader;
+import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -208,7 +208,7 @@ public class DocumentHelper {
       */
     public static Document parseText(String text) throws DocumentException {
         SAXReader reader = new SAXReader();
-        return reader.read( new StringReader( text ) );
+        return reader.read(new ByteArrayInputStream(text.getBytes()));
     }
 
     /** <p>makeElement</p> a helper method which navigates from the
