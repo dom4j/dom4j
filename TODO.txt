@@ -84,3 +84,7 @@ used for the cookbook (in dom4j/src/doc/cookbook/style/html).
 * does Avalon have some nice DocBook stylesheets we can use to get better 
   output? e.g.
   http://jakarta.apache.org/avalon/
+
+
+* document the org.dom4j.rule package which allows declarative rule processing
+  of XML documents using Java code.
