@@ -9,9 +9,6 @@
 
 package org.dom4j.xpath;
 
-import org.antlr.CharBuffer;
-import org.antlr.*;
-
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
