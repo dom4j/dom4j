@@ -48,6 +48,9 @@
 
     <property name="xml.format.options" value="-indentSize 2 -trimText -newlines"/>
 
+    <!-- Whether to halt the junit task on any single failure.  On by default. -->
+    <property name="HALTFAIL" value="on"/>
+
     <filter token="year" value="${year}"/>
     <filter token="version" value="${version}"/>
     <filter token="date" value="${TODAY}"/>
@@ -308,7 +311,7 @@
               includes="**/*.xml" excludes="style/**,project.xml,cookbook/**,docbook/**"/>
 
     -->
-    <copy todir="${build.doc}" overwrite="yes"> 
+    <copy todir="${build.doc}" overwrite="yes">
       <fileset dir="${doc.dir}" includes="license.txt,document.dtd"/>
     </copy>
     <copy todir="${build.doc}/images" overwrite="yes">
@@ -490,8 +493,9 @@
   <!-- Unit Testing Targets                                                -->
   <!-- =================================================================== -->
   <target name="test" depends="compile-test">
+    <delete failonerror="false" dir="${build.dir}/test-results"/>
     <mkdir dir="${build.dir}/test-results/xml"/>
-    <junit printsummary="yes" haltonfailure="yes">
+    <junit printsummary="yes" haltonfailure="${HALTFAIL}">
       <formatter type="xml"/>
 
       <classpath>
@@ -508,7 +512,22 @@
     </junit>
   </target>
 
-  <target name="test-report" depends="test">
+  <!-- Run the the tests, halt if some fail, suitable for nightly build. Won't make HTML report. -->
+  <target name="test-report">
+    <property name="HALTFAIL" value="on"/>
+    <antcall target="test-report-inner">
+    </antcall>
+  </target>
+
+  <!-- Run the all the tests, even if some fail, so that the report is complete. -->
+  <target name="test-report-errors">
+    <property name="HALTFAIL" value="off"/>
+    <antcall target="test-report-inner">
+    </antcall>
+  </target>
+
+  <!-- Don't call this target.  Call test-report or test-report-errors instead. -->
+  <target name="test-report-inner" depends="test">
     <mkdir dir="${build.dir}/test-results"/>
     <junitreport todir="${build.dir}/test-results">
       <fileset dir="${build.dir}/test-results/xml">
@@ -530,8 +549,6 @@
     <java classname="org.dom4j.datatype.TestManualSchema"/>
     <java classname="org.dom4j.datatype.TestDataTypes"/>
     <java classname="org.dom4j.datatype.TestAutoSchema"/>
-<!--
--->
   </target>
 
   <target name="test-detach" depends="compile-test">
@@ -591,10 +608,10 @@
   <target name="demo-sax-cdata" depends="samples">
     <java classname="SAXDemo" args="${xml.format.options} xml/cdata.xml"/>
     <java classname="SAXDemo" args="${xml.format.options} xml/cdata.xml">
-      <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/> 
+      <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/>
     </java>
     <java classname="SAXDemo" args="${xml.format.options} xml/cdata.xml">
-      <sysproperty key="org.xml.sax.driver" value="xml.aelfred2.SAXDriver"/> 
+      <sysproperty key="org.xml.sax.driver" value="xml.aelfred2.SAXDriver"/>
     </java>
   </target>
 
@@ -643,22 +660,22 @@
     <java classname="PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10"/>
 
     <java classname="PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10">
-      <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/> 
+      <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/>
     </java>
 
     <java classname="PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10">
-      <sysproperty key="org.xml.sax.driver" value="xml.aelfred2.SAXDriver"/> 
+      <sysproperty key="org.xml.sax.driver" value="xml.aelfred2.SAXDriver"/>
     </java>
 
 
     <java classname="PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory 10"/>
 
     <java classname="PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory 10">
-      <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/> 
+      <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/>
     </java>
 
     <java classname="PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory 10">
-      <sysproperty key="org.xml.sax.driver" value="xml.aelfred2.SAXDriver"/> 
+      <sysproperty key="org.xml.sax.driver" value="xml.aelfred2.SAXDriver"/>
     </java>
   </target>
 
@@ -683,7 +700,7 @@
   <target name="demo-bigdoc" depends="samples">
     <java classname="LargeDocumentDemo" args="xml/much_ado.xml /PLAY/ACT"/>
   </target>
-  
+
   <target name="demo-bigdoc2" depends="samples">
     <java classname="LargeDocumentDemo2" args="xml/much_ado.xml"/>
   </target>
