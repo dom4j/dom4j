@@ -84,6 +84,10 @@ public class TestSerialize extends AbstractTestCase {
         assertTrue( "Read back document after serialization", doc2 != null && doc2 instanceof Document );
         
         assertDocumentsEqual( document, (Document) doc2 );        
+        
+        // now lets try add something to the document...
+        
+        doc2.getRootElement().addElement( "new" );
     }            
     
     protected void setUp() throws Exception {

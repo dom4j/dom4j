@@ -49,6 +49,10 @@ List externalDecls = docType.getExternalDeclarations();
         </section>
 
         <section title="Patches">
+        <p>Fixed problem found by Kesav Kumar Kolla whereby a deserialized Document could have problems if 
+          new elements were attempted to be added. The problem was an issue with DocumentFactory not correctly
+          deserializing itself properly.
+        </p>
         <p>Fixed problem found by David Hooker with Ant build file for the 
         binary and source distribution that was not including the manifest file
         in the distribution. 

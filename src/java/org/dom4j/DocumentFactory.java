@@ -9,7 +9,10 @@
 
 package org.dom4j;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
+
 import java.util.List;
 import java.util.Map;
 
@@ -75,7 +78,7 @@ public class DocumentFactory implements Serializable {
     }
 
     public DocumentFactory() {
-        cache = createQNameCache();
+        init();
     }
     
     
@@ -280,6 +283,16 @@ public class DocumentFactory implements Serializable {
         return new QNameCache(this);
     }
 
+    
+    
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        init();
+    }
+    
+    protected void init() {
+        cache = createQNameCache();
+    }
 }
 
 
