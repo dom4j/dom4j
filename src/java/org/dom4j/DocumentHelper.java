@@ -259,7 +259,7 @@ public final class DocumentHelper {
      * </p>
      * 
      * @param text
-     *            is the XML text to be parsed
+     *            the XML text to be parsed
      * 
      * @return a newly parsed Document
      * 
@@ -267,13 +267,23 @@ public final class DocumentHelper {
      *             if the document could not be parsed
      */
     public static Document parseText(String text) throws DocumentException {
+        Document result = null;
+
         SAXReader reader = new SAXReader();
         String encoding = getEncoding(text);
 
         InputSource source = new InputSource(new StringReader(text));
         source.setEncoding(encoding);
 
-        return reader.read(source);
+        result = reader.read(source);
+
+        // if the XML parser doesn't provide a way to retrieve the encoding,
+        // specify it manually
+        if (result.getXMLEncoding() == null) {
+            result.setXMLEncoding(encoding);
+        }
+
+        return result;
     }
 
     private static String getEncoding(String text) {
