@@ -42,10 +42,6 @@ public class DefaultVariableContext implements VariableContext, org.jaxen.Variab
     *
     *  @param name The name of the variable sought.
     *
-    *  @return The currently bound value of the variable, or null.
-    *
-    *  @see org.dom4j.xpath.ContextSupport#getVariableValue
-    *  @see org.dom4j.xpath.ContextSupport#setVariableContext
     */
     public Object getVariableValue(String name) {
         return map.get(name);
