@@ -73,7 +73,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     protected static final String[] LEXICAL_HANDLER_NAMES = {
             "http://xml.org/sax/properties/lexical-handler",
-            "http://xml.org/sax/handlers/LexicalHandler" };
+            "http://xml.org/sax/handlers/LexicalHandler"};
 
     protected static final OutputFormat DEFAULT_FORMAT = new OutputFormat();
 
@@ -1037,7 +1037,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                         } else if (lastTextNode != null) {
                             firstChar = lastTextNode.getText().charAt(0);
                         }
-                        
+
                         if (Character.isWhitespace(firstChar)) {
                             writer.write(PAD_TEXT);
                         }
@@ -1051,11 +1051,23 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                             writeString(lastTextNode.getText());
                         }
 
-                        lastTextNode = null;
-
                         if (format.isPadText()) {
-                            writer.write(PAD_TEXT);
+                            // only add the PAD_TEXT if the text itself ends
+                            // with whitespace
+                            char lastTextChar = 'a';
+                            if (buff != null) {
+                                lastTextChar = buff.charAt(buff.length() - 1);
+                            } else if (lastTextNode != null) {
+                                String txt = lastTextNode.getText();
+                                lastTextChar = txt.charAt(txt.length() - 1);
+                            }
+
+                            if (Character.isWhitespace(lastTextChar)) {
+                                writer.write(PAD_TEXT);
+                            }
                         }
+
+                        lastTextNode = null;
                     }
 
                     textOnly = false;
@@ -1073,7 +1085,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                     } else {
                         firstChar = lastTextNode.getText().charAt(0);
                     }
-                    
+
                     if (Character.isWhitespace(firstChar)) {
                         writer.write(PAD_TEXT);
                     }
@@ -1102,18 +1114,18 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                         // only add the PAD_TEXT if the text itself ends with
                         // whitespace
                         String txt = lastTextNode.getText();
-                        char lastChar = txt.charAt(txt.length() - 1);
-                        
-                        if (Character.isWhitespace(lastChar)) {
+                        char lastTextChar = txt.charAt(txt.length() - 1);
+
+                        if (Character.isWhitespace(lastTextChar)) {
                             writer.write(PAD_TEXT);
                         }
                     }
 
                     writeNode(node);
 
-//                    if ((lastTextNode != null) && format.isPadText()) {
-//                        writer.write(PAD_TEXT);
-//                    }
+                    // if ((lastTextNode != null) && format.isPadText()) {
+                    // writer.write(PAD_TEXT);
+                    // }
 
                     lastTextNode = null;
                 }
@@ -1171,8 +1183,8 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     /**
      * Writes the SAX namepsaces
      * 
-     * @param prefix
-     * @param uri
+     * @param prefix the prefix
+     * @param uri the namespace uri
      * 
      * @throws IOException
      */
