@@ -93,13 +93,20 @@
         give us feedback or discuss your requirements.
       </p>
 
-      <p>You can browse the archives of 
+      <p>You can browse the archives for here
+        <a href="http://www.geocrawler.com/lists/3/SourceForge/8798/0/">
+          dom4j-dev archive 11
+        </a> 
+        or 
         <a href="http://www.mail-archive.com/dom4j-dev%40lists.sourceforge.net/">
-          dom4j-dev
+          dom4j-dev archive 2
         </a> 
         and 
+        <a href="http://www.geocrawler.com/lists/3/SourceForge/8797/0/">
+          dom4j-user archive 1
+        </a>
         <a href="http://www.mail-archive.com/dom4j-user%40lists.sourceforge.net/">
-          dom4j-user
+          dom4j-user archive 2
         </a>
       </p>
     </section>

@@ -81,7 +81,11 @@ public class BeanDocumentFactory extends DocumentFactory {
         String value = attributes.getValue( "class" );
         if ( value != null ) {
             try {
-                Class beanClass = Class.forName( value );
+                Class beanClass = Class.forName( 
+                    value, 
+                    true, 
+                    BeanDocumentFactory.class.getClassLoader() 
+                );
                 return beanClass.newInstance();
             }
             catch (Exception e) {

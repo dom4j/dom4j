@@ -239,7 +239,7 @@ public class DocumentFactory implements Serializable {
             Class theClass = Class.forName( 
                 className, 
                 true, 
-                DocumentHelper.class.getClassLoader() 
+                DocumentFactory.class.getClassLoader() 
             );
             return (DocumentFactory) theClass.newInstance();
         }

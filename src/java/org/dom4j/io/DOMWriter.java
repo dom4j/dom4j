@@ -66,7 +66,11 @@ public class DOMWriter {
             for ( int i = 0; i < size; i++ ) {
                 try {
                     String name = DEFAULT_DOM_DOCUMENT_CLASSES[i];
-                    domDocumentClass = Class.forName( name );
+                    domDocumentClass = Class.forName( 
+                        name,
+                        true,
+                        DOMWriter.class.getClassLoader()
+                    );
                     if ( domDocumentClass != null ) {
                         break;
                     }
@@ -99,7 +103,11 @@ public class DOMWriter {
       */
     public void setDomDocumentClassName(String className) throws DocumentException {
         try {
-            this.domDocumentClass = Class.forName( className );
+            this.domDocumentClass = Class.forName( 
+                className,
+                true,
+                DOMWriter.class.getClassLoader()
+            );
         }
         catch (Exception e) {
             throw new DocumentException( 
