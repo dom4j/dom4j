@@ -33,6 +33,7 @@
             </p>
             <p>XMLWriter now implements the SAX XMLFilter interface so that it can
               be added to a SAX parsing filter chain to output the XML being parsed in a simple way.
+              Many thanks to Joseph Bowbeer for his help in this area.
             </p>
             <p>Added setProperty() and setFeature() methods to SAXReader to allow
               the easy configuration of custom parser properties via SAXReader, such
@@ -74,6 +75,13 @@
             <p>Fixed bug that attributes without a namespace prefix which are inside
               an element with a default namespace declaration of the form xmlns="theURI", 
               the attribute now correctly inherits the namespace URI.
+            </p>
+            <p>Applied patch found by Stefan Graeber that the UserDataFactory was not
+              correctly creating UserDataAttribute instances.
+            </p>
+            <p>Fixed bug that SAXWriter and DocumentSource were not correctly producing
+            lexical events such as entities, comments and DOCTYPE declarations.
+            Many thanks to Joseph Bowbeer for his help in this area.
             </p>
           </section>
         </section>

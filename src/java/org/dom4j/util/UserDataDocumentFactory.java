@@ -54,9 +54,10 @@ public class UserDataDocumentFactory extends DocumentFactory {
         return new UserDataElement(qname);
     }
 
-    public Attribute createAttribute(QName qname, String value) {
+    public Attribute createAttribute(Element owner, QName qname, String value) {
         return new UserDataAttribute(qname, value);
-    }    
+    }
+    
 }
 
 
