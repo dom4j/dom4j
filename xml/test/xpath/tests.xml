@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tests>
 
+  <!-- test the use of 'or' -->
+  <document url="xml/test/sample.xml">
+    <context select="/">
+      <test select="/products/product[@id='2' or colour='green']" count="2"/>
+    </context>
+  </document>
+
   <document url="xml/test/DavidHooker.xml">
     <context select="/"> 
       <test select="/*/oi:thing-info/@triggering-document-expression" count="1"/>
