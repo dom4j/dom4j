@@ -12,9 +12,8 @@
       processing XML data.
       </p>
 
-      <p><b>DOM4J</b> provides custom tree building, plug and play tree 
-      implementations and simple Java interfaces together with integrated 
-      XPath navigation.
+      <p><b>DOM4J</b> is a simple interface based API together with 
+      configurable plug and play tree implementations and fully integrated XPath navigation.
       </p>
     </header>
 
