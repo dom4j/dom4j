@@ -7,6 +7,17 @@
 <author><firstname>Tobias</firstname><surname>Rademacher</surname></author>
 <revhistory>
   <revision>
+    <revnumber>0.0.5</revnumber>
+    <date>01-07-09</date>
+    <authorinitials>tradem</authorinitials>
+    <revdescription>
+      <itemizedlist>
+        <listitem><para>Fixing xml structure mistake</para></listitem>
+        <listitem><para>Make Writer samples dom4j 0.6 compliant</para></listitem>
+      </itemizedlist>
+    </revdescription>
+  </revision>
+<revision>
     <revnumber>0.0.4</revnumber>
     <date>01-07-06</date>
     <authorinitials>tradem</authorinitials>
@@ -299,23 +310,25 @@ import java.io.OutputStream;
 
 import org.dom4j.Document;
 import org.dom4j.io.XMLWriter;
+import org.dom4j.io.OutputFormat;
 
 public class DeployFileCreator {
 
  private Document doc;
 
  public void serializetoXML(OutputStream out, String aEncodingScheme) throws Exception {
-   XMLWriter writer = new XMLWriter();
-   writer.setWriter(writer.createWriter(out,aEncodingScheme);
+   OutputFormat outformat = OutputFormat.createPrettyPrint();
+   outformat.setEncoding(aEncodingScheme);
+   XMLWriter writer = new XMLWriter(out, outformat);
    writer.write(this.doc);
-   writer.close;
+   writer.flush();
  }
 
 }
 </programlisting>
 
 <para>
-We used writers createWriter method to wrap a given <classname>OutputStream</classname> with the appropriate encoding. You should use a <classname>Writer</classname> rather than a <classname>OutputStream</classname>, because you are able to control the encoding of your XML application. Since write()-Method is overloaded you are able to write all Object of which DOM4J consits.
+We use the constructor to wrap a given <classname>OutputStream</classname> with the appropriate encoding. You should use a <classname>Writer</classname> rather than a <classname>OutputStream</classname>, because you are able to control the encoding of your XML application. Since write()-Method is overloaded you are able to write all Object of which DOM4J consits.
 </para>
 
 
@@ -338,12 +351,14 @@ public class DeployFileCreator {
 
  private Document doc;
 
- public void serilizetoXML(OutputStream out, String aEncodingScheme) throws Exception {
-   XMLWriter writer = new XMLWriter(OutputFormat.getPrettyPrinting());
-   writer.setWriter(writer.createWriter(out,aEncodingScheme);
+  public void serializetoXML(OutputStream out, String aEncodingScheme) throws Exception {
+   OutputFormat outformat = OutputFormat.createPrettyPrint();
+   outformat.setEncoding(aEncodingScheme);
+   XMLWriter writer = new XMLWriter(out, outformat);
    writer.write(this.doc);
-   writer.close;
+   writer.flush();
  }
+
 
 }
 </programlisting>
@@ -379,10 +394,9 @@ public class DeployFileCreator {
  }
 
  public void serilizeToXML(OutputStream out) throws Exception {
-   XMLWriter writer = new XMLWriter(outFormat);
-   writer.setWriter(writer.createWriter(out,outFormat.getEncoding());
+   XMLWriter writer = new XMLWriter(outFormat, this.outFormat);
    writer.write(this.doc);
-   writer.close;
+   writer.flush();
  }
 
  public void serilizeToXML(OutputStream out, String encoding) throws Exception {
@@ -397,6 +411,11 @@ public class DeployFileCreator {
 The serialization methods in our little example will now set encoding using <classname>OutputFormater</classname>. If you use the parameterless construtor and the seriazliation method takes only
 an <classname>java.io.OutputStream</classname> <acronym>UTF8</acronym> is used for encoding. If you need a simple output on screen for debbuing or testing you can omit setting of a <classname>Writer</classname> or an <classname>OutputStream</classname> completly
 because <application>dom4j</application>.<classname>org.io.XMLWriter</classname> standard Stream is <classname>System.out</classname>.
+</para>
+
+<para>
+When you use a <classname>java.io.OutputStream</classname> you should use the <classname>flush()</classname> method, when you use a writer its recommended to use
+<classname>close()</classname>.
 </para>
 
 </section>
@@ -431,10 +450,9 @@ public class DeployFileCreator {
  }
 
  public void serilizeToHTML(OutputStream out) throws Exception {
-   HTMLWriter writer = new HTMLWriter(outFormat);
-   writer.setWriter(writer.createWriter(out,outFormat.getEncoding());
+   HTMLWriter writer = new HTMLWriter(outFormat, this.outFormat);
    writer.write(this.doc);
-   writer.close;
+   writer.flush();
  }
 
 }
@@ -683,8 +701,7 @@ the inbuild vistor implemention. Please keep in mind that the <emphasis>complete
 </para>
 </chapter>
 
-<chapter>
-<title>Mainpulation with DOM4J</title>
+<chapter><title>Mainpulation with DOM4J</title>
 <para>
 Accessing XML content statically alone would not very special. Thus dom4j offers several methods for manipulation a documents content.
 </para>
@@ -711,7 +728,7 @@ A <classname>org.dom4j.Document</classname> allows you to configure and retreive
   }
 
 </programlisting>
-
+</section>
 
 
   <section><title>Qualified Names</title>
@@ -721,7 +738,7 @@ A <classname>org.dom4j.Document</classname> allows you to configure and retreive
   Names that are provided by <classname>org.dom4j.QName</classname> instances.
   </para>
 
-  <programmlisting>
+  <programlisting>
 
   import org.dom4j.Element;
   import org.dom4j.Document;
@@ -741,11 +758,9 @@ A <classname>org.dom4j.Document</classname> allows you to configure and retreive
    }
   }
 
-  </programmlisting>
+  </programlisting>
 
   </section>
-
-  <section><title>Inserting elements</title>
 
   <section><title>Inserting elements</title>
   <para>
@@ -841,7 +856,7 @@ Since JaXP 1.1 TraX is the common API for proceeding a XSL Stylesheet inside of 
 Whereas <classname>org.dom4j.io.DocumentResult</classname> contains a <classname>org.dom4j.Document</classname> as result tree, <classname>DocumentSource</classname> takes dom4j <classname>Document</classname>s and pepare them for transformation. Both classes are build on top of TraX own SAX classes. This is much more perfomant as a DOM adaptation. The following example explains the use of XSLT with TraX and dom4j.
 </para>
 
-<programmlisting>
+<programlisting>
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
@@ -874,7 +889,7 @@ public class TemplateGeneratorSample {
  }
 }
 
-</programmlisting>
+</programlisting>
 
 <para>
 Imagine that you use XSLT to process a XML Schema in order to generate a empty template xml file accoring the schema contraints. The above sample should how easy the Java code is when you use dom4j and it's TraX support. If you use TemplateGenerator a lot you should consider the application of singleton pattern, but for this example I avoided this for simplicity. More information about TraX is provided  <ulink url="http://www.java.sun.com/xml">here</ulink>.
