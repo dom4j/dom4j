@@ -151,6 +151,35 @@ public class TestContent extends AbstractTestCase {
         assertTrue( list.get(1) == foo );
         assertTrue( list.get(2) == footer );
     }
+    
+    public void testAddAtIndex() throws Exception {
+        Document doc = factory.createDocument();
+        Element root = doc.addElement( "html" );
+        Element header = root.addElement( "header" );
+        Element body = root.addElement( "body" );
+        
+        Element foo = factory.createElement( "foo" );
+        Element bar = factory.createElement( "bar" );
+        
+        List content = header.content();
+        content.add(0, foo);
+        content.add(0, bar);
+        
+        assertEquals( "foo", header.node(1).getName() );
+        assertEquals( "bar", header.node(0).getName() );
+        
+        foo = factory.createElement( "foo" );
+        bar = factory.createElement( "bar" );
+        
+        content = body.content();
+        content.add(0, foo);
+        content.add(1, bar);
+        
+        assertEquals( "foo", body.node(0).getName() );
+        assertEquals( "bar", body.node(1).getName() );
+    }
+        
+    
         
     // Implementation methods
     //-------------------------------------------------------------------------                    
