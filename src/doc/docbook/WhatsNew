@@ -1,0 +1,132 @@
+Changes since version 1.28 (2001-01-12)
+
+Changes to docbook/*
+
+  | 2001-01-30  Norman Walsh  <ndw@nwalsh.com>
+  | 
+  | 	* VERSION: Version 1.29 released.
+  | 
+
+Changes to docbook/common/*
+
+  | 2001-01-30  Norman Walsh  <ndw@nwalsh.com>
+  | 
+  | 	* en.xml: Added index symbols entry
+  | 
+  | 2001-01-28  Norman Walsh  <ndw@nwalsh.com>
+  | 
+  | 	* common.xsl: Support suppressing anchors in referenced
+  | 	  titles; support imageobjectco
+  | 
+  | 	* hu.xml: Tweak chapter title xref template
+  | 
+
+Changes to docbook/docsrc/*
+
+  | 2001-01-30  Norman Walsh  <ndw@nwalsh.com>
+  | 
+  | 	* documentation.xml: Fixed system identifier
+  | 
+
+Changes to docbook/fo/*
+
+  | 2001-01-30  Norman Walsh  <ndw@nwalsh.com>
+  | 
+  | 	* index.xsl, param.xsl: Added support for indexing, with
+  | 	  PassiveTeX support for sorted index page numbers
+  | 
+  | 	* inline.xsl: Added varname
+  | 
+  | 2001-01-28  Norman Walsh  <ndw@nwalsh.com>
+  | 
+  | 	* admon.xsl: Improve support for admon graphics
+  | 
+  | 	* autotoc.xsl, index.xsl: First attempt at support for
+  | 	  automatic indexing
+  | 
+  | 	* biblio.xsl: Support shortaffil and jobtitle in bibliomixed
+  | 
+  | 	* graphics.xsl: Fix bug with content-width/content-height vs.
+  | 	  width/height in graphics
+  | 
+  | 	* lists.xsl: Improve list formatting; fix bug that caused
+  | 	  fo:block to be omitted from list labels sometimes
+  | 
+  | 	* pagesetup.xsl: Remove unnecessary rule; put region-after
+  | 	  after region-before
+  | 
+  | 	* param.xsl: Added admon.graphics.extension, default.units,
+  | 	  and generate.index
+  | 
+  | 	* sections.xsl: Keep section titles with next element
+  | 
+  | 	* table.xsl: Remove unnecessary doctype declaration
+  | 
+
+Changes to docbook/html/*
+
+  | 2001-01-30  Norman Walsh  <ndw@nwalsh.com>
+  | 
+  | 	* autotoc.xsl: Added support for section TOCs and refentrys in
+  | 	  components
+  | 
+  | 	* index.xsl: Proper support for grouping symbol entries in the
+  | 	  index. Thanks again Jeni.
+  | 
+  | 	* lists.xsl: Added summary attribute to simplelist tables
+  | 
+  | 	* param.xsl, sections.xsl: Added support for section TOCs
+  | 
+  | 2001-01-28  Norman Walsh  <ndw@nwalsh.com>
+  | 
+  | 	* autotoc.xsl, index.xsl: Support automatic indexing
+  | 
+  | 	* biblio.xsl: Support shortaffil and jobtitle in bibliomixed
+  | 
+  | 	* component.xsl: Allow anchors in component titles
+  | 
+  | 	* division.xsl: Support ToCs and PartIntros in References
+  | 
+  | 	* graphics.xsl: Process mediaobjectco and imageobjectco (just
+  | 	  do the graphic, ignore the callouts)
+  | 
+  | 	* inline.xsl: Fix precedence bug processing of function params
+  | 
+  | 	* param.xsl: Added generate.reference.toc and generate.index
+  | 
+  | 	* refentry.xsl: Handle Reference ToC correctly
+  | 
+  | 	* sections.xsl: Allow anchors in section titles
+  | 
+  | 	* synop.xsl, verbatim.xsl: Handle synopsis as a proper
+  | 	  verbatim environment
+  | 
+
+Changes to docbook/lib/*
+
+  | 2001-01-28  Norman Walsh  <ndw@nwalsh.com>
+  | 
+  | 	* lib.xsl: Moved string.subst to lib; added length-magnitude
+  | 	  and length-units templates for parsing lengths
+  | 
+
+Changes to docbook/test/*
+
+  | 2001-01-30  Norman Walsh  <ndw@nwalsh.com>
+  | 
+  | 	* Makefile: Changes
+  | 
+  | 2001-01-28  Norman Walsh  <ndw@nwalsh.com>
+  | 
+  | 	* Makefile: Tweaks
+  | 
+  | 	* book.xml, graphics.xml, idxbook.xml, test.xml: Hacking
+  | 
+
+Changes to docbook/indexing/*
+
+  | 2001-01-28  Norman Walsh  <ndw@nwalsh.com>
+  | 
+  | 	* chunk.xsl, docbook.xsl: Hacking
+  | 
+

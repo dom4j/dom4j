@@ -1,0 +1,98 @@
+2001-01-30  Norman Walsh  <ndw@nwalsh.com>
+
+	* en.xml: Added index symbols entry
+
+2001-01-28  Norman Walsh  <ndw@nwalsh.com>
+
+	* common.xsl: Support suppressing anchors in referenced titles; support imageobjectco
+
+	* hu.xml: Tweak chapter title xref template
+
+2001-01-07  Norman Walsh  <ndw@nwalsh.com>
+
+	* common.xsl: Added 'Chapter' and 'Appendix' to the gentext for chapter and appendix titles
+
+	* et.xml, hu.xml, id.xml, ko.xml, sl.xml: Added dingbats
+
+	* l10n.xml, zh_tw.xml: Added traditional Chinese
+
+	* l10n.xsl: Generalized 'gentext.element.name' to 'gentext' with key parameter
+
+2000-12-14  Norman Walsh  <ndw@nwalsh.com>
+
+	* it.xml: Updated
+
+2000-11-29  Norman Walsh  <ndw@nwalsh.com>
+
+	* l10n.xsl: Changed variables to parameters
+
+2000-11-05  Norman Walsh  <ndw@nwalsh.com>
+
+	* nl.xml: Updates
+
+2000-11-03  Norman Walsh  <ndw@nwalsh.com>
+
+	* common.xsl: Parameterize wrappers around the parts of a title.ref
+
+2000-11-02  Norman Walsh  <ndw@nwalsh.com>
+
+	* common.xsl: Remove HTML spans from common.xsl; that needs to be supported some other way (in the HTML stylesheets)
+
+2000-10-30  Norman Walsh  <ndw@nwalsh.com>
+
+	* common.xsl: Don't put the span around the label if text-only is true
+
+2000-10-29  Norman Walsh  <ndw@nwalsh.com>
+
+	* common.xsl: Added label.this.section template to provide more specific control of section labelling; added spans around labels and titles for CSS styling
+
+	* en.xml: Make dingbat quotes curly
+
+2000-10-27  Norman Walsh  <ndw@nwalsh.com>
+
+	* cs.xml: Updates
+
+2000-10-26  Norman Walsh  <ndw@nwalsh.com>
+
+	* common.xsl: Changed text-only parameter to 0/1 from true()/false()
+
+	* hu.xml: Updated
+
+	* ko.xml: New file.
+
+	* l10n.xml: Added Korean
+
+	* l10n.xsl: Handle empty gentext
+
+	* l10n.xsl: Fixed serious bug in gentext.element.name
+
+2000-10-23  Norman Walsh  <ndw@nwalsh.com>
+
+	* ca.xml, cs.xml, da.xml, de.xml, el.xml, es.xml, et.xml, fi.xml, fr.xml, hu.xml, id.xml, it.xml, ja.xml, no.xml, pl.xml, pt.xml, pt_br.xml, ro.xml, ru.xml, sk.xml, sl.xml, sv.xml: 
+	Fixed localization key errors and missing xrefs (thanks to Eva a Pavel ZAMPACHOVI)
+
+2000-10-19  Norman Walsh  <ndw@nwalsh.com>
+
+	* common.xsl: Documentation changes
+
+2000-10-17  Norman Walsh  <ndw@nwalsh.com>
+
+	* common.xsl: Updated documentation
+
+2000-10-16  Norman Walsh  <ndw@nwalsh.com>
+
+	* common.xsl: Added doc:reference
+
+2000-10-14  Norman Walsh  <ndw@nwalsh.com>
+
+	* common.xsl: Added filename-basename, select.mediaobject, and is.acceptable.mediaobject
+
+	* cs.xml: Updates
+
+2000-10-09  Norman Walsh  <ndw@nwalsh.com>
+
+	* LostLog, ca.xml, common.xsl, cs.xml, da.xml, de.xml, el.xml, en.xml, es.xml, et.xml, fi.xml, fr.xml, hu.xml, id.xml, it.xml, ja.xml, l10n.dtd, l10n.xml, l10n.xsl, nl.xml, no.xml, pl.xml, pt.xml, pt_br.xml, ro.xml, ru.xml, sk.xml, sl.xml, sv.xml, zh_cn.xml: 
+	New file.
+
+	* common.xsl: Output '.' between section numbers
+

@@ -1,0 +1,259 @@
+2001-01-30  Norman Walsh  <ndw@nwalsh.com>
+
+	* autotoc.xsl: Added support for section TOCs and refentrys in components
+
+	* index.xsl: Proper support for grouping symbol entries in the index. Thanks again Jeni.
+
+	* lists.xsl: Added summary attribute to simplelist tables
+
+	* param.xsl, sections.xsl: Added support for section TOCs
+
+2001-01-28  Norman Walsh  <ndw@nwalsh.com>
+
+	* autotoc.xsl, index.xsl: Support automatic indexing
+
+	* biblio.xsl: Support shortaffil and jobtitle in bibliomixed
+
+	* component.xsl: Allow anchors in component titles
+
+	* division.xsl: Support ToCs and PartIntros in References
+
+	* graphics.xsl: Process mediaobjectco and imageobjectco (just do the graphic, ignore the callouts)
+
+	* inline.xsl: Fix precedence bug processing of function params
+
+	* param.xsl: Added generate.reference.toc and generate.index
+
+	* refentry.xsl: Handle Reference ToC correctly
+
+	* sections.xsl: Allow anchors in section titles
+
+	* synop.xsl, verbatim.xsl: Handle synopsis as a proper verbatim environment
+
+2001-01-12  Norman Walsh  <ndw@nwalsh.com>
+
+	* admon.xsl, param.xsl: Added admon.graphics.extension parameter
+
+	* docbook.xsl: (Attempt) to fix bug with root node context
+
+	* footnote.xsl: Improve handling of footnote links
+
+	* keywords.xsl: Make a single META header with a comma-delimited list of keywords, instead of a set of META headers
+
+	* table.xsl: Add anchors for ROW and ENTRY IDs
+
+2001-01-07  Norman Walsh  <ndw@nwalsh.com>
+
+	* component.xsl, division.xsl, titlepage.templates.xml, titlepage.xsl: 
+	Updated to use new parameters and new titlepage formatting
+
+	* param.xsl: Added new parameters for controlling TOCs
+
+	* titlepage.templates.xsl: Updated
+
+	* xref.xsl: Added support for xref to author
+
+2000-12-14  Norman Walsh  <ndw@nwalsh.com>
+
+	* param.xsl: Added information about parameter types (for a future web-based customization tool); added new table parameters for Saxon tablecolumn extensions
+
+	* table.xsl: Added support for the Saxon (6-only) table column extension
+
+2000-11-29  Norman Walsh  <ndw@nwalsh.com>
+
+	* admon.xsl: Use PNGs for admonition graphics
+
+	* block.xsl: Hack for putting anchors in list items
+
+	* callout.xsl, graphics.xsl, verbatim.xsl: Updated to use Saxon 6 extensions
+
+	* docbook.xsl: Whitespace changes
+
+	* lists.xsl: Hack to fix anchors in list items
+
+	* param.xsl: Added stylesheet.result.type for the Saxon extensions
+
+	* pi.xsl: Only output the dbhtml PI if we're using.chunker
+
+	* sections.xsl: Remove IDs from divs; we also generate anchors and it's wrong to generate both with the same ID value
+
+	* table.xsl: Improve calculation of starting column number
+
+	* table.xsl: Support align on tgroup
+
+	* xref.xsl: Support bibliomixed
+
+2000-11-17  Norman Walsh  <ndw@nwalsh.com>
+
+	* block.xsl: Added template for highlights
+
+	* callout.xsl, lists.xsl: Callout list marks didn't work
+
+	* docbook.xsl: Fixed bug in calculation of root element
+
+	* pi.xsl, xref.xsl: Reworked processing of xrefs: now a mode instead of named templates
+
+2000-11-15  Norman Walsh  <ndw@nwalsh.com>
+
+	* callout.xsl, graphics.xsl, param.xsl, verbatim.xsl: Saxon extension support for callouts and numbered verbatim environments
+
+2000-11-13  Norman Walsh  <ndw@nwalsh.com>
+
+	* param.xsl: Whitespace/documentation fixes
+
+2000-11-12  Norman Walsh  <ndw@nwalsh.com>
+
+	* callout.xsl, lists.xsl: Added support for callout graphics and callout-tables hack
+
+	* chunk-common.xsl: Move write.chunk out of common; support rootid
+
+	* chunk.xsl: Move write.chunk into chunk.xsl
+
+	* docbook.xsl: Support rootid
+
+	* param.xsl: Added rootid and callout graphics parameters
+
+	* refentry.xsl: Don't wrap name anchor around refentry title
+
+	* xref.xsl: Use local-name() instead of name(), support xref to co
+
+	* xtchunk.xsl: Add support for method and encoding parameters to write.chunk
+
+2000-11-09  Norman Walsh  <ndw@nwalsh.com>
+
+	* chunk-common.xsl, chunk.xsl, xtchunk.xsl: Reworked chunking to support XT, Xalan, and Saxon
+
+	* param.xsl: Added ulink.target parameter
+
+	* xref.xsl: Support ulink.target
+
+2000-11-05  Norman Walsh  <ndw@nwalsh.com>
+
+	* chunk.xsl: Made base.dir absolute.base.dir; added encoding to saxon:output
+
+2000-11-03  Norman Walsh  <ndw@nwalsh.com>
+
+	* chunk.xsl: Fix suppress.navigation problems
+
+	* chunk.xsl: Abstract chunk writing to a write.chunk template
+
+	* sections.xsl: Parameterize wrappers around the parts of a title.ref
+
+2000-10-30  Norman Walsh  <ndw@nwalsh.com>
+
+	* chunk.xsl: Fix typos in suppress.navigation
+
+2000-10-29  Norman Walsh  <ndw@nwalsh.com>
+
+	* autotoc.xsl, division.xsl: Support ToC (for navigation) in Set title pages
+
+	* component.xsl: Don't process footnotes in article apendixes, let the article handle them
+
+	* footnote.xsl: Superscript the footnote numbers; make space after the hr
+
+	* lists.xsl: Cycle numeration of nested ordered lists: 1, a, i, A, I, 1, a, ...
+
+	* sections.xsl: Add template for subtitles
+
+	* table.xsl: Reworked colnum calculations to handle some cases where leading entrys are missing in a row; support 'summary' attributes on HTML tables
+
+	* titlepage.xsl: If there are no authorinitials; just make revhistorys two columns
+
+2000-10-26  Norman Walsh  <ndw@nwalsh.com>
+
+	* autotoc.xsl: Revised autotoc support; make the HTML valid
+
+	* block.xsl: Added some missing IDs; added summary attribute to tables
+
+	* changebars.xsl: More tweaks; still largely unfinished
+
+	* chunk.xsl, param.xsl: Added suppress.navigation parameter to suppress header and footer navigation tables
+
+	* docbook.xsl: Use ISO Latin 1 for output encoding; changed text-node to a 0/1 variable
+
+	* graphics.xsl: Fix typos and XLink attribute values
+
+	* html.xsl: Support trade, service, and registered dingbats
+
+	* html.xsl: Turn off <dingbat> nonsense
+
+	* inline.xsl: Don't put <b>'s inside titles that are likely to already be <b>; support trade, service, and registered dingbats
+
+	* pi.xsl: Remove needless './'
+
+	* sections.xsl: Fix header construction; check css.decoration parameter; don't output <b>'s around normal section titles
+
+	* table.xsl: Support 'table-summary' attribute of dbhtml PI inside of tgroup to set the HTML table summary
+
+	* titlepage.xsl: Added summary attribute to revision history table
+
+	* verbatim.xsl: Figured out how to do non-PRE verbatim display for address and literallayout
+
+	* xref.xsl: Fixed messages for bad xrefs
+
+2000-10-20  Norman Walsh  <ndw@nwalsh.com>
+
+	* Makefile: Use titlepage.xsl to generate title pages
+
+	* titlepage.templates.xsl: Regenerated with new stylesheets
+
+2000-10-19  Norman Walsh  <ndw@nwalsh.com>
+
+	* Makefile, component.xsl, sections.xsl, titlepage.templates.xml, titlepage.templates.xsl: 
+	Updates to template-driven title pages
+
+	* ebnf.xsl, param.xsl: Documentation changes
+
+2000-10-17  Norman Walsh  <ndw@nwalsh.com>
+
+	* Makefile: New file.
+
+	* ebnf.xsl, param.xsl: Updated documentation
+
+	* param.xsl: Whitespace
+
+	* refentry.xsl: Support referenceinfo; put reference partintro before TOC
+
+	* titlepage.xsl: Improved formatting of legal notices
+
+2000-10-16  Norman Walsh  <ndw@nwalsh.com>
+
+	* chunk.xsl: Fixed prev/next calculations for chapters with multiple sections
+
+	* ebnf.xsl, param.xsl: Added doc:reference
+
+2000-10-14  Norman Walsh  <ndw@nwalsh.com>
+
+	* block.xsl, glossary.xsl, lists.xsl, synop.xsl: Added priority to avoid template conflicts
+
+	* chunk.xsl, docbook.xsl: Added user.header.content and user.footer.content
+
+	* graphics.xsl: Rewrote support for graphics
+
+	* inline.xsl: Added support for role='bold' on emphasis
+
+	* titlepage.xsl: Added support for revisionflag on article titles
+
+2000-10-12  Norman Walsh  <ndw@nwalsh.com>
+
+	* autotoc.xsl: Don't point to empty indexes
+
+	* changebars.xsl, lists.xsl, param.xsl: The beginnings of support for changebars
+
+	* chunk.xsl: Added base.dir parameter; fixed typo in table cells (widht instead of width attr)
+
+	* graphics.xsl: In media objects, always pick the first object if there's only one
+
+2000-10-09  Norman Walsh  <ndw@nwalsh.com>
+
+	* LostLog, admon.xsl, autotoc.xsl, biblio.xsl, block.xsl, callout.xsl, chunk.xsl, component.xsl, division.xsl, docbook.xsl, ebnf.xsl, footnote.xsl, formal.xsl, glossary.xsl, graphics.xsl, html.xsl, index.xsl, info.xsl, inline.xsl, keywords.xsl, lists.xsl, math.xsl, param.xsl, pi.xsl, qandaset.xsl, refentry.xsl, sections.xsl, synop.xsl, table.xsl, titlepage.templates.xml, titlepage.templates.xsl, titlepage.xsl, toc.xsl, verbatim.xsl, xref.xsl, xtchunk.xsl: 
+	New file.
+
+	* biblio.xsl: Support xref to bibliography entries
+
+	* chunk.xsl, docbook.xsl: Turn off indenting
+
+	* lists.xsl: Add priority to avoid specificity errors
+
+	* xref.xsl: Support xref to bibliography entries; fix broken test for empty ulink
+

@@ -1,0 +1,20 @@
+2001-01-28  Norman Walsh  <ndw@nwalsh.com>
+
+	* lib.xsl: Moved string.subst to lib; added length-magnitude and length-units templates for parsing lengths
+
+2000-10-19  Norman Walsh  <ndw@nwalsh.com>
+
+	* lib.xsl: Documentation changes
+
+2000-10-17  Norman Walsh  <ndw@nwalsh.com>
+
+	* lib.xsl: Updated documentation
+
+2000-10-16  Norman Walsh  <ndw@nwalsh.com>
+
+	* lib.xsl: Added doc:reference
+
+2000-10-09  Norman Walsh  <ndw@nwalsh.com>
+
+	* LostLog, lib.xsl: New file.
+
