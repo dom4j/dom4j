@@ -12,6 +12,13 @@
       </p>
     </section>
 
+    <section title="What is the DOM4J license?">
+      <p>We use an Apache-style open source license which is one of the least
+        restrictive licenses around, you can use DOM4J to create new products
+        without them having to be open source.
+      </p>
+    </section>
+
     <section title="How does DOM4J relate to DOM?">
       <p>DOM is a quite large language independent API.
         DOM4J is a simpler, lightweight API which is optimised for the Java 
@@ -20,6 +27,12 @@
       </p>
       <p>Though DOM4J fully supports the DOM standard allowing both APIs to be 
         used easily together.
+      </p>
+    </section>
+
+    <section title="How does DOM4J work with DOM and SAX?">
+      <p>You can create DOM4J documents from SAX events or existing DOM trees
+        or you can output DOM4J documents to SAX events, DOM trees or XML text.
       </p>
     </section>
 
