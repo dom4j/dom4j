@@ -8,6 +8,8 @@
           <p>Added patch so that patterns such as <code>@id='123'</code> and <code>name()='foo'</code> are now
             working properly again.
           </p>
+          <p>Patched the dynamic loading of classes to fix some ClassLoader issues found with some application servers.
+          </p>
         </section>
         <section title="0.9 release">
           <section title="Full support for the Jaxen XPath engine">

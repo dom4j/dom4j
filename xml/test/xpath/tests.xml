@@ -24,6 +24,7 @@
       <pattern match="@id='2'"/>
       <pattern match="colour='blue'"/>
       <pattern match="name()='product'"/>
+      <pattern match="not(id='3')"/>
     </context>
   </document>
 
