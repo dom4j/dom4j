@@ -36,7 +36,7 @@ public class BinaryExpr extends Expr {
     
     public Object evaluate(Context context) {
         
-        System.err.println( "Evaluating: " + _op + " " + _lhs + " " + _rhs );
+        //System.err.println( "Evaluating: " + _op + " " + _lhs + " " + _rhs );
         
         Context duplicateContext = context.duplicate();
         

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document url="http://www.dom4j.org/guide.xml">
+  <body>
+    <title>XML Object Model Comparisons</title>
+    
+    <section title="Comparison">
+      <p>This page attempts to survey the landscape of available XML object 
+        models and compare and contrast their features.
+        The information in this table is correct to the best of our knowledge
+        and we will try and keep this information as up to date as possible.
+        If you think there's anything wrong, please let us know 
+        <a href="mailto:dom4j-dev@lists.sourceforge.net">here</a>.
+      </p>
+
+      <table width="100%">
+        <tr>
+            <th align="left">Feature</th>
+            <th align="left"><a href="http://www.w3.org/DOM/">WC3 DOM</a></th>
+            <th align="left"><a href="http://dom4j.org">dom4j</a></th>
+            <th align="left"><a href="http://www.jdom.org">JDOM</a></th>
+            <th align="left"><a href="http://www.themindelectric.com/products/xml/xml.html">Electric XML</a></th>
+        </tr>
+        <tr>
+            <td>Open Source</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>Based on Java Interfaces</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>Supports Java 2 Collections</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>Can use any SAX parser and XMLFilter</td>
+            <td>Yes (usually)</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Don't know</td>
+        </tr>
+        <tr>
+            <td>Convert to and from DOM trees</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>Can implement DOM interfacs natively</td>
+            <td>Yes</td>
+            <td>Yes (optional)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>Integrated XPath support</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Partial</td>
+        </tr>
+        <tr>
+            <td>Event based processing support</td>
+            <td>Possible</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>Capable of processing massive documents</td>
+            <td>Possible</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>XML Schema Data Type support</td>
+            <td>DOM 3.0</td>
+            <td>Yes (alpha)</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+      </table>
+
+    </section>
+
+  </body>
+</document>
+
+
+
+
+
+
+
+
+
