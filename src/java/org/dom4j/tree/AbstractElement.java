@@ -131,6 +131,10 @@ public abstract class AbstractElement
     }
 
     public String getPath(Element context) {
+        
+        if (this == context) {
+            return ".";
+        }
 
         Element parent = getParent();
 

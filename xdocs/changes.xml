@@ -8,6 +8,11 @@
   <body>
 
     <release version="1.5 dev" date="in CVS">
+      <action dev="maartenc" type="fix" due-to="Rob Grzywinski">
+        Fixed bug in <code>AbstractElement</code> causing <code>Node.getPath(Element context)</code> to
+        return an absolute path, even if a the current element was the same as the context element. The
+        relative path "." is now returned.
+      </action>
       <action dev="maartenc" type="add" due-to="Thomas Diesler">
         Added method to <code>Element</code> to retrieve all <code>Namespaces</code> for a given URI..
       </action>

@@ -20,6 +20,7 @@ import org.dom4j.AbstractTestCase;
 import org.dom4j.Attribute;
 import org.dom4j.Branch;
 import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.io.SAXReader;
@@ -94,6 +95,17 @@ public class TestGetPath extends AbstractTestCase {
         testRelativePath( root, child, "*[name()='b']" ); 
     }
     
+    public void testBug770410() {
+        Document doc = DocumentHelper.createDocument();
+        Element a = doc.addElement("a");
+        Element b = a.addElement("b");
+        Element c = b.addElement("c");
+        
+        b.detach();
+        
+        String relativePath = b.getPath(b);
+        assertSame(b, b.selectSingleNode(relativePath));
+    }
         
     protected void testPath(Node node, String value) {
         testPath( node, value, value );
