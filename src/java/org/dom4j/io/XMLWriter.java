@@ -48,6 +48,8 @@ import org.xml.sax.DTDHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.XMLFilterImpl;
@@ -73,10 +75,16 @@ import org.xml.sax.helpers.XMLFilterImpl;
   * </p>
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+  * @author Joseph Bowbeer
   * @version $Revision$
   */
-public class XMLWriter extends XMLFilterImpl implements ContentHandler, LexicalHandler {
+public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
+    protected static final String[] LEXICAL_HANDLER_NAMES = {
+        "http://xml.org/sax/properties/lexical-handler",
+        "http://xml.org/sax/handlers/LexicalHandler"
+    };
+    
     private static final boolean ESCAPE_TEXT = true;
     private static final boolean SUPPORT_PAD_TEXT = false;
     
@@ -104,7 +112,16 @@ public class XMLWriter extends XMLFilterImpl implements ContentHandler, LexicalH
     /** Whether a flush should occur after writing a document */
     private boolean autoFlush;
     
+    /** Lexical handler we should delegate to */
+    private LexicalHandler lexicalHandler;
 
+    /** Whether comments should appear inside DTD declarations - defaults to false */
+    private boolean showCommentsInDTDs;
+    
+    /** Is the writer curerntly inside a DTD definition? */
+    private boolean inDTD;
+    
+    
     public XMLWriter(Writer writer) {
         this( writer, DEFAULT_FORMAT );
     }
@@ -335,6 +352,7 @@ public class XMLWriter extends XMLFilterImpl implements ContentHandler, LexicalH
     public void write(DocumentType docType) throws IOException {
         if (docType != null) {
             writeDocType( docType.getElementName(), docType.getPublicID(), docType.getSystemID() );
+            writePrintln();
         }
     }
 
@@ -526,10 +544,39 @@ public class XMLWriter extends XMLFilterImpl implements ContentHandler, LexicalH
         super.parse(source);
     }
     
-    public void parse(String uri) throws IOException, SAXException {
-        installLexicalHandler();
-        super.parse(uri);
+
+    public void setProperty(String name, Object value) throws SAXNotRecognizedException, SAXNotSupportedException {
+        for (int i = 0; i < LEXICAL_HANDLER_NAMES.length; i++) {
+            if (LEXICAL_HANDLER_NAMES[i].equals(name)) {
+                setLexicalHandler((LexicalHandler) value);
+                return;
+            }
+        }
+        super.setProperty(name, value);
     }
+
+    public Object getProperty(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
+        for (int i = 0; i < LEXICAL_HANDLER_NAMES.length; i++) {
+            if (LEXICAL_HANDLER_NAMES[i].equals(name)) {
+                return getLexicalHandler();
+            }
+        }
+        return super.getProperty(name);
+    }
+
+    public void setLexicalHandler (LexicalHandler handler) {
+        if (handler == null) {
+            throw new NullPointerException("Null lexical handler");
+        } 
+        else {
+            this.lexicalHandler = handler;
+        }
+    }
+
+    public LexicalHandler getLexicalHandler(){
+        return lexicalHandler;
+    }
+    
     
     // ContentHandler interface
     //-------------------------------------------------------------------------
@@ -642,14 +689,7 @@ public class XMLWriter extends XMLFilterImpl implements ContentHandler, LexicalH
     // DTDHandler interface
     //-------------------------------------------------------------------------
     public void notationDecl(String name, String publicID, String systemID) throws SAXException {
-        try {
-            writeDocType(name, publicID, systemID);
-
-            super.notationDecl(name, publicID, systemID);
-        }
-        catch (IOException e) {
-            handleException(e);
-        }
+        super.notationDecl(name, publicID, systemID);
     }
     
     public void unparsedEntityDecl(String name, String publicID, String systemID, String notationName) throws SAXException {        
@@ -660,10 +700,24 @@ public class XMLWriter extends XMLFilterImpl implements ContentHandler, LexicalH
     // LexicalHandler interface
     //-------------------------------------------------------------------------
     public void startDTD(String name, String publicID, String systemID) throws SAXException {
-        //writeDocType(name, publicID, systemID);
+        inDTD = true;        
+        try {
+            writeDocType(name, publicID, systemID);
+        }
+        catch (IOException e) {
+            handleException(e);
+        }
+        
+        if (lexicalHandler != null) {
+            lexicalHandler.startDTD(name, publicID, systemID);
+        }
     }
     
-    public void endDTD() throws SAXException {        
+    public void endDTD() throws SAXException {               
+        inDTD = false;
+        if (lexicalHandler != null) {
+            lexicalHandler.endDTD();
+        }
     }
     
     public void startCDATA() throws SAXException {
@@ -672,6 +726,10 @@ public class XMLWriter extends XMLFilterImpl implements ContentHandler, LexicalH
         }
         catch (IOException e) {
             handleException(e);
+        }
+                
+        if (lexicalHandler != null) {
+            lexicalHandler.startCDATA();
         }
     }
     
@@ -682,6 +740,10 @@ public class XMLWriter extends XMLFilterImpl implements ContentHandler, LexicalH
         catch (IOException e) {
             handleException(e);
         }
+                
+        if (lexicalHandler != null) {
+            lexicalHandler.endCDATA();
+        }
     }
     
     public void startEntity(String name) throws SAXException {
@@ -691,17 +753,30 @@ public class XMLWriter extends XMLFilterImpl implements ContentHandler, LexicalH
         catch (IOException e) {
             handleException(e);
         }
+                
+        if (lexicalHandler != null) {
+            lexicalHandler.startEntity(name);
+        }
     }
     
-    public void endEntity(String name) throws SAXException {            
+    public void endEntity(String name) throws SAXException {                            
+        if (lexicalHandler != null) {
+            lexicalHandler.endEntity(name);
+        }
     }
     
     public void comment(char[] ch, int start, int length) throws SAXException {
-        try {
-            writeComment( new String(ch, start, length) );
+        if ( showCommentsInDTDs || ! inDTD ) {
+            try {
+                writeComment( new String(ch, start, length) );
+            }
+            catch (IOException e) {
+                handleException(e);
+            }
         }
-        catch (IOException e) {
-            handleException(e);
+                
+        if (lexicalHandler != null) {
+            lexicalHandler.comment(ch, start, length);
         }
     }
     
@@ -709,15 +784,26 @@ public class XMLWriter extends XMLFilterImpl implements ContentHandler, LexicalH
     
     // Implementation methods
     //-------------------------------------------------------------------------
-    protected void installLexicalHandler() throws SAXException {
-        // set the lexical handler
-        setProperty( "http://xml.org/sax/handlers/LexicalHandler",  this );
-        
-        // try alternate property just in case
-        setProperty( "http://xml.org/sax/properties/lexical-handler", this );
+    protected void installLexicalHandler() {
+        XMLReader parent = getParent();
+        if (parent == null) {
+            throw new NullPointerException("No parent for filter");
+        }
+        // try to register for lexical events
+        for (int i = 0; i < LEXICAL_HANDLER_NAMES.length; i++) {
+            try {
+                parent.setProperty(LEXICAL_HANDLER_NAMES[i], this);
+                break;
+            }
+            catch (SAXNotRecognizedException ex) {
+                // ignore
+            }
+            catch (SAXNotSupportedException ex) {
+                // ignore
+            }
+        }
     }
-    
-    
+
     protected void writeDocType(String name, String publicID, String systemID) throws IOException {
         boolean hasPublic = false;
 
