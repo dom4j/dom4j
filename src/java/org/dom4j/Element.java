@@ -224,7 +224,7 @@ public interface Element extends Branch {
     
     /** Adds the given <code>Attribute</code> to this element.
       * If the given node already has a parent defined then an
-      * <code>InvalidAddNodeException</code> will be thrown.
+      * <code>IllegalAddException</code> will be thrown.
       * Attributes with null values are silently ignored.
       * If the value of the attribute is null then this method call will 
       * remove any attributes with the QName of this attribute.</p>
@@ -236,7 +236,7 @@ public interface Element extends Branch {
     
     /** Adds the given <code>CDATA</code> to this element.
       * If the given node already has a parent defined then an
-      * <code>InvalidAddNodeException</code> will be thrown.
+      * <code>IllegalAddException</code> will be thrown.
       *
       * @param cdata is the CDATA to be added
       */
@@ -244,7 +244,7 @@ public interface Element extends Branch {
     
     /** Adds the given <code>Entity</code> to this element.
       * If the given node already has a parent defined then an
-      * <code>InvalidAddNodeException</code> will be thrown.
+      * <code>IllegalAddException</code> will be thrown.
       *
       * @param entity is the entity to be added
       */
@@ -252,7 +252,7 @@ public interface Element extends Branch {
     
     /** Adds the given <code>Text</code> to this element.
       * If the given node already has a parent defined then an
-      * <code>InvalidAddNodeException</code> will be thrown.
+      * <code>IllegalAddException</code> will be thrown.
       *
       * @param text is the text to be added
       */
@@ -260,7 +260,7 @@ public interface Element extends Branch {
     
     /** Adds the given <code>Namespace</code> to this element.
       * If the given node already has a parent defined then an
-      * <code>InvalidAddNodeException</code> will be thrown.
+      * <code>IllegalAddException</code> will be thrown.
       *
       * @param namespace is the namespace to be added
       */

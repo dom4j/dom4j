@@ -163,7 +163,7 @@ public interface Branch extends Node {
     
     /** Adds the given <code>Comment</code> to this branch.
       * If the given node already has a parent defined then an
-      * <code>InvalidAddNodeException</code> will be thrown.
+      * <code>IllegalAddException</code> will be thrown.
       *
       * @param comment is the comment to be added
       */
@@ -171,7 +171,7 @@ public interface Branch extends Node {
     
     /** Adds the given <code>Element</code> to this branch.
       * If the given node already has a parent defined then an
-      * <code>InvalidAddNodeException</code> will be thrown.
+      * <code>IllegalAddException</code> will be thrown.
       *
       * @param element is the element to be added
       */
@@ -179,7 +179,7 @@ public interface Branch extends Node {
     
     /** Adds the given <code>ProcessingInstruction</code> to this branch.
       * If the given node already has a parent defined then an
-      * <code>InvalidAddNodeException</code> will be thrown.
+      * <code>IllegalAddException</code> will be thrown.
       *
       * @param pi is the processing instruction to be added
       */
