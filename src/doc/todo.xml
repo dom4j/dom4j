@@ -48,6 +48,10 @@ List customers
               the textual values of CDATA, Entity and Text nodes. 
               The previous version only returned Text node values.
             </li>
+            <li>Refactored code and removed XPathEngine, XPathHelper and 
+                all the static newXXX() methods in DocumentFactory.
+                Added equivalent methods to DocumentHelper and DocumentFactory.
+            </li>
           </ul>
           <p>This release also includes full XPath source code.
           </p>
