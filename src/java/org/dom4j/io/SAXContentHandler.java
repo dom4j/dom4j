@@ -262,7 +262,6 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
             return;
         }
         if ( currentElement != null ) {
-            String text = new String(ch, start, end);
             if (entity != null) {
                 if ( mergeAdjacentText && textInTextBuffer ) {
                     completeCurrentTextNode();
