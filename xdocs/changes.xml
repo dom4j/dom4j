@@ -8,6 +8,9 @@
   <body>
 
     <release version="1.5 dev" date="in CVS">
+      <action dev="maartenc" type="add" due-to="Thomas Diesler">
+        Added method to <code>Element</code> to retrieve all <code>Namespaces</code> for a given URI..
+      </action>
       <action dev="maartenc" type="fix" due-to="Thomas Diesler">
         Fixed bug in <code>DOMReader</code> causing namespace declarations to get lost in some situations.
       </action>

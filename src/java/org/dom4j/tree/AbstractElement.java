@@ -1960,6 +1960,38 @@ public abstract class AbstractElement
 
     }
 
+    public List getNamespacesForURI(String uri) {
+
+        BackedList answer = createResultList();
+
+        if (getNamespaceURI().equals(uri)) {
+
+            answer.addLocal(getNamespace());
+
+        }
+
+        List list = contentList();
+
+        int size = list.size();
+
+        for (int i = 0; i < size; i++) {
+
+            Object object = list.get(i);
+
+            if ((object instanceof Namespace) 
+
+                && ((Namespace) object).getURI().equals(uri)) {
+                
+                    answer.addLocal(object);
+                    
+            }
+
+        }
+
+        return answer;
+        
+    }
+
     public List declaredNamespaces() {
 
         BackedList answer = createResultList();

@@ -52,8 +52,6 @@ public interface Element extends Branch {
       */
     public Namespace getNamespace();
 
-    
- 
     /** <p>Returns the <code>QName</code> for the given qualified name, using
       * the namespace URI in scope for the given prefix of the qualified name
       * or the default namespace if the qualified name has no prefix.</p>
@@ -79,6 +77,15 @@ public interface Element extends Branch {
      * @return the <code>Namespace</code> associated with the given URI
      */
     public Namespace getNamespaceForURI(String uri);
+    
+    /**
+     * <p>Returns the all namespaces which are mapped to the given
+     * URI or an empty list if no such namespaces could be found.
+     *
+     * @return the namespaces associated with the given URI
+     * @since 1.5
+     */
+    public List getNamespacesForURI(String uri);
     
     /** <p>Returns the namespace prefix of this element if one exists 
       * otherwise an empty <code>String</code> is returned.</p>
