@@ -292,7 +292,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
                 if ( internalDTDDeclarations != null ) {
                     docType.setInternalDeclarations( internalDTDDeclarations );
                 }
-                if ( internalDTDDeclarations != null ) {
+                if ( externalDTDDeclarations != null ) {
                     docType.setExternalDeclarations( externalDTDDeclarations );
                 }
             }

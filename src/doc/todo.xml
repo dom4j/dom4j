@@ -5,9 +5,13 @@
 
     <section title="Change History">
 
-<!--
       <section title="Changes in CVS since last release">
--->    
+        <section title="Patches">
+        <p>Applied patchs supplied by Steen Lehmann that fixes handling of external DTD entities in SAXContentHandler 
+          and fix the XML output of the ExternalEntityDecl
+        </p>
+        </section>
+      </section>
 
       <section title="1.1 Release">
         <section title="New features">
@@ -862,6 +866,7 @@ while ( iter2.hasNext() ) {
         <li>Joseph Bowbeer</li>
         <li>Michal Palicka</li>
         <li>Yuxin Ruan</li>
+        <li>Steen Lehmann</li>
       </ul>
     </section>
 
