@@ -22,6 +22,8 @@ import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.QName;
 
+import org.xml.sax.Attributes;
+
 /** <p><code>SchemaElementFactory</code> is a factory for a specific Element 
   * in an XML Schema.</p>
   *
@@ -35,16 +37,25 @@ public class SchemaElementFactory extends DocumentFactory {
     
     public SchemaElementFactory(QName elementQName) {
         this.elementQName = elementQName;
-        elementQName.setDocumentFactory(this);
     }
     
     /** Cache of <code>DataType</code> instances per 
       * Attribute <code>QName</code> */
     private Map attributeDataTypes = new HashMap();
-
     
-    /** Registers the given <code>DataType</code> for the given 
-      * &lt;attribute&gt; schema element
+    /** Cache of <code>DataType</code> instances per 
+      * child Element <code>QName</code> */
+    private Map childrenDataTypes = new HashMap();
+    
+    
+
+    /** @return the QName this element factory is associated with */
+    public QName getQName() {
+        return elementQName;
+    }
+
+    /** @return the <code>DataType</code> associated with the given Attribute
+      * QName
       */
     public DataType getAttributeDataType( QName attributeQName ) {
         return (DataType) attributeDataTypes.get( attributeQName );
@@ -60,8 +71,44 @@ public class SchemaElementFactory extends DocumentFactory {
         attributeDataTypes.put( attributeQName, dataType );
     }
     
+ 
+    /** @return the <code>DataType</code> associated with the given child 
+      * Element QName
+      */
+    public DataType getChildElementDataType( QName qname ) {
+        return (DataType) childrenDataTypes.get( qname );
+    }
+    
+   public void setChildElementDataType( QName qname, DataType dataType ) {
+        System.out.println( "==== Creating DataType for child element: " + qname.getQualifiedName()  );
+        System.out.println( "### DataType: " + dataType );
+        
+        childrenDataTypes.put( qname, dataType );
+    }
+
+    
     // DocumentFactory methods
     //-------------------------------------------------------------------------
+    public Element createElement(QName qname) {
+        DataType dataType = getChildElementDataType( qname );
+        if ( dataType == null ) {
+            return super.createElement( qname );
+        }
+        else {
+            return new SchemaElement(qname, dataType);
+        }
+    }
+    
+    public Element createElement(QName qname, Attributes attributes) {
+        DataType dataType = getChildElementDataType( qname );
+        if ( dataType == null ) {
+            return super.createElement( qname, attributes );
+        }
+        else {
+            return new SchemaElement(qname, attributes, dataType);
+        }
+    }
+    
     public Attribute createAttribute(QName qname, String value) {
         System.out.println( "### Creating Attribute for element: " + elementQName.getQualifiedName() + " and attribute: " + qname.getQualifiedName() );
         
