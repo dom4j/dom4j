@@ -204,22 +204,41 @@ public class Foo {
 </ROWSET>]]>     
       </pre>
       <p>We can process each &lt;ROW&gt; at a time, there is no 
-        need to keep all of them in memory at once. 
-        <i>dom4j</i> provides a <i>Pruning Mode</i> for this purpose. 
-        We can register an event handler for a simple path expression and our
-        handler will be called whenever the path is complete.
+        need to keep all of them in memory at once.
+        <i>dom4j</i> provides a <i>Event Based Mode</i> for this purpose. 
+        We can register an event handler for one or more path expressions.
+        These handlers will then be called on the start and end of each path
+        registered against a particular handler.  When the start tag of a 
+        path is found, the onStart method of the handler registered to the 
+        path is called.  When the end tag of a path if found, the onEnd method 
+        of the handler registered to that path is called.
+      </p>
+      <p>
+        The onStart and onEnd methods are passed an instance of an ElementPath,
+        which can be used to retrieve the current Element for the given path.
+        If the handler wishes to "prune" the tree being built in order to 
+        save memory use, it can simply call the detach() method of the current
+        Element being processed in the handlers onEnd() method.
+      </p>
+      <p>
         So to process each &lt;ROW&gt; individually we can do the following.
       </p>
       <pre>
 // enable pruning mode to call me back as each ROW is complete
 SAXReader reader = new SAXReader();
-reader.setPruningMode( "/ROWSET/ROW", 
+reader.addHandler( "/ROWSET/ROW", 
     new ElementHandler() {
-        public void handle(Element row) {
+        public void onStart(ElementPath path) {
+            // do nothing here...    
+        }
+        public void onEnd(ElementPath path) {
             // process a ROW element
+            Element row = path.getCurrent();
             Element rowSet = row.getParent();
             Document document = row.getDocument();
             ...
+            // prune the tree
+            row.detach();
         }
     }
 );
