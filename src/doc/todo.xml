@@ -41,6 +41,18 @@
               your own DocumentFactory which uses your own
               QNameCache which creates your own QName classes.
             </p>
+            <p>If JAXP can be found in the CLASSPATH then it is now used first by
+              the SAXReader to find the correct SAX parser class. 
+              We have found that sometimes (e.g. Tomcat 4.0 beta 6) the value
+              of the org.xml.sax.driver system property is set to a class which is not 
+              in the CLASSPATH but a valid JAXP parser is present. 
+              So now we try JAXP first, then the SAX system property then if all else fails
+              we use the bundled Aelfred SAX parser.
+            </p>
+            <p>Fixed XPath bug found by James Elson that the path /foo[@a and @b] or
+              /foo[@a='1' and @b='2'] was no longer working correctly. This is now fixed
+              and many tests of this nature have been added to the JUnit test harness.
+            </p>
           </section>
         </section>
         <section title="0.7 release">

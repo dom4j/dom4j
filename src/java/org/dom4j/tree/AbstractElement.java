@@ -874,6 +874,33 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         addText(text);
     }
 
+    public String getStringValue() {
+        List list = contentList();
+        int size = list.size();
+        if ( size > 0 ) {
+            if ( size == 1 ) {
+                // optimised to avoid StringBuffer creation
+                return getContentAsStringValue( list.get(0) );
+            }
+            else {
+                StringBuffer buffer = new StringBuffer();
+                for ( int i = 0; i < size; i++ ) {
+                    Object node = list.get(i);
+                    String string = getContentAsStringValue( node ); 
+                    if ( string.length() > 0 ) {
+                        if ( buffer.length() > 0 ) {
+                            buffer.append( ' ' );
+                        }
+                        buffer.append( string );
+                    }
+                }
+                return buffer.toString();
+            }
+        }
+        return "";
+    }
+    
+    
     /**
      * Puts all <code>Text</code> nodes in the full depth of the sub-tree 
      * underneath this <code>Node</code>, including attribute nodes, into a 

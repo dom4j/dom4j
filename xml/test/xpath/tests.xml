@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tests>
 
+  <document url="xml/nitf/sample.xml">
+    <context select="/nitf/head/docdata">
+      <test select="doc-id[@regsrc='AP' and @id-string='D76UIMO80']" count="1"/>
+    </context>
+    <context select="/nitf/head">
+      <test select="meta[@name='ap-cycle']" count="1"/>
+      <test select="meta[@content='AP']" count="1"/>
+      <test select="meta[@name and @content]" count="8"/>
+      <test select="meta[@name='ap-cycle' and @content='AP']" count="1"/>
+<!--
+      <test select="meta[@name != 'ap-cycle']" count="6"/>
+-->
+    </context>
+    <context select="/">
+      <test select="/nitf/head/meta[@name='ap-cycle']" count="1"/>
+      <test select="/nitf/head/meta[@content='AP']" count="1"/>
+      <test select="/nitf/head/meta[@name and @content]" count="8"/>
+      <test select="/nitf/head/meta[@name='ap-cycle' and @content='AP']" count="1"/>
+<!--
+      <test select="/nitf/head/meta[@name != 'ap-cycle']" count="6"/>
+-->
+    </context>
+  </document>
+
   <!-- test name -->
 
   <document url="xml/web.xml">
@@ -109,4 +133,5 @@
       <test select="/*/fibonacci[position() &lt; 10]" count="9"/>
     </context>
   </document>
+
 </tests>

@@ -59,9 +59,10 @@ public class BinaryExpr extends Expr implements org.jaxen.expr.BinaryExpr {
     
     public Object evaluate(Context context) {
         
-        //System.err.println( "Evaluating: " + _op + " " + _lhs + " " + _rhs );
         
         Object result = null;
+        
+        Context duplicateContext = context.duplicate();        
         
         Object lhsValue = _lhs.evaluate( context );
         
@@ -78,7 +79,6 @@ public class BinaryExpr extends Expr implements org.jaxen.expr.BinaryExpr {
                 return Boolean.TRUE;
             }
             
-            Context duplicateContext = context.duplicate();        
             rhsValue = _rhs.evaluate( duplicateContext );
             
             if (BooleanFunction.evaluate(rhsValue).booleanValue()) {
@@ -92,7 +92,6 @@ public class BinaryExpr extends Expr implements org.jaxen.expr.BinaryExpr {
                 return Boolean.FALSE;
             }
             
-            Context duplicateContext = context.duplicate();        
             rhsValue = _rhs.evaluate( duplicateContext );
             
             if ( ! BooleanFunction.evaluate(rhsValue).booleanValue()) {
@@ -101,10 +100,7 @@ public class BinaryExpr extends Expr implements org.jaxen.expr.BinaryExpr {
             return Boolean.TRUE;
         }
         else {
-            Context duplicateContext = context.duplicate();        
             rhsValue = _rhs.evaluate( duplicateContext );
-            
-            //System.out.println( "Evaluating lhs: " + lhsValue + " rhs: " + rhsValue + " operation: " + _op );
             
             result = Operator.evaluate(
                 duplicateContext, _op, lhsValue, rhsValue
