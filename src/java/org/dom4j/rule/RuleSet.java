@@ -33,6 +33,11 @@ public class RuleSet {
     public RuleSet() {
     }
     
+    public String toString() {
+        return super.toString() + " [RuleSet: " + ruleTree + " ]";
+    }
+    
+    
     /** Performs an XSLT processing model match for the rule
       * which matches the given Node the best.
       *
@@ -58,6 +63,13 @@ public class RuleSet {
     
     public void removeRule(Rule rule) {
         ruleTree.remove( rule );
+        ruleArray = null;
+    }
+    
+    /** Adds all the rules to this RuleSet from the given other rule set. 
+      */
+    public void addAll(RuleSet that) {
+        ruleTree.addAll( that.ruleTree );
         ruleArray = null;
     }
     

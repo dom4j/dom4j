@@ -29,6 +29,10 @@ public class NodeTypePattern implements Pattern {
     public static final NodeTypePattern ANY_COMMENT
         = new NodeTypePattern( Node.COMMENT_NODE );
     
+    /** A pattern which matches any Document node  */
+    public static final NodeTypePattern ANY_DOCUMENT
+        = new NodeTypePattern( Node.DOCUMENT_NODE );
+    
     /** A pattern which matches any Element node  */
     public static final NodeTypePattern ANY_ELEMENT 
         = new NodeTypePattern( Node.ELEMENT_NODE );

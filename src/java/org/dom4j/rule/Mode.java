@@ -18,15 +18,16 @@ import org.dom4j.Element;
 import org.dom4j.Node;
 
 
-/** <p><code>RuleSetManager</code> manages a number of RuleSet instances 
-  * for a given mode such that finding the correct rule for a given DOM4J Node 
+/** <p><code>Mode</code> manages a number of RuleSet instances 
+  * for the mode in a stylesheet. 
+  * It is responsible for finding the correct rule for a given DOM4J Node 
   * using the XSLT processing model uses the smallest possible RuleSet to 
   * reduce the number of Rule evaluations.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class RuleSetManager {
+public class Mode {
 
     private RuleSet[] ruleSets = new RuleSet[ Pattern.NUMBER_OF_TYPES ];
     
@@ -36,17 +37,19 @@ public class RuleSetManager {
     /** Map of exact (local) attribute names to RuleSet instances */
     private Map attributeNameRuleSets;
 
-    public RuleSetManager() {
+    public Mode() {
     }
 
     /** Runs the actions associated with the given node 
       */
     public void fireRule( Node node ) {
-        Rule rule = getMatchingRule( node );
-        if ( rule != null ) {
-            Action action = rule.getAction();
-            if ( action != null ) {
-                action.run( node );
+        if ( node != null ) {
+            Rule rule = getMatchingRule( node );
+            if ( rule != null ) {
+                Action action = rule.getAction();
+                if ( action != null ) {
+                    action.run( node );
+                }
             }
         }
     }
@@ -88,10 +91,16 @@ public class RuleSetManager {
         if ( matchType >= Pattern.NUMBER_OF_TYPES ) {
             matchType = Pattern.ANY_NODE;
         }
-        getRuleSet( matchType ).addRule( rule );
-        if ( matchType != Pattern.ANY_NODE ) {
-            getRuleSet( Pattern.ANY_NODE ).addRule( rule );
+        if ( matchType == Pattern.ANY_NODE ) {
+            // add rule to all other RuleSets if they exist
+            for ( int i = 1, size = ruleSets.length; i < size; i++ ) {
+                RuleSet ruleSet = ruleSets[i];
+                if ( ruleSet != null ) {
+                    ruleSet.addRule( rule );
+                }
+            }
         }
+        getRuleSet( matchType ).addRule( rule );
     }
     
     public void removeRule(Rule rule) {
@@ -158,7 +167,9 @@ public class RuleSetManager {
         if ( answer == null && matchType != Pattern.ANY_NODE ) {
             // try general rules that match any kind of node
             ruleSet = ruleSets[ Pattern.ANY_NODE ];
-            answer = ruleSet.getMatchingRule( node );
+            if ( ruleSet != null ) {
+                answer = ruleSet.getMatchingRule( node );
+            }
         }
         return answer;
     }
@@ -172,6 +183,14 @@ public class RuleSetManager {
         if ( ruleSet == null ) {
             ruleSet = new RuleSet();
             ruleSets[ matchType ] = ruleSet;
+            
+            // add the patterns that match any node
+            if ( matchType != Pattern.ANY_NODE ) {
+                RuleSet allRules = ruleSets[ Pattern.ANY_NODE ];
+                if ( allRules != null ) {
+                    ruleSet.addAll( allRules );
+                }
+            }
         }
         return ruleSet;
     }
