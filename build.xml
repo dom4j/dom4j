@@ -62,7 +62,7 @@
     <property name="jaxen.src" value="../jaxen/jaxen/src/java/main"/>
 
     <!-- Activate support for fop in Ant (tradem) / Must be in classpath -->
-    <!-- Construct compile classpath -->    <path id="fop.classpath">      <fileset dir="${lib.dir}/fop">        <include name="*.jar"/>      </fileset>    </path>      <taskdef name="fop" classname="org.apache.fop.tools.anttasks.Fop">    	<classpath refid="fop.classpath"/>    </taskdef>
+    <!-- Construct classpaths -->    <path id="fop.classpath">      <fileset dir="${lib.dir}/fop">        <include name="*.jar"/>      </fileset>    </path>      <path id="saxon.classpath">      <fileset dir="${lib.dir}/tool">        <include name="*.jar"/>      </fileset>    </path>      <taskdef name="fop" classname="org.apache.fop.tools.anttasks.Fop">    	<classpath refid="fop.classpath"/>    </taskdef>
   </target>
 
   <!-- =================================================================== -->
@@ -291,10 +291,9 @@
     <style basedir="${doc.dir}"
            destdir="${build.doc}"
            style="${doc.dir}/style/style.xsl"
-           classpath="${lib.dir}/jaxp.jar:${lib.dir}/tools/saxon.jar"
-           processor="trax"
+           classpathref="saxon.classpath"                      processor="trax"
            includes="**/*.xml"
-           excludes="style/**,project.xml,cookbook/**,docbook/**"
+           excludes="style/**,project.xml,cookbook/**,docbook/**, benchmarks/**"
     />
     <!-- **** comment out by tradem on 02-02-08  ****
 
@@ -327,7 +326,7 @@
     <style basedir="${doc.dir}/cookbook"
            destdir="${build.doc}/cookbook"
            style="src/doc/docbook/html/docbook.xsl"
-           classpath="${lib.dir}/jaxp.jar:${lib.dir}/tools/saxon.jar"
+           classpathref="saxon.classpath"
            processor="trax"
            includes="**/*.xml"
      >
@@ -340,7 +339,7 @@
             destdir="${build.doc}/cookbook"
             extension=".fo"
             style="src/doc/docbook/fo/docbook.xsl"
-            classpath="${lib.dir}/jaxp.jar:${lib.dir}/tools/saxon.jar"
+            classpathref="saxon.classpath"
             processor="trax"
             includes="**/*.xml"
       />
