@@ -51,7 +51,7 @@ public class TestDatatype2 extends TestCase {
     
     public void tearDown() {
     }
-/*    
+    
     public void testLongAttribute() throws Exception {
         Document doc=getSource();
         Element root=doc.getRootElement();
@@ -60,7 +60,6 @@ public class TestDatatype2 extends TestCase {
         validateData("testLongAttribute",attrData,new Long(123));
         System.out.println("retrieved attribute "+attrData);
     }
-*/
     
     public void testFloatElement() throws Exception {
         Document doc=getSource();
