@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<document url="http://www.dom4j.org/index.xml">
+  <body>
+    <title>DOM4J The Flexible XML Framework for Java</title>
+
+    <header>
+      <p><b>DOM4J</b> is a powerful and flexible Open Source XML framework for Java.
+      </p>
+
+      <p><b>DOM4J</b> combines the best of DOM, JDOM and SAX to provide a 
+      flexible and powerful framework for parsing, navigating, creating and 
+      processing XML data.
+      </p>
+
+      <p><b>DOM4J</b> provides custom tree building, plug and play tree 
+      implementations and simple Java interfaces together with integrated 
+      XPath navigation.
+      </p>
+    </header>
+
+    <section title="Overview">
+      <p>The nightly build of version $VERSION$ is now <a href="download.html">available for download</a>.</p>
+
+      <p>Contributors are welcome to join this project. Please join us on the <a href="http://sourceforge.net/projects/dom4j/">project page</a>.</p>
+    </section>
+
+
+
+
+  </body>
+</document>

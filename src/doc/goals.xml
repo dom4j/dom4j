@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document url="http://www.dom4j.org/goals.xml">
+  <body>
+    <title>Design Goals</title>
+    
+    <header>
+      <p>This document outlines our design goals for <b>DOM4J</b> and our 
+        philosophy.
+      </p>
+    </header>
+
+    <section title="Easy to use">
+      <p>We have found that DOM can often be difficult to use for simple tasks
+        and that SAX can be too simple for handling complex documents.
+        We want to take the best features from SAX, JDOM and DOM and put them 
+        together optimising the API for the Java platform, making full use of 
+        Java 2 Collections and other Java features.
+      </p>
+    </section>
+
+    <section title="Complete XPath integration">
+      <p>We want complete XPath integration and for it to be very easy to 
+        use within <b>DOM4J</b>.
+      </p>
+    </section>
+
+    <section title="Handle large documents">
+      <p>One of the primary goals of <b>DOM4J</b> is to be a generic XML
+        framework for Java which supports most users needs whether that be
+        fast and efficient parsing with small memory overhead, processing 
+        large documents or using the latest XML features such as XPath, XSLT 
+        and XML Query.
+      </p>
+      <p>Before <b>DOM4J</b> came into being we found that we needed to
+        move from DOM to JDOM for ease of use or JDOM to SAX to handle large 
+        documents or JDOM to DOM for a full feature set. 
+        Our aim is for <b>DOM4J</b> to be the only framework you really need
+        and for it to be a good citizen supporting and integrating with exiting 
+        DOM and SAX standards fully.
+      </p>
+    </section>
+
+    <section title="High performance and low memory overhead">
+      <p>We want to support code generation of special Element and Attribute
+        implementations from a DTD or Schema which are optimised for navigation
+        or memory usage based on knowledge of the schema. For example
+        a custom Attribute implementation could be generated which uses
+        class data for the name and namespace and only use instance data 
+        for the value. It may internally store an <code>int</code> to store
+        its state rather than the heavier weight <code>String</code> object
+        Similar performance and validation options can be done for Elements 
+        e.g. empty elements, elements with a single child or well 
+        defined attribute values etc.
+      </p>
+      <p>Another area of development we want to support is that of lazily 
+        or dynamically generating branches which are created on demand. 
+        Often logical XML documents are used to represent parts of a physical 
+        database and we want a certain part of a very large XML document to 
+        be generated lazily  from the database when it is required, rather 
+        than creating the whole tree up front.
+      </p>
+    </section>
+
+    <section title="Flexible implementations">
+      <p>We want to be able to create very flexible, performant and 
+          memory efficient implementations of XML trees.
+      </p>
+      <p>Just as no single List implementation will suffice (the JDK comes 
+        with at least 3) we believe we need a framework of XML 
+        tree implementations. 
+        For some users, using a LinkedList performs better than an ArrayList
+        because their usage characteristics differ. 
+        Others like to use a Vector as it is synchronized. 
+        We believe XML tree structures should have the same flexibility.
+      </p>
+      <p>In DOM4J some user may wish to create a singly linked tree
+        as they have no need to perform upward navigation (from a leaf node up
+        to the document owner via the parent relationship) 
+        so unnecessary memory usage and computation can be saved.
+      </p>
+      <p>Others may wish to take this a step further by sharing part of the tree
+        in multiple places withing a document or across documents. 
+        This avoids unnecessary object creation, memory usage and computation.
+        It could be used very effectively in an XSLT style processing model.
+      </p>
+      <p>Another use of <b>DOM4J</b> could be as a lightweight proxy layer
+        above Java Beans. The tree structure could be used to navigate and 
+        configure Java Beans using introspection or code generation.
+        Getting and setting <code>Attribute</code> values from an 
+        <code>Element</code> could be just modifying instance variables 
+        of a bean.
+      </p>
+    </section>
+
+  </body>
+</document>
+
+
+
+
+
+
+
+
+

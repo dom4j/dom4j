@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document url="http://www.dom4j.org/download.xml">
+  <body>
+    <title>Download DOM4J</title>
+    
+    <section title="Download a daily build">
+      <ul>
+        <!--
+        For FTP access use <url>ftp://jdom.sourceforge.net/pub/dom4j</url>.
+        -->
+
+        <li>The DOM4J JAR<br/>
+            <a href="../../dist/dom4j-$VERSION$.jar">dom4j-$VERSION$.jar</a>
+            <br/>&#xA0;</li>
+        <li>The DOM4J ZIP<br/>
+            <a href="../../dist/dom4j-$VERSION$.zip">dom4j-$VERSION$.zip</a>
+            <br/>&#xA0;</li>
+        <li>The DOM4J tarball<br/>
+            <a href="../../dist/dom4j-$VERSION$.tar.gz">dom4j-$VERSION$.tar.gz</a>
+            <br/>&#xA0;</li>
+      </ul>
+
+    </section>
+  </body>
+</document>
+
+
+
+
+
+
+
+
+

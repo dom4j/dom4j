@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document url="http://www.dom4j.org/todo.xml">
+  <body>
+    <title>To Do List</title>
+    
+    <section title="Urgent tasks">
+      <ul>
+        <li>Should Element be the factory?
+        </li>
+        <li>Resolve the addAdditionalNamespace / add(Namespace) / setNamespace() 
+            inconsistency, like addText(text), setText(text).
+        </li>
+        <li>Does the Node's a getText() method which Attribute, Element, CDATA 
+            et al implement, cause confusion?
+        </li>
+        <li>Should an entity just have a name and text? 
+            JDOM has mixed content - a bug? 
+            Why does an entity have an element / content model in JDOM?
+        </li>
+        <li>Sort out namespaces...; store namespaces like any other?
+        </li>
+        <li>Document is-a Element?
+        </li>
+        <li>Add function/variable/namespace contexts to XPath?
+        </li>
+        <li>Rename xxxMixedContent() methods to xxxContent()
+        </li>
+        <li>Have getNamespace(String prefix) and getNamespaces()) and getAllNamespaces() 
+          which would walk up the tree finding all namespaces;
+        </li>
+        <li>Rename $Version:$ -> $Revision$
+        </li>
+      </ul>
+    </section>
+
+    <section title="Outstanding tasks">
+      <ul>
+        <li>Implementation support for lazily constructed Elements, proxies, read only helper classes etc.
+        </li>
+        <li>XInclude, XLink and database query Element proxies which evaluate themselves on demand.
+        </li>
+        <li>Better support for easy sharing of Element branches without cloning or exceptions being thrown
+        </li>
+        <li>Add properties file for the default parser class names, factories, 
+        XPathEngine et al as an alternative to using system properties or 
+        embedding class names in code.
+        </li>
+        <li>Create a suit of useful samples
+        </li>
+      </ul>
+    </section>
+
+    <section title="Code Generation">
+      <p>Code generate memory and peformance efficient Element and Attribute 
+        implementations based on a DTD or Schema to improve performance and memory usage
+        in use cases where documents of a particular schema are repeatedly 
+        parsed (e.g. in EAI, XML messaging, SOAP, Servlets etc.) 
+      </p>
+      <p>For example the attribute "height" in namespace "foo" could be code generated using only 
+      1 object reference as instance data:-
+      </p>
+<pre>
+public class HeightAttribute extends AbstractAttribute {
+
+    public static final Namespace FOO_NAMESPACE 
+        = new DefaultNamespace( "foo", "http://foo.bar.com/foo/1.0" );
+
+
+    /** The only instance data - the value */
+    private String value;
+
+    public Namespace getNamespace() {
+      return FOO_NAMESPACE;
+    }
+
+    public String getName() {
+        return "weight";
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    ...
+}
+</pre>
+    </section>
+
+    <section title="Design Decisions">
+    </section>
+
+    <section title="Change History">
+      <ul>
+        <li>
+        </li>
+      </ul>
+    </section>
+
+  </body>
+</document>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="DOM4J" repository="dom4j" href="http://www.dom4j.org">
+
+  <title>DOM4J Powerful XML Framework for Java</title>
+
+
+  <links>
+    <div align="center">
+    <font size="2">
+    <a href="index.html">DOM4J</a> 
+    | <a href="goals.html">Goals</a> 
+    | <a href="faq.html">FAQ</a> 
+    | <a href="apidocs/index.html">JavaDoc</a> 
+    | <a href="download.html">Download</a>
+    | <a href="guide.html">Guide</a> 
+    | <a href="todo.html">Status</a> 
+    | <a href="http://sourceforge.net/projects/dom4j/">Project Page</a>
+    </font>
+    </div>
+  </links>
+
+  <notice>
+    Copyright 2000 (C) James Strachan. All Rights Reserved. Hosted by <br/>
+    <a href="http://sourceforge.net"> 
+    <img src="http://sourceforge.net/sflogo.php?group_id=16035" width="88" height="31" border="0" alt="SourceForge Logo"/>
+    </a> 
+  </notice>
+
+</project>

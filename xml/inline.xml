@@ -1,0 +1,16 @@
+<?xml version='1.0'?>
+
+<!DOCTYPE DOCUMENT [
+  <!ELEMENT DOCUMENT (#PCDATA)>
+  <!ENTITY nbsp '&#160;'>
+  <!ENTITY aring '&#229;'>
+  <!ENTITY auml '&#228;'>
+  <!ENTITY ouml '&#246;'>
+  <!ENTITY Aring '&#197;'>
+  <!ENTITY Auml '&#196;'>
+  <!ENTITY Ouml '&#214;'>
+]>
+
+<DOCUMENT>
+  God forts&auml;ttning p&aring; det nya millenniet!
+</DOCUMENT>

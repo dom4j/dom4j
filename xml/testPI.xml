@@ -1,0 +1,11 @@
+<?pi  first?>
+<root> Hello he <?middle value?> said. 
+
+<!-- This document tests the PI bug that Anli Shundi found -->
+<a href="http://lists.denveronline.net/lists/jdom-interest/2000-July/001171.html">
+Anli's article is here.
+</a>
+  
+
+</root>
+<?pi  this PI but not a Comment will cause an empty stack exception?>
