@@ -1,6 +1,8 @@
 package org.dom4j.tree;
 
 import org.dom4j.CDATA;
+import org.dom4j.Element;
+import org.dom4j.Node;
 import org.dom4j.TreeVisitor;
 
 /** <p><code>DefaultCDATA</code> is the default DOM4J implementation of a 
@@ -24,4 +26,7 @@ public class DefaultCDATA extends AbstractCDATA implements CDATA {
 	return text;
     }
     
+    protected Node createXPathNode(Element parent) {
+        return new XPathCDATA( parent, getText() );
+    }
 }

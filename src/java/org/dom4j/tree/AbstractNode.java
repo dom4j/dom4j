@@ -115,6 +115,10 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
         if (supportsParent()) {
             return this;
         }
+        return createXPathNode(parent);
+    }
+    
+    protected Node createXPathNode(Element parent) {
         throw new RuntimeException("asXPathNode() not yet implemented fully");
     }
     

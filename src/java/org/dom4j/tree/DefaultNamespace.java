@@ -1,5 +1,8 @@
 package org.dom4j.tree;
 
+import org.dom4j.Element;
+import org.dom4j.Node;
+
 /** <p><code>DefaultNamespace</code> is the DOM4J default implementation
   * of <code>Namespace</code>.</p>
   *
@@ -34,4 +37,7 @@ public class DefaultNamespace extends AbstractNamespace {
     }
 
 
+    protected Node createXPathNode(Element parent) {
+        return new XPathNamespace( parent, getPrefix(), getURI() );
+    }
 }

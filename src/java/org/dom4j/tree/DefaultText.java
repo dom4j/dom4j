@@ -1,5 +1,7 @@
 package org.dom4j.tree;
 
+import org.dom4j.Element;
+import org.dom4j.Node;
 import org.dom4j.Text;
 import org.dom4j.TreeVisitor;
 
@@ -24,4 +26,7 @@ public class DefaultText extends AbstractText implements Text {
 	return text;
     }
     
+    protected Node createXPathNode(Element parent) {
+        return new XPathText( parent, getText() );
+    }
 }

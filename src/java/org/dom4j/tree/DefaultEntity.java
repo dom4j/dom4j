@@ -1,5 +1,8 @@
 package org.dom4j.tree;
 
+import org.dom4j.Element;
+import org.dom4j.Node;
+
 /** <p><code>DefaultEntity</code> is the DOM4J default implementation
   * of a singly linked, read-only XML entity.</p>
   *
@@ -13,10 +16,10 @@ package org.dom4j.tree;
 public class DefaultEntity extends AbstractEntity {
 
     /** The name of the <code>Entity</code> */
-    private String name;
+    protected String name;
 
     /** The text of the <code>Entity</code> */
-    private String text;
+    protected String text;
 
     /** A default constructor for implementors to use.
       */
@@ -67,5 +70,9 @@ public class DefaultEntity extends AbstractEntity {
                 "This Entity is read-only. It cannot be modified" 
             );
         }
+    }
+    
+    protected Node createXPathNode(Element parent) {
+        return new XPathEntity( parent, getName(), getText() );
     }
 }
