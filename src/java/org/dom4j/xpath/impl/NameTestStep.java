@@ -51,10 +51,7 @@ public class NameTestStep extends UnAbbrStep {
             List results = new ArrayList();
             
             if ( matchesAnyName || element.getName().equals(_localName) ) {
-                if ( matchesAnyNamespace
-                    || element.getNamespaceURI().equals( 
-                        support.translateNamespacePrefix( _namespacePrefix ) ) ) 
-                {
+                if ( matchesAnyNamespace || matchesPrefix( element ) ) {
                     results.add( node );
                 }
             }
@@ -65,11 +62,7 @@ public class NameTestStep extends UnAbbrStep {
             List results = new ArrayList();
            
             if ( attribute.getName().equals(_localName) ) {
-                if ( matchesAnyNamespace
-                    || attribute.getNamespaceURI().equals( 
-                        support.translateNamespacePrefix( 
-                            _namespacePrefix ) ) ) 
-                {
+                if ( matchesAnyNamespace || matchesPrefix( attribute ) ) {
                     results.add( node );
                 }
             }
@@ -91,8 +84,15 @@ public class NameTestStep extends UnAbbrStep {
                     attr = element.attribute( _localName );
                 }
                 else {
-                    QName qName = support.getQName( _namespacePrefix, _localName );                    
-                    attr = element.attribute( qName );
+                    Namespace namespace = element.getNamespaceForPrefix( _namespacePrefix );
+                    if ( namespace == null ) {
+                        System.out.println( "WARNING: couldn't find namespace for prefix: " + _namespacePrefix );
+                        attr = element.attribute( _localName );
+                    }
+                    else {
+                        QName qName = QName.get( _localName, namespace );
+                        attr = element.attribute( qName );
+                    }
                 }
                 
                 if ( attr != null ) {
@@ -135,10 +135,6 @@ public class NameTestStep extends UnAbbrStep {
         String nsURI = null;
         Namespace ns = null;
         
-        if ( _namespacePrefix != null ) {
-            ns = support.getNamespaceByPrefix( _namespacePrefix );
-        }
-        
         if ( node instanceof Document ) {
             Element child = ((Document) node).getRootElement();
             
@@ -153,6 +149,11 @@ public class NameTestStep extends UnAbbrStep {
         }
         else if ( node instanceof Element ) {
             Element element = (Element) node;            
+
+            if ( _namespacePrefix != null ) {
+                ns = element.getNamespaceForPrefix( _namespacePrefix );
+            }
+        
             if ( matchesAnyName ) {
                 Iterator iter = element.elementIterator();
                 if ( ns == null ) {
@@ -190,9 +191,7 @@ public class NameTestStep extends UnAbbrStep {
             ContextSupport support = context.getContextSupport();
             
             if ( matchesAnyName || element.getName().equals(_localName) ) {
-                matches = matchesAnyNamespace || element.getNamespaceURI().equals( 
-                    support.translateNamespacePrefix( _namespacePrefix ) 
-                );
+                matches = matchesAnyNamespace || matchesPrefix( element );
             }
         }
         else if ( node instanceof Attribute ) {
@@ -200,9 +199,7 @@ public class NameTestStep extends UnAbbrStep {
             ContextSupport support = context.getContextSupport();
             
             if ( matchesAnyName || attribute.getName().equals(_localName) ) {
-                matches = matchesAnyNamespace || attribute.getNamespaceURI().equals( 
-                    support.translateNamespacePrefix( _namespacePrefix ) 
-                );
+                matches = matchesAnyNamespace || matchesPrefix( attribute );
             }
         }
         if ( matches ) {
@@ -236,6 +233,16 @@ public class NameTestStep extends UnAbbrStep {
         return null;
     }
     
+    protected boolean matchesPrefix( Element element ) {
+        // XXXX: should we map the prefix to a URI and compare that?
+        return element.getNamespacePrefix().equals( _namespacePrefix );
+    }
+    
+    protected boolean matchesPrefix( Attribute attribute ) {
+        // XXXX: should we map the prefix to a URI and compare that?
+        return attribute.getNamespacePrefix().equals( _namespacePrefix );
+    }
+
     public String toString() {
         return "[NameTestStep [ name: " + _namespacePrefix + ":" + _localName + " " + super.toString() + " ]]";
     }

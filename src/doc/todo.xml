@@ -33,6 +33,9 @@
               were being thrown if a Document is output with the XMLWriter
               and an attribute value is null.
             </p>
+            <p>Fixed problem found by Nicolas Fonrose that XPath expressions
+              using namespace prefixes were not working correcty.
+            </p>
             <p>Fixed some detach() bugs that were found with Attributes.
             </p>
             <p>Default encoding is now "UTF-8" rather than "UTF8". Thanks to

@@ -108,18 +108,19 @@ public class ContextSupport {
         return _nsContext.translateNamespacePrefix(prefix);
     }
     
+/*    
     public QName getQName( String prefix, String localName ) {
         return QName.get( localName, getNamespaceByPrefix( prefix ) );
     }
     
     public Namespace getNamespaceByPrefix(String prefix) {
-        if ( _nsContext == null ) {
+        if ( _nsContext != null ) {
             System.err.println("SHORT_CIRCUIT: NO_NAMESPACE");
             return Namespace.NO_NAMESPACE;
         }
         return _nsContext.getNamespaceByPrefix( prefix );
     }
-    
+*/    
 
     /** Retrieve a named function
      *
