@@ -267,6 +267,9 @@ while ( iter2.hasNext() ) {
 }
           </pre>
         </li>
+        <li>Build a version of XMLC which uses the dom4j API rather than DOM and
+          could also make use of XPath, XSLT and Java 2 Collections support.
+        </li>
         <li>Build full XML Schema validation
         </li>
         <li>Build validators using dom4j API using schema and validation technologies such as:-
