@@ -15,9 +15,10 @@
       <item name="Home"                   href="/index.html"/>
       <item name="FAQ"                    href="/faq.html"/>
       <item name="Quick start"            href="/guide.html"/>
-      <item name="Cookbook"               href="/cookbook/cookbook.html"/>
+      <item name="Cookbook"               href="/cookbook.html"/>
       <item name="Comparison"             href="/compare.html"/>
       <item name="Goals"              	  href="/goals.html"/>
+      <item name="Status"                 href="/status.html"/>
       <item name="Download"               href="/download.html"/>
       <item name="License"                href="/license.html"/>
     </menu>

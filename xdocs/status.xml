@@ -2,15 +2,14 @@
 <document url="http://www.dom4j.org/status.xml">
 
   <properties>
-    <title>Status</title>
+    <title>Change History</title>
     <author email="jstrachan@apache.org">James Strachan</author>
  </properties>
  
   <body>
 
-    <section name="Change History">
-
       <section name="Changes in CVS since last release">
+      	<p>Maven build of dom4j is now nearly complete. Maven is now used for the website generation.</p>
       </section>
       
       <section name="1.4 Release">
@@ -984,8 +983,7 @@ List customers
             support and integrated XPath
           </p>
         </section>
-    </section>
-
+ 
     <section name="To Do List">
       <ul>
         <li>The internal subset does not pass through DOMReader and DOMWriter. This needs patching!
