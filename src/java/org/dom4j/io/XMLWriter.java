@@ -15,19 +15,19 @@
     these conditions in the documentation and/or other materials 
     provided with the distribution.
 
- 3. The name "DOM4J" must not be used to endorse or promote products
+ 3. The name "JDOM" must not be used to endorse or promote products
     derived from this software without prior written permission.  For
     written permission, please contact license@jdom.org.
  
- 4. Products derived from this software may not be called "DOM4J", nor
-    may "DOM4J" appear in their name, without prior written permission
-    from the DOM4J Project Management (pm@jdom.org).
+ 4. Products derived from this software may not be called "JDOM", nor
+    may "JDOM" appear in their name, without prior written permission
+    from the JDOM Project Management (pm@jdom.org).
  
  In addition, we request (but do not require) that you include in the 
  end-user documentation provided with the redistribution and/or in the 
  software itself an acknowledgement equivalent to the following:
      "This product includes software developed by the
-      DOM4J Project (http://www.jdom.org/)."
+      JDOM Project (http://www.jdom.org/)."
  Alternatively, the acknowledgment may be graphical using the logos 
  available at http://www.jdom.org/images/logos.
 
@@ -45,10 +45,10 @@
  SUCH DAMAGE.
 
  This software consists of voluntary contributions made by many 
- individuals on behalf of the DOM4J Project and was originally 
+ individuals on behalf of the JDOM Project and was originally 
  created by Brett McLaughlin <brett@jdom.org> and 
  Jason Hunter <jhunter@jdom.org>.  For more information on the 
- DOM4J Project, please see <http://www.jdom.org/>.
+ JDOM Project, please see <http://www.jdom.org/>.
  
  */
 
