@@ -40,7 +40,7 @@ public class Stylesheet {
     }
     
     public void removeRule( Rule rule ) {
-        ruleManager.addRule( rule );
+        ruleManager.removeRule( rule );
     }
 
     /** Runs this stylesheet on the given input which should be 
