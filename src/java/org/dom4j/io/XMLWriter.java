@@ -872,17 +872,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     protected void writeNamespace(Namespace namespace) throws IOException {
         if ( namespace != null ) {
-            String prefix = namespace.getPrefix();
-            if ( prefix != null && prefix.length() > 0 ) {
-                writer.write(" xmlns:");
-                writer.write(prefix);
-                writer.write("=\"");
-            }
-            else {
-                writer.write(" xmlns=\"");
-            }
-            writer.write(namespace.getURI());
-            writer.write("\"");
+            writeNamespace(namespace.getPrefix(), namespace.getURI());
         }
     }
 
@@ -895,18 +885,26 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                 Map.Entry entry = (Map.Entry) iter.next();
                 String prefix = (String) entry.getKey();
                 String uri = (String) entry.getValue();
-                if ( prefix != null && prefix.length() > 0 ) {
-                    writer.write(" xmlns:");
-                    writer.write(prefix);
-                    writer.write("=\"");
-                }
-                else {
-                    writer.write(" xmlns=\"");
-                }
-                writer.write(uri);
+                writeNamespace(prefix, uri);
             }
             namespacesMap = null;
         }
+    }
+
+    /**
+     * Writes the SAX namepsaces
+     */
+    protected void writeNamespace(String prefix, String uri) throws IOException {
+        if ( prefix != null && prefix.length() > 0 ) {
+            writer.write(" xmlns:");
+            writer.write(prefix);
+            writer.write("=\"");
+        }
+        else {
+            writer.write(" xmlns=\"");
+        }
+        writer.write(uri);
+        writer.write("\"");
     }
 
     protected void writeProcessingInstruction(ProcessingInstruction processingInstruction) throws IOException {
