@@ -14,6 +14,8 @@
           </p>
           <p>Patched the dynamic loading of classes to fix some ClassLoader issues found with some application servers.
           </p>
+          <p>Ported the data type support to work with the latest MSV library from Sun
+          </p>
         </section>
         <section title="0.9 release">
           <section title="Full support for the Jaxen XPath engine">

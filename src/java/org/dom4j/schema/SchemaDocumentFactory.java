@@ -9,7 +9,7 @@
 
 package org.dom4j.schema;
 
-import com.sun.tranquilo.datatype.DataType;
+import com.sun.msv.datatype.xsd.XSDatatype;
 
 import java.util.HashMap;
 import java.util.Map;

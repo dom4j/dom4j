@@ -9,13 +9,15 @@
 
 package org.dom4j.schema;
 
-import com.sun.tranquilo.datatype.DataType;
-import com.sun.tranquilo.datatype.ValidationContextProvider;
+import com.sun.msv.datatype.DatabindableDatatype;
 
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
 import org.dom4j.tree.AbstractAttribute;
+
+import com.sun.msv.datatype.xsd.XSDatatype;
+import org.relaxng.datatype.ValidationContext;
 
 /** <p><code>SchemaAttribute</code> represents an Attribute which supports the
   * <a href="http://www.w3.org/TR/xmlschema-2/">XML Schema Data Types</a>
@@ -24,7 +26,7 @@ import org.dom4j.tree.AbstractAttribute;
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class SchemaAttribute extends AbstractAttribute implements ValidationContextProvider {
+public class SchemaAttribute extends AbstractAttribute implements ValidationContext {
 
     /** The parent <code>Element</code> of the <code>Attribute</code> */
     private Element parent;
@@ -32,8 +34,8 @@ public class SchemaAttribute extends AbstractAttribute implements ValidationCont
     /** The <code>QName</code> for this element */
     private QName qname;
     
-    /** The <code>DataType</code> of the <code>Attribute</code> */
-    private DataType dataType;
+    /** The <code>XSDatatype</code> of the <code>Attribute</code> */
+    private XSDatatype datatype;
     
     /** The data (Object) value of the <code>Attribute</code> */
     private Object data;
@@ -42,9 +44,9 @@ public class SchemaAttribute extends AbstractAttribute implements ValidationCont
     private String text;
 
     
-    public SchemaAttribute(QName qname, DataType dataType) {
+    public SchemaAttribute(QName qname, XSDatatype datatype) {
         this.qname = qname;
-        this.dataType = dataType;
+        this.datatype = datatype;
     }
 
     public String toString() {
@@ -53,21 +55,25 @@ public class SchemaAttribute extends AbstractAttribute implements ValidationCont
             + " value \"" + getValue() + "\" data: " + getData() + "]";
     }
 
-    public SchemaAttribute(QName qname, DataType dataType, String text) { 
+    public SchemaAttribute(QName qname, XSDatatype datatype, String text) { 
         this.qname = qname;
-        this.dataType = dataType;
+        this.datatype = datatype;
         this.text = text;
         this.data = validate(text);
     }
     
     
-    public DataType getDataType() {
-        return dataType;
+    public XSDatatype getXSDatatype() {
+        return datatype;
     }
     
-    // ValidationContextProvider interface
+    // ValidationContext interface
     //-------------------------------------------------------------------------
-    
+    public boolean isNotation(String notationName) {
+        // XXXX: no way to do this yet in dom4j so assume false
+        return false;
+    }
+            
     public boolean isUnparsedEntity(String entityName) {
         // XXXX: no way to do this yet in dom4j so assume valid
         return true;
@@ -84,7 +90,7 @@ public class SchemaAttribute extends AbstractAttribute implements ValidationCont
             if ( parent != null ) {
                 Namespace namespace = parent.getNamespaceForPrefix( prefix );
                 if ( namespace != null ) {
-                    return namespace.getPrefix();
+                    return namespace.getURI();
                 }
             }
         }
@@ -103,7 +109,7 @@ public class SchemaAttribute extends AbstractAttribute implements ValidationCont
     public String getValue() {
         if ( text == null ) {
             // XXXX: when the library supports this
-            // text = dataType.convertValueToString( data );
+            // text = datatype.convertValueToString( data );
             text = ( data == null ) ? "" : data.toString();
         }
         return text;
@@ -123,7 +129,7 @@ public class SchemaAttribute extends AbstractAttribute implements ValidationCont
         this.text = null;
         
         // XXXX: when the library supports this
-        // dataType.verify( data, this );
+        // datatype.verify( data, this );
     }
     
     public Element getParent() {
@@ -149,7 +155,13 @@ public class SchemaAttribute extends AbstractAttribute implements ValidationCont
     
     /** Validates the given text */
     protected Object validate(String text) {
-        return dataType.convertToValueObject( text, this );
+        if ( datatype instanceof DatabindableDatatype ) {
+            DatabindableDatatype bindable = (DatabindableDatatype) datatype;
+            return bindable.createJavaObject( text, this );
+        }
+        else {
+            return datatype.createValue( text, this );
+        }
     }
     
 }

@@ -44,8 +44,8 @@
         </li>
         <li>alpha release of 
          <a href="http://www.w3.org/TR/xmlschema-2/">XML Schema Data Type</a>
-         support using Kohsuke Kawaguchi's
-         <a href="http://www.sun.com/software/xml/developers/xsdlib/download.html">xsdlib</a>
+         support using Kohsuke Kawaguchi's excellent
+         <a href="http://www.sun.com/software/xml/developers/multischema/">Multi Schema Validator</a> library
         </li>
       </ul>
     </section>

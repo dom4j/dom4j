@@ -170,7 +170,8 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     }
 
     public String getAttribute(String name) {
-        return attributeValue(name);
+        String answer = attributeValue(name);
+        return (answer != null) ? answer : "";
     }
 
     public void setAttribute(String name, String value) throws DOMException {
@@ -217,9 +218,12 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     public String getAttributeNS(String namespaceURI,  String localName) {
         Attribute attribute = attribute( namespaceURI, localName );
         if ( attribute != null ) {
-            return attribute.getValue();
+            String answer = attribute.getValue();
+            if ( answer != null ) {
+                return answer;
+            }
         }
-        return null;
+        return "";
     }
 
     public void setAttributeNS(

@@ -9,8 +9,7 @@
 
 package org.dom4j.schema;
 
-import com.sun.tranquilo.datatype.DataType;
-import com.sun.tranquilo.datatype.DataTypeFactory;
+import com.sun.msv.datatype.xsd.XSDatatype;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,13 +38,13 @@ public class SchemaElementFactory extends DocumentFactory {
         this.elementQName = elementQName;
     }
     
-    /** Cache of <code>DataType</code> instances per 
+    /** Cache of <code>XSDatatype</code> instances per 
       * Attribute <code>QName</code> */
-    private Map attributeDataTypes = new HashMap();
+    private Map attributeXSDatatypes = new HashMap();
     
-    /** Cache of <code>DataType</code> instances per 
+    /** Cache of <code>XSDatatype</code> instances per 
       * child Element <code>QName</code> */
-    private Map childrenDataTypes = new HashMap();
+    private Map childrenXSDatatypes = new HashMap();
     
     
 
@@ -54,37 +53,37 @@ public class SchemaElementFactory extends DocumentFactory {
         return elementQName;
     }
 
-    /** @return the <code>DataType</code> associated with the given Attribute
+    /** @return the <code>XSDatatype</code> associated with the given Attribute
       * QName
       */
-    public DataType getAttributeDataType( QName attributeQName ) {
-        return (DataType) attributeDataTypes.get( attributeQName );
+    public XSDatatype getAttributeXSDatatype( QName attributeQName ) {
+        return (XSDatatype) attributeXSDatatypes.get( attributeQName );
     }
     
-    /** Registers the given <code>DataType</code> for the given 
+    /** Registers the given <code>XSDatatype</code> for the given 
       * &lt;attribute&gt; QNames
       */
-    public void setAttributeDataType( QName attributeQName, DataType dataType ) {
-        attributeDataTypes.put( attributeQName, dataType );
+    public void setAttributeXSDatatype( QName attributeQName, XSDatatype dataType ) {
+        attributeXSDatatypes.put( attributeQName, dataType );
     }
     
  
-    /** @return the <code>DataType</code> associated with the given child 
+    /** @return the <code>XSDatatype</code> associated with the given child 
       * Element QName
       */
-    public DataType getChildElementDataType( QName qname ) {
-        return (DataType) childrenDataTypes.get( qname );
+    public XSDatatype getChildElementXSDatatype( QName qname ) {
+        return (XSDatatype) childrenXSDatatypes.get( qname );
     }
     
-   public void setChildElementDataType( QName qname, DataType dataType ) {
-        childrenDataTypes.put( qname, dataType );
+   public void setChildElementXSDatatype( QName qname, XSDatatype dataType ) {
+        childrenXSDatatypes.put( qname, dataType );
     }
 
     
     // DocumentFactory methods
     //-------------------------------------------------------------------------
     public Element createElement(QName qname) {
-        DataType dataType = getChildElementDataType( qname );
+        XSDatatype dataType = getChildElementXSDatatype( qname );
         if ( dataType == null ) {
             return super.createElement( qname );
         }
@@ -94,7 +93,7 @@ public class SchemaElementFactory extends DocumentFactory {
     }
 
     public Attribute createAttribute(Element owner, QName qname, String value) {
-        DataType dataType = getAttributeDataType(qname);
+        XSDatatype dataType = getAttributeXSDatatype(qname);
         if ( dataType == null ) {
             return super.createAttribute( owner, qname, value );
         }

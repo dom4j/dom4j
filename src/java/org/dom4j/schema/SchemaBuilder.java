@@ -9,11 +9,9 @@
 
 package org.dom4j.schema;
 
-import com.sun.tranquilo.datatype.BadTypeException;
-import com.sun.tranquilo.datatype.DataType;
-import com.sun.tranquilo.datatype.DataTypeFactory;
-import com.sun.tranquilo.datatype.TypeIncubator;
-import com.sun.tranquilo.datatype.ValidationContextProvider;
+import com.sun.msv.datatype.xsd.DatatypeFactory;
+import com.sun.msv.datatype.xsd.TypeIncubator;
+import com.sun.msv.datatype.xsd.XSDatatype;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -24,6 +22,9 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.QName;
 import org.dom4j.util.AttributeHelper;
+
+import org.relaxng.datatype.DatatypeException;
+import org.relaxng.datatype.ValidationContext;
 
 /** <p><code>SchemaBuilder</code> reads an XML Schema Document.</p>
   *
@@ -46,7 +47,7 @@ public class SchemaBuilder {
     /** Document factory used to register Element specific factories*/
     private SchemaDocumentFactory documentFactory;
     
-    /** Cache of <code>DataType</code> instances loaded or created during this build */
+    /** Cache of <code>XSDatatype</code> instances loaded or created during this build */
     private Map dataTypeCache = new HashMap();
     
     
@@ -116,14 +117,14 @@ public class SchemaBuilder {
             String name = xsdAttribute.attributeValue( "name" );
             QName qname = getQName( name );
             
-            DataType dataType = dataTypeForXsdAttribute( xsdAttribute );
+            XSDatatype dataType = dataTypeForXsdAttribute( xsdAttribute );
             if ( dataType != null ) {
-                // register the DataType for the given Attribute 
-                elementFactory.setChildElementDataType( qname, dataType );
+                // register the XSDatatype for the given Attribute 
+                elementFactory.setChildElementXSDatatype( qname, dataType );
             }
             else {
                 String type = xsdAttribute.attributeValue( "type" );
-                System.out.println( "Warning: Couldn't find DataType for type: " + type + " attribute: " + name );
+                System.out.println( "Warning: Couldn't find XSDatatype for type: " + type + " attribute: " + name );
             }
         }
     }
@@ -137,22 +138,22 @@ public class SchemaBuilder {
     ) {
         String name = xsdAttribute.attributeValue( "name" );
         QName qname = getQName( name );
-        DataType dataType = dataTypeForXsdAttribute( xsdAttribute );
+        XSDatatype dataType = dataTypeForXsdAttribute( xsdAttribute );
         if ( dataType != null ) {
-            // register the DataType for the given Attribute 
-            elementFactory.setAttributeDataType( qname, dataType );
+            // register the XSDatatype for the given Attribute 
+            elementFactory.setAttributeXSDatatype( qname, dataType );
         }
         else {
             String type = xsdAttribute.attributeValue( "type" );
-            System.out.println( "Warning: Couldn't find DataType for type: " + type + " attribute: " + name );
+            System.out.println( "Warning: Couldn't find XSDatatype for type: " + type + " attribute: " + name );
         }
     }
     
     /** processes an XML Schema &lt;attribute&gt; tag 
       */
-    protected DataType dataTypeForXsdAttribute( Element xsdAttribute ) {
+    protected XSDatatype dataTypeForXsdAttribute( Element xsdAttribute ) {
         String type = xsdAttribute.attributeValue( "type" );
-        DataType dataType = null;
+        XSDatatype dataType = null;
         if ( type != null ) {
             dataType = getTypeByName( type );
         }
@@ -165,18 +166,18 @@ public class SchemaBuilder {
                     "The attribute: " + name + " has no type attribute and does not contain a <simpleType/> element" 
                 );
             }
-            dataType = loadDataTypeFromSimpleType( xsdSimpleType );            
+            dataType = loadXSDatatypeFromSimpleType( xsdSimpleType );            
         }
         return dataType;
     }
     
-    /** Loads a DataType object from a <simpleType> attribute schema element */
-    protected DataType loadDataTypeFromSimpleType( Element xsdSimpleType ) {
+    /** Loads a XSDatatype object from a <simpleType> attribute schema element */
+    protected XSDatatype loadXSDatatypeFromSimpleType( Element xsdSimpleType ) {
         Element xsdRestriction = xsdSimpleType.element( XSD_RESTRICTION );
         if ( xsdRestriction != null ) {
             String base = xsdRestriction.attributeValue( XSD_BASE );
             if ( base != null ) {                
-                DataType baseType = getTypeByName( base );
+                XSDatatype baseType = getTypeByName( base );
                 if ( baseType == null ) {
                     onSchemaError( 
                         "Invalid base type: " + base 
@@ -198,13 +199,13 @@ public class SchemaBuilder {
                     );
                 }
                 else {
-                    return loadDataTypeFromSimpleType( xsdSubType );
+                    return loadXSDatatypeFromSimpleType( xsdSubType );
                 }
             }
         }
         else {
             onSchemaError( 
-                "No <restriction>. Could not create DataType for simpleType: " 
+                "No <restriction>. Could not create XSDatatype for simpleType: " 
                 + xsdSimpleType 
             );
         }
@@ -212,9 +213,9 @@ public class SchemaBuilder {
     }
 
     /** Derives a new type from a base type and a set of restrictions */
-    protected DataType deriveSimpleType( DataType baseType, Element xsdRestriction ) {
+    protected XSDatatype deriveSimpleType( XSDatatype baseType, Element xsdRestriction ) {
         TypeIncubator incubator = new TypeIncubator(baseType);
-        ValidationContextProvider context = null;
+        ValidationContext context = null;
         
         try {
             for ( Iterator iter = xsdRestriction.elementIterator(); iter.hasNext(); ) {
@@ -230,7 +231,7 @@ public class SchemaBuilder {
             String newTypeName = null;
             return incubator.derive( newTypeName );
         }
-        catch (BadTypeException e) {
+        catch (DatatypeException e) {
             onSchemaError( 
                 "Invalid restriction: " + e.getMessage()
                 + " when trying to build restriction: " + xsdRestriction
@@ -251,16 +252,16 @@ public class SchemaBuilder {
         return factory;
     }
     
-    protected DataType getTypeByName( String type ) {
-        DataType dataType = (DataType) dataTypeCache.get( type );
+    protected XSDatatype getTypeByName( String type ) {
+        XSDatatype dataType = (XSDatatype) dataTypeCache.get( type );
         if ( dataType == null ) {
-            dataType = DataTypeFactory.getTypeByName( type );
+            dataType = DatatypeFactory.getTypeByName( type );
             if ( dataType == null ) {
                 // maybe a prefix is being used
                 int idx = type.indexOf(':');
                 if (idx >= 0 ) {
                     String localName = type.substring(idx + 1);
-                    dataType = DataTypeFactory.getTypeByName( localName );
+                    dataType = DatatypeFactory.getTypeByName( localName );
                 }
             }
             // store in cache for later
