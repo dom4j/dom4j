@@ -455,8 +455,13 @@ public class SAXWriter implements XMLReader {
             publicID = docType.getPublicID();
             systemID = docType.getSystemID();
         }
-        locator.setPublicId(publicID);
-        locator.setSystemId(systemID);
+        if ( publicID != null ) {
+            locator.setPublicId(publicID);
+        }
+        if ( systemID != null ) {
+            locator.setSystemId(systemID);
+        }
+            
         locator.setLineNumber(-1);
         locator.setColumnNumber(-1);
         

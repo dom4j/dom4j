@@ -6,6 +6,8 @@
     <section title="Change History">
 
       <section title="Changes in CVS since last release">
+        <p>Patched SAXWriter to not pass in null System or Public IDs which can cause problems in Saxon.
+        </p>
         <p>Patched dom4j to work against Jaxen 1.0 RC1 or later build.
         </p>
         <p>Applied patch to bug found by Tom Oehser that XPath expressions using elements or attributes whose name starts 
