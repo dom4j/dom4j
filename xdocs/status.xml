@@ -7,7 +7,8 @@
  </properties>
  
   <body>
-      <section name="CVS">
+      <section name="1.5 beta 2">
+        <p>Upgraded dependencies to their latest version on ibiblio.</p>
         <p>Added method to <code>DocumentHelper</code> that allows user to specify encoding when parsing an xml <code>String</code>
            (contributed by Todd Wolff).</p>
         <p>Fixed a ClassCastException bug in <code>BeanElement</code>.</p>
