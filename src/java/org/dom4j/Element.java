@@ -465,7 +465,8 @@ public interface Element extends Branch {
       * @param value is the attribute's value
       *
       * @deprecated As of version 0.5. Please use 
-      *    {@link #addAttribute(String,String)} instead.
+      *    {@link #addAttribute(String,String)} instead. 
+      *    WILL BE REMOVED IN dom4j-1.6 !!
       */
     public void setAttributeValue(String name, String value);
     
@@ -477,6 +478,7 @@ public interface Element extends Branch {
       *
       * @deprecated As of version 0.5. Please use 
       *    {@link #addAttribute(QName,String)} instead.
+      *    WILL BE REMOVED IN dom4j-1.6 !!
       */
     public void setAttributeValue(QName qName, String value);
 

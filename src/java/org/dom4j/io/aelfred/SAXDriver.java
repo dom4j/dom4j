@@ -121,7 +121,7 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @author Updated by David Brownell &lt;david-b@pacbell.net&gt;
  * @version $Date$
  * @see org.xml.sax.Parser
- * @deprecated Use Aelfred2 instead!
+ * @deprecated Use Aelfred2 instead! THIS CLASS WILL BE REMOVED IN dom4j-1.6 !!
  */
 final public class SAXDriver
     implements Locator, Attributes, XMLReader, Parser, AttributeList

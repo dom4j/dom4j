@@ -58,7 +58,7 @@ import org.xml.sax.SAXException;
  * @author Updated by David Brownell &lt;david-b@pacbell.net&gt;
  * @version $Date$
  * @see SAXDriver
- * @deprecated Use Aelfred2 instead!
+ * @deprecated Use Aelfred2 instead! THIS CLASS WILL BE REMOVED IN dom4j-1.6 !!
  */
 final class XmlParser
 {

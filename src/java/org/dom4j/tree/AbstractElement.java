@@ -834,6 +834,7 @@ public abstract class AbstractElement
     /**
      * @deprecated As of version 0.5. Please use 
      *    {@link #addAttribute(String,String)} instead.
+     *    WILL BE REMOVED IN dom4j-1.6 !!
      **/
     public void setAttributeValue(String name, String value) {
 
@@ -844,6 +845,7 @@ public abstract class AbstractElement
     /**
      * @deprecated As of version 0.5. Please use 
      *    {@link #addAttribute(String,String)} instead.
+     *    WILL BE REMOVED IN dom4j-1.6 !!
      **/
     public void setAttributeValue(QName qName, String value) {
 
