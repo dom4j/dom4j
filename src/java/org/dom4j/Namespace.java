@@ -11,11 +11,11 @@ package org.dom4j;
 
 import org.dom4j.tree.AbstractNode;
 import org.dom4j.tree.NamespaceCache;
-import org.dom4j.tree.XPathNamespace;
+import org.dom4j.tree.DefaultNamespace;
 
-/** <p><code>Namespace</code> defines the standard behaviour for an XML namespace.</p>
+/** <p><code>Namespace</code> is a Flyweight Namespace that can be shared amongst nodes.</p>
   * 
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class Namespace extends AbstractNode {
@@ -154,7 +154,7 @@ public class Namespace extends AbstractNode {
     }
     
     protected Node createXPathResult(Element parent) {
-        return new XPathNamespace( parent, getPrefix(), getURI() );
+        return new DefaultNamespace( parent, getPrefix(), getURI() );
     }    
     
 }

@@ -27,12 +27,12 @@ import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.QName;
 import org.dom4j.Namespace;
-import org.dom4j.tree.XPathAttribute;
+import org.dom4j.tree.DefaultAttribute;
 
 /** <p><code>SaxonNodeHelper</code> contains a collection of utility methods
   * for use across Node implementations.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class SaxonNodeHelper {

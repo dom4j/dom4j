@@ -21,7 +21,7 @@ import org.dom4j.Visitor;
 /** <p><code>AbstractNamespace</code> is an abstract base class for 
   * tree implementors to use for implementation inheritence.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public abstract class AbstractAttribute extends AbstractNode implements Attribute {
@@ -112,7 +112,7 @@ public abstract class AbstractAttribute extends AbstractNode implements Attribut
     }
     
     protected Node createXPathResult(Element parent) {
-        return new XPathAttribute(parent, getQName(), getValue());
+        return new DefaultAttribute(parent, getQName(), getValue());
     }
 }
     

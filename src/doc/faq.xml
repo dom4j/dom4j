@@ -159,20 +159,16 @@ transformer.transform( source, result );
         and the <code>StringReader</code> from the JDK. For example:-
       </p>
       <pre>
-import java.io.IOException;
-import java.io.StringReader;
-
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
-import org.dom4j.io.SAXReader;
+import org.dom4j.DocumentHelper;
 
 public class Foo {
-    private String xmlText 
-      = "&lt;root&gt; &lt;child id='1'&gt;James&lt;/child&gt; &lt;/root&gt;";
 
-    protected Document parse() throws IOException, DocumentException {
-        SAXReader reader = new SAXReader();
-        return reader.read( new StringReader( xmlText ) );
+    public Document getDocument() throws DocumentException {
+        return DocumentHelper.parseText( 
+            "&lt;root&gt; &lt;child id='1'&gt;James&lt;/child&gt; &lt;/root&gt;"
+        );
     }
 }
       </pre>

@@ -9,87 +9,88 @@
 
 package org.dom4j.tree;
 
-import java.util.Collections;
 import java.util.Map;
 
-import org.dom4j.Element;
 import org.dom4j.Node;
-import org.dom4j.ProcessingInstruction;
+import org.dom4j.Element;
 
-/** <p><code>DefaultProcessingInstruction</code> is the DOM4J default implementation
-  * of a singly linked, read-only XML Processing Instruction.</p>
+/** <p><code>DefaultProcessingInstruction</code> is the default 
+  * Processing Instruction implementation.
+  * It is a doubly linked node which supports the parent relationship 
+  * and can be modified in place.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class DefaultProcessingInstruction extends AbstractProcessingInstruction {
+public class DefaultProcessingInstruction extends FlyweightProcessingInstruction {
 
-    /** The target of the PI */
-    protected String target;
+    /** The parent of this node */
+    private Element parent;
 
-    /** The values for the PI as a String */
-    protected String text;
-
-    /** The values for the PI in name/value pairs */
-    protected Map values;
-
-    /** A default constructor for implementors to use.
+    /** <p>This will create a new PI with the given target and values</p>
+      *
+      * @param target is the name of the PI
+      * @param values is the <code>Map</code> values for the PI
       */
-    public DefaultProcessingInstruction() { 
+    public DefaultProcessingInstruction(String target,Map values) {
+        super(target, values);
     }
 
     /** <p>This will create a new PI with the given target and values</p>
       *
       * @param target is the name of the PI
-      * @param values is the <code>Map</code> of the values for the PI
+      * @param values is the values for the PI
       */
-    public DefaultProcessingInstruction(String target, Map values) {
-        this.target = target;
-        this.values = values;
-        this.text = toString(values);
+    public DefaultProcessingInstruction(String target,String values) {
+        super(target, values);
     }
 
     /** <p>This will create a new PI with the given target and values</p>
       *
+      * @param parent is the parent element
       * @param target is the name of the PI
-      * @param text is the values for the PI as text
+      * @param values is the values for the PI
       */
-    public DefaultProcessingInstruction(String target, String text) {
+    public DefaultProcessingInstruction(Element parent,String target,String values) {
+        super(target, values);
+        this.parent = parent;
+    }
+    
+    public void setTarget(String target) {
         this.target = target;
+    }
+    
+    public void setText(String text) {
         this.text = text;
         this.values = parseValues(text);
     }
-
-    public String getTarget() {
-        return target;
-    }
-
-    public void setTarget(String target) {
-        throw new UnsupportedOperationException( "This PI is read-only and cannot be modified" );
-    }
-
-    public String getText() {
-        return text;
+    
+    public void setValues(Map values) {
+        this.values = values;
+        this.text = toString(values);
     }
     
-    public String getValue(String name) {
-        String answer = (String) values.get(name);
-        if (answer == null) {
-            return "";
-        }
-        return answer;
+    public void setValue(String name, String value) {
+        values.put(name, value);
     }
     
-    public Map getValues() {
-        return Collections.unmodifiableMap( values );
+
+    public Element getParent() {
+        return parent;
+    }
+
+    public void setParent(Element parent) {
+        this.parent = parent;
     }
     
-    protected Node createXPathResult(Element parent) {
-        return new XPathProcessingInstruction( parent, getTarget(), getText() );
+    public boolean supportsParent() {
+        return true;
+    }
+    
+    public boolean isReadOnly() {
+        return false;
     }
 }
-
-
 
 
 

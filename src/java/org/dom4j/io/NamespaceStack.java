@@ -22,7 +22,7 @@ import org.dom4j.QName;
   * which are in scope. This is useful when building or navigating a DOM4J 
   * document.
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 class NamespaceStack {
@@ -147,6 +147,13 @@ class NamespaceStack {
         else {
             System.out.println( "Warning: duplicate namespace prefix ignored: " + prefix );
         }
+    }
+    
+    /** Adds a new namespace to the stack */
+    public Namespace addNamespace( String prefix, String uri ) {        
+        Namespace namespace = createNamespace( prefix, uri );
+        push( namespace );
+        return namespace;
     }
     
     /** Pops a namepace from the stack with the given prefix and URI */

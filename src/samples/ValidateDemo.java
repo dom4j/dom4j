@@ -17,7 +17,7 @@ import org.xml.sax.SAXException;
 
 /** A sample program demonstrating the use of validation using SAXValidator
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class ValidateDemo extends AbstractDemo {
@@ -73,7 +73,7 @@ public class ValidateDemo extends AbstractDemo {
             DocumentType docType = document.getDocType();
             if ( docType == null ) {
                 println( "Adding an NITF doc type" );
-                document.setDocType( "nitf", null, "nitf.dtd" );
+                document.addDocType( "nitf", null, "nitf.dtd" );
             }
 
             // now lets validate

@@ -25,31 +25,14 @@ import java.util.Map;
   * such as {@link #getParent} or {@link #getDocument}.</p>
   *
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public interface Element extends Branch {
 
+    // Name and namespace related methods
+    //-------------------------------------------------------------------------        
  
-    /** @return true if this element is the root element of a document
-      * and this element supports the parent relationship else false.
-      */
-    public boolean isRootElement();
-
-    /** <p>Returns true if this <code>Element</code> has mixed content.
-      * Mixed content means that an element contains both textual data and
-      * child elements.
-      *
-      * @return true if this element contains mixed content.
-      */
-    public boolean hasMixedContent();    
-        
-    /** <p>Returns true if this <code>Element</code> has text only content.
-      *
-      * @return true if this element is empty or only contains text content.
-      */
-    public boolean isTextOnly();    
-        
     /** <p>Returns the <code>QName</code> of this element which represents 
       * the local name, the qualified name and the <code>Namespace</code>.</p>
       *
@@ -132,8 +115,172 @@ public interface Element extends Branch {
       * @return a list of namespaces declared for this element.
       */
     public List declaredNamespaces();
+
+
     
-    // Text API
+    // Builder methods 
+    //-------------------------------------------------------------------------        
+
+    /** <p>Adds the attribute value of the given local name. 
+      * If an attribute already exists for the given name it will be replaced.</p>
+      *
+      * @param name is the name of the attribute whose value is to be added 
+      * or updated
+      * @param value is the attribute's value
+      * @return this <code>Element</code> instance.
+      */
+    public Element addAttribute(String name, String value);
+    
+    /** <p>Adds the attribute value of the given fully qualified name. 
+      * If an attribute already exists for the given name it will be replaced.</p>
+      *
+      * @param qName is the fully qualified name of the attribute 
+      * whose value is to be added or updated
+      * @param value is the attribute's value
+      * @return this <code>Element</code> instance.
+      */
+    public Element addAttribute(QName qName, String value);
+    
+    /** Adds a new <code>Comment</code> node with the given text to this branch.
+      *
+      * @param comment is the text for the <code>Comment</code> node.
+      * @return this <code>Element</code> instance.
+      */    
+    public Element addComment(String comment);
+    
+    
+    /** Adds a new <code>CDATA</code> node with the given text to this element.
+      *
+      * @param cdata is the text for the <code>CDATA</code> node.
+      * @return this <code>Element</code> instance.
+      */    
+    public Element addCDATA(String cdata);
+    
+    /** Adds a new <code>Entity</code> node with the given name and text
+      * to this element and returns a reference to the new node.
+      *
+      * @param name is the name for the <code>Entity</code> node.
+      * @param text is the text for the <code>Entity</code> node.
+      * @return this <code>Element</code> instance.
+      */    
+    public Element addEntity(String name, String text);
+    
+    
+    /** Adds a namespace to this element for use by its child content
+      *
+      * @param prefix is the prefix to use, which should not be null or blank
+      * @param uri is the namespace URI
+      * @return this <code>Element</code> instance.
+      */
+    public Element addNamespace(String prefix, String uri);
+
+    /** Adds a processing instruction for the given target
+      *
+      * @param target is the target of the processing instruction
+      * @param text is the textual data (key/value pairs) of the processing instruction
+      * @return this <code>Element</code> instance.
+      */
+    public Element addProcessingInstruction(String target, String text);
+    
+    /** Adds a processing instruction for the given target
+      *
+      * @param target is the target of the processing instruction
+      * @param data is a Map of the key / value pairs of the processing instruction
+      * @return this <code>Element</code> instance.
+      */
+    public Element addProcessingInstruction(String target, Map data);
+
+    /** Adds a new <code>Text</code> node with the given text to this element.
+      *
+      * @param text is the text for the <code>Text</code> node.
+      * @return this <code>Element</code> instance.
+      */    
+    public Element addText(String text);    
+    
+    
+    // Typesafe modifying methods
+    //-------------------------------------------------------------------------        
+    
+    
+    /** Adds the given <code>Attribute</code> to this element.
+      * If the given node already has a parent defined then an
+      * <code>InvalidAddNodeException</code> will be thrown.
+      *
+      * @param attribute is the attribute to be added
+      */
+    public void add(Attribute attribute);
+    
+    
+    /** Adds the given <code>CDATA</code> to this element.
+      * If the given node already has a parent defined then an
+      * <code>InvalidAddNodeException</code> will be thrown.
+      *
+      * @param cdata is the CDATA to be added
+      */
+    public void add(CDATA cdata);
+    
+    /** Adds the given <code>Entity</code> to this element.
+      * If the given node already has a parent defined then an
+      * <code>InvalidAddNodeException</code> will be thrown.
+      *
+      * @param entity is the entity to be added
+      */
+    public void add(Entity entity);
+    
+    /** Adds the given <code>Text</code> to this element.
+      * If the given node already has a parent defined then an
+      * <code>InvalidAddNodeException</code> will be thrown.
+      *
+      * @param text is the text to be added
+      */
+    public void add(Text text);
+    
+    /** Adds the given <code>Namespace</code> to this element.
+      * If the given node already has a parent defined then an
+      * <code>InvalidAddNodeException</code> will be thrown.
+      *
+      * @param namespace is the namespace to be added
+      */
+    public void add(Namespace namespace);
+        
+    /** Removes the given <code>Attribute</code> from this element.
+      *
+      * @param attribute is the attribute to be removed
+      * @return true if the attribute was removed
+      */
+    public boolean remove(Attribute attribute);
+    
+    /** Removes the given <code>CDATA</code> from this element.
+      *
+      * @param cdata is the CDATA to be removed
+      * @return true if the cdata was removed
+      */
+    public boolean remove(CDATA cdata);
+    
+    /** Removes the given <code>Entity</code> from this element.
+      *
+      * @param entity is the entity to be removed
+      * @return true if the entity was removed
+      */
+    public boolean remove(Entity entity);
+    
+    /** Removes the given <code>Namespace</code> from this element.
+      *
+      * @param namespace is the namespace to be removed
+      * @return true if the namespace was removed
+      */
+    public boolean remove(Namespace namespace);
+    
+    /** Removes the given <code>Text</code> from this element.
+      *
+      * @param text is the text to be removed
+      * @return true if the text was removed
+      */
+    public boolean remove(Text text);
+
+    
+    // Text methods
+    //-------------------------------------------------------------------------        
     
     /** Returns the text value of this element without recursing through
       * child elements. 
@@ -175,8 +322,10 @@ public interface Element extends Branch {
       * binding or calls {@link #setText} if it doesn't
       */
     public void setData(Object data);
+
     
-    // Attributes API
+    // Attribute methods
+    //-------------------------------------------------------------------------        
     
 
     /** <p>Returns the {@link Attribute} instances this element contains as 
@@ -274,6 +423,9 @@ public interface Element extends Branch {
       * @param name is the name of the attribute whose value is to be added 
       * or updated
       * @param value is the attribute's value
+      *
+      * @deprecated As of version 0.5. Please use 
+      *    {@link #addAttribute(String,String)} instead.
       */
     public void setAttributeValue(String name, String value);
     
@@ -282,20 +434,15 @@ public interface Element extends Branch {
       * @param qName is the fully qualified name of the attribute 
       * whose value is to be added or updated
       * @param value is the attribute's value
+      *
+      * @deprecated As of version 0.5. Please use 
+      *    {@link #addAttribute(QName,String)} instead.
       */
     public void setAttributeValue(QName qName, String value);
 
     
-    // Content API
-    
-    /** Returns a node at the given index suitable for an XPath result set.
-      * This means the resulting Node will either be null or it will support 
-      * the parent relationship.
-      *
-      * @return the Node for the given index which will support the parent 
-      * relationship or null if there is not a node at the given index.
-      */
-    public Node getXPathResult(int index);
+    // Content methods
+    //-------------------------------------------------------------------------        
     
     
     /** Returns the first element for the given local name and any namespace.
@@ -371,126 +518,29 @@ public interface Element extends Branch {
     public Iterator elementIterator(QName qname);
         
     
-    // helper methods
-    public String elementText(String name);
-    public String elementText(QName qname);
-    public String elementTextTrim(String name);
-    public String elementTextTrim(QName qname);
-    
 
-    // builder methods 
-    
-    /** Adds a new <code>CDATA</code> node with the given text to this element.
-      *
-      * @param cdata is the text for the <code>CDATA</code> node.
-      */    
-    public void addCDATA(String cdata);
-    
-    /** Adds a new <code>Text</code> node with the given text to this element.
-      *
-      * @param text is the text for the <code>Text</code> node.
-      */    
-    public void addText(String text);    
-    
-    /** Adds a new <code>Entity</code> node with the given name to this element
-      * and returns a reference to the new node.
-      *
-      * @param name is the name for the <code>Entity</code> node.
-      * @return the newly added <code>Entity</code> node.
-      */    
-    public Entity addEntity(String name);
-    
-    /** Adds a new <code>Entity</code> node with the given name and text
-      * to this element and returns a reference to the new node.
-      *
-      * @param name is the name for the <code>Entity</code> node.
-      * @param text is the text for the <code>Entity</code> node.
-      * @return the newly added <code>Entity</code> node.
-      */    
-    public Entity addEntity(String name, String text);
-    
-    public Namespace addNamespace(String prefix, String uri);
+    // Helper methods
+    //-------------------------------------------------------------------------        
+ 
+    /** @return true if this element is the root element of a document
+      * and this element supports the parent relationship else false.
+      */
+    public boolean isRootElement();
 
-    
-    // typesafe versions using node classes
-    
-    
-    /** Adds the given <code>Attribute</code> to this element.
-      * If the given node already has a parent defined then an
-      * <code>InvalidAddNodeException</code> will be thrown.
+    /** <p>Returns true if this <code>Element</code> has mixed content.
+      * Mixed content means that an element contains both textual data and
+      * child elements.
       *
-      * @param attribute is the attribute to be added
+      * @return true if this element contains mixed content.
       */
-    public void add(Attribute attribute);
-    
-    
-    /** Adds the given <code>CDATA</code> to this element.
-      * If the given node already has a parent defined then an
-      * <code>InvalidAddNodeException</code> will be thrown.
-      *
-      * @param cdata is the CDATA to be added
-      */
-    public void add(CDATA cdata);
-    
-    /** Adds the given <code>Entity</code> to this element.
-      * If the given node already has a parent defined then an
-      * <code>InvalidAddNodeException</code> will be thrown.
-      *
-      * @param entity is the entity to be added
-      */
-    public void add(Entity entity);
-    
-    /** Adds the given <code>Text</code> to this element.
-      * If the given node already has a parent defined then an
-      * <code>InvalidAddNodeException</code> will be thrown.
-      *
-      * @param text is the text to be added
-      */
-    public void add(Text text);
-    
-    /** Adds the given <code>Namespace</code> to this element.
-      * If the given node already has a parent defined then an
-      * <code>InvalidAddNodeException</code> will be thrown.
-      *
-      * @param namespace is the namespace to be added
-      */
-    public void add(Namespace namespace);
+    public boolean hasMixedContent();    
         
-    /** Removes the given <code>Attribute</code> from this element.
+    /** <p>Returns true if this <code>Element</code> has text only content.
       *
-      * @param attribute is the attribute to be removed
-      * @return true if the attribute was removed
+      * @return true if this element is empty or only contains text content.
       */
-    public boolean remove(Attribute attribute);
-    
-    /** Removes the given <code>CDATA</code> from this element.
-      *
-      * @param cdata is the CDATA to be removed
-      * @return true if the cdata was removed
-      */
-    public boolean remove(CDATA cdata);
-    
-    /** Removes the given <code>Entity</code> from this element.
-      *
-      * @param entity is the entity to be removed
-      * @return true if the entity was removed
-      */
-    public boolean remove(Entity entity);
-    
-    /** Removes the given <code>Namespace</code> from this element.
-      *
-      * @param namespace is the namespace to be removed
-      * @return true if the namespace was removed
-      */
-    public boolean remove(Namespace namespace);
-    
-    /** Removes the given <code>Text</code> from this element.
-      *
-      * @param text is the text to be removed
-      * @return true if the text was removed
-      */
-    public boolean remove(Text text);
-    
+    public boolean isTextOnly();    
+        
     
     /** Appends the attributes of the given element to me.
       * This method behaves like the {@link Collection#addAll(java.util.Collection)} 
@@ -523,6 +573,21 @@ public interface Element extends Branch {
       * @return a new deep copy Element
       */
     public Element createCopy(QName qName);
+    
+    public String elementText(String name);
+    public String elementText(QName qname);
+    public String elementTextTrim(String name);
+    public String elementTextTrim(QName qname);
+    
+    /** Returns a node at the given index suitable for an XPath result set.
+      * This means the resulting Node will either be null or it will support 
+      * the parent relationship.
+      *
+      * @return the Node for the given index which will support the parent 
+      * relationship or null if there is not a node at the given index.
+      */
+    public Node getXPathResult(int index);
+    
     
 }
 

@@ -10,34 +10,53 @@
 package org.dom4j.tree;
 
 import org.dom4j.Element;
-import org.dom4j.Node;
-import org.dom4j.Text;
-import org.dom4j.Visitor;
 
-/** <p><code>DefaultText</code> is the default DOM4J implementation of a 
-  * singly linked read only XML Text.</p>
+/** <p><code>DefaultText</code> is the default Text implementation.
+  * It is a doubly linked node which supports the parent relationship 
+  * and can be modified in place.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class DefaultText extends AbstractText implements Text {
+public class DefaultText extends FlyweightText {
 
-    /** Text of the <code>Text</code> node */
-    protected String text;
+    /** The parent of this node */
+    private Element parent;
 
     /** @param text is the Text text
       */
     public DefaultText(String text) {
-	this.text = text;
+	super(text);
     }
 
-    public String getText() {
-	return text;
+    /** @param parent is the parent element
+      * @param text is the Text text
+      */
+    public DefaultText(Element parent,String text) {
+	super(text);
+        this.parent = parent;
+    }
+
+    public void setText(String text) {
+	this.text = text;
     }
     
-    protected Node createXPathResult(Element parent) {
-        return new XPathText( parent, getText() );
+    public Element getParent() {
+        return parent;
     }
+
+    public void setParent(Element parent) {
+        this.parent = parent;
+    }
+    
+    public boolean supportsParent() {
+        return true;
+    }
+
+    public boolean isReadOnly() {
+        return false;
+    }
+
 }
 
 

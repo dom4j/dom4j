@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.dom4j.Attribute;
+import org.dom4j.Element;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
@@ -21,7 +22,7 @@ import org.dom4j.tree.DefaultElement;
 
 /** <p><code>BeanElement</code> uses a Java Bean to store its attributes.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class BeanElement extends DefaultElement {
@@ -69,18 +70,20 @@ public class BeanElement extends DefaultElement {
         return getBeanAttributeList().attribute(qname);
     }
     
-    public void setAttributeValue(String name, String value) {
+    public Element addAttribute(String name, String value) {
         Attribute attribute = attribute(name);
         if (attribute != null ) {
             attribute.setValue(value);
         }
+        return this;
     }
 
-    public void setAttributeValue(QName qName, String value) {
+    public Element addAttribute(QName qName, String value) {
         Attribute attribute = attribute(qName);
         if (attribute != null ) {
             attribute.setValue(value);
         }
+        return this;
     }
     
     public void setAttributes(List attributes) {

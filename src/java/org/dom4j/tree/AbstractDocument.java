@@ -14,6 +14,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.dom4j.Attribute;
 import org.dom4j.CDATA;
@@ -33,7 +34,7 @@ import org.dom4j.io.XMLWriter;
 /** <p><code>AbstractDocument</code> is an abstract base class for 
   * tree implementors to use for implementation inheritence.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public abstract class AbstractDocument extends AbstractBranch implements Document {
@@ -98,7 +99,7 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
             for ( Iterator iter = content.iterator(); iter.hasNext(); ) {
                 Object object = iter.next();
                 if (object instanceof String) {
-                    DefaultText text = new DefaultText((String) object);
+                    Text text = getDocumentFactory().createText((String) object);
                     visitor.visit(text);
                 } 
                 else {
@@ -119,10 +120,35 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
             element.normalize();
         }
     }
+    
+    public Document addComment(String comment) {
+        Comment node = getDocumentFactory().createComment( comment );
+        add( node );
+        return this;
+    }
        
+    public Document addProcessingInstruction(String target, String data) {
+        ProcessingInstruction node = getDocumentFactory().createProcessingInstruction( target, data );
+        add( node );
+        return this;
+    }
+    
+    public Document addProcessingInstruction(String target, Map data) {
+        ProcessingInstruction node = getDocumentFactory().createProcessingInstruction( target, data );
+        add( node );
+        return this;
+    }
+    
     public Element addElement(String name) {
         checkAddElementAllowed();
         Element node = super.addElement(name);
+        rootElementAdded(node);
+        return node;
+    }
+    
+    public Element addElement(String qualifiedName, String namespaceURI) {
+        checkAddElementAllowed();
+        Element node = super.addElement(qualifiedName, namespaceURI);
         rootElementAdded(node);
         return node;
     }

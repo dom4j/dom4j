@@ -30,7 +30,7 @@ import org.xml.sax.Attributes;
 /** <p><code>DOMAttribute</code> implements an XML element which 
   * supports the W3C DOM API.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
@@ -176,7 +176,7 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     }
 
     public void setAttribute(String name, String value) throws DOMException {
-        setAttributeValue(name, value);
+        addAttribute(name, value);
     }
 
     public void removeAttribute(String name) throws DOMException {
@@ -235,7 +235,7 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
         }
         else {
             QName qname = getQName( namespaceURI, qualifiedName );
-            setAttributeValue( qname, value );
+            addAttribute( qname, value );
         }
     }
 

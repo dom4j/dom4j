@@ -28,7 +28,7 @@ import org.xml.sax.EntityResolver;
 /** <p><code>DefaultDocument</code> is the default DOM4J default implementation
   * of an XML document.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class DefaultDocument extends AbstractDocument {
@@ -102,13 +102,10 @@ public class DefaultDocument extends AbstractDocument {
         this.docType = docType;
     }
     
-    public void setDocType(String name, String publicId, String systemId) {
-        setDocType( createDocType( name, publicId, systemId ) );
+    public Document addDocType(String name, String publicId, String systemId) {
+        setDocType( getDocumentFactory().createDocType( name, publicId, systemId ) );
+        return this;
     }    
-    
-    public DocumentType createDocType(String name, String publicId, String systemId) {
-        return new DefaultDocumentType( name, publicId, systemId );
-    }
     
     public EntityResolver getEntityResolver() {
         return entityResolver;
@@ -214,7 +211,7 @@ public class DefaultDocument extends AbstractDocument {
                 return (Node) object;
             }
             if (object instanceof String) {
-                return new DefaultText((String) object);
+                return getDocumentFactory().createText(object.toString());
             }
         }
         return null;

@@ -27,7 +27,7 @@ import org.dom4j.util.NodeComparator;
 
 /** A test harness to test the the round trips of Documents.
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class TestRoundTrip extends AbstractTestCase {

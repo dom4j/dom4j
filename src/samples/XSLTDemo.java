@@ -21,7 +21,7 @@ import org.dom4j.io.XMLWriter;
 
 /** A sample program to demonstrate using XSLT to transform a dom4j Document.
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class XSLTDemo extends SAXDemo {

@@ -12,7 +12,7 @@ package org.dom4j.dom;
 import org.dom4j.Comment;
 import org.dom4j.Element;
 import org.dom4j.QName;
-import org.dom4j.tree.XPathComment;
+import org.dom4j.tree.DefaultComment;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.DOMException;
@@ -22,10 +22,10 @@ import org.w3c.dom.NodeList;
 /** <p><code>DOMText</code> implements a Text node which 
   * supports the W3C DOM API.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class DOMComment extends XPathComment implements org.w3c.dom.Comment {
+public class DOMComment extends DefaultComment implements org.w3c.dom.Comment {
 
     public DOMComment(String text) {
 	super(text);

@@ -20,8 +20,9 @@
               For example:-
             </p>
 <pre>
-    String text = "&lt;team&gt; &lt;author&gt;James&lt;/author&gt; &lt;/team&gt;";
-    Document document = DocumentHelper.parseText(text);
+    Document document = DocumentHelper.parseText(
+        "&lt;team&gt; &lt;author&gt;James&lt;/author&gt; &lt;/team&gt;"
+    );
 </pre>
 
           </section>
@@ -29,6 +30,45 @@
             <p>The Branch interface (and so Document and Element interfaces) has 
               a new normalize() method that has the same semantics as the same method 
               in the DOM API to remove empty Text nodes and merge adjacent Text nodes.
+            </p>
+          </section>
+          <section title="Easier document building methods">
+            <p>A document can now be constructed more easily now that the addXXX() methods
+              return a reference to the Document or Element which created them.
+              An example is shown below
+            </p>
+<pre>
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+
+public class Foo {
+
+    public Document createDocument() {
+        Document document = DocumentHelper.createDocument();
+        Element root = document.addElement( "root" );
+
+        Element author1 = root.addElement( "author" )
+            .addAttribute( "name", "James" )
+            .addAttribute( "location", "UK" )
+            .addText( "James Strachan" );
+        
+        Element author2 = root.addElement( "author" )
+            .addAttribute( "name", "Bob" )
+            .addAttribute( "location", "Canada" )
+            .addText( "Bob McWhirter" );
+
+        return document;
+    }
+}
+</pre>
+            <p>
+              Note that the addElement() method returns the <b>new</b> child element
+              not the parent element.
+            </p>
+            <p>
+              To promote consistency, the Element.setAttributeValue() method is now deprecated
+              and should be replaced with Element.addAttribute().
             </p>
           </section>
           <section title="Patches and bug fixes">
@@ -57,6 +97,16 @@
             </p>
             <p>If an XMLWriter is used with an OutputStream then an explicit call to 
             flush() is no longer required after calling write(Document)
+            </p>
+            <p>Some housekeeping was performed in the naming of some implementation classes.
+              The old XPathXXX.java classes in the org.dom4j.tree package 
+              where XXX = Attribute, CDATA, 
+              Comment, Entity, ProcessingInstruction and Text have been renamed to
+              DefaultXXX and the corresponding DefaultXXX has been renamed to
+              FlyweightXXX. This makes it clearer the purpose of these implementation
+              classes. The default implementations of the leaf nodes are mutable but cannot
+              be shared across elements. The FlyweightXXX implementations are immutable
+              and can be shared across nodes and documents.
             </p>
           </section>
         </section>

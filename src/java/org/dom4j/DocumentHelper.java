@@ -22,7 +22,7 @@ import org.xml.sax.SAXException;
 /** <p><code>DocumentHelper</code> is a collection of helper methods 
   * for using DOM4J.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class DocumentHelper {
@@ -68,10 +68,6 @@ public class DocumentHelper {
         return DocumentFactory.getInstance().createText(text);
     }
     
-    
-    public static Entity createEntity(String name) {
-        return DocumentFactory.getInstance().createEntity(name);
-    }
     
     public static Entity createEntity(String name, String text) {
         return DocumentFactory.getInstance().createEntity(name, text);

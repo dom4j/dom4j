@@ -30,7 +30,7 @@ import XSLTDemo;
 /** This sample program peforms XSLT on the native DOM implementation of 
   * dom4j.
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class XSLTNativeDOMDemo extends XSLTDemo {

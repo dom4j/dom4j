@@ -11,7 +11,7 @@ package org.dom4j.dom;
 
 import org.dom4j.Element;
 import org.dom4j.QName;
-import org.dom4j.tree.XPathNamespace;
+import org.dom4j.tree.DefaultNamespace;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.DOMException;
@@ -21,10 +21,10 @@ import org.w3c.dom.NodeList;
 /** <p><code>DOMNamespace</code> implements a Namespace that is compatable 
   * with the DOM API.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class DOMNamespace extends XPathNamespace implements org.w3c.dom.Node {
+public class DOMNamespace extends DefaultNamespace implements org.w3c.dom.Node {
     
     public DOMNamespace(String prefix, String uri) {
         super( prefix, uri );

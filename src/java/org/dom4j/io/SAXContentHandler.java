@@ -41,7 +41,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /** <p><code>SAXHandler</code> builds a DOM4J tree via SAX events.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class SAXContentHandler extends DefaultHandler implements LexicalHandler {
@@ -64,8 +64,8 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     /** the <code>ElementHandler</code> called as the elements are complete */
     private ElementHandler elementHandler;
 
-    /** Used when inside an entity block */
-    private Entity entity;
+    /** The name of the current entity */
+    private String entity;
     
     /** Flag used to indicate that we are inside a DTD section */
     private boolean insideDTDSection;
@@ -125,7 +125,13 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     //-------------------------------------------------------------------------
     
     public void processingInstruction(String target, String data) throws SAXException {
-        peekBranch().addProcessingInstruction(target, data);
+        Branch branch = peekBranch();
+        if ( branch instanceof Element ) {
+            ((Element) branch).addProcessingInstruction(target, data);
+        }
+        else {
+            ((Document) branch).addProcessingInstruction(target, data);
+        }
     }
     
     public void startPrefixMapping(String prefix, String uri) throws SAXException {
@@ -181,7 +187,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
             QName attributeQName = namespaceStack.getQName( 
                 attributeURI, attributeLocalName, attributeQualifiedName 
             );
-            element.setAttributeValue(attributeQName, attributeValue);
+            element.addAttribute(attributeQName, attributeValue);
         }
 
         elementStack.pushElement(element);
@@ -203,8 +209,8 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
         Element element = elementStack.peekElement();
         
         if (entity != null) {
-            // #### should we append context or replace?
-            entity.setText(text);
+            element.addEntity(entity, text);
+            entity = null;
         }
         else if (insideCDATASection) {
             element.addCDATA(text);
@@ -232,7 +238,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     public void startDTD(String name, String publicId, String systemId) throws SAXException {
         Document document = getDocument();
         if (document != null) {
-            document.setDocType(name, publicId, systemId);
+            document.addDocType(name, publicId, systemId);
         }
         insideDTDSection = true;
     }
@@ -243,10 +249,11 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
 
     public void startEntity(String name) throws SAXException {
         // Ignore DTD references
+        entity = null;
         if (! insideDTDSection ) {
             if ( SHOW_STANDARD_ENTITIES || ! getIgnoreEntityNames().contains(name)) {
                 Element element = elementStack.peekElement();
-                entity = element.addEntity(name);
+                entity = name;
             }
         }
     }
@@ -266,7 +273,13 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     public void comment(char[] ch, int start, int end) throws SAXException {
         String text = new String(ch, start, end);
         if (!insideDTDSection && text.length() > 0) {
-            peekBranch().addComment(text);
+            Branch branch = peekBranch();
+            if ( branch instanceof Element ) {
+                ((Element) branch).addComment(text);
+            }
+            else {
+                ((Document) branch).addComment(text);
+            }
         }
     }
 

@@ -9,79 +9,38 @@
 
 package org.dom4j.tree;
 
-import org.dom4j.Node;
+import org.dom4j.CDATA;
 import org.dom4j.Element;
+import org.dom4j.Node;
+import org.dom4j.Visitor;
 
-/** <p><code>XPathEntity</code> implements a doubly linked node which 
-  * supports the parent relationship and is mutable.
-  * It is useful when evalutating XPath expressions.</p>
+/** <p><code>FlyweightCDATA</code> is a Flyweight pattern implementation
+  * of a singly linked, read-only XML CDATA.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * <p>This node could be shared across documents and elements though 
+  * it does not support the parent relationship.</p>
+  *
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class XPathEntity extends DefaultEntity {
+public class FlyweightCDATA extends AbstractCDATA implements CDATA {
 
-    /** The parent of this node */
-    private Element parent;
+    /** Text of the <code>CDATA</code> node */
+    protected String text;
 
-    /** Creates the <code>Entity</code> with the specified name
-      *
-      * @param name is the name of the entity
+    /** @param text is the CDATA text
       */
-    public XPathEntity(String name) {
-        super( name );
+    public FlyweightCDATA(String text) {
+	this.text = text;
     }
 
-    /** Creates the <code>Entity</code> with the specified name
-      * and text.
-      *
-      * @param name is the name of the entity
-      * @param text is the text of the entity
-      */
-    public XPathEntity(String name, String text) {
-        super( name, text );
+    public String getText() {
+	return text;
     }
     
-    
-    /** Creates the <code>Entity</code> with the specified name
-      * and text.
-      *
-      * @param parent is the parent element
-      * @param name is the name of the entity
-      * @param text is the text of the entity
-      */
-    public XPathEntity(Element parent, String name, String text) {
-        super( name, text );
-        this.parent = parent;
+    protected Node createXPathResult(Element parent) {
+        return new DefaultCDATA( parent, getText() );
     }
-
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public void setText(String text) {
-        this.text = text;
-    }
-    
-    
-
-    public Element getParent() {
-        return parent;
-    }
-
-    public void setParent(Element parent) {
-        this.parent = parent;
-    }
-    
-    public boolean supportsParent() {
-        return true;
-    }
-    
-    public boolean isReadOnly() {
-        return false;
-    }
-
 }
 
 

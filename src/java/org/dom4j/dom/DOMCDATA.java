@@ -13,7 +13,7 @@ import org.dom4j.CDATA;
 import org.dom4j.Element;
 import org.dom4j.QName;
 import org.dom4j.Text;
-import org.dom4j.tree.XPathCDATA;
+import org.dom4j.tree.DefaultCDATA;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.DOMException;
@@ -23,10 +23,10 @@ import org.w3c.dom.NodeList;
 /** <p><code>DOMCDATA</code> implements a CDATA Section which 
   * supports the W3C DOM API.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class DOMCDATA extends XPathCDATA implements org.w3c.dom.CDATASection {
+public class DOMCDATA extends DefaultCDATA implements org.w3c.dom.CDATASection {
 
     public DOMCDATA(String text) {
 	super(text);

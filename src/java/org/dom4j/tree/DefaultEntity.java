@@ -9,38 +9,27 @@
 
 package org.dom4j.tree;
 
-import org.dom4j.Element;
 import org.dom4j.Node;
+import org.dom4j.Element;
 
-/** <p><code>DefaultEntity</code> is the DOM4J default implementation
-  * of a singly linked, read-only XML entity.</p>
+/** <p><code>DefaultEntity</code> is the default Entity implementation.
+  * It is a doubly linked node which supports the parent relationship 
+  * and can be modified in place.</p>
   *
-  * <p>Often this node needs to be created and then the text content added
-  * later (for example in SAX) so this implementation allows a call to 
-  * {@link #setText} providing the entity has no text already.
-  *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class DefaultEntity extends AbstractEntity {
+public class DefaultEntity extends FlyweightEntity {
 
-    /** The name of the <code>Entity</code> */
-    protected String name;
-
-    /** The text of the <code>Entity</code> */
-    protected String text;
-
-    /** A default constructor for implementors to use.
-      */
-    protected DefaultEntity() {
-    }
+    /** The parent of this node */
+    private Element parent;
 
     /** Creates the <code>Entity</code> with the specified name
       *
       * @param name is the name of the entity
       */
     public DefaultEntity(String name) {
-        this.name = name;
+        super( name );
     }
 
     /** Creates the <code>Entity</code> with the specified name
@@ -49,41 +38,50 @@ public class DefaultEntity extends AbstractEntity {
       * @param name is the name of the entity
       * @param text is the text of the entity
       */
-    public DefaultEntity(String name, String text) {
+    public DefaultEntity(String name,String text) {
+        super( name, text );
+    }
+    
+    
+    /** Creates the <code>Entity</code> with the specified name
+      * and text.
+      *
+      * @param parent is the parent element
+      * @param name is the name of the entity
+      * @param text is the text of the entity
+      */
+    public DefaultEntity(Element parent,String name,String text) {
+        super( name, text );
+        this.parent = parent;
+    }
+
+    
+    public void setName(String name) {
         this.name = name;
+    }
+    
+    public void setText(String text) {
         this.text = text;
     }
+    
+    
 
-    /** @return the name of the entity
-      */
-    public String getName() {
-        return name;
+    public Element getParent() {
+        return parent;
     }
 
-    /** @return the text of the entity
-      */
-    public String getText() {
-        return text;
+    public void setParent(Element parent) {
+        this.parent = parent;
     }
     
-    /** sets the value of the entity if it is not defined yet
-      * otherwise an <code>UnsupportedOperationException</code> is thrown
-      * as this class is read only.
-      */
-    public void setText(String text) {
-        if (this.text != null) {
-            this.text = text;
-        }
-        else {
-            throw new UnsupportedOperationException( 
-                "This Entity is read-only. It cannot be modified" 
-            );
-        }
+    public boolean supportsParent() {
+        return true;
     }
     
-    protected Node createXPathResult(Element parent) {
-        return new XPathEntity( parent, getName(), getText() );
+    public boolean isReadOnly() {
+        return false;
     }
+
 }
 
 

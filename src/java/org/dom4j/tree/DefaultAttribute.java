@@ -10,34 +10,32 @@
 package org.dom4j.tree;
 
 import org.dom4j.Element;
-import org.dom4j.Node;
-import org.dom4j.Namespace;
 import org.dom4j.QName;
+import org.dom4j.Namespace;
 
-/** <p><code>DefaultAttribute</code> is the DOM4J default implementation
-  * of a singly linked, read-only XML attribute.</p>
+/** <p><code>DefaultAttribute</code> implements a doubly linked node which 
+  * supports the parent relationship and is mutable.</p>
   *
-  * <p>It implements a singly linked attribute.</p>
-  *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class DefaultAttribute extends AbstractAttribute {
+public class DefaultAttribute extends FlyweightAttribute {
 
-    /** The <code>QName</code> for this element */
-    private QName qname;
-    
-    /** The value of the <code>Attribute</code> */
-    protected String value;
+    /** The parent of this node */
+    private Element parent;
 
     
-    public DefaultAttribute(QName qname) {
-        this.qname = qname;
+    public DefaultAttribute(QName qname) { 
+        super(qname);
     }
-
-    public DefaultAttribute(QName qname, String value) { 
-        this.qname = qname;
-        this.value = value;
+    
+    public DefaultAttribute(QName qname,String value) { 
+        super(qname, value);
+    }
+    
+    public DefaultAttribute(Element parent,QName qname,String value) { 
+        super(qname, value);
+        this.parent = parent;
     }
     
     /** Creates the <code>Attribute</code> with the specified local name
@@ -46,11 +44,10 @@ public class DefaultAttribute extends AbstractAttribute {
       * @param name is the name of the attribute
       * @param value is the value of the attribute
       */
-    public DefaultAttribute(String name, String value) {
-        this.qname = getDocumentFactory().createQName(name);
-        this.value = value;
+    public DefaultAttribute(String name,String value) {
+        super(name, value);
     }
-
+    
     /** Creates the <code>Attribute</code> with the specified local name,
       * value and <code>Namespace</code>.
       *
@@ -58,18 +55,43 @@ public class DefaultAttribute extends AbstractAttribute {
       * @param value is the value of the attribute
       * @param namespace is the namespace of the attribute
       */
-    public DefaultAttribute(String name, String value, Namespace namespace) {
-        this.qname = getDocumentFactory().createQName(name, namespace);
-        this.value = value;
+    public DefaultAttribute(String name,String value,Namespace namespace) {
+        super(name, value, namespace);
     }
     
-    public String getValue() {
-        return value;
+    /** Creates the <code>Attribute</code> with the specified local name,
+      * value and <code>Namespace</code>.
+      *
+      * @param parent is the parent element
+      * @param name is the name of the attribute
+      * @param value is the value of the attribute
+      * @param namespace is the namespace of the attribute
+      */
+    public DefaultAttribute(Element parent,String name,String value,Namespace namespace) {
+        super(name, value, namespace);
+        this.parent = parent;
+    }
+
+    public void setValue(String value) {
+	this.value = value;
     }
     
-    public QName getQName() {
-        return qname;
+    public Element getParent() {
+        return parent;
     }
+
+    public void setParent(Element parent) {
+        this.parent = parent;
+    }
+    
+    public boolean supportsParent() {
+        return true;
+    }
+    
+    public boolean isReadOnly() {
+        return false;
+    }
+
 }
 
 

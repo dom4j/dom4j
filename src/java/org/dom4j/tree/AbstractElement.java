@@ -217,7 +217,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
                     return (Node) node;
                 }
                 else {
-                    return new DefaultText(node.toString());
+                    return getDocumentFactory().createText(node.toString());
                 }
             }
         }
@@ -431,31 +431,11 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     }
     
     public void setAttributeValue(String name, String value) {
-        Attribute attribute = attribute(name);
-        if (attribute == null ) {
-            add(getDocumentFactory().createAttribute(this, name, value));
-        }
-        else if (attribute.isReadOnly()) {
-            remove(attribute);
-            add(getDocumentFactory().createAttribute(this, name, value));
-        }
-        else {
-            attribute.setValue(value);
-        }
+        addAttribute(name, value);
     }
 
     public void setAttributeValue(QName qName, String value) {
-        Attribute attribute = attribute(qName);
-        if (attribute == null ) {
-            add(getDocumentFactory().createAttribute(this, qName, value));
-        }
-        else if (attribute.isReadOnly()) {
-            remove(attribute);
-            add(getDocumentFactory().createAttribute(this, qName, value));
-        }
-        else {
-            attribute.setValue(value);
-        }
+        addAttribute(qName, value);
     }
     
     public void add(Attribute attribute) {
@@ -568,10 +548,48 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     }
        
     
-    public void addCDATA(String cdata) {
+    public Element addAttribute(String name, String value) {
+        Attribute attribute = attribute(name);
+        if (attribute == null ) {
+            add(getDocumentFactory().createAttribute(this, name, value));
+        }
+        else if (attribute.isReadOnly()) {
+            remove(attribute);
+            add(getDocumentFactory().createAttribute(this, name, value));
+        }
+        else {
+            attribute.setValue(value);
+        }
+        return this;
+    }
+
+    public Element addAttribute(QName qName, String value) {
+        Attribute attribute = attribute(qName);
+        if (attribute == null ) {
+            add(getDocumentFactory().createAttribute(this, qName, value));
+        }
+        else if (attribute.isReadOnly()) {
+            remove(attribute);
+            add(getDocumentFactory().createAttribute(this, qName, value));
+        }
+        else {
+            attribute.setValue(value);
+        }
+        return this;
+    }
+    
+    public Element addCDATA(String cdata) {
         CDATA node = getDocumentFactory().createCDATA(cdata);
         add(node);
+        return this;
     }
+    
+    public Element addComment(String comment) {
+        Comment node = getDocumentFactory().createComment( comment );
+        add( node );
+        return this;
+    }
+    
     
     public Element addElement(String name) {
         DocumentFactory factory = getDocumentFactory();
@@ -594,27 +612,35 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         return node;
     }
     
-    public Entity addEntity(String name) {
-        Entity node = getDocumentFactory().createEntity(name);
-        add(node);
-        return node;
-    }
-    
-    public Entity addEntity(String name, String text) {
+    public Element addEntity(String name, String text) {
         Entity node = getDocumentFactory().createEntity(name, text);
         add(node);
-        return node;
+        return this;
     }
     
-    public Namespace addNamespace(String prefix, String uri) {
+    public Element addNamespace(String prefix, String uri) {
         Namespace node = getDocumentFactory().createNamespace(prefix, uri);
         add(node);
-        return node;
+        return this;
     }
 
-    public void addText(String text) {
+    public Element addProcessingInstruction(String target, String data) {
+        ProcessingInstruction node = getDocumentFactory().createProcessingInstruction( target, data );
+        add( node );
+        return this;
+    }
+    
+    public Element addProcessingInstruction(String target, Map data) {
+        ProcessingInstruction node = getDocumentFactory().createProcessingInstruction( target, data );
+        add( node );
+        return this;
+    }
+    
+    
+    public Element addText(String text) {
         Text node = getDocumentFactory().createText(text);
         add(node);
+        return this;
     }
     
 
@@ -863,7 +889,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         for ( int i = 0, size = element.attributeCount(); i < size; i++ ) {
             Attribute attribute = element.attribute(i);
             if ( attribute.supportsParent() ) {
-                setAttributeValue(attribute.getQName(), attribute.getValue());
+                addAttribute(attribute.getQName(), attribute.getValue());
             }
             else {
                 add(attribute);

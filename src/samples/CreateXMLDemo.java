@@ -24,7 +24,7 @@ import org.dom4j.io.XMLWriter;
   * This sample generates an XML document representing the state of the current JVM
   * displaying the current system properties.
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class CreateXMLDemo extends AbstractDemo {
@@ -63,7 +63,7 @@ public class CreateXMLDemo extends AbstractDemo {
             String name = (String) enum.nextElement();
             String value = properties.getProperty( name );
             Element element = root.addElement( "property" );
-            element.setAttributeValue( "name", name );
+            element.addAttribute( "name", name );
             element.addText( value );
         }
         return document;

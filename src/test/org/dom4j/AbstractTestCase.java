@@ -17,7 +17,7 @@ import junit.textui.TestRunner;
 
 /** An abstract base class for some DOM4J test cases
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class AbstractTestCase extends TestCase {
@@ -39,15 +39,16 @@ public class AbstractTestCase extends TestCase {
         document = DocumentHelper.createDocument();
         
         Element root = document.addElement( "root" );
-        Element author1 = root.addElement( "author" );
-        author1.setAttributeValue( "name", "James" );
-        author1.setAttributeValue( "location", "UK" );
-        author1.addText("James Strachan");
         
-        Element author2 = root.addElement( "author" );
-        author2.setAttributeValue( "name", "Bob" );
-        author2.setAttributeValue( "location", "Canada" );
-        author2.addText("Bob McWhirter");
+        Element author1 = root.addElement( "author" )
+            .addAttribute( "name", "James" )
+            .addAttribute( "location", "UK" )
+            .addText("James Strachan");
+        
+        Element author2 = root.addElement( "author" )
+            .addAttribute( "name", "Bob" )
+            .addAttribute( "location", "Canada" )
+            .addText("Bob McWhirter");
     }
 
 }

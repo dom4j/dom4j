@@ -9,54 +9,90 @@
 
 package org.dom4j.tree;
 
-import org.dom4j.Element;
+import java.util.Collections;
+import java.util.Map;
 
-/** <p><code>XPathComment</code> implements a doubly linked node which 
-  * supports the parent relationship and is mutable.
-  * It is useful when evalutating XPath expressions.</p>
+import org.dom4j.Element;
+import org.dom4j.Node;
+import org.dom4j.ProcessingInstruction;
+
+/** <p><code>FlyweightProcessingInstruction</code> is a Flyweight pattern implementation
+  * of a singly linked, read-only XML Processing Instruction.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * <p>This node could be shared across documents and elements though 
+  * it does not support the parent relationship.</p>
+  *
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class XPathComment extends DefaultComment {
+public class FlyweightProcessingInstruction extends AbstractProcessingInstruction {
 
-    /** The parent of this node */
-    private Element parent;
+    /** The target of the PI */
+    protected String target;
 
-    /** @param text is the Comment text
+    /** The values for the PI as a String */
+    protected String text;
+
+    /** The values for the PI in name/value pairs */
+    protected Map values;
+
+    /** A default constructor for implementors to use.
       */
-    public XPathComment(String text) {
-	super(text);
+    public FlyweightProcessingInstruction() { 
     }
 
-    /** @param parent is the parent element
-      * @param text is the Comment text
+    /** <p>This will create a new PI with the given target and values</p>
+      *
+      * @param target is the name of the PI
+      * @param values is the <code>Map</code> of the values for the PI
       */
-    public XPathComment(Element parent, String text) {
-	super(text);
-        this.parent = parent;
+    public FlyweightProcessingInstruction(String target,Map values) {
+        this.target = target;
+        this.values = values;
+        this.text = toString(values);
     }
 
-    public void setText(String text) {
-	this.text = text;
+    /** <p>This will create a new PI with the given target and values</p>
+      *
+      * @param target is the name of the PI
+      * @param text is the values for the PI as text
+      */
+    public FlyweightProcessingInstruction(String target,String text) {
+        this.target = target;
+        this.text = text;
+        this.values = parseValues(text);
+    }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        throw new UnsupportedOperationException( "This PI is read-only and cannot be modified" );
+    }
+
+    public String getText() {
+        return text;
     }
     
-    public Element getParent() {
-        return parent;
-    }
-
-    public void setParent(Element parent) {
-        this.parent = parent;
+    public String getValue(String name) {
+        String answer = (String) values.get(name);
+        if (answer == null) {
+            return "";
+        }
+        return answer;
     }
     
-    public boolean supportsParent() {
-        return true;
+    public Map getValues() {
+        return Collections.unmodifiableMap( values );
     }
-
-    public boolean isReadOnly() {
-        return false;
+    
+    protected Node createXPathResult(Element parent) {
+        return new DefaultProcessingInstruction( parent, getTarget(), getText() );
     }
 }
+
+
 
 
 

@@ -14,7 +14,7 @@ import java.util.Map;
 import org.dom4j.Element;
 import org.dom4j.Entity;
 import org.dom4j.QName;
-import org.dom4j.tree.XPathEntity;
+import org.dom4j.tree.DefaultEntity;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.DOMException;
@@ -24,10 +24,10 @@ import org.w3c.dom.NodeList;
 /** <p><code>DOMEntity</code> implements a Entity node which 
   * supports the W3C DOM API.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class DOMEntityReference extends XPathEntity implements org.w3c.dom.EntityReference {
+public class DOMEntityReference extends DefaultEntity implements org.w3c.dom.EntityReference {
 
     public DOMEntityReference(String name) {
         super( name );

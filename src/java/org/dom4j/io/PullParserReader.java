@@ -284,7 +284,7 @@ public class PullParserReader {
             String uri = startTag.getURI(i);
             String value = startTag.getValue(i);
             QName attributeQname = getQName( name, uri );
-            element.setAttributeValue( attributeQname, value );
+            element.addAttribute( attributeQname, value );
         }
         branch.add( element );
         return element;

@@ -10,33 +10,35 @@
 package org.dom4j.tree;
 
 import org.dom4j.Element;
-import org.dom4j.QName;
+import org.dom4j.Node;
 import org.dom4j.Namespace;
+import org.dom4j.QName;
 
-/** <p><code>XPathAttribute</code> implements a doubly linked node which 
-  * supports the parent relationship and is mutable.
-  * It is useful when evalutating XPath expressions.</p>
+/** <p><code>FlyweightAttribute</code> is a Flyweight pattern implementation
+  * of a singly linked, read-only XML Attribute.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * <p>This node could be shared across documents and elements though 
+  * it does not support the parent relationship.</p>
+  *
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class XPathAttribute extends DefaultAttribute {
+public class FlyweightAttribute extends AbstractAttribute {
 
-    /** The parent of this node */
-    private Element parent;
+    /** The <code>QName</code> for this element */
+    private QName qname;
+    
+    /** The value of the <code>Attribute</code> */
+    protected String value;
 
     
-    public XPathAttribute(QName qname) { 
-        super(qname);
+    public FlyweightAttribute(QName qname) {
+        this.qname = qname;
     }
-    
-    public XPathAttribute(QName qname, String value) { 
-        super(qname, value);
-    }
-    
-    public XPathAttribute(Element parent, QName qname, String value) { 
-        super(qname, value);
-        this.parent = parent;
+
+    public FlyweightAttribute(QName qname,String value) { 
+        this.qname = qname;
+        this.value = value;
     }
     
     /** Creates the <code>Attribute</code> with the specified local name
@@ -45,10 +47,11 @@ public class XPathAttribute extends DefaultAttribute {
       * @param name is the name of the attribute
       * @param value is the value of the attribute
       */
-    public XPathAttribute(String name, String value) {
-        super(name, value);
+    public FlyweightAttribute(String name,String value) {
+        this.qname = getDocumentFactory().createQName(name);
+        this.value = value;
     }
-    
+
     /** Creates the <code>Attribute</code> with the specified local name,
       * value and <code>Namespace</code>.
       *
@@ -56,43 +59,18 @@ public class XPathAttribute extends DefaultAttribute {
       * @param value is the value of the attribute
       * @param namespace is the namespace of the attribute
       */
-    public XPathAttribute(String name, String value, Namespace namespace) {
-        super(name, value, namespace);
+    public FlyweightAttribute(String name,String value,Namespace namespace) {
+        this.qname = getDocumentFactory().createQName(name, namespace);
+        this.value = value;
     }
     
-    /** Creates the <code>Attribute</code> with the specified local name,
-      * value and <code>Namespace</code>.
-      *
-      * @param parent is the parent element
-      * @param name is the name of the attribute
-      * @param value is the value of the attribute
-      * @param namespace is the namespace of the attribute
-      */
-    public XPathAttribute(Element parent, String name, String value, Namespace namespace) {
-        super(name, value, namespace);
-        this.parent = parent;
-    }
-
-    public void setValue(String value) {
-	this.value = value;
+    public String getValue() {
+        return value;
     }
     
-    public Element getParent() {
-        return parent;
+    public QName getQName() {
+        return qname;
     }
-
-    public void setParent(Element parent) {
-        this.parent = parent;
-    }
-    
-    public boolean supportsParent() {
-        return true;
-    }
-    
-    public boolean isReadOnly() {
-        return false;
-    }
-
 }
 
 

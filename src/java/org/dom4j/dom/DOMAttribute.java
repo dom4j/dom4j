@@ -11,7 +11,7 @@ package org.dom4j.dom;
 
 import org.dom4j.Element;
 import org.dom4j.QName;
-import org.dom4j.tree.XPathAttribute;
+import org.dom4j.tree.DefaultAttribute;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.DOMException;
@@ -21,10 +21,10 @@ import org.w3c.dom.NodeList;
 /** <p><code>DOMAttribute</code> implements a doubly linked attribute which 
   * supports the W3C DOM API.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class DOMAttribute extends XPathAttribute implements org.w3c.dom.Attr {
+public class DOMAttribute extends DefaultAttribute implements org.w3c.dom.Attr {
     
     public DOMAttribute(QName qname) { 
         super(qname);

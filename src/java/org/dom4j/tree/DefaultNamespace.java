@@ -9,70 +9,37 @@
 
 package org.dom4j.tree;
 
-import java.util.Map;
-
-import org.dom4j.Node;
 import org.dom4j.Element;
+import org.dom4j.Node;
+import org.dom4j.Namespace;
 
-/** <p><code>XPathProcessingInstruction</code> implements a doubly linked node which 
+/** <p><code>DefaultNamespace</code> implements a doubly linked node which 
   * supports the parent relationship and is mutable.
-  * It is useful when evalutating XPath expressions.</p>
+  * It is useful when returning results from XPath expressions.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class XPathProcessingInstruction extends DefaultProcessingInstruction {
+public class DefaultNamespace extends Namespace {
 
     /** The parent of this node */
     private Element parent;
 
-    /** <p>This will create a new PI with the given target and values</p>
-      *
-      * @param target is the name of the PI
-      * @param values is the <code>Map</code> values for the PI
+    /** @param prefix is the prefix for this namespace
+      * @param uri is the URI for this namespace
       */
-    public XPathProcessingInstruction(String target, Map values) {
-        super(target, values);
+    public DefaultNamespace(String prefix,String uri) {
+        super( prefix, uri );
     }
 
-    /** <p>This will create a new PI with the given target and values</p>
-      *
-      * @param target is the name of the PI
-      * @param values is the values for the PI
+    /** @param parent is the parent element
+      * @param prefix is the prefix for this namespace
+      * @param uri is the URI for this namespace
       */
-    public XPathProcessingInstruction(String target, String values) {
-        super(target, values);
-    }
-
-    /** <p>This will create a new PI with the given target and values</p>
-      *
-      * @param parent is the parent element
-      * @param target is the name of the PI
-      * @param values is the values for the PI
-      */
-    public XPathProcessingInstruction(Element parent, String target, String values) {
-        super(target, values);
+    public DefaultNamespace(Element parent,String prefix,String uri) {
+        super( prefix, uri );
         this.parent = parent;
     }
-    
-    public void setTarget(String target) {
-        this.target = target;
-    }
-    
-    public void setText(String text) {
-        this.text = text;
-        this.values = parseValues(text);
-    }
-    
-    public void setValues(Map values) {
-        this.values = values;
-        this.text = toString(values);
-    }
-    
-    public void setValue(String name, String value) {
-        values.put(name, value);
-    }
-    
 
     public Element getParent() {
         return parent;
@@ -84,10 +51,6 @@ public class XPathProcessingInstruction extends DefaultProcessingInstruction {
     
     public boolean supportsParent() {
         return true;
-    }
-    
-    public boolean isReadOnly() {
-        return false;
     }
 }
 

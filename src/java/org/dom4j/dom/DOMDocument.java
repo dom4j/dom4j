@@ -29,7 +29,7 @@ import org.w3c.dom.NodeList;
 /** <p><code>DOMDocument</code> implements an XML document which 
   * supports the W3C DOM API.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class DOMDocument extends DefaultDocument implements org.w3c.dom.Document {

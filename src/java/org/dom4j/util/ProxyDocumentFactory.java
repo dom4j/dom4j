@@ -98,10 +98,6 @@ public abstract class ProxyDocumentFactory {
     }
     
     
-    public Entity createEntity(String name) {
-        return proxy.createEntity(name);
-    }
-    
     public Entity createEntity(String name, String text) {
         return proxy.createEntity(name, text);
     }

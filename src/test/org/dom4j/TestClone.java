@@ -22,7 +22,7 @@ import org.dom4j.util.NodeComparator;
 
 /** A test harness to test the clone() methods on Nodes
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class TestClone extends AbstractTestCase {
@@ -79,7 +79,7 @@ public class TestClone extends AbstractTestCase {
     public void testRootCompare1() throws Exception {                
         Document doc2 = (Document) document.clone();
         Element author = doc2.getRootElement();
-        author.setAttributeValue( "foo", "bar" );
+        author.addAttribute( "foo", "bar" );
         
         assert( "Documents are not equal", comparator.compare( document, doc2 ) != 0 );
     }
@@ -96,7 +96,7 @@ public class TestClone extends AbstractTestCase {
     public void testAuthorCompare1() throws Exception {                
         Document doc2 = (Document) document.clone();
         Element author = (Element) doc2.selectSingleNode( "//author" );
-        author.setAttributeValue( "name", "James Strachan" );
+        author.addAttribute( "name", "James Strachan" );
         
         assert( "Documents are not equal", comparator.compare( document, doc2 ) != 0 );
     }

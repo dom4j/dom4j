@@ -12,7 +12,7 @@ package org.dom4j.util;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
-import org.dom4j.tree.XPathAttribute;
+import org.dom4j.tree.DefaultAttribute;
 
 /** <p><code>UserDataAttribute</code> support the adornment of a user 
   * data object on an Element or Attribute instance such that the 
@@ -24,7 +24,7 @@ import org.dom4j.tree.XPathAttribute;
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class UserDataAttribute extends XPathAttribute {
+public class UserDataAttribute extends DefaultAttribute {
 
     /** The user data object */
     private Object data;
