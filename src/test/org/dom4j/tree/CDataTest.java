@@ -30,6 +30,10 @@ public class CDataTest extends AbstractTestCase {
         DefaultCDATA cdata = new DefaultCDATA("sample");
         assertEquals("CData not correct", "<![CDATA[sample]]>", cdata.asXML());
     }
+    
+    public void testLongCData() throws Exception {
+        getDocument("xml/test/longCDATA.xml");
+    }
 }
 
 /*
