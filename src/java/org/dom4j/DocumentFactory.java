@@ -190,8 +190,9 @@ public class DocumentFactory implements Serializable {
       * @return a new <code>NodeFilter</code> instance
       */
     public NodeFilter createXPathFilter(String xpathFilterExpression, VariableContext variableContext) {
-        XPathPattern answer = new XPathPattern( xpathFilterExpression );
+        DefaultXPath answer = new DefaultXPath( xpathFilterExpression );        
         //DefaultXPath answer = new DefaultXPath( ".[" + xpathFilterExpression + "]" );        
+        //XPathPattern answer = new XPathPattern( xpathFilterExpression );
         answer.setVariableContext( variableContext );
         return answer;
     }
@@ -206,8 +207,9 @@ public class DocumentFactory implements Serializable {
       * @return a new <code>NodeFilter</code> instance
       */
     public NodeFilter createXPathFilter(String xpathFilterExpression) {
+        return new DefaultXPath( xpathFilterExpression );        
         //return new DefaultXPath( ".[" + xpathFilterExpression + "]" );        
-        return new XPathPattern( xpathFilterExpression );
+        //return new XPathPattern( xpathFilterExpression );
     }
     
     /** <p><code>createPattern</code> parses the given 

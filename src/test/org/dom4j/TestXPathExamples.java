@@ -16,6 +16,7 @@ import junit.framework.*;
 import junit.textui.TestRunner;
 
 import org.dom4j.io.SAXReader;
+import org.dom4j.rule.Pattern;
 
 
 /** Performs a number of unit test cases on the XPath engine
@@ -116,6 +117,10 @@ public class TestXPathExamples extends TestCase {
             Element pattern = (Element) iter.next();
             testPattern( documentTest, context, pattern );
         }
+        for ( Iterator iter = context.elementIterator( "filter" ); iter.hasNext(); ) {
+            Element filter = (Element) iter.next();
+            testFilter( documentTest, context, filter );
+        }
     }
         
     protected void runTest(Element documentTest, Element context, Element test) throws Exception {
@@ -172,7 +177,24 @@ public class TestXPathExamples extends TestCase {
         assertEquals( description, expected, result );
     }
     
-    protected void testPattern(Element documentTest, Element context, Element pattern) throws Exception {
+    protected void testPattern(Element documentTest, Element context, Element patternElement) throws Exception {
+        String match = patternElement.attributeValue( "match" );
+        String description = "match: " + match;
+        
+        log( "" );
+        log( description );
+
+        Pattern pattern = factory.createPattern( match );
+        
+        if ( VERBOSE ) {
+            log( "Pattern: " + pattern );
+        }
+        
+        assertTrue( description, pattern.matches( testContext ) );
+        
+    }
+    
+    protected void testFilter(Element documentTest, Element context, Element pattern) throws Exception {
         String match = pattern.attributeValue( "match" );
         String description = "match: " + match;
         
@@ -180,11 +202,10 @@ public class TestXPathExamples extends TestCase {
         log( description );
 
         if ( VERBOSE ) {
-            log( "Pattern: " + factory.createPattern( match ) );
+            log( "Pattern: " + factory.createXPathFilter( match ) );
         }
         
-        assertTrue( description, testContext.matches( match ) );
-        
+        assertTrue( description, testContext.matches( match ) );        
     }
 }
 

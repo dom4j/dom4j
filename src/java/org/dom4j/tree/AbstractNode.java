@@ -19,6 +19,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.Node;
+import org.dom4j.NodeFilter;
 import org.dom4j.Visitor;
 import org.dom4j.XPath;
 import org.dom4j.rule.Pattern;
@@ -197,12 +198,16 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
     }
     
     public boolean matches(String patternText) {        
-        Pattern pattern = createPattern(patternText);
-        return pattern.matches(this);
+        NodeFilter filter = createXPathFilter(patternText);
+        return filter.matches(this);
     }
     
     public XPath createXPath(String xpathExpression) {
         return getDocumentFactory().createXPath(xpathExpression);
+    }
+    
+    public NodeFilter createXPathFilter(String patternText) {
+        return getDocumentFactory().createXPathFilter(patternText);
     }
     
     public Pattern createPattern(String patternText) {

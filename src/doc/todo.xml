@@ -47,6 +47,18 @@ List list = element.elements( element.getQName( "foo" ) );
 List list = element.elements( element.getQName( "x:foo" ) );
 </pre>
           </p>
+          <p>
+            Fixed the behaviour of DocumentFactory.createXPathFilter() to use XPath filtering
+            rather than XSLT style patterns. One of the major differences is that an XSLT pattern
+            (used in the &lt;xsl:template match="pattern"/&gt; element in XSLT) works slightly 
+            differently. An element &lt;foo&gt; would match an XSLT pattern "foo" whereas an
+            element &lt;bar&gt; could match an XPath filter "foo" if it contained a child &lt;foo&gt; 
+            element.
+          </p>
+          <p>
+            Patched the behaviour of Node.matches(String xpathExpression) so that it uses
+            XPath filters now rather than XSLT patterns.
+          </p>
         </section>
         <section title="0.9 release">
           <section title="Full support for the Jaxen XPath engine">

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tests>
 
-  <!-- test Patterns -->
+  <!-- test `s -->
+  <!-- patterns are used in XSLT <xsl:template match="pattern"/> tags -->
   <document url="xml/web.xml">
     <context select="/">
       <pattern match="*"/>
@@ -25,6 +26,30 @@
       <pattern match="colour='blue'"/>
       <pattern match="name()='product'"/>
       <pattern match="not(id='3')"/>
+    </context>
+  </document>
+
+  <!-- test filters -->
+  <document url="xml/web.xml">
+    <context select="/">
+      <filter match="*"/>
+      <filter match="/"/>
+    </context>
+    <context select="//servlet[1]">
+      <filter match="*"/>
+      <filter match="servlet-name"/>
+      <filter match="servlet-name='snoop'"/>
+    </context>
+  </document>
+
+  <document url="xml/test/sample.xml">
+    <context select="/products/product[@id='2']">
+      <filter match=".[@id='2']"/>
+      <filter match=".[colour='blue']"/>
+      <filter match="@id='2'"/>
+      <filter match="colour='blue'"/>
+      <filter match="name()='product'"/>
+      <filter match="not(id='3')"/>
     </context>
   </document>
 
