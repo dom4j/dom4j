@@ -7,6 +7,7 @@
 
 package org.dom4j.io;
 
+import java.io.StringWriter;
 import java.net.URL;
 import junit.framework.*;
 import junit.textui.TestRunner;
@@ -61,6 +62,23 @@ public class TestDOMWriter extends AbstractTestCase {
         assertEquals("version", versionAttr.getNodeName());
     }
     
+    public void testBug926752() throws Exception {
+        org.dom4j.Document doc = parseDocument("/xml/test/defaultNamespace.xml");
+        DOMWriter writer = new DOMWriter(org.dom4j.dom.DOMDocument.class);
+        org.w3c.dom.Document result = writer.write(doc);
+        
+        NamedNodeMap atts = result.getDocumentElement().getAttributes();
+        assertEquals(1, atts.getLength());
+        
+        OutputFormat format = OutputFormat.createCompactFormat();
+        format.setSuppressDeclaration(true);
+        XMLWriter wr = new XMLWriter(format);
+        StringWriter strWriter = new StringWriter();
+        wr.setWriter(strWriter);
+        wr.write((org.dom4j.Document) result);
+        assertEquals("<a xmlns=\"dummyNamespace\"><b><c>Hello</c></b></a>", strWriter.toString());
+    }
+
     protected org.dom4j.Document parseDocument(String file) throws Exception {
         URL url = getClass().getResource(file);
         SAXReader reader = new SAXReader();
