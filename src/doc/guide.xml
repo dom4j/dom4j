@@ -90,7 +90,7 @@ public class Foo {
     }
 </pre>
       <p>If you need any help learning the XPath language we highly recommend
-        the <a href="http://www.zvon.org/xxl/XPathTutorial/General/examples.html">zvon tutorial</a> 
+        the <a href="http://www.zvon.org/xxl/XPathTutorial/General/examples.html">Zvon tutorial</a> 
         which allows you to learn by example.
       </p>
     </section>
@@ -177,6 +177,11 @@ public class Foo {
 
         // Pretty print the document to System.out
         OutputFormat format = OutputFormat.createPrettyPrint();
+        writer = new XMLWriter( System.out, format );
+        writer.write( document );
+
+        // Compact format to System.out
+        format = OutputFormat.createCompactFormat();
         writer = new XMLWriter( System.out, format );
         writer.write( document );
     }
