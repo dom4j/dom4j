@@ -7,7 +7,7 @@
     <tstamp/>
     <property name="Name" value="dom4j"/>
     <property name="name" value="dom4j"/>
-    <property name="version" value="1.0"/>
+    <property name="version" value="patched-1.0"/>
     <property name="current.version" value="1.0"/>
     <property name="year" value="2001"/>
 
@@ -25,7 +25,7 @@
     <property name="test.dir" value="./src/test"/>
     <property name="lib.dir" value="./lib"/>
     <property name="packages" value="org.*"/>
-    <property name="api.packages" value="org.dom4j,org.dom4j.io,org.dom4j.rule,org.dom4j.schema,org.dom4j.util"/>
+    <property name="api.packages" value="org.dom4j,org.dom4j.io,org.dom4j.rule,org.dom4j.datatype,org.dom4j.util"/>
 
     <property name="build.dir" value="./build"/>
     <property name="build.src" value="./build/src"/>
@@ -462,10 +462,10 @@
   </target>
 
   <target name="test-schema" depends="compile-test">
-    <java classname="org.dom4j.schema.TestDataTypes"/>
+    <java classname="org.dom4j.datatype.TestDataTypes"/>
 <!--
-    <java classname="org.dom4j.schema.TestAutoSchema"/>
-    <java classname="org.dom4j.schema.TestManualSchema"/>
+    <java classname="org.dom4j.datatype.TestAutoSchema"/>
+    <java classname="org.dom4j.datatype.TestManualSchema"/>
 -->
   </target>
 
@@ -646,7 +646,7 @@
   <target name="demo-schema" depends="samples">
     <java classname="SchemaDemo" args="xml/schema/personal-schema.xml"/>
     <java classname="VisitorDemo">
-      <sysproperty key="org.dom4j.factory" value="org.dom4j.schema.SchemaDocumentFactory"/>
+      <sysproperty key="org.dom4j.factory" value="org.dom4j.datatype.DatatypeDocumentFactory"/>
       <arg line="xml/schema/personal-schema.xml"/>
     </java>
   </target>
