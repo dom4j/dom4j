@@ -4,17 +4,18 @@
     <title>DOM4J The Flexible XML Framework for Java</title>
 
     <header>
-      <p><b>DOM4J</b> is a powerful and flexible Open Source XML framework for Java.
+      <p><b>DOM4J</b> is an open and easy to use, interface-based Java API 
+      for navigating and manipulating XML documents.</p>
+
+      <p><b>DOM4J</b> combines the best of DOM, SAX, XPath and the 
+      Java 2 platform to provide a flexible and powerful framework integrating 
+      XML and Java.</p>
+
+      <p><b>DOM4J</b> extends the Java 2 Collections framework to handle XML 
+      documents allowing flexible plug and play implementations and has fully 
+      integrated XPath navigation support from anywhere in the model.
       </p>
 
-      <p><b>DOM4J</b> combines the best of DOM, JDOM and SAX to provide a 
-      flexible and powerful framework for parsing, navigating, creating and 
-      processing XML data.
-      </p>
-
-      <p><b>DOM4J</b> is a simple interface based API together with 
-      configurable plug and play tree implementations and fully integrated XPath navigation.
-      </p>
     </header>
 
     <section title="Overview">

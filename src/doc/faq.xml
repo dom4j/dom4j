@@ -6,25 +6,20 @@
     <section title="What is DOM4J?">
       <p><b>DOM4J</b> is an Open Source XML framework for Java.
       <b>DOM4J</b> allows you to read, write, navigate, create and modify 
-      XML documents and tree structures. 
-      <b>DOM4J</b> integrates with DOM and SAX and comes complete with 
-      XPath support.
+      XML documents. 
+      <b>DOM4J</b> integrates with DOM and SAX and is seamlessly integrated 
+      with full XPath support.
       </p>
     </section>
 
-    <section title="Why not use JDOM?">
-      <p>We want to use interfaces to specify the XML tree structure while 
-      allowing any implementation to be plugged into the framework.
-      Currently JDOM only allows you to derive from concrete base classes 
-      with quite a lot of instance variables which we find an unnecessary 
-      waste of memory and computation.
-      </p>
-    </section>
-
-    <section title="Why not use DOM?">
+    <section title="How does DOM4J relate to DOM?">
       <p>DOM is a quite large language independent API.
-      DOM4J is a smaller, lighter weight and simpler Java API which 
-      makes extensive use of the Java platform such as the Java 2 collections.
+        DOM4J is a simpler, lightweight API which is optimised for the Java 
+        platform making extensive use of the Java 2 platform such as the 
+        Java 2 collections.
+      </p>
+      <p>Though DOM4J fully supports the DOM standard allowing both APIs to be 
+        used easily together.
       </p>
     </section>
 
@@ -66,7 +61,7 @@ protected void foo(Node node) {
 
     <section title="Does DOM4J support the Visitor Pattern?">
       <p>Yes. <b>DOM4J</b> supports the visitor pattern via the 
-          <a href="apidocs/org/jdom/Visitor.html">Visitor</a> interface.
+          <a href="apidocs/org/dom4j/Visitor.html">Visitor</a> interface.
       </p>
       <p>Here is an example.
       </p>
