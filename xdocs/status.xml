@@ -8,6 +8,8 @@
  
   <body>
       <section name="CVS">
+        <p>Added method to <code>DocumentHelper</code> that allows user to specify encoding when parsing an xml <code>String</code>
+           (contributed by Todd Wolff).</p>
         <p>Fixed a ClassCastException bug in <code>BeanElement</code>.</p>
         <p>Fixed a bug in <code>SAXContentHandler</code> which caused a <code>NullPointerException</code> in some 
            situations.</p>

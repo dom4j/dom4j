@@ -211,6 +211,22 @@ public class DocumentHelper {
         return reader.read(new ByteArrayInputStream(text.getBytes()));
     }
 
+    /** <p><code>parseText</code> parses the given text as an XML document
+      * and returns the newly created Document, using the specified encoding.</p>
+      *
+      * @param text is the XML text to be parsed
+      * @param encoding text encoding
+      * @return a newly parsed Document
+      * @throws DocumentException if the document could not be parsed
+      * @throws UnsupportedEncodingException if the specified encoding is not 
+      *         supported.
+      */
+    public static Document parseText(String text, String encoding) 
+        throws DocumentException, UnsupportedEncodingException {
+        SAXReader reader = new SAXReader();
+        return reader.read(new ByteArrayInputStream(text.getBytes(encoding)));
+    }
+
     /** <p>makeElement</p> a helper method which navigates from the
       * given Document or Element node to some Element using the path 
       * expression, creating any necessary elements along the way.
