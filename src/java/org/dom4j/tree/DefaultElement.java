@@ -45,7 +45,7 @@ import org.dom4j.Text;
 public class DefaultElement extends AbstractElement {
     
     /** The <code>DocumentFactory</code> instance used by default */
-    private static final DocumentFactory DOCUMENT_FACTORY = DocumentFactory.getInstance();
+    private static transient final DocumentFactory DOCUMENT_FACTORY = DocumentFactory.getInstance();
 
     
     /** The <code>QName</code> for this element */
@@ -875,7 +875,7 @@ public class DefaultElement extends AbstractElement {
     
     // Implementation methods
     //-------------------------------------------------------------------------    
-
+    
     protected void addNewNode(Node node) {
         if (content == null) {
             content = node;

@@ -75,13 +75,13 @@ public class TestSerialize extends AbstractTestCase {
         
         ObjectInputStream in = new ObjectInputStream( new ByteArrayInputStream( data ) );
         Document doc2 = (Document) in.readObject();
-        in.close();
-        
-        assertTrue( "Read back document after serialization", doc2 != null && doc2 instanceof Document );
+        in.close();        
         
         String text2 = doc2.asXML();
         
-        assertEquals( "Documents text are equal", text, text2 );
+        assertEquals( "Documents text are equal", text, text2 );        
+        
+        assertTrue( "Read back document after serialization", doc2 != null && doc2 instanceof Document );
         
         assertDocumentsEqual( document, (Document) doc2 );        
     }            

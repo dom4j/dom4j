@@ -101,7 +101,7 @@
 
     <!-- copy src files -->
     <copy todir="${build.src}">
-      <fileset dir="${src.dir}" />
+      <fileset dir="${src.dir}" excludes="org/dom4j/persistence/**"/>
     </copy>
   </target>
 
@@ -146,7 +146,7 @@
 
     <!-- copy src files -->
     <copy todir="${build.src}">
-      <fileset dir="${samples.dir}" />
+      <fileset dir="${samples.dir}"/>
     </copy>
   </target>
 
