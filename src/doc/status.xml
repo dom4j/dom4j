@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<document url="http://www.dom4j.org/todo.xml">
+<document url="http://www.dom4j.org/status.xml">
   <body>
     <title>Status</title>
 
     <section title="Change History">
 
+<!--
       <section title="Changes in CVS since last release">
+      </section>
+-->
+      <section title="1.2 Release">
         <section title="New Swing TableModel for displaying XML">
 
         <p>Added a new Swing TableModel for displaying XML data in a Swing user interface. It uses
