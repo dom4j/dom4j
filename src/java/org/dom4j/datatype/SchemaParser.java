@@ -22,11 +22,15 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
+import org.dom4j.io.SAXReader;
 import org.dom4j.util.AttributeHelper;
 import org.dom4j.DocumentFactory;
 
 import org.relaxng.datatype.DatatypeException;
 import org.relaxng.datatype.ValidationContext;
+
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 
 /** <p><code>SchemaParser</code> reads an XML Schema Document.</p>
  *
@@ -47,6 +51,7 @@ public class SchemaParser {
     private static final QName XSD_SEQUENCE = QName.get( "sequence", XSD_NAMESPACE );
     private static final QName XSD_CHOICE = QName.get( "choice", XSD_NAMESPACE );
     private static final QName XSD_ALL = QName.get( "all", XSD_NAMESPACE );
+    private static final QName XSD_INCLUDE = QName.get("include", XSD_NAMESPACE);
 
     /** Document factory used to register Element specific factories*/
     private DatatypeDocumentFactory documentFactory;
@@ -74,6 +79,33 @@ public class SchemaParser {
     public void build( Document schemaDocument ) {
         Element root = schemaDocument.getRootElement();
         if ( root != null ) {
+            //handle schema includes
+            Iterator includeIter = root.elementIterator( XSD_INCLUDE);
+            while (includeIter.hasNext()) {
+                Element includeElement = (Element) includeIter.next();
+                String inclSchemaInstanceURI = includeElement.attributeValue("schemaLocation");
+                EntityResolver resolver = schemaDocument.getEntityResolver();
+                try {
+                    if ( resolver == null ) {
+                        throw new InvalidSchemaException( "No EntityResolver available so could not resolve the schema URI: " +
+                                                           inclSchemaInstanceURI );
+                    }
+                    InputSource inputSource = resolver.resolveEntity( null, inclSchemaInstanceURI );
+                    if ( inputSource == null ) {
+                        throw new InvalidSchemaException( "Could not resolve the schema URI: " + inclSchemaInstanceURI );
+                    }
+                    SAXReader reader = new SAXReader();
+                    Document inclSchemaDocument = reader.read( inputSource );
+                    build( inclSchemaDocument );
+                }
+                catch (Exception e) {
+                    System.out.println( "Failed to load schema: " + inclSchemaInstanceURI );
+                    System.out.println( "Caught: " + e );
+                    e.printStackTrace();
+                    throw new InvalidSchemaException( "Failed to load schema: " + inclSchemaInstanceURI );
+                }
+            }
+
             //handle elements
             Iterator iter = root.elementIterator( XSD_ELEMENT );
             while ( iter.hasNext() ) {
@@ -123,6 +155,17 @@ public class SchemaParser {
             return;
         }
 
+        // handle element types derrived from simpleTypes
+        Element xsdSimpleType = xsdElement.element( XSD_SIMPLETYPE );
+        if ( xsdSimpleType != null ) {
+            System.out.println("Agfa-sg: handle element types derrived from simpleTypes for element: " + name);
+            XSDatatype dataType = loadXSDatatypeFromSimpleType( xsdSimpleType );
+            if (dataType != null) {
+                System.out.println("dataType (from loadXSDatatypeFromSimpleType) = " + dataType);
+                elementFactory.setChildElementXSDatatype( qname, dataType );
+            }
+        }
+        
         Element schemaComplexType = xsdElement.element( XSD_COMPLEXTYPE );
         if ( schemaComplexType != null ) {
             onSchemaComplexType( schemaComplexType, elementFactory );

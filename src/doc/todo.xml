@@ -92,6 +92,11 @@ Document doc = reader.read( "soap.xml" );
         </section>
 
         <section title="Patches">
+        <p>Applied patches supplied by Stefan Graeber that enhance the datatype support to support included schemata and derived element types.
+        </p>
+        <p>Applied patches suggested by Omer van der Horst Jansen to enable dom4j to fully work
+          properly on JDK1.1 platforms. There were some uses of java.util.Stack which have been changed to ArrayList.
+        </p>
         <p>Applied patches supplied by Maarten Coene that fixes some issues with using the correct
           DocumentFactory when using the DOM implementation.
         </p>
