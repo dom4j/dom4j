@@ -1,5 +1,6 @@
 package org.dom4j.tree;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.dom4j.Attribute;
@@ -16,6 +17,7 @@ import org.dom4j.Namespace;
 public interface AttributeModel {
 
     public List getAttributes();
+    public Iterator attributeIterator();
     public void setAttributes(List attributes);
 
 

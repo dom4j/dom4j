@@ -25,6 +25,9 @@ import org.dom4j.Text;
   */
 public class DefaultContentModel extends AbstractContentModel {
 
+    protected static final List EMTPY_LIST = Collections.EMPTY_LIST;
+    protected static final Iterator EMPTY_ITERATOR = EMTPY_LIST.iterator();
+    
     /** Store the contents of the element as a lazily created <code>List</code> */
     private List contents;
     
@@ -222,6 +225,23 @@ public class DefaultContentModel extends AbstractContentModel {
         return answer;
     }
     
+    public Iterator elementIterator() {
+        if (contents == null) {
+            return EMPTY_ITERATOR;
+        }
+        else {
+            return new ElementIterator(contents.iterator());
+        }
+    }
+        
+    public Iterator elementIterator(String name, Namespace namespace) {
+        if (contents == null) {
+            return EMPTY_ITERATOR;
+        }
+        else {
+            return new ElementNameIterator(contents.iterator(), name, namespace);
+        }
+    }
     
     public List getContent() {
         if (contents == null) {
@@ -259,6 +279,9 @@ public class DefaultContentModel extends AbstractContentModel {
         return (contents != null) ? contents.size() : 0;
     }
     
+    public Iterator nodeIterator() {
+        return (contents != null) ? contents.iterator() : EMPTY_ITERATOR;
+    }
 
     public void addNode(Node node) {
         if (contents == null) {

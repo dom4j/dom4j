@@ -84,6 +84,10 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
         return getContentModel().getNodeCount();
     }
     
+    public Iterator nodeIterator() {
+        return getContentModel().nodeIterator();
+    }
+    
     public Comment addComment(String comment) {
         Comment node = getContentModel().addComment(getContentFactory(), comment);
         childAdded(node);
@@ -176,9 +180,6 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
         return DefaultContentFactory.getInstance();
     }
 
-    /** Allows derived classes to override the content model */
-    protected abstract ContentModel getContentModel();
-    
     /** Called when a new child node has been added to me
       * to allow any parent relationships to be created or
       * events to be fired.
@@ -190,5 +191,8 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
       * events to be fired.
       */
     protected abstract void childRemoved(Node node);
+    
+    /** Allows derived classes to override the content model */
+    protected abstract ContentModel getContentModel();
     
 }

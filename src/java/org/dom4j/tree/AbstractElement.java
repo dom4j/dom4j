@@ -45,27 +45,6 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         return false;
     }
 
-    public String getNamespacePrefix() {
-        Namespace namespace = getNamespace();
-        return (namespace != null) ? namespace.getPrefix() : "";
-    }
-
-    public String getNamespaceURI() {
-        Namespace namespace = getNamespace();
-        return (namespace != null) ? namespace.getPrefix() : "";
-    }
-
-    public String getQualifiedName() {
-        Namespace namespace = getNamespace();
-        if (namespace != null ) {
-            String prefix = namespace.getPrefix();
-            if (prefix != null && prefix.length() > 0) {
-                return prefix + ":" + getName();
-            }
-        }
-        return getName();
-    }
-
     public Namespace getNamespaceForPrefix(String prefix) {
         if ( prefix == null || prefix.length() <= 0 ) {
             return Namespace.NO_NAMESPACE;
@@ -178,6 +157,33 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     public int getXPathNodeCount() {
         return getNodeCount();
     }
+
+    
+    // NameModel methods
+    
+    public Namespace getNamespace() {
+        return getNameModel().getNamespace();
+    }
+    
+    public String getName() {
+        return getNameModel().getName();
+    }
+    
+    public String getNamespacePrefix() {
+        return getNameModel().getNamespacePrefix();
+    }
+
+    public String getNamespaceURI() {
+        return getNameModel().getNamespaceURI();
+    }
+
+    public String getQualifiedName() {
+        return getNameModel().getQualifiedName();
+    }
+
+    /** Allows derived classes to override how the element is named */
+    protected abstract NameModel getNameModel();
+    
     
     
     
@@ -191,6 +197,10 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         getAttributeModel().setAttributes(attributes);
     }
 
+    public Iterator attributeIterator() {
+        return getAttributeModel().attributeIterator();
+    }
+    
     public Attribute getAttribute(String name) {
         return getAttributeModel().getAttribute(name);
     }
@@ -239,6 +249,9 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         return getAttributeModel().remove(attribute);
     }
 
+    /** Allows derived classes to override the attribute model */
+    protected abstract AttributeModel getAttributeModel();
+
 
     
     // Content Model methods
@@ -275,6 +288,18 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         return getContentModel().getElements(name, namespace);
     }
 
+    public Iterator elementIterator() {
+        return getContentModel().elementIterator();
+    }
+    
+    public Iterator elementIterator(String name) {
+        return getContentModel().elementIterator(name);
+    }
+    
+    public Iterator elementIterator(String name, Namespace namespace) {
+        return getContentModel().elementIterator(name, namespace);
+    }
+    
 
     
     
@@ -490,8 +515,5 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
             node.setParent(null);
         }
     }
-    
-    /** Allows derived classes to override the attribute model */
-    protected abstract AttributeModel getAttributeModel();
 
 }

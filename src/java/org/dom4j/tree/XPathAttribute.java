@@ -15,6 +15,16 @@ public class XPathAttribute extends DefaultAttribute {
     /** The parent of this node */
     private Element parent;
 
+    
+    public XPathAttribute(NameModel nameModel, String value) { 
+        super(nameModel, value);
+    }
+    
+    public XPathAttribute(Element parent, NameModel nameModel, String value) { 
+        super(nameModel, value);
+        this.parent = parent;
+    }
+    
     /** Creates the <code>Attribute</code> with the specified local name
       * and value.
       *
@@ -50,7 +60,7 @@ public class XPathAttribute extends DefaultAttribute {
     }
 
     public void setName(String name) {
-	this.name = name;
+        setNameModel( NameModel.get(name, getNamespace()) );
     }
     
     public void setValue(String value) {
@@ -58,7 +68,7 @@ public class XPathAttribute extends DefaultAttribute {
     }
     
     public void setNamespace(Namespace namespace) {
-        this.namespace = namespace;
+        setNameModel( NameModel.get(getName(), namespace) );
     }
     
     public Element getParent() {

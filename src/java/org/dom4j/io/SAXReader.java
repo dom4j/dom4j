@@ -135,7 +135,8 @@ public class SAXReader extends TreeReader {
       * @throws FileNotFoundException if the file could not be found
       */
     public Document read(File file) throws TreeException, FileNotFoundException {
-        Document document = read(new BufferedReader(new FileReader(file)));
+        //Document document = read(new BufferedReader(new FileReader(file)));
+        Document document = read(file.getAbsolutePath());
         document.setName( file.getAbsolutePath() );
         return document;
     }

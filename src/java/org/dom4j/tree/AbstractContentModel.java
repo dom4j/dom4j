@@ -116,6 +116,10 @@ public abstract class AbstractContentModel implements ContentModel {
     public List getElements(String name) {
         return getElements(name, Namespace.NO_NAMESPACE);
     }
+    
+    public Iterator elementIterator(String name) {
+        return elementIterator(name, Namespace.NO_NAMESPACE);
+    }
         
     public CDATA addCDATA(ContentFactory factory, String cdata) {
         CDATA node = factory.createCDATA( cdata );

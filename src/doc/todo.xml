@@ -76,7 +76,8 @@ public class HeightAttribute extends AbstractAttribute {
 
     <section title="Change History">
       <ul>
-        <li>
+        <li>Added new JUnit unit test cases together with an Ant build target 
+            of "test" which executes all of the unit tests.
         </li>
       </ul>
     </section>

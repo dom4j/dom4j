@@ -39,6 +39,12 @@ public interface Branch extends Node {
       * @return the nodes that this branch contains as a <code>List</code>
       */    
     public List getContent();    
+
+    /** Returns an iterator through the content nodes of this branch
+      * 
+      * @return an iterator through the content nodes of this branch
+      */
+    public Iterator nodeIterator();
     
     /** Sets the contents of this branch as a <code>List</code> of 
       * <code>Node</code> instances.

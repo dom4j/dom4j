@@ -113,6 +113,7 @@ public interface Element extends Branch {
     
     
     public List getAttributes();
+    public Iterator attributeIterator();
     public void setAttributes(List attributes);
 
 
@@ -218,6 +219,11 @@ public interface Element extends Branch {
     public List getElements();
     public List getElements(String name);
     public List getElements(String name, Namespace namespace);
+
+    public Iterator elementIterator();
+    public Iterator elementIterator(String name);
+    public Iterator elementIterator(String name, Namespace namespace);
+    
     
     // helper methods
     public String getElementText(String name);

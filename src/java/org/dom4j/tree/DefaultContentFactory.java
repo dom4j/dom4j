@@ -36,7 +36,7 @@ public class DefaultContentFactory implements ContentFactory {
     }
     
     public Attribute createAttribute(String name, String value, Namespace namespace) {
-        return new DefaultAttribute(name, value);
+        return new DefaultAttribute(name, value, namespace);
     }
 
     public CDATA createCDATA(String text) {
@@ -75,7 +75,7 @@ public class DefaultContentFactory implements ContentFactory {
     }
     
     public Namespace createNamespace(String prefix, String uri) {
-        return new DefaultNamespace(prefix, uri);
+        return DefaultNamespace.get(prefix, uri);
     }
     
     public ProcessingInstruction createProcessingInstruction(String target, String data) {

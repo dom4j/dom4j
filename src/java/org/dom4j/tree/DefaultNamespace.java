@@ -1,6 +1,7 @@
 package org.dom4j.tree;
 
 import org.dom4j.Element;
+import org.dom4j.Namespace;
 import org.dom4j.Node;
 
 /** <p><code>DefaultNamespace</code> is the DOM4J default implementation
@@ -10,12 +11,20 @@ import org.dom4j.Node;
   */
 public class DefaultNamespace extends AbstractNamespace {
 
+    /** Cache of Namespace instances */
+    protected static NamespaceCache cache = new NamespaceCache();
+    
     /** The prefix mapped to this namespace */
     private String prefix;
 
     /** The URI for this namespace */
     private String uri;
 
+    
+    public static Namespace get(String prefix, String uri) {
+        return cache.get(prefix, uri);
+    }
+    
     /** @param prefix is the prefix for this namespace
       * @param uri is the URI for this namespace
       */

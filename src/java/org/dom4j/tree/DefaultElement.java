@@ -30,53 +30,41 @@ import org.dom4j.Text;
   */
 public class DefaultElement extends AbstractElement {
 
-    /** The name of the element */
-    private String name;
-
-    /** The <code>Namespace</code> for this elemenet */
-    private Namespace namespace;
-
     /** The parent of this node */
     private Element parent;
 
-    /** The <code>ContentModel</code> for this elemenet */
+    /** The <code>NameModel</code> for this element */
+    private NameModel nameModel;
+    
+    /** The <code>ContentModel</code> for this element */
     private ContentModel contentModel;
     
-    /** The <code>AttributeModel</code> for this elemenet */
+    /** The <code>AttributeModel</code> for this element */
     private AttributeModel attributeModel;
 
     
     public DefaultElement() { 
-        this.namespace = Namespace.NO_NAMESPACE;
+        this.nameModel = NameModel.EMPTY_NAME;
     }
 
     public DefaultElement(String name) { 
-        this.name = name;
-        this.namespace = Namespace.NO_NAMESPACE;
+        this.nameModel = NameModel.get(name);
+    }
+
+    public DefaultElement(NameModel nameModel) { 
+        this.nameModel = nameModel;
     }
 
     public DefaultElement(String name, Namespace namespace) { 
-        this.name = name;
-        this.namespace = namespace;
+        this.nameModel = NameModel.get(name, namespace);
     }
 
-    public Namespace getNamespace() {
-        return namespace;
-    }
-    
     public void setNamespace(Namespace namespace) {
-        if ( namespace == null ) {
-            namespace = Namespace.NO_NAMESPACE;
-        }
-        this.namespace = namespace;
-    }
-    
-    public String getName() {
-        return name;
+        this.nameModel = NameModel.get(getName(), namespace);
     }
     
     public void setName(String name) {
-        this.name = name;
+        this.nameModel = NameModel.get(name, getNamespace());
     }
     
     public Element getParent() {
@@ -91,6 +79,16 @@ public class DefaultElement extends AbstractElement {
         return true;
     }
 
+    protected NameModel getNameModel() {
+        return nameModel;
+    }
+    
+    /** Allow derived classes to change the name model */
+    protected void setNameModel(NameModel nameModel) {
+        this.nameModel = nameModel;
+    }
+    
+    
     /** Allows derived classes to override the content model */
     protected ContentModel getContentModel() {
         if ( contentModel == null ) {

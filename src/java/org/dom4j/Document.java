@@ -9,7 +9,16 @@ import org.dom4j.XPathEngine;
   */
 public interface Document extends Branch {
 
+    /** Returns the root {@link Element} for this document.
+      *
+      * @return the root element for this document
+      */
     public Element getRootElement();
+    
+    /** Sets the root element for this document
+      *
+      * @param rootElement the new root element for this document
+      */    
     public void setRootElement(Element rootElement);
 
     public DocumentType getDocType();

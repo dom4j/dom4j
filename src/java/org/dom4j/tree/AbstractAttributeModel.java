@@ -16,6 +16,9 @@ import org.dom4j.Namespace;
   */
 public abstract class AbstractAttributeModel implements AttributeModel {
     
+    public Iterator attributeIterator() {
+        return getAttributes().iterator();
+    }
     
     public Attribute getAttribute(String name) {
         return getAttribute(name, Namespace.NO_NAMESPACE);

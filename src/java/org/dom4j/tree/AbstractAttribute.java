@@ -1,6 +1,8 @@
 package org.dom4j.tree;
 
 import org.dom4j.Attribute;
+import org.dom4j.Element;
+import org.dom4j.Node;
 import org.dom4j.Namespace;
 import org.dom4j.TreeVisitor;
 
@@ -12,31 +14,6 @@ import org.dom4j.TreeVisitor;
   */
 public abstract class AbstractAttribute extends AbstractNode implements Attribute {
 
-    public String getQualifiedName() {
-        StringBuffer buffer = new StringBuffer();
-
-        // Add prefix, if needed
-        Namespace namespace = getNamespace();
-        if (namespace != null) {
-            String prefix = namespace.getPrefix();
-            if (prefix != null && prefix.length() > 0) {
-                buffer.append(prefix);
-                buffer.append(":");
-            }
-        }
-        buffer.append(getName());
-        return buffer.toString();
-    }
-
-    public String getNamespacePrefix() {
-        Namespace namespace = getNamespace();
-        return (namespace != null) ? namespace.getPrefix() : "";
-    }
-
-    public String getNamespaceURI() {
-        Namespace namespace = getNamespace();
-        return (namespace != null) ? namespace.getPrefix() : "";
-    }
 
     public void setNamespace(Namespace namespace) {
         throw new UnsupportedOperationException("This Attribute is read only and cannot be changed" );
@@ -66,4 +43,33 @@ public abstract class AbstractAttribute extends AbstractNode implements Attribut
     public void accept(TreeVisitor visitor) {
         visitor.visit(this);
     }
+    
+    // NameModel methods
+    
+    public Namespace getNamespace() {
+        return getNameModel().getNamespace();
+    }
+    
+    public String getName() {
+        return getNameModel().getName();
+    }
+    
+    public String getNamespacePrefix() {
+        return getNameModel().getNamespacePrefix();
+    }
+
+    public String getNamespaceURI() {
+        return getNameModel().getNamespaceURI();
+    }
+
+    public String getQualifiedName() {
+        return getNameModel().getQualifiedName();
+    }
+    
+    protected Node createXPathNode(Element parent) {
+        return new XPathAttribute(parent, getNameModel(), getValue());
+    }
+    
+    /** Allows derived classes to override how the attribute is named */
+    protected abstract NameModel getNameModel();
 }
