@@ -1,10 +1,5 @@
 /*
- * Copyright 2001-2004 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * This software is open source.
- * See the bottom of this file for the licence.
- *
- * $Id$
+ * Copyright (c) 2005 Your Corporation. All Rights Reserved.
  */
 
 package org.dom4j;
@@ -30,6 +25,8 @@ import org.dom4j.xpath.DefaultXPath;
 import org.dom4j.xpath.XPathPattern;
 
 import org.jaxen.VariableContext;
+import org.dom4j.util.SingletonStrategy;
+import org.dom4j.dom.DOMDocumentFactory;
 
 /**
  * <p>
@@ -48,26 +45,47 @@ import org.jaxen.VariableContext;
 public class DocumentFactory implements Serializable {
     /** The Singleton instance */
 
-    //private static transient DocumentFactory singleton;
-    private static final ThreadLocal SINGLE_PER_THREAD = new ThreadLocal();
-    private static String documentFactoryClassName = null;
-
-    static {
-        try {
-            documentFactoryClassName =
-                System.getProperty("org.dom4j.factory",
-                                   "org.dom4j.DocumentFactory");
-        } catch (Exception e) {
-            documentFactoryClassName = "org.dom4j.DocumentFactory";
-        }
-
-        getInstance(); //create first one
-    }
-
+    private static SingletonStrategy singleton=null;
+    private static String documentFactoryClassName=null;
     protected transient QNameCache cache;
 
     /** Default namespace prefix -> URI mappings for XPath expressions to use */
     private Map xpathNamespaceURIs;
+
+    static {
+      try {
+          documentFactoryClassName = System.getProperty(
+              "org.dom4j.factory",
+              "org.dom4j.DocumentFactory"
+          );
+      }
+      catch (Exception e) {
+          documentFactoryClassName = "org.dom4j.DocumentFactory";
+      }
+
+      try{
+        String defaultSingletonClass = "org.dom4j.util.SimpleSingleton";
+        Class clazz = null;
+        try {
+          String singletonClass = defaultSingletonClass;
+          singletonClass = System.getProperty(
+              "org.dom4j.DocumentFactory.singleton.strategy",
+              singletonClass);
+          clazz = DocumentFactory.class.forName(singletonClass);
+        }
+        catch (Exception exc1) {
+          try {
+            String singletonClass = defaultSingletonClass;
+            clazz = DocumentFactory.class.forName(singletonClass);
+          }
+          catch (Exception exc2) {
+          }
+        }
+        singleton = (SingletonStrategy) clazz.newInstance();
+        singleton.setSingletonClassName(documentFactoryClassName);
+      }  catch(Exception exc3) {}
+      getInstance();  //create first one
+    }
 
     public DocumentFactory() {
         init();
@@ -83,14 +101,7 @@ public class DocumentFactory implements Serializable {
      * @return the default singleon instance
      */
     public static DocumentFactory getInstance() {
-        DocumentFactory fact = (DocumentFactory) SINGLE_PER_THREAD.get();
-
-        if (fact == null) {
-            // create first instance
-            fact = createSingleton(documentFactoryClassName);
-            SINGLE_PER_THREAD.set(fact);
-        }
-
+        DocumentFactory fact = (DocumentFactory)singleton.instance();
         return fact;
     }
 

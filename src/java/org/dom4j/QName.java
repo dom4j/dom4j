@@ -15,6 +15,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import org.dom4j.tree.QNameCache;
+import org.dom4j.util.SingletonStrategy;
 
 /**
  * <p>
@@ -27,8 +28,33 @@ import org.dom4j.tree.QNameCache;
  * @version $Revision$
  */
 public class QName implements Serializable {
-    //protected transient static QNameCache cache = new QNameCache();
-    protected static transient ThreadLocal cachePerThread = new ThreadLocal();
+
+    /** The Singleton instance */
+    private static SingletonStrategy singleton=null;
+
+    static {
+      try{
+        String defaultSingletonClass = "org.dom4j.util.SimpleSingleton";
+        Class clazz = null;
+        try {
+          String singletonClass = defaultSingletonClass;
+          singletonClass = System.getProperty(
+              "org.dom4j.QName.singleton.strategy",
+              singletonClass);
+          clazz = QName.class.forName(singletonClass);
+        }
+        catch (Exception exc1) {
+          try {
+            String singletonClass = defaultSingletonClass;
+            clazz = QName.class.forName(singletonClass);
+          }
+          catch (Exception exc2) {
+          }
+        }
+        singleton = (SingletonStrategy) clazz.newInstance();
+        singleton.setSingletonClassName(QNameCache.class.getName());
+      }  catch(Exception exc3) {}
+    }
 
     /** The local name of the element or attribute */
     private String name;
@@ -230,14 +256,8 @@ public class QName implements Serializable {
     }
 
     private static QNameCache getCache() {
-        QNameCache cache = (QNameCache) cachePerThread.get();
-
-        if (cache == null) {
-            cache = new QNameCache();
-            cachePerThread.set(cache);
-        }
-
-        return cache;
+      QNameCache cache = (QNameCache) singleton.instance();
+      return cache;
     }
 }
 
