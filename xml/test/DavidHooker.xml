@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<atomic:thing 
+  xmlns:atomic="http://www.a4networks.com/schemas/atomic-thing"
+  xmlns:oi="http://www.a4networks.com/schemas/thing-info" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+  xsi:schemaLocation="http://www.a4networks.com/schemas/atomic-opl C:/work/atomic-thing.xsd"
+>                         
+  <oi:thing-info 
+    owner="dhooker" 
+    author="dhooker" 
+    thing-version="1" 
+    date-modified="2001-11-05" 
+    triggering-document-expression="/a/b/c/d" 
+    thing-type="transform" 
+    check-for-duplicate="yes" 
+    sharing="private"/>
+
+</atomic:thing>

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tests>
 
+  <document url="xml/test/DavidHooker.xml">
+    <context select="/"> 
+      <test select="/*/oi:thing-info/@triggering-document-expression" count="1"/>
+      <test select="/atomic:thing/oi:thing-info/@triggering-document-expression" count="1"/>
+      <test select="//@triggering-document-expression" count="1"/>
+    </context>
+  </document>
+
   <document url="xml/web.xml">
     <context select="/"> 
       <valueOf select="/*/servlet[servlet-name='snoop']/servlet-class | 'N/A'">SnoopServlet</valueOf>
