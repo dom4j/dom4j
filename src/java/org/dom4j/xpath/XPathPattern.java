@@ -24,7 +24,7 @@ import org.jaxen.XPathFunctionContext;
 import org.jaxen.dom4j.DocumentNavigator;
 import org.jaxen.pattern.Pattern;
 import org.jaxen.pattern.PatternParser;
-import org.saxpath.SAXPathException;
+import org.jaxen.saxpath.SAXPathException;
 
 /** <p><code>XPathPattern</code> is an implementation of Pattern
   * which uses an XPath xpath.</p>
