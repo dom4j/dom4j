@@ -53,6 +53,11 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
         return this;
     }
     
+    public String getStringValue() {
+        Element root = getRootElement();
+        return ( root != null ) ? root.getStringValue() : "";
+    }
+    
     public String asXML() {
         try {
             StringWriter out = new StringWriter();

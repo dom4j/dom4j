@@ -346,6 +346,9 @@ public class DefaultXPath implements org.dom4j.XPath {
         catch (TokenStreamException e) {
             e.printStackTrace();
         }
+        if ( _expr == null ) {
+            throw new RuntimeException( "Invalid XPath expression: " + _xpath );
+        }
     }
     
     protected List applyTo(Object context) {
@@ -374,10 +377,16 @@ public class DefaultXPath implements org.dom4j.XPath {
     /** Perform the string() function on the return values of an XPath
      */
     public String valueOf(Node node) {
+        if ( _expr == null ) {
+            return "";
+        }
         return _expr.valueOf( new Context( node, _contextSupport ) );
     }
 
     public String valueOf(List nodes) {
+        if ( _expr == null ) {
+            return "";
+        }
         return _expr.valueOf( new Context( nodes, _contextSupport ) );
     }
 
