@@ -15,14 +15,12 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.Serializable;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentFactory;
 import org.dom4j.ElementHandler;
-
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;

@@ -9,7 +9,6 @@
 
 package org.dom4j.util;
 
-import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.QName;
 import org.dom4j.tree.DefaultElement;

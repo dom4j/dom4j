@@ -10,8 +10,6 @@
 package org.dom4j.tree;
 
 import java.lang.reflect.Constructor;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.dom4j.Namespace;

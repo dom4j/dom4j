@@ -11,36 +11,24 @@ package org.dom4j.io;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.dom4j.Attribute;
 import org.dom4j.Branch;
-import org.dom4j.CDATA;
-import org.dom4j.Comment;
 import org.dom4j.Document;
-import org.dom4j.DocumentType;
 import org.dom4j.DocumentFactory;
+import org.dom4j.DocumentType;
 import org.dom4j.Element;
 import org.dom4j.ElementHandler;
-import org.dom4j.Entity;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
-import org.dom4j.ProcessingInstruction;
-import org.dom4j.DocumentException;
-
 import org.dom4j.dtd.AttributeDecl;
 import org.dom4j.dtd.ElementDecl;
 import org.dom4j.dtd.ExternalEntityDecl;
 import org.dom4j.dtd.InternalEntityDecl;
-
 import org.dom4j.tree.AbstractElement;
 import org.dom4j.tree.NamespaceStack;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.DTDHandler;
 import org.xml.sax.EntityResolver;
@@ -48,8 +36,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.ext.DeclHandler;
+import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.ext.Locator2;
 import org.xml.sax.helpers.DefaultHandler;
 
