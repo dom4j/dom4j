@@ -51,10 +51,16 @@ public class DocumentFactory implements Serializable {
     protected transient QNameCache cache;
 
     static {
-        String className = System.getProperty( 
-            "org.dom4j.factory", 
-            "org.dom4j.DocumentFactory" 
-        );
+        String className = null;
+        try {
+            className = System.getProperty( 
+                "org.dom4j.factory", 
+                "org.dom4j.DocumentFactory" 
+            );
+        }
+        catch (Exception e) {
+            className = "org.dom4j.DocumentFactory";
+        }
         singleton = createSingleton( className );
     }
     
