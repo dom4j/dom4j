@@ -55,18 +55,20 @@ public class DOMWriter {
     }
 
     public Class getDomDocumentClass() throws DocumentException {
-        if ( domDocumentClass == null ) {
+        Class result = domDocumentClass;
+        
+        if ( result == null ) {
             // lets try and find one in the classpath
             int size = DEFAULT_DOM_DOCUMENT_CLASSES.length;
             for ( int i = 0; i < size; i++ ) {
                 try {
                     String name = DEFAULT_DOM_DOCUMENT_CLASSES[i];
-                    domDocumentClass = Class.forName( 
+                    result = Class.forName( 
                         name,
                         true,
                         DOMWriter.class.getClassLoader()
                     );
-                    if ( domDocumentClass != null ) {
+                    if ( result != null ) {
                         break;
                     }
                 }
@@ -76,7 +78,7 @@ public class DOMWriter {
                 }
             }
         }
-        return domDocumentClass;
+        return result;
     }
     
     /** Sets the DOM {@link org.w3c.dom.Document} implementation
@@ -290,21 +292,37 @@ public class DOMWriter {
     protected org.w3c.dom.Document createDomDocument(
         Document document
     ) throws DocumentException {
-        // lets try JAXP first
-        org.w3c.dom.Document answer = createDomDocumentViaJAXP();
-        if ( answer != null ) {
-            return answer;
+        org.w3c.dom.Document result = null;
+        
+        // use the given domDocumentClass (if not null)
+        if (domDocumentClass != null) {
+            try {
+                result = (org.w3c.dom.Document) domDocumentClass.newInstance();
+            }
+            catch (Exception e) {
+                throw new DocumentException( 
+                    "Could not instantiate an instance of DOM Document with class: " 
+                    + domDocumentClass.getName(), e 
+                );
+            }
+        } else {
+            // lets try JAXP first before using the hardcoded default parsers
+            result = createDomDocumentViaJAXP();
+            if ( result == null ) {
+                Class theClass = getDomDocumentClass();
+                try {
+                    result = (org.w3c.dom.Document) theClass.newInstance();
+                }
+                catch (Exception e) {
+                    throw new DocumentException( 
+                        "Could not instantiate an instance of DOM Document with class: " 
+                        + theClass.getName(), e 
+                    );
+                }
+            }
         }
-        Class theClass = getDomDocumentClass();
-        try {
-            return (org.w3c.dom.Document) theClass.newInstance();
-        }
-        catch (Exception e) {
-            throw new DocumentException( 
-                "Could not instantiate an instance of DOM Document wtih class: " 
-                + theClass.getName(), e 
-            );
-        }
+        
+        return result;
     }
     
     protected org.w3c.dom.Document createDomDocumentViaJAXP() throws DocumentException {
