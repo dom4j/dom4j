@@ -86,13 +86,16 @@ public class TestSAXContentHandler extends AbstractTestCase {
     
     public void testBug926713() throws Exception {
         URL url = getClass().getResource("/xml/test/cdata.xml");
-        SAXReader reader = new SAXReader("org.dom4j.io.aelfred2.SAXDriver");
+        SAXReader reader = new SAXReader();
         
         Document doc = reader.read(url);
         Element foo = doc.getRootElement();
         Element bar = foo.element("bar");
         List content = bar.content();
-        assertEquals(1, content.size());
+        assertEquals(3, content.size());
+        assertEquals(Node.TEXT_NODE, ((Node) content.get(0)).getNodeType());
+        assertEquals(Node.CDATA_SECTION_NODE, ((Node) content.get(1)).getNodeType());
+        assertEquals(Node.TEXT_NODE, ((Node) content.get(2)).getNodeType());
     }
 
 }
