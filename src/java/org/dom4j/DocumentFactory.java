@@ -1,9 +1,9 @@
 /*
  * Copyright 2001 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -40,7 +40,7 @@ import org.xml.sax.Attributes;
   * easy custom building of DOM4J trees. The default tree that is built uses
   * a doubly linked tree. </p>
   *
-  * <p>The tree built allows full XPath expressions from anywhere on the 
+  * <p>The tree built allows full XPath expressions from anywhere on the
   * tree.</p>
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
@@ -49,64 +49,70 @@ import org.xml.sax.Attributes;
 public class DocumentFactory implements Serializable {
 
     /** The Singleton instance */
-    private static transient DocumentFactory singleton;
-    
+    //private static transient DocumentFactory singleton;
+    private final static ThreadLocal singlePerThread=new ThreadLocal();
+    private static String documentFactoryClassName=null;
+
     protected transient QNameCache cache;
 
     /** Default namespace prefix -> URI mappings for XPath expressions to use */
     private Map xpathNamespaceURIs;
-    
+
     static {
-        String className = null;
         try {
-            className = System.getProperty( 
-                "org.dom4j.factory", 
-                "org.dom4j.DocumentFactory" 
+            documentFactoryClassName = System.getProperty(
+                "org.dom4j.factory",
+                "org.dom4j.DocumentFactory"
             );
         }
         catch (Exception e) {
-            className = "org.dom4j.DocumentFactory";
+            documentFactoryClassName = "org.dom4j.DocumentFactory";
         }
-        singleton = createSingleton( className );
+        getInstance();  //create first one
     }
-    
-    /** <p>Access to singleton implementation of DocumentFactory which 
-      * is used if no DocumentFactory is specified when building using the 
+
+    /** <p>Access to singleton implementation of DocumentFactory which
+      * is used if no DocumentFactory is specified when building using the
       * standard builders.</p>
       *
       * @return the default singleon instance
       */
     public static DocumentFactory getInstance() {
-        return singleton;
+        DocumentFactory fact = (DocumentFactory)singlePerThread.get();
+        if (fact==null) {
+          fact=createSingleton( documentFactoryClassName ); //create first instance
+          singlePerThread.set(fact);
+        }
+        return fact;
     }
 
     public DocumentFactory() {
         init();
     }
-    
-    
+
+
     // Factory methods
-    
+
     public Document createDocument() {
         DefaultDocument answer = new DefaultDocument();
         answer.setDocumentFactory( this );
         return answer;
     }
-    
+
     public Document createDocument(Element rootElement) {
         Document answer = createDocument();
         answer.setRootElement(rootElement);
         return answer;
     }
-    
+
     public DocumentType createDocType(String name, String publicId, String systemId) {
         return new DefaultDocumentType( name, publicId, systemId );
     }
-    
+
     public Element createElement(QName qname) {
         return new DefaultElement(qname);
     }
-    
+
     public Element createElement(String name) {
         return createElement(createQName(name));
     }
@@ -114,55 +120,55 @@ public class DocumentFactory implements Serializable {
     public Element createElement(String qualifiedName, String namespaceURI) {
         return createElement(createQName(qualifiedName, namespaceURI));
     }
-    
+
     public Attribute createAttribute(Element owner, QName qname, String value) {
         return new DefaultAttribute(qname, value);
     }
-    
+
     public Attribute createAttribute(Element owner, String name, String value) {
         return createAttribute(owner, createQName(name), value);
     }
-    
+
     public CDATA createCDATA(String text) {
         return new DefaultCDATA(text);
     }
-    
+
     public Comment createComment(String text) {
         return new DefaultComment(text);
     }
-    
+
     public Text createText(String text) {
         if ( text == null ) {
             throw new IllegalArgumentException( "Adding text to an XML document must not be null" );
         }
         return new DefaultText(text);
     }
-    
-    
+
+
     public Entity createEntity(String name, String text) {
         return new DefaultEntity(name, text);
     }
-    
+
     public Namespace createNamespace(String prefix, String uri) {
         return Namespace.get(prefix, uri);
     }
-    
+
     public ProcessingInstruction createProcessingInstruction(String target, String data) {
         return new DefaultProcessingInstruction(target, data);
     }
-    
+
     public ProcessingInstruction createProcessingInstruction(String target, Map data) {
         return new DefaultProcessingInstruction(target, data);
     }
-    
+
     public QName createQName(String localName, Namespace namespace) {
         return cache.get(localName, namespace);
     }
-    
+
     public QName createQName(String localName) {
         return cache.get(localName);
     }
-    
+
     public QName createQName(String name, String prefix, String uri) {
         return cache.get(name, Namespace.get( prefix, uri ));
     }
@@ -170,7 +176,7 @@ public class DocumentFactory implements Serializable {
     public QName createQName(String qualifiedName, String uri) {
         return cache.get(qualifiedName, uri);
     }
-    
+
     /** <p><code>createXPath</code> parses an XPath expression
       * and creates a new XPath <code>XPath</code> instance.</p>
       *
@@ -205,47 +211,47 @@ public class DocumentFactory implements Serializable {
       * XPath filter expressions occur within XPath expressions such as
       * <code>self::node()[ filterExpression ]</code></p>
       *
-      * @param xpathFilterExpression is the XPath filter expression 
+      * @param xpathFilterExpression is the XPath filter expression
       * to create
       * @param variableContext is the variable context to use when evaluating the XPath
       * @return a new <code>NodeFilter</code> instance
       */
     public NodeFilter createXPathFilter(String xpathFilterExpression, VariableContext variableContext) {
         XPath answer = createXPath( xpathFilterExpression );
-        //DefaultXPath answer = new DefaultXPath( xpathFilterExpression );        
+        //DefaultXPath answer = new DefaultXPath( xpathFilterExpression );
         answer.setVariableContext( variableContext );
         return answer;
     }
-    
+
     /** <p><code>createXPathFilter</code> parses a NodeFilter
       * from the given XPath filter expression.
       * XPath filter expressions occur within XPath expressions such as
       * <code>self::node()[ filterExpression ]</code></p>
       *
-      * @param xpathFilterExpression is the XPath filter expression 
+      * @param xpathFilterExpression is the XPath filter expression
       * to create
       * @return a new <code>NodeFilter</code> instance
       */
     public NodeFilter createXPathFilter(String xpathFilterExpression) {
         return createXPath( xpathFilterExpression );
-        //return new DefaultXPath( xpathFilterExpression );        
+        //return new DefaultXPath( xpathFilterExpression );
     }
-    
-    /** <p><code>createPattern</code> parses the given 
+
+    /** <p><code>createPattern</code> parses the given
       * XPath expression to create an XSLT style {@link Pattern} instance
       * which can then be used in an XSLT processing model.</p>
       *
-      * @param xpathPattern is the XPath pattern expression 
+      * @param xpathPattern is the XPath pattern expression
       * to create
       * @return a new <code>Pattern</code> instance
       */
     public Pattern createPattern(String xpathPattern) {
         return new XPathPattern( xpathPattern );
     }
-    
-    
+
+
     // Properties
-    //-------------------------------------------------------------------------        
+    //-------------------------------------------------------------------------
 
     /** Returns a list of all the QName instances currently used by this document factory
      */
@@ -254,26 +260,26 @@ public class DocumentFactory implements Serializable {
     }
 
     /** @return the Map of namespace URIs that will be used by by XPath expressions
-     * to resolve namespace prefixes into namespace URIs. The map is keyed by 
+     * to resolve namespace prefixes into namespace URIs. The map is keyed by
      * namespace prefix and the value is the namespace URI. This value could well be
      * null to indicate no namespace URIs are being mapped.
      */
     public Map getXPathNamespaceURIs() {
         return xpathNamespaceURIs;
     }
-    
+
     /** Sets the namespace URIs to be used by XPath expressions created by this factory
-     * or by nodes associated with this factory. The keys are namespace prefixes and the 
+     * or by nodes associated with this factory. The keys are namespace prefixes and the
      * values are namespace URIs.
      */
     public void setXPathNamespaceURIs(Map xpathNamespaceURIs) {
         this.xpathNamespaceURIs = xpathNamespaceURIs;
     }
-    
-    // Implementation methods
-    //-------------------------------------------------------------------------        
 
-    
+    // Implementation methods
+    //-------------------------------------------------------------------------
+
+
     /** <p><code>createSingleton</code> creates the singleton instance
       * from the given class name.</p>
       *
@@ -285,10 +291,10 @@ public class DocumentFactory implements Serializable {
         try {
             // I'll use the current class loader
             // that loaded me to avoid problems in J2EE and web apps
-            Class theClass = Class.forName( 
-                className, 
-                true, 
-                DocumentFactory.class.getClassLoader() 
+            Class theClass = Class.forName(
+                className,
+                true,
+                DocumentFactory.class.getClassLoader()
             );
             return (DocumentFactory) theClass.newInstance();
         }
@@ -296,29 +302,29 @@ public class DocumentFactory implements Serializable {
             System.out.println( "WARNING: Cannot load DocumentFactory: " + className );
             return new DocumentFactory();
         }
-    }        
-    
+    }
+
     /** @return the cached QName instance if there is one or adds the given
-      * qname to the cache if not 
+      * qname to the cache if not
        */
     protected QName intern(QName qname) {
         return cache.intern(qname);
     }
 
-    /** Factory method to create the QNameCache. This method should be overloaded 
+    /** Factory method to create the QNameCache. This method should be overloaded
       * if you wish to use your own derivation of QName.
       */
     protected QNameCache createQNameCache() {
         return new QNameCache(this);
     }
 
-    
-    
+
+
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         init();
     }
-    
+
     protected void init() {
         cache = createQNameCache();
     }
