@@ -35,6 +35,7 @@
          you'll have to include the SAX classes and the SAX parser of your choice to your
          CLASSPATH. If you want to use XPath expressions, you also have to include the
          jaxen.jar to your CLASSPATH.
+      </p>
       <p><i>dom4j</i> can use your existing XML parser and/or DOM implementation 
         (such as <a href="http://xml.apache.org/crimson/">Crimson</a> or 
         <a href="http://xml.apache.org/xerces-j/">Xerces</a> if you want it to. <i>dom4j</i> can also use
