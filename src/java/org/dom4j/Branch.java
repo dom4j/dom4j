@@ -189,7 +189,12 @@ public interface Branch extends Node {
       */
     public void add(ProcessingInstruction pi);
         
-    /** Removes the given <code>Node</code> if the node is in this branch.
+    /** Removes the given <code>Node</code> if the node is 
+      * an immediate child of this branch. 
+      *
+      * If the given node is not an immediate child of this branch
+      * then the {@link Node#detach()} method should be used instead.
+      *
       * This is a polymorphic method which will call the typesafe method 
       * for the node type such as remove(Element) or remove(Comment).
       *
@@ -198,21 +203,33 @@ public interface Branch extends Node {
       */    
     public boolean remove(Node node);
     
-    /** Removes the given <code>Comment</code> from this branch.
+    /** Removes the given <code>Comment</code> if the node is 
+      * an immediate child of this branch. 
+      *
+      * If the given node is not an immediate child of this branch
+      * then the {@link Node#detach()} method should be used instead.
       *
       * @param comment is the comment to be removed
       * @return true if the comment was removed
       */
     public boolean remove(Comment comment);
     
-    /** Removes the given <code>Element</code> from this branch.
+    /** Removes the given <code>Element</code> if the node is 
+      * an immediate child of this branch. 
+      *
+      * If the given node is not an immediate child of this branch
+      * then the {@link Node#detach()} method should be used instead.
       *
       * @param element is the element to be removed
       * @return true if the element was removed
       */
     public boolean remove(Element element);
     
-    /** Removes the given <code>ProcessingInstruction</code> from this branch.
+    /** Removes the given <code>ProcessingInstruction</code> if the node is 
+      * an immediate child of this branch. 
+      *
+      * If the given node is not an immediate child of this branch
+      * then the {@link Node#detach()} method should be used instead.
       *
       * @param pi is the processing instruction to be removed
       * @return true if the processing instruction was removed
