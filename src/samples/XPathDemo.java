@@ -40,6 +40,8 @@ public class XPathDemo extends SAXDemo {
         String xmlFile = args[0];
         xpath = args[1];
         
+        writer = createXMLWriter();        
+        
         parse( xmlFile );
     }
     
@@ -51,11 +53,10 @@ public class XPathDemo extends SAXDemo {
         println( "Found: " + list.size() + " node(s)" );        
         println( "Results:" );
         
-        XMLWriter writer = createXMLWriter();        
-        
         for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
             Object object = iter.next();
             writer.write( object );
+            writer.println();
         }
         
         writer.flush();

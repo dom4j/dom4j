@@ -44,6 +44,8 @@
     <property name="web.dist" value="${web.htdocs}/dist"/>
     <property name="web.ftp" value="./build/ftp"/>
 
+    <property name="xml.format.options" value="-indentSize 2 -trimText -newlines"/>
+
     <filter token="year" value="${year}"/>
     <filter token="version" value="${version}"/>
     <filter token="date" value="${TODAY}"/>
@@ -242,9 +244,9 @@
              windowtitle="${Name} Full JavaDoc"
              doctitle="${Name}"
              bottom="Copyright &#169; ${year} MetaStuff Ltd. All Rights Reserved."
-             stylesheetfile="${doc.dir}/style/javadoc.css"
-             link="http://java.sun.com/products/jdk/1.3/docs/api"
-  />
+             stylesheetfile="${doc.dir}/style/javadoc.css">
+    <link href="http://java.sun.com/products/jdk/1.3/docs/api"/>
+  </javadoc>
     <javadoc packagenames="${api.packages}"
              sourcepath="${build.src}"
              destdir="${build.apidocs}"
@@ -256,9 +258,10 @@
              windowtitle="${Name} API"
              doctitle="${Name}"
              bottom="Copyright &#169; ${year} MetaStuff Ltd. All Rights Reserved."
-             stylesheetfile="${doc.dir}/style/javadoc.css"
-             link="http://java.sun.com/products/jdk/1.3/docs/api"
-    />
+             stylesheetfile="${doc.dir}/style/javadoc.css">
+    <link href="http://java.sun.com/products/jdk/1.3/docs/api"/>
+    <link href="${build.javadocs}"/>
+  </javadoc>
   </target>
 
 
@@ -431,38 +434,38 @@
   <!-- Run sample programs                                                 -->
   <!-- =================================================================== -->
   <target name="demo-sax" depends="samples">
-    <java classname="SAXDemo" args="xml/web.xml"/>
+    <java classname="SAXDemo" args="${xml.format.options} xml/web.xml"/>
   </target>
 
   <target name="demo-sax2" depends="samples">
-    <java classname="SAXDemo" args="xml/xhtml/xhtml-basic.xml"/>
+    <java classname="SAXDemo" args="${xml.format.options} xml/xhtml/xhtml-basic.xml"/>
   </target>
 
   <target name="demo-sax-contents" depends="samples">
-    <java classname="SAXDemo" args="xml/contents.xml"/>
+    <java classname="SAXDemo" args="${xml.format.options} xml/contents.xml"/>
   </target>
 
   <target name="demo-sax-cdata" depends="samples">
-    <java classname="SAXDemo" args="xml/cdata.xml"/>
-    <java classname="SAXDemo" args="xml/cdata.xml">
+    <java classname="SAXDemo" args="${xml.format.options} xml/cdata.xml"/>
+    <java classname="SAXDemo" args="${xml.format.options} xml/cdata.xml">
       <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/> 
     </java>
-    <java classname="SAXDemo" args="xml/cdata.xml">
+    <java classname="SAXDemo" args="${xml.format.options} xml/cdata.xml">
       <sysproperty key="org.xml.sax.driver" value="xml.aelfred2.SAXDriver"/> 
     </java>
   </target>
 
   <target name="demo-sax-pi" depends="samples">
-    <java classname="SAXDemo" args="xml/testPI.xml"/>
+    <java classname="SAXDemo" args="${xml.format.options} xml/testPI.xml"/>
   </target>
 
   <target name="demo-sax-ns" depends="samples">
-    <java classname="SAXDemo" args="xml/namespaces.xml"/>
-    <java classname="SAXDemo" args="xml/testNamespaces.xml"/>
+    <java classname="SAXDemo" args="${xml.format.options} xml/namespaces.xml"/>
+    <java classname="SAXDemo" args="${xml.format.options} xml/testNamespaces.xml"/>
   </target>
 
   <target name="demo-saxall" depends="demo-sax,demo-sax-contents,demo-sax-cdata,demo-sax-pi,demo-sax-ns">
-    <java classname="SAXDemo" args="xml/inline.xml"/>
+    <java classname="SAXDemo" args="${xml.format.options} xml/inline.xml"/>
   </target>
 
   <target name="demo-dom" depends="samples">

@@ -29,22 +29,6 @@ public class SAXDemo extends AbstractDemo {
     public SAXDemo() {
     }
     
-    public void run(String[] args) throws Exception {    
-        if ( args.length < 1) {
-            printUsage( "<XML document URL>" );
-            return;
-        }
-        
-        parse( args[0] );
-    }
-    
-    protected void parse( String xmlFile ) throws Exception {
-        URL url = getURL( xmlFile );
-        if ( url != null ) {
-            parse( url );
-        }
-    }
-    
     protected void parse( URL url ) throws Exception {
         SAXReader reader = new SAXReader();
         Document document = reader.read(url);
@@ -52,20 +36,9 @@ public class SAXDemo extends AbstractDemo {
     }
     
     protected void process(Document document) throws Exception {
-        XMLWriter writer = createXMLWriter();
         writer.write(document);
     }
 
-    /** A Factory Method to create an <code>XMLWriter</code>
-      * instance allowing derived classes to change this behaviour
-      */
-    protected XMLWriter createXMLWriter() throws Exception {
-        OutputFormat format = new OutputFormat("  ", true);
-        format.setTrimText(true);
-        format.setExpandEmptyElements(true);
-        return new XMLWriter( System.out, format );
-    }
-    
 }
 
 

@@ -29,22 +29,12 @@ public class LinkChecker extends SAXDemo {
     public LinkChecker() {
     }
         
-    public void run(String[] args) throws Exception {    
-        if ( args.length < 1 ) {
-            printUsage( "<XML document URL>" );
-            return;
-        }
-        parse( args[0] );
-    }
-    
     protected void process(Document document) throws Exception {
         
         List list = document.selectNodes( "//a" );
         
         println( "Found: " + list.size() + " links(s)" );        
         println( "Results:" );
-        
-        XMLWriter writer = createXMLWriter();
         
         for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
             Object object = iter.next();

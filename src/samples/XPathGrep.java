@@ -15,7 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.dom4j.*;
-import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
@@ -55,7 +54,7 @@ public class XPathGrep extends AbstractDemo {
                     setXPath( arg );
                 }
                 else {
-                    processFile( arg );
+                    parse( arg );
                 }
             }
         }
@@ -65,8 +64,7 @@ public class XPathGrep extends AbstractDemo {
         xpath = DocumentHelper.createXPath( xpathExpression );
     }
     
-    protected void processFile(String fileName) throws Exception {
-        URL url = getFileURL(fileName);
+    protected void parse( URL url ) throws Exception {
         SAXReader reader = new SAXReader();
         Document document = reader.read( url );
         
@@ -82,33 +80,14 @@ public class XPathGrep extends AbstractDemo {
             println( ": " + list );
         }
         
-        XMLWriter writer = createXMLWriter();        
+        writer = createXMLWriter();        
+        
         for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
             Object object = iter.next();
             writer.write( object );
+            writer.println();
         }        
         writer.flush();
-    }
-    
-    /** @return the given file or url as a URL
-      */
-    protected URL getFileURL(String fileName) throws Exception {
-        try {
-            return new URL( fileName );
-        }
-        catch (MalformedURLException e) {
-            File file = new File( fileName );
-            return file.toURL();
-        }
-    }
-    /** A Factory Method to create an <code>XMLWriter</code>
-      * instance allowing derived classes to change this behaviour
-      */
-    protected XMLWriter createXMLWriter() throws Exception {
-        OutputFormat format = new OutputFormat("  ", true);
-        format.setTrimText(true);
-        format.setExpandEmptyElements(true);
-        return new XMLWriter( System.out, format );
     }
     
     protected void readOptions( String arg ) {

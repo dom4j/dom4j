@@ -77,7 +77,6 @@ public class OutputFormat implements Cloneable {
     public OutputFormat(String indent, boolean newlines) {
         this.indent = indent;
         this.newlines = newlines;
-        this.trimText = newlines;
     }
 
     /** Creates an <code>OutputFormat</code> with the given indent added 
@@ -270,6 +269,53 @@ public class OutputFormat implements Cloneable {
         }
         this.indent = indentBuffer.toString();
     }
+    
+    /** Parses command line arguments of the form 
+      * <code>-omitEncoding -indentSize 3 -newlines -trimText</code>
+      *
+      * @param args is the array of command line arguments
+      * @param i is the index in args to start parsing options
+      * @return the index of first parameter that we didn't understand
+      */      
+    public int parseOptions(String[] args, int i) {
+        for ( int size = args.length; i < size; i++ ) {
+            if (args[i].equals("-suppressDeclaration")) {
+                setSuppressDeclaration(true);
+            }
+            else if (args[i].equals("-omitEncoding")) {
+                setOmitEncoding(true);
+            }
+            else if (args[i].equals("-indent")) {
+                setIndent(args[++i]);
+            }
+            else if (args[i].equals("-indentSize")) {
+                setIndentSize(Integer.parseInt(args[++i]));
+            }
+            else if (args[i].startsWith("-expandEmpty")) {
+                setExpandEmptyElements(true);
+            }
+            else if (args[i].equals("-encoding")) {
+                setEncoding(args[++i]);
+            }
+            else if (args[i].equals("-newlines")) {
+                setNewlines(true);
+            }
+            else if (args[i].equals("-lineSeparator")) {
+                setLineSeparator(args[++i]);
+            }
+            else if (args[i].equals("-trimText")) {
+                setTrimText(true);
+            }
+            else if (args[i].equals("-padText")) {
+                setPadText(true);
+            }
+            else {
+                return i;
+            }
+        }
+        return i;
+    } 
+    
 }
 
 

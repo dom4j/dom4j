@@ -92,11 +92,11 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         }
         for ( Iterator iter = content.iterator(); iter.hasNext(); ) {
             Object object = iter.next();
-            if ( ! ( object instanceof CharacterData) ) {
+            if ( ! ( object instanceof CharacterData) && ! ( object instanceof String ) ) {
                 return false;
             }
         }
-        return false;
+        return true;
     }
     
     public void setName(String name) {

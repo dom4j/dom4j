@@ -53,7 +53,7 @@ public class XPathValueOf extends AbstractDemo {
                     setXPath( arg );
                 }
                 else {
-                    processFile( arg );
+                    parse( arg );
                 }
             }
         }
@@ -63,26 +63,13 @@ public class XPathValueOf extends AbstractDemo {
         xpath = DocumentHelper.createXPath( xpathExpression );
     }
     
-    protected void processFile(String fileName) throws Exception {
-        URL url = getFileURL(fileName);
+    protected void parse( URL url ) throws Exception {
         SAXReader reader = new SAXReader();
         Document document = reader.read( url );
         
         String value = xpath.valueOf( document );
         
         println( value );
-    }
-    
-    /** @return the given file or url as a URL
-      */
-    protected URL getFileURL(String fileName) throws Exception {
-        try {
-            return new URL( fileName );
-        }
-        catch (MalformedURLException e) {
-            File file = new File( fileName );
-            return file.toURL();
-        }
     }
     
     protected void readOptions( String arg ) {

@@ -36,35 +36,44 @@ import org.xml.sax.SAXException;
  */
 public class HTMLWriter extends XMLWriter {
 
+    protected static final OutputFormat defaultHtmlFormat;
+    
+    static {
+        defaultHtmlFormat = new OutputFormat( "  ", true );
+        defaultHtmlFormat.setTrimText( true );
+        defaultHtmlFormat.setSuppressDeclaration( true );
+    }
+    
     /** Used to store the qualified element names which 
       * should have no close element tag 
       */
     private Set omitElementCloseSet;
 
     
-    public HTMLWriter() {
-    }
-
     public HTMLWriter(Writer writer) {
-        super( writer );
-    }
-    
-    public HTMLWriter(OutputStream out) throws UnsupportedEncodingException {
-        super( out );
+        super( writer, defaultHtmlFormat );
     }
     
     public HTMLWriter(Writer writer, OutputFormat format) {
         super( writer, format );
     }
     
+    public HTMLWriter() throws UnsupportedEncodingException {
+        super( defaultHtmlFormat );
+    }
+
+    public HTMLWriter(OutputFormat format) throws UnsupportedEncodingException {
+        super( format );
+    }
+
+    public HTMLWriter(OutputStream out) throws UnsupportedEncodingException {
+        super( out, defaultHtmlFormat );
+    }
+    
     public HTMLWriter(OutputStream out, OutputFormat format) throws UnsupportedEncodingException {
         super( out, format );
     }
     
-    public HTMLWriter(OutputFormat format) {
-        super( format );
-    }
-
     
     public void startCDATA() throws SAXException {
     }

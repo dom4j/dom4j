@@ -145,7 +145,12 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
     public void close() throws IOException {
         writer.close();
     }
-    
+
+    /** Writes the new line text to the underlying Writer */
+    public void println() throws IOException {
+        writer.write( format.getLineSeparator() );
+    }
+
     /** Writes the given {@link Attribute}.
       *
       * @param attribute <code>Attribute</code> to output.
@@ -187,6 +192,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
             Node node = doc.node(i);
             write( node );
         }
+        writePrintln();
         flush();
     }
 
@@ -205,9 +211,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
       * @param cdata <code>CDATA</code> to output.
       */
     public void write(CDATA cdata) throws IOException {
-        indent();
         writer.write(cdata.asXML());
-        writePrintln();
         lastOutputNodeType = Node.CDATA_SECTION_NODE;
     }
     
@@ -216,9 +220,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
       * @param comment <code>Comment</code> to output.
       */
     public void write(Comment comment) throws IOException {        
-        indent();
         writer.write(comment.asXML());
-        writePrintln();
         lastOutputNodeType = Node.COMMENT_NODE;
     }
     
@@ -289,7 +291,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
       * @param processingInstruction <code>ProcessingInstruction</code> to output.
       */
     public void write(ProcessingInstruction processingInstruction) throws IOException {
-        indent();
+        //indent();
         writer.write(processingInstruction.asXML());
         writePrintln();
         lastOutputNodeType = Node.PROCESSING_INSTRUCTION_NODE;
@@ -301,27 +303,33 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
       * @param text is the text to output
       */
     public void write(String text) throws IOException {
-        if (lastOutputNodeType == Node.ELEMENT_NODE) {
-            String padText = getPadText();
-            if ( padText != null ) {
-                writer.write(padText);
-            }
+        boolean trimText = format.isTrimText();
+        if ( trimText ) {
+            text = text.trim();
         }
-        text = escapeElementEntities(text);
-        if (format.isTrimText()) {
-            StringTokenizer tokenizer = new StringTokenizer(text);
-            while (tokenizer.hasMoreTokens()) {
-                String token = tokenizer.nextToken();
-                writer.write(token);
-                if (tokenizer.hasMoreTokens()) {
-                    writer.write(" ");
+        if ( text.length() > 0 ) {
+            if (lastOutputNodeType == Node.ELEMENT_NODE) {
+                String padText = getPadText();
+                if ( padText != null ) {
+                    writer.write(padText);
                 }
             }
-        } 
-        else {                    
-            writer.write(text);
+            text = escapeElementEntities(text);
+            if (trimText) {
+                StringTokenizer tokenizer = new StringTokenizer(text);
+                while (tokenizer.hasMoreTokens()) {
+                    String token = tokenizer.nextToken();
+                    writer.write(token);
+                    if (tokenizer.hasMoreTokens()) {
+                        writer.write(" ");
+                    }
+                }
+            } 
+            else {                    
+                writer.write(text);
+            }
+            lastOutputNodeType = Node.TEXT_NODE;
         }
-        lastOutputNodeType = Node.TEXT_NODE;
     }
 
 
@@ -391,18 +399,6 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         else if (object != null) {
             write( object.toString());
         }
-    }
-    
-    
-    /** <p> This will handle printing out an {@link Element}'s content only, 
-      * not its tag or attributes. This can be useful for printing the content of an
-      * element that contains HTML, like "&lt;description&gt;DOM4J is
-      * &lt;b&gt;fun&gt;!&lt;/description&gt;".</p>
-      *
-      * @param element <code>Element</code> to output.
-      */
-    public void writeElementContent(Element element) throws IOException {
-        writeContent(element, new NamespaceStack());
     }
     
     
@@ -578,8 +574,10 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
      */
     protected void write(Element element, NamespaceStack namespaces) throws IOException {
         int size = element.nodeCount();
+        
+        writePrintln();
         indent();
-
+        
         writer.write("<");
         writer.write(element.getQualifiedName());
         
@@ -605,9 +603,10 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
 
         writeAttributes(element, namespaces);
 
+        lastOutputNodeType = Node.ELEMENT_NODE;
+        
         if ( size <= 0 ) {
             writeEmptyElementClose(element);
-            writePrintln();
         }
         else {
             if ( element.isTextOnly() ) {
@@ -620,18 +619,23 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
                     writer.write(">");
                     writer.write( text );
                     writeClose(element);
-                    writePrintln();
                 }
             }
             else {
                 // we know it's not null or empty from above
-                writer.write(">");
+                writer.write(">");        
+                ++indentLevel;
+                
+                for ( int i = 0; i < size; i++ ) {
+                    Node node = element.node(i);
+                    write(node);
+                }
+                --indentLevel;                
 
                 writePrintln();
-                writeContent(element, namespaces);
-                indent();               
+                indent();
+
                 writeClose(element);
-                writePrintln();
             }
         }
 
@@ -639,34 +643,9 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         while (namespaces.size() > previouslyDeclaredNamespaces) {
             namespaces.pop();
         }
+        
         lastOutputNodeType = Node.ELEMENT_NODE;
     }
-
-    /** This will handle printing out an {@link Element}'s content only, 
-      * not including its tag, attributes, and namespace info.
-      *
-      * @param element <code>Element</code> to output.
-      */
-    protected void writeContent(Element element, NamespaceStack namespaces) throws IOException {
-        int size = element.nodeCount();
-        if ( size > 0 ) {
-            if (element.isTextOnly()) {
-                String text = format.isTrimText() ? element.getTextTrim() : element.getText();
-                if ( text != null && text.length() > 0 ) {            
-                    write(text);
-                }
-
-            } 
-            else {
-                ++indentLevel;
-                for ( int i = 0; i < size; i++ ) {
-                    Node node = element.node(i);
-                    write(node);
-                }
-                --indentLevel;                
-            }
-        }
-    }  
 
 
     /** Writes the attributes of the given element
@@ -779,7 +758,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
                 }
                 writer.write("?>");
             }
-            writePrintln();
+            println();
         }        
     }    
 
