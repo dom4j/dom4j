@@ -70,6 +70,10 @@ public class TestManualSchema extends AbstractTestCase {
         testSchema( "//person/@d", Date.class );
     }
     
+    public void testDateTime() throws Exception {        
+        testSchema( "//person/@dt", Date.class );
+    }
+    
     public void testInteger() throws Exception {        
         testSchema( "//person/@age", Integer.class );
     }
