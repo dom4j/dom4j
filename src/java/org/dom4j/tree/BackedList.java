@@ -65,7 +65,10 @@ public class BackedList extends ArrayList {
     
     public void add(int index, Object object) {
         int realIndex = branchContent.indexOf( get(index) );
-        if ( realIndex >= 0 || index == 0) {
+        if ( realIndex < 0 ) {
+            realIndex = ( index == 0 ) ? 0 : Integer.MAX_VALUE;
+        }
+        if ( realIndex < branchContent.size() ) {
             branchContent.add(realIndex, object);
         }
         else {
@@ -77,7 +80,10 @@ public class BackedList extends ArrayList {
     
     public Object set(int index, Object object) {
         int realIndex = branchContent.indexOf( get(index) );
-        if ( realIndex >= 0 || index == 0) {
+        if ( realIndex < 0 ) {
+            realIndex = ( index == 0 ) ? 0 : Integer.MAX_VALUE;
+        }
+        if ( realIndex < branchContent.size() ) {
             branchContent.set(realIndex, object);
         }
         else {

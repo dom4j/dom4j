@@ -93,7 +93,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         visitor.visit(this);
         
         // visit attributes
-        List attributes = getAttributes();
+        List attributes = getAttributeList();
         if (attributes != null) {
             for ( Iterator iter = attributes.iterator(); iter.hasNext(); ) {
                 Attribute attribute = (Attribute) iter.next();
@@ -165,7 +165,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     // Attribute methods
         
     public Iterator attributeIterator() {
-        return getAttributes().iterator();
+        return getAttributeList().iterator();
     }
     
     public String getAttributeValue(String name) {
@@ -234,7 +234,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
             
             throw new IllegalAddException( this, attribute, message );
         }        
-        getAttributes().add(attribute);
+        getAttributeList().add(attribute);
         childAdded(attribute);
     }
     
@@ -424,7 +424,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     // add to me content from another element
     // analagous to the addAll(collection) methods in Java 2 collections
     public void appendAttributes(Element element) {
-        for (Iterator i = getAttributes().iterator(); i.hasNext(); ) {
+        for (Iterator i = attributeIterator(); i.hasNext(); ) {
             Attribute attribute = (Attribute) i.next();
             if ( attribute.supportsParent() ) {
                 Namespace namespace = attribute.getNamespace();
@@ -535,6 +535,9 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         }
     }
 
+    /** @return the internal List used to store attributes
+      */
+    protected abstract List getAttributeList();
 }
 
 

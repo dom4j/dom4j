@@ -7,63 +7,85 @@
  * $Id$
  */
 
-package org.dom4j.tree;
+package org.dom4j.xpath;
 
-import org.dom4j.Namespace;
-import org.dom4j.Visitor;
+import java.io.File;
+import java.util.Iterator;
+import java.util.List;
 
-/** <p><code>AbstractNamespace</code> is an abstract base class for 
-  * tree implementors to use for implementation inheritence.</p>
+import junit.framework.*;
+import junit.textui.TestRunner;
+
+import org.dom4j.AbstractTestCase;
+import org.dom4j.Attribute;
+import org.dom4j.XPath;
+import org.dom4j.XPathHelper;
+import org.dom4j.io.SAXReader;
+
+/** Test harness for the attribute axis 
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public abstract class AbstractNamespace extends AbstractNode implements Namespace {
+public class TestAttribute extends AbstractTestCase {
+
+    protected static boolean VERBOSE = false;
     
-    public AbstractNamespace() {
+    protected static String[] paths = {
+        "attribute::*",
+        "/root/author/attribute::*",
+        "//attribute::*",
+        "@name"
+    };
+    
+    
+    public TestAttribute(String name) {
+        super(name);
     }
 
-    public int hashCode() {
-        return getPrefix().hashCode() ^ getURI().hashCode();
-    }
-    
-    /** Implements equality test. Two namespaces are equal if and only if
-      * their prefixes and URIs are equal.
-      * 
-      * @param that is the object to compare this to
-      * @return true if this and that are equal namespaces
-      */
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
+    // Test case(s)
+    //-------------------------------------------------------------------------                    
+    public void testXPaths() throws Exception {        
+        int size = paths.length;
+        for ( int i = 0; i < size; i++ ) {
+            testXPath( paths[i] );
         }
-        if (that instanceof Namespace) {
-            Namespace other = (Namespace) that;
-            return getPrefix().equals( other.getPrefix() ) 
-                && getURI().equals( other.getURI() );
+    }
+        
+    // JUnit stuff
+    //-------------------------------------------------------------------------                    
+    public static void main( String[] args ) {
+        TestRunner.run( suite() );
+    }
+    
+    public static Test suite() {
+        return new TestSuite( TestAttribute.class );
+    }
+    
+    protected void testXPath(String xpathText) {
+        XPath xpath = XPathHelper.createXPath(xpathText);
+        List list = document.selectNodes(xpath);
+        
+        log( "Searched path: " + xpathText + " found: " + list.size() + " result(s)" );
+        
+        if ( VERBOSE ) {
+            log( "xpath: " + xpath );
+            log( "results: " + list );
         }
-        return false;
-    }
-
-    public String getText() {
-        return getURI();
-    }
-    
-    public String getString() {
-        return getURI();
-    }
-    
-    public String toString() {
-        return super.toString() + " [Namespace: prefix " + getPrefix() 
-            + " mapped to URI \"" + getURI() + "\"]";
-    }
-
-    public String asXML() {
-        return "xmlns:" + getPrefix() + "=\"" + getURI() + "\"";
-    }
-    
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
+        
+        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
+            Object object = iter.next();
+            
+            log( "Found Result: " + object );
+            
+            assert( "Results should be Attribute objects", object instanceof Attribute );
+            
+            Attribute attribute = (Attribute) object;
+            
+            assert( "Results should support the parent relationship", attribute.supportsParent() );
+            assert( "Results should contain reference to the parent element", attribute.getParent() != null );
+            assert( "Results should contain reference to the owning document", attribute.getDocument() != null );
+        }
     }
 }
 

@@ -7,64 +7,66 @@
  * $Id$
  */
 
-package org.dom4j.tree;
+package org.dom4j.xpath;
 
+import java.io.File;
+import java.util.Iterator;
+import java.util.List;
+
+import junit.framework.*;
+import junit.textui.TestRunner;
+
+import org.dom4j.AbstractTestCase;
 import org.dom4j.Namespace;
-import org.dom4j.Visitor;
+import org.dom4j.XPath;
+import org.dom4j.XPathHelper;
+import org.dom4j.io.SAXReader;
 
-/** <p><code>AbstractNamespace</code> is an abstract base class for 
-  * tree implementors to use for implementation inheritence.</p>
+/** Test harness for the valueOf() function
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public abstract class AbstractNamespace extends AbstractNode implements Namespace {
+public class TestValueOf extends AbstractTestCase {
+
+    protected static boolean VERBOSE = false;
     
-    public AbstractNamespace() {
+    protected static String[] paths = {
+        "/root",
+        "//author",
+        "//author/@name",
+        "/root/author[2]",
+        "/root/author[2]/@name"
+    };
+    
+    
+    public static void main( String[] args ) {
+        TestRunner.run( suite() );
+    }
+    
+    public static Test suite() {
+        return new TestSuite( TestValueOf.class );
+    }
+    
+    public TestValueOf(String name) {
+        super(name);
     }
 
-    public int hashCode() {
-        return getPrefix().hashCode() ^ getURI().hashCode();
-    }
-    
-    /** Implements equality test. Two namespaces are equal if and only if
-      * their prefixes and URIs are equal.
-      * 
-      * @param that is the object to compare this to
-      * @return true if this and that are equal namespaces
-      */
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
+    // Test case(s)
+    //-------------------------------------------------------------------------                    
+    public void testXPaths() throws Exception {        
+        int size = paths.length;
+        for ( int i = 0; i < size; i++ ) {
+            testXPath( paths[i] );
         }
-        if (that instanceof Namespace) {
-            Namespace other = (Namespace) that;
-            return getPrefix().equals( other.getPrefix() ) 
-                && getURI().equals( other.getURI() );
-        }
-        return false;
     }
-
-    public String getText() {
-        return getURI();
+        
+    protected void testXPath(String xpath) {
+        String value = document.valueOf(xpath);
+        
+        log( "valueOf: " + xpath + " is: " + value );
     }
     
-    public String getString() {
-        return getURI();
-    }
-    
-    public String toString() {
-        return super.toString() + " [Namespace: prefix " + getPrefix() 
-            + " mapped to URI \"" + getURI() + "\"]";
-    }
-
-    public String asXML() {
-        return "xmlns:" + getPrefix() + "=\"" + getURI() + "\"";
-    }
-    
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
-    }
 }
 
 

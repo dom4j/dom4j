@@ -112,7 +112,7 @@ public class DefaultElement extends AbstractElement {
     public String getText() {
         if ( contents == null ) {
             if ( firstNode != null ) {
-                if ( firstNode instanceof CharacterData ) {
+                if ( firstNode instanceof Text ) {
                     return firstNode.getText();
                 }
             }
@@ -120,6 +120,46 @@ public class DefaultElement extends AbstractElement {
         }
         else {
             return super.getText();
+        }
+    }
+    
+    public String getString() {
+        if ( contents == null ) {
+            if ( firstNode != null ) {
+                if ( firstNode instanceof Text ) {
+                    return firstNode.getText();
+                }
+                else if (firstNode instanceof Element ) {
+                    Element element = (Element) firstNode;
+                    return element.getString();
+                }
+            }
+            return "";
+        }
+        else {
+            StringBuffer buffer = new StringBuffer();
+            for ( int i = 0, size = contents.size(); i < size; i++ ) {
+                Object node = contents.get(i);
+                String string = null;
+                if ( node instanceof String ) {
+                    string = (String) node;
+                }
+                else if ( node instanceof Text ) { 
+                    Text text = (Text) node;
+                    string = text.getText();
+                }
+                else if ( node instanceof Element ) { 
+                    Element element = (Element) node;
+                    string = element.getString();
+                }
+                if ( string != null ) {
+                    if ( buffer.length() > 0 ) {
+                        buffer.append( ' ' );
+                    }
+                    buffer.append( string );
+                }
+            }
+            return buffer.toString();
         }
     }
     
@@ -622,12 +662,8 @@ public class DefaultElement extends AbstractElement {
         return EMPTY_ITERATOR;
     }
 
-    
     public List getAttributes() {
-        if ( attributes == null ) {
-            attributes = createAttributeList();
-        }
-        return attributes;
+        return new ContentListFacade(this, getAttributeList());
     }
     
     public void setAttributes(List attributes) {
@@ -800,6 +836,13 @@ public class DefaultElement extends AbstractElement {
         return contents;
     }
 
+    protected List getAttributeList() {
+        if ( attributes == null ) {
+            attributes = createAttributeList();
+        }
+        return attributes;
+    }
+    
     protected Iterator createSingleIterator( Object result ) {
         return new SingleIterator( result );
     }

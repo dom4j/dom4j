@@ -89,6 +89,10 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
         return null;
     }
     
+    public String getString() {
+        return getText();
+    }
+    
     public void setText(String text) {
         throw new UnsupportedOperationException( "This node cannot be modified" );
     }

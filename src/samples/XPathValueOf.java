@@ -7,63 +7,86 @@
  * $Id$
  */
 
-package org.dom4j.tree;
 
-import org.dom4j.Namespace;
-import org.dom4j.Visitor;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
 
-/** <p><code>AbstractNamespace</code> is an abstract base class for 
-  * tree implementors to use for implementation inheritence.</p>
+import org.dom4j.*;
+import org.dom4j.io.SAXReader;
+
+/** A utility program which performs XPath expressions on one or more XML
+  * files and outputs the valueOf the XPath expression. 
+  * It is similar to the <code>grep</code>
+  * command on Unix but uses XPath valueOf for matching
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public abstract class AbstractNamespace extends AbstractNode implements Namespace {
+public class XPathValueOf extends AbstractDemo {
     
-    public AbstractNamespace() {
+    protected XPath xpath;
+    
+    
+    public static void main(String[] args) {
+        run( new XPathValueOf(), args );
+    }    
+    
+    public XPathValueOf() {
+    }
+        
+    public void run(String[] args) throws Exception {    
+        if ( args.length < 2 ) {
+            printUsage( "{options} <XPath expression> <xml file(s)>" );
+            return;
+        }
+
+        for ( int i = 0, size = args.length; i < size; i++ ) {
+            String arg = args[i];
+            if ( arg.startsWith( "-" ) ) {
+                readOptions( arg );
+            }
+            else {
+                if ( xpath == null ) {
+                    setXPath( arg );
+                }
+                else {
+                    processFile( arg );
+                }
+            }
+        }
     }
 
-    public int hashCode() {
-        return getPrefix().hashCode() ^ getURI().hashCode();
+    public void setXPath(String xpathExpression) {
+        xpath = XPathHelper.createXPath( xpathExpression );
     }
     
-    /** Implements equality test. Two namespaces are equal if and only if
-      * their prefixes and URIs are equal.
-      * 
-      * @param that is the object to compare this to
-      * @return true if this and that are equal namespaces
+    protected void processFile(String fileName) throws Exception {
+        URL url = getFileURL(fileName);
+        SAXReader reader = new SAXReader();
+        Document document = reader.read( url );
+        
+        // perform XPath
+        String value = document.valueOf( xpath );
+        
+        println( value );
+    }
+    
+    /** @return the given file or url as a URL
       */
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
+    protected URL getFileURL(String fileName) throws Exception {
+        try {
+            return new URL( fileName );
         }
-        if (that instanceof Namespace) {
-            Namespace other = (Namespace) that;
-            return getPrefix().equals( other.getPrefix() ) 
-                && getURI().equals( other.getURI() );
+        catch (MalformedURLException e) {
+            File file = new File( fileName );
+            return file.toURL();
         }
-        return false;
-    }
-
-    public String getText() {
-        return getURI();
     }
     
-    public String getString() {
-        return getURI();
-    }
-    
-    public String toString() {
-        return super.toString() + " [Namespace: prefix " + getPrefix() 
-            + " mapped to URI \"" + getURI() + "\"]";
-    }
-
-    public String asXML() {
-        return "xmlns:" + getPrefix() + "=\"" + getURI() + "\"";
-    }
-    
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
+    protected void readOptions( String arg ) {
     }
 }
 

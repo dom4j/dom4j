@@ -135,6 +135,15 @@ public interface Node extends Cloneable {
      */
     public void setText(String text);
     
+    /** Returns the XPath string-value of this node. 
+      * The behaviour of this method is defined in the 
+      * <a href="http://www.w3.org/TR/xpath">XPath specification</a>.
+      *
+      * @return the text from all the child Text and Element nodes appended 
+      * together.
+      */
+    public String getString();    
+    
     
     /** <p><code>asXML</code> returns a representation of this node as 
       * an XML <code>String</code> which is equivalent to the 
