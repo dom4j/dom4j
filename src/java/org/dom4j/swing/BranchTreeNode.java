@@ -94,26 +94,33 @@ public class BranchTreeNode extends LeafTreeNode {
         // are asked for.
         // XXXX - we may wish to detect inconsistencies here....
         if ( children == null ) {
-            // add attributes and content as children?
-            Branch branch = getXmlBranch();
-            int size = branch.nodeCount();
-            children = new ArrayList( size );
-            for ( int i = 0; i < size; i++ ) {
-                Node node = branch.node(i);
-                
-                // ignore whitespace text nodes
-                if ( node instanceof CharacterData ) {
-                    String text = node.getText();
-                    if ( text == null ) {
-                        continue;
-                    }
-                    text = text.trim();
-                    if ( text.length() <= 0 ) {
-                        continue;
-                    }
+            children = createChildList();
+        }
+        return children;
+    }
+    
+    
+    /** Factory method to create List of children TreeNodes */
+    protected List createChildList() {
+        // add attributes and content as children?
+        Branch branch = getXmlBranch();
+        int size = branch.nodeCount();
+        List children = new ArrayList( size );
+        for ( int i = 0; i < size; i++ ) {
+            Node node = branch.node(i);
+            
+            // ignore whitespace text nodes
+            if ( node instanceof CharacterData ) {
+                String text = node.getText();
+                if ( text == null ) {
+                    continue;
                 }
-                children.add( createChildTreeNode( node ) );
+                text = text.trim();
+                if ( text.length() <= 0 ) {
+                    continue;
+                }
             }
+            children.add( createChildTreeNode( node ) );
         }
         return children;
     }
