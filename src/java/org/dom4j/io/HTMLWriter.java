@@ -516,7 +516,6 @@ public class HTMLWriter extends XMLWriter {
 
         String qualifiedName = element.getQualifiedName();
         String saveLastText = m_lastText;
-        String seq = ""+vestek.util.VesTools.now();
         int size = element.nodeCount();
         if (  isPreformattedTag(qualifiedName)  ) {
             OutputFormat currentFormat = getOutputFormat();
