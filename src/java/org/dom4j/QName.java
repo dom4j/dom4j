@@ -54,11 +54,23 @@ public class QName implements Serializable {
     }
 
     public static QName get(String name, String prefix, String uri) {
-        return getCache().get(name, Namespace.get( prefix, uri ));
+        if ((prefix == null || prefix.length() == 0) && (uri == null)) {
+            return QName.get(name);
+        } else if (prefix == null || prefix.length() == 0) {
+            return getCache().get(name, Namespace.get(uri));
+        } else if (uri == null) {
+            return QName.get(name);
+        } else {
+            return getCache().get(name, Namespace.get(prefix, uri));
+        }
     }
 
     public static QName get(String qualifiedName, String uri) {
-        return getCache().get(qualifiedName, uri);
+        if (uri == null) {
+            return getCache().get(qualifiedName);
+        } else {
+            return getCache().get(qualifiedName, uri);
+        }
     }
 
     public static QName get(String localName, Namespace namespace, String qualifiedName) {
