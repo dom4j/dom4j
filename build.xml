@@ -527,6 +527,10 @@
     <java classname="XSLTDemo" args="xml/nitf_sample.xml xml/nitf_ashtml.xsl"/>
   </target>
 
+  <target name="demo-swing" depends="samples">
+    <java classname="swing.JTreeDemo" args="xml/web.xml"/>
+  </target>
+
   <target name="demo-bigdoc" depends="samples">
     <java classname="LargeDocumentDemo" args="xml/much_ado.xml /PLAY/ACT"/>
   </target>

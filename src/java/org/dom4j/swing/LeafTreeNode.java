@@ -7,87 +7,99 @@
  * $Id$
  */
 
-import java.net.URL;
+package org.dom4j.swing;
 
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamSource;
+import java.util.Enumeration;
 
-import org.dom4j.Document;
-import org.dom4j.io.DocumentResult;
-import org.dom4j.io.DocumentSource;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
+import javax.swing.tree.TreeNode;
+   
+import org.dom4j.Node;
 
-import org.xml.sax.InputSource;
-
-
-/** A simple test program to demonstrate using SAX to create a DOM4J tree
+/** <p><code>LeafTreeNode</code> implements the Swing TreeNode interface
+  * to bind a leaf XML nodes to a Swing TreeModel.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
-  * @version $Revision$
+  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a> (james.strachan@metastuff.com)
+  * @author Jakob Jenkov
+  * @version $Revision$ 
   */
-public class XSLTDemo extends SAXDemo {
-    
-    private URL xsl;
-    
-    
-    public static void main(String[] args) {
-        run( new XSLTDemo(), args );
-    }    
-    
-    public XSLTDemo() {
-    }
-    
-    public void run(String[] args) throws Exception {    
-        if ( args.length < 2) {
-            printUsage();
-            return;
-        }
-        
-        int idx = format.parseOptions( args, 0 );
-        if ( args.length - idx < 2 ) {
-            printUsage();
-            return;
-        }
-        else {
-            writer = createXMLWriter();
-            
-            Document document = parse( args[idx++] );
-            
-            xsl = getURL( args[idx++] );
-            
-            process(document);
-        }
-    }
-    
-    protected void printUsage() {
-        printUsage( "<XML URL> <XSLT URL>" );
-    }
-    
-    
-    /** Perform XSLT on the stylesheet */
-    protected void process(Document document) throws Exception {
-        // load the transformer
-        TransformerFactory factory = TransformerFactory.newInstance();
-        Transformer transformer = factory.newTransformer( 
-            new StreamSource( xsl.toString() ) 
-        );
-        
-        // now lets create the TRaX source and result
-        // objects and do the transformation
-        Source source = new DocumentSource( document );
-        DocumentResult result = new DocumentResult();
-        transformer.transform( source, result );
+public class LeafTreeNode implements TreeNode {
 
-        // output the transformed document
-        Document transformedDoc = result.getDocument();
-        writer.write( transformedDoc );
-    }
+    protected static final Enumeration EMPTY_ENUMERATION = new Enumeration() {
+        public boolean hasMoreElements() {
+            return false;
+        }
+        public Object nextElement() {
+            return null;
+        }
+    };
 
+    /** The parent node of this TreeNode */
+    private TreeNode parent;
+    
+    /** The dom4j Node which contains the */
+    protected Node xmlNode;
+
+    
+    public LeafTreeNode() {
+    }
+    
+    public LeafTreeNode(Node xmlNode) {
+        this.xmlNode = xmlNode;
+    }
+    
+    public LeafTreeNode(TreeNode parent, Node xmlNode) {
+        this.parent = parent;
+        this.xmlNode = xmlNode;
+    }
+    
+
+    // TreeNode methods
+    //-------------------------------------------------------------------------                
+    public Enumeration children() {
+        return EMPTY_ENUMERATION;
+    }
+    
+    public boolean getAllowsChildren() {
+        return false;
+    }
+    
+    public TreeNode getChildAt(int childIndex) {
+        return null;
+    }
+    
+    public int getChildCount() {
+        return 0;
+    }
+    
+    public int getIndex(TreeNode node) {
+        return -1;
+    }
+    
+    public TreeNode getParent() {
+        return parent;
+    }
+    
+    public boolean isLeaf() {
+        return true;
+    }
+    
+    public String toString() {
+        // should maybe do things differently based on content?
+        String text = xmlNode.getText();
+        return (text != null) ? text.trim() : "";
+    }
+    
+    // Properties
+    //-------------------------------------------------------------------------                
+    
+    /** Sets the parent of this node but doesn't change the parents children */
+    public void setParent(LeafTreeNode parent) {
+        this.parent = parent;
+    }
+    
+    public Node getXmlNode() {
+        return xmlNode;
+    }
 }
 
 

@@ -7,85 +7,49 @@
  * $Id$
  */
 
+package swing;
+
+import SAXDemo;
+
 import java.net.URL;
 
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamSource;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
 
 import org.dom4j.Document;
-import org.dom4j.io.DocumentResult;
-import org.dom4j.io.DocumentSource;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
+import org.dom4j.swing.DocumentTreeModel;
 
 import org.xml.sax.InputSource;
 
 
-/** A simple test program to demonstrate using SAX to create a DOM4J tree
+/** A sample program to build a JTree GUI from a dom4j Document
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author Jakob Jenkov
   * @version $Revision$
   */
-public class XSLTDemo extends SAXDemo {
-    
-    private URL xsl;
-    
+public class JTreeDemo extends SAXDemo {
     
     public static void main(String[] args) {
-        run( new XSLTDemo(), args );
+        run( new JTreeDemo(), args );
     }    
     
-    public XSLTDemo() {
-    }
-    
-    public void run(String[] args) throws Exception {    
-        if ( args.length < 2) {
-            printUsage();
-            return;
-        }
-        
-        int idx = format.parseOptions( args, 0 );
-        if ( args.length - idx < 2 ) {
-            printUsage();
-            return;
-        }
-        else {
-            writer = createXMLWriter();
-            
-            Document document = parse( args[idx++] );
-            
-            xsl = getURL( args[idx++] );
-            
-            process(document);
-        }
-    }
-    
-    protected void printUsage() {
-        printUsage( "<XML URL> <XSLT URL>" );
+    public JTreeDemo() {
     }
     
     
-    /** Perform XSLT on the stylesheet */
+    /** Create a Swing GUI containing the document */
     protected void process(Document document) throws Exception {
-        // load the transformer
-        TransformerFactory factory = TransformerFactory.newInstance();
-        Transformer transformer = factory.newTransformer( 
-            new StreamSource( xsl.toString() ) 
-        );
+        DocumentTreeModel treeModel = new DocumentTreeModel( document );
+        JTree tree = new JTree( treeModel );
         
-        // now lets create the TRaX source and result
-        // objects and do the transformation
-        Source source = new DocumentSource( document );
-        DocumentResult result = new DocumentResult();
-        transformer.transform( source, result );
-
-        // output the transformed document
-        Document transformedDoc = result.getDocument();
-        writer.write( transformedDoc );
+        JFrame frame = new JFrame( "JTreeDemo: " + document.getName() );
+        frame.setSize(300, 300);
+        frame.setLocation(100, 100);
+        frame.getContentPane().add( new JScrollPane( tree ) );
+        frame.validate();
+        frame.setVisible(true);
     }
 
 }
