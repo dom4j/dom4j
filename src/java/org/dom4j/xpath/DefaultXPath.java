@@ -51,6 +51,7 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter {
 
     private String text;
     private BaseXPath xpath;
+    private NamespaceContext namespaceContext;
     
 
     /** Construct an XPath
@@ -84,10 +85,11 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter {
     }
     
     public NamespaceContext getNamespaceContext() {
-        return xpath.getNamespaceContext();
+        return namespaceContext;
     }
     
     public void setNamespaceContext(NamespaceContext namespaceContext) {
+        this.namespaceContext = namespaceContext;
         xpath.setNamespaceContext(namespaceContext);
     }
     
@@ -101,6 +103,7 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter {
     
     public Object selectObject(Object context) {
         try {
+            setNSContext(context);
             List answer = xpath.selectNodes( context );
             if ( answer != null && answer.size() == 0 ) {
                 return answer.get(0);
@@ -115,6 +118,7 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter {
 
     public List selectNodes(Object context) {
         try {
+            setNSContext(context);
             return xpath.selectNodes( context );
         }
         catch (JaxenException e) {
@@ -138,6 +142,7 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter {
     
     public Node selectSingleNode(Object context) {
         try {
+            setNSContext(context);
             Object answer = xpath.selectSingleNode( context );
             if ( answer instanceof Node ) {
                 return (Node) answer;
@@ -160,6 +165,7 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter {
     
     public String valueOf(Object context) {
         try {
+            setNSContext(context);
             return xpath.valueOf( context );
         }
         catch (JaxenException e) {
@@ -170,6 +176,7 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter {
 
     public Number numberValueOf(Object context) {
         try {
+            setNSContext(context);
             return xpath.numberValueOf( context );
         }
         catch (JaxenException e) {
@@ -217,6 +224,7 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter {
     
     public boolean matches( Node node ) {
         try {
+            setNSContext(node);
             List answer = xpath.selectNodes( node );
             if ( answer != null && answer.size() > 0 ) {
                 Object item = answer.get(0);
@@ -302,6 +310,12 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter {
         throw new InvalidXPathException( text );
     }
     
+    protected void setNSContext(Object context) {
+        if ( namespaceContext == null ) {
+            xpath.setNamespaceContext( DefaultNamespaceContext.create(context) );
+        }
+    }
+        
     protected void handleJaxenException(JaxenException e) throws XPathException {
         throw new XPathException(text, e);
     }

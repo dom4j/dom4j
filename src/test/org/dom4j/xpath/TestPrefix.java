@@ -22,6 +22,8 @@ import org.dom4j.Namespace;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 
+import org.jaxen.SimpleNamespaceContext;
+
 /** Tests finding items using a namespace prefix
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
@@ -64,11 +66,17 @@ public class TestPrefix extends AbstractTestCase {
     //-------------------------------------------------------------------------                    
     protected void testXPath(String xpathText) {
         XPath xpath = DocumentHelper.createXPath(xpathText);
+        
+        SimpleNamespaceContext context = new SimpleNamespaceContext();
+        context.addNamespace( "xplt", "www.xxxx.com" );
+        context.addNamespace( "xpl", "www.xxxx.com" );
+        xpath.setNamespaceContext( context );
+        
         List list = xpath.selectNodes( document );
         
         log( "Searched path: " + xpathText + " found: " + list.size() + " result(s)" );
 
-        assertTrue( list.size() > 0 );
+        assertTrue( "Should have found at lest one result", list.size() > 0 );
         
         if ( VERBOSE ) {
             log( "xpath: " + xpath );

@@ -1184,6 +1184,19 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         return answer;
     }
     
+    // Implementation helper methods
+    //-------------------------------------------------------------------------    
+
+    /** Ensures that the list of attributes has the given size */
+    public void ensureAttributesCapacity(int minCapacity) {
+        if ( minCapacity > 1 ) {
+            List list = attributeList();
+            if ( list instanceof ArrayList ) {
+                ArrayList arrayList = (ArrayList) list;
+                arrayList.ensureCapacity(minCapacity);            
+            }
+        }
+    }
     
     // Implementation methods
     //-------------------------------------------------------------------------    

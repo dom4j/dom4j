@@ -94,8 +94,8 @@ public class TestVariable extends AbstractTestCase {
         rootNode = document.selectSingleNode( "/root" );
         authorNode = document.selectSingleNode( "/root/author[1]" );
         
-        variableContext.setVariableValue( "", "root", rootNode );
-        variableContext.setVariableValue( "", "author", authorNode );
+        variableContext.setVariableValue( "root", rootNode );
+        variableContext.setVariableValue( "author", authorNode );
     }
 }
 

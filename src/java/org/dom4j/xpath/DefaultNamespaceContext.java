@@ -7,60 +7,57 @@
  * $Id$
  */
 
-package org.dom4j.dtd;
+package org.dom4j.xpath;
 
-/** <p><code>InternalEntityDecl</code> represents an internal entity declaration in a DTD.</p>
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.Namespace;
+import org.dom4j.Node;
+
+import org.jaxen.NamespaceContext;
+
+
+/** <p><code>DefaultNamespaceContext</code> implements a Jaxen 
+  * NamespaceContext such that a context node is used
+  * to determine the current XPath namespace prefixes and namespace URIs 
+  * available.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
-  * @version $Revision$
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   */
-public class InternalEntityDecl {
+public class DefaultNamespaceContext implements NamespaceContext {
 
-    /** Holds value of property name. */
-    private String name;
+    private final Element element;
     
-    /** Holds value of property value. */
-    private String value;
-    
-    
-    public InternalEntityDecl() {
+    public DefaultNamespaceContext(Element element) {
+        this.element = element;
     }
 
-    public InternalEntityDecl(String name, String value) {
-        this.name = name;
-        this.value = value;
-    }
-
-    /** Getter for property name.
-     * @return Value of property name.
-     */
-    public String getName() {
-        return name;
-    }
-    
-    /** Setter for property name.
-     * @param name New value of property name.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    /** Getter for property value.
-     * @return Value of property value.
-     */
-    public String getValue() {
-        return value;
+    public static DefaultNamespaceContext create(Object node) {
+        Element element = null;
+        if ( node instanceof Element ) {
+            element = (Element) node;
+        }
+        if ( node instanceof Document ) {
+            Document doc = (Document) node;
+            element = doc.getRootElement();
+        }
+        else if ( node instanceof Node ) {
+            element = ((Node) node).getParent();
+        }
+        if (element != null) {
+            return new DefaultNamespaceContext(element);
+        }
+        return null;
     }
     
-    /** Setter for property value.
-     * @param value New value of property value.
-     */
-    public void setValue(String value) {
-        this.value = value;
-    }
-    
-    public String toString() {
-        return "<!ENTITY " + name + " \"" + value + "\">";
+    public String translateNamespacePrefixToUri(String prefix) {
+        if ( prefix != null && prefix.length() > 0 ) {
+            Namespace ns = element.getNamespaceForPrefix( prefix );
+            if ( ns != null ) {
+                return ns.getURI();
+            }
+        }
+        return null;
     }
 }
 

@@ -49,6 +49,8 @@ List externalDecls = docType.getExternalDeclarations();
         </section>
 
         <section title="Patches">
+        <p>Applied patch submitted by Yuxin Ruan
+        </p>
         <p>Followed Dennis Sosnoski's suggestion, adding a null text String to an Element
           now throws an IllegalArgumentException.
           To ensure that the IllegalArgumentException is not thrown its advisable

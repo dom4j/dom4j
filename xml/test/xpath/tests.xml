@@ -302,7 +302,6 @@
       <test select="/*" count="1"/>
       <test select="/foo:a" count="1"/>
       <test select="/foo:a/b" count="1"/>
-      <test select="/foo:a/*:f" count="1"/>
       <test select="/foo:a/bar:f" count="1"/>
       <test select="/*[namespace-uri()='fooNamespace' and local-name()='a']" count="1"/>
       <test select="/*[local-name()='a' and namespace-uri()='fooNamespace']/*[local-name()='x' and namespace-uri()='fooNamespace']" count="1"/>
@@ -311,14 +310,7 @@
     <context select="/">
       <valueOf select="/foo:a/b/c">Hello</valueOf>
       <valueOf select="/foo:a/foo:d/foo:e">Hey</valueOf>
-      <valueOf select="/*:a/*:d/*:e">Hey</valueOf>
-      <valueOf select="/foo:a/*:d/*:e">Hey</valueOf>
-      <valueOf select="/foo:a/*:f/*:g">Hey2</valueOf>
-      <valueOf select="/foo:a/*:f/bar:g">Hey2</valueOf>
-      <valueOf select="/foo:a/*:x/*:y">Hey3</valueOf>
-      <valueOf select="/foo:a/*:x/alias:y">Hey3</valueOf>
       <valueOf select="/foo:a/alias:x/alias:y">Hey3</valueOf>
-      <valueOf select="/foo:a/*:x/foo:y">Hey3</valueOf>
       <valueOf select="/foo:a/foo:x/foo:y">Hey3</valueOf>
       <valueOf select="/*[local-name()='a' and namespace-uri()='fooNamespace']/*[local-name()='x' and namespace-uri()='fooNamespace']/*[local-name()='y' and namespace-uri()='fooNamespace']">Hey3</valueOf>
     </context>
