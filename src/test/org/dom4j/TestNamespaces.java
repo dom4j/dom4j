@@ -257,6 +257,13 @@ public class TestNamespaces extends AbstractTestCase {
     }
 
     public void testDefaultNamespaceIssue(Document document) throws Exception {
+        // When writing documents using a default namespace with XMLWriter
+        // a redeclaration of the default namespace to "" was dropped in the output.
+        // Test that <xsd:schema><xsd:element><xsd:annotation><xsd:documentation><text> 
+        // is in no namespace.
+        assertNotNull("default namespace redeclaration", (Element)document.selectSingleNode(
+            "/xsd:schema/xsd:element/xsd:annotation/xsd:documentation/text"));
+
         // The test document has a default namespace declaration on the root
         // element ("schema"), but the element itself is not in the default
         // namespace. Test that declaredNamespaces on the root element also
