@@ -133,6 +133,24 @@ public class TestContent extends AbstractTestCase {
         assertTrue( "Second element is an element", root instanceof Element );
         
     }
+    
+    public void testAddingInTheMiddle() throws Exception {
+        Document doc = factory.createDocument();
+        Element root = doc.addElement( "html" );
+        Element header = root.addElement( "header" );
+        Element footer = root.addElement( "footer" );
+
+        // now lets add <foo> in between header & footer
+        List list = root.content();
+        Element foo = factory.createElement( "foo" );
+        list.add( 1, foo );
+
+        // assertions
+        assertTrue( list.size() == 3 );
+        assertTrue( list.get(0) == header );
+        assertTrue( list.get(1) == foo );
+        assertTrue( list.get(2) == footer );
+    }
         
     // Implementation methods
     //-------------------------------------------------------------------------                    
