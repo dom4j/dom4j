@@ -46,73 +46,97 @@ public class Stylesheet {
     /** Runs this stylesheet on the given input which should be 
       * either a Node or a List of Node objects.
       */
-    public void run( Object input ) throws Exception {
-        if ( input instanceof Node ) {
-            run ( (Node) input );
+    public void run(Object input) throws Exception {
+        run(input, this.modeName);
+    }
+    
+    public void run(Object input, String mode) throws Exception {
+        if (input instanceof Node) {
+            run ((Node) input, mode);
+        }
+        else if (input instanceof List) {
+            run((List) input, mode);
+        }
+    }
+    
+    public void run(List list) throws Exception {
+        run(list, this.modeName);
+    }
+    
+    public void run(List list, String mode) throws Exception {
+        for (int i = 0, size = list.size(); i < size; i++) {
+            Object object = list.get(i);
+            if (object instanceof Node) {
+                run((Node) object, mode);
+            }
+        }
+    }
+    
+    public void run(Node node) throws Exception {
+        run(node, this.modeName);
+    }
+    
+    public void run(Node node, String mode) throws Exception {
+        Mode mod = ruleManager.getMode(mode);
+        mod.fireRule(node);
+    }
+    
+    
+    public void applyTemplates(Object input, XPath xpath) throws Exception {
+        applyTemplates(input, xpath, this.modeName);
+    }
+    
+    public void applyTemplates(Object input, XPath xpath, String mode) throws Exception {
+        List list = xpath.selectNodes(input);
+        list.remove(input);
+        applyTemplates(list, mode);
+//        for ( int i = 0, size = list.size(); i < size; i++ ) {
+//            Object object = list.get(i);
+//            if ( object != input && object instanceof Node ) {
+//                run( (Node) object );
+//            }
+//        }
+    }
+    
+    public void applyTemplates(Object input, org.jaxen.XPath xpath) throws Exception {
+        applyTemplates(input, xpath, this.modeName);
+    }
+    
+    public void applyTemplates(Object input, org.jaxen.XPath xpath, String mode) throws Exception {
+        List list = xpath.selectNodes(input);
+        applyTemplates(list, mode);
+//        for ( int i = 0, size = list.size(); i < size; i++ ) {
+//            Object object = list.get(i);
+//            if ( object != input && object instanceof Node ) {
+//                run( (Node) object );
+//            }
+//        }
+    }
+    
+    public void applyTemplates(Object input) throws Exception {
+        applyTemplates(input, this.modeName);
+    }
+    
+    public void applyTemplates(Object input, String mode) throws Exception {
+        // iterate through all children
+        Mode mod = ruleManager.getMode(mode);
+
+        if ( input instanceof Element ) {
+            mod.applyTemplates( (Element) input );
+        }
+        else if ( input instanceof Document ) { 
+            mod.applyTemplates( (Document) input );
         }
         else if ( input instanceof List ) {
-            run( (List) input );
-        }
-    }
-    
-    public void run( List list ) throws Exception {
-        for ( int i = 0, size = list.size(); i < size; i++ ) {
-            Object object = list.get(i);
-            if ( object instanceof Node ) {
-                run( (Node) object );
-            }
-        }
-    }
-    
-    public void run( Node node ) throws Exception {
-        Mode mode = getMode();
-        if ( mode != null ) {
-            mode.fireRule( node );
-        }
-    }
-    
-    
-    public void applyTemplates( Object input, XPath xpath ) throws Exception {
-        List list = xpath.selectNodes( input );
-        for ( int i = 0, size = list.size(); i < size; i++ ) {
-            Object object = list.get(i);
-            if ( object != input && object instanceof Node ) {
-                run( (Node) object );
-            }
-        }
-    }
-    
-    public void applyTemplates( Object input, org.jaxen.XPath xpath ) throws Exception {
-        List list = xpath.selectNodes( input );
-        for ( int i = 0, size = list.size(); i < size; i++ ) {
-            Object object = list.get(i);
-            if ( object != input && object instanceof Node ) {
-                run( (Node) object );
-            }
-        }
-    }
-    
-    public void applyTemplates( Object input ) throws Exception {
-        // iterate through all children
-        Mode mode = getMode();
-        if ( mode != null ) {
-            if ( input instanceof Element ) {
-                mode.applyTemplates( (Element) input );
-            }
-            else if ( input instanceof Document ) { 
-                mode.applyTemplates( (Document) input );
-            }
-            else if ( input instanceof List ) {
-                List list = (List) input;
-                for ( int i = 0, size = list.size(); i < size; i++ ) {
-                    Object object = list.get(i);
-                    if ( object != input ) {
-                        if ( object instanceof Element ) {
-                            mode.applyTemplates( (Element) object );
-                        }
-                        else if ( object instanceof Document ) { 
-                            mode.applyTemplates( (Document) object );
-                        }
+            List list = (List) input;
+            for ( int i = 0, size = list.size(); i < size; i++ ) {
+                Object object = list.get(i);
+                if ( object != input ) {
+                    if ( object instanceof Element ) {
+                        mod.applyTemplates( (Element) object );
+                    }
+                    else if ( object instanceof Document ) { 
+                        mod.applyTemplates( (Document) object );
                     }
                 }
             }
@@ -152,14 +176,6 @@ public class Stylesheet {
     public void setValueOfAction(Action valueOfAction) {
         ruleManager.setValueOfAction( valueOfAction );
     }
-    
-
-    // Implementation methods
-    //------------------------------------------------------------------------- 
-    protected Mode getMode() {
-        return ruleManager.getMode( modeName );
-    }
-    
     
 }
 
