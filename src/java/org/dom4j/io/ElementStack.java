@@ -105,7 +105,7 @@ class ElementStack implements ElementPath {
     //
     public int size()
     {
-        return stack.length;
+        return lastElementIndex + 1;
     }
     
     public Element getElement(int depth)
