@@ -10,6 +10,7 @@
 package org.dom4j.io;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -71,9 +72,8 @@ import org.xml.sax.ext.LexicalHandler;
   */
 public class XMLWriter implements ContentHandler, LexicalHandler {
 
-    private static final boolean ESCAPE_XML_ENTITIES = true;
-    private static final boolean ESCAPE_TEXT = false;
-    private static final boolean SUPPORT_PAD_TEXT = true;
+    private static final boolean ESCAPE_TEXT = true;
+    private static final boolean SUPPORT_PAD_TEXT = false;
     
     protected static final OutputFormat DEFAULT_FORMAT = new OutputFormat();
 
@@ -106,12 +106,14 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         this.format = format;
     }
     
-    public XMLWriter() throws UnsupportedEncodingException {
-        this( DEFAULT_FORMAT );
+    public XMLWriter() {
+        this.format = DEFAULT_FORMAT;
+        this.writer = new OutputStreamWriter( System.out );
     }
 
     public XMLWriter(OutputStream out) throws UnsupportedEncodingException {
-        this( out, DEFAULT_FORMAT );
+        this.format = DEFAULT_FORMAT;
+        this.writer = createWriter(out, format.getEncoding());
     }
     
     public XMLWriter(OutputStream out, OutputFormat format) throws UnsupportedEncodingException {
@@ -782,10 +784,9 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
      * Get an OutputStreamWriter, use preferred encoding.
      */
     protected Writer createWriter(OutputStream outStream, String encoding) throws UnsupportedEncodingException {
-        Writer writer = new OutputStreamWriter(
-            new BufferedOutputStream(outStream), encoding
+        return new BufferedWriter( 
+            new OutputStreamWriter( outStream, encoding )
         );
-        return writer;
     }
 
     /**
@@ -871,11 +872,11 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
       * entity reference, suitable for XML attributes.
       */
     protected String escapeElementEntities(String text) {
-        char[] block = text.toCharArray();
-        int i, last = 0, size = block.length;
+        char[] block = null;
+        int i, last = 0, size = text.length();
         for ( i = 0; i < size; i++ ) {
             String entity = null;
-            switch(block[i]) {
+            switch( text.charAt(i) ) {
                 case '<' :
                     entity = "&lt;";
                     break;
@@ -887,6 +888,9 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
                     break;
             }
             if (entity != null) {
+                if ( block == null ) {
+                    block = text.toCharArray();
+                }
                 buffer.append(block, last, i - last);
                 buffer.append(entity);
                 last = i + 1;
@@ -895,7 +899,10 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         if ( last == 0 ) {
             return text;
         }
-        if ( last < block.length ) {
+        if ( last < size ) {
+            if ( block == null ) {
+                block = text.toCharArray();
+            }
             buffer.append(block, last, i - last);
         }
         String answer = buffer.toString();
@@ -908,11 +915,11 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
       * entity reference, suitable for XML attributes.
       */
     protected String escapeAttributeEntities(String text) {
-        char[] block = text.toCharArray();
-        int i, last = 0, size = block.length;
+        char[] block = null;
+        int i, last = 0, size = text.length();
         for ( i = 0; i < size; i++ ) {
             String entity = null;
-            switch(block[i]) {
+            switch( text.charAt(i) ) {
                 case '<' :
                     entity = "&lt;";
                     break;
@@ -930,6 +937,9 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
                     break;
             }
             if (entity != null) {
+                if ( block == null ) {
+                    block = text.toCharArray();
+                }
                 buffer.append(block, last, i - last);
                 buffer.append(entity);
                 last = i + 1;
@@ -938,7 +948,10 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         if ( last == 0 ) {
             return text;
         }
-        if ( last < block.length ) {
+        if ( last < size ) {
+            if ( block == null ) {
+                block = text.toCharArray();
+            }
             buffer.append(block, last, i - last);
         }
         String answer = buffer.toString();
