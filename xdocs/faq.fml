@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document>
+<faqs title="Frequently Asked Questions">
 
 <part id="general">
   <title>General</title>
@@ -625,7 +625,7 @@ Document doc = reader.parse( "foo.xml" );
   </faq>
 
 </part>
-</document>
+</faqs>
 
 
 
