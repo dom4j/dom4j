@@ -289,7 +289,7 @@
   <reports>
      <report>maven-changelog-plugin</report>
      <report>maven-changes-plugin</report>
-     <report>maven-clover</report>
+     <report>maven-clover-plugin</report>
      <report>maven-developer-activity-plugin</report>
      <report>maven-faq-plugin</report>
      <report>maven-file-activity-plugin</report>
