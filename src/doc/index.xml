@@ -46,15 +46,7 @@
     </section>
 
     <section title="Mailing Lists">
-      <p>For <i>dom4j</i> users there is an email list at
-        <a href="http://lists.sourceforge.net/lists/listinfo/dom4j-user">
-          dom4j-user
-        </a> 
-        where you can share ideas and experiences, ask for help, 
-        give us feedback or discuss your requirements.
-      </p>
-
-      <p>For geeks and advanced techies there is an email list at 
+      <p>For developers there is an email list at 
         <a href="http://lists.sourceforge.net/lists/listinfo/dom4j-dev">
           dom4j-dev
         </a> 
@@ -62,6 +54,14 @@
         discuss alternate implementation strategies, submit patches or just
         talk about any relevant topic of the day.
       </p>        
+      <p>For <i>dom4j</i> users wanting help using dom4j there is an email list at
+        <a href="http://lists.sourceforge.net/lists/listinfo/dom4j-user">
+          dom4j-user
+        </a> 
+        where you can share ideas and experiences, ask for help, 
+        give us feedback or discuss your requirements.
+      </p>
+
     </section>
 
   </body>
