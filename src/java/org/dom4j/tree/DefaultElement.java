@@ -681,6 +681,33 @@ public class DefaultElement extends AbstractElement {
         this.attributes = attributes;
     }
     
+    public Iterator attributeIterator() {
+        if ( attributes == null ) {
+            return EMPTY_ITERATOR;
+        }
+        else {
+            return attributeList().iterator();
+        }
+    }
+    
+    public Attribute attribute(int index) {
+        if ( attributes == null ) {
+            return null;
+        }
+        else {
+            return (Attribute) attributeList().get(index);
+        }
+    }
+            
+    public int attributeCount() {
+        if ( attributes == null ) {
+            return 0;
+        }
+        else {
+            return attributeList().size();
+        }
+    }
+    
     public Attribute attribute(String name) {
         if ( attributes != null ) {
             int size = attributes.size();
