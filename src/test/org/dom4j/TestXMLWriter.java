@@ -214,6 +214,21 @@ public class TestXMLWriter extends AbstractTestCase {
         assertEquals( "getText() returns the correct text padding", expected, doc2.getRootElement().element("meaning").getText() );
     }
     
+    /*
+     * This must be tested manually to see if the layout is correct.
+     */
+    public void testPrettyPrinting() throws Exception {
+        Document doc = DocumentFactory.getInstance().createDocument(); 
+        doc.addElement("summary").addAttribute("date", "6/7/8").addElement("orderline").addText("puffins").addElement("ranjit").addComment("Ranjit is a happy Puffin"); 
+        XMLWriter writer = new XMLWriter(System.out, OutputFormat.createPrettyPrint()); 
+        writer.write(doc);
+
+        doc = DocumentFactory.getInstance().createDocument(); 
+        doc.addElement("summary").addAttribute("date", "6/7/8").addElement("orderline").addText("puffins").addElement("ranjit").addComment("Ranjit is a happy Puffin").addComment("another comment").addElement("anotherElement"); 
+        writer.write(doc);
+    }
+
+    
     protected void generateXML(ContentHandler handler) throws SAXException {
     handler.startDocument();
     AttributesImpl attrs = new AttributesImpl();

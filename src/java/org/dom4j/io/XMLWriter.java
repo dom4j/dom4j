@@ -756,6 +756,9 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
             else if ( node instanceof Element) {
                 textOnly = false;
             }
+            else if ( node instanceof Comment) {
+                textOnly = false;
+            }
         }
 
         writeAttributes(element);
@@ -1060,16 +1063,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     protected void writeComment(String text) throws IOException {
         if (format.isNewlines()) {
-            if ( lastOutputNodeType != Node.COMMENT_NODE ) {
-                println();
-            }
+            println();
             indent();
         }
         writer.write( "<!--" );
         writer.write( text );
         writer.write( "-->" );
-
-        writePrintln();
 
         lastOutputNodeType = Node.COMMENT_NODE;
     }
