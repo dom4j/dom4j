@@ -286,8 +286,20 @@
   <target name="doc" depends="prepare">
     <mkdir    dir="${doc.dir}/images"/>
     <mkdir    dir="${build.doc}"/>
+    <style basedir="${doc.dir}"
+           destdir="${build.doc}"
+           style="${doc.dir}/style/style.xsl"
+           classpath="${lib.dir}/jaxp.jar:${lib.dir}/tools/saxon.jar"
+           processor="trax"
+           includes="**/*.xml"
+           excludes="style/**,project.xml,cookbook/**,docbook/**"
+    />
+    <!-- **** comment out by tradem on 02-02-08  ****
+
     <style    basedir="${doc.dir}" destdir="${build.doc}" style="${doc.dir}/style/style.xsl"
               includes="**/*.xml" excludes="style/**,project.xml,cookbook/**,docbook/**"/>
+
+    -->
     <copy todir="${build.doc}" overwrite="yes"> 
       <fileset dir="${doc.dir}" includes="license.txt,document.dtd"/>
     </copy>
