@@ -486,7 +486,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
             indent();
             writer.write("<");
             writer.write(qName);
-            write( attributes );
+            writeAttributes( attributes );
             writer.write(">");
             ++indentLevel;
             lastOutputNodeType = Node.ELEMENT_NODE;
