@@ -80,12 +80,15 @@ public class SchemaElement extends DefaultElement implements ValidationContext {
     //-------------------------------------------------------------------------
     public Object getData() {
         if ( data == null ) {
-            if ( datatype instanceof DatabindableDatatype ) {
-                DatabindableDatatype bindable = (DatabindableDatatype) datatype;
-                data = bindable.createJavaObject( getTextTrim(), this );
-            }
-            else {
-                data = datatype.createValue( getTextTrim(), this );
+            String text = getTextTrim();
+            if ( text != null && text.length() > 0 ) {
+                if ( datatype instanceof DatabindableDatatype ) {
+                    DatabindableDatatype bindable = (DatabindableDatatype) datatype;
+                    data = bindable.createJavaObject( text, this );
+                }
+                else {
+                    data = datatype.createValue( text, this );
+                }
             }
         }
         return data;

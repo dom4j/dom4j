@@ -73,11 +73,6 @@ public class TestAutoSchema extends AbstractDataTypeTest {
     public void testInteger() throws Exception {        
         testNodes( "//person/@age", BigInteger.class );
     }
-/*
- * these don't yet work due to a bug in Sun's xsdlib 
- *
- 
-*/
 
     
     // Implementation methods
