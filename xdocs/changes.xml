@@ -8,6 +8,23 @@
   <body>
 
     <release version="1.6-dev" date="in CVS">
+      <action dev="maartenc" type="update">
+        Changed the <code>DocumentHelper.parseText(String)</code> method to make sure
+        that the XML encoding is always set (if known) on the returned <code>Document</code>,
+        even if the used SAXParser doesn't provide a way to retrieve that encoding.
+      </action>
+      <action dev="maartenc" type="add">
+        Added a <code>setXMLEncoding(String)</code> method to the <code>Document</code>
+        interface.
+      </action>
+      <action dev="maartenc" type="fix" due-to="John Plaxton">
+        Removed a static <code>OutputFormat</code> field from <code>AbstractBranch</code>.
+        This can cause problems if multiple threads are using the <code>asXML()</code>
+        method simultaniously.
+      </action>
+      <action dev="maartenc" type="fix" due-to="Brett Porter">
+        Fixed a whitespace problem with the pretty-print <code>OutputFormat</code>.
+      </action>
       <action dev="maartenc" type="fix" due-to="Peter Schaefer">
         Fixed a bug in the <code>DefaultElement.setContent(List)</code> method that
         caused incorrectly resetting the parent of the nodes in the list.
