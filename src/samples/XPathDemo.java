@@ -1,7 +1,9 @@
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.dom4j.*;
+import org.dom4j.io.XMLWriter;
 
 /** A sample program to demonstrate the use of XPath expressions.
   *
@@ -43,7 +45,19 @@ public class XPathDemo extends SAXDemo {
         
         List list = document.selectNodes( xpath );
         
-        println( "Found: " + list.size() + " node(s)" );
-        println( "List:  " + list );
+        println( "Found: " + list.size() + " node(s)" );        
+        println( "Results:" );
+        
+        XMLWriter writer = createXMLWriter();
+        
+        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
+            Object object = iter.next();
+            if ( object instanceof Node ) {
+                writer.outputNode( (Node) object, System.out  );
+            }
+            else {
+                writer.output( object.toString(), System.out );
+            }
+        }
     }
 }

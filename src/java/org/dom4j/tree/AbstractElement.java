@@ -220,6 +220,10 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         return getContentModel().getElement(name, namespace);
     }
     
+    public List getElements() {
+        return getContentModel().getElements();
+    }
+    
     public List getElements(String name) {
         return getContentModel().getElements(name);
     }

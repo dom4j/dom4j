@@ -82,6 +82,7 @@ public interface ContentModel {
     public Element getElement(String name);
     public Element getElement(String name, Namespace namespace);
     
+    public List getElements();
     public List getElements(String name);
     public List getElements(String name, Namespace namespace);
     

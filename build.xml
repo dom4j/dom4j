@@ -37,6 +37,8 @@
     <property name="web.dist" value="${web.htdocs}/dist"/>
     <property name="web.ftp" value="../ftp"/>
 
+    <property name="werken.lib.dir" value="../werken.xpath/lib"/>
+
     <filter token="year" value="${year}"/>
     <filter token="version" value="${version}"/>
     <filter token="date" value="${TODAY}"/>
@@ -344,12 +346,17 @@
 
 
   <target name="demo-xpath" depends="samples">
-    <java classname="XPathDemo" args="xml/web.xml /servlet/servlet-class"/>
+    <java classname="XPathDemo" args="xml/web.xml //servlet/servlet-class"/>
     <java classname="XPathDemo" args="xml/much_ado.xml //ACT/TITLE"/>
   </target>
 
 
   <target name="demo-all" depends="demo-sax,demo-visitor,demo-count,demo-xpath,demo-html"/>
+
+  <!-- copies current dom4j build to the current werken.xpath checkout -->
+  <target name="werken" depends="package">
+    <copy file="${build.dir}/${name}.jar" todir="${werken.lib.dir}" overwrite="yes"/>
+  </target>
 
 </project>
 

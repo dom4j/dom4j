@@ -81,6 +81,7 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Entity;
 import org.dom4j.Namespace;
+import org.dom4j.Node;
 import org.dom4j.ProcessingInstruction;
 import org.dom4j.Text;
 
@@ -755,6 +756,68 @@ public class XMLWriter implements Cloneable {
     }
     
 
+    /**
+     * <p>
+     * Print out a <code>{@link Node}</code>
+     * </p>
+     *
+     * @param node <code>Node</code> to output.
+     * @param out <code>Writer</code> to write to.
+     **/
+    public void outputNode(Node node, Writer out)
+        throws IOException
+    {
+        if (node instanceof Element) {
+            output((Element) node, out);
+        }
+        else if (node instanceof Attribute) {
+            printAttribute((Attribute) node, out);
+        }
+        else if (node instanceof Document) {
+            output((Document) node, out);
+        }
+        else if (node instanceof Text) {
+            Text text = (Text) node;
+            output(text.getText(), out);
+        }
+        else if (node instanceof Namespace) {
+            printNamespace((Namespace) node, out);
+        }
+        else if (node instanceof CDATA) {
+            output((CDATA) node, out);
+        }
+        else if (node instanceof Comment) {
+            output((Comment) node, out);
+        }
+        else if (node instanceof Entity) {
+            output((Entity) node, out);
+        }
+        else if (node instanceof ProcessingInstruction) {
+            output((ProcessingInstruction) node, out);
+        }
+        else if (node instanceof DocumentType) {
+            printDocType((DocumentType) node, out);
+        }
+    }
+    
+    /**
+     * <p>
+     * Print out a <code>{@link Node}</code>
+     * </p>
+     *
+     * @param node <code>Node</code> to output.
+     * @param out <code>OutputStream</code> to write to.
+     **/
+    public void outputNode(Node node, OutputStream out)
+        throws IOException
+    {
+        Writer writer = makeWriter(out);
+        outputNode(node, writer);
+        writer.flush();         // Flush the output to the underlying stream
+    }
+    
+    
+    
     // output as string
     
     /**
@@ -1226,6 +1289,26 @@ public class XMLWriter implements Cloneable {
             out.write("\"");
         }
         
+    }
+
+    /**
+     * <p>
+     * This will handle printing out an <code>{@link Attribute}</code>.
+     * </p>
+     *
+     * @param attribute <code>Attribute</code> to be printed
+     * @param out <code>Writer</code> to write to
+     */
+    protected void printAttribute(Attribute attribute, Writer out) 
+      throws IOException {
+        
+        out.write(" ");
+        out.write(attribute.getQualifiedName());
+        out.write("=");
+
+        out.write("\"");
+        out.write(escapeAttributeEntities(attribute.getValue()));
+        out.write("\"");
     }
 
     /**

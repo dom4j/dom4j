@@ -1,7 +1,11 @@
 package org.dom4j.io;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.IOException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.Reader;
 import java.net.URL;
 
@@ -149,9 +153,19 @@ public class SAXReader {
     }
 
     
+    /** <p>Reads a Document from the given <code>File</code> using SAX</p>
+      *
+      * @param file <code>File</code> to read from.
+      * @return the newly created Document instance
+      * @throws TreeException if an error occurs during parsing.
+      * @throws FileNotFoundException if the file could not be found
+      */
+    public Document read(File file) throws TreeException, FileNotFoundException {
+        Document document = read(new BufferedReader(new FileReader(file)));
+        document.setName( file.getAbsolutePath() );
+        return document;
+    }
     
-
-
     
     /** <p>Reads a Document from the given <code>URL</code> using SAX</p>
       *

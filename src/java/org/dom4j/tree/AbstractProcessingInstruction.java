@@ -43,6 +43,14 @@ public abstract class AbstractProcessingInstruction extends AbstractNode impleme
         );
     }
     
+    public String getName() {
+        return getTarget();
+    }
+    
+    public void setName(String name) {
+        setTarget(name);
+    }
+    
     public boolean removeValue(String name) {
         return false;
     }
