@@ -1,12 +1,13 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:wapforum:devicesheet" xmlns="urn:wapforum:devicesheet">
   <xsd:element name="DeviceSheet" type="DeviceSheetType">
     <xsd:annotation>
-			 <xsd:documentation>
+        <xsd:documentation>
+            <text xmlns="">
           A Component within the CC/PP Schema is a class of related properties
           that describe the capabilities and preferences information.
-		   </xsd:documentation>
-	  </xsd:annotation>
-
+            </text>
+        </xsd:documentation>
+    </xsd:annotation>
   </xsd:element>
 
   <xsd:complexType name="DeviceSheetType">
