@@ -52,9 +52,21 @@ public class TestDocType extends AbstractTestCase {
         ElementDecl decl = (ElementDecl) declarations.get(0);
         
         assertEquals( "name is correct", "greeting", decl.getName() );
-        assertEquals( "model is correct", "(#PCDATA)", decl.getModel() );
+        assertEquals( "model is correct", "(#PCDATA)", normalize(decl.getModel()));
         
         assertEquals( "getText() is correct", "<!ELEMENT greeting (#PCDATA)>", decl.toString() );
+    }
+    
+    /**
+     * Removes the optional * at the end of (#PCDATA)
+     */
+    private String normalize(String model) {
+        if (model.endsWith("*")) {
+            return model.substring(0, model.length() - 1);
+        } else {
+            return model;
+        }
+        
     }
         
     // Implementation methods

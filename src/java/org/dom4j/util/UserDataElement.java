@@ -9,6 +9,7 @@
 
 package org.dom4j.util;
 
+import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.QName;
 import org.dom4j.tree.DefaultElement;
@@ -25,6 +26,8 @@ import org.dom4j.tree.DefaultElement;
   */
 public class UserDataElement extends DefaultElement {
 
+//    private static final DocumentFactory DOCUMENT_FACTORY = UserDataDocumentFactory.getInstance();
+    
     /** The user data object */
     private Object data;
 
@@ -78,7 +81,11 @@ public class UserDataElement extends DefaultElement {
         Element answer = getDocumentFactory().createElement(qName);
         answer.setData( getCopyOfUserData() );
         return answer;
-    }    
+    }
+    
+//    protected DocumentFactory getDocumentFactory() {
+//        return DOCUMENT_FACTORY;
+//    }
 }
 
 

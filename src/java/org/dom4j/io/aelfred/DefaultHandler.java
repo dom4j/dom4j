@@ -28,6 +28,7 @@ import org.xml.sax.ext.LexicalHandler;
  *
  * @author David Brownell
  * @version $Date$
+ * @deprecated Use Aelfred2 instead!
  */
 public class DefaultHandler extends org.xml.sax.helpers.DefaultHandler
     implements LexicalHandler, DeclHandler

@@ -58,6 +58,7 @@ import org.xml.sax.SAXException;
  * @author Updated by David Brownell &lt;david-b@pacbell.net&gt;
  * @version $Date$
  * @see SAXDriver
+ * @deprecated Use Aelfred2 instead!
  */
 final class XmlParser
 {
@@ -1397,8 +1398,10 @@ loop:
     // Check for PCDATA alone.
     skipWhitespace ();
     if (tryRead (')')) {
-        dataBufferAppend (")*");
-        tryRead ('*');
+        dataBufferAppend (")");
+        if (tryRead ('*')) {
+            dataBufferAppend("*");
+        }
         return;
     }
 

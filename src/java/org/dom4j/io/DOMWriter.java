@@ -326,12 +326,6 @@ public class DOMWriter {
     }
     
     protected org.w3c.dom.Document createDomDocumentViaJAXP() throws DocumentException {
-        if ( ! SAXHelper.classNameAvailable( "javax.xml.parsers.DocumentBuilderFactory" ) ) {
-            // don't attempt to use JAXP if it is not in the ClassPath
-            return null;
-        }
-        
-        // try use JAXP to load the XMLReader...
         try {
             return JAXPHelper.createDocument( false, true );
         }

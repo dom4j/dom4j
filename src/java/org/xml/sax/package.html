@@ -1,0 +1,435 @@
+<html><head>
+<!-- $Id$ -->
+</head><body>
+
+<p> This package provides the core SAX APIs.
+Some SAX1 APIs are deprecated to encourage integration of
+namespace-awareness into designs of new applications
+and into maintenance of existing infrastructure. </p>
+
+<p>See <a href='http://www.saxproject.org'>http://www.saxproject.org</a>
+for more information about SAX.</p>
+
+
+<h2> SAX2 Standard Feature Flags </h2>
+
+<p> One of the essential characteristics of SAX2 is that it added
+feature flags which can be used to examine and perhaps modify
+parser modes, in particular modes such as validation.
+Since features are identified by (absolute) URIs, anyone
+can define such features.   
+Currently defined standard feature URIs have the prefix
+<code>http://xml.org/sax/features/</code> before an identifier such as
+<code>validation</code>.  Turn features on or off using
+<em>setFeature</em>.  Those standard identifiers are: </p>
+
+
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+    <tr align="center" bgcolor="#ccccff">
+	<th>Feature ID</th>
+	<th>Default</th>
+	<th>Description</th>
+	</tr>
+
+    <tr>
+	<td>external-general-entities</td>
+	<td><em>unspecified</em></td>
+	<td> Reports whether this parser processes external
+	    general entities; always true if validating</td>
+	</tr>
+
+    <tr>
+	<td>external-parameter-entities</td>
+	<td><em>unspecified</em></td>
+	<td> Reports whether this parser processes external
+	    parameter entities; always true if validating</td>
+	</tr>
+
+    <tr>
+	<td>is-standalone</td>
+	<td><em>none</em></td>
+	<td> May be examined only during a parse, after the
+	    <em>startDocument()</em> callback has been completed; read-only.
+	    The value is true if the document specified the
+	    "standalone" flag in its XML declaration,
+	    and otherwise is false. </td>
+	</tr>
+
+    <tr>
+	<td>lexical-handler/parameter-entities</td>
+	<td><em>unspecified</em></td>
+	<td> true indicates that the LexicalHandler will report the
+	    beginning and end of parameter entities
+	    </td>
+	</tr>
+
+    <tr>
+	<td>namespaces</td>
+	<td>true</td>
+	<td> true indicates namespace URIs and unprefixed local names
+	    for element and attribute names will be available </td>
+	</tr>
+
+    <tr>
+	<td>namespace-prefixes</td> <td>false</td> <td> true indicates
+	XML qualified names (with prefixes) and attributes (including
+	<em>xmlns*</em> attributes) will be available </td>
+	</tr>
+
+    <tr>
+	<td>resolve-dtd-uris</td>
+	<td><em>true</em></td>
+	<td> A value of "true" indicates that system IDs in declarations will
+	    be absolutized (relative to their base URIs) before reporting.
+	    (That is the default behavior for all SAX2 XML parsers.)
+	    A value of "false" indicates those IDs will not be absolutized;
+	    parsers will provide the base URI from
+	    <em>Locator.getSystemId()</em>.
+	    This applies to system IDs passed in <ul>
+		<li><em>DTDHandler.notationDecl()</em>,
+		<li><em>DTDHandler.unparsedEntityDecl()</em>, and
+		<li><em>DeclHandler.externalEntityDecl()</em>.
+	    </ul>
+	    It does not apply to <em>EntityResolver.resolveEntity()</em>,
+	    which is not used to report declarations, or to
+	    <em>LexicalHandler.startDTD()</em>, which already provides
+	    the non-absolutized URI.
+	    </td>
+	</tr>
+
+    <tr>
+	<td>string-interning</td>
+	<td><em>unspecified</em></td>
+	<td> true if all XML names (for elements, prefixes, attributes,
+	    entities, notations, and local names),
+	    as well as Namespace URIs, will have been interned
+	    using <em>java.lang.String.intern</em>. This supports fast
+	    testing of equality/inequality against string constants,
+	    rather than forcing slower calls to <em>String.equals()</em>.
+	    </td>
+	</tr>
+
+    <tr>
+	<td>use-attributes2</td>
+	<td><em>unspecified</em></td>
+	<td> Returns true if the <em>Attributes</em> objects passed by
+	    this parser in <em>ContentHandler.startElement()</em>
+	    implement the <a href="ext/Attributes2.html"
+	    ><em>org.xml.sax.ext.Attributes2</em></a> interface.
+	    That interface exposes additional DTD-related information,
+	    such as whether the attribute was specified in the
+	    source text rather than defaulted.
+	    </td>
+	</tr>
+
+    <tr>
+	<td>use-locator2</td>
+	<td><em>unspecified</em></td>
+	<td> Returns true if the <em>Locator</em> objects passed by
+	    this parser in <em>ContentHandler.setDocumentLocator()</em>
+	    implement the <a href="ext/Locator2.html"
+	    ><em>org.xml.sax.ext.Locator2</em></a> interface.
+	    That interface exposes additional entity information,
+	    such as the character encoding and XML version used.
+	    </td>
+	</tr>
+
+    <tr>
+	<td>use-entity-resolver2</td>
+	<td><em>true</em> (when recognized)</td>
+	<td> Returns true if, when <em>setEntityResolver</em> is given
+	    an object implementing the <a href="ext/EntityResolver2.html"
+	    ><em>org.xml.sax.ext.EntityResolver2</em></a> interface,
+	    those new methods will be used.
+	    Returns false to indicate that those methods will not be used.
+	    </td>
+	</tr>
+
+    <tr>
+	<td>validation</td>
+	<td><em>unspecified</em></td>
+	<td> Controls whether the parser is reporting all validity
+	    errors; if true, all external entities will be read.  </td>
+	</tr>
+
+    <tr>
+	<td>xmlns-uris</td>
+	<td><em>false</em></td>
+	<td> Controls whether, when the <em>namespace-prefixes</em> feature
+	    is set, the parser treats namespace declaration attributes as
+	    being in the <em>http://www.w3.org/2000/xmlns/</em> namespace.
+	    By default, SAX2 conforms to the original "Namespaces in XML"
+	    Recommendation, which explicitly states that such attributes are
+	    not in any namespace.
+	    Setting this optional flag to true makes the SAX2 events conform to
+	    a later backwards-incompatible revision of that recommendation,
+	    placing those attributes in a namespace.
+	    </td>
+	</tr>
+
+</table>
+
+<p> Support for the default values of the
+<em>namespaces</em> and <em>namespace-prefixes</em>
+properties is required.
+Support for any other feature flags is entirely optional.
+</p>
+
+<p> For default values not specified by SAX2,
+each XMLReader implementation specifies its default,
+or may choose not to expose the feature flag.
+Unless otherwise specified here,
+implementations may support changing current values
+of these standard feature flags, but not while parsing.
+</p>
+
+<h2> SAX2 Standard Handler and Property IDs </h2>
+
+<p> For parser interface characteristics that are described
+as objects, a separate namespace is defined.  The
+objects in this namespace are again identified by URI, and
+the standard property URIs have the prefix
+<code>http://xml.org/sax/properties/</code> before an identifier such as
+<code>lexical-handler</code> or
+<code>dom-node</code>.  Manage those properties using
+<em>setProperty()</em>.  Those identifiers are: </p>
+
+<table border="1" cellpadding="3" cellspacing="0" width="100%">
+    <tr align="center" bgcolor="#ccccff">
+	<th>Property ID</th>
+	<th>Description</th>
+	</tr>
+
+    <tr>
+	<td>declaration-handler</td>
+	<td> Used to see most DTD declarations except those treated
+	    as lexical ("document element name is ...") or which are
+	    mandatory for all SAX parsers (<em>DTDHandler</em>).
+	    The Object must implement <a href="ext/DeclHandler.html"
+	    ><em>org.xml.sax.ext.DeclHandler</em></a>.
+	    </td>
+	</tr>
+
+    <tr>
+	<td>dom-node</td>
+	<td> For "DOM Walker" style parsers, which ignore their
+	    <em>parser.parse()</em> parameters, this is used to
+	    specify the DOM (sub)tree being walked by the parser.
+	    The Object must implement the
+	    <em>org.w3c.dom.Node</em> interface.
+	    </td>
+	</tr>
+
+    <tr>
+	<td>lexical-handler</td>
+	<td> Used to see some syntax events that are essential in some
+	    applications:  comments, CDATA delimiters, selected general
+	    entity inclusions, and the start and end of the DTD
+	    (and declaration of document element name).
+	    The Object must implement <a href="ext/LexicalHandler.html"
+	    ><em>org.xml.sax.ext.LexicalHandler</em></a>.
+	    </td>
+	</tr>
+
+    <tr>
+	<td>xml-string</td>
+	<td> Readable only during a parser callback, this exposes a <b>TBS</b>
+	    chunk of characters responsible for the current event. </td>
+	</tr>
+
+</table>
+
+<p> All of these standard properties are optional;
+XMLReader implementations need not support them.
+</p>
+
+<h2><a name="exceptions">SAX2 Standard Exception IDs</a></h2>
+
+<p>SAX 2.1 defines a standard
+<a href="SAXParseException.html#getExceptionId"
+>SAXParseException.getExceptionId()</a>
+method to identify which kind of error is being reported.
+since any diagnostic message will vary between parsers.
+Those identifiers are URIs, which are used in much the same way that
+they are used for feature and property IDs.
+Systems can define nonstandard IDs when needed, by using a
+different base URI.
+</p>
+
+<p>Moreover, for the XML (and related) standards relied on by the SAX
+specification itself (including <em>XML</em> and
+<em>Namespaces in XML</em>), SAX also standardizes the IDs used
+to identify those errors.
+The identifiers all start with the exception base URI
+<code>http://xml.org/sax/exception/</code>
+which is then combined with additional information describing 
+the error encountered.
+Not all parsers will choose to provide all these IDs, but
+those that provide any must only use the exception IDs defined by SAX.
+Any errors defined by those specifications which are not yet
+addressed by the SAX specification must not include any exception ID
+(but see below, more identifiers can be defined).
+</p>
+
+<p>Parsers that correctly use exception IDs thus allow application
+software to reason, in a parser-independent manner, about all
+the basic XML errors that may be reported by an
+<a href="XMLReader.html">XMLReader</a>.
+For example,
+they could assemble (and translate) catalogs of messages that make
+more sense to their users, because they can use application context
+to supplement a parser's textually oriented diagnostic.
+In some cases they can write code that uses knowledge of the errors to
+decide how to proceed most effectively.
+For example, some validity errors might be of no concern,
+while others might need to be treated as fatal.
+</p>
+
+<p> The core SAX identifiers are described here, and a more current
+version might be available through <a href='http://www.saxproject.org'
+>http://www.saxproject.org</a>,.
+Parser writers should work with the SAX project to define standard ID
+for any error cases that are identified in the relevant specifications,
+but for which no IDs are defined here.
+</p>
+
+<h3>IDs for XML 1.0 Parsing Errors</h3>
+
+<p>These IDs are derived from the current
+<em>XML 1.0 (2nd edition)</em> recommendation.
+The IDs start with the exception base URI, and append to that
+<code>xml/</code> and then
+an additional string that provides more specific identification of
+the rule being violated.
+Those additional strings are defined as follows:
+</p>
+
+<ul>
+    <li><em>Grammar Violations</em> are identified by strings that
+	start <code>rule-</code> and include the grammar rule number.
+	For example, a violation of rule 42 (end tag syntax) would
+	be reported using the additional string <code>rule-42</code>.
+	(These are all fatal errors.)
+	</li>
+
+    <li><em>Well Formedness Constraint (WFC) Violations</em> are identified
+	by strings that start <code>wfc-</code> and append the XML ID of the
+	WFC being violated, as found in the source to the XML Recommendation.
+	(Any leading <em>wfc-</em> or <em>wf-</em> is first removed;
+	that source does not have a consistent naming convention for
+	these identifiers.)
+	For example, a violation of the <em>PEs in Internal Subset</em>
+	WFC would be reported using the additional string
+	<code>wfc-PEInInternalSubset</code>.
+	(These are all fatal errors.)
+	</li>
+
+    <li><em>Validity Constraint (VC) Violations</em> are identified
+	by strings that start <code>vc-</code> and append the XML ID of the
+	VC being violated, as found in the source to the XML Recommendation.
+	(Any leading <em>vc-</em> is first removed
+	that source does not have a consistent naming convention for
+	these identifiers.)
+	For example, a violation of the <em>Root Element Type</em> VC would
+	be reported using the additional string <code>vc-roottype</code>.
+	(These are all validity errors.)
+	</li>
+
+</ul>
+
+<p>So for example <code>http://xml.org/sax/exception/xml/rule-66</code>
+indicates a violation of grammar rule 66 (a malformed character reference),
+which is a fatal error.
+And <code>http://xml.org/sax/exception/xml/vc-one-id-per-el</code>
+indicates a violation of the <em>One ID per Element Type</em>
+validity constraint, which is a validity error reflecting a
+bug in the document's DTD.
+</p>
+
+<p> That list is subject to evolution for several reasons, such as:
+</p>
+
+<ul>
+    <li>There are additional error cases defined in the XML Recommendation.
+    These are situations where the text specifies that parsers must (or may)
+    report an <em>error</em> or <em>fatal error</em>, although there is no
+    applicable grammar rule or constraint.
+    </li>
+
+    <li>It may be desirable to assign similar IDs to <em>warning</em>s.
+    Opportunities to issue standardized warnings are scattered through
+    the XML Recommendation just like the error cases that don't relate
+    to specific grammar rules.
+    </li>
+
+    <li> Some WF-ness violations could be attributed to more than one
+    grammar rule, depending on how a parser detects the error.
+    The general guideline is that the most specific applicable rule
+    should be used.  (Otherwise everything could be blamed on
+    a violation of rule 1!)
+    Depending on how consistently parsers report such errors,
+    it may not be practical for application code to rely heavily
+    on the <code>rule-*</code> codes.
+    <em>Reports of other errors, such as violations of VCs or WFCs,
+    have no corresponding ambiguity issues.</em>
+    </li>
+
+    <li> In a similar vein, some rules are very complex and it may be
+    desirable in some cases to provide even more specific
+    information about a given error:  which clause of a complex rule
+    triggered, which attribute value caused the problem, and so on.
+    </li>
+
+</ul>
+
+<p> However, potential changes to the XML source of the XML Recommendation
+which change those identifiers will not change that list.
+Such cases would be addressed by applying these rules to a base revision
+of that specification, and assigning IDs manually for such problem cases.
+</p>
+
+<h3>IDs for XML Namespaces Violations</h3>
+
+<p>These IDs are derived from the current XML Namespaces recommendation.
+    <!-- FIXME link via URL -->
+The IDs start with the exception base URI, and append to that
+<code>xmlns/</code> and then
+an additional string that provides more specific identification of
+the rule being violated.
+Those additional strings are defined as follows:
+</p>
+
+<ul>
+    <li><em>Namespace Constraint (NSC) Violations</em> are identified
+	by additional strings that start <code>nsc-</code> and appending
+	the XML ID of the NSC being violated, as found in the source to
+	the <em>Namespaces in XML Recommendation</em>.
+	(Any leading <em>nsc-</em> is first removed.)
+	For example, a violation of the <em>Prefix Declared</em> NC would
+	be reported using the additional string <code>nsc-NSDeclared</code>.
+	Because these are (necessarily) not defined by the XML Recommendation,
+	much less as as fatal errors, and they are clearly not just warnings,
+	SAX parsers report these at the same level of severity they use
+	for reporting validity errors.
+	</li>
+    
+    <li><em>QName Violations</em> (such as using colons in interesting
+	ways, such as <em>with:some:hierarchy</em>) are reported
+	using the additional string <code>qname</code>.
+	</li>
+
+</ul>
+
+<p>So for example
+<code>http://xml.org/sax/exception/xmlns/qname</code>
+might indicate an "localName" that begins with a digit,
+which is a nonfatal error.
+</p>
+
+<p> That list is subject to evolution, although it has
+substantially less need to evolve than the corresponding
+list for XML 1.0 errors, since there are only two
+NSCs and one other conformance constraint.
+</p>
+
+</body></html>
