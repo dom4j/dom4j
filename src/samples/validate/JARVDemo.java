@@ -9,13 +9,7 @@
 
 package validate;
 
-import com.sun.msv.grammar.Grammar;
-import com.sun.msv.reader.util.GrammarLoader;
-import com.sun.msv.reader.util.IgnoreController;
-import com.sun.msv.verifier.DocumentDeclaration;
-import com.sun.msv.verifier.ValidityViolation;
-import com.sun.msv.verifier.Verifier;
-import com.sun.msv.verifier.VerificationErrorHandler;
+import com.sun.msv.verifier.jarv.TheFactoryImpl;
 
 import javax.xml.parsers.SAXParserFactory;
 
@@ -24,21 +18,24 @@ import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.SAXWriter;
 
-import org.xml.sax.ContentHandler;
 import org.xml.sax.ErrorHandler;
-import org.xml.sax.Locator;
 import org.xml.sax.SAXParseException;
 
+import org.iso_relax.verifier.Schema;
+import org.iso_relax.verifier.Verifier;
+import org.iso_relax.verifier.VerifierFactory;
+import org.iso_relax.verifier.VerifierHandler;
+
 /** A sample program which validates an already existing dom4j Document
-  * using Sun's MSV library.
+  * using the JARV API using Sun's MSV library implementation.
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class MSVDemo {
+public class JARVDemo {
     
     public static void main(String[] args) {
-        new MSVDemo().run( args );
+        new JARVDemo().run( args );
     }    
     
     public void run(String[] args) {
@@ -74,41 +71,16 @@ public class MSVDemo {
     }
     
     /** Validate document using MSV */
-    protected void process(Document document, String schema) throws Exception {
-        SAXParserFactory saxFactory = SAXParserFactory.newInstance();
-        saxFactory.setNamespaceAware( true );
+    protected void process(Document document, String schemaURI) throws Exception {
+
+        System.out.println( "Loaded schema document: " + schemaURI );
         
-        DocumentDeclaration docDeclaration = GrammarLoader.loadVGM(
-            schema,
-            new IgnoreController() {
-                public void error(Locator[] locations, String message, Exception e) {
-                    System.out.println( "ERROR: " + message );
-                }
-                public void warning(Locator[] locations, String message) {
-                    System.out.println( "WARNING: " + message );
-                }
-            },
-            saxFactory 
-        );
-        
-        System.out.println( "Loaded schema document: " + docDeclaration );
-        
-        Verifier verifier = new Verifier( 
-            docDeclaration, 
-            new VerificationErrorHandler() {
-                public void onError(ValidityViolation e) {
-                    System.out.println( "Verification ERROR: " + e );
-                }
-                public void onWarning(ValidityViolation e) {
-                    System.out.println( "Verification WARNING: " + e );
-                }
-            }
-        );
-        
-        System.out.println( "Validating XML document" );
-        
-        SAXWriter writer = new SAXWriter( (ContentHandler) verifier );
-        writer.setErrorHandler(
+        // use autodetection of schemas
+        VerifierFactory factory = new com.sun.msv.verifier.jarv.TheFactoryImpl();
+        Schema schema = factory.compileSchema( schemaURI );
+                  
+        Verifier verifier = schema.newVerifier();
+        verifier.setErrorHandler(
             new ErrorHandler() {
                 public void error(SAXParseException e) {
                     System.out.println( "ERROR: " + e );
@@ -123,6 +95,11 @@ public class MSVDemo {
                 }
             }
         );
+        
+        System.out.println( "Validating XML document" );
+        
+        VerifierHandler handler = verifier.getVerifierHandler();
+        SAXWriter writer = new SAXWriter( handler );
         writer.write( document );
     }
 }
