@@ -92,11 +92,11 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     }
 
     public org.w3c.dom.Node getFirstChild() {
-        return DOMNodeHelper.asDOMNode( getNode(0) );
+        return DOMNodeHelper.asDOMNode( node(0) );
     }
 
     public org.w3c.dom.Node getLastChild() {
-        return DOMNodeHelper.asDOMNode( getNode( getNodeCount() - 1 ) );
+        return DOMNodeHelper.asDOMNode( node( nodeCount() - 1 ) );
     }
 
     public org.w3c.dom.Node getPreviousSibling() {

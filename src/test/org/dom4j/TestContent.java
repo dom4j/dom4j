@@ -74,13 +74,13 @@ public class TestContent extends AbstractTestCase {
         Element root = document.getRootElement();
         assert( "Has root element", root != null );
         
-        int count = root.getNodeCount();
+        int count = root.nodeCount();
         assert( "Root has correct node count", count == 2 );
         
         boolean iterated = false;
         for ( int i = 0; i < count; i++ ) {
-            Node node = root.getNode(i);
-            assert( "Valid node returned from getNode()", node != null );
+            Node node = root.node(i);
+            assert( "Valid node returned from node()", node != null );
             iterated = true;
         }
         
@@ -91,13 +91,13 @@ public class TestContent extends AbstractTestCase {
         Element root = document.getRootElement();
         assert( "Has root element", root != null );
         
-        int count = root.getNodeCount();
+        int count = root.nodeCount();
         assert( "Root has correct node count", count == 2 );
         
         boolean iterated = false;
         for ( int i = 0; i < count; i++ ) {
             Node node = root.getXPathResult(i);
-            assert( "Valid node returned from getNode()", node != null );
+            assert( "Valid node returned from node()", node != null );
             assert( "Node supports the parent relationship", node.supportsParent() );
             iterated = true;
         }

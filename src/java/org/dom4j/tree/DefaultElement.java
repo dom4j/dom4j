@@ -615,7 +615,7 @@ public class DefaultElement extends AbstractElement {
     
     // node navigation API - return content as nodes
     // such as Text etc.
-    public Node getNode(int index) {
+    public Node node(int index) {
         if ( index >= 0 ) {
             Object node = content;
             if ( content instanceof List ) {
@@ -648,7 +648,7 @@ public class DefaultElement extends AbstractElement {
         }
     }
     
-    public int getNodeCount() {
+    public int nodeCount() {
         if ( content instanceof List ) {
             List list = (List) content;
             return list.size();

@@ -17,6 +17,7 @@ import java.util.Properties;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 
 /** A sample program to demonstrate creating some XML output using DOM4J.
@@ -37,16 +38,18 @@ public class CreateXMLDemo extends AbstractDemo {
     
     public void run(String[] args) throws Exception {    
         Document document = createDocument();
-        XMLWriter writer = new XMLWriter( "  ", true );
+        OutputFormat format = new OutputFormat("  ", true);
         
         if ( args.length < 1 ) {
-            writer.write( document, System.out );
+            XMLWriter writer = new XMLWriter( System.out, format );
+            writer.write( document );
         }
         else {
             String fileName = args[0];
             println( "Writing file: " + fileName );
             FileWriter out = new FileWriter( args[0] );
-            writer.write( document, out );
+            XMLWriter writer = new XMLWriter( out, format );
+            writer.write( document );
             out.close();
         }
     }

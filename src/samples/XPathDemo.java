@@ -51,18 +51,15 @@ public class XPathDemo extends SAXDemo {
         println( "Found: " + list.size() + " node(s)" );        
         println( "Results:" );
         
-        XMLWriter writer = createXMLWriter();
+        XMLWriter writer = createXMLWriter();        
         
         for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
             Object object = iter.next();
-            if ( object instanceof Node ) {
-                writer.write( (Node) object, System.out  );
-            }
-            else {
-                writer.write( object.toString(), System.out );
-            }
+            writer.write( object );
         }
-    }
+        
+        writer.flush();
+   }
 }
 
 

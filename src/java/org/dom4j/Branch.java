@@ -34,9 +34,9 @@ public interface Branch extends Node {
       * @return the <code>Node</code> at the specified position.
       * 
       * @throws IndexOutOfBoundsException if the index is out of range (index
-      * 		  &lt; 0 || index &gt;= {@link #getNodeCount}).
+      * 		  &lt; 0 || index &gt;= {@link #nodeCount}).
       */    
-    public Node getNode(int index);
+    public Node node(int index);
     
     /** Returns the index of the given node if it is a child node of this 
       * branch or -1 if the given node is not a child node.
@@ -52,7 +52,7 @@ public interface Branch extends Node {
       *
       * @return the number of nodes this branch contains
       */    
-    public int getNodeCount();
+    public int nodeCount();
 
     /** Returns the element of the given ID attribute value. If this tree
       * is capable of understanding which attribute value should be used for

@@ -10,6 +10,8 @@
 package org.dom4j.io;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +20,9 @@ import org.dom4j.CDATA;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Entity;
+import org.dom4j.Node;
+
+import org.xml.sax.SAXException;
 
 /** <p><code>HTMLWriter</code> takes a DOM4J tree and formats it to a
   * stream as HTML.  
@@ -36,69 +41,77 @@ public class HTMLWriter extends XMLWriter {
       */
     private Set omitElementCloseSet;
 
+    
     public HTMLWriter() {
-        init();
     }
 
-    public HTMLWriter(String indent) {
-       super( indent );
-        init();
-    }
-
-    public HTMLWriter(String indent, boolean newlines) {
-       super( indent, newlines );
-        init();
-    }
-
-    public HTMLWriter(String indent,boolean newlines,String encoding) {
-       super( indent, newlines, encoding );
-        init();
+    public HTMLWriter(Writer writer) {
+        super( writer );
     }
     
-    public HTMLWriter(XMLWriter that) {
-        super( that );
-        init();
-    }
-
-    /** @return true to suppress the output of the XML declaration 
-      */
-    public boolean isSuppressDeclaration() {
-        return true;
-    }
- 
-    /** Overriden method to only output the text of CDATA sections
-      * rather than the XML format
-      */
-    protected void printCDATASection(CDATA cdata, Writer out, int indentLevel) throws IOException {
-        indent(out, indentLevel);
-        out.write(cdata.getText());
-        maybePrintln(out);
+    public HTMLWriter(OutputStream out) throws UnsupportedEncodingException {
+        super( out );
     }
     
-    /** Overriden method to only output the content of the Entity
-      * rather than the XML format
-      */
-    protected void printEntity(Entity entity, Writer out) throws IOException {
-        out.write(entity.getText());
+    public HTMLWriter(Writer writer, OutputFormat format) {
+        super( writer, format );
     }
+    
+    public HTMLWriter(OutputStream out, OutputFormat format) throws UnsupportedEncodingException {
+        super( out, format );
+    }
+    
+    public HTMLWriter(OutputFormat format) {
+        super( format );
+    }
+
+    
+    public void startCDATA() throws SAXException {
+    }
+    
+    public void endCDATA() throws SAXException {
+    }
+    
+    
+    
+    /** Writes the given {@link CDATA}.
+      *
+      * @param cdata <code>CDATA</code> to output.
+      */
+    public void write(CDATA cdata) throws IOException {
+        writer.write(cdata.getText());
+        lastOutputNodeType = Node.CDATA_SECTION_NODE;
+    }
+    
+    /** Writes the given {@link Entity}.
+      *
+      * @param entity <code>Entity</code> to output.
+      */
+    public void write(Entity entity) throws IOException {
+        writer.write(entity.getText());
+        lastOutputNodeType = Node.ENTITY_REFERENCE_NODE;
+    }
+    
+    protected void writeDeclaration() throws IOException {
+    }
+    
+    
     
     /** Overriden method to not close certain element names to avoid
       * wierd behaviour from browsers for versions up to 5.x
       */
-    protected void printElementClose(Element element, Writer out) throws IOException {
-        String name = element.getQualifiedName();
-        if ( ! getOmitElementCloseSet().contains( name ) ) {
-            super.printElementClose(element, out);
+    protected void writeClose(String qualifiedName) throws IOException {
+        if ( ! getOmitElementCloseSet().contains( qualifiedName ) ) {
+            super.writeClose(qualifiedName);
         }
     }
-    
-    protected void printEmptyElementClose(Element element, Writer out) throws IOException {
-        String name = element.getQualifiedName();
-        if ( ! getOmitElementCloseSet().contains( name ) ) {
-            super.printEmptyElementClose(element, out);
+
+    protected void writeEmptyElementClose(String qualifiedName) throws IOException {
+        if ( ! getOmitElementCloseSet().contains( qualifiedName ) ) {
+            super.writeEmptyElementClose(qualifiedName);
         }
         else {
-            out.write(">");
+            writer.write(">");
         }
     }
     
@@ -123,13 +136,14 @@ public class HTMLWriter extends XMLWriter {
         set.add( "IMG" );
     }
     
-    /** Called by all constructors, be careful of calling
-      * any lazy construction methods before this object
-      * is properly constructed
-      */
-    private void init() {
-        setExpandEmptyElements(true);
+    protected String getPadText() {
+        return " ";
     }
+    
+    protected boolean isExpandEmptyElements() {
+        return true;
+    }
+    
 }
 
 

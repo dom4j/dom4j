@@ -186,7 +186,7 @@ public class DefaultDocument extends AbstractDocument {
     }
     
     
-    public Node getNode(int index) {
+    public Node node(int index) {
         if (contents != null) {
             Object object = contents.get(index);
             if (object instanceof Node) {
@@ -199,7 +199,7 @@ public class DefaultDocument extends AbstractDocument {
         return null;
     }
     
-    public int getNodeCount() {
+    public int nodeCount() {
         return ( contents == null ) ? 0 : contents.size();
     }
     

@@ -30,8 +30,8 @@ public class HTMLWriterDemo extends SAXDemo {
     /** A Factory Method to create an <code>XMLWriter</code>
       * instance allowing derived classes to change this behaviour
       */
-    protected XMLWriter createXMLWriter() {
-        return new HTMLWriter();
+    protected XMLWriter createXMLWriter() throws Exception {
+        return new HTMLWriter( System.out );
     }
     
 }

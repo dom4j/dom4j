@@ -59,15 +59,15 @@ public class Mode {
             Attribute attribute = element.attribute(i);
             fireRule( attribute );
         }
-        for ( int i = 0, size = element.getNodeCount(); i < size; i++ ) {
-            Node node = element.getNode(i);
+        for ( int i = 0, size = element.nodeCount(); i < size; i++ ) {
+            Node node = element.node(i);
             fireRule( node );
         }
     }
     
     public void applyTemplates( Document document ) throws Exception {
-        for ( int i = 0, size = document.getNodeCount(); i < size; i++ ) {
-            Node node = document.getNode(i);
+        for ( int i = 0, size = document.nodeCount(); i < size; i++ ) {
+            Node node = document.node(i);
             fireRule( node );
         }
     }

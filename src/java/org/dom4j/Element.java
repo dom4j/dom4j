@@ -36,6 +36,20 @@ public interface Element extends Branch {
       */
     public boolean isRootElement();
 
+    /** <p>Returns true if this <code>Element</code> has mixed content.
+      * Mixed content means that an element contains both textual data and
+      * child elements.
+      *
+      * @return true if this element contains mixed content.
+      */
+    public boolean hasMixedContent();    
+        
+    /** <p>Returns true if this <code>Element</code> has text only content.
+      *
+      * @return true if this element is empty or only contains text content.
+      */
+    public boolean isTextOnly();    
+        
     /** <p>Returns the <code>QName</code> of this element which represents 
       * the local name, the qualified name and the <code>Namespace</code>.</p>
       *
@@ -284,14 +298,6 @@ public interface Element extends Branch {
     public Node getXPathResult(int index);
     
     
-    /** <p>Returns true if this <code>Element</code> has mixed content.
-      * Mixed content means that an element contains both textual data and
-      * child elements.
-      *
-      * @return true if this element contains mixed content.
-      */
-    public boolean hasMixedContent();    
-        
     /** Returns the first element for the given local name and any namespace.
       * 
       * @return the first element with the given local name 

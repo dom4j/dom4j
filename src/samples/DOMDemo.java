@@ -16,6 +16,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.dom4j.Document;
 import org.dom4j.io.DOMReader;
+import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 
 /** A simple test program to demonstrate using W3C DOM and JAXP to load a DOM
@@ -64,17 +65,17 @@ public class DOMDemo extends AbstractDemo {
     
     protected void process(Document document) throws Exception {
         XMLWriter writer = createXMLWriter();
-        writer.write(document, System.out);                
+        writer.write(document);                
     }
 
     /** A Factory Method to create an <code>XMLWriter</code>
       * instance allowing derived classes to change this behaviour
       */
-    protected XMLWriter createXMLWriter() {
-        XMLWriter writer = new XMLWriter("  ", true);
-        writer.setTrimText(true);
-        writer.setExpandEmptyElements(false);
-        return writer;
+    protected XMLWriter createXMLWriter() throws Exception {
+        OutputFormat format = new OutputFormat("  ", true);
+        format.setTrimText(true);
+        format.setExpandEmptyElements(true);
+        return new XMLWriter( System.out, format );
     }
     
 }

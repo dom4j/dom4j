@@ -34,6 +34,7 @@ import org.dom4j.ProcessingInstruction;
 import org.dom4j.QName;
 import org.dom4j.Text;
 import org.dom4j.Visitor;
+import org.dom4j.io.XMLWriter;
 
 /** <p><code>AbstractElement</code> is an abstract base class for 
   * tree implementors to use for implementation inheritence.</p>
@@ -64,6 +65,40 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         return false;
     }
 
+    public boolean hasMixedContent() {
+        List content = getContentList();
+        if (content == null || content.isEmpty() || content.size() < 2) {
+            return false;
+        }
+
+        Class prevClass = null;
+        for ( Iterator iter = content.iterator(); iter.hasNext(); ) {
+            Object object = iter.next();
+            Class newClass = object.getClass();
+            if (newClass != prevClass) {
+               if (prevClass != null) {
+                  return true;
+               }
+               prevClass = newClass;
+            }
+        }
+        return false;
+    }
+    
+    public boolean isTextOnly() {
+        List content = getContentList();
+        if (content == null || content.isEmpty()) {
+            return true;
+        }
+        for ( Iterator iter = content.iterator(); iter.hasNext(); ) {
+            Object object = iter.next();
+            if ( ! ( object instanceof CharacterData) ) {
+                return false;
+            }
+        }
+        return false;
+    }
+    
     public void setName(String name) {
         throw new UnsupportedOperationException("The name and namespace of this Element cannot be changed" );
     }
@@ -82,7 +117,8 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     public String asXML() {
         try {
             StringWriter out = new StringWriter();
-            writer.write(this, out);
+            XMLWriter writer = new XMLWriter( out, outputFormat );
+            writer.write(this);
             return out.toString();
         } 
         catch (IOException e) {
@@ -92,7 +128,8 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
 
     public void write(PrintWriter out) {
         try {
-            writer.write(this, out);
+            XMLWriter writer = new XMLWriter( out, outputFormat );
+            writer.write(this);
         }
         catch (IOException e) {
             throw new RuntimeException("Wierd IOException while generating textual representation: " + e.getMessage());
@@ -269,7 +306,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     // Content Model methods
     
     public Node getXPathResult(int index) {
-        Node answer = getNode(index);
+        Node answer = node(index);
         if (answer != null && !answer.supportsParent()) {
             return answer.asXPathResult(this);
         }

@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.dom4j.*;
+import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
@@ -81,12 +82,12 @@ public class XPathGrep extends AbstractDemo {
             println( ": " + list );
         }
         
-        XMLWriter writer = createXMLWriter();
-        
+        XMLWriter writer = createXMLWriter();        
         for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
             Object object = iter.next();
-            writer.write( object, System.out  );
+            writer.write( object );
         }        
+        writer.flush();
     }
     
     /** @return the given file or url as a URL
@@ -103,11 +104,11 @@ public class XPathGrep extends AbstractDemo {
     /** A Factory Method to create an <code>XMLWriter</code>
       * instance allowing derived classes to change this behaviour
       */
-    protected XMLWriter createXMLWriter() {
-        XMLWriter writer = new XMLWriter("  ", true);
-        writer.setTrimText(true);
-        writer.setExpandEmptyElements(false);
-        return writer;
+    protected XMLWriter createXMLWriter() throws Exception {
+        OutputFormat format = new OutputFormat("  ", true);
+        format.setTrimText(true);
+        format.setExpandEmptyElements(true);
+        return new XMLWriter( System.out, format );
     }
     
     protected void readOptions( String arg ) {
