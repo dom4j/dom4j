@@ -7,8 +7,12 @@
 
       <section title="Changes in CVS since last release">
         <section title="Patches">
-        <p>Applied patchs supplied by Steen Lehmann that fixes handling of external DTD entities in SAXContentHandler 
+        <p>Applied patches supplied by Steen Lehmann that fixes handling of external DTD entities in SAXContentHandler 
           and fix the XML output of the ExternalEntityDecl
+        </p>
+        <p>Applied patch to bug found by Steen Lehmann that XPath expressions on the root element
+          were not correctly handling namespaces correctly. The test case is demonstrated in
+          dom4j/src/test/org/dom4j/xpath/TestSelectSingleNode.java
         </p>
         </section>
       </section>

@@ -37,7 +37,7 @@ public class DefaultNamespaceContext implements NamespaceContext {
         if ( node instanceof Element ) {
             element = (Element) node;
         }
-        if ( node instanceof Document ) {
+        else if ( node instanceof Document ) {
             Document doc = (Document) node;
             element = doc.getRootElement();
         }
