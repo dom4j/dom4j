@@ -126,6 +126,14 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     /** The namespaces used for the current element when consuming SAX events */
     private Map namespacesMap;
 
+	/** 
+	 * what is the maximum allowed character code
+	 * such as 127 in US-ASCII (7 bit) or 255 in ISO-* (8 bit) 
+	 * or -1 to not escape any characters (other than the special XML characters like < > &) 
+	 */
+	private int maximumAllowedCharacter;
+	
+
     public XMLWriter(Writer writer) {
         this( writer, DEFAULT_FORMAT );
     }
@@ -133,37 +141,36 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     public XMLWriter(Writer writer, OutputFormat format) {
         this.writer = writer;
         this.format = format;
-	namespaceStack.push(Namespace.NO_NAMESPACE);
+		namespaceStack.push(Namespace.NO_NAMESPACE);
     }
 
     public XMLWriter() {
         this.format = DEFAULT_FORMAT;
         this.writer = new BufferedWriter( new OutputStreamWriter( System.out ) );
         this.autoFlush = true;
-	namespaceStack.push(Namespace.NO_NAMESPACE);
+		namespaceStack.push(Namespace.NO_NAMESPACE);
     }
 
     public XMLWriter(OutputStream out) throws UnsupportedEncodingException {
         this.format = DEFAULT_FORMAT;
         this.writer = createWriter(out, format.getEncoding());
         this.autoFlush = true;
-	namespaceStack.push(Namespace.NO_NAMESPACE);
+		namespaceStack.push(Namespace.NO_NAMESPACE);
     }
 
     public XMLWriter(OutputStream out, OutputFormat format) throws UnsupportedEncodingException {
         this.format = format;
         this.writer = createWriter(out, format.getEncoding());
         this.autoFlush = true;
-	namespaceStack.push(Namespace.NO_NAMESPACE);
+		namespaceStack.push(Namespace.NO_NAMESPACE);
     }
 
     public XMLWriter(OutputFormat format) throws UnsupportedEncodingException {
         this.format = format;
         this.writer = createWriter( System.out, format.getEncoding() );
         this.autoFlush = true;
-	namespaceStack.push(Namespace.NO_NAMESPACE);
+		namespaceStack.push(Namespace.NO_NAMESPACE);
     }
-
 
     public void setWriter(Writer writer) {
         this.writer = writer;
@@ -206,6 +213,34 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     public void setIndentLevel(int indentLevel) {
         this.indentLevel = indentLevel;
     }
+
+	/**
+	 * Returns the maximum allowed character code that should be allowed
+	 * unescaped which defaults to 127 in US-ASCII (7 bit) or 
+	 * 255 in ISO-* (8 bit).
+	 */
+	public int getMaximumAllowedCharacter() {
+		if (maximumAllowedCharacter == 0) {
+			maximumAllowedCharacter = defaultMaximumAllowedCharacter();
+		}
+		return maximumAllowedCharacter;
+	}
+
+	/**
+	 * Sets the maximum allowed character code that should be allowed
+	 * unescaped
+	 * such as 127 in US-ASCII (7 bit) or 255 in ISO-* (8 bit)
+	 * or -1 to not escape any characters (other than the special XML characters like < > &) 
+	 * 
+	 * If this is not explicitly set then it is defaulted from the encoding.
+	 *  
+	 * @param maximumAllowedCharacter The maximumAllowedCharacter to set
+	 */
+	public void setMaximumAllowedCharacter(int maximumAllowedCharacter) {
+		this.maximumAllowedCharacter = maximumAllowedCharacter;
+	}
+
+
 
     /** Flushes the underlying Writer */
     public void flush() throws IOException {
@@ -1205,9 +1240,9 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                     // don't encode standard whitespace characters
                     break;
                 default:
-                    // encode low and high characters as entities
-                    if ((c < 32) || (c >= 127))
-                        entity = "&#" + (int)c + ";";
+                	if (c < 32 || shouldEncodeChar(c)) {
+                        entity = "&#" + (int) c + ";";
+                	}
                     break;
             }
             if (entity != null) {
@@ -1232,6 +1267,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         buffer.setLength(0);
         return answer;
     }
+
 
     protected void writeEscapeAttributeEntities(String text) throws IOException {
         if ( text != null ) {
@@ -1269,9 +1305,9 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                     // don't encode standard whitespace characters
                     break;
                 default:
-                    // encode low and high characters as entities
-                    if ((c < 32) || (c >= 127))
-                        entity = "&#" + (int)c + ";";
+                	if (c < 32 || shouldEncodeChar(c)) {
+                        entity = "&#" + (int) c + ";";
+                	}
                     break;
             }
             if (entity != null) {
@@ -1296,6 +1332,36 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         buffer.setLength(0);
         return answer;
     }
+
+	/**
+	 * Should the given character be escaped. This depends on the
+	 * encoding of the document.
+	 * 
+	 * @return boolean
+	 */
+	protected boolean shouldEncodeChar(char c) {
+		int max = getMaximumAllowedCharacter();
+		return max > 0 && c > max;
+	}
+	
+	/**
+	 * Returns the maximum allowed character code that should be allowed
+	 * unescaped which defaults to 127 in US-ASCII (7 bit) or 
+	 * 255 in ISO-* (8 bit).
+	 */
+	protected int defaultMaximumAllowedCharacter() {
+		String encoding = format.getEncoding();
+		if (encoding != null) {
+			if (encoding.equals("US-ASCII")) {
+				return 127;
+			}			
+			else if (encoding.startsWith("ISO-")) {
+				return 255;
+			}
+		}
+		// no encoding for things like UTF-8 or UTF-16
+		return -1;
+	}
 
     protected boolean isNamespaceDeclaration( Namespace ns ) {
         if (ns != null && ns != Namespace.XML_NAMESPACE) {
