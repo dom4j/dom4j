@@ -53,6 +53,8 @@ import org.xml.sax.helpers.LocatorImpl;
   */
 public class SAXWriter implements XMLReader {
 
+    protected static String FEATURE_NAMESPACE_PREFIXES = "http://xml.org/sax/features/namespace-prefixes";
+    
     /** <code>ContentHandler</code> to which SAX events are raised */
     private ContentHandler contentHandler;
     
@@ -76,6 +78,8 @@ public class SAXWriter implements XMLReader {
     /** Stores the properties */
     private Map properties = new HashMap();
 
+    /** Whether namespace declarations are exported as attributes or not */
+    private boolean declareNamespaceAttributes;
     
     
     public SAXWriter() {
@@ -196,6 +200,22 @@ public class SAXWriter implements XMLReader {
     }
     
 
+    
+    /** Should namespace declarations be converted to "xmlns" attributes. This property
+      * defaults to <code>false</code> as per the SAX specification. 
+      * This property is set via the SAX feature "http://xml.org/sax/features/namespace-prefixes"
+      */ 
+    public boolean isDeclareNamespaceAttributes() {
+        return declareNamespaceAttributes;
+    }
+    
+    /** Sets whether namespace declarations should be exported as "xmlns" attributes or not.
+      * This property is set from the SAX feature "http://xml.org/sax/features/namespace-prefixes"
+      */ 
+    public void setDeclareNamespaceAttributes(boolean declareNamespaceAttributes) {
+        this.declareNamespaceAttributes = declareNamespaceAttributes;
+    }
+    
 
     
     // XMLReader methods
@@ -299,6 +319,10 @@ public class SAXWriter implements XMLReader {
     public void setFeature(String name, boolean value)
             throws SAXNotRecognizedException, SAXNotSupportedException {
         features.put(name, (value) ? Boolean.TRUE : Boolean.FALSE );
+        
+        if ( FEATURE_NAMESPACE_PREFIXES.equals( name ) ) {
+            setDeclareNamespaceAttributes( value );
+        }
     }
 
     /** Gets the given property
@@ -454,8 +478,8 @@ public class SAXWriter implements XMLReader {
     
     protected void write( Element element, NamespaceStack namespaces ) throws SAXException {
         int stackSize = namespaces.size();
-        startPrefixMapping(element, namespaces);
-        startElement(element);
+        AttributesImpl namespaceAttributes = startPrefixMapping(element, namespaces);
+        startElement(element, namespaceAttributes);
         writeContent(element, namespaces);
         endElement(element);
         endPrefixMapping(namespaces, stackSize);
@@ -464,7 +488,8 @@ public class SAXWriter implements XMLReader {
     /** Fires a SAX startPrefixMapping event for all the namespaces
       * which have just come into scope
       */
-    protected void startPrefixMapping( Element element, NamespaceStack namespaces ) throws SAXException {
+    protected AttributesImpl startPrefixMapping( Element element, NamespaceStack namespaces ) throws SAXException {
+        AttributesImpl namespaceAttributes = null;
         List declaredNamespaces = element.declaredNamespaces();
         for ( int i = 0, size = declaredNamespaces.size(); i < size ; i++ ) {
             Namespace namespace = (Namespace) declaredNamespaces.get(i);
@@ -473,8 +498,10 @@ public class SAXWriter implements XMLReader {
                 contentHandler.startPrefixMapping(
                     namespace.getPrefix(), namespace.getURI()
                 );
+                namespaceAttributes = addNamespaceAttribute( namespaceAttributes, namespace );
             }
         }
+        return namespaceAttributes;
     }
     
     /** Fires a SAX endPrefixMapping event for all the namespaces which 
@@ -490,12 +517,12 @@ public class SAXWriter implements XMLReader {
     }
     
     
-    protected void startElement( Element element ) throws SAXException {                       
+    protected void startElement( Element element, AttributesImpl namespaceAttributes ) throws SAXException {                       
         contentHandler.startElement( 
             element.getNamespaceURI(), 
             element.getName(), 
             element.getQualifiedName(), 
-            createAttributes( element )
+            createAttributes( element, namespaceAttributes )
         );
     }
 
@@ -507,8 +534,11 @@ public class SAXWriter implements XMLReader {
         );
     }
 
-    protected Attributes createAttributes( Element element ) throws SAXException {
+    protected Attributes createAttributes( Element element, Attributes namespaceAttributes ) throws SAXException {
         attributes.clear();
+        if ( namespaceAttributes != null ) {
+            attributes.setAttributes( namespaceAttributes );
+        }
         
         for ( Iterator iter = element.attributeIterator(); iter.hasNext(); ) {
             Attribute attribute = (Attribute) iter.next();
@@ -523,12 +553,41 @@ public class SAXWriter implements XMLReader {
         return attributes;
     }
     
+    /** If isDelcareNamespaceAttributes() is enabled then this method will add the
+      * given namespace declaration to the supplied attributes object, creating one if
+      * it does not exist.
+      */
+    protected AttributesImpl addNamespaceAttribute( AttributesImpl namespaceAttributes, Namespace namespace ) {
+        if ( declareNamespaceAttributes ) {
+            if ( namespaceAttributes == null ) {
+                namespaceAttributes = new AttributesImpl();
+            }
+            String prefix = namespace.getPrefix();
+            String qualifiedName = "xmlns";
+            if ( prefix != null && prefix.length() > 0 ) {
+                qualifiedName = "xmlns:" + prefix;
+            }
+            String uri = "";
+            String localName = prefix;
+            String type = "CDATA";
+            String value = namespace.getURI();
+            
+            namespaceAttributes.addAttribute( uri, localName, qualifiedName, type, value );
+        }
+        return namespaceAttributes;
+    }
+
+    
     /** @return true if the given namespace is an ignorable namespace 
       * (such as Namespace.NO_NAMESPACE or Namespace.XML_NAMESPACE) or if the
       * namespace has already been declared in the current scope
       */
     protected boolean isIgnoreableNamespace( Namespace namespace, NamespaceStack namespaces ) {
         if ( namespace.equals( Namespace.NO_NAMESPACE ) || namespace.equals( Namespace.XML_NAMESPACE ) ) {
+            return true;
+        }
+        String uri = namespace.getURI();
+        if ( uri == null || uri.length() <= 0 ) {
             return true;
         }
         return namespaces.containsPrefix( namespace.getPrefix() );

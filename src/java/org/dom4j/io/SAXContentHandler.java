@@ -378,9 +378,9 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
         else {
             int size = attributes.getLength();
             for ( int i = 0; i < size; i++ ) {
+                String attributeQualifiedName = attributes.getQName(i);
                 String attributeURI = attributes.getURI(i);
                 String attributeLocalName = attributes.getLocalName(i);
-                String attributeQualifiedName = attributes.getQName(i);
                 String attributeValue = attributes.getValue(i);
 
                 QName attributeQName = namespaceStack.getQName( 
