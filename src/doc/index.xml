@@ -13,20 +13,36 @@
 
     <section title="Features">
       <ul>
-        <li>designed for the Java platform with full support for Java 2 Collections</li>
-        <li>full support for JAXP, SAX, DOM, TrAX and XSLT</li>
-        <li>fully integrated XPath support for easy navigation of XML documents
+        <li>designed for the Java platform with full support for the
+        <a href="http://java.sun.com/products/jdk/1.2/docs/guide/collections/index.html">Java Collections Framework</a>
+        (Java 2 Collections)</li>
+        <li>full support for 
+        <a href="http://java.sun.com/xml/xml_jaxp.html">JAXP</a>, 
+        <a href="http://java.sun.com/xml/xml_jaxp.html">TrAX</a>, 
+        <a href="http://www.megginson.com/SAX/">SAX</a>, 
+        <a href="http://www.w3.org/DOM/">DOM</a>, 
+        and <a href="http://www.w3.org/TR/xslt.html">XSLT</a>        
+        </li>
+        <li>fully integrated 
+        <a href="http://www.w3.org/TR/xpath.html">XPath</a> 
+        support for easy navigation of XML documents
         </li>
         <li>event based proccessing mode to support for massive documents or XML streams
         </li>
         <li>based on Java interfaces for flexible plug and play implementations.
         </li>
-        <li>alpha release of XML Schema Data Type support
+        <li>alpha release of 
+         <a href="http://www.w3.org/TR/xmlschema-2/">XML Schema Data Type</a>
+         support using Kohsuke Kawaguchi's
+         <a href="http://www.sun.com/software/xml/developers/xsdlib/download.html">xsdlib</a>
         </li>
       </ul>
     </section>
 
     <section title="Getting Started">
+      <p>You can download the current $VERSION$ release 
+        or a nightly build via the <a href="download.html">download page</a>.</p>
+
       <p>For a quick overview of <i>dom4j</i> and how to use it try the reading the
         <a href="guide.html">quick start guide</a> or browsing the
         <a href="faq.html">FAQ</a> or the online 
@@ -36,8 +52,11 @@
       <p>To see how <i>dom4j</i> compares to other XML object models you could try
         reading our <a href="compare.html">comparison</a></p>
         
-      <p>You can download the current $VERSION$ release 
-        or a nightly build via the <a href="download.html">download page</a>.</p>
+      <p>We really like XPath and if you are working with XML we highly recommend
+        you try to experiment with XPath. If you need help learning XPath
+        try the excellent
+        <a href="http://www.zvon.org/xxl/XPathTutorial/General/examples.html">zvon tutorial</a> 
+        .</p>
 
       <p>Contributors are welcome to join this project. 
         Once you've browsed the <a href="faq.html">FAQ</a> you could try
