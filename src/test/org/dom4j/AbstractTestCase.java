@@ -47,6 +47,13 @@ public class AbstractTestCase extends TestCase {
         
         NodeComparator comparator = new NodeComparator();
         assertTrue( "Documents are equal", comparator.compare( doc1, doc2 ) == 0 );
+        
+/*        
+        String text1 = doc1.asXML();
+        String text2 = doc2.asXML();
+        
+        assertEquals( "Text of documents is equal", text1, text2 );
+*/
     }
 
     

@@ -47,7 +47,23 @@ public class TestSerialize extends AbstractTestCase {
 
     // Test case(s)
     //-------------------------------------------------------------------------                    
-    public void testSerialize() throws Exception {
+    public void testSerializePeriodicTable() throws Exception {
+        testSerialize( "xml/periodic_table.xml" );
+    }
+    
+    public void testSerializeMuchAdo() throws Exception {
+        testSerialize( "xml/much_ado.xml" );
+    }
+    
+    public void testSerializeTestSchema() throws Exception {
+        testSerialize( "xml/schema/personal.xsd" );
+    }
+    
+    // Implementation methods
+    //-------------------------------------------------------------------------                    
+    protected void testSerialize(String xmlFile) throws Exception {
+        SAXReader reader = new SAXReader();
+        Document document = reader.read( xmlFile );
         String text = document.asXML();
         
         ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
@@ -71,8 +87,6 @@ public class TestSerialize extends AbstractTestCase {
     }            
     
     protected void setUp() throws Exception {
-        SAXReader reader = new SAXReader();
-        document = reader.read( "xml/schema/personal.xsd" );
     }
 }
 

@@ -26,7 +26,7 @@ public class Foo {
 </pre>
     </section>
 
-    <section title="Navigating Iterators">
+    <section title="Using Iterators">
       <p>A document can be navigated using a variety of methods that return
         standard Java Iterators. For example
       </p>
@@ -90,6 +90,32 @@ public class Foo {
         the <a href="http://www.zvon.org/xxl/XPathTutorial/General/examples.html">zvon tutorial</a> 
         which allows you to learn by example.
       </p>
+    </section>
+
+
+    <section title="Fast Looping">
+      <p>If you ever have to walk a large XML document tree
+        then for performance we recommend you use the fast 
+        looping method which avoids the cost of creating
+        an Iterator object for each loop. For example
+      </p>
+<pre>
+    public void treeWalk(Document document) {
+        treeWalk( document.getRootElement() );
+    }
+
+    public void treeWalk(Element element) {
+        for ( int i = 0, size = element.nodeCount(); i &lt; size; i++ ) {
+            Node node = element.node(i);
+            if ( node instanceof Element ) {
+                treeWalk( (Element) node );
+            }
+            else {
+                // do something....
+            }
+        }
+    }
+</pre>
     </section>
 
 

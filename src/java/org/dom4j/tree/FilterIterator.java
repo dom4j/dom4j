@@ -10,6 +10,7 @@
 package org.dom4j.tree;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /** <p><code>FilterIterator</code> is an abstract base class which is useful
   * for implementors of {@link Iterator} which filter an existing iterator.
@@ -21,6 +22,7 @@ public abstract class FilterIterator implements Iterator {
     
     protected Iterator proxy;
     private Object next;
+    private boolean first = true;
     
     public FilterIterator(Iterator proxy) {
         this.proxy = proxy;
@@ -28,22 +30,20 @@ public abstract class FilterIterator implements Iterator {
 
 
     public boolean hasNext() {
-        if ( proxy == null ) {
-            return false;
+        if ( first ) {
+            next = findNext();
+            first = false;
         }
-        while (proxy.hasNext()) {
-            next = proxy.next();
-            if ( matches(next) ) {
-                return true;
-            }
-        }
-        proxy = null;
-        next = null;
-        return false;
+        return next != null;
     }
 
-    public Object next() {
-        return next;
+    public Object next() throws NoSuchElementException {
+        if ( ! hasNext() ) {
+            throw new NoSuchElementException();
+        }
+        Object answer = this.next;
+        this.next = findNext();
+        return answer;
     }
 
     public void remove() {
@@ -58,6 +58,20 @@ public abstract class FilterIterator implements Iterator {
       * and should be appear in the iteration
       */
     protected abstract boolean matches(Object element);
+    
+    
+    protected Object findNext() {
+        if ( proxy != null ) {
+            while (proxy.hasNext()) {
+                Object next = proxy.next();
+                if ( next != null &&  matches(next) ) {
+                    return next;
+                }
+            }
+            proxy = null;
+        }
+        return null;
+    }
 }
 
 

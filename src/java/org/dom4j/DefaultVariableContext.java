@@ -21,7 +21,7 @@ import org.dom4j.VariableContext;
  *  @author bob mcwhirter (bob @ werken.com)
  */
 
-public class DefaultVariableContext implements VariableContext {
+public class DefaultVariableContext implements VariableContext, org.jaxen.VariableContext {
 
     /** The map used to resolve variable values */
     private Map map;
@@ -48,6 +48,10 @@ public class DefaultVariableContext implements VariableContext {
     *  @see org.dom4j.xpath.ContextSupport#setVariableContext
     */
     public Object getVariableValue(String name) {
+        return map.get(name);
+    }
+
+    public Object getVariableValue(String prefix, String name) {
         return map.get(name);
     }
 

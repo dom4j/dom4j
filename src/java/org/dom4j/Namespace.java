@@ -78,14 +78,20 @@ public class Namespace extends AbstractNode {
       */
     public int hashCode() {
         if ( hashCode == 0 ) {
-            hashCode = uri.hashCode() 
-                ^ prefix.hashCode();
-            if ( hashCode == 0 ) {
-                hashCode = 0xbabe;
-            }
+            hashCode = createHashCode();
         }
         return hashCode;
     }
+        
+    /** Factory method to create the hashcode allowing derived classes to change the behaviour */
+    protected int createHashCode() {        
+        int hashCode = uri.hashCode() ^ prefix.hashCode();
+        if ( hashCode == 0 ) {
+            hashCode = 0xbabe;
+        }            
+        return hashCode;
+    }
+
   
     public boolean equals(Object object) {
         if ( this == object ) {

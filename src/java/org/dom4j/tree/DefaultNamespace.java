@@ -40,7 +40,32 @@ public class DefaultNamespace extends Namespace {
         super( prefix, uri );
         this.parent = parent;
     }
+    
+    /** @return the hash code based on the qualified name and the URI of the 
+      * namespace and the hashCode() of the parent element.
+      */
+    protected int createHashCode() {        
+        int hashCode = super.createHashCode();
+        if ( parent != null ) {
+            hashCode ^= parent.hashCode();
+        }
+        return hashCode;
+    }
 
+    /** Implements an identity based comparsion using the parent element as well as
+     * the prefix and URI
+     */
+    public boolean equals(Object object) {
+        if ( object instanceof DefaultNamespace ) {
+            DefaultNamespace that = (DefaultNamespace) object;
+            if ( that.parent == parent ) {
+                return super.equals( object );
+            }
+        }
+        return false;
+    }
+
+    
     public Element getParent() {
         return parent;
     }
