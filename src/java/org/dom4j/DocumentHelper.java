@@ -207,7 +207,7 @@ public class DocumentHelper {
       *
       * @param text is the XML text to be parsed
       * @return a newly parsed Document
-      * @throws SAXException if the document could not be parsed
+      * @throws DocumentException if the document could not be parsed
       */
     public static Document parseText(String text) throws DocumentException {
         SAXReader reader = new SAXReader();
