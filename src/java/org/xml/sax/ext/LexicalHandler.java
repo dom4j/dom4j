@@ -54,7 +54,7 @@ public interface LexicalHandler
      *
      * <p>All declarations reported through 
      * {@link org.xml.sax.DTDHandler DTDHandler} or
-     * {@link org.xml.sax.DeclHandler DeclHandler} events must appear
+     * {@link org.xml.sax.ext.DeclHandler DeclHandler} events must appear
      * between the startDTD and {@link #endDTD endDTD} events.
      * Declarations are assumed to belong to the internal DTD subset
      * unless they appear between {@link #startEntity startEntity}

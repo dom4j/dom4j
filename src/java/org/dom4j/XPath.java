@@ -44,6 +44,21 @@ public interface XPath extends NodeFilter {
       */
     public boolean matches(Node node);
 
+    /** <p><code>selectObject</code> evaluates an XPath expression and returns 
+      * the result as an {@link Object}. The object returned can
+      * either be a {@link List} of {@link Node} instances, a {@link Node} 
+      * instance, a {@link String} or a {@link Number} instance depending on 
+      * the XPath expression. 
+      *
+      * @param context is either a node or a list of nodes on which to 
+      *    evalute the XPath
+      * @return the value of the XPath expression as a
+      * {@link List} of {@link Node} instances, a {@link Node} 
+      * instance, a {@link String} or a {@link Number} instance depending on 
+      * the XPath expression. 
+      */
+    public Object selectObject(Object context);
+
     /** <p><code>selectNodes</code> performs this XPath expression
       * on the given {@link Node} or {@link List} of {@link Node}s 
       * instances appending all the results together into a single list.</p>
@@ -104,6 +119,17 @@ public interface XPath extends NodeFilter {
       */
     public String valueOf(Object context);
     
+    /** <p><code>numberValueOf</code> evaluates an XPath expression
+      * and returns the numeric value of the XPath expression if the XPath
+      * expression results in a number, or null if the result is not a number.
+      *
+      * @param context is either a node or a list of nodes on which to 
+      *    evalute the XPath
+      * @return the numeric result of the XPath expression or null
+      * if the result is not a number.
+      */
+    public Number numberValueOf(Object context);
+
     /** <p><code>sort</code> sorts the given List of Nodes
       * using this XPath expression as a {@link Comparator}.</p>
       *

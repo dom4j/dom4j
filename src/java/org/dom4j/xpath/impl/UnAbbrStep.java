@@ -444,7 +444,7 @@ public abstract class UnAbbrStep extends Step {
         return null;
     }
     
-  /** @return a list of {@link Attributes} instances which
+  /** @return a list of {@link Attribute} instances which
    * support the parent relationship
    */
     protected List attributes(Element element) {

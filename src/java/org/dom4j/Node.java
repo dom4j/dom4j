@@ -249,6 +249,20 @@ public interface Node extends Cloneable {
       */
     public List selectNodes(String xpathExpression);
     
+    /** <p><code>selectObject</code> evaluates an XPath expression and returns 
+      * the result as an {@link Object}. The object returned can
+      * either be a {@link List} of {@link Node} instances, a {@link Node} 
+      * instance, a {@link String} or a {@link Number} instance depending on 
+      * the XPath expression. 
+      *
+      * @param xpathExpression is the XPath expression to be evaluated
+      * @return the value of the XPath expression as a
+      * {@link List} of {@link Node} instances, a {@link Node} 
+      * instance, a {@link String} or a {@link Number} instance depending on 
+      * the XPath expression. 
+      */
+    public Object selectObject(String xpathExpression);
+    
     /** <p><code>selectNodes</code> evaluates an XPath expression then
       * sorts the results using a secondary XPath expression
       * Returns a sorted <code>List</code> of <code>Node</code> instances.</p>
@@ -302,6 +316,16 @@ public interface Node extends Cloneable {
       * expression
       */
     public String valueOf(String xpathExpression);
+
+    /** <p><code>numberValueOf</code> evaluates an XPath expression
+      * and returns the numeric value of the XPath expression if the XPath
+      * expression results in a number, or null if the result is not a number.
+      *
+      * @param xpathExpression is the XPath expression to be evaluated
+      * @return the numeric result of the XPath expression or null
+      * if the result is not a number.
+      */
+    public Number numberValueOf(String xpathExpression);
 
     /** <p><code>createXPath</code> creates an XPath object for
       * the given xpathExpression.

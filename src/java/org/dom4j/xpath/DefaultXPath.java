@@ -112,6 +112,24 @@ public class DefaultXPath implements org.dom4j.XPath {
         _contextSupport = contextSupport;
     }
     
+    public Object selectObject(Object context) {
+        if ( context instanceof Node ) {
+            return selectObject( (Node) context );
+        }
+        else if ( context instanceof List ) {
+            return selectObject( (List) context );
+        }
+        return null;
+    }
+    
+    public Object selectObject(Node node) {
+        return _expr.evaluate( new Context( node, _contextSupport ) );
+    }
+
+    public Object selectObject(List nodes) {
+        return _expr.evaluate( new Context( nodes, _contextSupport ) );
+    }
+    
     /** <p><code>selectNodes</code> performs this XPath expression
       * on the given {@link Node} or {@link List} of {@link Node}s 
       * instances appending all the results together into a single list.</p>
@@ -170,11 +188,17 @@ public class DefaultXPath implements org.dom4j.XPath {
       * @return a single matching <code>Node</code> instance
       */
     public Node selectSingleNode(Object context) {
-        List answer = applyTo( context );
-        if ( answer == null || answer.isEmpty() ) {
-            return null;
+        Object object = selectObject( context );
+        if ( object instanceof Node ) {
+            return (Node) object;
         }
-        return (Node) answer.get(0);
+        else if ( object instanceof List) {
+            List list = (List) object;
+            if ( ! list.isEmpty() ) {
+                return (Node) list.get(0);
+            }
+        }
+        return null;
     }
     
     
@@ -194,6 +218,14 @@ public class DefaultXPath implements org.dom4j.XPath {
             return valueOf( (List) context );
         }
         return "";
+    }
+
+    public Number numberValueOf(Object context) {
+        Object object = selectObject( context );
+        if ( object instanceof Number ) {
+            return (Number) object;
+        }
+        return null;
     }
     
     /** <p><code>sort</code> sorts the given List of Nodes
