@@ -16,7 +16,7 @@
       <item name="FAQ"                    href="/faq.html"/>
       <item name="Javadoc (1.5 beta2)"    href="/apidocs/index.html" class="newWindow" title="New Window" target="_blank"/>
       <item name="Quick start"            href="/guide.html"/>
-      <item name="Cookbook"               href="/cookbook.html"/>
+      <item name="Cookbook"               href="/cookbook.html" class="newWindow" title="New Window" target="_blank"/>
       <item name="Comparison"             href="/compare.html"/>
       <item name="Goals"              	  href="/goals.html"/>
       <item name="Status"                 href="/status.html"/>
