@@ -62,6 +62,7 @@ public class BeanElement extends DefaultElement {
     // Implementation methods
     
     protected DocumentFactory getDocumentFactory() {
+        System.out.println( "###### BeanElement:getDocumentFactory()");
         return DOCUMENT_FACTORY;
     }
     

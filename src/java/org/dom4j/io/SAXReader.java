@@ -151,8 +151,6 @@ public class SAXReader {
     /** @return the <code>DocumentFactory</code> used to create document objects
       */
     public DocumentFactory getDocumentFactory() {
-        System.out.println( "getDocumentFactory() = " + factory );
-        
         if (factory == null) {
             factory = DocumentFactory.getInstance();
         }

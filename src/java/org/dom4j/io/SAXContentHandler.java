@@ -291,7 +291,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
 
 
     protected Element createElement(QName qName, Attributes attributes) {
-        return peekBranch().addElement(qName);
+        return peekBranch().addElement(qName, attributes);
     }
     
     protected ElementStack createElementStack() {
