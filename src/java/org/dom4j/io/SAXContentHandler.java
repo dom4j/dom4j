@@ -189,8 +189,6 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     }
 
     public void startDocument() throws SAXException {
-        System.out.println("start document ...");
-        
         document = createDocument();
         currentElement = null;
 
