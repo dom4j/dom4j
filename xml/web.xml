@@ -9,9 +9,7 @@
     <servlet-class>ViewFile</servlet-class>
     <init-param>
       <param-name>initial</param-name>
-      <param-value>
-        1000
-      </param-value>
+      <param-value>1000</param-value>
       <description>
         The initial value for the counter  <!-- optional -->
       </description>

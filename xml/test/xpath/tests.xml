@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tests>
 
+  <document url="xml/web.xml">
+    <context select="/"> 
+      <valueOf select="/*/servlet[servlet-name='snoop']/servlet-class | 'N/A'">SnoopServlet</valueOf>
+      <valueOf select="/*/servlet[servlet-name='dummy']/servlet-class | 'N/A'">N/A</valueOf>
+      <valueOf select="/*/servlet[servlet-name='snoop']/init-param/param-value | '0'">0</valueOf>
+      <valueOf select="/*/servlet[servlet-name='file']/init-param/param-value | '0'">1000</valueOf>
+    </context>
+  </document>
+
   <!-- test Axes -->
   <document url="xml/xhtml.xml">
     <context select="/">
