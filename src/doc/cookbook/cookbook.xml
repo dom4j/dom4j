@@ -4,8 +4,22 @@
 <book>
 <bookinfo>
 <title>dom4j cookbook</title>
-<author><firstname>Tobias</firstname><surname>Rademacher</surname></author>
+<authorgroup>
+  <author><honorific>Mr</honorific><firstname>Tobias</firstname><surname>Rademacher</surname></author>
+  <author><honorific>Mr</honorific><firstname>James</firstname><surname>Strachan</surname></author>
+</authorgroup>
 <revhistory>
+ <revision>
+    <revnumber>0.0.7</revnumber>
+    <date>01-09-03</date>
+    <authorinitials>tradem</authorinitials>
+    <revdescription>
+      <itemizedlist>
+        <listitem><para>Completed the Schema chapter.</para></listitem>
+        <listitem><para>Fixed the XPath sample.</para></listitem>
+      </itemizedlist>
+    </revdescription>
+  </revision>
   <revision>
     <revnumber>0.0.6</revnumber>
     <date>01-08-03</date>
@@ -63,9 +77,9 @@
   </revdescription>
   </revision>
 </revhistory>
-<pubdate>August 2001</pubdate>
+<pubdate>September 2001</pubdate>
 <abstract>
-  <para>This document provides a practical introduction to dom4j. It guides you through by using a lot of examples and is based on dom4j v0.8</para>
+  <para>This document provides a practical introduction to dom4j. It guides you through by using a lot of examples and is based on dom4j v1.0</para>
 </abstract>
 </bookinfo>
 <preface>
@@ -194,16 +208,6 @@ public class DeployFileLoaderSample {
 
 }
 </programlisting>
-
-<!-- XXXX don't understand?
-
-<para>
-Using Reflection API provides the most flexbility for handling all kinds of <classname>org.dom4j.io.SAXReader</classname> Sources, but that
-and even a check with instanceof needs a good exception management while you suspend and a lot of
-xml driven application will not need this flexiblity.
-</para>
-
--->
 
 </section>
 
@@ -668,13 +672,7 @@ public class DeployFileLoaderSample {
 
 <para>
 The above example might be a little bit confusing if you are not too familiar with the Collections API. 
-Casting is necessary when you want to acess the object. 
-<!--
-XXXX - not relevant yet?
-Sometimes casting can be dangerous because of a <classname>java.lang.ClassCastException</classname>. 
-dom4j normally uses a clean object model that such a exception never occurs. 
-There's another interesting approach in API may be usefull.
--->
+Casting is necessary when you want to acess the object. Java Generics will solve this problem in future.
 </para>
 
 <programlisting>
@@ -777,8 +775,10 @@ along with the <citation>Zvon</citation> Zvon tutorial.
 <programlisting>
 import java.util.Iterator;
 
-import org.dom4j.Document;
+import org.dom4j.Documet;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.dom4j.XPath;
 
 public class DeployFileLoaderSample {
 
@@ -786,14 +786,17 @@ public class DeployFileLoaderSample {
   private org.dom4j.Element root;
 
   public void browseRootChildren() {
-    List results = doc.selectNodes("/people/person[@name='Toby']")
+    XPath xpathSelector = DocumentHelper.createXPath("/people/person[@name='James']");
+    List results = xpathSelector.selectNodes(doc);
     for ( Iterator iter = result.iterator(); iter.hasNext(); ) {
       Element element = (Element) iter.next();
       System.out.println(element.getName();
     }
 
+<!-- won't work in dom4j 1.0 - Document interface has no method "valueOf(..)" and no "numberValueOf(..)"
     String address = doc.valueOf( "//person[@name='Toby']/address" );
     Number count = doc.numberValueOf( "//people[@location='London']" );
+-->
   }
 
 }
@@ -802,10 +805,12 @@ public class DeployFileLoaderSample {
 <para>
 As selectNodes returns a List we can apply <classname>Iterator</classname> 
 or any other operation avaliable on <classname>java.util.List</classname>. 
+<!--  won't work in dom4j 1.0 - Document interface has no method "valueOf(..)" and no "numberValueOf(..)"
 You can also select a single node via <classname>selectSingleNode()</classname>
 as well as to select a String expression via <classname>valueOf()</classname>
 or Number 
 value of an XPath expression via <classname>numberVvalueOf()</classname>.
+-->
 </para>
 
 
@@ -991,10 +996,17 @@ An empty <classname>Document</classname> should be created via <classname>org.do
 
   <para>
   The difference between <emphasis>createCopy(...)</emphasis> and <emphasis>clone()</emphasis> is that first is a polymorphic method that created a decoupled deep copy whereas <emphasis>clone()</emphasis> returns a returns a deep copy of the
-  current document or element itself. Cloning might be usefull when you want to build a element pool. Such a pool should be desinged carefully keeping
+  current document or element itself. 
+  </para>
+
+  <caution><title>Consider use of Cloning</title>
+   <para>
+   Cloning might be usefull when you want to build a element pool. Such a pool should be desinged carefully keeping
    <classname>OutOfMemoryException</classname> in mind. You could alternativly consider to use Reference API <citation>Pawlan98</citation>
     or Dave Millers approach <citation>JavaWorldTip76</citation>.
   </para>
+  </caution>
+
 </section>
 </chapter>
 
@@ -1057,7 +1069,279 @@ Imagine that you use XSLT to process a XML Schema in order to generate a empty t
 </chapter>
 
 <chapter>
-<title>Schema-Support</title>
+<title>Schemata-Support</title>
+
+<para>
+The first way to describe and constrain the form and data of a XML document is as old as XML itself.
+Document Type Definitions are used since the XML Specicifiation has been published. 
+At lot of applications used this DTDs to describe and validate her documents. Unfortunatly
+the DTD Syntax was not that powerfull as needed. Written in SGML, DTDs are also not so easy to handle as
+XML is.
+</para>
+
+<para>
+During the time of DTDs a couple of people invents several other possible ways that could
+be used to describe a document and force its content in the desired form. Latly the 
+W3C published XML Schema Specification with a couple of massive inprovements. XML Schemas
+are no described by XML and the way to describe a Schema is done with DTD once and not longer
+by every XML user. A growing group of people using XML Schema now. But XML Schema isn't perfect.
+So a few people swear by Relax or Relax NG. The reader of this document is able to choose one of
+the following technologies:
+</para>
+
+<itemizedlist>
+  <listitem><para>Relax NG (Regular Language description for XML Next Generation)<citation>RelaxNG</citation></para></listitem> 
+  <listitem><para>Relax (Regular Language description for XML)<citation>Relax</citation></para></listitem>
+  <listitem><para>TREX<citation>TREX</citation></para></listitem>
+  <listitem><para>XML DTDs<citation>DTD</citation></para></listitem>
+  <listitem><para>XML Schema<citation>XSD</citation></para></listitem>
+</itemizedlist>
+
+<section><title>Using XML Schema Data Types in dom4j</title>
+<para>
+dom4j supports currently XML Schema Data Types<citation>DataTypes</citation> only.
+The dom4j implementation is based on top of MSV. Earlier dom4j releases are built
+on top of Suns Tranquilo (xsdlib.jar) but we use MSV now, because its uses
+offers the same Tranquilo plus exiting additional features we discuss later.
+</para>
+
+<programlisting>
+import java.util.List;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.XPath;
+import org.dom4j.io.SAXReader;
+import org.dom4j.dataType.DataTypeElement;
+
+public class SchemaTypeDemo {
+
+public static void main(String[] args) {
+
+  SAXReader reader = new SAXReader();
+  reader.setDocumentFactory( DatatypeDocumentFactory.getInstance() );
+  Document schema =  return reader.read(xmlFile)
+  XPath xpathSelector = DocumentHelper.createXPath("xsd:schema/xsd:complexType[@name='Address']/xsd:structure/xsd:element[@type]");
+  List xsdElements = xpathSelector.selectNodes(schema);
+
+  for (int i=0; i &lt; xsdElements.size(); i++) {
+    DataElement tempXsdElement = (DatatypeElement)xsdElements.get(i);
+
+    if (tempXsdElement.getData() instanceof Integer) {
+       tempXsdElement.setData(new Integer(23));
+     }
+  }  
+}
+</programlisting>
+
+<caution><title>Alpha status</title>
+<para>
+Note that the Data Type support is still alpha. If you find any bug, please report it to
+the mailing listy. This helps us to make the Data Type support more error-prone and trustworthy.
+</para>
+</caution>
+
+</section>
+
+
+<section><title>Validation</title>
+<para>
+dom4j currently comes not with its one validation engine. You are forced to use a different
+engine instead. We recommend the use of Xerces 1.4.x or later in the past, but now you are
+able to use Suns Multi Schema Validator as well. Xerces is able to validate against DTDs and
+XML Schema, but not against TREX or Relax. You would belive it, but the Mulit Schema Validator Libery 
+supports all earlier mentioned types for validation.
+</para>
+
+<caution><title>Consider use of Validation</title>
+<para>
+Using Valdiation consumes valueable resources. Use it wisely.
+</para>
+</caution>
+
+<section><title>Using Apaches Xerces 1.4.x and dom4j for validation</title>
+<para>
+Using Xerecs 1.4.x for Schema and Validation is very easy. You have to download 
+Xerces at Apaches XML web sites. The past has shown that not always the newest version
+is best. You can view there mailing lists in order to find out which version is buggy
+and which works well. For Schema support at least Xerecs 1.4.0 is necessary. If you 
+work according the following rules valdation should be no problem. 
+</para>
+
+<itemizedlist>
+  <listitem><para>Turn on validation mode - which is false for default - using a SAXReader instance</para></listitem>
+  <listitem><para>Set the following Xerces property http://apache.org/xml/properties/schema/external-noNamespaceSchemaLocation using the schema URI.</para></listitem>
+  <listitem><para>Create a SAX XMLErrorHandler and install it to your SAXReader instance.</para></listitem>
+  <listitem><para>Parse and validate the Document.</para></listitem>
+  <listitem><para>Output Validation/Parse Errors errors.</para></listitem>
+</itemizedlist>
+
+<programlisting>
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
+import org.dom4j.util.XMLErrorHandler;
+
+
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXParseException
+
+public class SimpleValidationDemo {
+
+public static void main(String[] args) {
+  SAXReader reader = new SAXReader();
+
+  reader.setValidation(true);
+        
+  // specify the schema to use
+  reader.setProperty( 
+   "http://apache.org/xml/properties/schema/external-noNamespaceSchemaLocation", 
+   "prices.xsd" 
+  );
+    
+  // add an error handler which turns any errors into XML
+   XMLErrorHandler errorHandler = new XMLErrorHandler();
+   reader.setErrorHandler( errorHandler );
+
+  // now lets parse the document
+  Document document = reader.read(args[0]);
+
+ // now lets output the errors as XML        
+  XMLWriter writer = new XMLWriter( OutputFormat.createPrettyPrint() );
+  writer.write( errorHandler.getErrors() );        
+}
+
+</programlisting>
+
+<caution><title>Xerces and Crimson</title>
+<para>
+Both, Xerecs and Crimson, are JaXPable Parsers. You should be carefully in using
+Crimson and Xerces in same classpath. Xerces will work only correct when it is the 
+mentioned <emphasis>before</emphasis> Crimson in classpath. At this time I
+recommend that you should either Xereces <emphasis>or</emphasis> Crimson.
+</para>
+</caution>
+
+</section>
+
+<section><title>A perfect team - Multi Schema Validator<citation>MSV</citation> and dom4j </title>
+<para>
+Kohsuke Kawaguchi a deleloper from Sun created a extremly usefull tool for validtion of XML
+documents. The Multi Schema Validator (MSV) supports following kinds of Schmemata:
+</para>
+
+<itemizedlist>
+  <listitem><para>Relax NG</para></listitem> 
+  <listitem><para>Relax </para></listitem>
+  <listitem><para>TREX</para></listitem>
+  <listitem><para>XML DTDs</para></listitem>
+  <listitem><para>XML Schema</para></listitem>
+</itemizedlist>
+
+<para>
+You are able to use the MSV and dom4j in order to validate your Documents. The following examples shows you how to use
+the MSV and with dom4j.
+</para>
+
+<programlisting>
+import com.sun.msv.grammar.Grammar;
+import com.sun.msv.reader.util.GrammarLoader;
+import com.sun.msv.reader.util.IgnoreController;
+import com.sun.msv.verifier.DocumentDelcaration;
+import com.sun.msv.verifier.VadilityViolation;
+import com.sun.msv.verifier.Verifier;
+import com.sun.msv.verifier.VerificationErrorHandler;
+
+import javax.xml.parsers.SAXParserFactory;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentExcpetion;
+import org.dom4j.io.SAXReader;
+import org.dom4j.io.SAXWriter;
+
+import org.xml.sax.ContentHandler;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.Locator;
+import org.xml.sax.SAXParseException;
+
+public class MSVandDOM4JDemo {
+
+  public void validate(Document doc, String schema) throws Excpetion {
+
+    // Turn on Namespace handling JAXP SAXParserFactory
+    SAXParserFactory saxFacotry = SAXParserFactory.newInstance();
+    saxFactory.setNamespaceAware( true );
+
+
+    // create MSVs DocumentDeclaration by over a IgnoreController in a anonyous inner class
+    DocumentDeclaration docDeclaration =
+                                        GrammarLoader.loadVGM( 
+                                                               schema, 
+                                                               new IgnoreController() {
+
+         public void error(Locator[] locations, String message, Exception exception) {
+           System.out.println( "ERROR: "+  message); 
+         }
+
+         public void error(Locator[] locations, String message) {
+           System.out.println( "WARNING: "+  message); 
+         }
+    };
+
+    // create a new Vertifier by overwriding its method using a anonymous inner class
+    
+    Verifier verifier = new Vertifier( docDeclaration, 
+                                         new VertificationHandler() {
+            
+        public void onError(ValidityViolation e) {
+          System.out.println( "Document unvalid! Error: " + e);
+        }
+
+        public void onWarning(ValidityViolation e) {
+          System.out.println( "Document unvalid! Warining: " + e);
+        }
+   };
+
+   // validate now!
+
+   SAXWriter writer = new SAXWriter( (ContentHandler) verifier );
+   writer.setErrorHandler( 
+     new ErrorHandler() {
+     
+      public void error(SAXParseException e) {
+        System.out.println("ERROR:" + e); 
+      }
+
+      public void fatalError(SAXParseException e) {
+        System.out.println("Fatal:" + e); 
+      } 
+
+      public void warning(SAXParseException e) {
+        System.out.println("Warning:" + e); 
+      } 
+    }
+  };
+
+  }
+
+}
+
+
+</programlisting>
+
+<para>
+At the first look the use of MSV looks not trival. The Xerces validation is 
+easier to use in code, but not so powerfull. Currently its not clear if XML Schema
+will be the next standard for validation. Relax NG gots a even more growing
+lobby. If you want to build a open application that is not fixed to a 
+specific XML parser and specific XML Schematas you should use this powerfull
+tool.
+</para>
+
+  </section>
+ </section>
 </chapter>
 
 
@@ -1141,6 +1425,41 @@ Imagine that you use XSLT to process a XML Schema in order to generate a empty t
     <holder>http://www.zvon.org/xxl/XPathTutorial/General/examples.html</holder>
   </copyright>
   <title>Zvon XPath tutorial</title>
+</biblioentry>
+<biblioentry>
+  <abbrev>RelaxNG</abbrev>
+  <copyright>
+    <holder>http://www.oasis-open.org/committees/relax-ng/</holder>
+  </copyright>
+  <title>Developing RELAX NG, the next generation schema language for XML: clean, simple and powerful</title>
+</biblioentry>
+<biblioentry>
+  <abbrev>Relax</abbrev>
+  <copyright>
+    <holder>http://www.xml.gr.jp/relax/</holder>
+  </copyright>
+  <title>The offical site of Relax</title>
+</biblioentry>
+<biblioentry>
+  <abbrev>TREX</abbrev>
+  <copyright>
+    <holder>http://www.thaiopensource.com/trex/</holder>
+  </copyright>
+  <title>TREX - Tree Regular Expressions for XML</title>
+</biblioentry>
+<biblioentry>
+  <abbrev>DTD</abbrev>
+  <copyright>
+    <holder>http://www.w3schools.com/dtd/default.asp</holder>
+  </copyright>
+  <title>Document Type Definitions Tutorial</title>
+</biblioentry>
+<biblioentry>
+  <abbrev>XSD</abbrev>
+  <copyright>
+    <holder>http://www.w3.org/XML/Schema http://www.w3.org/XML/1998/06/xmlspec-report</holder>
+  </copyright>
+  <title>XML Schema</title>
 </biblioentry>
 </bibliodiv>
 </book>
