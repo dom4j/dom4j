@@ -53,8 +53,14 @@ import org.xml.sax.helpers.LocatorImpl;
   */
 public class SAXWriter implements XMLReader {
 
-    protected static String FEATURE_NAMESPACE_PREFIXES = "http://xml.org/sax/features/namespace-prefixes";
+    protected static final String[] LEXICAL_HANDLER_NAMES = {
+        "http://xml.org/sax/properties/lexical-handler",
+        "http://xml.org/sax/handlers/LexicalHandler"
+    };
     
+    protected static String FEATURE_NAMESPACE_PREFIXES = "http://xml.org/sax/features/namespace-prefixes";
+    protected static String FEATURE_NAMESPACES = "http://xml.org/sax/features/namespaces";
+
     /** <code>ContentHandler</code> to which SAX events are raised */
     private ContentHandler contentHandler;
     
@@ -83,9 +89,12 @@ public class SAXWriter implements XMLReader {
     
     
     public SAXWriter() {
+        properties.put( FEATURE_NAMESPACE_PREFIXES, Boolean.FALSE );
+        properties.put( FEATURE_NAMESPACE_PREFIXES, Boolean.TRUE );
     }
 
     public SAXWriter(ContentHandler contentHandler) {
+        this();
         this.contentHandler = contentHandler;
     }
 
@@ -94,6 +103,7 @@ public class SAXWriter implements XMLReader {
         EntityResolver entityResolver, 
         LexicalHandler lexicalHandler
     ) {
+        this();
         this.contentHandler = contentHandler;
         this.entityResolver = entityResolver;
         this.lexicalHandler = lexicalHandler;
@@ -316,27 +326,39 @@ public class SAXWriter implements XMLReader {
     /** This implementation does actually use any features but just
       * stores them for later retrieval
       */
-    public void setFeature(String name, boolean value)
-            throws SAXNotRecognizedException, SAXNotSupportedException {
-        features.put(name, (value) ? Boolean.TRUE : Boolean.FALSE );
-        
+    public void setFeature(String name, boolean value) throws SAXNotRecognizedException, SAXNotSupportedException {
         if ( FEATURE_NAMESPACE_PREFIXES.equals( name ) ) {
             setDeclareNamespaceAttributes( value );
         }
+        else if ( FEATURE_NAMESPACE_PREFIXES.equals( name ) ) {
+            if ( ! value ) {
+                throw new SAXNotSupportedException(name + ". namespace feature is always supported in dom4j." );
+            }
+        }
+        features.put(name, (value) ? Boolean.TRUE : Boolean.FALSE );        
     }
 
-    /** Gets the given property
-      */
-    public Object getProperty(String name) throws SAXNotRecognizedException {
-        return properties.get(name);
-    }
-
-    
-    /** Sets the given property
-      */
-    public void setProperty(String name, Object value) 
-            throws SAXNotRecognizedException, SAXNotSupportedException {
+    /** Sets the given SAX property
+      */    
+    public void setProperty(String name, Object value) throws SAXNotRecognizedException, SAXNotSupportedException {
+        for (int i = 0; i < LEXICAL_HANDLER_NAMES.length; i++) {
+            if (LEXICAL_HANDLER_NAMES[i].equals(name)) {
+                setLexicalHandler((LexicalHandler) value);
+                return;
+            }
+        }
         properties.put(name, value);
+    }
+
+    /** Gets the given SAX property
+      */    
+    public Object getProperty(String name) throws SAXNotRecognizedException, SAXNotSupportedException {
+        for (int i = 0; i < LEXICAL_HANDLER_NAMES.length; i++) {
+            if (LEXICAL_HANDLER_NAMES[i].equals(name)) {
+                return getLexicalHandler();
+            }
+        }
+        return properties.get(name);
     }
 
     

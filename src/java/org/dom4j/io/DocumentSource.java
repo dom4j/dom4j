@@ -11,6 +11,7 @@ package org.dom4j.io;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.TransformerFactory;
 
 import org.dom4j.Document;
 import org.dom4j.Node;
@@ -26,6 +27,12 @@ import org.xml.sax.XMLReader;
   * @version $Revision$
   */
 public class DocumentSource extends SAXSource {
+    
+    /** If {@link javax.xml.transform.TransformerFactory#getFeature}
+      * returns <code>true</code> when passed this value as an argument
+      * then the Transformer natively supports <i>dom4j</i>.
+      */
+    public final static String DOM4J_FEATURE = "http://org.dom4j.io.DoucmentSource/feature";
 
     /** The XMLReader to use */
     private XMLReader xmlReader = new SAXWriter();
