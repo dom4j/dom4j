@@ -31,39 +31,16 @@
   <faq id="classpath">
     <question>What do I need to add to my CLASSPATH?</question>
     <answer>
-      <p>The dom4j-full.jar contains everything you need to use <i>dom4j</i> so that is 
-        the only JAR you'll need to add to your CLASSPATH.
-        No other JAR is necessary! <i>dom4j</i> comes complete with a default 
-        SAX parser so its ready to run straight out of the box.</p>
-
+      <p>The dom4j.jar only contains the dom4j classes. If you want to use a SAX parser,
+         you'll have to include the SAX classes and the SAX parser of your choice to your
+         CLASSPATH. If you want to use XPath expressions, you also have to include the
+         jaxen.jar to your CLASSPATH.
       <p><i>dom4j</i> can use your existing XML parser and/or DOM implementation 
         (such as <a href="http://xml.apache.org/crimson/">Crimson</a> or 
         <a href="http://xml.apache.org/xerces-j/">Xerces</a> if you want it to. <i>dom4j</i> can also use
         <a href="http://java.sun.com/xml/">JAXP</a> to configure which SAX Parser to use - just add the 
         jaxp.jar to your CLASSPATH and whichever SAX parser you wish away you go.
       </p>
-    </answer>
-  </faq>
-
-  <faq id="whats-dom4j-full">
-    <question>What is the difference between dom4j.jar, dom4j-full.jar and dom4j-core.jar??</question>
-    <answer>
-      <p>The standard <i>dom4j</i> release comes with three jars.</p>
-      <ul>
-        <li><b>dom4j-full.jar</b> this contains all the dom4j code, the XPath engine and 
-          the interfaces for SAX and DOM. If in doubt use this JAR.
-        </li>
-        <li><b>dom4j.jar</b> this contains all the dom4j code and the XPath engine but
-          without the SAX or DOM interfaces. Usually the SAX and DOM interfaces come bundled with a JAXP
-          parser so if you are using JAXP and crimson.jar or xerces.jar
-          then dom4j.jar is the recommended JAR to use.
-        </li>
-        <li><b>dom4j-core.jar</b> this contains all the dom4j code without the XPath 
-          engine and the SAX and DOM interfaces. 
-          This JAR is intended for developers who wish to keep the dom4j.jar and the jaxen.jar
-          JARs seperate.
-        </li>
-      </ul>
     </answer>
   </faq>
 
