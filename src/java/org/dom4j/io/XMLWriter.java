@@ -86,6 +86,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
      */
     protected int lastOutputNodeType;
 
+    /**
+     * Stores if the last written element node was a closing tag or an opening
+     * tag.
+     */
+    private boolean lastElementClosed = false;
+
     /** Stores the xml:space attribute value of preserve for whitespace flag */
     protected boolean preserve = false;
 
@@ -681,6 +687,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
             writer.write(">");
             ++indentLevel;
             lastOutputNodeType = Node.ELEMENT_NODE;
+            lastElementClosed = false;
 
             super.startElement(namespaceURI, localName, qName, attributes);
         } catch (IOException e) {
@@ -694,7 +701,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
             charsAdded = false;
             --indentLevel;
 
-            if (lastOutputNodeType == Node.ELEMENT_NODE) {
+            if (lastElementClosed) {
                 writePrintln();
                 indent();
             }
@@ -710,6 +717,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
             }
 
             lastOutputNodeType = Node.ELEMENT_NODE;
+            lastElementClosed = true;
 
             super.endElement(namespaceURI, localName, qName);
         } catch (IOException e) {
@@ -741,6 +749,10 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                     writer.write(" ");
                 } else if (charsAdded && Character.isWhitespace(lastChar)) {
                     writer.write(lastChar);
+                } else if (lastOutputNodeType == Node.ELEMENT_NODE
+                        && format.isPadText() && lastElementClosed
+                        && Character.isWhitespace(ch[0])) {
+                    writer.write(PAD_TEXT);
                 }
 
                 String delim = "";
@@ -1183,13 +1195,14 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     /**
      * Writes the SAX namepsaces
      * 
-     * @param prefix the prefix
-     * @param uri the namespace uri
+     * @param prefix
+     *            the prefix
+     * @param uri
+     *            the namespace uri
      * 
      * @throws IOException
      */
-    protected void writeNamespace(String prefix, String uri) 
-            throws IOException {
+    protected void writeNamespace(String prefix, String uri) throws IOException {
         if ((prefix != null) && (prefix.length() > 0)) {
             writer.write(" xmlns:");
             writer.write(prefix);

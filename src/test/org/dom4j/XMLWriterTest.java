@@ -53,6 +53,27 @@ public class XMLWriterTest extends AbstractTestCase {
         System.out.println(xml);
         assertEquals("whitespace problem", -1, xml.indexOf("</code>bar"));
     }
+    
+    public void testBug1119733WithSAXEvents() throws Exception {
+        StringWriter out = new StringWriter();
+        XMLWriter writer = new XMLWriter(out, OutputFormat.createPrettyPrint());
+        writer.startDocument();
+        writer.startElement(null, "root", "root", new AttributesImpl());
+        writer.startElement(null, "code", "code", new AttributesImpl());
+        writer.characters(new char[] {'f', 'o', 'o'}, 0, 3);
+        writer.endElement(null, "code", "code");
+        writer.characters(new char[] {' ', 'b', 'a', 'r'}, 0, 4);
+        writer.endElement(null, "root", "root");
+        writer.endDocument();
+        writer.close();
+        
+        String xml = out.toString();
+
+        System.out.println(xml);
+        assertEquals("whitespace problem", -1, xml.indexOf("</code>bar"));
+    }
+    
+    
 
     public void testWriter() throws Exception {
         Object object = document;
