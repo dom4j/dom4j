@@ -1,6 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tests>
 
+  <!-- test Axes -->
+
+  <document url="xml/web.xml">
+    <context select="/">
+      <test select="/descendant-or-self::*" count="20"/>
+      <test select="descendant-or-self::*" count="20"/>
+      <test select="/descendant-or-self::servlet" count="2"/>
+      <test select="descendant-or-self::servlet" count="2"/>
+      <test select="/descendant::servlet" count="2"/>
+      <test select="descendant::*" count="19"/>
+      <test select="/descendant::*" count="19"/>
+      <test select="descendant::servlet" count="2"/>
+      <test select="/*/servlet" count="2"/>
+      <valueOf select="count(/*/servlet)">2</valueOf>
+      <test select="//servlet" count="2"/>
+      <valueOf select="count(//servlet)">2</valueOf>
+    </context>
+    <context select="/web-app">
+      <test select="/descendant-or-self::servlet" count="2"/>
+      <test select="descendant-or-self::servlet" count="2"/>
+      <test select="/descendant::servlet" count="2"/>
+      <test select="descendant::servlet" count="2"/>
+    </context>
+    <context select="/web-app/servlet[2]/servlet-name">
+      <test select="preceding::*" count="3"/>
+    </context>
+
+    <context select="/web-app/servlet[2]/servlet-name">
+      <test select="following::*" count="13"/>
+    </context>
+  </document>
+
+  <document url="xml/axis.xml">
+
+    <context select="/root">
+      <test select="preceding-sibling::*" count="0"/>
+    </context>
+
+    <context select="/root/a/a.3">
+      <test select="preceding::*" count="2"/>
+    </context>
+
+    <context select="/root/a/a.3">
+      <test select="preceding-sibling::*" count="2"/>
+    </context>
+
+    <context select="/">
+      <valueOf select="name(/root/a/a.3/preceding-sibling::*[1])">a.2</valueOf>
+      <valueOf select="name(/root/a/a.3/preceding-sibling::*[2])">a.1</valueOf>
+    </context>
+
+    <context select="/">
+      <valueOf select="name(/root/a/a.3/following-sibling::*[1])">a.4</valueOf>
+      <valueOf select="name(/root/a/a.3/following-sibling::*[2])">a.5</valueOf>
+    </context>
+
+  </document>
+
   <!-- test predicates -->
 
   <document url="xml/web.xml">
@@ -236,31 +294,6 @@
     </context>
   </document>
 
-
-  <!-- test Axes -->
-
-  <document url="xml/web.xml">
-    <context select="/">
-      <test select="/descendant-or-self::*" count="20"/>
-      <test select="descendant-or-self::*" count="20"/>
-      <test select="/descendant-or-self::servlet" count="2"/>
-      <test select="descendant-or-self::servlet" count="2"/>
-      <test select="/descendant::servlet" count="2"/>
-      <test select="descendant::*" count="19"/>
-      <test select="/descendant::*" count="19"/>
-      <test select="descendant::servlet" count="2"/>
-      <test select="/*/servlet" count="2"/>
-      <valueOf select="count(/*/servlet)">2</valueOf>
-      <test select="//servlet" count="2"/>
-      <valueOf select="count(//servlet)">2</valueOf>
-    </context>
-    <context select="/web-app">
-      <test select="/descendant-or-self::servlet" count="2"/>
-      <test select="descendant-or-self::servlet" count="2"/>
-      <test select="/descendant::servlet" count="2"/>
-      <test select="descendant::servlet" count="2"/>
-    </context>
-  </document>
 
   <!-- test namespace -->
 

@@ -17,7 +17,7 @@
     <link rel="stylesheet" type="text/css" href="default.css"/>
   </head>
   <body>
-    <h1>This is some HTML</h1>
+    <h1>This is some HTML &amp; and entites</h1>
 
     <h2>Here are some entities</h2>
 
