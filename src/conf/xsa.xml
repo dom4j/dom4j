@@ -15,6 +15,14 @@
     <last-release>20010412</last-release>
     <info-url>http://dom4j.org/</info-url>
     <changes>
-    </changes>
+dom4j is an easy to use, open source Java library for working with XML.
+The main new features of this release include:-
+
+- improved XPath integration
+- full JAXP, DOM, SAX and XSLT integration
+- better I/O support
+- new SAXValidator for validating Documents
+- cleaner API
+   </changes>
   </product>
 </xsa>
