@@ -61,6 +61,8 @@ public class TestNamespaces extends AbstractTestCase {
         Element root = doc2.getRootElement();
         assertNamespace( root.getNamespace(), "", "http://www.w3.org/2001/XMLSchema" );
         assertEquals( "xmlns=\"http://www.w3.org/2001/XMLSchema\"", root.getNamespace().asXML());
+        assertEquals( "namespace::*[name()='']", root.getNamespace().getPath());
+        assertEquals( "namespace::*[name()='']", root.getNamespace().getUniquePath());
 
         List additionalNS = root.additionalNamespaces();
         assertTrue( "at least one additional namespace", additionalNS != null && additionalNS.size() > 0 );
@@ -68,6 +70,8 @@ public class TestNamespaces extends AbstractTestCase {
         Namespace ns = (Namespace) additionalNS.get(0);
         assertNamespace( ns, "t", "http://www.w3.org/namespace/" );
         assertEquals( "xmlns:t=\"http://www.w3.org/namespace/\"", ns.asXML());
+        assertEquals( "namespace::t", ns.getPath());
+        assertEquals( "namespace::t", ns.getUniquePath());
 
         Node node = root.node(0);
         assertTrue( "First node is a namespace", node instanceof Namespace );
