@@ -28,6 +28,62 @@
     </section>
 
     <section title="Change History">
+        <section title="(coming soon) 0.3 release">
+          <p>A new extension function, <i>matrix-concat()</i> was submitted by 
+          James Pereira.
+          By default, doing <i>concat()</i> functions in XPath the 'string-value' is taken
+          for each argument.
+          So for a document:-</p>
+<pre>
+&lt;root project="dom4j"&gt;
+    &lt;contributor&gt;James Pereira&lt;/contributor&gt;
+    &lt;contributor&gt;Bob McWhirter&lt;/contributor&gt;
+&lt;/root;&gt;
+</pre>
+        <p>Then the XPath</p>
+
+<pre>
+concat( 'thanks ', /root/contributor )
+</pre>
+
+        <p>would return</p>
+
+<pre>
+"thanks James Pereira"
+</pre>
+
+      <p>as the <i>/root/contributor</i> expression matches a node set of 2 
+      elements, but the "string-value" takes the first elements text.
+      Whereas <i>matrix-contact</i> will do a cartesian product of all the 
+      arguments and then do the concatenation of each combination of nodes. So
+      </p>
+
+<pre>
+matrix-concat( 'thanks ', /root/contributor )
+</pre>
+
+      <p>will produce</p>
+
+<pre>
+"thanks James Pereira"
+"thanks Bob McWhirter"
+</pre>
+
+      <p>The cartesian product is done such that multiple paths can be used.
+      </p>
+
+<pre>
+matrix-concat( 'thanks ', /root/contributor, ' for working on ', '/@project' )
+</pre>
+
+      <p>will produce</p>
+
+<pre>
+"thanks James Pereira for working on dom4j"
+"thanks Bob McWhirter for working on dom4j"
+</pre>
+        </section>
+ 
         <section title="0.2 release">
           <p>There following new features were added:-
           </p>
@@ -85,6 +141,19 @@ List customers
       </ul>
       <p>The optional W3C DOM implementation of the dom4j API is not yet at 
       full DOM compliance</p>
+    </section>
+
+    <section title="Contributors">    
+      <p>The following people have contributed to the dom4j project. 
+      Many thanks to you all!</p>
+      <ul>
+        <li>James Strachan</li>
+        <li>Bob McWhirter</li>
+        <li>James Dodd</li>
+        <li>James Elson</li>
+        <li>Jakob Jenkov</li>
+        <li>James Pereira</li>
+      </ul>
     </section>
 
   </body>
