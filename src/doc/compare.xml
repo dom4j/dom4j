@@ -84,6 +84,13 @@
             <td>No</td>
         </tr>
         <tr>
+            <td>Capable of processing a continuous XML streams</td>
+            <td>Possible</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        <tr>
             <td>Capable of processing massive documents</td>
             <td>Possible</td>
             <td>Yes</td>

@@ -26,7 +26,6 @@ import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
 import org.dom4j.ElementHandler;
 import org.dom4j.DocumentException;
-import org.dom4j.io.aelfred.SAXDriver;
 
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ErrorHandler;
@@ -414,15 +413,23 @@ public class SAXReader {
     // Implementation methods    
     //-------------------------------------------------------------------------                
     
+    /** Factory Method to allow alternate methods of 
+      * creating and configuring XMLReader objects
+      */
+    protected XMLReader createXMLReader() throws SAXException {
+        return SAXHelper.createXMLReader( isValidating() );
+    }
+    
+    /** Configures the XMLReader before use */
     protected void configureReader(XMLReader reader, DefaultHandler contentHandler) throws DocumentException {                
         // configure lexical handling
-        setParserProperty(
+        SAXHelper.setParserProperty(
             reader,
             "http://xml.org/sax/handlers/LexicalHandler", 
             contentHandler
         );
         // try alternate property just in case
-        setParserProperty(
+        SAXHelper.setParserProperty(
             reader,
             "http://xml.org/sax/properties/lexical-handler", 
             contentHandler
@@ -462,18 +469,6 @@ public class SAXReader {
         }
     }
         
-    protected boolean setParserProperty(XMLReader reader, String propertyName, ContentHandler contentHandler) {    
-        try {
-            reader.setProperty(propertyName, contentHandler);
-            return true;
-        } 
-        catch (SAXNotSupportedException e) {
-        } 
-        catch (SAXNotRecognizedException e) {
-        }
-        return false;
-    }
-
     /** Factory Method to allow user derived SAXContentHandler objects to be used
       */
     protected SAXContentHandler createContentHandler() {
@@ -501,109 +496,6 @@ public class SAXReader {
         return answer;
     }
 
-    /** Factory Method to allow alternate methods of 
-      * creating and configuring XMLReader objects
-      */
-    protected XMLReader createXMLReader() throws SAXException {
-        String className = System.getProperty( "org.xml.sax.driver" );
-        if (className == null || className.trim().length() <= 0) {
-            XMLReader reader = createXMLReaderViaJAXP();
-            if ( reader != null ) {
-                return reader;
-            }
-            return new SAXDriver();
-        }
-        return XMLReaderFactory.createXMLReader();
-    }
-
-    /** This method attempts to use JAXP to locate the  
-      * SAX2 XMLReader implementation.  
-      * This method uses reflection to avoid being dependent directly
-      * on the JAXP classes.
-      */
-    protected XMLReader createXMLReaderViaJAXP() {
-        Class factoryClass = null;
-        try {
-            factoryClass = Class.forName("javax.xml.parsers.SAXParserFactory");
-        }
-        catch (Exception e) {
-            // JAXP is not loaded so continue
-        }
-        if (factoryClass == null) {
-            return null;
-        }
-        try {            
-            Method newParserInstanceMethod 
-                = factoryClass.getMethod("newInstance", null);            
-            Object factory = newParserInstanceMethod.invoke(null, null);
-            if ( factory != null ) {
-                // set validating mode
-                Class[] setValidatePrototype = { boolean.class };
-                Method setValidatingMethod = factoryClass.getMethod(
-                    "setValidating", setValidatePrototype
-                );
-                Object[] setValidaingArgs = { 
-                    (isValidating()) ? Boolean.TRUE : Boolean.FALSE 
-                };
-                setValidatingMethod.invoke( factory, setValidaingArgs );
-
-                // create JAXP SAXParser
-                Method newSAXParserMethod 
-                    = factoryClass.getMethod("newSAXParser", null);
-                Object jaxpParser  = newSAXParserMethod.invoke(factory, null);
-                if ( jaxpParser != null ) {
-                    Class parserClass = jaxpParser.getClass();
-                    Method getXMLReaderMethod 
-                        = parserClass.getMethod("getXMLReader", null);
-
-                    return (XMLReader) getXMLReaderMethod.invoke(jaxpParser, null);
-                }
-            }
-        }
-        catch (Throwable e) {
-            if ( isVerboseErrorReporting() ) {
-                // log all exceptions as warnings and carry
-                // on as we have a default SAX parser we can use
-                System.out.println( 
-                    "Warning: Caught exception attempting to use JAXP to "
-                     + "load a SAX XMLReader " 
-                );
-
-                // extract the real exception if its wrapped in 
-                // a reflection exception wrapper
-                if ( e instanceof InvocationTargetException ) {
-                    InvocationTargetException ie = (InvocationTargetException) e;
-                    e = ie.getTargetException();
-                }
-                System.out.println( "Warning: Exception was: " + e );
-                System.out.println( 
-                    "Warning: I will print the stack trace then carry on "
-                     + "using the default SAX parser" 
-                 );
-                e.printStackTrace();
-            }
-            else {
-                System.out.println( 
-                    "Info: Could not use JAXP to load a SAXParser. Will use Aelfred instead" 
-                );
-            }
-        }
-        return null;
-    }
-    
-    protected boolean isVerboseErrorReporting() {
-        try {
-            String flag = System.getProperty( "org.dom4j.verbose" );
-            if ( flag != null && flag.equalsIgnoreCase( "true" ) ) {
-                return true;
-            }
-        }
-        catch (Exception e) {
-            // in case a security exception
-            // happens in an applet or similar JVM
-        }
-        return false;
-    }
 }
 
 

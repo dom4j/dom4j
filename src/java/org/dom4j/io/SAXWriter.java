@@ -269,6 +269,18 @@ public class SAXWriter implements XMLReader {
         this.lexicalHandler = lexicalHandler;
     }
 
+    
+    /** Sets the <code>XMLReader</code> used to write SAX events to
+      * 
+      * @param xmlReader is the <code>XMLReader</code> 
+      */
+    public void setXMLReader(XMLReader xmlReader) {
+        setContentHandler( xmlReader.getContentHandler() );
+        setDTDHandler( xmlReader.getDTDHandler() );
+        setEntityResolver( xmlReader.getEntityResolver() );
+        setErrorHandler( xmlReader.getErrorHandler() );
+    }
+    
     /** Looks up the value of a feature.
       */
     public boolean getFeature(String name) 

@@ -16,6 +16,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.dom4j.Document;
@@ -69,12 +70,8 @@ public class XSLTNativeDOMDemo extends XSLTDemo {
         // now lets create the TRaX source and result
         // objects and do the transformation
         Source source = new DOMSource( domDocument );
-        DocumentResult result = new DocumentResult();
+        StreamResult result = new StreamResult( System.out );
         transformer.transform( source, result );
-
-        // output the transformed document
-        Document transformedDoc = result.getDocument();
-        writer.write( transformedDoc );
     }
 
 }
