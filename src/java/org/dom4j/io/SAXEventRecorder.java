@@ -12,9 +12,13 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import org.dom4j.Namespace;
+import org.dom4j.QName;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.DTDHandler;
@@ -37,7 +41,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * 
  * 
  *        SAXEventRecorder recorder = new SAXEventRecorder();
- *        SAXWriter saxWriter = new SAXWriter(recorder);
+ *        SAXWriter saxWriter = new SAXWriter(recorder, recorder);
  *        saxWriter.write(document);
  *        out.writeObject(recorder);
  *        ...
@@ -62,6 +66,12 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
     private static final byte NULL = 2;
 
     private List events = new ArrayList();
+    
+    private Map prefixMappings = new HashMap();
+    
+    private static final String XMLNS = "xmlns";
+    
+    private static final String EMPTY_STRING = "";
 
     public SAXEventRecorder() {
     }
@@ -259,20 +269,61 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
         saxEvent.addParm(namespaceURI);
         saxEvent.addParm(localName);
         saxEvent.addParm(qualifiedName);
-
+        
+        QName qName = null;
+        if (namespaceURI != null) {
+            qName = new QName(localName, Namespace.get(namespaceURI));
+        } else {
+            qName = new QName(localName);
+        }
+         
         if ((attributes != null) && (attributes.getLength() > 0)) {
             List attParmList = new ArrayList(attributes.getLength());
             String[] attParms = null;
 
             for (int i = 0; i < attributes.getLength(); i++) {
-                attParms = new String[5];
-                attParms[0] = attributes.getURI(i);
-                attParms[1] = attributes.getLocalName(i);
-                attParms[2] = attributes.getQName(i);
-                attParms[3] = attributes.getType(i);
-                attParms[4] = attributes.getValue(i);
-                attParmList.add(attParms);
-            }
+                
+                String attLocalName = attributes.getLocalName(i);
+                
+                if (attLocalName.startsWith(XMLNS)) {
+                    
+                    // if SAXWriter is writing a DOMDocument, namespace
+                    // decls are treated as attributes. record a start
+                    // prefix mapping event
+                    String prefix = null;
+                    if (attLocalName.length() > 5) {
+                        prefix = attLocalName.substring(6);
+                    } else {
+                        prefix = EMPTY_STRING;
+                    }
+                    
+                    SAXEvent prefixEvent = new SAXEvent(SAXEvent.START_PREFIX_MAPPING);
+                    prefixEvent.addParm(prefix);
+                    prefixEvent.addParm(attributes.getValue(i));
+                    events.add(prefixEvent);
+                    
+                    // 'register' the prefix so that we can generate
+                    // an end prefix mapping event within endElement
+                    List prefixes = (List)prefixMappings.get(qName);
+                    if (prefixes == null) {
+                        prefixes = new ArrayList();
+                        prefixMappings.put(qName, prefixes);
+                    }
+                    prefixes.add(prefix);                   
+                                        
+                } else {
+                    
+                    attParms = new String[5];
+                    attParms[0] = attributes.getURI(i);
+                    attParms[1] = attLocalName;
+                    attParms[2] = attributes.getQName(i);
+                    attParms[3] = attributes.getType(i);
+                    attParms[4] = attributes.getValue(i);
+                    attParmList.add(attParms); 
+                    
+                }
+                
+             }
 
             saxEvent.addParm(attParmList);
         }
@@ -282,11 +333,33 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
 
     public void endElement(String namespaceURI, String localName, String qName)
             throws SAXException {
+        
         SAXEvent saxEvent = new SAXEvent(SAXEvent.END_ELEMENT);
         saxEvent.addParm(namespaceURI);
         saxEvent.addParm(localName);
         saxEvent.addParm(qName);
         events.add(saxEvent);
+        
+        // check to see if a we issued a start prefix mapping event
+        // for DOMDocument namespace decls
+        
+        QName elementName = null;
+        if (namespaceURI != null) {
+            elementName = new QName(localName, Namespace.get(namespaceURI));
+        } else {
+            elementName = new QName(localName);
+        }
+        
+        List prefixes = (List)prefixMappings.get(elementName);
+        if (prefixes != null) {
+            Iterator itr = prefixes.iterator();
+            while (itr.hasNext()) {
+                SAXEvent prefixEvent = new SAXEvent(SAXEvent.END_PREFIX_MAPPING);
+                prefixEvent.addParm(itr.next());
+                events.add(prefixEvent);                
+            }
+        }
+        
     }
 
     public void characters(char[] ch, int start, int end) throws SAXException {
