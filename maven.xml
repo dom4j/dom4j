@@ -1,22 +1,42 @@
-<project default="java:jar">
+<project default="java:jar" 
+         xmlns:ant="jelly:ant"
+         xmlns:maven="jelly:maven" >
 
-  <!-- define the classpath used to run examples -->
-  <goal name="create-classpath" prereqs="java:compile,test:compile">
-    <path id="test.classpath">
-      <pathelement path="${maven.build.dest}"/>
-      <pathelement path="target/classes"/>
-      <pathelement path="target/test-classes"/>
-      <pathelement path="src/"/>
-      <path refid="maven.dependency.classpath"/>
-    </path>
-  </goal>
+    <!-- define the classpath used to run examples -->
+    <goal name="create-classpath" prereqs="java:compile,test:compile">
+        <path id="test.classpath">
+            <pathelement path="${maven.build.dest}"/>
+            <pathelement path="target/classes"/>
+            <pathelement path="target/test-classes"/>
+            <pathelement path="src/"/>
+            <path refid="maven.dependency.classpath"/>
+        </path>
+    </goal>
 
-  <preGoal name="site:deploy">
-    <attainGoal name="docbook:transform"/>
-  </preGoal>
+    <preGoal name="test:test">
+        <ant:property name="test.dest"
+            value="${pom.getPluginContext('maven-test-plugin').getVariable('maven.test.dest')}"/>
 
-  <preGoal name="xdoc:jelly-transform">
-    <attainGoal name="faq"/>
-  </preGoal>  
+        <ant:path id="test.extra.classpath">
+            <pathelement location="."/>
+        </ant:path>
+
+        <maven:addPath id="maven.dependency.classpath"
+                       refid="test.extra.classpath"/>
+
+        <ant:pathconvert property="classpath"
+                         refid="maven.dependency.classpath" 
+                         targetOS="unix"/>
+
+        <echo>classpath: ${classpath}</echo>
+    </preGoal>
+
+    <preGoal name="site:deploy">
+        <attainGoal name="docbook:transform"/>
+    </preGoal>
+
+    <preGoal name="xdoc:jelly-transform">
+        <attainGoal name="faq"/>
+    </preGoal>  
 
 </project>
