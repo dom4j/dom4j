@@ -59,6 +59,10 @@ public class BeanElement extends DefaultElement {
     
     public void setData(Object data) {
         this.bean = bean;
+        
+        // force the attributeList to be lazily
+        // created next time an attribute related
+        // method is called again.
         setAttributeList(null);
     }
     
