@@ -63,12 +63,12 @@ public class BackedList extends ArrayList {
         else if ( index > size ) {
             throw new IndexOutOfBoundsException( "Index value: " + index + " cannot be greater than the size: " + size );
         }
-
+        
         int realIndex = size == 0
                 ? branchContent.size()                   // Insert at the end of branch
                 : index < size
                 ? branchContent.indexOf(get(index))      // Normal case: get position of element in branch
-                : branchContent.indexOf(get(size - 1));  // Insert after last item
+                : (branchContent.indexOf(get(size - 1)) + 1);  // Insert after last item
         
         branch.addNode(realIndex, asNode( object ) );
         super.add(index, object);
