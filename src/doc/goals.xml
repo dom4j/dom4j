@@ -19,7 +19,7 @@
     </section>
 
     <section title="Standards compliant">
-      <p>We want to fully support DOM, SAX and XPath together with existing 
+      <p>We want to fully support DOM and SAX together with existing 
         Java platform standards such as the Java 2 Collections and J2EE.
       </p>
     </section>

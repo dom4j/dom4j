@@ -58,7 +58,7 @@ public class LargeDocumentDemo extends SAXDemo implements ElementHandler {
         // enable pruning to call me back as each Element is complete
         reader.setPruningMode( pruningPath, this );
         
-        Document documemnt = reader.read(url);
+        Document document = reader.read(url);
         
         // the document will be complete but have the prunePath elements pruned
     }

@@ -36,6 +36,85 @@
       </p>
     </section>
 
+    <section title="How does DOM4J handle very large XML documents?">
+      <p>DOM4J provides an event based model for processing XML documents.
+        Using this event based model allows developers to prune the XML tree
+        when parts of the document have been successfully processed avoiding
+        having to keep the entire document in memory.
+      </p>
+      <p>For example, imagine you need to process a very large XML file that is 
+        generated externally by some database process and looks something like 
+        the following (where N is a very large number).
+      </p>
+      <pre>
+<![CDATA[<ROWSET>
+    <ROW id="1">
+        ...
+    </ROW>
+    <ROW id="2">
+        ...
+    </ROW>
+    ...
+    <ROW id="N">
+        ...
+    </ROW>
+</ROWSET>]]>     
+      </pre>
+      <p>In the above we can process each &lt;ROW&gt; at a time, there is no 
+        need to keep all of them in memory at once. 
+        DOM4J provides a <i>Pruning Mode</i> for this purpose. 
+        We can register an event handler for a simple path expression and our
+        handler will be called whenever the path is complete.
+        So to process each &lt;ROW&gt; individually we can do the following.
+      </p>
+      <pre>
+// enable pruning mode to call me back as each ROW is complete
+SAXReader reader = new SAXReader();
+reader.setPruningMode( "/ROWSET/ROW", 
+    new ElementHandler() {
+        public void handle(Element element) {
+            // process a ROW element
+            Element rowSet = element.getParent();
+            Document document = element.getDocument();
+            ...
+        }
+    }
+);
+
+Document document = reader.read(url);
+
+// The document will now be complete but all the ROW elements
+// will have been pruned.
+// We may want to do some final processing now...
+      </pre>
+    </section>
+
+    <section title="Does DOM4J support the Visitor Pattern?">
+      <p>Yes. <b>DOM4J</b> supports the visitor pattern via the 
+          <a href="apidocs/org/dom4j/Visitor.html">Visitor</a> interface.
+      </p>
+      <p>Here is an example.
+      </p>
+      <pre>
+protected void foo(Document doc) {
+  
+    // lets use the Visitor Pattern to 
+    // navigate the document for entities
+
+    Visitor visitor = new VisitorSupport() {
+        public void visit(Entity entity) {
+            System.out.println( 
+                "Entity name: " + entity.getName() 
+                + " content: " + entity.getContent() 
+            );
+        }
+    };
+
+    doc.accept( visitor );
+}
+      </pre>
+    </section>
+
     <section title="What features are optional in DOM4J?">
       <p>In <b>DOM4J</b> being able to navigate up a tree towards the parent
         and to be able to change a tree are optional features.
@@ -68,32 +147,6 @@ protected void foo(Node node) {
 
         parent.setAttributeValue( "bar", "modified" );
     }
-}
-      </pre>
-    </section>
-
-    <section title="Does DOM4J support the Visitor Pattern?">
-      <p>Yes. <b>DOM4J</b> supports the visitor pattern via the 
-          <a href="apidocs/org/dom4j/Visitor.html">Visitor</a> interface.
-      </p>
-      <p>Here is an example.
-      </p>
-      <pre>
-protected void foo(Document doc) {
-  
-    // lets use the Visitor Pattern to 
-    // navigate the document for entities
-
-    Visitor visitor = new VisitorSupport() {
-        public void visit(Entity entity) {
-            System.out.println( 
-                "Entity name: " + entity.getName() 
-                + " content: " + entity.getContent() 
-            );
-        }
-    };
-
-    doc.accept( visitor );
 }
       </pre>
     </section>

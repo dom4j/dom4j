@@ -25,18 +25,30 @@ public class Foo {
 </pre>
     </section>
 
-    <section title="Using Navigation">
-      <p>A document can be navigated using the getElements() and getElement() 
-        methods. For example
+    <section title="Using Iterators">
+      <p>A document can be navigated using a variety of methods that return
+        standard Java Iterators. For example
       </p>
 <pre>
     public void bar(Document document) throws DocumentException {
 
         Element root = document.getRootElement();
 
-        List servlets = root.getElements("servlet");
-        for ( Iterator i = servlets.iterator(); i.hasNext(); ) {
-            Element servlet = (Element) i.next();
+        // iterate through child elements of root
+        for ( Iterator i = root.elementIterator(); i.hasNext(); ) {
+            Element element = (Element) i.next();
+            // do something
+        }
+
+        // iterate through child elements of root with element name "foo"
+        for ( Iterator i = root.elementIterator( "foo" ); i.hasNext(); ) {
+            Element foo = (Element) i.next();
+            // do something
+        }
+
+        // iterate through attributes of root 
+        for ( Iterator i = root.attributeIterator(); i.hasNext(); ) {
+            Attribute attribute = (Attribute) i.next();
             // do something
         }
      }
@@ -44,19 +56,18 @@ public class Foo {
     </section>
 
     <section title="Using XPath Navigation">
-      <p>In <b>DOM4J</b> XPath expressions can be evaluated
-        on the Document or any Node in the tree. For example.
+      <p>In <b>DOM4J</b> XPath expressions can be evaluated on the Document 
+        or any Node in the tree. 
+        This allows complex navigation throughout the document with a single 
+        line of code. For example.
       </p>
 <pre>
     public void bar(Document document) throws DocumentException {
-        List list = document.selectNodes( "foo/bar" );
+        List list = document.selectNodes( "//foo/bar" );
 
-        System.out.println( "Found:        " + list.size() + " nodes(s)" );
-        System.out.println( "Nodes(s) are: " + list  );
+        Node node = document.selectSingleNode( "//foo/bar/author" );
 
-        Node node = document.selectSingleNode( "foo/bar/author" );
-
-        System.out.println( "Found single node: " + node );
+        String name = node.valueOf( "@name" );
     }
 </pre>
     </section>
