@@ -23,7 +23,7 @@ import org.dom4j.ElementHandler;
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-class PruningElementStack extends ElementStack {
+public class PruningElementStack extends ElementStack {
 
     /** ElementHandler to call when pruning occurs */
     private ElementHandler elementHandler;

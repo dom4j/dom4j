@@ -22,7 +22,7 @@ import org.dom4j.Element;
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-class ElementStack {
+public class ElementStack {
 
     /** stack of <code>Element</code> objects */
     protected Element[] stack;

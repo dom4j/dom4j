@@ -250,6 +250,15 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     }
 
     
+    // Properties
+    public ElementStack getElementStack() {
+        return elementStack;
+    }
+    
+    public void setElementStack(ElementStack elementStack) {
+        this.elementStack = elementStack;
+    }
+    
     // Implementation methods
     
 
