@@ -142,6 +142,7 @@ public class SchemaParser {
         if ( schemaComplexType != null ) {
             onSchemaComplexType( schemaComplexType, elementFactory );
         }
+
         Iterator iter = xsdElement.elementIterator( XSD_ATTRIBUTE );
         if ( iter.hasNext() ) {
             do {
@@ -180,7 +181,7 @@ public class SchemaParser {
             if ( dataType != null ) {
                 // register the XSDatatype for the given Attribute
                 // #### should both these be done?
-                elementFactory.setChildElementXSDatatype( qname, dataType );
+                //elementFactory.setChildElementXSDatatype( qname, dataType );
                 elementFactory.setAttributeXSDatatype( qname, dataType );
             }
             else {
