@@ -71,7 +71,6 @@ public class XMLTableColumnDefinition implements Serializable {
     }
     
     public XMLTableColumnDefinition(XPath columnNameXPath, XPath xpath, int type) {
-        this.name = name;
         this.xpath = xpath;
         this.columnNameXPath = columnNameXPath;
         this.type = type;

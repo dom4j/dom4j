@@ -18,7 +18,7 @@ public class MarshallingContext {
   protected String strategy;
   protected boolean isAutoCommiting;
 
-  public MarshallingContext(boolean isAutoCommting) {
+  public MarshallingContext(boolean isAutoCommiting) {
     this.isAutoCommiting = isAutoCommiting;
   }
 
