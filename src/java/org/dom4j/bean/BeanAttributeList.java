@@ -7,92 +7,87 @@
  * $Id$
  */
 
-package org.dom4j.tree;
+package org.dom4j.bean;
+
+import java.beans.PropertyDescriptor;
+import java.util.AbstractList;
+import java.util.Iterator;
+import java.util.List;
 
 import org.dom4j.Attribute;
-import org.dom4j.Element;
-import org.dom4j.Node;
-import org.dom4j.Namespace;
-import org.dom4j.Visitor;
 
-/** <p><code>AbstractNamespace</code> is an abstract base class for 
-  * tree implementors to use for implementation inheritence.</p>
+/** <p><code>BeanAttributeList</code> implements a list of Attributes
+  * which are the properties of a JavaBean.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public abstract class AbstractAttribute extends AbstractNode implements Attribute {
+public class BeanAttributeList extends AbstractList {
 
-    public short getNodeType() {
-        return ATTRIBUTE_NODE;
-    }
+    /** The BeanElement that this */
+    private BeanElement parent;
 
-    
-    public void setNamespace(Namespace namespace) {
-        throw new UnsupportedOperationException("This Attribute is read only and cannot be changed" );
-    }
-    
-    public String getText() {
-        return getValue();
-    }
+    /** The BeanElement that this */
+    private BeanMetaData beanMetaData;
 
-    public void setText(String text) {
-        setValue(text);
-    }
-
-    public void setValue(String value) {
-        throw new UnsupportedOperationException("This Attribute is read only and cannot be changed" );
+    /** The attributes */
+    private BeanAttribute[] attributes;
+  
+    
+    public BeanAttributeList(BeanElement parent) { 
+        this.parent = parent;
+        
+        Object data = parent.getData();
+        Class beanClass = (data != null) ? data.getClass() : null;
+        this.beanMetaData = BeanMetaData.get( beanClass );
+        this.attributes = new BeanAttribute[ beanMetaData.getAttributeCount() ];
     }
     
-    public Object getData() {
-        return getValue();
+    public int size() {
+        return attributes.length;
     }
     
-    public void setData(Object data) {
-        setValue( data == null ? null : data.toString() );
+    public Object get(int index) {
+        BeanAttribute attribute = attributes[index];
+        if ( attribute == null ) {
+            attribute = beanMetaData.createAttribute( parent, index );
+            attributes[index] = attribute;
+        }
+        return attribute;
     }
     
-    public String toString() {
-        return super.toString() + " [Attribute: name " + getQualifiedName() 
-            + " value \"" + getValue() + "\"]";
-    }
-
-    public String asXML() {
-        return getQualifiedName() + "=\"" + getValue() + "\"";
+    public boolean add(Object object) {
+        throw new UnsupportedOperationException( "add(int, Object) is not supported" );
     }
     
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
+    public void add(int index, Object object) {
+        throw new UnsupportedOperationException( "add(int, Object) is not supported" );
     }
     
-    // QName methods
-    
-    public Namespace getNamespace() {
-        return getQName().getNamespace();
+    public Object set(int index, Object object) {
+        throw new UnsupportedOperationException( "set(int, Object) is not supported" );
     }
     
-    public String getName() {
-        return getQName().getName();
-    }
-    
-    public String getNamespacePrefix() {
-        return getQName().getNamespacePrefix();
+    public boolean remove(Object object) {
+        return false;
     }
 
-    public String getNamespaceURI() {
-        return getQName().getNamespaceURI();
+    public Object remove(int index) {
+        BeanAttribute attribute = (BeanAttribute) get(index);
+        Object oldValue = attribute.getValue();
+        attribute.setValue(null);
+        return oldValue;
     }
 
-    public String getQualifiedName() {
-        return getQName().getQualifiedName();
-    }
-    
-    protected Node createXPathNode(Element parent) {
-        return new XPathAttribute(parent, getQName(), getValue());
+    public void clear() {
+        for ( int i = 0, size = attributes.length; i < size; i++ ) {
+            BeanAttribute attribute = attributes[i];
+            if ( attribute != null ) {
+                attribute.setValue( null );
+            }
+        }
     }
 }
-    
- 
 
 
 

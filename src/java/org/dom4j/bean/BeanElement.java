@@ -7,92 +7,76 @@
  * $Id$
  */
 
-package org.dom4j.tree;
+package org.dom4j.bean;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.dom4j.Attribute;
-import org.dom4j.Element;
-import org.dom4j.Node;
+import org.dom4j.DocumentFactory;
 import org.dom4j.Namespace;
-import org.dom4j.Visitor;
+import org.dom4j.QName;
+import org.dom4j.tree.DefaultElement;
 
-/** <p><code>AbstractNamespace</code> is an abstract base class for 
-  * tree implementors to use for implementation inheritence.</p>
+/** <p><code>BeanElement</code> uses a Java Bean to store its attributes.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public abstract class AbstractAttribute extends AbstractNode implements Attribute {
+public class BeanElement extends DefaultElement {
 
-    public short getNodeType() {
-        return ATTRIBUTE_NODE;
-    }
-
+    /** The <code>DocumentFactory</code> instance used by default */
+    private static final DocumentFactory DOCUMENT_FACTORY = BeanDocumentFactory.getInstance();
     
-    public void setNamespace(Namespace namespace) {
-        throw new UnsupportedOperationException("This Attribute is read only and cannot be changed" );
-    }
+    /** The JavaBean which defines my attributes */
+    private Object bean;
     
-    public String getText() {
-        return getValue();
+    
+    public BeanElement(String name, Object bean) { 
+        this( QName.get(name), bean );
     }
 
-    public void setText(String text) {
-        setValue(text);
+    public BeanElement(String name,Namespace namespace, Object bean) { 
+        this( QName.get(name, namespace), bean );
     }
 
-    public void setValue(String value) {
-        throw new UnsupportedOperationException("This Attribute is read only and cannot be changed" );
+    public BeanElement(QName qname, Object bean) { 
+        super( qname);
+        this.bean = bean;
     }
-    
+
+    /** @return the JavaBean associated with this element 
+      */
     public Object getData() {
-        return getValue();
+        return bean;
     }
     
     public void setData(Object data) {
-        setValue( data == null ? null : data.toString() );
+        this.bean = bean;
+        setAttributeList(null);
     }
     
-    public String toString() {
-        return super.toString() + " [Attribute: name " + getQualifiedName() 
-            + " value \"" + getValue() + "\"]";
-    }
-
-    public String asXML() {
-        return getQualifiedName() + "=\"" + getValue() + "\"";
+    
+    
+    // Implementation methods
+    
+    protected DocumentFactory getDocumentFactory() {
+        return DOCUMENT_FACTORY;
     }
     
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
+    protected BeanAttributeList getBeanAttributeList() {
+        return (BeanAttributeList) getAttributeList();
     }
     
-    // QName methods
-    
-    public Namespace getNamespace() {
-        return getQName().getNamespace();
+    /** A Factory Method pattern which lazily creates 
+      * a List implementation used to store content
+      */
+    protected List createAttributeList() {
+        return new BeanAttributeList(this);
     }
     
-    public String getName() {
-        return getQName().getName();
-    }
-    
-    public String getNamespacePrefix() {
-        return getQName().getNamespacePrefix();
-    }
-
-    public String getNamespaceURI() {
-        return getQName().getNamespaceURI();
-    }
-
-    public String getQualifiedName() {
-        return getQName().getQualifiedName();
-    }
-    
-    protected Node createXPathNode(Element parent) {
-        return new XPathAttribute(parent, getQName(), getValue());
-    }
 }
-    
- 
 
 
 

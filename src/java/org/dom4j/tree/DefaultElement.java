@@ -741,14 +741,6 @@ public class DefaultElement extends AbstractElement {
     }
     
 
-    /** A Factory Method pattern which lazily creates 
-      * a List implementation used to store attributes
-      */
-    protected List createAttributeList() {
-        return new ArrayList();
-    }
-    
-    
     protected void addNode(Node node) {
         if (node.getParent() != null) {
             // XXX: could clone here
@@ -791,11 +783,39 @@ public class DefaultElement extends AbstractElement {
 
     // Implementation methods
     
+    protected List getContentList() {
+        if ( contents == null ) {
+            contents = createContentList();
+            if ( firstNode != null ) {
+                contents.add( firstNode );
+            }
+        }
+        return contents;
+    }
+
+    protected List getAttributeList() {
+        if ( attributes == null ) {
+            attributes = createAttributeList();
+        }
+        return attributes;
+    }
+    
+    protected void setAttributeList(List attributes) {
+        this.attributes = attributes;
+    }
+    
     
     /** A Factory Method pattern which lazily creates 
       * a List implementation used to store content
       */
     protected List createContentList() {
+        return new ArrayList();
+    }
+    
+    /** A Factory Method pattern which lazily creates 
+      * a List implementation used to store attributes
+      */
+    protected List createAttributeList() {
         return new ArrayList();
     }
     
@@ -825,22 +845,6 @@ public class DefaultElement extends AbstractElement {
         return new BackedList( this, getContentList(), 0 );
     }
     
-    protected List getContentList() {
-        if ( contents == null ) {
-            contents = createContentList();
-            if ( firstNode != null ) {
-                contents.add( firstNode );
-            }
-        }
-        return contents;
-    }
-
-    protected List getAttributeList() {
-        if ( attributes == null ) {
-            attributes = createAttributeList();
-        }
-        return attributes;
-    }
     
     protected Iterator createSingleIterator( Object result ) {
         return new SingleIterator( result );

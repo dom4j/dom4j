@@ -153,6 +153,14 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     }
 
     
+    public Object getData() {
+        return getText();
+    }
+    
+    public void setData(Object data) {
+        // ignore this method
+    }
+    
     
     
     

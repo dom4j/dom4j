@@ -150,7 +150,17 @@ public interface Element extends Branch {
       */
     public String getString();    
 
+
+    /** Accesses the data of this element which may implement data typing 
+      * bindings such as XML Schema or 
+      * Java Bean bindings or will return the same value as {@link #getText}
+      */
+    public Object getData();
     
+    /** Sets the data value of this element if this element supports data 
+      * binding or calls {@link #setText} if it doesn't
+      */
+    public void setData(Object data);
     
     // Attributes API
     

@@ -7,92 +7,66 @@
  * $Id$
  */
 
-package org.dom4j.tree;
+package org.dom4j.bean;
 
+import java.util.Map;
+
+import org.dom4j.DocumentFactory;
 import org.dom4j.Attribute;
 import org.dom4j.Element;
-import org.dom4j.Node;
-import org.dom4j.Namespace;
-import org.dom4j.Visitor;
+import org.dom4j.QName;
+import org.dom4j.tree.DefaultAttribute;
+import org.dom4j.tree.DefaultElement;
 
-/** <p><code>AbstractNamespace</code> is an abstract base class for 
-  * tree implementors to use for implementation inheritence.</p>
+/** <p><code>BeanDocumentFactory</code> is a factory of DOM4J objects
+  * which may be BeanElements which are backed by JavaBeans 
+  * and their properties. </p>
+  *
+  * <p>The tree built allows full XPath expressions from anywhere on the 
+  * tree.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public abstract class AbstractAttribute extends AbstractNode implements Attribute {
+public class BeanDocumentFactory extends DocumentFactory {
 
-    public short getNodeType() {
-        return ATTRIBUTE_NODE;
-    }
+    /** The Singleton instance */
+    private static BeanDocumentFactory singleton = new BeanDocumentFactory();
 
-    
-    public void setNamespace(Namespace namespace) {
-        throw new UnsupportedOperationException("This Attribute is read only and cannot be changed" );
+    /** <p>Access to the singleton instance of this factory.</p>
+      *
+      * @return the default singleon instance
+      */
+    public static DocumentFactory getInstance() {
+        return singleton;
     }
     
-    public String getText() {
-        return getValue();
-    }
-
-    public void setText(String text) {
-        setValue(text);
-    }
-
-    public void setValue(String value) {
-        throw new UnsupportedOperationException("This Attribute is read only and cannot be changed" );
+    
+    // Factory methods
+    
+    public Element createElement(QName qname) {
+        Object bean = createBean( qname );
+        if ( bean == null ) {
+            return new DefaultElement(qname);
+        }
+        else {
+            return new BeanElement(qname, bean);
+        }
     }
     
-    public Object getData() {
-        return getValue();
+    public Attribute createAttribute(QName qname, String value) {
+        return new DefaultAttribute(qname, value);
     }
     
-    public void setData(Object data) {
-        setValue( data == null ? null : data.toString() );
+    public Attribute createAttribute(String name, String value) {
+        return createAttribute(createQName(name), value);
     }
     
-    public String toString() {
-        return super.toString() + " [Attribute: name " + getQualifiedName() 
-            + " value \"" + getValue() + "\"]";
-    }
-
-    public String asXML() {
-        return getQualifiedName() + "=\"" + getValue() + "\"";
+    protected Object createBean( QName qname ) {
+        return null;
     }
     
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
-    }
-    
-    // QName methods
-    
-    public Namespace getNamespace() {
-        return getQName().getNamespace();
-    }
-    
-    public String getName() {
-        return getQName().getName();
-    }
-    
-    public String getNamespacePrefix() {
-        return getQName().getNamespacePrefix();
-    }
-
-    public String getNamespaceURI() {
-        return getQName().getNamespaceURI();
-    }
-
-    public String getQualifiedName() {
-        return getQName().getQualifiedName();
-    }
-    
-    protected Node createXPathNode(Element parent) {
-        return new XPathAttribute(parent, getQName(), getValue());
-    }
 }
-    
- 
 
 
 

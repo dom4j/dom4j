@@ -7,92 +7,81 @@
  * $Id$
  */
 
-package org.dom4j.tree;
+package org.dom4j.bean;
 
-import org.dom4j.Attribute;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
+
 import org.dom4j.Element;
-import org.dom4j.Node;
-import org.dom4j.Namespace;
-import org.dom4j.Visitor;
+import org.dom4j.QName;
+import org.dom4j.tree.AbstractAttribute;
 
-/** <p><code>AbstractNamespace</code> is an abstract base class for 
-  * tree implementors to use for implementation inheritence.</p>
+/** <p><code>BeanAttribute</code> represents a mutable XML attribute which
+  * is backed by a property of the JavaBean of its parent element.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public abstract class AbstractAttribute extends AbstractNode implements Attribute {
+public class BeanAttribute extends AbstractAttribute {
 
-    public short getNodeType() {
-        return ATTRIBUTE_NODE;
-    }
-
+    /** Empty arguments for reflection calls */
+    protected static final Object[] NULL_ARGS = {};
     
-    public void setNamespace(Namespace namespace) {
-        throw new UnsupportedOperationException("This Attribute is read only and cannot be changed" );
+    /** The <code>QName</code> for this element */
+    private QName qname;
+    
+    /** The BeanElement that this */
+    private BeanElement parent;
+
+    /** The property this attribute represents */
+    private PropertyDescriptor descriptor;
+    
+    
+    public BeanAttribute(QName qname, BeanElement parent, PropertyDescriptor descriptor) {
+        this.qname = qname;
+        this.parent = parent;
+        this.descriptor = descriptor;
+    }
+
+    public QName getQName() {
+        return qname;
+    }
+
+    public Element getParent() {
+        return parent;
     }
     
-    public String getText() {
-        return getValue();
-    }
-
-    public void setText(String text) {
-        setValue(text);
-    }
-
-    public void setValue(String value) {
-        throw new UnsupportedOperationException("This Attribute is read only and cannot be changed" );
+    public String getValue() {
+        Object data = getData();
+        return ( data != null ) ? data.toString() : null;
     }
     
     public Object getData() {
-        return getValue();
+        try {
+            Method method = descriptor.getReadMethod();
+            return method.invoke( parent.getData(), NULL_ARGS );
+        }
+        catch (Exception e) {
+            handleException(e);
+            return null;
+        }
     }
     
     public void setData(Object data) {
-        setValue( data == null ? null : data.toString() );
+        try {
+            Method method = descriptor.getWriteMethod();
+            Object[] args = { data };
+            method.invoke( parent.getData(), args );
+        }
+        catch (Exception e) {
+            handleException(e);
+        }
     }
     
-    public String toString() {
-        return super.toString() + " [Attribute: name " + getQualifiedName() 
-            + " value \"" + getValue() + "\"]";
-    }
-
-    public String asXML() {
-        return getQualifiedName() + "=\"" + getValue() + "\"";
-    }
-    
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
-    }
-    
-    // QName methods
-    
-    public Namespace getNamespace() {
-        return getQName().getNamespace();
-    }
-    
-    public String getName() {
-        return getQName().getName();
-    }
-    
-    public String getNamespacePrefix() {
-        return getQName().getNamespacePrefix();
-    }
-
-    public String getNamespaceURI() {
-        return getQName().getNamespaceURI();
-    }
-
-    public String getQualifiedName() {
-        return getQName().getQualifiedName();
-    }
-    
-    protected Node createXPathNode(Element parent) {
-        return new XPathAttribute(parent, getQName(), getValue());
+    protected void handleException(Exception e) {
+        // ignore introspection exceptions
     }
 }
-    
- 
 
 
 

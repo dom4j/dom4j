@@ -145,7 +145,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
             namespaceURI, localName, qualifiedName 
         );
         
-        Element element = createElement(qName);
+        Element element = createElement(qName, attributes);
 
         // add all declared namespaces
         addDeclaredNamespaces(element);
@@ -290,7 +290,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     }
 
 
-    protected Element createElement(QName qName) {
+    protected Element createElement(QName qName, Attributes attributes) {
         return peekBranch().addElement(qName);
     }
     
