@@ -39,6 +39,21 @@ public class XMLWriterTest extends AbstractTestCase {
 
     // Test case(s)
     // -------------------------------------------------------------------------
+    public void testBug1119733() throws Exception {
+        Document doc = DocumentHelper
+                .parseText("<root><code>foo</code> bar</root>");
+        
+        StringWriter out = new StringWriter();
+        XMLWriter writer = new XMLWriter(out, OutputFormat.createPrettyPrint());
+        writer.write(doc);
+        writer.close();
+        
+        String xml = out.toString();
+
+        System.out.println(xml);
+        assertEquals("whitespace problem", -1, xml.indexOf("</code>bar"));
+    }
+
     public void testWriter() throws Exception {
         Object object = document;
         StringWriter out = new StringWriter();
@@ -252,17 +267,17 @@ public class XMLWriterTest extends AbstractTestCase {
     public void testPadding() throws Exception {
         Document doc = DocumentFactory.getInstance().createDocument();
         Element root = doc.addElement("root");
-        root.addText("prefix");
+        root.addText("prefix    ");
         root.addElement("b");
-        root.addText("suffix");
+        root.addText("      suffix");
 
         OutputFormat format = new OutputFormat("", false);
         format.setOmitEncoding(true);
         format.setSuppressDeclaration(true);
         format.setExpandEmptyElements(true);
         format.setPadText(true);
+        format.setTrimText(true);
 
-        // format.setTrimText(true);
         StringWriter buffer = new StringWriter();
         XMLWriter writer = new XMLWriter(buffer, format);
         writer.write(doc);
