@@ -295,7 +295,6 @@ public class HTMLWriter extends XMLWriter {
     protected void writeDeclaration() throws IOException {
     }
 
-       //COPIED FROM XMLWRITER, Laramie 4/7/2002 10:44AM
     protected void writeString(String text) throws IOException {
         //DOM stores \n at the end of text nodes that are newlines.  This is significant if
         // we are in a PRE section.  However, we only want to output the system line.separator, not \n.
