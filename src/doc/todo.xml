@@ -28,6 +28,28 @@
     </section>
 
     <section title="Change History">
+        <section title="0.2 release">
+          <p>There following new features were added:-
+          </p>
+          <ul>
+            <li>New sorting method added to Node for easier selections of nodes
+              which are sorted via an XPath expression. The following
+              code sorts all CUSTOMER elements by their name attributes and 
+              removes duplicates:-
+              <pre>
+Document document 
+  = new SAXReader().read( new File( "customers.xml" ) );
+
+List customers 
+  = document.selectNodes( "//CUSTOMER", "@name", true );
+              </pre>
+            </li>
+            <li>The getText() and getString() methods of Element now return
+              the textual values of CDATA, Entity and Text nodes. 
+              The previous version only returned Text node values.
+            </li>
+          </ul>
+        </section>
         <section title="0.1 release">
           <p>Initial release which comes complete with DOM, JAXP and SAX 
             support and integrated XPath
