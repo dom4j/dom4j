@@ -7,13 +7,13 @@
       <p>
       <i>dom4j</i> is an easy to use, open source library for working with XML, XPath and
       XSLT on the Java platform using the Java Collections Framework and will full
-      integration with DOM, SAX and JAXP.
+      support for DOM, SAX and JAXP.
       </p>
     </header>
 
     <section title="Features">
       <ul>
-        <li>optimised for the Java platform with full support for Java 2 Collections</li>
+        <li>designed for the Java platform with full support for Java 2 Collections</li>
         <li>full support for JAXP, SAX, DOM, TrAX and XSLT</li>
         <li>fully integrated XPath support for easy navigation of XML documents
         </li>
