@@ -1,0 +1,452 @@
+<!-- saved from url=(0022)http://internet.e-mail -->
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Another View at Dom4J performance versus Xerces</title>
+</head>
+
+<body>
+
+<h1>Dom4<span lang="en-gb">j</span> performance versus Xerces / Xalan</h1>
+<p><a href="mailto:bhm@eigner.com">Martin Böhm</a>, <a href="mailto:jjd@eigner.com">Jean-Jacques
+Dubray</a></p>
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0">Eigner
+Precision Lifecycle Management</p>
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><a href="http://www.eigner.com">www.eigner.com</a></p>
+<h2>Introduction</h2>
+<p>We have created a simple test bed to evaluate the performance of DOM4J versus
+Xerces/Xalan. These results are intended to give a rough idea rather than
+exhaustive test suite. In particular we focus our study on XML document which
+look like database result set. It is pretty clear that performance results may
+vary greatly based on the topology of your XML.</p>
+<p>The test is designed to have elements only and each element name is unique in
+the whole document. </p>
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font COLOR="#008080" size="2">&lt;?xml
+version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</font></p>
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font size="2"><font COLOR="#0000ff">&lt;</font><font COLOR="#800000">ItemResultSet</font><font COLOR="#0000ff">&gt;</font></font></p>
+<font SIZE="2">
+<blockquote>
+  <p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font COLOR="#0000ff">&lt;</font><font COLOR="#800000">Item</font><font COLOR="#0000ff">&gt;</font></font></p>
+<font SIZE="2">
+<blockquote>
+  <p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font COLOR="#0000ff">&lt;</font><font COLOR="#800000">Attr0x0</font><font COLOR="#0000ff">&gt;</font>123456789<font COLOR="#0000ff">&lt;/</font><font COLOR="#800000">Attr0x0</font><font COLOR="#0000ff">&gt;</font></font></p>
+<font SIZE="2">
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font COLOR="#0000ff">&lt;</font><font COLOR="#800000">Attr1x0</font><font COLOR="#0000ff">&gt;</font>123456789<font COLOR="#0000ff">&lt;/</font><font COLOR="#800000">Attr1x0</font><font COLOR="#0000ff">&gt;</font></font></p>
+<font SIZE="2">
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font COLOR="#0000ff">&lt;</font><font COLOR="#800000">Attr2x0</font><font COLOR="#0000ff">&gt;</font>123456789<font COLOR="#0000ff">&lt;/</font><font COLOR="#800000">Attr2x0</font><font COLOR="#0000ff">&gt;</font></font></p>
+<font SIZE="2">
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font COLOR="#0000ff">&lt;</font><font COLOR="#800000">Attr3x0</font><font COLOR="#0000ff">&gt;</font>123456789<font COLOR="#0000ff">&lt;/</font><font COLOR="#800000">Attr3x0</font><font COLOR="#0000ff">&gt;</font></font></p>
+<font SIZE="2">
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font COLOR="#0000ff">&lt;</font><font COLOR="#800000">Attr4x0</font><font COLOR="#0000ff">&gt;</font>123456789<font COLOR="#0000ff">&lt;/</font><font COLOR="#800000">Attr4x0</font><font COLOR="#0000ff">&gt;</font></font></p>
+<font SIZE="2">
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font COLOR="#0000ff">&lt;</font><font COLOR="#800000">Attr5x0</font><font COLOR="#0000ff">&gt;</font>123456789<font COLOR="#0000ff">&lt;/</font><font COLOR="#800000">Attr5x0</font><font COLOR="#0000ff">&gt;</font></font></p>
+<font SIZE="2">
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font COLOR="#0000ff">&lt;</font><font COLOR="#800000">Attr6x0</font><font COLOR="#0000ff">&gt;</font>123456789<font COLOR="#0000ff">&lt;/</font><font COLOR="#800000">Attr6x0</font><font COLOR="#0000ff">&gt;</font></font></p>
+<font SIZE="2">
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font COLOR="#0000ff">&lt;</font><font COLOR="#800000">Attr7x0</font><font COLOR="#0000ff">&gt;</font>123456789<font COLOR="#0000ff">&lt;/</font><font COLOR="#800000">Attr7x0</font><font COLOR="#0000ff">&gt;</font></font></p>
+<font SIZE="2">
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font COLOR="#0000ff">&lt;</font><font COLOR="#800000">Attr8x0</font><font COLOR="#0000ff">&gt;</font>123456789<font COLOR="#0000ff">&lt;/</font><font COLOR="#800000">Attr8x0</font><font COLOR="#0000ff">&gt;</font></font></p>
+<font SIZE="2">
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font COLOR="#0000ff">&lt;</font><font COLOR="#800000">Attr9x0</font><font COLOR="#0000ff">&gt;</font>123456789<font COLOR="#0000ff">&lt;/</font><font COLOR="#800000">Attr9x0</font><font COLOR="#0000ff">&gt;</font></font></p>
+<font SIZE="2">
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font COLOR="#0000ff">&lt;</font><font COLOR="#800000">Attr10x0</font><font COLOR="#0000ff">&gt;</font>123456789<font COLOR="#0000ff">&lt;/</font><font COLOR="#800000">Attr10x0</font><font COLOR="#0000ff">&gt;</font></font></p>
+<font SIZE="2">
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font COLOR="#0000ff">&lt;</font><font COLOR="#800000">Attr11x0</font><font COLOR="#0000ff">&gt;</font>123456789<font COLOR="#0000ff">&lt;/</font><font COLOR="#800000">Attr11x0</font><font COLOR="#0000ff">&gt;</font></font></p>
+<font SIZE="2">
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font COLOR="#0000ff">&lt;</font><font COLOR="#800000">Attr12x0</font><font COLOR="#0000ff">&gt;</font>123456789<font COLOR="#0000ff">&lt;/</font><font COLOR="#800000">Attr12x0</font><font COLOR="#0000ff">&gt;</font></font></p>
+<font SIZE="2">
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font COLOR="#0000ff">&lt;</font><font COLOR="#800000">Attr13x0</font><font COLOR="#0000ff">&gt;</font>123456789<font COLOR="#0000ff">&lt;/</font><font COLOR="#800000">Attr13x0</font><font COLOR="#0000ff">&gt;</font></font></p>
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font size="2">...</font></p>
+</blockquote>
+<font SIZE="2">
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font COLOR="#0000ff">&lt;/</font><font COLOR="#800000">Item</font><font COLOR="#0000ff">&gt;</font></font></p>
+<font SIZE="2">
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font COLOR="#0000ff">&lt;</font><font COLOR="#800000">Item</font><font COLOR="#0000ff">&gt;</font></font></p>
+<font SIZE="2">
+<blockquote>
+  <p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font COLOR="#0000ff">&lt;</font><font COLOR="#800000">Attr0x1</font><font COLOR="#0000ff">&gt;</font>123456789<font COLOR="#0000ff">&lt;/</font><font COLOR="#800000">Attr0x1</font><font COLOR="#0000ff">&gt;</font></font></p>
+<font SIZE="2">
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font COLOR="#0000ff">&lt;</font><font COLOR="#800000">Attr1x1</font><font COLOR="#0000ff">&gt;</font>123456789<font COLOR="#0000ff">&lt;/</font><font COLOR="#800000">Attr1x1</font><font COLOR="#0000ff">&gt;</font></font></p>
+<font SIZE="2">
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font COLOR="#0000ff">&lt;</font><font COLOR="#800000">Attr2x1</font><font COLOR="#0000ff">&gt;</font>123456789<font COLOR="#0000ff">&lt;/</font><font COLOR="#800000">Attr2x1</font><font COLOR="#0000ff">&gt;</font></p>
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font color="#0000ff">...</font></p>
+</blockquote>
+</blockquote>
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0"><font color="#0000ff">&lt;/</font><font COLOR="#800000">ItemResultSet</font><font COLOR="#0000ff">&gt;</font></font></p>
+<p>We have tested for 1000,100,10,1 items the time it takes to:</p>
+<ul>
+  <li>create a document</li>
+  <li>write it to disk</li>
+  <li>reparse it from disk (I don't have a good disk)</li>
+  <li>transform it to HTML (very simple transformation)</li>
+  <li>run a series of XPath statements for both selectNodes and selectSingleNode
+    (where applicable)
+    <p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0">/*/*/Attr1x1</p>
+    <p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0">/*/*/Attr1x500</p>
+    <p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0">/*/*/Attr1x999</p>
+    <p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0">/*/*/Item</li>
+</ul>
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0">All
+tests are running on my lapdog (PIII, 500MHz, 512Mb) We allocate a heap size of
+256 Mb when we start the test.</p>
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0">&nbsp;</p>
+<h2 style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0">Results</h2>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td width="10%">All times in ms</td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+  </tr>
+  <tr>
+    <td width="10%" bordercolor="#000000"></td>
+    <td width="20%" colspan="2" bordercolor="#000000"><b>Create Document </b></td>
+    <td width="20%" colspan="2" bordercolor="#000000"><b>Write Document to disk</b></td>
+    <td width="20%" colspan="2" bordercolor="#000000"><b>Transform via XSLT</b></td>
+    <td width="20%" colspan="2" bordercolor="#000000"><b>Reparse the document
+      from disk</b></td>
+    <td width="10%"></td>
+  </tr>
+  <tr>
+    <td width="10%" bordercolor="#000000"><b>Items</b></td>
+    <td width="10%" bordercolor="#000000"><i>dom4j</i></td>
+    <td width="10%" bordercolor="#000000"><i>xalan</i></td>
+    <td width="10%" bordercolor="#000000"><i>dom4j</i></td>
+    <td width="10%" bordercolor="#000000"><i>xalan</i></td>
+    <td width="10%" bordercolor="#000000"><i>dom4j</i></td>
+    <td width="10%" bordercolor="#000000"><i>xalan</i></td>
+    <td width="10%" bordercolor="#000000"><i>dom4j</i></td>
+    <td width="10%" bordercolor="#000000"><i>xalan</i></td>
+    <td width="10%"></td>
+  </tr>
+  <tr>
+    <td width="10%" bordercolor="#000000"><b>1000</b></td>
+    <td width="10%" bordercolor="#000000">641.0</td>
+    <td width="10%" bordercolor="#000000">571.0</td>
+    <td width="10%" bordercolor="#000000">531</td>
+    <td width="10%" bordercolor="#000000">852</td>
+    <td width="10%" bordercolor="#000000">2286</td>
+    <td width="10%" bordercolor="#000000">3884</td>
+    <td width="10%" bordercolor="#000000"></td>
+    <td width="10%" bordercolor="#000000"></td>
+    <td width="10%"></td>
+  </tr>
+  <tr>
+    <td width="10%" bordercolor="#000000"><b>100</b></td>
+    <td width="10%" bordercolor="#000000">9.0</td>
+    <td width="10%" bordercolor="#000000">20.0</td>
+    <td width="10%" bordercolor="#000000">60</td>
+    <td width="10%" bordercolor="#000000">61</td>
+    <td width="10%" bordercolor="#000000">66</td>
+    <td width="10%" bordercolor="#000000">114</td>
+    <td width="10%" bordercolor="#000000">62.99</td>
+    <td width="10%" bordercolor="#000000">68.6</td>
+    <td width="10%"></td>
+  </tr>
+  <tr>
+    <td width="10%" bordercolor="#000000"><b>10</b></td>
+    <td width="10%" bordercolor="#000000">0.7</td>
+    <td width="10%" bordercolor="#000000">1.0</td>
+    <td width="10%" bordercolor="#000000">10</td>
+    <td width="10%" bordercolor="#000000">10</td>
+    <td width="10%" bordercolor="#000000">6</td>
+    <td width="10%" bordercolor="#000000">14</td>
+    <td width="10%" bordercolor="#000000">11.92</td>
+    <td width="10%" bordercolor="#000000">14.62</td>
+    <td width="10%"></td>
+  </tr>
+  <tr>
+    <td width="10%" bordercolor="#000000"><b>1</b></td>
+    <td width="10%" bordercolor="#000000">0.1</td>
+    <td width="10%" bordercolor="#000000">0.0</td>
+    <td width="10%" bordercolor="#000000">10</td>
+    <td width="10%" bordercolor="#000000">10</td>
+    <td width="10%" bordercolor="#000000">3</td>
+    <td width="10%" bordercolor="#000000">7</td>
+    <td width="10%" bordercolor="#000000">8.01</td>
+    <td width="10%" bordercolor="#000000">8.31</td>
+    <td width="10%"></td>
+  </tr>
+  <tr>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+  </tr>
+  <tr>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+  </tr>
+  <tr>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+    <td width="10%"></td>
+  </tr>
+</table>
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0">&nbsp;</p>
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0">The
+most surprising result comes from executing XPath statements. Xalan does warn us
+in the <a href="http://xml.apache.org/xalan-j/apidocs/org/apache/xpath/XPathAPI.html">JavaDoc</a>
+that things could be a little slow.</p>
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0">selectSingleNode()</p>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td width="50%">
+      <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td width="33%">All times in ms</td>
+          <td width="33%"><b>1000 Items in the document</b></td>
+          <td width="34%"></td>
+        </tr>
+        <tr>
+          <td width="33%"></td>
+          <td width="33%"><i>Dom4j</i></td>
+          <td width="34%"><i>Xalan</i></td>
+        </tr>
+        <tr>
+          <td width="33%"><b>/*/*/Attr1x1</b></td>
+          <td width="33%">127</td>
+          <td width="34%">10</td>
+        </tr>
+        <tr>
+          <td width="33%"><b>/*/*/Attr1x500</b></td>
+          <td width="33%">20</td>
+          <td width="34%">661</td>
+        </tr>
+        <tr>
+          <td width="33%"><b>/*/*/Attr1x999</b></td>
+          <td width="33%">23</td>
+          <td width="34%">1662</td>
+        </tr>
+        <tr>
+          <td width="33%"></td>
+          <td width="33%"></td>
+          <td width="34%"></td>
+        </tr>
+      </table>
+    </td>
+    <td width="50%">
+      <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td width="33%"></td>
+          <td width="33%"><b>100 Items in the document</b></td>
+          <td width="34%"></td>
+        </tr>
+        <tr>
+          <td width="33%"></td>
+          <td width="33%"><i>Dom4j</i></td>
+          <td width="34%"><i>Xalan</i></td>
+        </tr>
+        <tr>
+          <td width="33%"><b>/*/*/Attr1x1</b></td>
+          <td width="33%">2</td>
+          <td width="34%">3.0</td>
+        </tr>
+        <tr>
+          <td width="33%"><b>/*/*/Attr1x50</b></td>
+          <td width="33%">3</td>
+          <td width="34%">13.0</td>
+        </tr>
+        <tr>
+          <td width="33%"><b>/*/*/Attr1x99</b></td>
+          <td width="33%">2</td>
+          <td width="34%">55.1</td>
+        </tr>
+        <tr>
+          <td width="33%"></td>
+          <td width="33%"></td>
+          <td width="34%"></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%"></td>
+    <td width="50%"></td>
+  </tr>
+</table>
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0">&nbsp;</p>
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0">selectNodes()</p>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td width="50%">
+      <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td width="33%">All times in ms</td>
+          <td width="33%"><b>1000 Items in the document</b></td>
+          <td width="34%"></td>
+        </tr>
+        <tr>
+          <td width="33%"></td>
+          <td width="33%"><i>Dom4j</i></td>
+          <td width="34%"><i>Xalan</i></td>
+        </tr>
+        <tr>
+          <td width="33%"><b>/*/*/Attr1x1</b></td>
+          <td width="33%">16.6</td>
+          <td width="34%">1633</td>
+        </tr>
+        <tr>
+          <td width="33%"><b>/*/*/Attr1x500</b></td>
+          <td width="33%">20</td>
+          <td width="34%">1772</td>
+        </tr>
+        <tr>
+          <td width="33%"><b>/*/*/Attr1x999</b></td>
+          <td width="33%">20.0</td>
+          <td width="34%">1733</td>
+        </tr>
+        <tr>
+          <td width="33%"><b>/*/Item</b></td>
+          <td width="33%">2.0</td>
+          <td width="34%">1742</td>
+        </tr>
+      </table>
+    </td>
+    <td width="50%">
+      <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td width="33%"></td>
+          <td width="33%"><b>100 Items in the document</b></td>
+          <td width="34%"></td>
+        </tr>
+        <tr>
+          <td width="33%"></td>
+          <td width="33%"><i>Dom4j</i></td>
+          <td width="34%"><i>Xalan</i></td>
+        </tr>
+        <tr>
+          <td width="33%"><b>/*/*/Attr1x1</b></td>
+          <td width="33%">1.0</td>
+          <td width="34%">35.0</td>
+        </tr>
+        <tr>
+          <td width="33%"><b>/*/*/Attr1x50</b></td>
+          <td width="33%">2.0</td>
+          <td width="34%">36.1</td>
+        </tr>
+        <tr>
+          <td width="33%"><b>/*/*/Attr1x99</b></td>
+          <td width="33%">1.0</td>
+          <td width="34%">49.0</td>
+        </tr>
+        <tr>
+          <td width="33%"><b>/*/Item</b></td>
+          <td width="33%">0.2</td>
+          <td width="34%">49.0</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%"></td>
+    <td width="50%"></td>
+  </tr>
+</table>
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0">&nbsp;</p>
+<p style="word-spacing: 0; line-height: 100%; margin-top: 0; margin-bottom: 0">selectNodes()</p>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td width="50%">
+      <table border="0" cellpadding="0" cellspacing="0" width="100%" height="123">
+        <tr>
+          <td width="33%" height="21">All times in ms</td>
+          <td width="33%" height="21"><b>/*/*/Attr1x500</b></td>
+          <td width="34%" height="21"></td>
+        </tr>
+        <tr>
+          <td width="33%" height="21"></td>
+          <td width="33%" height="21"><i>Dom4j</i></td>
+          <td width="34%" height="21"><i>Xalan</i></td>
+        </tr>
+        <tr>
+          <td width="33%" height="18"><b>1000</b></td>
+          <td width="33%" height="18">20.0</td>
+          <td width="34%" height="18">1793</td>
+        </tr>
+        <tr>
+          <td width="33%" height="21"><b>100</b></td>
+          <td width="33%" height="21">2.0</td>
+          <td width="34%" height="21">36.1</td>
+        </tr>
+        <tr>
+          <td width="33%" height="21"><b>10</b></td>
+          <td width="33%" height="21">0.1</td>
+          <td width="34%" height="21">11.72</td>
+        </tr>
+        <tr>
+          <td width="33%" height="21"><b>1</b></td>
+          <td width="33%" height="21">0.1</td>
+          <td width="34%" height="21">4.3</td>
+        </tr>
+      </table>
+    </td>
+    <td width="50%"></td>
+  </tr>
+  <tr>
+    <td width="50%"></td>
+  </tr>
+</table>
+<h2>&nbsp;</h2>
+<h2><b>Conclusion</b></h2>
+<p>These number suggest one <span lang="en-gb">s</span>hould use the XPathAPI class of Xalan with great
+caution, if at all</p>
+<p>The syntax of X<span lang="en-gb">P</span>ath statements must be chosen carefully </p>
+<p>It seems most efficient to use selectNodes with Dom4j even if one needs a
+single node.</p>
+<p>In another instance of the test we found that it was most efficient to use
+elements rather than attributes.&nbsp;&nbsp; </p>
+<h2><b><span lang="en-gb">Resources</span></b></h2>
+<p><span lang="en-gb">Here's the source code and data for these tests. Try them 
+for yourself</span></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111">
+  <tr>
+    <td width="100%" height="19"><a href="PerfDOM4J.java">PerfDOM4J.java</a></td>
+  </tr>
+  <tr>
+    <td width="100%" height="21"><a href="PerfW3C.java">PerfW3C.java</a></td>
+  </tr>
+  <tr>
+    <td width="100%" height="19"><a href="item.xslt">item.xslt</a></td>
+  </tr>
+  <tr>
+    <td width="100%" height="19"><a href="w3c_100.xml">w3c_100.xml</a></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+</body>
+
+</html>

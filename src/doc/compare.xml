@@ -122,6 +122,10 @@
         You can find the very interesting results 
         <a href="http://www-106.ibm.com/developerworks/xml/library/x-injava/index.html">here</a>.
       </p>
+      <p>
+        Also you might find these new <a href="benchmarks/xpath/index.html">Performance Benchmarks</a> 
+        interesting comparing dom4j and Jaxen against Xerces and Xalan. 
+      </p>
     </section>
 
   </body>
