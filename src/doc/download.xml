@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0"?>
 <document url="http://www.dom4j.org/download.xml">
   <body>
     <title>Download dom4j</title>
@@ -77,12 +77,3 @@ cvs -d:ext:developername@cvs.dom4j.org:/cvsroot/dom4j co dom4j
     </section>
   </body>
 </document>
-
-
-
-
-
-
-
-
-
