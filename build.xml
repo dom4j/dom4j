@@ -536,6 +536,10 @@
   <target name="demo-bigdoc" depends="samples">
     <java classname="LargeDocumentDemo" args="xml/much_ado.xml /PLAY/ACT"/>
   </target>
+  
+  <target name="demo-bigdoc2" depends="samples">
+    <java classname="LargeDocumentDemo2" args="xml/much_ado.xml"/>
+  </target>
 
   <target name="demo-link" depends="samples">
     <java classname="LinkChecker" args="xml/xhtml/xhtml-basic.xml"/>
