@@ -22,6 +22,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentFactory;
 import org.dom4j.ElementHandler;
+
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
@@ -205,9 +206,20 @@ public class SAXReader {
              * Thanks to Christian Oetterli
              */
             InputSource source = new InputSource(new FileInputStream(file));
-            String systemId = file.getAbsolutePath();
-            if (systemId != null) {
-                source.setSystemId("file:/" + systemId.replace('\\', '/'));
+            String path = file.getAbsolutePath();
+            if (path != null) {
+                // Code taken from Ant FileUtils
+
+                StringBuffer sb = new StringBuffer("file://");
+                // add an extra slash for filesystems with drive-specifiers
+                if (!path.startsWith(File.separator)) {
+                    sb.append("/");
+                }
+
+                path = path.replace('\\', '/');
+                sb.append(path);
+                
+                source.setSystemId(sb.toString());
             }
             return read(source);
         } catch (FileNotFoundException e) {
