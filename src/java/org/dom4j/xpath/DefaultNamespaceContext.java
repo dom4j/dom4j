@@ -9,6 +9,8 @@
 
 package org.dom4j.xpath;
 
+import java.io.Serializable;
+
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
@@ -24,7 +26,7 @@ import org.jaxen.NamespaceContext;
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   */
-public class DefaultNamespaceContext implements NamespaceContext {
+public class DefaultNamespaceContext implements NamespaceContext, Serializable {
 
     private final Element element;
     
