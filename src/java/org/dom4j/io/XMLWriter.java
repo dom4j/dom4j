@@ -1150,13 +1150,32 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                 }
             }
 
-            char quote = format.getAttributeQuoteCharacter();
-            writer.write(" ");
-            writer.write(attribute.getQualifiedName());
-            writer.write("=");
-            writer.write(quote);
-            writeEscapeAttributeEntities(attribute.getValue());
-            writer.write(quote);
+            // If the attribute is a namespace declaration, check if we have already
+            // written that declaration elsewhere (if that's the case, it must be 
+            // in the namespace stack
+            String attName = attribute.getName();
+            if (attName.startsWith("xmlns:")) {
+                String prefix = attName.substring(6);
+                if (namespaceStack.getNamespaceForPrefix(prefix) == null) {
+                    String uri = attribute.getValue();
+                    namespaceStack.push(prefix, uri);
+                    writeNamespace(prefix, uri);
+                }
+            } else if (attName.startsWith("xmlns=")) {
+                if (namespaceStack.getDefaultNamespace() == null) {
+                    String uri = attribute.getValue();
+                    namespaceStack.push(null, uri);
+                    writeNamespace(null, uri);
+                }
+            } else {
+                char quote = format.getAttributeQuoteCharacter();
+                writer.write(" ");
+                writer.write(attribute.getQualifiedName());
+                writer.write("=");
+                writer.write(quote);
+                writeEscapeAttributeEntities(attribute.getValue());
+                writer.write(quote);
+            }
         }
     }
 
