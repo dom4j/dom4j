@@ -212,7 +212,7 @@
     <fixcrlf srcdir="." includes="*.sh" cr="remove"/>
     <jar jarfile="${build.dir}/${name}.jar"
          basedir="${build.dest}"
-         includes="org/**"/>
+         includes="org/dom4j/**"/>
 
      <!-- add dependent JARs -->
     <mkdir dir="${build.tmp}"/>
