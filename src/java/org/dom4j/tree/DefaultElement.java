@@ -597,6 +597,8 @@ public class DefaultElement extends AbstractElement {
     }
 
     public void setContent(List content) {
+        contentRemoved();
+
         if (content instanceof ContentListFacade) {
             content = ((ContentListFacade) content).getBackingList();
         }
@@ -613,7 +615,6 @@ public class DefaultElement extends AbstractElement {
 
                 if (object instanceof Node) {
                     Node node = (Node) object;
-
                     Element parent = node.getParent();
 
                     if ((parent != null) && (parent != this)) {
@@ -621,20 +622,14 @@ public class DefaultElement extends AbstractElement {
                     }
 
                     newContent.add(node);
-
                     childAdded(node);
                 } else if (object != null) {
                     String text = object.toString();
-
                     Node node = getDocumentFactory().createText(text);
-
                     newContent.add(node);
-
                     childAdded(node);
                 }
             }
-
-            contentRemoved();
 
             this.content = newContent;
         }

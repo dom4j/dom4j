@@ -8,14 +8,14 @@
 package org.dom4j.tree;
 
 import junit.textui.TestRunner;
-
-import java.util.List;
-
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.dom4j.Node;
+
+import java.util.List;
 
 /**
  * JUnit tests for <code>DefaultElement</code>.
@@ -29,6 +29,20 @@ public class DefaultElementTest extends AbstractTestCase {
 
     // Test case(s)
     // -------------------------------------------------------------------------
+    public void testParentAfterSetContent() throws Exception {
+            Document doc = DocumentHelper.parseText("<root>" + "<a>a</a>"
+                + "<b>b</b>" + "<x>x</x>" + "<d>d</d>" + "</root>");
+            Node x = doc.selectSingleNode("/root/x");
+            List content = doc.getRootElement().content();
+            int position = content.indexOf(x);
+            Element c = DocumentHelper.createElement("c");
+            c.setText("c");
+            content.add(position, c);
+            assertNotNull(c.getParent());
+            doc.getRootElement().setContent(content);
+            assertNotNull("Parent is null of setting content", c.getParent());
+        }
+
     public void testGetStringValue() throws Exception {
         Document doc = getDocument("xml/test/test_text.xml");
         Element message = doc.getRootElement();

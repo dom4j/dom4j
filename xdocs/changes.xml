@@ -8,6 +8,10 @@
   <body>
 
     <release version="1.6-dev" date="in CVS">
+      <action dev="maartenc" type="fix" due-to="Peter Schaefer">
+        Fixed a bug in the <code>DefaultElement.setContent(List)</code> method that
+        caused incorrectly resetting the parent of the nodes in the list.
+      </action>
       <action dev="wolfftw" type="remove">
         Removed <code>persistence</code> package and sub-package.
       </action>
