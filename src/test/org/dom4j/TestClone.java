@@ -68,6 +68,14 @@ public class TestClone extends AbstractTestCase {
         assert( "Documents are equal", comparator.compare( document, doc2 ) == 0 );
     }
     
+    public void testRootElementClone() throws Exception {
+        testElementClone( document.getRootElement() );
+    }
+    
+    public void testAuthorElementClone() throws Exception {
+        testElementClone( (Element) document.selectSingleNode( "//author" ) );
+    }
+    
     public void testRootCompare1() throws Exception {                
         Document doc2 = (Document) document.clone();
         Element author = doc2.getRootElement();
@@ -101,6 +109,18 @@ public class TestClone extends AbstractTestCase {
         
         assert( "Documents are not equal", comparator.compare( document, doc2 ) != 0 );
     }
+    
+    
+    protected void testElementClone( Element element ) throws Exception {        
+        Element element2 = (Element) element.clone();
+        
+        assert( "Returned a new Element", element2 != element );
+        assert( "New element has no parent", element2.getParent() == null );
+        assert( "New element has no Document", element2.getDocument() == null );
+        
+        assert( "Element fragments are equal", comparator.compare( element, element2 ) == 0 );
+    }
+    
 }
 
 
