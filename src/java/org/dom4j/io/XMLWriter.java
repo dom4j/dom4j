@@ -90,7 +90,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     protected static final OutputFormat DEFAULT_FORMAT = new OutputFormat();
 
     /** Should entityRefs by resolved when writing ? */
-    private boolean resolveEntityRefs = false;
+    private boolean resolveEntityRefs = true;
 
     /** Stores the last type of node written so algorithms can refer to the
       * previous node type */
