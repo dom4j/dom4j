@@ -53,6 +53,9 @@ public class DocumentFactory implements Serializable {
     
     protected transient QNameCache cache;
 
+    /** Default namespace prefix -> URI mappings for XPath expressions to use */
+    private Map xpathNamespaceURIs;
+    
     static {
         String className = null;
         try {
@@ -111,7 +114,6 @@ public class DocumentFactory implements Serializable {
     public Element createElement(String qualifiedName, String namespaceURI) {
         return createElement(createQName(qualifiedName, namespaceURI));
     }
-
     
     public Attribute createAttribute(Element owner, QName qname, String value) {
         return new DefaultAttribute(qname, value);
@@ -177,7 +179,11 @@ public class DocumentFactory implements Serializable {
       * @throws InvalidXPathException if the XPath expression is invalid
       */
     public XPath createXPath(String xpathExpression) throws InvalidXPathException {
-        return new DefaultXPath( xpathExpression );
+        DefaultXPath xpath = new DefaultXPath( xpathExpression );
+        if ( xpathNamespaceURIs != null ) {
+            xpath.setNamespaceURIs( xpathNamespaceURIs );
+        }
+        return xpath;
     }
 
     /** <p><code>createXPath</code> parses an XPath expression
@@ -205,9 +211,8 @@ public class DocumentFactory implements Serializable {
       * @return a new <code>NodeFilter</code> instance
       */
     public NodeFilter createXPathFilter(String xpathFilterExpression, VariableContext variableContext) {
-        DefaultXPath answer = new DefaultXPath( xpathFilterExpression );        
-        //DefaultXPath answer = new DefaultXPath( ".[" + xpathFilterExpression + "]" );        
-        //XPathPattern answer = new XPathPattern( xpathFilterExpression );
+        XPath answer = createXPath( xpathFilterExpression );
+        //DefaultXPath answer = new DefaultXPath( xpathFilterExpression );        
         answer.setVariableContext( variableContext );
         return answer;
     }
@@ -222,9 +227,8 @@ public class DocumentFactory implements Serializable {
       * @return a new <code>NodeFilter</code> instance
       */
     public NodeFilter createXPathFilter(String xpathFilterExpression) {
-        return new DefaultXPath( xpathFilterExpression );        
-        //return new DefaultXPath( ".[" + xpathFilterExpression + "]" );        
-        //return new XPathPattern( xpathFilterExpression );
+        return createXPath( xpathFilterExpression );
+        //return new DefaultXPath( xpathFilterExpression );        
     }
     
     /** <p><code>createPattern</code> parses the given 
@@ -240,13 +244,35 @@ public class DocumentFactory implements Serializable {
     }
     
     
+    // Properties
+    //-------------------------------------------------------------------------        
+
     /** Returns a list of all the QName instances currently used by this document factory
      */
     public List getQNames() {
         return cache.getQNames();
     }
+
+    /** @return the Map of namespace URIs that will be used by by XPath expressions
+     * to resolve namespace prefixes into namespace URIs. The map is keyed by 
+     * namespace prefix and the value is the namespace URI. This value could well be
+     * null to indicate no namespace URIs are being mapped.
+     */
+    public Map getXPathNamespaceURIs() {
+        return xpathNamespaceURIs;
+    }
+    
+    /** Sets the namespace URIs to be used by XPath expressions created by this factory
+     * or by nodes associated with this factory. The keys are namespace prefixes and the 
+     * values are namespace URIs.
+     */
+    public void setXPathNamespaceURIs(Map xpathNamespaceURIs) {
+        this.xpathNamespaceURIs = xpathNamespaceURIs;
+    }
     
     // Implementation methods
+    //-------------------------------------------------------------------------        
+
     
     /** <p><code>createSingleton</code> creates the singleton instance
       * from the given class name.</p>

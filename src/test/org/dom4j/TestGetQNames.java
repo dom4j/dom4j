@@ -45,6 +45,26 @@ public class TestGetQNames extends AbstractTestCase {
 
         assertTrue( "Found 15 QNames", qnames.size() == 15 );
     }
+    
+    /** Test the element rename functionality which was lacking as spotted by
+     * Rob Lebowitz
+     */
+    public void testRename() throws Exception {
+        Document doc = DocumentHelper.createDocument();
+        Element root = doc.addElement( "foo" );
+        
+        assertEquals( "named correctly", "foo", root.getName() );
+        
+        root.setName( "bar" );
+        
+        assertEquals( "named correctly", "bar", root.getName() );
+        
+        QName xyz = root.getQName( "xyz" );
+        
+        root.setQName( xyz );
+        
+        assertEquals( "QNamed correctly", xyz, root.getQName() );
+    }
         
     // Implementation methods
     //-------------------------------------------------------------------------                    

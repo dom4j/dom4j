@@ -6,7 +6,8 @@
     <section title="Change History">
 
       <section title="Changes in CVS since last release">
-        <section title="New features">
+        <section title="New Swing TableModel for displaying XML">
+
         <p>Added a new Swing TableModel for displaying XML data in a Swing user interface. It uses
           an XPath based model to define the rows and column values.
           A table definition can be specified using a simple XML format and then loaded in a small amount of code.
@@ -34,7 +35,9 @@ JTable table = new JTable( tableModel );
           for a given source XML document. There is an example table definition for the periodic table
           in xml/swing/tableForAtoms.xml.
         </p>
-        <br />
+        </section>
+
+        <section title="Registering Namespace URIs for XPath">
         <p>Added a new helper method to make it easier to create namespace contexts for doing
           namespace aware XPath expressions. The new setNamespaceURIs(Map) method on XPath makes it easier
           to pass in the prefixes and URIs you wish to use in an XPath expression. Here's an example of it in action
@@ -47,7 +50,29 @@ XPath xpath = document.createXPath( "/SOAP-ENV:Envelope/SOAP-ENV:Body/m:BabelFis
 xpath.setNamespaceURIs( uris );        
 Node element = xpath.selectSingleNode( document );
 </pre>
-        <br />
+        <p>In addition DocumentFactory has a setXPathNamespaceURIs(Map) method so that common namespace URIs can be associated with
+          a DocumentFactory so namespace prefixes can be used across many XPath expressions in an easy way. e.g.
+        </p>
+<pre>
+// register prefixes with my factory
+Map uris = new HashMap();
+uris.put( "SOAP-ENV", "http://schemas.xmlsoap.org/soap/envelope/" );
+uris.put( "m", "urn:xmethodsBabelFish" );        
+
+DocumentFactory factory = new DocumentFactory();
+factory.setXPathNamespaceURIs( uris );
+
+// now parse a document using my factory
+SAXReader reader = new SAXReader();
+reader.setDocumentFactory( factory );
+Document doc = reader.read( "soap.xml" );
+
+// now lets use the prefixes
+Node element = doc.selectSingleNode( "/SOAP-ENV:Envelope/SOAP-ENV:Body/m:BabelFish" );
+</pre>
+        </section>
+
+        <section title="Whitespace handling">
 
         <p>There is a new <i>mergeAdjacentText</i> option available on SAXReader 
         to concatenate adjacent text nodes into a single Text node. 
@@ -92,6 +117,10 @@ Document doc = reader.read( "soap.xml" );
         </section>
 
         <section title="Patches">
+        <p>Patched the setName() method on Element so that elements can be renamed. Also added a new setQName() to the Element interface so that elements can be renamed in a namespace aware manner. Thanks to Robert Lebowitz for this.
+        </p>
+        <p>Applied fix to bug found by Manfred Lotz that XMLWriter in whitespace trimming mode would sometimes not correctly insert a space when text is seperated by newlines. The Test case testWhitespaceBug() in org.dom4j.TestXMLWriter reproduces the bug that has now been fixed.
+        </p>
         <p>Applied patches supplied by Stefan Graeber that enhance the datatype support to support included schemata and derived element types.
         </p>
         <p>Applied patches suggested by Omer van der Horst Jansen to enable dom4j to fully work

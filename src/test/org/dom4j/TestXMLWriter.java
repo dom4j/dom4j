@@ -137,6 +137,35 @@ public class TestXMLWriter extends AbstractTestCase {
         assertEquals( "Document contains the correct text", "jeejee", value );
     }
 
+    /** This test was provided by Manfred Lotz */
+    public void testWhitespaceBug() throws Exception {
+        Document doc = DocumentHelper.parseText(
+            "<notes> This is a      multiline\n\rentry</notes>"
+        );
+        
+        OutputFormat format = new OutputFormat();
+        format.setEncoding("UTF-8");
+        format.setIndentSize(4);
+        format.setNewlines(true);
+        format.setTrimText(true);
+        format.setExpandEmptyElements(true);
+        
+        StringWriter buffer = new StringWriter();
+        XMLWriter writer = new XMLWriter(buffer, format);
+        writer.write( doc );
+        
+        String xml = buffer.toString();
+        log( xml );
+        
+        Document doc2 = DocumentHelper.parseText( xml );
+        String text = doc2.valueOf( "/notes" );
+        String expected = "This is a multiline entry";
+        
+        assertEquals( "valueOf() returns the correct text padding", expected, text );
+        
+        assertEquals( "getText() returns the correct text padding", expected, doc2.getRootElement().getText() );
+    }
+    
     protected void generateXML(ContentHandler handler) throws SAXException {
 	handler.startDocument();
 	AttributesImpl attrs = new AttributesImpl();

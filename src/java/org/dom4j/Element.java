@@ -39,6 +39,13 @@ public interface Element extends Branch {
       * @return the <code>QName</code> associated with this element
       */
     public QName getQName();    
+
+    /** <p>Sets the <code>QName</code> of this element which represents 
+      * the local name, the qualified name and the <code>Namespace</code>.</p>
+      *
+      * @param qname is the <code>QName</code> to be associated with this element
+      */
+    public void setQName(QName qname);    
     
     /** <p>Returns the <code>Namespace</code> of this element if one exists 
       * otherwise <code>Namespace.NO_NAMESPACE</code> is returned.</p>

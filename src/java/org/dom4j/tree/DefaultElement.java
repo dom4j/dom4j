@@ -122,7 +122,10 @@ public class DefaultElement extends AbstractElement {
     public QName getQName() {
         return qname;
     }
-    
+
+    public void setQName(QName qname) {
+        this.qname = qname;
+    }
     
     public String getText() {
         if ( content instanceof List ) {

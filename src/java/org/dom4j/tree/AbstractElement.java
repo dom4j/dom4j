@@ -78,11 +78,11 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     }
 
     public void setName(String name) {
-        throw new UnsupportedOperationException("The name and namespace of this Element cannot be changed" );
+        setQName( getDocumentFactory().createQName( name ) );
     }
-    
+        
     public void setNamespace(Namespace namespace) {
-        throw new UnsupportedOperationException("The name and namespace of this Element cannot be changed" );
+        setQName( getDocumentFactory().createQName( getName(), namespace ) );
     }
 
     /** Returns the XPath expression to match this Elements name

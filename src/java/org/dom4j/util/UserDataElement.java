@@ -25,6 +25,7 @@ import org.dom4j.CDATA;
 import org.dom4j.CharacterData;
 import org.dom4j.Comment;
 import org.dom4j.Document;
+import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.Entity;
 import org.dom4j.IllegalAddException;
@@ -102,7 +103,7 @@ public class UserDataElement extends DefaultElement {
         Element answer = getDocumentFactory().createElement(qName);
         answer.setData( getCopyOfUserData() );
         return answer;
-    }
+    }    
 }
 
 

@@ -109,6 +109,9 @@ public class BaseElement extends AbstractElement {
         return qname;
     }
     
+    public void setQName(QName qname) {
+        this.qname = qname;
+    }
 
     public void clearContent() {
         contentList().clear();
