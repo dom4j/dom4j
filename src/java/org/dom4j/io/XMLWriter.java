@@ -71,7 +71,7 @@ import org.xml.sax.ext.LexicalHandler;
   */
 public class XMLWriter implements ContentHandler, LexicalHandler {
 
-    private static final boolean ESCAPE_XML_ENTITIES = true;
+    private static final boolean ESCAPE_XML_ENTITIES = false;
     
     protected static final OutputFormat DEFAULT_FORMAT = new OutputFormat();
 
@@ -240,10 +240,8 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
                 write(additional);
             }
             else {             
-                if ( textOnly ) {
-                    if ( ! ( node instanceof Text) ) {
-                        textOnly = false;
-                    }
+                if ( textOnly && ! ( node instanceof Text) ) {
+                    textOnly = false;
                 }
             }
         }
@@ -257,14 +255,26 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         }
         else {
             if ( textOnly ) {
-                String text = format.isTrimText() ? element.getTextTrim() : element.getText();
-                if (text == null || text.length() <= 0 ) {
-                    writeEmptyElementClose(element);
+                if ( format.isTrimText() ) {
+                    String text = element.getTextTrim();
+                    if (text == null || text.length() <= 0 ) {
+                        writeEmptyElementClose(element);
+                    }
+                    else {
+                        // we know it's not null or empty from above
+                        writer.write(">");
+                        writer.write( text );
+                        writeClose(element);
+                    }
                 }
                 else {
-                    // we know it's not null or empty from above
+                    // we have at least one text node so lets assume
+                    // that its non-empty
                     writer.write(">");
-                    writer.write( text );
+                    for ( int i = 0; i < size; i++ ) {
+                        Node node = element.node(i);
+                        writer.write(node.getText());
+                    }
                     writeClose(element);
                 }
             }

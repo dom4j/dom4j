@@ -45,7 +45,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class SAXContentHandler extends DefaultHandler implements LexicalHandler {
 
     /** Should standard entities be passed through? */
-    private static final boolean SHOW_STANDARD_ENTITIES = false;
+    private static final boolean SHOW_STANDARD_ENTITIES = true;
     
     /** The factory used to create new <code>Document</code> instances */
     private DocumentFactory documentFactory;

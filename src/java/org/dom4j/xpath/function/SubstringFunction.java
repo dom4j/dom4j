@@ -50,7 +50,8 @@ public class SubstringFunction implements Function
 
     int start = RoundFunction.evaluate( NumberFunction.evaluate(startArg) ).intValue();
 
-    start += 1;
+    // Java Strings start at 0 rather than 1
+    start -= 1;
 
     return str.substring(start);
 
@@ -69,8 +70,9 @@ public class SubstringFunction implements Function
     int len = RoundFunction.evaluate(
       NumberFunction.evaluate(lenArg) ).intValue();
 
-    start += 1;
-
+    // Java Strings start at 0 rather than 1
+    start -= 1;
+    
     int end = start + len;
 
     return str.substring(start,
