@@ -284,7 +284,12 @@ public class SAXReader {
                 if ( entityResolver == null ) {
                     entityResolver = createDefaultEntityResolver( in.getSystemId() );
                 }
-                //xmlReader.setEntityResolver( entityResolver );
+                xmlReader.setEntityResolver( entityResolver );
+            }
+            else {
+                if ( this.entityResolver != null ) {
+                    xmlReader.setEntityResolver( this.entityResolver );
+                }
             }
             
             SAXContentHandler contentHandler = createContentHandler(xmlReader);
@@ -612,7 +617,7 @@ public class SAXReader {
         public InputSource resolveEntity(String publicId, String systemId) {            
             // try create a relative URI reader...
             if ( systemId != null && systemId.length() > 0 ) {
-                if ( uriPrefix != null ) {
+                if ( uriPrefix != null && systemId.indexOf( ':' ) <= 0 ) {
                     systemId = uriPrefix + systemId;
                 }                    
             }

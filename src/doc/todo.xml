@@ -96,6 +96,10 @@ List nodes = xpath.selectNodes( document );
             Added helper method on <code>org.dom4j.DocumentFactory</code> called <code>getQNames</code>
             that returns a List of all the QNames that were used to parse the documents.
           </p>
+          <p>
+            Fixed bug in SAXReader that setEntityResolver() was not always behaving properly. 
+            Also the default entity resolver used to locate XML Schemas seems to work properly now.
+          </p>
         </section>
         <section title="0.9 release">
           <section title="Full support for the Jaxen XPath engine">
