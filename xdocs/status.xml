@@ -8,6 +8,7 @@
  
   <body>
       <section name="CVS">
+        <p>Fixed bug in <code>XMLWriter</code> that caused whitespace to be added between successive calls of the <code>characters(...)</code> method (reported by Paul Libbrecht).</p>
         <p>Improved performance of <code>NamespaceCache</code> in multithreaded environments (contributed by Brett Finnell).</p>
       </section>
 
