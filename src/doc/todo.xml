@@ -4,6 +4,9 @@
     <title>Status</title>
     
     <section title="Change History">
+        <section title="coming soon, 0.5 release">
+        </section>
+
         <section title="0.4 release">
           <section title="Enhanced event notification mechanism">
             <p>A new enhanced event notification mechanism has been implemented
@@ -208,7 +211,25 @@ List customers
           This would avoid any performance hit by making this kind of validation 
           the default behaviour.
         </li>
-        <li>Build an XML Schema Data Types aware DocumentFactory
+        <li>Implement an org.dom4j.util.NodeComparator for comparing nodes
+        </li>
+        <li>
+          Consider adding support for 
+          <a href="http://developer.java.sun.com/developer/earlyAccess/adding_generics/">Java Generics</a> 
+          such that typesafe Iterators can be used. For example
+          <pre>
+Iterator&lt;Node&gt; iter = element.nodeIterator();
+while ( iter.hasNext() ) {
+    Node node = iter.next();
+}
+
+Iterator&lt;Element&gt; iter2 = element.elementIterator( "foo" );
+while ( iter2.hasNext() ) {
+    Element foo = iter2.next();
+}
+          </pre>
+        </li>
+        <li>Build full XML Schema validation
         </li>
         <li>Build validators using dom4j API using schema and validation technologies such as:-
           <ul>
