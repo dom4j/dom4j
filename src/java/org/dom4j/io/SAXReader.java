@@ -214,7 +214,6 @@ public class SAXReader {
       * @param systemId is a URL for a document or a file name.
       * @return the newly created Document instance
       * @throws DocumentException if an error occurs during parsing.
-      * @throws MalformedURLException if a URL could not be made for the given File
       */
     public Document read(String systemId) throws DocumentException {
         return read(new InputSource(systemId));        
