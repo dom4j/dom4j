@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <document url="http://www.dom4j.org/download.xml">
   <body>
-    <title>Download DOM4J</title>
+    <title>Download dom4j</title>
     
     <section title="Download the current release">
       <p>The current release is version $VERSION$.</p>
       <p>It can be downloaded at
         <a href="http://sourceforge.net/project/showfiles.php?group_id=16035">SourceForge</a>
-        or via this link 
-        <a href="http://prdownloads.sourceforge.net/dom4j/dom4j-$VERSION$.tar.gz">dom4j-$VERSION$.tar.gz</a>
+        or directly via one of the following links:-
       </p>
+      <ul>
+          <li>
+            <a href="http://prdownloads.sourceforge.net/dom4j/dom4j-$VERSION$.zip">dom4j-$VERSION$.zip</a> for Windows platforms (ZIP)
+          </li>
+          <li>
+            <a href="http://prdownloads.sourceforge.net/dom4j/dom4j-$VERSION$.tar.gz">dom4j-$VERSION$.tar.gz</a> for all other platforms (Tarball)
+          </li>
+      </ul>
     </section>
 
     <section title="Download a daily build">
@@ -18,15 +25,12 @@
         For FTP access use <url>ftp://dom4j.sourceforge.net/pub/dom4j</url>.
         -->
 
-        <li>The DOM4J JAR<br/>
-            <a href="../../dist/dom4j-daily.jar">dom4j-daily.jar</a>
-            <br/>&#xA0;</li>
-        <li>The DOM4J ZIP<br/>
-            <a href="../../dist/dom4j-daily.zip">dom4j-daily.zip</a>
-            <br/>&#xA0;</li>
-        <li>The DOM4J tarball<br/>
-            <a href="../../dist/dom4j-daily.tar.gz">dom4j-daily.tar.gz</a>
-            <br/>&#xA0;</li>
+        <li><a href="../../dist/dom4j-daily.zip">dom4j-daily.zip</a> 
+            for Windows platforms (ZIP)
+        </li>
+        <li><a href="../../dist/dom4j-daily.tar.gz">dom4j-daily.tar.gz</a>
+            for all other platforms (Tarball)
+        </li>
       </ul>
     </section>
 
