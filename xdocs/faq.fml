@@ -524,6 +524,24 @@ SAXReader reader = new SAXReader(true);
 Document document = reader.read( "foo.xml" );
 </pre>
 
+		<p>
+		Note: if you want to validate against an XML Schema with xerces, 
+		you need to enable the XML Schema validation with the "setFeature" method.
+		For more information about
+		<a href="http://xml.apache.org/xerces2-j/features.html">xerces features</a>
+		visit the xerces website.
+		Below is a code sample to enable XML Schema validation.
+		</p>
+
+<pre>
+// turn validation on
+SAXReader reader = new SAXReader(true);
+// request XML Schema validation
+reader.setFeature("http://apache.org/xml/features/validation/schema", true);
+Document document = reader.read( "foo.xml" );
+</pre>
+
+
       <p>An alternative approach is to use Sun's MSV library for validation, 
       which allows you to use DTD, XML Schema, Relax NG, Relax or TREX as the 
       schema languages. 
@@ -539,7 +557,7 @@ Document document = reader.read( "foo.xml" );
         <a href="http://iso-relax.sourceforge.net/JARV/">JARV</a> API 
         which allows alternative validation mechanisms to
         be plugged into your code.
-      </p>
+      </p>		
     </answer>
   </faq>
 
