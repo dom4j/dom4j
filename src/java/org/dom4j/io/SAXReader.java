@@ -543,6 +543,19 @@ public class SAXReader {
             contentHandler
         );
         
+        // register the DeclHandler 
+        try {
+            reader.setProperty(
+                "http://xml.org/sax/properties/declaration-handler",
+                contentHandler);
+        } 
+        catch (SAXNotSupportedException e) {
+            // ignore
+        } 
+        catch (SAXNotRecognizedException e) {
+            // ignore
+        }
+
         try {
             // configure namespace support
             reader.setFeature(

@@ -743,11 +743,13 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     protected void writeDocType(DocumentType docType) throws IOException {
         if (docType != null) {
-            writeDocType( docType.getElementName(), docType.getPublicID(), docType.getSystemID() );
+            docType.write( writer );
+            //writeDocType( docType.getElementName(), docType.getPublicID(), docType.getSystemID() );
             writePrintln();
         }
     }
 
+    
     protected void writeNamespace(Namespace namespace) throws IOException {
         if ( namespace != null ) {
             String prefix = namespace.getPrefix();

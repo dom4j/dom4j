@@ -9,6 +9,8 @@
 
 package org.dom4j.tree;
 
+import java.util.List;
+
 import org.dom4j.DocumentType;
 
 /** <p><code>DefaultDocumentType</code> is the DOM4J default implementation
@@ -27,6 +29,9 @@ public class DefaultDocumentType extends AbstractDocumentType {
     
     /** Holds value of property systemID. */    
     private String systemID;
+    
+    /** The DTD declarations */
+    private List declarations;
     
     public DefaultDocumentType() { 
     }
@@ -86,6 +91,16 @@ public class DefaultDocumentType extends AbstractDocumentType {
       */
     public void setSystemID(String systemID) {
         this.systemID = systemID;
+    }
+    
+    /** Returns a list of declaration objects, defined in the {@link org.dom4j.dtd} package */    
+    public List getDeclarations() {
+        return declarations;
+    }
+    
+    /** Sets the list of declaration objects, defined in the {@link org.dom4j.dtd} package */    
+    public void setDeclarations(List declarations) {
+        this.declarations = declarations;
     }
 }
 

@@ -22,6 +22,7 @@ import org.dom4j.Branch;
 import org.dom4j.CDATA;
 import org.dom4j.Comment;
 import org.dom4j.Document;
+import org.dom4j.DocumentType;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.ElementHandler;
@@ -31,15 +32,22 @@ import org.dom4j.QName;
 import org.dom4j.ProcessingInstruction;
 import org.dom4j.DocumentException;
 
+import org.dom4j.dtd.AttributeDecl;
+import org.dom4j.dtd.ElementDecl;
+import org.dom4j.dtd.ExternalEntityDecl;
+import org.dom4j.dtd.InternalEntityDecl;
+
 import org.dom4j.tree.AbstractElement;
 import org.dom4j.tree.NamespaceStack;
 
 import org.xml.sax.Attributes;
+import org.xml.sax.DTDHandler;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.ext.LexicalHandler;
+import org.xml.sax.ext.DeclHandler;
 import org.xml.sax.helpers.DefaultHandler;
 
 /** <p><code>SAXHandler</code> builds a DOM4J tree via SAX events.</p>
@@ -47,7 +55,7 @@ import org.xml.sax.helpers.DefaultHandler;
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class SAXContentHandler extends DefaultHandler implements LexicalHandler {
+public class SAXContentHandler extends DefaultHandler implements LexicalHandler, DeclHandler, DTDHandler {
 
     /** Should standard entities be passed through? */
     private static final boolean SHOW_STANDARD_ENTITIES = true;
@@ -81,6 +89,9 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
 
     /** declared namespaces that are not yet available for use */
     private List declaredNamespaceList = new ArrayList();
+
+    /** DTD declarations */
+    private List dtdDeclarations;
 
     /** A <code>Set</code> of the entity names we should ignore */
     private Set ignoreEntityNames;
@@ -265,6 +276,13 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
 
     public void endDTD() throws SAXException {
         insideDTDSection = false;
+        if ( document != null && dtdDeclarations != null) {
+            DocumentType docType = document.getDocType();
+            if ( docType != null ) {
+                docType.setDeclarations( dtdDeclarations );
+            }
+        }
+        dtdDeclarations = null;
     }
 
     public void startEntity(String name) throws SAXException {
@@ -301,6 +319,151 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
         }
     }
 
+    // DeclHandler interface
+    //-------------------------------------------------------------------------
+    
+    /**
+     * Report an element type declaration.
+     *
+     * <p>The content model will consist of the string "EMPTY", the
+     * string "ANY", or a parenthesised group, optionally followed
+     * by an occurrence indicator.  The model will be normalized so
+     * that all parameter entities are fully resolved and all whitespace 
+     * is removed,and will include the enclosing parentheses.  Other
+     * normalization (such as removing redundant parentheses or 
+     * simplifying occurrence indicators) is at the discretion of the
+     * parser.</p>
+     *
+     * @param name The element type name.
+     * @param model The content model as a normalized string.
+     * @exception SAXException The application may raise an exception.
+     */
+    public void elementDecl(String name, String model) throws SAXException {
+        addDTDDeclaration( new ElementDecl( name, model ) );
+    }
+
+    /**
+     * Report an attribute type declaration.
+     *
+     * <p>Only the effective (first) declaration for an attribute will
+     * be reported.  The type will be one of the strings "CDATA",
+     * "ID", "IDREF", "IDREFS", "NMTOKEN", "NMTOKENS", "ENTITY",
+     * "ENTITIES", a parenthesized token group with 
+     * the separator "|" and all whitespace removed, or the word
+     * "NOTATION" followed by a space followed by a parenthesized
+     * token group with all whitespace removed.</p>
+     *
+     * <p>Any parameter entities in the attribute value will be
+     * expanded, but general entities will not.</p>
+     *
+     * @param eName The name of the associated element.
+     * @param aName The name of the attribute.
+     * @param type A string representing the attribute type.
+     * @param valueDefault A string representing the attribute default
+     *       ("#IMPLIED", "#REQUIRED", or "#FIXED") or null if
+     *       none of these applies.
+     * @param value A string representing the attribute's default value,
+     *       or null if there is none.
+     * @exception SAXException The application may raise an exception.
+     */
+    public void attributeDecl(String eName,String aName,String type,String valueDefault,String value) throws SAXException {
+        addDTDDeclaration( new AttributeDecl( eName, aName, type, valueDefault, value) );
+    }
+    
+    /**
+     * Report an internal entity declaration.
+     *
+     * <p>Only the effective (first) declaration for each entity
+     * will be reported.  All parameter entities in the value
+     * will be expanded, but general entities will not.</p>
+     *
+     * @param name The name of the entity.  If it is a parameter
+     *       entity, the name will begin with '%'.
+     * @param value The replacement text of the entity.
+     * @exception SAXException The application may raise an exception.
+     * @see #externalEntityDecl
+     * @see org.xml.sax.DTDHandler#unparsedEntityDecl
+     */
+    public void internalEntityDecl(String name, String value) throws SAXException {
+        addDTDDeclaration( new InternalEntityDecl( name, value ) );
+    }
+    
+    /**
+     * Report a parsed external entity declaration.
+     *
+     * <p>Only the effective (first) declaration for each entity
+     * will be reported.</p>
+     *
+     * @param name The name of the entity.  If it is a parameter
+     *       entity, the name will begin with '%'.
+     * @param publicId The declared public identifier of the entity, or
+     *       null if none was declared.
+     * @param systemId The declared system identifier of the entity.
+     * @exception SAXException The application may raise an exception.
+     * @see #internalEntityDecl
+     * @see org.xml.sax.DTDHandler#unparsedEntityDecl
+     */
+    public void externalEntityDecl(String name, String publicID, String systemID) throws SAXException {
+        addDTDDeclaration( new ExternalEntityDecl( name, publicID, systemID ) );
+    }
+
+    
+    // DTDHandler interface
+    //-------------------------------------------------------------------------
+    
+    /**
+     * Receive notification of a notation declaration event.
+     *
+     * <p>It is up to the application to record the notation for later
+     * reference, if necessary.</p>
+     *
+     * <p>At least one of publicId and systemId must be non-null.
+     * If a system identifier is present, and it is a URL, the SAX
+     * parser must resolve it fully before passing it to the
+     * application through this event.</p>
+     *
+     * <p>There is no guarantee that the notation declaration will be
+     * reported before any unparsed entities that use it.</p>
+     *
+     * @param name The notation name.
+     * @param publicId The notation's public identifier, or null if
+     *       none was given.
+     * @param systemId The notation's system identifier, or null if
+     *       none was given.
+     * @exception org.xml.sax.SAXException Any SAX exception, possibly
+     *           wrapping another exception.
+     * @see #unparsedEntityDecl
+     * @see org.xml.sax.AttributeList
+     */
+    public void notationDecl(String name,String publicId,String systemId) throws SAXException {
+        // #### not supported yet!
+    }
+    
+    /**
+     * Receive notification of an unparsed entity declaration event.
+     *
+     * <p>Note that the notation name corresponds to a notation
+     * reported by the {@link #notationDecl notationDecl} event.  
+     * It is up to the application to record the entity for later 
+     * reference, if necessary.</p>
+     *
+     * <p>If the system identifier is a URL, the parser must resolve it
+     * fully before passing it to the application.</p>
+     *
+     * @exception org.xml.sax.SAXException Any SAX exception, possibly
+     *           wrapping another exception.
+     * @param name The unparsed entity's name.
+     * @param publicId The entity's public identifier, or null if none
+     *       was given.
+     * @param systemId The entity's system identifier.
+     * @param notation name The name of the associated notation.
+     * @see #notationDecl
+     * @see org.xml.sax.AttributeList
+     */
+    public void unparsedEntityDecl(String name,String publicId,String systemId,String notationName) throws SAXException {
+        // #### not supported yet!
+    }
+    
     
     // Properties
     //-------------------------------------------------------------------------
@@ -419,6 +582,13 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     }
 
 
+    /** Adds a DTD declaration to the list of declarations */
+    protected void addDTDDeclaration(Object declaration) {
+        if ( dtdDeclarations == null ) {
+            dtdDeclarations = new ArrayList();
+        }
+        dtdDeclarations.add( declaration );
+    }
     
     protected ElementStack createElementStack() {
         return new ElementStack();

@@ -5,6 +5,12 @@
     
     <section title="Change History">
       <section title="Changes in CVS since last release">
+        <section title="New features">
+        <p>Added a new package, org.dom4j.dtd which contains some DTD declaration classes which are added to the DocumentType interfaces
+        List of declarations. This is useful for finding out details of the attribute or element delcarations inside in internal DTD subset of
+        a document. It also means that XML documents which use internal DTD subsets can now be properly round tripped.
+        </p>
+        </section>
 
         <section title="Patches">
         <p>Fixed problem found by David Hooker with Ant build file for the 

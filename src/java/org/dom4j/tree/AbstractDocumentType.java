@@ -11,8 +11,9 @@ package org.dom4j.tree;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
@@ -106,6 +107,16 @@ public abstract class AbstractDocumentType extends AbstractNode implements Docum
             writer.write( " \"" );
             writer.write( systemID );
             writer.write( "\"" );
+        }
+        List list = getDeclarations();
+        if ( list != null && list.size() > 0 ) {
+            writer.write( " [" );
+            for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
+                Object decl = iter.next();
+                writer.write( "\n  " );
+                writer.write( decl.toString() );
+            }
+            writer.write( "\n]" );
         }
         writer.write(">");
     }
