@@ -276,6 +276,14 @@ public class TestRoundTrip extends AbstractTestCase {
     protected void assertNodesEqualContent( Branch b1, Branch b2 ) {
         int c1 = b1.nodeCount();
         int c2 = b2.nodeCount();
+        
+        if ( c1 != c2 ) {
+            log( "Content of: " + b1 );
+            log( "is: " + b1.content() );
+            log( "Content of: " + b2 );
+            log( "is: " + b2.content() );
+        }
+        
         assertEquals( 
             "Branches have same number of children (" + c1 + ", " + c2 
                 + " for: " + b1 + " and " + b2,

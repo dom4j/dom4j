@@ -92,6 +92,9 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     
     private InputSource inputSource;
     
+    /** The current branch we are on */
+    private Branch currentBranch;
+    
     
     public SAXContentHandler() {
         this( DocumentFactory.getInstance() );
@@ -128,7 +131,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     //-------------------------------------------------------------------------
     
     public void processingInstruction(String target, String data) throws SAXException {
-        Branch branch = peekBranch();
+        Branch branch = currentBranch;
         if ( branch instanceof Element ) {
             ((Element) branch).addProcessingInstruction(target, data);
         }
@@ -147,7 +150,8 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     }
 
     public void startDocument() throws SAXException {
-        document = null;
+        document = createDocument();
+        currentBranch = document;
         
         if ( elementStack == null ) {
             elementStack = createElementStack();
@@ -167,6 +171,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     public void endDocument() throws SAXException {
         namespaceStack.clear();
         elementStack.clear();
+        currentBranch = null;        
     }
     
     public void startElement(String namespaceURI, String localName, String qualifiedName, Attributes attributes) throws SAXException {
@@ -174,8 +179,8 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
             namespaceURI, localName, qualifiedName 
         );
         
-        Element element = peekBranch().addElement(qName);
-
+        Element element = currentBranch.addElement(qName);
+        
         // add all declared namespaces
         addDeclaredNamespaces(element);
 
@@ -183,6 +188,8 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
         addAttributes( element, attributes );
         
         elementStack.pushElement(element);
+        currentBranch = element;
+
         
         if ( elementHandler != null ) {
             elementHandler.onStart(elementStack);   
@@ -190,26 +197,31 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     }
 
     public void endElement(String namespaceURI, String localName, String qName) {
-        if ( (elementStack.peekElement() != null) && elementHandler != null ) {
-        //    elementHandler.handle( element );
+        if ( elementHandler != null && currentBranch instanceof Element ) {
             elementHandler.onEnd(elementStack);
         }
-        Element element = elementStack.popElement();
+        elementStack.popElement();
+        currentBranch = elementStack.peekElement();
+        if ( currentBranch == null ) {
+            currentBranch = document;
+        }
     }
 
     public void characters(char[] ch, int start, int end) throws SAXException {
         String text = new String(ch, start, end);
-        Element element = elementStack.peekElement();
-        
-        if (entity != null) {
-            element.addEntity(entity, text);
-            entity = null;
-        }
-        else if (insideCDATASection) {
-            element.addCDATA(text);
-        }
-        else {
-            element.addText(text);
+        Branch branch = currentBranch;
+        if ( branch instanceof Element ) {
+            Element element = (Element) branch;
+            if (entity != null) {
+                element.addEntity(entity, text);
+                entity = null;
+            }
+            else if (insideCDATASection) {
+                element.addCDATA(text);
+            }
+            else {
+                element.addText(text);
+            }
         }
     }
 
@@ -229,7 +241,6 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     //-------------------------------------------------------------------------
     
     public void startDTD(String name, String publicId, String systemId) throws SAXException {
-        Document document = getDocument();
         if (document != null) {
             document.addDocType(name, publicId, systemId);
         }
@@ -245,7 +256,6 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
         entity = null;
         if (! insideDTDSection ) {
             if ( SHOW_STANDARD_ENTITIES || ! getIgnoreEntityNames().contains(name)) {
-                Element element = elementStack.peekElement();
                 entity = name;
             }
         }
@@ -266,7 +276,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     public void comment(char[] ch, int start, int end) throws SAXException {
         String text = new String(ch, start, end);
         if (!insideDTDSection && text.length() > 0) {
-            Branch branch = peekBranch();
+            Branch branch = currentBranch;
             if ( branch instanceof Element ) {
                 ((Element) branch).addComment(text);
             }
@@ -307,6 +317,13 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     // Implementation methods
     //-------------------------------------------------------------------------
 
+    protected final Branch getCurrentBranch() {
+        if ( currentBranch == null ) {
+            currentBranch = getDocument();
+        }
+        return currentBranch;
+    }
+    
     /** @return the current document 
       */
     protected Document createDocument() {
@@ -389,15 +406,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     protected ElementStack createElementStack() {
         return new ElementStack();
     }
-    
-    protected Branch peekBranch() {
-        Branch branch = elementStack.peekElement();
-        if ( branch == null ) {
-            branch = getDocument();
-        }
-        return branch;
-    }
-    
+       
 }
 
 

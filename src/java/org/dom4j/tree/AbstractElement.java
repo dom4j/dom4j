@@ -409,6 +409,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         // now lets add all attribute values
         int size = attributes.getLength();
         if ( size > 0 ) {
+            DocumentFactory factory = getDocumentFactory();
             if ( size == 1 ) {
                 // allow lazy construction of the List of Attributes
                 String attributeURI = attributes.getURI(0);
@@ -419,7 +420,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
                 QName attributeQName = namespaceStack.getQName( 
                     attributeURI, attributeLocalName, attributeQualifiedName 
                 );
-                addAttribute(attributeQName, attributeValue);
+                add(factory.createAttribute(this, attributeQName, attributeValue));
             }
             else {
                 List list = attributeList(size);
@@ -435,7 +436,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
                     QName attributeQName = namespaceStack.getQName( 
                         attributeURI, attributeLocalName, attributeQualifiedName 
                     );
-                    Attribute attribute = getDocumentFactory().createAttribute(
+                    Attribute attribute = factory.createAttribute(
                         this, attributeQName, attributeValue
                     );
                     list.add(attribute);
