@@ -401,6 +401,9 @@ public class DOMNodeHelper {
     }
 
     public static org.w3c.dom.Node asDOMNode(Node node) {
+        if ( node == null ) {
+            return null;
+        }
         if ( node instanceof org.w3c.dom.Node ) {
             return (org.w3c.dom.Node) node;
         }
@@ -413,6 +416,9 @@ public class DOMNodeHelper {
     }
     
     public static org.w3c.dom.Document asDOMDocument(Document document) {
+        if ( document == null ) {
+            return null;
+        }
         if ( document instanceof org.w3c.dom.Document ) {
             return (org.w3c.dom.Document) document;
         }
@@ -424,6 +430,9 @@ public class DOMNodeHelper {
     }
     
     public static org.w3c.dom.DocumentType asDOMDocumentType(DocumentType documentType) {
+        if ( documentType == null ) {
+            return null;
+        }
         if ( documentType instanceof org.w3c.dom.DocumentType ) {
             return (org.w3c.dom.DocumentType) documentType;
         }
@@ -435,6 +444,9 @@ public class DOMNodeHelper {
     }
 
     public static org.w3c.dom.Text asDOMText(CharacterData text) {
+        if ( text == null ) {
+            return null;
+        }
         if ( text instanceof org.w3c.dom.Text ) {
             return (org.w3c.dom.Text) text;
         }
@@ -446,6 +458,9 @@ public class DOMNodeHelper {
     }
 
     public static org.w3c.dom.Element asDOMElement(Node element) {
+        if ( element == null ) {
+            return null;
+        }
         if ( element instanceof org.w3c.dom.Element ) {
             return (org.w3c.dom.Element) element;
         }
@@ -457,6 +472,9 @@ public class DOMNodeHelper {
     }
 
     public static org.w3c.dom.Attr asDOMAttr(Node attribute) {
+        if ( attribute == null ) {
+            return null;
+        }
         if ( attribute instanceof org.w3c.dom.Attr ) {
             return (org.w3c.dom.Attr) attribute;
         }
