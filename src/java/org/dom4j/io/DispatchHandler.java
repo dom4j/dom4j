@@ -91,6 +91,19 @@ class DispatchHandler implements ElementHandler
         defaultHandler = handler;
     }
     
+    /**
+     * Used to remove all the Element Handlers and return things back to the way
+     * they were when object was created.
+     */
+    public void resetHandlers() {
+        atRoot          = true;
+        path            = "/";
+        pathStack.clear();
+        handlerStack.clear();
+        handlers.clear();
+	defaultHandler=null;
+    }
+
     /** @return the current path for the parse */
     public String getPath() { return path; }
     

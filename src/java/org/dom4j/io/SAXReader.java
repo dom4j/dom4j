@@ -571,6 +571,14 @@ public class SAXReader {
         getDispatchHandler().setDefaultHandler(handler);   
     }
     
+    /**
+    * This method clears out all the existing handlers and default handler
+    * setting things back as if no handler existed.  Useful when reusing an
+    * object instance.
+    */
+    public void resetHandlers() {
+        getDispatchHandler().resetHandlers();   
+    }
     
     /** Returns the SAX filter being used to filter SAX events.
       *
