@@ -22,7 +22,7 @@
     </section>
 
     <section title="What do I need to add to my CLASSPATH?">
-      <p>The dom4j-all.jar contains everything you need to use <i>dom4j</i> so that is 
+      <p>The dom4j-full.jar contains everything you need to use <i>dom4j</i> so that is 
         the only JAR you'll need to add to your CLASSPATH.
         No other JAR is necessary! <i>dom4j</i> comes complete with a default 
         SAX parser so its ready to run straight out of the box.</p>
