@@ -30,7 +30,7 @@ import java.util.Map;
 
 /** <p>Main run-time interface into the XPath functionality</p>
  * 
- *  <p>The XPath object embodies a textual XPath as described by
+ *  <p>The DefaultXPath object embodies a textual XPath as described by
  *  the W3C XPath specification.  It can be applied against a
  *  context node (or nodeset) along with context-helpers to
  *  produce the result of walking the XPath.</p>
@@ -41,7 +41,7 @@ import java.util.Map;
  *  <code>
  *
  *      // Create a new XPath
- *      XPath xpath = new XPath("a/b/c/../d/.[@name="foo"]);
+ *      DefaultXPath xpath = new DefaultXPath("a/b/c/../d/.[@name="foo"]);
  *
  *      // Apply the XPath to your root context.
  *      Object results = xpath.applyTo(myContext);
