@@ -29,7 +29,6 @@ import org.jaxen.SimpleNamespaceContext;
 import org.jaxen.VariableContext;
 import org.jaxen.XPath;
 import org.jaxen.dom4j.Dom4jXPath;
-import org.saxpath.SAXPathException;
 
 
 /** <p>Default implementation of {@link org.dom4j.XPath} which uses the
@@ -301,7 +300,7 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
         try {
             return new Dom4jXPath( text );
         }
-        catch (SAXPathException e) {
+        catch (JaxenException e) {
             throw new InvalidXPathException( text, e.getMessage() );
         }
         catch (RuntimeException e) {
