@@ -53,6 +53,11 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     }
 
     
+    public List getContent() {
+        List backingList = getContentList();
+        return new ContentListFacade(this, backingList);
+    }
+    
     public String getText() {
         List content = getContentList();
         if (content != null) {

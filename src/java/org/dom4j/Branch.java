@@ -41,10 +41,11 @@ public interface Branch extends Node {
       */    
     public int getNodeCount();
     
-    /** <p>Returns the content nodes of this branch as a <code>List</code>. 
+    /** <p>Returns the content nodes of this branch as a backed {@link List}
+      * so that the content of this branch may be modified directly using
+      * the {@link List} interface.
       * The <code>List</code> is backed by the <code>Branch</code> so that
-      * changes to the list are reflected in the branch though the reverse 
-      * is not true.</p>
+      * changes to the list are reflected in the branch and vice versa.</p>
       *
       * @return the nodes that this branch contains as a <code>List</code>
       */    

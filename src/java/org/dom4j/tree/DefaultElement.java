@@ -572,13 +572,11 @@ public class DefaultElement extends AbstractElement {
         }
     }
     
-    public List getContent() {
-        List backingList = getContentList();
-        return new BackedList(this, backingList, backingList);
-    }
-    
     public void setContent(List contents) {
         this.contents = contents;
+        if ( contents instanceof ContentListFacade ) {
+            this.contents = ((ContentListFacade) contents).getBackingList();
+        }
     }
     
     public void clearContent() {
