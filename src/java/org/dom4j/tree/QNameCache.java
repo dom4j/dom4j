@@ -9,7 +9,10 @@
 
 package org.dom4j.tree;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.dom4j.DocumentFactory;
@@ -45,6 +48,18 @@ public class QNameCache {
         this.documentFactory = documentFactory;
     }
 
+    /** Returns a list of all the QName instances currently used
+     */
+    public List getQNames() {
+        List answer = new ArrayList();
+        answer.addAll( noNamespaceCache.values() );
+        for ( Iterator iter = namespaceCache.values().iterator(); iter.hasNext(); ) {
+            Map map = (Map) iter.next();
+            answer.addAll( map.values() );
+        }
+        return answer;
+    }
+    
     /** @return the QName for the given name and no namepsace 
       */
     public QName get(String name) {

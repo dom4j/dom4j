@@ -10,6 +10,7 @@
 package org.dom4j;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 import org.dom4j.rule.Pattern;
@@ -226,6 +227,12 @@ public class DocumentFactory implements Serializable {
         return new XPathPattern( xpathPattern );
     }
     
+    
+    /** Returns a list of all the QName instances currently used by this document factory
+     */
+    public List getQNames() {
+        return cache.getQNames();
+    }
     
     // Implementation methods
     

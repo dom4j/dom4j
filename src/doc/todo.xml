@@ -92,6 +92,10 @@ List nodes = xpath.selectNodes( document );
             turns SAX ErrorHandler callbacks into XML that can then be output in a JAXM or SOAP message
             or styled via XSLT or whatever.
           </p>
+          <p>
+            Added helper method on <code>org.dom4j.DocumentFactory</code> called <code>getQNames</code>
+            that returns a List of all the QNames that were used to parse the documents.
+          </p>
         </section>
         <section title="0.9 release">
           <section title="Full support for the Jaxen XPath engine">
