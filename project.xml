@@ -72,15 +72,15 @@
   
     <mailingList>
       <name>dom4j user list</name>
-      <subscribe>dom4j-user-subscribe@lists.sourceforge.net</subscribe>
-      <unsubscribe>dom4j-user-unsubscribe@lists.sourceforge.net</unsubscribe>
+      <subscribe>http://lists.sourceforge.net/lists/listinfo/dom4j-user</subscribe>
+      <unsubscribe>http://lists.sourceforge.net/lists/listinfo/dom4j-user</unsubscribe>
       <archive>http://www.mail-archive.com/dom4j-user%40lists.sourceforge.net/</archive>
     </mailingList>
 
     <mailingList>
       <name>dom4j developer list</name>
-      <subscribe>dom4j-dev-subscribe@lists.sourceforge.net</subscribe>
-      <unsubscribe>dom4j-dev-unsubscribe@lists.sourceforge.net</unsubscribe>
+      <subscribe>http://lists.sourceforge.net/lists/listinfo/dom4j-dev</subscribe>
+      <unsubscribe>http://lists.sourceforge.net/lists/listinfo/dom4j-dev</unsubscribe>
       <archive>http://www.mail-archive.com/dom4j-dev%40lists.sourceforge.net/</archive>
     </mailingList>
   
