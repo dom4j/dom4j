@@ -28,14 +28,12 @@ public class XPathDemo extends SAXDemo {
     
     public void run(String[] args) throws Exception {    
         if ( args.length < 2 ) {
-            printUsage( "<XML document URL> <XPath expression> [<SAX XMLReader Class Name>]" );
+            printUsage( "<XML document URL> <XPath expression>" );
             return;
         }
 
         String xmlFile = args[0];
         xpath = args[1];
-        xmlReaderClassName = (args.length > 2) 
-            ? args[2] : null;
         
         parse( xmlFile );
     }

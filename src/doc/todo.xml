@@ -79,6 +79,9 @@ public class HeightAttribute extends AbstractAttribute {
         <li>Added new JUnit unit test cases together with an Ant build target 
             of "test" which executes all of the unit tests.
         </li>
+        <li>DOM4J now comes with a default SAX parser (derived from Aelfred) which is used if
+          the <code>org.xml.sax.driver</code> system property is not specified.
+        </li>
       </ul>
     </section>
 

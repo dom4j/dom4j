@@ -394,12 +394,26 @@
   </target>
 
   <target name="test-performance" depends="demo-compile">
-    <java classname="PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory xml.aelfred2.SAXDriver 10"/>
-    <java classname="PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory org.apache.xerces.parsers.SAXParser 10"/>
-    <java classname="PerformanceTest2" args="${build.dir}/xml/periodic_table.xb org.dom4j.DocumentFactory 10"/>
-    <java classname="PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory xml.aelfred2.SAXDriver 10"/>
-    <java classname="PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory org.apache.xerces.parsers.SAXParser 10"/>
-    <java classname="PerformanceTest2" args="${build.dir}/xml/much_ado.xb org.dom4j.DocumentFactory 10"/>
+    <java classname="PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10"/>
+
+    <java classname="PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10">
+      <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/> 
+    </java>
+
+    <java classname="PerformanceTest" args="xml/periodic_table.xml org.dom4j.DocumentFactory 10">
+      <sysproperty key="org.xml.sax.driver" value="xml.aelfred2.SAXDriver"/> 
+    </java>
+
+
+    <java classname="PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory 10"/>
+
+    <java classname="PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory 10">
+      <sysproperty key="org.xml.sax.driver" value="org.apache.xerces.parsers.SAXParser"/> 
+    </java>
+
+    <java classname="PerformanceTest" args="xml/much_ado.xml org.dom4j.DocumentFactory 10">
+      <sysproperty key="org.xml.sax.driver" value="xml.aelfred2.SAXDriver"/> 
+    </java>
   </target>
 
 

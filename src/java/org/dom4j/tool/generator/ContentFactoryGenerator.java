@@ -149,12 +149,11 @@ public class ContentFactoryGenerator extends AbstractGenerator {
         this.jclass = jclass;
         
         jclass.addImportStatement( "org.dom4j.Attribute" );
+        jclass.addImportStatement( "org.dom4j.ContentFactory" );
         jclass.addImportStatement( "org.dom4j.Element" );
         jclass.addImportStatement( "org.dom4j.Namespace" );
-        jclass.addImportStatement( "org.dom4j.tree.ContentFactory" );
-        jclass.addImportStatement( "org.dom4j.tree.DefaultContentFactory" );
         
-        jclass.setExtendsClass( "DefaultContentFactory" );
+        jclass.setExtendsClass( "ContentFactory" );
         
         addCreateElementMethods();        
         addCreateAttributeMethods();

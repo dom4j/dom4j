@@ -30,7 +30,7 @@ public class Decompile extends SAXDemo {
     
     public void run(String[] args) throws Exception {    
         if ( args.length < 1 ) {
-            printUsage( "<Binary XML document URL> [<Output XML text file>] [<SAX XMLReader Class Name>]" );
+            printUsage( "<Binary XML document URL> [<Output XML text file>]" );
             return;
         }
 
@@ -38,9 +38,6 @@ public class Decompile extends SAXDemo {
         outputFileName = (args.length > 1) 
             ? args[1] : null;
         
-        xmlReaderClassName = (args.length > 2) 
-            ? args[2] : null;
-
         println( "Decompiling binary XML file: " + xmlFile + 
             ((outputFileName != null ) 
                 ? " into XML text file: " + outputFileName

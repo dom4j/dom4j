@@ -30,7 +30,7 @@ public class AbstractReaderDemo extends SAXDemo {
     
     public void run(String[] args) throws Exception {    
         if ( args.length < 1 ) {
-            printUsage( "<XML document URL> [<Document Factory Class Name>] [<SAX XMLReader Class Name>]" );
+            printUsage( "<XML document URL> [<Document Factory Class Name>]" );
             return;
         }
 
@@ -39,9 +39,6 @@ public class AbstractReaderDemo extends SAXDemo {
         documentFactoryClassName = (args.length > 1) 
             ? args[1] : null;
 
-        xmlReaderClassName = (args.length > 2) 
-            ? args[2] : null;
-        
         parse( xmlFile );
     }
     
@@ -52,9 +49,9 @@ public class AbstractReaderDemo extends SAXDemo {
     }
     
     protected TreeReader createTreeReader() throws Exception {
-        println( "Using SAX parser: " + xmlReaderClassName );
+        println( "Using SAX parser: " + System.getProperty( "org.xml.sax.driver", "default" ) );
         
-        TreeReader answer = new SAXReader( xmlReaderClassName );        
+        TreeReader answer = new SAXReader();        
         
         // allow the DocumentFactory used by the TreeReader to be configured
         DocumentFactory factory = createDocumentFactory();

@@ -14,22 +14,16 @@ import org.dom4j.io.XMLWriter;
   */
 public class SAXDemo extends AbstractDemo {
     
-    protected String xmlReaderClassName;
-    
     public SAXDemo() {
     }
     
     public void run(String[] args) throws Exception {    
         if ( args.length < 1) {
-            printUsage( "<XML document URL> [<SAX XMLReader Class Name>]" );
+            printUsage( "<XML document URL>" );
             return;
         }
 
-        String xmlFile = args[0];
-        xmlReaderClassName = (args.length > 1) 
-            ? args[1] : null;
-
-        parse( xmlFile );
+        parse( args[0] );
     }
     
     protected void parse( String xmlFile ) throws Exception {
@@ -53,7 +47,7 @@ public class SAXDemo extends AbstractDemo {
     }
     
     protected void parse( URL url ) throws Exception {
-        SAXReader reader = new SAXReader( xmlReaderClassName );
+        SAXReader reader = new SAXReader();
         Document document = reader.read(url);
         process(document);
     }

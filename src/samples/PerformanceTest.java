@@ -41,7 +41,7 @@ public class PerformanceTest extends SAXDemo {
     
     public void run(String[] args) throws Exception {    
         if ( args.length < 1 ) {
-            printUsage( "<XML document URL> [<Document Factory Class Name>] [<SAX XMLReader Class Name>] [<loopCount>]" );
+            printUsage( "<XML document URL> [<Document Factory Class Name>] [<loopCount>]" );
             return;
         }
 
@@ -50,12 +50,9 @@ public class PerformanceTest extends SAXDemo {
         documentFactoryClassName = (args.length > 1) 
             ? args[1] : null;
             
-        xmlReaderClassName = (args.length > 2) 
-            ? args[2] : null;
-        
         loopCount = DEFAULT_LOOP_COUNT;
-        if (args.length > 3) {
-            loopCount = Integer.parseInt(args[3]);
+        if (args.length > 2) {
+            loopCount = Integer.parseInt(args[2]);
         }        
 
         parse( xmlFile );
@@ -71,6 +68,7 @@ public class PerformanceTest extends SAXDemo {
                     
         println( "Parsing url:      " + url );
         println( "Looping:          " + loopCount + " time(s)" );        
+        println( "Using SAX parser: " + System.getProperty( "org.xml.sax.driver", "default" ) );
         println( "DocumentFactory:  " + reader.getDocumentFactory() );
         
         if ( loopCount <= 0 ) {
@@ -147,13 +145,8 @@ public class PerformanceTest extends SAXDemo {
         return end - start;
     }
 
-    protected void printParser() {
-        println( "Using SAX parser: " + xmlReaderClassName );
-        println( "DocumentFactory:  " + documentFactoryClassName );
-    }
-    
     protected TreeReader createTreeReader() throws Exception {
-        TreeReader answer = new SAXReader( xmlReaderClassName );        
+        TreeReader answer = new SAXReader();        
         if ( documentFactoryClassName != null ) {
             try {
                 Class theClass = Class.forName( documentFactoryClassName );
