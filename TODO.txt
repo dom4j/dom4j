@@ -10,6 +10,10 @@ documentation. Any contributions will be greatly received.
 Development Tasks
 =================
 
+* As suggested by Robert Lebowitz, consider the pretty printing
+  and OutputFormat to allow very large text nodes to wrap their
+  text at (say) 80 characters per line.
+
 * Implement a Saxon adapter so that the SAxon XSLT engine can work
   natively on top of dom4j.
 
@@ -17,26 +21,6 @@ Development Tasks
   errors may occur on for better debugging.
 
 * implement a proper lazy tree parsing mechanism using the XPP pull parser.
-
-* support for setExpandEntities(true) to expand entities, so that
-  text using "&amp;" could just be treated as a String. So
-    <foo>A &amp; B</foo>
-  could be treated as a single Element with a Text node containing a String
-  "A & B"
-
-* merging adjacent text nodes; use an internal StringBuffer to add multiple 
-  characters() SAX events together.
-
-* whilespace removal option.
-  Without access to a schema or DTD its hard to do proper whitespace 
-  removal thanks to mixed content, however a simple option for 
-  data-related XML applications, to ignoring all whieespace-only nodes 
-  such that
-
-  <customer>
-    <name>James</name>
-  </customer>
-  would only contain 1 child <name> element and not 2 whilespace nodes.
 
 * JDBC ResultSet implementation of an Element so that XPath and XSLT can be
 easily done on a JDBC result set.
@@ -88,3 +72,33 @@ used for the cookbook (in dom4j/src/doc/cookbook/style/html).
 
 * document the org.dom4j.rule package which allows declarative rule processing
   of XML documents using Java code.
+
+
+
+
+Test completed
+==============
+
+These features have been developed but require more testing to
+determine that they are complete...
+
+* support for setExpandEntities(true) to expand entities, so that
+  text using "&amp;" could just be treated as a String. So
+    <foo>A &amp; B</foo>
+  could be treated as a single Element with a Text node containing a String
+  "A & B"
+
+* merging adjacent text nodes; use an internal StringBuffer to add multiple 
+  characters() SAX events together.
+
+* whilespace removal option.
+  Without access to a schema or DTD its hard to do proper whitespace 
+  removal thanks to mixed content, however a simple option for 
+  data-related XML applications, to ignoring all whieespace-only nodes 
+  such that
+
+  <customer>
+    <name>James</name>
+  </customer>
+  would only contain 1 child <name> element and not 2 whilespace nodes.
+
