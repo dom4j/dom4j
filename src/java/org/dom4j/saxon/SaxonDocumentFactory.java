@@ -43,7 +43,7 @@ public class SaxonDocumentFactory extends DocumentFactory {
     // Factory methods
     
 /*    
-    public Attribute createAttribute(QName qname, String value) {
+    public Attribute createAttribute(Element owner, QName qname, String value) {
         return new SaxonAttribute(qname, value);
     }
 */

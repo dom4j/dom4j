@@ -66,14 +66,10 @@ public class BeanDocumentFactory extends DocumentFactory {
         }
     }
     
-    public Attribute createAttribute(QName qname, String value) {
+    public Attribute createAttribute(Element owner, QName qname, String value) {
         return new DefaultAttribute(qname, value);
     }
     
-    public Attribute createAttribute(String name, String value) {
-        return createAttribute(createQName(name), value);
-    }
-
     
     // Implementation methods
     

@@ -98,12 +98,12 @@ public class DocumentFactory {
     }
 
     
-    public Attribute createAttribute(QName qname, String value) {
+    public Attribute createAttribute(Element owner, QName qname, String value) {
         return new DefaultAttribute(qname, value);
     }
     
-    public Attribute createAttribute(String name, String value) {
-        return createAttribute(createQName(name), value);
+    public Attribute createAttribute(Element owner, String name, String value) {
+        return createAttribute(owner, createQName(name), value);
     }
     
     public CDATA createCDATA(String text) {

@@ -81,12 +81,8 @@ public abstract class ProxyDocumentFactory {
     }
 
     
-    public Attribute createAttribute(QName qname, String value) {
-        return proxy.createAttribute(qname, value);
-    }
-    
-    public Attribute createAttribute(String name, String value) {
-        return proxy.createAttribute(name, value);
+    public Attribute createAttribute(Element owner, QName qname, String value) {
+        return proxy.createAttribute(owner, qname, value);
     }
     
     public CDATA createCDATA(String text) {

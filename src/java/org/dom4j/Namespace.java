@@ -48,9 +48,6 @@ public class Namespace extends AbstractNode {
       * @return an interned Namespace object
       */
     public static Namespace get(String prefix, String uri) {
-        if ( (uri == null || uri.length() == 0)  && (prefix == null || prefix.length() == 0 ) ) {
-            return NO_NAMESPACE;
-        }
         return cache.get(prefix, uri);
     }
     
@@ -60,9 +57,6 @@ public class Namespace extends AbstractNode {
       * @return an interned Namespace object
       */
     public static Namespace get(String uri) {
-        if (uri == null || uri.length() == 0) {
-            return NO_NAMESPACE;
-        }
         return cache.get(uri);
     }
     

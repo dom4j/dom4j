@@ -66,7 +66,7 @@ public class DOMDocumentFactory extends DocumentFactory implements org.w3c.dom.D
         return new DOMElement(qname, attributes);
     }
     
-    public Attribute createAttribute(QName qname, String value) {
+    public Attribute createAttribute(Element owner, QName qname, String value) {
         return new DOMAttribute(qname, value);
     }
     

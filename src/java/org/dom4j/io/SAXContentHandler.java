@@ -32,6 +32,8 @@ import org.dom4j.ProcessingInstruction;
 import org.dom4j.DocumentException;
 
 import org.xml.sax.Attributes;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.ext.LexicalHandler;
@@ -83,6 +85,10 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     /** The number of namespaces that are declared in the current scope */
     private int declaredNamespaceIndex;
     
+    private EntityResolver entityResolver;
+    
+    private InputSource inputSource;
+    
     
     public SAXContentHandler() {
         this( DocumentFactory.getInstance() );
@@ -116,6 +122,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     }
     
     // ContentHandler interface
+    //-------------------------------------------------------------------------
     
     public void processingInstruction(String target, String data) throws SAXException {
         peekBranch().addProcessingInstruction(target, data);
@@ -220,6 +227,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     }
 
     // LexicalHandler interface
+    //-------------------------------------------------------------------------
     
     public void startDTD(String name, String publicId, String systemId) throws SAXException {
         Document document = getDocument();
@@ -264,6 +272,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
 
     
     // Properties
+    //-------------------------------------------------------------------------
     public ElementStack getElementStack() {
         return elementStack;
     }
@@ -272,13 +281,36 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
         this.elementStack = elementStack;
     }
     
-    // Implementation methods
+    public EntityResolver getEntityResolver() {
+        return entityResolver;
+    }
     
+    public void setEntityResolver(EntityResolver entityResolver) {
+        this.entityResolver = entityResolver;
+    }
+
+    public InputSource getInputSource() {
+        return inputSource;
+    }
+    
+    public void setInputSource(InputSource inputSource) {
+        this.inputSource = inputSource;
+    }
+
+    
+    // Implementation methods
+    //-------------------------------------------------------------------------
 
     /** @return the current document 
       */
     protected Document createDocument() {
-        return documentFactory.createDocument();
+        Document document = documentFactory.createDocument();
+        
+        // set the EntityResolver
+        document.setEntityResolver(entityResolver);
+        document.setName( inputSource.getSystemId() );
+            
+        return document;
     }
     
     /** @return the set of entity names which are ignored
@@ -333,7 +365,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
         }
         return branch;
     }
-
+    
 }
 
 

@@ -23,6 +23,8 @@ import org.dom4j.QName;
 import org.dom4j.io.SAXReader;
 
 import org.xml.sax.Attributes;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 
 /** <p><code>SchemaDocumentFactory</code> is a factory of XML objects which 
   * support the 
@@ -57,7 +59,7 @@ public class SchemaDocumentFactory extends DocumentFactory {
 
     
     /** If schemas are automatically loaded when parsing instance documents */
-    private boolean autoLoadSchema = false;
+    private boolean autoLoadSchema = true;
     
     
     /** <p>Access to the singleton instance of this factory.</p>
@@ -100,27 +102,32 @@ public class SchemaDocumentFactory extends DocumentFactory {
     //-------------------------------------------------------------------------
     
     public Element createElement(QName qname, Attributes attributes) {
-        //System.out.println( "Creating element for: " + qname );
-        //System.out.println( "Has factory: " + qname.getDocumentFactory() );
         return super.createElement(qname, attributes);
     }
     
-    public Attribute createAttribute(QName qname, String value) {
+    public Attribute createAttribute(Element owner, QName qname, String value) {
         if ( autoLoadSchema && qname.equals( XSI_NO_SCHEMA_LOCATION ) ) {
-            loadSchema( value );
+            Document document = (owner != null) ? owner.getDocument() : null;
+            loadSchema( document, value );
         }
-        return super.createAttribute( qname, value );
+        return super.createAttribute( owner, qname, value );
     }
     
 
     
     // Implementation methods
     //-------------------------------------------------------------------------
-    protected void loadSchema( String schemaInstanceURI ) {
+    protected void loadSchema( Document document, String schemaInstanceURI ) {
         try {
-            // XXXX: massive hack!            
-            schemaInstanceURI = "xml/schema/" + schemaInstanceURI;
-            Document schemaDocument = xmlSchemaReader.read( schemaInstanceURI );
+            EntityResolver resolver = document.getEntityResolver();
+            if ( resolver == null ) {
+                throw new InvalidSchemaException( "No EntityResolver available so could not resolve the schema URI: " + schemaInstanceURI );
+            }
+            InputSource inputSource = resolver.resolveEntity( null, schemaInstanceURI );
+            if ( resolver == null ) {
+                throw new InvalidSchemaException( "Could not resolve the schema URI: " + schemaInstanceURI );
+            }
+            Document schemaDocument = xmlSchemaReader.read( inputSource );
             loadSchema( schemaDocument );
         }
         catch (Exception e) {

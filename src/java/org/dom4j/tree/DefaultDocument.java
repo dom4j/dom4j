@@ -23,6 +23,8 @@ import org.dom4j.IllegalAddException;
 import org.dom4j.Node;
 import org.dom4j.ProcessingInstruction;
 
+import org.xml.sax.EntityResolver;
+
 /** <p><code>DefaultDocument</code> is the default DOM4J default implementation
   * of an XML document.</p>
   *
@@ -48,6 +50,9 @@ public class DefaultDocument extends AbstractDocument {
     
     /** The document factory used by default */
     private DocumentFactory documentFactory = DocumentFactory.getInstance();
+
+    /** The resolver of URIs */
+    private EntityResolver entityResolver;
     
     
     public DefaultDocument() { 
@@ -99,10 +104,18 @@ public class DefaultDocument extends AbstractDocument {
     
     public void setDocType(String name, String publicId, String systemId) {
         setDocType( createDocType( name, publicId, systemId ) );
-    }
+    }    
     
     public DocumentType createDocType(String name, String publicId, String systemId) {
         return new DefaultDocumentType( name, publicId, systemId );
+    }
+    
+    public EntityResolver getEntityResolver() {
+        return entityResolver;
+    }    
+    
+    public void setEntityResolver(EntityResolver entityResolver) {
+        this.entityResolver = entityResolver;
     }
     
     public List processingInstructions() {
@@ -214,6 +227,13 @@ public class DefaultDocument extends AbstractDocument {
         return EMPTY_ITERATOR;
     }
 
+    public void setDocumentFactory(DocumentFactory documentFactory) {
+        this.documentFactory = documentFactory;
+    }
+
+    
+    // Implementation methods
+    //-------------------------------------------------------------------------
     protected List getContentList() {
         if (contents == null) {
             contents = createContentList();
@@ -285,9 +305,6 @@ public class DefaultDocument extends AbstractDocument {
         return documentFactory;
     }
 
-    public void setDocumentFactory(DocumentFactory documentFactory) {
-        this.documentFactory = documentFactory;
-    }
 }
 
 

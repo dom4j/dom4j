@@ -44,12 +44,12 @@ public class DocumentHelper {
     }
     
     
-    public static Attribute createAttribute(QName qname, String value) {
-        return DocumentFactory.getInstance().createAttribute(qname, value);
+    public static Attribute createAttribute(Element owner, QName qname, String value) {
+        return DocumentFactory.getInstance().createAttribute(owner, qname, value);
     }
     
-    public static Attribute createAttribute(String name, String value) {
-        return DocumentFactory.getInstance().createAttribute(name, value);
+    public static Attribute createAttribute(Element owner, String name, String value) {
+        return DocumentFactory.getInstance().createAttribute(owner, name, value);
     }
     
     public static CDATA createCDATA(String text) {

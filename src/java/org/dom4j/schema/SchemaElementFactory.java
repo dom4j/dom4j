@@ -65,9 +65,6 @@ public class SchemaElementFactory extends DocumentFactory {
       * &lt;attribute&gt; QNames
       */
     public void setAttributeDataType( QName attributeQName, DataType dataType ) {
-        System.out.println( "==== Creating DataType for element: " + elementQName.getQualifiedName() + " and attribute: " + attributeQName.getQualifiedName() );
-        System.out.println( "### DataType: " + dataType );
-        
         attributeDataTypes.put( attributeQName, dataType );
     }
     
@@ -80,9 +77,6 @@ public class SchemaElementFactory extends DocumentFactory {
     }
     
    public void setChildElementDataType( QName qname, DataType dataType ) {
-        System.out.println( "==== Creating DataType for child element: " + qname.getQualifiedName()  );
-        System.out.println( "### DataType: " + dataType );
-        
         childrenDataTypes.put( qname, dataType );
     }
 
@@ -109,16 +103,12 @@ public class SchemaElementFactory extends DocumentFactory {
         }
     }
     
-    public Attribute createAttribute(QName qname, String value) {
-        System.out.println( "### Creating Attribute for element: " + elementQName.getQualifiedName() + " and attribute: " + qname.getQualifiedName() );
-        
+    public Attribute createAttribute(Element owner, QName qname, String value) {
         DataType dataType = getAttributeDataType(qname);
         if ( dataType == null ) {
-            System.out.println( "no DataType!" );
-            return super.createAttribute( qname, value );
+            return super.createAttribute( owner, qname, value );
         }
         else {
-            System.out.println( "### FOUND " + dataType );
             return new SchemaAttribute( qname, dataType, value );
         }
     }

@@ -29,6 +29,7 @@ import org.dom4j.ElementHandler;
 import org.dom4j.DocumentException;
 
 import org.xml.sax.ContentHandler;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -92,9 +93,6 @@ public class SAXReader {
     /** ErrorHandler class to use */
     private ErrorHandler errorHandler;
  
-    /** The pruning path to use if any */
-    private String pruningPath;
- 
     
     
     
@@ -148,12 +146,6 @@ public class SAXReader {
       */
     public Document read(File file) throws DocumentException, MalformedURLException {
         return read( file.toURL() );
-/*        
-        Document document = read(new BufferedReader(new FileReader(file)));
-        //Document document = read(file.getAbsolutePath());
-        document.setName( file.getAbsolutePath() );
-        return document;
-*/
     }
     
     /** <p>Reads a Document from the given <code>URL</code> using SAX</p>
@@ -164,9 +156,7 @@ public class SAXReader {
       */
     public Document read(URL url) throws DocumentException {
         String systemID = url.toExternalForm();
-        Document document = read(new InputSource(systemID));
-        document.setName( url.toString() );
-        return document;
+        return read(new InputSource(systemID));
     }
     
     /** <p>Reads a Document from the given URL or filename using SAX.</p>
@@ -252,7 +242,15 @@ public class SAXReader {
         try {
             XMLReader reader = getXMLReader();
 
-            SAXContentHandler contentHandler = createContentHandler();
+            XMLReader xmlReader = getXMLReader();
+            EntityResolver entityResolver = xmlReader.getEntityResolver();
+            if ( entityResolver == null ) {
+                entityResolver = createDefaultEntityResolver( in.getSystemId() );
+            }
+            
+            SAXContentHandler contentHandler = createContentHandler(reader);
+            contentHandler.setEntityResolver( entityResolver );
+            contentHandler.setInputSource( in );
             reader.setContentHandler(contentHandler);
 
             configureReader(reader, contentHandler);
@@ -361,13 +359,10 @@ public class SAXReader {
         setXMLReader( XMLReaderFactory.createXMLReader(xmlReaderClassName) );
     }
 
-    private void initDispatchMode() {
-        if (dispatchHandler == null) {
-            setDispatchHandler(new DispatchHandler());   
-        }
-    }
-    
     private DispatchHandler getDispatchHandler() {
+        if (dispatchHandler == null) {
+            dispatchHandler = new DispatchHandler();
+        }
         return dispatchHandler;   
     }
     
@@ -383,7 +378,6 @@ public class SAXReader {
       * by the event based processor.
       */
     public void addHandler(String path, ElementHandler handler) {
-        initDispatchMode();
         getDispatchHandler().addHandler(path, handler);   
     }
     
@@ -393,7 +387,6 @@ public class SAXReader {
       * @param path is the path to remove the <code>ElementHandler</code> for.
       */
     public void removeHandler(String path) {
-        initDispatchMode();
         getDispatchHandler().removeHandler(path);   
     }
     
@@ -405,7 +398,6 @@ public class SAXReader {
       * by the event based processor.
       */
     public void setDefaultHandler(ElementHandler handler) {
-        initDispatchMode();
         getDispatchHandler().setDefaultHandler(handler);   
     }
     
@@ -470,9 +462,37 @@ public class SAXReader {
         
     /** Factory Method to allow user derived SAXContentHandler objects to be used
       */
-    protected SAXContentHandler createContentHandler() {
-        return new SAXContentHandler( getDocumentFactory(), getDispatchHandler() );
+    protected SAXContentHandler createContentHandler(XMLReader reader) {
+        return new SAXContentHandler( 
+            getDocumentFactory(), dispatchHandler 
+        );
     }
+
+    protected EntityResolver createDefaultEntityResolver( String documentSystemId ) {
+        String prefix = null;
+        if ( documentSystemId != null && documentSystemId.length() > 0 ) {
+            int idx = documentSystemId.lastIndexOf( '/' );
+            if ( idx > 0 ) {
+                prefix = documentSystemId.substring(0, idx+1);
+                
+            }
+        }
+        final String uriPrefix = prefix;
+        return new EntityResolver() {
+            public InputSource resolveEntity(String publicId, String systemId) {            
+                // try create a relative URI reader...
+                if ( systemId != null && systemId.length() > 0 ) {
+                    if ( uriPrefix != null ) {
+                        systemId = uriPrefix + systemId;
+                    }                    
+                }
+                return new InputSource(systemId);
+            }
+        };
+    }
+
+    
+    
 }
 
 

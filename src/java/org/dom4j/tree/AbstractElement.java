@@ -249,11 +249,11 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     public void setAttributeValue(String name, String value) {
         Attribute attribute = attribute(name);
         if (attribute == null ) {
-            add(getDocumentFactory().createAttribute(name, value));
+            add(getDocumentFactory().createAttribute(this, name, value));
         }
         else if (attribute.isReadOnly()) {
             remove(attribute);
-            add(getDocumentFactory().createAttribute(name, value));
+            add(getDocumentFactory().createAttribute(this, name, value));
         }
         else {
             attribute.setValue(value);
@@ -263,11 +263,11 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     public void setAttributeValue(QName qName, String value) {
         Attribute attribute = attribute(qName);
         if (attribute == null ) {
-            add(getDocumentFactory().createAttribute(qName, value));
+            add(getDocumentFactory().createAttribute(this, qName, value));
         }
         else if (attribute.isReadOnly()) {
             remove(attribute);
-            add(getDocumentFactory().createAttribute(qName, value));
+            add(getDocumentFactory().createAttribute(this, qName, value));
         }
         else {
             attribute.setValue(value);

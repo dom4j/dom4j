@@ -43,7 +43,7 @@
      </restriction>
     </simpleType>
    </attribute>
-   <attribute name="salary" type="integer"/>
+   <attribute name="salary" type="int"/>
   </complexType>
   <attribute name="age" type="integer"/>
   <attribute name="x" type="int"/>

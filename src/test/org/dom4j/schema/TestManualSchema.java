@@ -29,7 +29,7 @@ import org.dom4j.schema.SchemaDocumentFactory;
 /** Test harness for the XML Schema Data Type integration. These tests
   * manually load the schemas
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class TestManualSchema extends AbstractTestCase {
@@ -50,8 +50,12 @@ public class TestManualSchema extends AbstractTestCase {
 
     // Test case(s)
     //-------------------------------------------------------------------------                    
-    public void testInt() throws Exception {        
+    public void testIntAttribute() throws Exception {        
         testSchema( "//person/@x", Integer.class );
+    }
+    
+    public void testIntElement() throws Exception {        
+        testSchema( "//person/salary", Integer.class );
     }
     
 /*        
