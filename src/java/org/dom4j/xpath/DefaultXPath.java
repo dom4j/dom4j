@@ -15,18 +15,16 @@ import org.dom4j.InvalidXPathException;
 import org.dom4j.Node;
 import org.dom4j.VariableContext;
 import org.dom4j.XPath;
+import org.dom4j.XPathException;
 
 import org.dom4j.rule.Pattern;
 
-import org.dom4j.xpath.impl.Context;
-import org.dom4j.xpath.impl.Expr;
-import org.dom4j.xpath.impl.DefaultXPathFactory;
+import org.jaxen.BaseXPath;
+import org.jaxen.JaxenException;
 
 import org.saxpath.XPathReader;
 import org.saxpath.SAXPathException;
 import org.saxpath.helpers.XPathReaderFactory;
-
-import org.jaxen.JaxenHandler;
 
 import java.io.StringReader;
 
@@ -40,51 +38,27 @@ import java.util.List;
 import java.util.Map;
 
 
-/** <p>Main run-time interface into the XPath functionality</p>
- * 
- *  <p>The DefaultXPath object embodies a textual XPath as described by
- *  the W3C XPath specification.  It can be applied against a
- *  context node (or nodeset) along with context-helpers to
- *  produce the result of walking the XPath.</p>
- *
- *  <p>Example usage:</p>
- *
- *  <pre>
- *  <code>
- *
- *      // Create a new XPath
- *      DefaultXPath xpath = new DefaultXPath("a/b/c/../d/.[@name="foo"]);
- *
- *      // Apply the XPath to your root context.
- *      Object results = xpath.applyTo(myContext);
- *
- *  </code>
- *  </pre>
- *
- *
- *  @see org.dom4j.xpath.ContextSupport
- *  @see org.dom4j.xpath.NamespaceContext
- *  @see org.dom4j.VariableContext
- *  @see org.dom4j.xpath.FunctionContext
- *  @see org.dom4j.xpath.XPathFunctionContext
+/** <p>Default implementation of {@link org.dom4j.XPath} which uses the
+ * <a href="http://jaxen.org">Jaxen</a> project.</p>
  *
  *  @author bob mcwhirter (bob @ werken.com)
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
  */
 public class DefaultXPath implements org.dom4j.XPath {
 
-    private String _xpath = "";
-    private Expr _expr;
-    private ContextSupport _contextSupport = new ContextSupport();
+    private String text;
+    private BaseXPath xpath;
+    
 
     /** Construct an XPath
      */
-    public DefaultXPath(String xpath) throws InvalidXPathException {
-        _xpath = xpath;
-        parse();
+    public DefaultXPath(String text) throws InvalidXPathException {
+        this.text = text;
+        this.xpath = parse( text );
     }
 
     public String toString() {
-        return "[XPath: " + _xpath + " " + _expr + "]";
+        return "[XPath: " + xpath + "]";
     }
 
     
@@ -95,139 +69,98 @@ public class DefaultXPath implements org.dom4j.XPath {
      *  @return The XPath string
      */
     public String getText() {
-        return _xpath;
+        return text;
     }
 
     public VariableContext getVariableContext() {
-        return _contextSupport.getVariableContext();
-    }
-    
-    public void setVariableContext(VariableContext variableContext) {
-        _contextSupport.setVariableContext( variableContext );
-    }
-    
-    public ContextSupport getContextSupport() {
-        return _contextSupport;
-    }
-    
-    public void setContextSupport(ContextSupport contextSupport) {
-        _contextSupport = contextSupport;
-    }
-    
-    public Object selectObject(Object context) {
-        if ( context instanceof Node ) {
-            return selectObject( (Node) context );
-        }
-        else if ( context instanceof List ) {
-            return selectObject( (List) context );
+        Object object = xpath.getVariableContext();
+        if ( object instanceof VariableContext) {
+            return (VariableContext) object;
         }
         return null;
     }
     
-    public Object selectObject(Node node) {
-        return _expr.evaluate( new Context( node, _contextSupport ) );
+    public void setVariableContext(final VariableContext variableContext) {
+        if ( variableContext instanceof org.jaxen.VariableContext ) {
+            xpath.setVariableContext( (org.jaxen.VariableContext) variableContext );
+        }
+        else {
+            xpath.setVariableContext( 
+                new org.jaxen.VariableContext() {
+                    public Object getVariableValue(String prefix, String localName) {
+                        return variableContext.getVariableValue( localName );
+                    }
+                }
+            );
+        }
+    }
+    
+    public Object selectObject(Object context) {
+        try {
+            List answer = xpath.selectNodes( context );
+            if ( answer != null && answer.size() == 0 ) {
+                return answer.get(0);
+            }
+            return answer;
+        }
+        catch (JaxenException e) {
+            handleJaxenException(e);
+            return null;
+        }
     }
 
-    public Object selectObject(List nodes) {
-        return _expr.evaluate( new Context( nodes, _contextSupport ) );
-    }
-    
-    /** <p><code>selectNodes</code> performs this XPath expression
-      * on the given {@link Node} or {@link List} of {@link Node}s 
-      * instances appending all the results together into a single list.</p>
-      *
-      * @param context is either a node or a list of nodes on which to 
-      *    evalute the XPath
-      * @return the results of all the XPath evaluations as a single list
-      */
     public List selectNodes(Object context) {
-        return applyTo( context );
+        try {
+            return xpath.selectNodes( context );
+        }
+        catch (JaxenException e) {
+            handleJaxenException(e);
+            return Collections.EMPTY_LIST;
+        }
     }
     
     
-    /** <p><code>selectNodes</code> evaluates the XPath expression
-      * on the given {@link Node} or {@link List} of {@link Node}s 
-      * and returns the result as a <code>List</code> of 
-      * <code>Node</code>s sorted by the sort XPath expression.</p>
-      *
-      * @param context is either a node or a list of nodes on which to 
-      *    evalute the XPath
-      * @param sortXPath is the XPath expression to sort by
-      * @return a list of <code>Node</code> instances 
-      */
     public List selectNodes(Object context, org.dom4j.XPath sortXPath) {
-        List answer = applyTo( context );
+        List answer = selectNodes( context );
         sortXPath.sort( answer );
         return answer;
     }
     
-    /** <p><code>selectNodes</code> evaluates the XPath expression
-      * on the given {@link Node} or {@link List} of {@link Node}s 
-      * and returns the result as a <code>List</code> of 
-      * <code>Node</code>s sorted by the sort XPath expression.</p>
-      *
-      * @param context is either a node or a list of nodes on which to 
-      *    evalute the XPath
-      * @param sortXPath is the XPath expression to sort by
-      * @param distinct specifies whether or not duplicate values of the 
-      *     sort expression are allowed. If this parameter is true then only 
-      *     distinct sort expressions values are included in the result
-      * @return a list of <code>Node</code> instances 
-      */
     public List selectNodes(Object context, org.dom4j.XPath sortXPath, boolean distinct) {
-        List answer = applyTo( context );
+        List answer = selectNodes( context );
         sortXPath.sort( answer, distinct );
         return answer;
     }
     
-    
-    /** <p><code>selectSingleNode</code> evaluates this XPath expression
-      * on the given {@link Node} or {@link List} of {@link Node}s 
-      * and returns the result as a single <code>Node</code> instance.</p>
-      *
-      * @param context is either a node or a list of nodes on which to 
-      *    evalute the XPath
-      * @return a single matching <code>Node</code> instance
-      */
     public Node selectSingleNode(Object context) {
-        Object object = selectObject( context );
-        if ( object instanceof Node ) {
-            return (Node) object;
+        try {
+            return (Node) xpath.selectSingleNode( context );
         }
-        else if ( object instanceof List) {
-            List list = (List) object;
-            if ( ! list.isEmpty() ) {
-                return (Node) list.get(0);
-            }
+        catch (JaxenException e) {
+            handleJaxenException(e);
+            return null;
         }
-        return null;
     }
     
     
-    /** <p><code>valueOf</code> evaluates this XPath expression
-      * and returns the textual representation of the results using the 
-      * XPath string() function.</p>
-      *
-      * @param context is either a node or a list of nodes on which to 
-      *    evalute the XPath
-      * @return the string representation of the results of the XPath expression
-      */
     public String valueOf(Object context) {
-        if ( context instanceof Node )  {
-            return valueOf( (Node) context );
+        try {
+            return xpath.valueOf( context );
         }
-        else if ( context instanceof List ) {
-            return valueOf( (List) context );
+        catch (JaxenException e) {
+            handleJaxenException(e);
+            return "";
         }
-        return "";
     }
 
     public Number numberValueOf(Object context) {
-        Object object = selectObject( context );
-        if ( object instanceof Number ) {
-            return (Number) object;
+        try {
+            return xpath.numberValueOf( context );
         }
-        return null;
+        catch (JaxenException e) {
+            handleJaxenException(e);
+            return null;
+        }
     }
     
     /** <p><code>sort</code> sorts the given List of Nodes
@@ -268,8 +201,17 @@ public class DefaultXPath implements org.dom4j.XPath {
     }
     
     public boolean matches( Node node ) {
-        Context context = new Context( node, _contextSupport );
-        return _expr.matches( context, node );
+        try {
+            Object answer = xpath.selectSingleNode( node );
+            if ( answer != null && answer.equals( node ) ) {
+                return true;
+            }
+            return false;
+        }
+        catch (JaxenException e) {
+            handleJaxenException(e);
+            return false;
+        }
     }
     
     /** Sorts the list based on the sortValues for each node
@@ -329,26 +271,9 @@ public class DefaultXPath implements org.dom4j.XPath {
         return valueOf( node );
     }
     
-    
-    
-    private void parse() {
-        _expr = parse( _xpath );
-    }
-    
-    protected static Expr parse(String text) {        
+    protected static BaseXPath parse(String text) {        
         try {
-            XPathReader reader = XPathReaderFactory.createReader();
-            
-            JaxenHandler handler = new JaxenHandler();
-            
-            handler.setXPathFactory( new DefaultXPathFactory() );
-            
-            reader.setXPathHandler( handler );
-            
-            reader.parse( text );
-            
-            org.jaxen.expr.XPath xpath = handler.getXPath(true);
-            return (Expr) xpath.getRootExpr();
+            return new org.jaxen.dom4j.XPath( text );
         }
         catch (SAXPathException e) {
             throw new InvalidXPathException( text, e.getMessage() );
@@ -358,57 +283,8 @@ public class DefaultXPath implements org.dom4j.XPath {
         throw new InvalidXPathException( text );
     }
     
-    protected List applyTo(Object context) {
-        if ( context instanceof Node ) {
-            return applyTo( (Node) context );
-        }
-        else if ( context instanceof List ) {
-            return applyTo( (List) context );
-        }
-        return Collections.EMPTY_LIST;
-    }
-    
-
-    public List applyTo(Node node) {
-        return asList( 
-            _expr.evaluate( new Context( node, _contextSupport ) ) 
-        );
-    }
-
-    public List applyTo(List nodes) {
-        return asList( 
-            _expr.evaluate( new Context( nodes, _contextSupport ) ) 
-        );
-    }
-    
-    /** Perform the string() function on the return values of an XPath
-     */
-    public String valueOf(Node node) {
-        if ( _expr == null ) {
-            return "";
-        }
-        return _expr.valueOf( new Context( node, _contextSupport ) );
-    }
-
-    public String valueOf(List nodes) {
-        if ( _expr == null ) {
-            return "";
-        }
-        return _expr.valueOf( new Context( nodes, _contextSupport ) );
-    }
-
-    
-    /** A helper method to detect for non List return types */
-    private final List asList(Object object)  {
-        if ( object instanceof List )  {
-            return (List) object;
-        }
-        else if ( object == null ) {
-            return Collections.EMPTY_LIST;
-        }
-        ArrayList results = new ArrayList(1);
-        results.add(object);
-        return results;
+    protected void handleJaxenException(JaxenException e) throws XPathException {
+        throw new XPathException(text, e);
     }
 }
 

@@ -14,15 +14,8 @@ import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.InvalidXPathException;
 import org.dom4j.rule.Pattern;
-import org.dom4j.xpath.impl.Context;
-import org.dom4j.xpath.impl.Expr;
-import org.dom4j.xpath.impl.DefaultXPathFactory;
 
-import org.saxpath.XPathReader;
-import org.saxpath.SAXPathException;
-import org.saxpath.helpers.XPathReaderFactory;
-
-import org.jaxen.JaxenHandler;
+import org.jaxen.BaseXPath;
 
 import java.io.StringReader;
 
@@ -36,78 +29,75 @@ import java.util.List;
 import java.util.Map;
 
 /** <p><code>XPathPattern</code> is an implementation of Pattern
-  * which uses an XPath expression.</p>
+  * which uses an XPath xpath.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class XPathPattern implements Pattern {
     
     private String text;
-    private Expr expression;
-    private Context context;
+    private BaseXPath xpath;
 
     
     public XPathPattern(String text) {
         this.text = text;
-        this.expression = DefaultXPath.parse( text );
+        this.xpath = DefaultXPath.parse( text );
     }
 
     public boolean matches( Node node ) {
-        return expression != null && expression.matches( getContext( node ), node );
+        //return xpath != null && xpath.matches( getContext( node ), node );
+        return false;
     }
     
     public String getText() {
         return text;
     }
+
     
     public double getPriority()  {
-        return ( expression != null ) 
-            ? expression.getPriority() : Pattern.DEFAULT_PRIORITY;
+        return Pattern.DEFAULT_PRIORITY;
     }
     
     public Pattern[] getUnionPatterns() {
-        return ( expression != null ) 
-            ? expression.getUnionPatterns() : null;
+        return null;
     }
 
     public short getMatchType() {
-        return ( expression != null ) 
-            ? expression.getMatchType() : ANY_NODE;
+        return ANY_NODE;
     }
 
     public String getMatchesNodeName() {
-        return ( expression != null ) 
-            ? expression.getMatchesNodeName() : null;
+        return null;
+    }
+    
+/*    
+    public double getPriority()  {
+        return ( xpath != null ) 
+            ? xpath.getPriority() : Pattern.DEFAULT_PRIORITY;
+        return Pattern.DEFAULT_PRIORITY
+    }
+    
+    public Pattern[] getUnionPatterns() {
+        return ( xpath != null ) 
+            ? xpath.getUnionPatterns() : null;
     }
 
-    public Context getContext( Node node ) {
-        Context context = getContext();
-        context.setNodeSet( node );
-        return context;
+    public short getMatchType() {
+        return ( xpath != null ) 
+            ? xpath.getMatchType() : ANY_NODE;
     }
+
+    public String getMatchesNodeName() {
+        return ( xpath != null ) 
+            ? xpath.getMatchesNodeName() : null;
+    }
+*/
     
-    public Context getContext() {
-        if ( context == null ) {
-            context = createContext();
-        }
-        return context;
-    }
     
-    public void setContext(Context Context) {
-        this.context = context;
-    }
     
     public String toString() {
-        return "[XPathPattern: text: " + text + " XPath: " + expression + "]";
-    }
-
-    
-
-    // Implementation methods
-    
-    protected Context createContext() {
-        return new Context();
+        return "[XPathPattern: text: " + text + " XPath: " + xpath + "]";
     }
 }
 
