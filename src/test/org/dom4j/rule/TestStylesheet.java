@@ -18,12 +18,13 @@ import junit.textui.TestRunner;
 
 import org.dom4j.*;
 
-/** A test harness to test the use of RuleManager
+/** A test harness to test the use of the Stylesheet and the
+  * XSLT rule engine.
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class TestRuleManager extends AbstractTestCase {
+public class TestStylesheet extends AbstractTestCase {
 
     protected String[] templates = {
         "/",
@@ -46,10 +47,10 @@ public class TestRuleManager extends AbstractTestCase {
     }
     
     public static Test suite() {
-        return new TestSuite( TestRuleManager.class );
+        return new TestSuite( TestStylesheet.class );
     }
     
-    public TestRuleManager(String name) {
+    public TestStylesheet(String name) {
         super(name);
     }
 
@@ -60,10 +61,9 @@ public class TestRuleManager extends AbstractTestCase {
             addTemplate( templates[i] );
         }
         
-        log( "........................................" );
         log( "" );
         log( "........................................" );
-        
+        log( "" );
         log( "Running stylesheet" );
         
         stylesheet.run( document );
