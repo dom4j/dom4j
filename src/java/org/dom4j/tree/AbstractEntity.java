@@ -32,19 +32,19 @@ public abstract class AbstractEntity extends AbstractNode implements Entity {
         return ENTITY_REFERENCE_NODE;
     }
 
-    public String getPath() {
+    public String getPath(Element context) {
         // From XPaths perspective, entities are included in text
         Element parent = getParent();
-        return ( parent != null ) 
-            ? parent.getPath() + "/text()"
+        return ( parent != null && parent != context ) 
+            ? parent.getPath( context ) + "/text()"
             : "text()";
     }
     
-    public String getUniquePath() {
+    public String getUniquePath(Element context) {
         // From XPaths perspective, entities are included in text
         Element parent = getParent();
-        return ( parent != null ) 
-            ? parent.getUniquePath() + "/text()"
+        return ( parent != null && parent != context ) 
+            ? parent.getUniquePath( context ) + "/text()"
             : "text()";
     }
     

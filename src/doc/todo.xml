@@ -5,6 +5,24 @@
     
     <section title="Change History">
         <section title="Patches in CVS since last release">
+          <section title="New methods">
+            <pre>hasContent()</pre>
+            <p> has been added to the Node interface
+              so that it is easy to decide if a node is a leaf node or not.
+              This method was suggested by Dane Foster.
+              This method returns true if the node is a Branch (i.e. an Element or Document)
+              which contains at least one node.
+            </p>
+            <pre>getPath(Element context)</pre>
+            <pre>getUniquePath(Element context)</pre> 
+            <p>These new methods 
+              allow paths and unique paths to be created relatively. Previously both
+              getPath() and getUniquePath() would create absolute XPath expressions. 
+              These new methods allow relative path expressions to be created by providing
+              an ancestor Element from which to make the path expression.
+              This method was suggested by Chris Nokleberg.
+            </p>
+          </section>
           <section title="Patches and bug fixes">
             <p>Fixed bug found by Chris Nokleberg when using the UserDataElement
                that the clone() and createCopy() methods were not correctly 

@@ -23,17 +23,17 @@ public abstract class AbstractCharacterData extends AbstractNode implements Char
     public AbstractCharacterData() {
     }
     
-    public String getPath() {
+    public String getPath(Element context) {
         Element parent = getParent();
-        return ( parent != null ) 
-            ? parent.getPath() + "/text()"
+        return ( parent != null && parent != context ) 
+            ? parent.getPath( context ) + "/text()"
             : "text()";
     }
     
-    public String getUniquePath() {
+    public String getUniquePath(Element context) {
         Element parent = getParent();
-        return ( parent != null ) 
-            ? parent.getUniquePath() + "/text()"
+        return ( parent != null && parent != context ) 
+            ? parent.getUniquePath( context ) + "/text()"
             : "text()";
     }
 

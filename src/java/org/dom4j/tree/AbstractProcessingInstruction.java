@@ -36,17 +36,17 @@ public abstract class AbstractProcessingInstruction extends AbstractNode impleme
         return PROCESSING_INSTRUCTION_NODE;
     }
 
-    public String getPath() {
+    public String getPath(Element context) {
         Element parent = getParent();
-        return ( parent != null ) 
-            ? parent.getPath() + "/processing-instruction()"
+        return ( parent != null && parent != context ) 
+            ? parent.getPath( context ) + "/processing-instruction()"
             : "processing-instruction()";
     }
     
-    public String getUniquePath() {
+    public String getUniquePath(Element context) {
         Element parent = getParent();
-        return ( parent != null ) 
-            ? parent.getUniquePath() + "/processing-instruction()"
+        return ( parent != null && parent != context ) 
+            ? parent.getUniquePath( context ) + "/processing-instruction()"
             : "processing-instruction()";
     }
     

@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import org.dom4j.DocumentType;
+import org.dom4j.Element;
 import org.dom4j.Visitor;
 
 /** <p><code>AbstractDocumentType</code> is an abstract base class for 
@@ -42,12 +43,12 @@ public abstract class AbstractDocumentType extends AbstractNode implements Docum
         setElementName(name);
     }
     
-    public String getPath() {
+    public String getPath(Element context) {
         // not available in XPath
         return "";
     }
 
-    public String getUniquePath() {
+    public String getUniquePath(Element context) {
         // not available in XPath
         return "";
     }

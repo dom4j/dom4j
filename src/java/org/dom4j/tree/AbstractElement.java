@@ -84,21 +84,27 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         throw new UnsupportedOperationException("The name and namespace of this Element cannot be changed" );
     }
         
-    public String getPath() {
+    public String getPath(Element context) {
         Element parent = getParent();
         if ( parent == null ) {
             return "/" + getQualifiedName();
         }
-        return parent.getPath() + "/" + getQualifiedName();
+        else if ( parent == context ) {
+            return getQualifiedName();
+        }
+        return parent.getPath( context ) + "/" + getQualifiedName();
     }
     
-    public String getUniquePath() {
+    public String getUniquePath(Element context) {
         Element parent = getParent();
         if ( parent == null ) {
             return "/" + getQualifiedName();
         }
-        StringBuffer buffer = new StringBuffer( parent.getUniquePath() );
-        buffer.append( "/" );
+        StringBuffer buffer = new StringBuffer();
+        if ( parent != context ) {
+            buffer.append( parent.getUniquePath(context) );
+            buffer.append( "/" );
+        }
         buffer.append( getQualifiedName() );
         List mySiblings = parent.elements( getQName() );
         if ( mySiblings.size() > 1 ) {

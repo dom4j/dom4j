@@ -76,6 +76,19 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
     public boolean isReadOnly() {
         return true;
     }
+    
+    public boolean hasContent() {
+        return false;
+    }
+    
+    public String getPath() {
+        return getPath(null);
+    }
+    
+    public String getUniquePath() {
+        return getUniquePath(null);
+    }
+    
 
     public Object clone() {
         if ( isReadOnly() ) {

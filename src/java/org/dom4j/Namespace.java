@@ -124,19 +124,19 @@ public class Namespace extends AbstractNode {
     }
 
 
-    public String getPath() {
+    public String getPath(Element context) {
         String match = ( prefix != null ) ? prefix : "*";
         Element parent = getParent();
-        return ( parent != null ) 
-            ? parent.getPath() + "/namespace::" + match
+        return ( parent != null && parent != context ) 
+            ? parent.getPath( context ) + "/namespace::" + match
             : "namespace::" + match;
     }
     
-    public String getUniquePath() {
+    public String getUniquePath(Element context) {
         String match = ( prefix != null ) ? prefix : "*";
         Element parent = getParent();
-        return ( parent != null ) 
-            ? parent.getUniquePath() + "/namespace::" + match
+        return ( parent != null && parent != context ) 
+            ? parent.getUniquePath( context ) + "/namespace::" + match
             : "namespace::" + match;
     }
     

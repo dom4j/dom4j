@@ -31,19 +31,20 @@ public abstract class AbstractComment extends AbstractCharacterData implements C
         return COMMENT_NODE;
     }
 
-    public String getPath() {
+    public String getPath(Element context) {
         Element parent = getParent();
-        return ( parent != null ) 
-            ? parent.getPath() + "/comment()"
+        return ( parent != null && parent != context ) 
+            ? parent.getPath( context ) + "/comment()"
             : "comment()";
     }
 
-    public String getUniquePath() {
+    public String getUniquePath(Element context) {
         Element parent = getParent();
-        return ( parent != null ) 
-            ? parent.getUniquePath() + "/comment()"
+        return ( parent != null && parent != context ) 
+            ? parent.getUniquePath( context ) + "/comment()"
             : "comment()";
     }
+
 
     public String toString() {
         return super.toString() + " [Comment: \"" + getText() + "\"]";

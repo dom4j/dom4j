@@ -58,6 +58,10 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
         return false;
     }    
     
+    public boolean hasContent() {
+        return nodeCount() > 0;
+    }
+
     public List content() {
         List backingList = contentList();
         return new ContentListFacade(this, backingList);
