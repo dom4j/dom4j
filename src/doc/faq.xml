@@ -533,7 +533,7 @@ crimson.jar
       </li>
     </ol>
     </section>
-
+    <section title="Cannot find DTD; how can I tell dom4j where to find the DTD from a DOCTYPE?">	<p>A common way around this is to implement a SAX EntityResolver to load theDTD from somewhere else. e.g. you could include the DTD in your JAR withyour java code and load it from there.	</p><pre>EntityResolver resolver = new EntityResolver() {    public InputSource resolveEntity(String publicId, String systemId) {        if ( publicId.equals( "-//Acme//DTD Foo 1.2//EN" ) ) {            InputStream in = getClass().getResourceAsStream(                "com/acme/foo.dtd"            );            return new InputSource( in );        }        return null;    }};SAXReader reader = new SAXReader();reader.setEntityResolver( resolver );Document doc = reader.parse( "foo.xml" );</pre>    </section>
   </body>
 </document>
 
