@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<product>
+    <product>This &amp; that</product>
+    <product>This &lt; that</product>
+    <product>This &gt; that</product>
+</product>

@@ -195,6 +195,14 @@ public class NodeComparator implements Comparator {
         return answer;
     }
     
+    public int compare( Namespace n1, Namespace n2 ) {
+        int answer = compare( n1.getURI(), n2.getURI() );
+        if ( answer == 0 ) {
+            answer = compare( n1.getPrefix(), n2.getPrefix() );
+        }
+        return answer;
+    }
+    
     public int compare( CharacterData t1, CharacterData t2 ) {
         return compare( t1.getText(), t2.getText() );
     }

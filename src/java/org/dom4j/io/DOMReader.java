@@ -130,12 +130,19 @@ public class DOMReader {
                 break;
 
 
-            case org.w3c.dom.Node.ENTITY_REFERENCE_NODE:
+            case org.w3c.dom.Node.ENTITY_REFERENCE_NODE: {
                 // is there a better way to get the value of an entity?
-                element.addEntity(
-                    node.getNodeName(), 
-                    node.getFirstChild().getNodeValue()
-                );
+                    org.w3c.dom.Node firstChild = node.getFirstChild();
+                    if ( firstChild != null ) {
+                        element.addEntity(
+                            node.getNodeName(), 
+                            firstChild.getNodeValue()
+                        );
+                    }
+                    else {
+                        element.addEntity( node.getNodeName() );
+                    }
+                }
                 break;
 
             case org.w3c.dom.Node.ENTITY_NODE:

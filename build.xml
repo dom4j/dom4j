@@ -427,6 +427,10 @@
     <java classname="org.dom4j.TestClone"/>
   </target>
 
+  <target name="test-roundtrip" depends="compile-test">
+    <java classname="org.dom4j.TestRoundTrip"/>
+  </target>
+
   <target name="test-schema" depends="compile-test">
     <java classname="org.dom4j.schema.TestDataTypes"/>
 <!--

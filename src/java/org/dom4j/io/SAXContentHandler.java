@@ -308,7 +308,9 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
         
         // set the EntityResolver
         document.setEntityResolver(entityResolver);
-        document.setName( inputSource.getSystemId() );
+        if ( inputSource != null ) {
+            document.setName( inputSource.getSystemId() );
+        }
             
         return document;
     }
