@@ -11,7 +11,6 @@ package org.dom4j;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
@@ -71,6 +70,24 @@ public class TestXMLWriter extends AbstractTestCase {
         
         assertTrue( "Output text is bigger than 10 characters", text.length() > 10 );
     }        
+    
+    public void testEncodingFormats() throws Exception {
+        testEncoding( "UTF-8" );
+        testEncoding( "UTF-16" );
+        testEncoding( "ISO-8859-1" );
+    }
+
+    protected void testEncoding(String encoding) throws Exception {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        
+        OutputFormat format = OutputFormat.createPrettyPrint();
+        format.setEncoding( encoding );
+        XMLWriter writer = new XMLWriter( out, format );
+        writer.write( document );
+        writer.close();
+        
+        log( "Wrote to encoding: " + encoding );
+    }
     
     public void testWriterBug() throws Exception {        
         Element project = new BaseElement("project"); 
