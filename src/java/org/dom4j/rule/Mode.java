@@ -55,8 +55,8 @@ public class Mode {
     }
     
     public void applyTemplates( Element element ) throws Exception {
-        for ( int i = 0, size = element.getAttributeCount(); i < size; i++ ) {
-            Attribute attribute = element.getAttribute(i);
+        for ( int i = 0, size = element.attributeCount(); i < size; i++ ) {
+            Attribute attribute = element.attribute(i);
             fireRule( attribute );
         }
         for ( int i = 0, size = element.getNodeCount(); i < size; i++ ) {

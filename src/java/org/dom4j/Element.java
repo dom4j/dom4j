@@ -173,7 +173,7 @@ public interface Element extends Branch {
       *
       * @return the attributes that this element contains as a <code>List</code>
       */    
-    public List getAttributes();
+    public List attributes();
     
     /** Sets the attributes that this element contains
       */
@@ -181,7 +181,7 @@ public interface Element extends Branch {
 
     /** @return the number of attributes this element contains
       */
-    public int getAttributeCount();
+    public int attributeCount();
     
     /** @returns an iterator over the attributes of this element
       */
@@ -194,7 +194,7 @@ public interface Element extends Branch {
       * an IndexOutOfBoundsException if the index is not within the 
       * allowable range
       */
-    public Attribute getAttribute(int index);
+    public Attribute attribute(int index);
             
     /** Returns the attribute with the given name
       *
@@ -202,13 +202,13 @@ public interface Element extends Branch {
       * If there are more than one attributes with the given local name 
       * in different namespaces then the first one is returned.
       */
-    public Attribute getAttribute(String name);
+    public Attribute attribute(String name);
     
     /** @param qName is the fully qualified name
       * @return the attribute for the given fully qualified name or null if 
       * it could not be found.
       */
-    public Attribute getAttribute(QName qname);
+    public Attribute attribute(QName qname);
 
     /** <p>This returns the attribute value for the attribute with the 
       * given name and any namespace or null if there is no such 
@@ -218,7 +218,7 @@ public interface Element extends Branch {
       * @return the value of the attribute, null if the attribute does 
       * not exist or the empty string
       */
-    public String getAttributeValue(String name);
+    public String attributeValue(String name);
 
     /** <p>This returns the attribute value for the attribute with the 
       * given name and any namespace or the default value if there is 
@@ -230,7 +230,7 @@ public interface Element extends Branch {
       * @return the value of the attribute or the defaultValue if the 
       *    attribute has no value defined.
       */
-    public String getAttributeValue(String name, String defaultValue);
+    public String attributeValue(String name, String defaultValue);
 
     /** <p>This returns the attribute value for the attribute with the 
       * given fully qualified name or null if there is no such 
@@ -240,7 +240,7 @@ public interface Element extends Branch {
       * @return the value of the attribute, null if the attribute does 
       * not exist or the empty string
       */
-    public String getAttributeValue(QName qName);
+    public String attributeValue(QName qName);
 
     /** <p>This returns the attribute value for the attribute with the 
       * given fully qualified name or the default value if 
@@ -252,7 +252,7 @@ public interface Element extends Branch {
       * @return the value of the attribute or the defaultValue if the 
       *    attribute has no value defined.
       */
-    public String getAttributeValue(QName qName, String defaultValue);
+    public String attributeValue(QName qName, String defaultValue);
 
     
     /** <p>Sets the attribute value of the given local name.</p>
@@ -271,21 +271,6 @@ public interface Element extends Branch {
       */
     public void setAttributeValue(QName qName, String value);
 
-    /** <p>Removes the first attribute with the given name and any namespace.</p>
-      *
-      * @param name is the name of the attribute to be removed
-      * @return the attribute that was removed or null if none was removed
-      */
-    public Attribute removeAttribute(String name);
-    
-    /** <p>Removes the attribute with the given fully qualified name.</p>
-      *
-      * @param qName is the fully qualified name to search for
-      * @return the attribute that was removed or null if none was removed
-      */
-    public Attribute removeAttribute(QName qName);
-
-    
     
     // Content API
     

@@ -97,7 +97,7 @@ public class BeanMetaData {
         
     /** @return the number of attribtutes for this bean type
       */
-    public int getAttributeCount() {
+    public int attributeCount() {
         return propertyDescriptors.length;
     }
     

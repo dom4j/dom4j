@@ -67,7 +67,7 @@ public class TestParent extends AbstractTestCase {
     }
     
     protected void testParentRelationship( Element element ) {
-        testParentRelationship( element, element.getAttributes() );
+        testParentRelationship( element, element.attributes() );
         testParentRelationship( element, element.getContent() );
     }    
     

@@ -108,7 +108,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         visitor.visit(this);
         
         // visit attributes
-        List attributes = getAttributeList();
+        List attributes = attributeList();
         if (attributes != null) {
             for ( Iterator iter = attributes.iterator(); iter.hasNext(); ) {
                 Attribute attribute = (Attribute) iter.next();
@@ -136,12 +136,12 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     public String toString() {
         if ( VERBOSE_TOSTRING ) {
             return super.toString() + " [Element: <" + getQualifiedName() 
-                + " attributes: " + getAttributeList()
+                + " attributes: " + attributeList()
                 + " content: " + getContentList() + " />]";
         }
         else {
             return super.toString() + " [Element: <" + getQualifiedName() 
-                + " attributes: " + getAttributeList() + "/>]";
+                + " attributes: " + attributeList() + "/>]";
         }
     }
     
@@ -183,19 +183,19 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     // Attribute methods
         
     public Iterator attributeIterator() {
-        return getAttributeList().iterator();
+        return attributeList().iterator();
     }
     
-    public Attribute getAttribute(int index) {
-        return (Attribute) getAttributeList().get(index);
+    public Attribute attribute(int index) {
+        return (Attribute) attributeList().get(index);
     }
             
-    public int getAttributeCount() {
-        return getAttributeList().size();
+    public int attributeCount() {
+        return attributeList().size();
     }
     
-    public String getAttributeValue(String name) {
-        Attribute attrib = getAttribute(name);
+    public String attributeValue(String name) {
+        Attribute attrib = attribute(name);
         if (attrib == null) {
             return null;
         } 
@@ -204,8 +204,8 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         }
     }
     
-    public String getAttributeValue(QName qName) {
-        Attribute attrib = getAttribute(qName);
+    public String attributeValue(QName qName) {
+        Attribute attrib = attribute(qName);
         if (attrib == null) {
             return null;
         } 
@@ -214,18 +214,18 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         }
     }
     
-    public String getAttributeValue(String name, String defaultValue) {
-        String answer = getAttributeValue(name);
+    public String attributeValue(String name, String defaultValue) {
+        String answer = attributeValue(name);
         return (answer != null) ? answer : defaultValue;
     }
 
-    public String getAttributeValue(QName qName, String defaultValue) {
-        String answer = getAttributeValue(qName);
+    public String attributeValue(QName qName, String defaultValue) {
+        String answer = attributeValue(qName);
         return (answer != null) ? answer : defaultValue;
     }
     
     public void setAttributeValue(String name, String value) {
-        Attribute attribute = getAttribute(name);
+        Attribute attribute = attribute(name);
         if (attribute == null ) {
             add(getDocumentFactory().createAttribute(name, value));
         }
@@ -239,7 +239,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     }
 
     public void setAttributeValue(QName qName, String value) {
-        Attribute attribute = getAttribute(qName);
+        Attribute attribute = attribute(qName);
         if (attribute == null ) {
             add(getDocumentFactory().createAttribute(qName, value));
         }
@@ -260,7 +260,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
             
             throw new IllegalAddException( this, attribute, message );
         }        
-        getAttributeList().add(attribute);
+        attributeList().add(attribute);
         childAdded(attribute);
     }
     
@@ -563,7 +563,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
 
     /** @return the internal List used to store attributes
       */
-    protected abstract List getAttributeList();
+    protected abstract List attributeList();
 }
 
 

@@ -61,23 +61,23 @@ public class BeanElement extends DefaultElement {
         setAttributeList(null);
     }
     
-    public Attribute getAttribute(String name) {
-        return getBeanAttributeList().getAttribute(name);
+    public Attribute attribute(String name) {
+        return getBeanAttributeList().attribute(name);
     }
     
-    public Attribute getAttribute(QName qname) {
-        return getBeanAttributeList().getAttribute(qname);
+    public Attribute attribute(QName qname) {
+        return getBeanAttributeList().attribute(qname);
     }
     
     public void setAttributeValue(String name, String value) {
-        Attribute attribute = getAttribute(name);
+        Attribute attribute = attribute(name);
         if (attribute != null ) {
             attribute.setValue(value);
         }
     }
 
     public void setAttributeValue(QName qName, String value) {
-        Attribute attribute = getAttribute(qName);
+        Attribute attribute = attribute(qName);
         if (attribute != null ) {
             attribute.setValue(value);
         }
@@ -96,7 +96,7 @@ public class BeanElement extends DefaultElement {
     }
     
     protected BeanAttributeList getBeanAttributeList() {
-        return (BeanAttributeList) getAttributeList();
+        return (BeanAttributeList) attributeList();
     }
     
     /** A Factory Method pattern which lazily creates 

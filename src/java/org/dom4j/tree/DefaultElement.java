@@ -666,15 +666,15 @@ public class DefaultElement extends AbstractElement {
         return EMPTY_ITERATOR;
     }
 
-    public List getAttributes() {
-        return new ContentListFacade(this, getAttributeList());
+    public List attributes() {
+        return new ContentListFacade(this, attributeList());
     }
     
     public void setAttributes(List attributes) {
         this.attributes = attributes;
     }
     
-    public Attribute getAttribute(String name) {
+    public Attribute attribute(String name) {
         if ( attributes != null ) {
             int size = attributes.size();
             for ( int i = 0; i < size; i++ ) {
@@ -687,7 +687,7 @@ public class DefaultElement extends AbstractElement {
         return null;
     }
 
-    public Attribute getAttribute(QName qName) {
+    public Attribute attribute(QName qName) {
         if ( attributes != null ) {
             int size = attributes.size();
             for ( int i = 0; i < size; i++ ) {
@@ -700,42 +700,10 @@ public class DefaultElement extends AbstractElement {
         return null;
     }
 
-    public Attribute getAttribute(String name, Namespace namespace) {
-        return getAttribute( QName.get( name, namespace ) );
+    public Attribute attribute(String name, Namespace namespace) {
+        return attribute( QName.get( name, namespace ) );
     }
 
-    public Attribute removeAttribute(String name) {
-        if ( attributes != null ) {
-            for ( Iterator iter = attributes.iterator(); iter.hasNext(); ) {
-                Attribute attribute = (Attribute) iter.next();
-                if ( name.equals( attribute.getName() ) ) {
-                    iter.remove();
-                    childRemoved(attribute);
-                    return attribute;
-                }
-            }
-        }
-        return null;
-    }
-    
-    public Attribute removeAttribute(QName qName) {
-        if ( attributes != null ) {
-            for ( Iterator iter = attributes.iterator(); iter.hasNext(); ) {
-                Attribute attribute = (Attribute) iter.next();
-                if ( qName.equals( attribute.getQName() ) ) {
-                    iter.remove();
-                    childRemoved(attribute);
-                    return attribute;
-                }
-            }
-        }
-        return null;
-    }
-    
-    public Attribute removeAttribute(String name, Namespace namespace) {
-        return removeAttribute( QName.get( name, namespace ) );
-    }
-    
     public boolean remove(Attribute attribute) {
         if ( attributes == null ) {
             return false;
@@ -800,7 +768,7 @@ public class DefaultElement extends AbstractElement {
         return contents;
     }
 
-    protected List getAttributeList() {
+    protected List attributeList() {
         if ( attributes == null ) {
             attributes = createAttributeList();
         }
@@ -862,7 +830,7 @@ public class DefaultElement extends AbstractElement {
     protected String getElementID(Element element) {
         // XXX: there will be other ways of finding the ID
         // XXX: should probably have an IDResolver or something
-        return element.getAttributeValue( "id" );
+        return element.attributeValue( "id" );
     }
 }
 

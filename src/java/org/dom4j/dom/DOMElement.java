@@ -30,7 +30,7 @@ import org.w3c.dom.NodeList;
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class DOMElement extends DefaultElement { // implements org.w3c.dom.Element {
+public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
 
     public DOMElement(String name) { 
         super(name);
@@ -107,11 +107,9 @@ public class DOMElement extends DefaultElement { // implements org.w3c.dom.Eleme
         return DOMNodeHelper.getNextSibling(this);
     }
 
-/*    
     public NamedNodeMap getAttributes() {
         return DOMNodeHelper.getAttributes(this);
     }
-*/
     
     public Document getOwnerDocument() {
         return DOMNodeHelper.getOwnerDocument(this);
@@ -167,18 +165,24 @@ public class DOMElement extends DefaultElement { // implements org.w3c.dom.Eleme
         return getName();
     }
 
-    //public String getAttribute(String name)
+    public String getAttribute(String name) {
+        return attributeValue(name);
+    }
 
-    //public void setAttribute(String name, String value) throws DOMException;
+    public void setAttribute(String name, String value) throws DOMException {
+        setAttributeValue(name, value);
+    }
 
-    //public void removeAttribute(String name) throws DOMException;
+    public void removeAttribute(String name) throws DOMException {
+        Attribute attribute = attribute(name);
+    }
 
     public org.w3c.dom.Attr getAttributeNode(String name) {
-        return DOMNodeHelper.asDOMAttr( getAttribute( name ) );
+        return DOMNodeHelper.asDOMAttr( attribute( name ) );
     }
 
     public org.w3c.dom.Attr setAttributeNode(org.w3c.dom.Attr newAttr) throws DOMException {
-        Attribute attribute = getAttributeObject(newAttr);
+        Attribute attribute = attribute(newAttr);
         if ( attribute != null ) {
             attribute.setValue( newAttr.getValue() );
         }
@@ -190,7 +194,7 @@ public class DOMElement extends DefaultElement { // implements org.w3c.dom.Eleme
     }
 
     public org.w3c.dom.Attr removeAttributeNode(org.w3c.dom.Attr oldAttr) throws DOMException {
-        Attribute attribute = getAttributeObject(oldAttr);
+        Attribute attribute = attribute(oldAttr);
         if ( attribute != null ) {
             attribute.detach();
             return DOMNodeHelper.asDOMAttr( attribute );
@@ -204,7 +208,7 @@ public class DOMElement extends DefaultElement { // implements org.w3c.dom.Eleme
     }
 
     public String getAttributeNS(String namespaceURI,  String localName) {
-        Attribute attribute = getAttributeObjectNS( namespaceURI, localName );
+        Attribute attribute = attribute( namespaceURI, localName );
         if ( attribute != null ) {
             return attribute.getValue();
         }
@@ -216,7 +220,7 @@ public class DOMElement extends DefaultElement { // implements org.w3c.dom.Eleme
         String qualifiedName, 
         String value
     ) throws DOMException {
-        Attribute attribute = getAttributeObjectNS( namespaceURI, qualifiedName );
+        Attribute attribute = attribute( namespaceURI, qualifiedName );
         if ( attribute != null ) {
             attribute.setValue(value);
         }
@@ -230,14 +234,14 @@ public class DOMElement extends DefaultElement { // implements org.w3c.dom.Eleme
         String namespaceURI, 
         String localName
     ) throws DOMException {
-        Attribute attribute = getAttributeObjectNS( namespaceURI, localName );
+        Attribute attribute = attribute( namespaceURI, localName );
         if ( attribute != null ) {
             remove( attribute );
         }
     }
 
     public org.w3c.dom.Attr getAttributeNodeNS(String namespaceURI,  String localName) {
-        Attribute attribute = getAttributeObjectNS( namespaceURI, localName );
+        Attribute attribute = attribute( namespaceURI, localName );
         if ( attribute != null ) {
             DOMNodeHelper.asDOMAttr( attribute );
         }
@@ -245,7 +249,7 @@ public class DOMElement extends DefaultElement { // implements org.w3c.dom.Eleme
     }
 
     public org.w3c.dom.Attr setAttributeNodeNS(org.w3c.dom.Attr newAttr) throws DOMException {
-        Attribute attribute = getAttributeObjectNS( 
+        Attribute attribute = attribute( 
             newAttr.getNamespaceURI(), newAttr.getLocalName() 
         );
         if ( attribute != null ) {
@@ -295,15 +299,15 @@ public class DOMElement extends DefaultElement { // implements org.w3c.dom.Eleme
     }
 
     public boolean hasAttributeNS(String namespaceURI, String localName) {
-        return getAttributeObjectNS(namespaceURI, localName) != null;
+        return attribute(namespaceURI, localName) != null;
     }
 
     
     // Implementation methods
     //-------------------------------------------------------------------------            
     
-    protected Attribute getAttributeObject(org.w3c.dom.Attr attr) {
-        return getAttribute( 
+    protected Attribute attribute(org.w3c.dom.Attr attr) {
+        return attribute( 
             QName.get( 
                 attr.getLocalName(), 
                 attr.getPrefix(), 
@@ -312,8 +316,8 @@ public class DOMElement extends DefaultElement { // implements org.w3c.dom.Eleme
         );
     }
 
-    protected Attribute getAttributeObjectNS(String namespaceURI,  String localName) {
-        List attributes = getAttributeList();
+    protected Attribute attribute(String namespaceURI,  String localName) {
+        List attributes = attributeList();
         int size = attributes.size();
         for ( int i = 0; i < size; i++ ) {
             Attribute attribute = (Attribute) attributes.get(i);

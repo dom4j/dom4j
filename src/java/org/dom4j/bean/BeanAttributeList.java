@@ -38,7 +38,7 @@ public class BeanAttributeList extends AbstractList {
     public BeanAttributeList(BeanElement parent, BeanMetaData beanMetaData) { 
         this.parent = parent;
         this.beanMetaData = beanMetaData;
-        this.attributes = new BeanAttribute[ beanMetaData.getAttributeCount() ];
+        this.attributes = new BeanAttribute[ beanMetaData.attributeCount() ];
     }
     
     public BeanAttributeList(BeanElement parent) { 
@@ -47,20 +47,20 @@ public class BeanAttributeList extends AbstractList {
         Object data = parent.getData();
         Class beanClass = (data != null) ? data.getClass() : null;
         this.beanMetaData = BeanMetaData.get( beanClass );
-        this.attributes = new BeanAttribute[ beanMetaData.getAttributeCount() ];
+        this.attributes = new BeanAttribute[ beanMetaData.attributeCount() ];
     }
     
-    public Attribute getAttribute(String name) {
+    public Attribute attribute(String name) {
         int index = beanMetaData.getIndex(name);
-        return getAttribute(index);
+        return attribute(index);
     }
     
-    public Attribute getAttribute(QName qname) {
+    public Attribute attribute(QName qname) {
         int index = beanMetaData.getIndex(qname);
-        return getAttribute(index);
+        return attribute(index);
     }
     
-    public BeanAttribute getAttribute(int index) {
+    public BeanAttribute attribute(int index) {
         if ( index >= 0 && index <= attributes.length ) {
             BeanAttribute attribute = attributes[index];
             if ( attribute == null ) {

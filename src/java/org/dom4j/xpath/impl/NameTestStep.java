@@ -81,18 +81,18 @@ public class NameTestStep extends UnAbbrStep {
     public List applyToAttribute(Object node, ContextSupport support) {
         if ( node instanceof Element ) {
             if ( matchesAnyName ) {
-                return getAttributes( (Element) node );
+                return attributes( (Element) node );
             }
             else {
                 Element element = (Element) node;
                 Attribute attr = null;
                 
                 if ( _namespacePrefix == null ) {
-                    attr = element.getAttribute( _localName );
+                    attr = element.attribute( _localName );
                 }
                 else {
                     QName qName = support.getQName( _namespacePrefix, _localName );                    
-                    attr = element.getAttribute( qName );
+                    attr = element.attribute( qName );
                 }
                 
                 if ( attr != null ) {

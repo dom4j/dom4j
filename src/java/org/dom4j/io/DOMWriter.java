@@ -180,7 +180,7 @@ public class DOMWriter {
         }
         
         // add the attributes
-        List attributes = element.getAttributes();
+        List attributes = element.attributes();
         size = attributes.size();
         for ( int i = 0; i < size ; i++ ) {
             Attribute attribute = (Attribute) attributes.get(i);   
@@ -259,7 +259,7 @@ public class DOMWriter {
         HashSet localNamespaces
     ) {
         if ( ! isIgnoreableNamespace( namespace, localNamespaces ) ) {
-            String attributeName = getAttributeNameForNamespace(namespace);
+            String attributeName = attributeNameForNamespace(namespace);
             if ( localNamespaces == parentNamespaces ) {
                 localNamespaces = (HashSet) parentNamespaces.clone();
             }
@@ -276,7 +276,7 @@ public class DOMWriter {
         return declaredNamespaces.contains( namespace );
     }
     
-    protected String getAttributeNameForNamespace(Namespace namespace) {
+    protected String attributeNameForNamespace(Namespace namespace) {
         String xmlns = "xmlns";
         String prefix = namespace.getPrefix();
         if ( prefix.length() > 0 ) {

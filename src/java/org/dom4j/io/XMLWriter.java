@@ -1103,7 +1103,7 @@ public class XMLWriter implements Cloneable {
             }
         }
 
-        printAttributes(element.getAttributes(), element, out, namespaces);
+        printAttributes(element.attributes(), element, out, namespaces);
 
         // handle "" string same as empty
         if (stringOnly) {

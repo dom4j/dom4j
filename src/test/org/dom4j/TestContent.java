@@ -38,8 +38,8 @@ public class TestContent extends AbstractTestCase {
         Element author1 = (Element) authors.get(0);
         Element author2 = (Element) authors.get(1);
         
-        assert( "Author1 is James", author1.getAttributeValue( "name" ).equals( "James" ) );
-        assert( "Author2 is Bob", author2.getAttributeValue( "name" ).equals( "Bob" ) );
+        assert( "Author1 is James", author1.attributeValue( "name" ).equals( "James" ) );
+        assert( "Author2 is Bob", author2.attributeValue( "name" ).equals( "Bob" ) );
         
         testGetAttributes(author1);
         testGetAttributes(author2);
@@ -115,10 +115,10 @@ public class TestContent extends AbstractTestCase {
         String undefinedName = "undefined-attribute-name";
         String defaultValue = "** Default Value **";
         
-        String value = author.getAttributeValue( definedName, defaultValue );
+        String value = author.attributeValue( definedName, defaultValue );
         assert( "Defined value doesn't return specified default value", value != defaultValue );
         
-        value = author.getAttributeValue( undefinedName, defaultValue );        
+        value = author.attributeValue( undefinedName, defaultValue );        
         assert( "Undefined value returns specified default value", value == defaultValue );
     }
     
