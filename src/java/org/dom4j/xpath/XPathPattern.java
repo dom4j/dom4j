@@ -13,7 +13,6 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.InvalidXPathException;
-import org.dom4j.VariableContext;
 import org.dom4j.XPathException;
 
 import org.jaxen.Context;
@@ -21,6 +20,7 @@ import org.jaxen.ContextSupport;
 import org.jaxen.JaxenException;
 import org.jaxen.SimpleNamespaceContext;
 import org.jaxen.SimpleVariableContext;
+import org.jaxen.VariableContext;
 import org.jaxen.XPathFunctionContext;
 import org.jaxen.dom4j.DocumentNavigator;
 import org.jaxen.pattern.Pattern;
@@ -114,19 +114,8 @@ public class XPathPattern implements org.dom4j.rule.Pattern {
         return pattern.getMatchesNodeName();
     }    
     
-    public void setVariableContext(final VariableContext variableContext) {
-        if ( variableContext instanceof org.jaxen.VariableContext ) {
-            context.getContextSupport().setVariableContext( (org.jaxen.VariableContext) variableContext );
-        }
-        else {
-            context.getContextSupport().setVariableContext( 
-                new org.jaxen.VariableContext() {
-                    public Object getVariableValue(String prefix, String localName) {
-                        return variableContext.getVariableValue( prefix, localName );
-                    }
-                }
-            );
-        }
+    public void setVariableContext(VariableContext variableContext) {
+        context.getContextSupport().setVariableContext( variableContext );
     }
     
     
