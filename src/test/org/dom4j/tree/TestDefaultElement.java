@@ -63,4 +63,47 @@ public class TestDefaultElement extends AbstractTestCase {
         assertNotNull(namespaces);
         assertEquals(2, namespaces.size());
     }
+    
+    public void testDeclaredNamespaces() throws Exception {
+        String xml = "<a xmlns:ns1=\"uri1\">" +
+                     "    <ns1:b/>" +
+                     "    <ns2:c xmlns:ns2=\"uri2\"/>" +
+                     "</a>";
+        Document doc = DocumentHelper.parseText(xml);
+        
+        Element a = doc.getRootElement();
+        List ns = a.declaredNamespaces();
+        assertEquals(1, ns.size());
+        assertSame(a.getNamespaceForPrefix("ns1"), ns.get(0));
+        
+        Element b = a.element("b");
+        ns = b.declaredNamespaces();
+        assertEquals(0, ns.size());
+        
+        Element c = a.element("c");
+        ns = c.declaredNamespaces();
+        assertEquals(1, ns.size());
+        assertSame(c.getNamespaceForPrefix("ns2"), ns.get(0));
+    }
+    
+    public void testAdditionalNamespaces() throws Exception {
+        String xml = "<a xmlns:ns1=\"uri1\">" +
+                     "    <ns1:b/>" +
+                     "    <ns2:c xmlns:ns2=\"uri2\"/>" +
+                     "</a>";
+        Document doc = DocumentHelper.parseText(xml);
+        
+        Element a = doc.getRootElement();
+        List ns = a.additionalNamespaces();
+        assertEquals(1, ns.size());
+        assertSame(a.getNamespaceForPrefix("ns1"), ns.get(0));
+        
+        Element b = a.element("b");
+        ns = b.additionalNamespaces();
+        assertEquals(0, ns.size());
+        
+        Element c = a.element("c");
+        ns = c.additionalNamespaces();
+        assertEquals(0, ns.size());
+    }
 }

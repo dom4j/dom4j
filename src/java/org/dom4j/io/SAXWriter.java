@@ -587,6 +587,16 @@ public class SAXWriter implements XMLReader {
       */
     protected AttributesImpl startPrefixMapping( Element element, NamespaceStack namespaceStack ) throws SAXException {
         AttributesImpl namespaceAttributes = null;
+        
+        // start with the namespace of the element
+        Namespace elementNamespace = element.getNamespace();
+        if ((elementNamespace != null) && !isIgnoreableNamespace(elementNamespace, namespaceStack)) {
+            namespaceStack.push(elementNamespace);
+            contentHandler.startPrefixMapping(
+                    elementNamespace.getPrefix(), elementNamespace.getURI());
+            namespaceAttributes = addNamespaceAttribute(namespaceAttributes, elementNamespace);
+        }
+        
         List declaredNamespaces = element.declaredNamespaces();
         for ( int i = 0, size = declaredNamespaces.size(); i < size ; i++ ) {
             Namespace namespace = (Namespace) declaredNamespaces.get(i);

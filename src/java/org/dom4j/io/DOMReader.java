@@ -196,10 +196,10 @@ public class DOMReader {
                     String prefix = getPrefix(name);
                     String uri = attribute.getNodeValue();
 
-                    if (!uri.equals(namespaceUri) || !prefix.equals(elementPrefix)) {
+//                    if (!uri.equals(namespaceUri) || !prefix.equals(elementPrefix)) {
                         Namespace namespace = namespaceStack.addNamespace( prefix, uri );
                         element.add( namespace );
-                    }
+//                    }
                 }
                 else {
                     attributes.add( attribute );

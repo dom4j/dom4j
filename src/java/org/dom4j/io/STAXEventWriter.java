@@ -199,7 +199,7 @@ public class STAXEventWriter {
         // create attribute & namespace iterators
         Iterator attrIter = new AttributeIterator(elem.attributeIterator());
         Iterator nsIter = new NamespaceIterator(
-        elem.declaredNamespaces().iterator());
+                elem.declaredNamespaces().iterator());
         
         // create start event
         return factory.createStartElement(tagName, attrIter, nsIter);

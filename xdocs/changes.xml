@@ -9,6 +9,12 @@
 
     <release version="1.5 dev" date="in CVS">
       <action dev="maartenc" type="fix" due-to="Marc Pellmann">
+        <code>Element.declaredNamespaces()</code> now only returns the namespaces that are
+        declared on that element. <code>Element.additionalNamespaces()</code>
+        now only returns namespaces that are declared on that element and is not the same as the
+        namespace of that element.
+      </action>
+      <action dev="maartenc" type="fix" due-to="Marc Pellmann">
         Escape the values of internal DTD entity declarations when serializing to XML.
       </action>
       <action dev="maartenc" type="fix" due-to="Rob Grzywinski">

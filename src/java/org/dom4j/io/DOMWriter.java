@@ -183,6 +183,15 @@ public class DOMWriter {
         org.w3c.dom.Element domElement = domDocument.createElementNS(elUri, elName);
         
         int stackSize = namespaceStack.size();
+        
+        // add the namespace of the element first
+        Namespace elementNamespace = element.getNamespace();
+        if (isNamespaceDeclaration(elementNamespace)) {
+            namespaceStack.push(elementNamespace);
+            writeNamespace(domElement, elementNamespace);
+        }
+        
+        // add the additional declared namespaces
         List declaredNamespaces = element.declaredNamespaces();
         for ( int i = 0, size = declaredNamespaces.size(); i < size ; i++ ) {
             Namespace namespace = (Namespace) declaredNamespaces.get(i);

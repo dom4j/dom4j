@@ -464,11 +464,11 @@ public class DefaultElement extends AbstractElement {
 
         BackedList answer = createResultList();
 
-        if (getNamespaceURI().length() > 0) {
-
-            answer.addLocal(getNamespace());
-
-        }
+//        if (getNamespaceURI().length() > 0) {
+//
+//            answer.addLocal(getNamespace());
+//
+//        }
 
         final Object contentShadow = content;
         if (contentShadow instanceof List) {
@@ -523,8 +523,11 @@ public class DefaultElement extends AbstractElement {
                 if (object instanceof Namespace) {
 
                     Namespace namespace = (Namespace) object;
+                    
+                    if (!namespace.equals(getNamespace())) {
 
-                    answer.addLocal(namespace);
+                        answer.addLocal(namespace);
+                    }
 
                 }
 
@@ -539,6 +542,12 @@ public class DefaultElement extends AbstractElement {
             if (contentShadow instanceof Namespace) {
 
                 Namespace namespace = (Namespace) contentShadow;
+                
+                if (namespace.equals(getNamespace())) {
+                    
+                    return createEmptyList();
+                    
+                }
 
                 return createSingleResultList(namespace);
 

@@ -749,9 +749,9 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
         Namespace elementNamespace = element.getNamespace();
         for ( int size = namespaceStack.size(); declaredNamespaceIndex < size; declaredNamespaceIndex++ ) {
             Namespace namespace = namespaceStack.getNamespace(declaredNamespaceIndex);
-            if ( namespace != elementNamespace ) {
+//            if ( namespace != elementNamespace ) {
                 element.add( namespace );
-            }
+//            }
         }
     }
 

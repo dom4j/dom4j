@@ -1968,11 +1968,11 @@ public abstract class AbstractElement
 
         BackedList answer = createResultList();
 
-        if (getNamespaceURI().equals(uri)) {
-
-            answer.addLocal(getNamespace());
-
-        }
+//        if (getNamespaceURI().equals(uri)) {
+//
+//            answer.addLocal(getNamespace());
+//
+//        }
 
         List list = contentList();
 
@@ -2000,12 +2000,12 @@ public abstract class AbstractElement
 
         BackedList answer = createResultList();
 
-        if (getNamespaceURI().length() > 0) {
-
-            answer.addLocal(getNamespace());
-
-        }
-
+//        if (getNamespaceURI().length() > 0) {
+//
+//            answer.addLocal(getNamespace());
+//
+//        }
+//
         List list = contentList();
 
         int size = list.size();
@@ -2041,8 +2041,11 @@ public abstract class AbstractElement
             if (object instanceof Namespace) {
 
                 Namespace namespace = (Namespace) object;
+                
+                if (! namespace.equals(getNamespace())) {
 
-                answer.addLocal(namespace);
+                    answer.addLocal(namespace);
+                }
 
             }
 
