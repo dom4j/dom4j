@@ -45,19 +45,19 @@ public class DOMDocument extends DefaultDocument implements org.w3c.dom.Document
         super(name);
     }
 
-    public DOMDocument(Element rootElement) { 
+    public DOMDocument(DOMElement rootElement) { 
         super(rootElement);
     }
 
-    public DOMDocument(DocumentType docType) { 
+    public DOMDocument(DOMDocumentType docType) { 
         super(docType);
     }
 
-    public DOMDocument(Element rootElement, DocumentType docType) { 
+    public DOMDocument(DOMElement rootElement, DOMDocumentType docType) { 
         super(rootElement, docType);
     }
 
-    public DOMDocument(String name, Element rootElement, DocumentType docType) { 
+    public DOMDocument(String name, DOMElement rootElement, DOMDocumentType docType) { 
         super(name, rootElement, docType);
     }
 

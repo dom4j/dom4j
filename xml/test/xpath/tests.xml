@@ -9,6 +9,13 @@
     </context>
   </document>
 -->
+  <!-- test cases for the use of = with nodesets -->
+  <document url="xml/web.xml">
+    <context select="/">
+      <pattern match="/web-app/servlet/servlet-name = 'file'"/>
+      <pattern match="/web-app/servlet/servlet-name = 'snoop'"/>
+    </context>
+  </document>
 
   <!-- test the use of 'or' -->
   <document url="xml/test/sample.xml">
