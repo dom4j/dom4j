@@ -7,7 +7,7 @@
   <body>
     <links>
       <item name="XPath Spec"        href="http://www.w3.org/TR/xpath"/>
-      <item name="Jaxen"             href="http://jaxen.org/"/>
+      <item name="Jaxen"             href="http://jaxen.codehaus.org/"/>
       <item name="dom4j@SourceForge" href="http://sourceforge.net/projects/dom4j/"/>
     </links>
 
