@@ -346,6 +346,16 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     
     // Helper methods
     
+    public String getAttributeValue(String name, String defaultValue) {
+        String answer = getAttributeValue(name);
+        return (answer != null) ? answer : defaultValue;
+    }
+
+    public String getAttributeValue(String name, Namespace namespace, String defaultValue) {
+        String answer = getAttributeValue(name, namespace);
+        return (answer != null) ? answer : defaultValue;
+    }
+    
     public String getElementText(String name) {
         Element element = getElement(name);
         return (element != null) ? element.getText() : null;

@@ -61,6 +61,36 @@ public class Foo {
 </pre>
     </section>
 
+
+    <section title="Creating a new XML document">
+      <p>Often in <b>DOM4J</b> you will need to create a new document
+        from scratch. Here's an example of doing that.
+      </p>
+<pre>
+import org.dom4j.Document;
+import org.dom4j.DocumentFactory;
+import org.dom4j.Element;
+
+public class Foo {
+
+    public Document createDocument() {
+        Document document = DocumentFactory.create();
+        Element root = document.addElement( "root" );
+
+        Element author1 = root.addElement( "author" );
+        author1.setAttributeValue( "name", "James" );
+        author1.setAttributeValue( "location", "UK" );
+        
+        Element author2 = root.addElement( "author" );
+        author2.setAttributeValue( "name", "Bob" );
+        author2.setAttributeValue( "location", "Canada" );
+
+        return document;
+    }
+}
+</pre>
+    </section>
+
   </body>
 </document>
 

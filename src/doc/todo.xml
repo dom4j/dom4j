@@ -5,6 +5,10 @@
     
     <section title="Urgent tasks">
       <ul>
+        <li>Complete JavaDoc for interfaces, particularly for Branch and Element
+        </li>
+        <li>Do a UML style documentation of Node, Branch, Element, Document etc.
+        </li>
         <li>Resolve the addAdditionalNamespace / add(Namespace) / setNamespace() 
             inconsistency, like addText(text), setText(text).
         </li>

@@ -130,15 +130,39 @@ public interface Element extends Branch {
     public String getAttributeValue(String name);
 
     /** <p>This returns the attribute value for the attribute with the 
-      * given name and within no namespace or null if there is no such 
+      * given name and within no namespace or the default value if there is 
+      * no such attribute value.</p>
+      *
+      * @param name is the name of the attribute value to be returnd
+      * @param defaultValue is the default value to be returned if the 
+      *    attribute has no value defined.
+      * @return the value of the attribute or the defaultValue if the 
+      *    attribute has no value defined.
+      */
+    public String getAttributeValue(String name, String defaultValue);
+
+    /** <p>This returns the attribute value for the attribute with the 
+      * given name and within the given namespace or null if there is no such 
       * attribute or the empty string if the attribute value is empty.</p>
       *
       * @param name is the name of the attribute value to be returnd
-      * @param namespace is the <code>Namespace</code> of the attribute
       * @return the value of the attribute, null if the attribute does 
       * not exist or the empty string
       */
     public String getAttributeValue(String name, Namespace namespace);
+
+    /** <p>This returns the attribute value for the attribute with the 
+      * given name and within the given namespace or the default value if 
+      * there is no such attribute value.</p>
+      *
+      * @param name is the name of the attribute value to be returnd
+      * @param namespace is the <code>Namespace</code> of the attribute
+      * @param defaultValue is the default value to be returned if the 
+      *    attribute has no value defined.
+      * @return the value of the attribute or the defaultValue if the 
+      *    attribute has no value defined.
+      */
+    public String getAttributeValue(String name, Namespace namespace, String defaultValue);
 
     
     /** <p>Sets the attribute value of the given name.</p>
@@ -158,7 +182,21 @@ public interface Element extends Branch {
       */
     public void setAttributeValue(String name, String value, Namespace namespace);
 
+    /** <p>Removes the attribute with the given name.</p>
+      *
+      * @param name is the name of the attribute to be removed
+      * @return true if the attribute was successfully removed or false 
+      *    if the attribute did not exist
+      */
     public boolean removeAttribute(String name);
+    
+    /** <p>Removes the attribute with the given name and namespace.</p>
+      *
+      * @param name is the name of the attribute to be removed
+      * @param namespace is the <code>Namespace</code> of the attribute
+      * @return true if the attribute was successfully removed or false 
+      *    if the attribute did not exist
+      */
     public boolean removeAttribute(String name, Namespace namespace);
     
 
@@ -190,10 +228,39 @@ public interface Element extends Branch {
 
     // builder methods 
     
+    /** Adds a new <code>CDATA</code> node with the given text to this element
+      * and returns a reference to the new node.
+      *
+      * @param cdata is the text for the <code>CDATA</code> node.
+      * @return the newly added <code>CDATA</code> node.
+      */    
     public CDATA addCDATA(String cdata);
+    
+    /** Adds a new <code>Text</code> node with the given text to this element
+      * and returns a reference to the new node.
+      *
+      * @param text is the text for the <code>Text</code> node.
+      * @return the newly added <code>Text</code> node.
+      */    
     public Text addText(String text);    
+    
+    /** Adds a new <code>Entity</code> node with the given name to this element
+      * and returns a reference to the new node.
+      *
+      * @param name is the name for the <code>Entity</code> node.
+      * @return the newly added <code>Entity</code> node.
+      */    
     public Entity addEntity(String name);
+    
+    /** Adds a new <code>Entity</code> node with the given name and text
+      * to this element and returns a reference to the new node.
+      *
+      * @param name is the name for the <code>Entity</code> node.
+      * @param text is the text for the <code>Entity</code> node.
+      * @return the newly added <code>Entity</code> node.
+      */    
     public Entity addEntity(String name, String text);
+    
     public Namespace addAdditionalNamespace(String prefix, String uri);
 
     // typesafe versions using node classes
