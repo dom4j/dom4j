@@ -10,7 +10,6 @@
 package org.dom4j.tree;
 
 import org.dom4j.Element;
-import org.dom4j.Node;
 import org.dom4j.Namespace;
 
 /** <p><code>DefaultNamespace</code> implements a doubly linked node which 

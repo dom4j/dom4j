@@ -9,32 +9,20 @@
 
 package org.dom4j.tree;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.dom4j.Branch;
-import org.dom4j.CDATA;
-import org.dom4j.CharacterData;
 import org.dom4j.Comment;
 import org.dom4j.Element;
-import org.dom4j.Entity;
 import org.dom4j.IllegalAddException;
-import org.dom4j.Node;
 import org.dom4j.Namespace;
-import org.dom4j.QName;
+import org.dom4j.Node;
 import org.dom4j.ProcessingInstruction;
-import org.dom4j.Text;
+import org.dom4j.QName;
 import org.dom4j.io.OutputFormat;
-
-import org.xml.sax.Attributes;
 
 /** <p><code>AbstractBranch</code> is an abstract base class for 
   * tree implementors to use for implementation inheritence.</p>

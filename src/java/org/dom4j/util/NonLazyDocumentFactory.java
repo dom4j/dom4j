@@ -9,11 +9,8 @@
 
 package org.dom4j.util;
 
-import org.dom4j.Attribute;
-import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
-import org.dom4j.Namespace;
 import org.dom4j.QName;
 
 /** <p><code>NonLazyDocumentFactory</code> is a factory of XML objects which 

@@ -9,12 +9,8 @@
 
 package org.dom4j;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
-import org.xml.sax.Attributes;
 
 
 /** <p><code>Branch</code> interface defines the common behaviour 

@@ -10,10 +10,10 @@
 package org.dom4j.swing;
 
 import java.util.List;
+
 import javax.swing.table.AbstractTableModel;
-   
+
 import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.XPath;
 

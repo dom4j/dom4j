@@ -11,11 +11,8 @@ package org.dom4j.tree;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Iterator;
-import java.util.StringTokenizer;
+import java.util.List;
 
 import org.dom4j.DocumentType;
 import org.dom4j.Element;

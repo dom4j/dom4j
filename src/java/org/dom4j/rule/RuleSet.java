@@ -9,9 +9,8 @@
 
 package org.dom4j.rule;
 
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.dom4j.Node;
 

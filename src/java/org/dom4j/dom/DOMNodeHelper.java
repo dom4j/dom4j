@@ -15,12 +15,8 @@ import org.dom4j.Branch;
 import org.dom4j.CharacterData;
 import org.dom4j.Document;
 import org.dom4j.DocumentType;
-import org.dom4j.Node;
 import org.dom4j.Element;
-import org.dom4j.QName;
-import org.dom4j.Namespace;
-import org.dom4j.Text;
-
+import org.dom4j.Node;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;

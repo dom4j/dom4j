@@ -12,7 +12,6 @@ package org.dom4j.tree;
 import org.dom4j.Comment;
 import org.dom4j.Element;
 import org.dom4j.Node;
-import org.dom4j.Visitor;
 
 /** <p><code>FlyweightComment</code> is a Flyweight pattern implementation
   * of a singly linked, read-only XML Comment.</p>

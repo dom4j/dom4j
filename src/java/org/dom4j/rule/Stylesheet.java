@@ -9,11 +9,8 @@
 
 package org.dom4j.rule;
 
-import java.util.Iterator;
 import java.util.List;
 
-import org.dom4j.Attribute;
-import org.dom4j.Branch;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;

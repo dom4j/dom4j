@@ -10,7 +10,7 @@
 package org.dom4j.swing;
 
 import javax.swing.tree.DefaultTreeModel;
-   
+
 import org.dom4j.Document;
 
 /** <p><code>DocumentTreeModel</code> implements a Swing TreeModel

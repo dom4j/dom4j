@@ -10,17 +10,13 @@
 package org.dom4j;
 
 import java.io.StringReader;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.dom4j.io.SAXReader;
 import org.dom4j.rule.Pattern;
-
 import org.jaxen.VariableContext;
-
-import org.xml.sax.SAXException;
 
 /** <p><code>DocumentHelper</code> is a collection of helper methods 
   * for using DOM4J.</p>

@@ -10,10 +10,7 @@
 package org.dom4j.dom;
 
 import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
 import org.w3c.dom.DOMException;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 
 /** <p><code>DOMAttributeNodeMap</code> implements a W3C NameNodeMap

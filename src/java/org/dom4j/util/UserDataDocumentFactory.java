@@ -9,18 +9,10 @@
 
 package org.dom4j.util;
 
-import com.sun.msv.datatype.xsd.XSDatatype;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.dom4j.Attribute;
-import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
-import org.dom4j.Namespace;
 import org.dom4j.QName;
-import org.dom4j.io.SAXReader;
 
 /** <p><code>UserDataDocumentFactory</code> is a factory of XML objects which 
   * support the adornment of a user data object on an Element or Attribute

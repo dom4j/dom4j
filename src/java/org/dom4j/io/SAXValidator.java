@@ -12,7 +12,6 @@ package org.dom4j.io;
 import java.io.IOException;
 
 import org.dom4j.Document;
-
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;

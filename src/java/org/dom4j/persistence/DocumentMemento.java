@@ -3,9 +3,6 @@ package org.dom4j.persistence;
 import org.dom4j.Document;
 import org.dom4j.Node;
 
-import org.dom4j.persistence.MarshallingStrategy;
-import org.dom4j.persistence.MarshallingContext;
-
 /*
  * @author  <a href="mailto:toby-wan-kenobi@gmx.de">Tobias Rademacher</a>
  * @version 1.0

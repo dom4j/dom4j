@@ -1,11 +1,6 @@
 package org.dom4j.persistence;
 
-import org.dom4j.Document;
 import org.dom4j.Node;
-import org.dom4j.io.SAXWriter;
-import org.dom4j.io.SAXContentHandler;
-
-import org.dom4j.persistence.MarshallingContext;
 
 /**
  * @author  Tobias Rademacher

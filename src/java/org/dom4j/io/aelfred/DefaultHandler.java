@@ -13,11 +13,9 @@
 
 package org.dom4j.io.aelfred;
 
-import org.xml.sax.AttributeList;
-import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
-import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.ext.DeclHandler;
+import org.xml.sax.ext.LexicalHandler;
 
 
 // $Id$

@@ -12,7 +12,6 @@ package org.dom4j.tree;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.List;
 
 import org.dom4j.DocumentFactory;
 import org.dom4j.Namespace;

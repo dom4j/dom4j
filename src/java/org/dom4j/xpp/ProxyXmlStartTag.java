@@ -17,7 +17,6 @@ import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.QName;
 import org.dom4j.tree.AbstractElement;
-
 import org.gjt.xpp.XmlPullParserException;
 import org.gjt.xpp.XmlStartTag;
 

@@ -13,8 +13,8 @@ import java.util.Comparator;
 
 import org.dom4j.Attribute;
 import org.dom4j.Branch;
-import org.dom4j.CharacterData;
 import org.dom4j.CDATA;
+import org.dom4j.CharacterData;
 import org.dom4j.Comment;
 import org.dom4j.Document;
 import org.dom4j.DocumentType;

@@ -9,15 +9,11 @@
 
 package org.dom4j.bean;
 
-import java.util.Map;
-
-import org.dom4j.DocumentFactory;
 import org.dom4j.Attribute;
+import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.QName;
 import org.dom4j.tree.DefaultAttribute;
-import org.dom4j.tree.DefaultElement;
-
 import org.xml.sax.Attributes;
 
 /** <p><code>BeanDocumentFactory</code> is a factory of DOM4J objects

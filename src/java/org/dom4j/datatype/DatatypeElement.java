@@ -10,19 +10,16 @@
 package org.dom4j.datatype;
 
 import com.sun.msv.datatype.DatabindableDatatype;
+import com.sun.msv.datatype.SerializationContext;
+import com.sun.msv.datatype.xsd.XSDatatype;
 
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.Node;
 import org.dom4j.QName;
 import org.dom4j.tree.DefaultElement;
-
-import com.sun.msv.datatype.SerializationContext;
-import com.sun.msv.datatype.xsd.XSDatatype;
 import org.relaxng.datatype.DatatypeException;
 import org.relaxng.datatype.ValidationContext;
-
-import org.xml.sax.Attributes;
 
 /** <p><code>DatatypeElement</code> represents an Element which supports the
   * <a href="http://www.w3.org/TR/xmlschema-2/">XML Schema Data Types</a>

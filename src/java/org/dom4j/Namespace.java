@@ -10,8 +10,8 @@
 package org.dom4j;
 
 import org.dom4j.tree.AbstractNode;
-import org.dom4j.tree.NamespaceCache;
 import org.dom4j.tree.DefaultNamespace;
+import org.dom4j.tree.NamespaceCache;
 
 /** <p><code>Namespace</code> is a Flyweight Namespace that can be shared amongst nodes.</p>
   * 

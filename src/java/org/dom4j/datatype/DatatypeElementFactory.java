@@ -14,14 +14,10 @@ import com.sun.msv.datatype.xsd.XSDatatype;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import org.dom4j.Attribute;
-import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.QName;
-
-import org.xml.sax.Attributes;
 
 /** <p><code>DatatypeElementFactory</code> is a factory for a specific Element
  * in an XML Schema.</p>

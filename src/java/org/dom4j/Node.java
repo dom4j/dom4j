@@ -11,7 +11,6 @@ package org.dom4j;
 
 import java.io.IOException;
 import java.io.Writer;
-
 import java.util.List;
 
 /** <p><code>Node</code> defines the polymorphic behavior 

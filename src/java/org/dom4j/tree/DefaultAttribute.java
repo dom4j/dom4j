@@ -10,8 +10,8 @@
 package org.dom4j.tree;
 
 import org.dom4j.Element;
-import org.dom4j.QName;
 import org.dom4j.Namespace;
+import org.dom4j.QName;
 
 /** <p><code>DefaultAttribute</code> implements a doubly linked node which 
   * supports the parent relationship and is mutable.</p>

@@ -11,12 +11,11 @@ package org.dom4j;
 
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import org.dom4j.tree.QNameCache;
-import java.util.*;
 
 /** <p><code>QName</code> represents a qualified name value of an XML element
   * or attribute. It consists of a local name and a {@link Namespace}

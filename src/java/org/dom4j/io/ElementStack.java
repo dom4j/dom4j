@@ -9,11 +9,9 @@
 
 package org.dom4j.io;
 
-import java.util.ArrayList;
-
 import org.dom4j.Element;
-import org.dom4j.ElementPath;
 import org.dom4j.ElementHandler;
+import org.dom4j.ElementPath;
 
 /** <p><code>ElementStack</code> is used internally inside the 
   * {@link SAXContentHandler} to maintain a stack of {@link Element} 

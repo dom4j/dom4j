@@ -12,9 +12,8 @@ package org.dom4j.dom;
 import org.dom4j.Element;
 import org.dom4j.QName;
 import org.dom4j.tree.DefaultAttribute;
-
-import org.w3c.dom.Document;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 

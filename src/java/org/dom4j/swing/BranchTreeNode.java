@@ -14,7 +14,7 @@ import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.tree.TreeNode;
-   
+
 import org.dom4j.Branch;
 import org.dom4j.CharacterData;
 import org.dom4j.Node;

@@ -12,7 +12,7 @@ package org.dom4j.swing;
 import java.util.Enumeration;
 
 import javax.swing.tree.TreeNode;
-   
+
 import org.dom4j.Node;
 
 /** <p><code>LeafTreeNode</code> implements the Swing TreeNode interface

@@ -11,7 +11,6 @@ package org.dom4j.tree;
 
 import java.util.Map;
 
-import org.dom4j.Node;
 import org.dom4j.Element;
 
 /** <p><code>DefaultProcessingInstruction</code> is the default 

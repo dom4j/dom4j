@@ -14,7 +14,6 @@ import java.util.Map;
 
 import org.dom4j.Element;
 import org.dom4j.Node;
-import org.dom4j.ProcessingInstruction;
 
 /** <p><code>FlyweightProcessingInstruction</code> is a Flyweight pattern implementation
   * of a singly linked, read-only XML Processing Instruction.</p>

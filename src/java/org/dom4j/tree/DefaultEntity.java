@@ -9,7 +9,6 @@
 
 package org.dom4j.tree;
 
-import org.dom4j.Node;
 import org.dom4j.Element;
 
 /** <p><code>DefaultEntity</code> is the default Entity implementation.

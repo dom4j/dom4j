@@ -11,8 +11,6 @@ package org.dom4j.tree;
 
 import java.util.List;
 
-import org.dom4j.DocumentType;
-
 /** <p><code>DefaultDocumentType</code> is the DOM4J default implementation
   * of an XML document type.</p>
   *

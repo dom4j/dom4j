@@ -9,12 +9,10 @@
 
 package org.dom4j.tree;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.dom4j.Comment;
 import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
 import org.dom4j.DocumentType;
@@ -22,7 +20,6 @@ import org.dom4j.Element;
 import org.dom4j.IllegalAddException;
 import org.dom4j.Node;
 import org.dom4j.ProcessingInstruction;
-
 import org.xml.sax.EntityResolver;
 
 /** <p><code>DefaultDocument</code> is the default DOM4J default implementation

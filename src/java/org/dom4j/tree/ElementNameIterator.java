@@ -12,7 +12,6 @@ package org.dom4j.tree;
 import java.util.Iterator;
 
 import org.dom4j.Element;
-import org.dom4j.Namespace;
 
 
 /** <p><code>ElementNameIterator</code> is a filtering {@link Iterator} which 

@@ -11,7 +11,6 @@ package org.dom4j.util;
 
 import org.dom4j.Attribute;
 import org.dom4j.Element;
-import org.dom4j.Node;
 import org.dom4j.QName;
 
 /** <p><code>AttributeHelper</code> a number of helper methods for 

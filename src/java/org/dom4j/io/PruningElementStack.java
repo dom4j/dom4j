@@ -9,8 +9,6 @@
 
 package org.dom4j.io;
 
-import java.util.ArrayList;
-
 import org.dom4j.Element;
 import org.dom4j.ElementHandler;
 

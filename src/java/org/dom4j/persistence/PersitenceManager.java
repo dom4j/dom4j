@@ -1,10 +1,10 @@
 package org.dom4j.persistence;
 
-import org.dom4j.Document;
-
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+
+import org.dom4j.Document;
 
 /**
  *

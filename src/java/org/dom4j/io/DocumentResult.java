@@ -9,12 +9,9 @@
 
 package org.dom4j.io;
 
-import javax.xml.transform.Result;
 import javax.xml.transform.sax.SAXResult;
 
 import org.dom4j.Document;
-import org.dom4j.Node;
-
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
 

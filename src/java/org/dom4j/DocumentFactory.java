@@ -12,7 +12,6 @@ package org.dom4j;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
-
 import java.util.List;
 import java.util.Map;
 
@@ -25,16 +24,11 @@ import org.dom4j.tree.DefaultDocumentType;
 import org.dom4j.tree.DefaultElement;
 import org.dom4j.tree.DefaultEntity;
 import org.dom4j.tree.DefaultProcessingInstruction;
-import org.dom4j.tree.QNameCache;
-import org.dom4j.tree.DefaultAttribute;
-import org.dom4j.tree.DefaultEntity;
 import org.dom4j.tree.DefaultText;
+import org.dom4j.tree.QNameCache;
 import org.dom4j.xpath.DefaultXPath;
 import org.dom4j.xpath.XPathPattern;
-
 import org.jaxen.VariableContext;
-
-import org.xml.sax.Attributes;
 
 /** <p><code>DocumentFactory</code> is a collection of factory methods to allow
   * easy custom building of DOM4J trees. The default tree that is built uses

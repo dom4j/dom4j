@@ -10,7 +10,7 @@
 package org.dom4j.swing;
 
 import java.io.Serializable;
-   
+
 import org.dom4j.DocumentHelper;
 import org.dom4j.Node;
 import org.dom4j.XPath;

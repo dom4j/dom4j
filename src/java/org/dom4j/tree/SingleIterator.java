@@ -11,8 +11,6 @@ package org.dom4j.tree;
 
 import java.util.Iterator;
 
-import org.dom4j.Element;
-
 /** <p><code>SingleIterator</code> is an {@link Iterator} over a single 
   * object instance.</p>
   *

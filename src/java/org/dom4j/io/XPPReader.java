@@ -12,31 +12,22 @@ package org.dom4j.io;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.IOException;
 import java.io.Reader;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 
-import org.dom4j.Branch;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.ElementHandler;
-import org.dom4j.QName;
 import org.dom4j.xpp.ProxyXmlStartTag;
-
-import org.xml.sax.InputSource;
-
 import org.gjt.xpp.XmlEndTag;
 import org.gjt.xpp.XmlPullParser;
-import org.gjt.xpp.XmlPullParserFactory;
 import org.gjt.xpp.XmlPullParserException;
-import org.gjt.xpp.XmlStartTag;
+import org.gjt.xpp.XmlPullParserFactory;
 
 /** <p><code>XPPReader</code> is a Reader of DOM4J documents that 
   * uses the fast 

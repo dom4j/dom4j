@@ -26,10 +26,7 @@ import org.dom4j.QName;
 import org.dom4j.Text;
 import org.dom4j.XPath;
 import org.dom4j.rule.Pattern;
-
 import org.jaxen.VariableContext;
-
-import org.xml.sax.Attributes;
 
 /** <p><code>ProxyDocumentFactory</code> implements a proxy to a DocumentFactory
   * which is useful for implementation inheritence, allowing the pipelining

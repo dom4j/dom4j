@@ -9,21 +9,16 @@
 
 package org.dom4j.io;
 
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-   
+
 import org.dom4j.Attribute;
 import org.dom4j.CDATA;
 import org.dom4j.Comment;
-import org.dom4j.DocumentType;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.Entity;
 import org.dom4j.Namespace;
-import org.dom4j.Node;
 import org.dom4j.ProcessingInstruction;
 import org.dom4j.Text;
 import org.dom4j.tree.NamespaceStack;

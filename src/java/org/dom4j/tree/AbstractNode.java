@@ -11,7 +11,6 @@ package org.dom4j.tree;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
 
@@ -20,7 +19,6 @@ import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.NodeFilter;
-import org.dom4j.Visitor;
 import org.dom4j.XPath;
 import org.dom4j.rule.Pattern;
 

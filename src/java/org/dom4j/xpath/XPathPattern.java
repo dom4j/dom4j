@@ -9,12 +9,11 @@
 
 package org.dom4j.xpath;
 
-import org.dom4j.Document;
-import org.dom4j.Element;
-import org.dom4j.Node;
-import org.dom4j.InvalidXPathException;
-import org.dom4j.XPathException;
+import java.util.ArrayList;
 
+import org.dom4j.InvalidXPathException;
+import org.dom4j.Node;
+import org.dom4j.XPathException;
 import org.jaxen.Context;
 import org.jaxen.ContextSupport;
 import org.jaxen.JaxenException;
@@ -25,18 +24,7 @@ import org.jaxen.XPathFunctionContext;
 import org.jaxen.dom4j.DocumentNavigator;
 import org.jaxen.pattern.Pattern;
 import org.jaxen.pattern.PatternParser;
-
 import org.saxpath.SAXPathException;
-
-import java.io.StringReader;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /** <p><code>XPathPattern</code> is an implementation of Pattern
   * which uses an XPath xpath.</p>

@@ -10,11 +10,8 @@
 package org.dom4j.bean;
 
 import java.util.AbstractList;
-import java.util.Iterator;
-import java.util.List;
 
 import org.dom4j.Attribute;
-import org.dom4j.Element;
 import org.dom4j.QName;
 
 /** <p><code>BeanAttributeList</code> implements a list of Attributes

@@ -14,14 +14,11 @@ import java.util.List;
 
 import org.dom4j.Attribute;
 import org.dom4j.DocumentFactory;
-import org.dom4j.Element;
 import org.dom4j.Namespace;
-import org.dom4j.Node;
 import org.dom4j.QName;
 import org.dom4j.tree.DefaultElement;
-
-import org.w3c.dom.Document;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 

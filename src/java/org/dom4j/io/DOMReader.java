@@ -10,27 +10,14 @@
 package org.dom4j.io;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import org.dom4j.Attribute;
 import org.dom4j.Branch;
-import org.dom4j.CDATA;
-import org.dom4j.Comment;
-import org.dom4j.DocumentType;
 import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
-import org.dom4j.DocumentException;
 import org.dom4j.Element;
-import org.dom4j.Entity;
 import org.dom4j.Namespace;
-import org.dom4j.Node;
-import org.dom4j.ProcessingInstruction;
 import org.dom4j.QName;
-import org.dom4j.Text;
-
 import org.dom4j.tree.NamespaceStack;
 
 /** <p><code>DOMReader</code> navigates a W3C DOM tree and creates

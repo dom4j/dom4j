@@ -9,12 +9,10 @@
 
 package org.dom4j.io;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
-import javax.xml.transform.Result;
 import javax.xml.transform.sax.SAXResult;
 
 import org.xml.sax.ContentHandler;

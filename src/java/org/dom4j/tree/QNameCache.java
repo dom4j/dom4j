@@ -10,15 +10,15 @@
 package org.dom4j.tree;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.Collections;
 
 import org.dom4j.DocumentFactory;
-import org.dom4j.QName;
 import org.dom4j.Namespace;
+import org.dom4j.QName;
 
 /** <p><code>QNameCache</code> caches instances of <code>QName</code>
   * for reuse both across documents and within documents.</p>

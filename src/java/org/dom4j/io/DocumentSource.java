@@ -9,13 +9,10 @@
 
 package org.dom4j.io;
 
-import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
-import javax.xml.transform.TransformerFactory;
 
 import org.dom4j.Document;
 import org.dom4j.Node;
-
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLFilter;
 import org.xml.sax.XMLReader;

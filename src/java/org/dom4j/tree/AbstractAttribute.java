@@ -14,8 +14,8 @@ import java.io.Writer;
 
 import org.dom4j.Attribute;
 import org.dom4j.Element;
-import org.dom4j.Node;
 import org.dom4j.Namespace;
+import org.dom4j.Node;
 import org.dom4j.Visitor;
 
 /** <p><code>AbstractNamespace</code> is an abstract base class for 

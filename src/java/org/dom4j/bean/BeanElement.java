@@ -9,13 +9,11 @@
 
 package org.dom4j.bean;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.dom4j.Attribute;
-import org.dom4j.Element;
 import org.dom4j.DocumentFactory;
+import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
 import org.dom4j.tree.DefaultElement;
@@ -57,7 +55,7 @@ public class BeanElement extends DefaultElement {
         return bean;
     }
     
-    public void setData(Object data) {
+    public void setData(Object bean) {
         this.bean = bean;
         
         // force the attributeList to be lazily

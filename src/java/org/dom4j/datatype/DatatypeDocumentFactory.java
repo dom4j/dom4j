@@ -9,11 +9,6 @@
 
 package org.dom4j.datatype;
 
-import com.sun.msv.datatype.xsd.XSDatatype;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
@@ -21,7 +16,6 @@ import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
 import org.dom4j.io.SAXReader;
-
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 

@@ -12,7 +12,6 @@ package org.dom4j.util;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.QName;
-
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXParseException;
 
