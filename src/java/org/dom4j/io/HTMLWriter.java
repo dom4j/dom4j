@@ -299,7 +299,7 @@ public class HTMLWriter extends XMLWriter {
         //DOM stores \n at the end of text nodes that are newlines.  This is significant if
         // we are in a PRE section.  However, we only want to output the system line.separator, not \n.
         // This is a little brittle, but this function appears to be called with these lineseparators
-        // as a separate TEXT_NODE.  If we are in a preformatted section, output the rigxzht line.separator,
+        // as a separate TEXT_NODE.  If we are in a preformatted section, output the right line.separator,
         // otherwise ditch.  If the single \n character is not the text, then do the super thing
         // to output the text.
         // Also, we store the last text that was not a \n since it may be used by writeElement in this class to
@@ -311,7 +311,11 @@ public class HTMLWriter extends XMLWriter {
             return;
         }
         m_lastText = text;
-        super.writeString(text);
+        if ( m_formatStack.empty() ) {
+            super.writeString(text.trim());
+        } else {
+            super.writeString(text);
+        }
     }
 
     /** Overriden method to not close certain element names to avoid
