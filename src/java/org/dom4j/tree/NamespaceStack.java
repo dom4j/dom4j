@@ -32,16 +32,6 @@ public class NamespaceStack {
     
     /** The Stack of namespaces */
     private ArrayList namespaceStack = new ArrayList();
-
-    /** Index of namespace prefix -> Namespace */
-    private HashMap prefixToNamespaceMap = new HashMap();
-    
-    /** Index of namespace prefix -> qualified name List */
-    private HashMap prefixToQualifiedNamesMap = new HashMap();
-
-    /** Index of qualified Name -> QName object */
-    private HashMap qNameMap = new HashMap();
-
     
     public NamespaceStack() {
         this.documentFactory = DocumentFactory.getInstance();
@@ -58,9 +48,6 @@ public class NamespaceStack {
       */
     public void push(Namespace namespace) {
         namespaceStack.add( namespace );
-        
-        String prefix = namespace.getPrefix();
-        prefixToNamespaceMap.put( prefix, namespace );
     }      
     
     /** Pops the most recently used <code>Namespace</code> from
@@ -70,7 +57,6 @@ public class NamespaceStack {
       */
     public Namespace pop() {
         Namespace namespace = (Namespace) namespaceStack.remove( namespaceStack.size() - 1 );
-        remove( namespace );        
         return namespace;
     }
     
@@ -83,9 +69,6 @@ public class NamespaceStack {
     /** Clears the stack 
       */
     public void clear() {
-        qNameMap.clear();
-        prefixToNamespaceMap.clear();
-        prefixToQualifiedNamesMap.clear();
         namespaceStack.clear();
     }
     
@@ -99,24 +82,30 @@ public class NamespaceStack {
       * if it could not be found.
       */
     public Namespace getNamespaceForPrefix( String prefix ) {
-        return (Namespace) prefixToNamespaceMap.get( prefix );
+        if ( prefix == null ) {
+            prefix = "";
+        }
+        for ( int i = namespaceStack.size() - 1; i >= 0; i-- ) {
+            Namespace namespace = (Namespace) namespaceStack.get(i);
+            if ( prefix.equals( namespace.getPrefix() ) ) {
+                return namespace;
+            }
+        }
+        return null;
     }
     
     /** @return the URI for the given prefix or null if it 
       * could not be found.
       */
     public String getURI( String prefix ) {
-        Namespace namespace = (Namespace) prefixToNamespaceMap.get( prefix );
-        if ( namespace != null ) {
-            return namespace.getURI();
-        }
-        return null;
+        Namespace namespace = getNamespaceForPrefix( prefix );
+        return ( namespace != null ) ? namespace.getURI() : null;        
     }
     
     /** @return true if the given prefix is in the stack.
       */
-    public boolean containsPrefix( String prefix ) {
-        return prefixToNamespaceMap.get( prefix ) != null;
+    public boolean contains( Namespace namespace ) {
+        return namespaceStack.contains(namespace);
     }
     
     public QName getQName( String namespaceURI, String localName, String qualifiedName ) {
@@ -126,35 +115,25 @@ public class NamespaceStack {
         else if ( qualifiedName == null ) {
             qualifiedName = localName;
         }
-        QName qName = (QName) qNameMap.get( qualifiedName );
-        if ( qName == null ) {
-            String prefix = "";
-            int index = qualifiedName.indexOf(":");
-            if (index > 0) {
-                prefix = qualifiedName.substring(0, index);
-            }
-            Namespace namespace = getNamespaceForPrefix( prefix );
-            if ( namespace == null ) {
-                namespace = createNamespace( prefix, namespaceURI );
-                push(namespace);
-            }
-            qName = pushQName( localName, qualifiedName, namespace, prefix );
+        if ( namespaceURI == null ) {
+            namespaceURI = "";
         }
-        return qName;
+        String prefix = "";
+        int index = qualifiedName.indexOf(":");
+        if (index > 0) {
+            prefix = qualifiedName.substring(0, index);
+        }
+        Namespace namespace = createNamespace( prefix, namespaceURI );
+        return pushQName( localName, qualifiedName, namespace, prefix );
     }
 
     /** Adds a namepace to the stack with the given prefix and URI */
     public void push( String prefix, String uri ) {        
-        Namespace namespace = getNamespaceForPrefix( prefix );
-        if ( namespace == null ) {
-            namespace = createNamespace( prefix, uri );
-            push( namespace );
+        if ( uri == null ) {
+            uri = "";
         }
-        else {
-            if ( prefix != null && prefix.length() > 0 ) {
-                System.out.println( "Warning: duplicate namespace prefix ignored: " + prefix );
-            }
-        }
+        Namespace namespace = createNamespace( prefix, uri );
+        push( namespace );
     }
     
     /** Adds a new namespace to the stack */
@@ -166,12 +145,19 @@ public class NamespaceStack {
     
     /** Pops a namepace from the stack with the given prefix and URI */
     public Namespace pop( String prefix ) {        
-        Namespace namespace = getNamespaceForPrefix( prefix );
-        if ( namespace != null ) {
-            namespaceStack.remove( namespace );
-            remove( namespace );
+        if ( prefix == null ) {
+            prefix = "";
         }
-        else {
+        Namespace namespace = null;
+        for (int i = namespaceStack.size() - 1; i >= 0; i-- ) {
+            Namespace ns = (Namespace) namespaceStack.get(i);            
+            if ( prefix.equals( ns.getPrefix() ) ) {
+                namespaceStack.remove(i);
+                namespace = ns;
+                break;
+            }
+        }
+        if ( namespace == null ) {
             System.out.println( "Warning: missing namespace prefix ignored: " + prefix );
         }
         return namespace;
@@ -192,36 +178,10 @@ public class NamespaceStack {
     // Implementation methods
     //-------------------------------------------------------------------------    
     
-    /** Removes the given namespace from the stack */
-    protected void remove( Namespace namespace ) {
-        String prefix = namespace.getPrefix();
-        prefixToNamespaceMap.remove( prefix );
-
-        // remove all QNames from the stack for the given prefix
-        List list = (List) prefixToQualifiedNamesMap.get( prefix );
-        if ( list != null ) {
-            for ( int i = 0, size = list.size(); i < size; i++ ) {
-                String qualifiedName = (String) list.get(i);                
-                qNameMap.remove( qualifiedName );
-            }
-            list.clear();
-        }
-    }
-    
     /** Adds the QName to the stack of available QNames
       */
     protected QName pushQName( String localName, String qualifiedName, Namespace namespace, String prefix ) {
-        QName qName = createQName( localName, qualifiedName, namespace );
-        qNameMap.put( qualifiedName, qName );
-        
-        // maintain list of QNames for a given prefix
-        List list = (List) prefixToQualifiedNamesMap.get( prefix );
-        if ( list == null ) {
-            list = new ArrayList();
-            prefixToQualifiedNamesMap.put( prefix, list );
-        }
-        list.add( qualifiedName );
-        return qName;
+        return createQName( localName, qualifiedName, namespace );
     }
 
     /** Factory method to creeate new QName instances. By default this method

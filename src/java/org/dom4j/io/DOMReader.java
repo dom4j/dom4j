@@ -251,7 +251,7 @@ public class DOMReader {
     
     protected void clearNamespaceStack() {
         namespaceStack.clear();
-        if ( ! namespaceStack.containsPrefix("xml" ) ) {
+        if ( ! namespaceStack.contains( Namespace.XML_NAMESPACE ) ) {
             namespaceStack.push( Namespace.XML_NAMESPACE );
         }
     }

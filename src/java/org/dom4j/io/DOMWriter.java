@@ -26,6 +26,7 @@ import org.dom4j.Namespace;
 import org.dom4j.Node;
 import org.dom4j.ProcessingInstruction;
 import org.dom4j.Text;
+import org.dom4j.tree.NamespaceStack;
 
 /** <p><code>DOMWriter</code> takes a DOM4J tree and outputs
   * it as a W3C DOM object</p>
@@ -35,6 +36,7 @@ import org.dom4j.Text;
   */
 public class DOMWriter {
 
+    private static boolean loggedWarning = false;
     private static final String[] DEFAULT_DOM_DOCUMENT_CLASSES = {
         "org.apache.xerces.dom.DocumentImpl", // Xerces
         "org.apache.crimson.tree.XmlDocument", // Crimson
@@ -46,8 +48,9 @@ public class DOMWriter {
     // the Class used to create new DOM Document instances
     private Class domDocumentClass;
     
-   /** Stores the default namespaces which should not be output */
-    private HashSet defaultNamespaces;
+    /** stack of <code>Namespace</code> objects */
+    private NamespaceStack namespaceStack = new NamespaceStack();
+
      
     public DOMWriter() {
     }
@@ -110,8 +113,10 @@ public class DOMWriter {
         if ( document instanceof org.w3c.dom.Document ) {
             return (org.w3c.dom.Document) document;
         }
+        resetNamespaceStack();
         org.w3c.dom.Document domDocument = createDomDocument(document);
-        appendDOMTree(domDocument, domDocument, document.content(), getDefaultNamespaces());
+        appendDOMTree(domDocument, domDocument, document.content());
+        namespaceStack.clear();
         return domDocument;
     }
     
@@ -122,22 +127,23 @@ public class DOMWriter {
         if ( document instanceof org.w3c.dom.Document ) {
             return (org.w3c.dom.Document) document;
         }
+        resetNamespaceStack();
         org.w3c.dom.Document domDocument = createDomDocument(document, domImplementation);
-        appendDOMTree(domDocument, domDocument, document.content(), getDefaultNamespaces());
+        appendDOMTree(domDocument, domDocument, document.content());
+        namespaceStack.clear();
         return domDocument;
     }
     
     protected void appendDOMTree( 
         org.w3c.dom.Document domDocument, 
         org.w3c.dom.Node domCurrent,
-        List content,
-        HashSet declaredNamespaces
+        List content
     ) {
         int size = content.size();
         for ( int i = 0; i < size; i++ ) {
             Object object = content.get(i);
             if (object instanceof Element) {
-                appendDOMTree( domDocument, domCurrent, (Element) object, declaredNamespaces);
+                appendDOMTree( domDocument, domCurrent, (Element) object);
             }
             else if ( object instanceof String ) {
                 appendDOMTree( domDocument, domCurrent, (String) object );
@@ -164,29 +170,33 @@ public class DOMWriter {
     protected void appendDOMTree( 
         org.w3c.dom.Document domDocument, 
         org.w3c.dom.Node domCurrent,
-        Element element,
-        HashSet declaredNamespaces
+        Element element
     ) {        
-        org.w3c.dom.Element domElement 
-            = domDocument.createElement( element.getQualifiedName() );
+        org.w3c.dom.Element domElement = null;
+        String elementUri = element.getNamespaceURI();
+        if (elementUri != null && elementUri.length() > 0 ) {            
+            domElement = domDocument.createElementNS( elementUri, element.getQualifiedName() );
+        }
+        else {
+            domElement = domDocument.createElement( element.getQualifiedName() );
+        }
         
-        // add namespaces
-        HashSet localNamespaces = declaredNamespaces;        
-        List namespaces = element.declaredNamespaces();
-        int size = namespaces.size();
-        for ( int i = 0; i < size ; i++ ) {
-            Namespace namespace = (Namespace) namespaces.get(i);
-            localNamespaces = writeNamespace( domElement, namespace, declaredNamespaces, localNamespaces );
+        int stackSize = namespaceStack.size();
+        List declaredNamespaces = element.declaredNamespaces();
+        for ( int i = 0, size = declaredNamespaces.size(); i < size ; i++ ) {
+            Namespace namespace = (Namespace) declaredNamespaces.get(i);
+            if ( isNamespaceDeclaration( namespace ) ) {
+                namespaceStack.push( namespace );     
+                writeNamespace( domElement, namespace );
+            }
         }
         
         // add the attributes
-        List attributes = element.attributes();
-        size = attributes.size();
-        for ( int i = 0; i < size ; i++ ) {
-            Attribute attribute = (Attribute) attributes.get(i);   
+        for ( int i = 0, size = element.attributeCount(); i < size ; i++ ) {
+            Attribute attribute = (Attribute) element.attribute(i);
             String uri = attribute.getNamespaceURI();
             if ( uri != null && uri.length() > 0 ) {
-                localNamespaces = writeNamespace( domElement, attribute.getNamespace(), declaredNamespaces, localNamespaces );
+                //writeNamespace( domElement, attribute.getNamespace() );
                 domElement.setAttributeNS( uri, attribute.getQualifiedName(), attribute.getValue() );
             }
             else {
@@ -195,9 +205,13 @@ public class DOMWriter {
         }
 
         // add content
-        appendDOMTree( domDocument, domElement, element.content(), localNamespaces );
+        appendDOMTree( domDocument, domElement, element.content() );
         
         domCurrent.appendChild( domElement );
+        
+        while ( namespaceStack.size() > stackSize ) {
+            namespaceStack.pop();
+        }
     }
     
     protected void appendDOMTree( 
@@ -252,28 +266,13 @@ public class DOMWriter {
     /** @return the new local namespace set which may be different from the input
       * set if a new namespace is added to the set
       */
-    protected HashSet writeNamespace( 
+    protected void writeNamespace( 
         org.w3c.dom.Element domElement, 
-        Namespace namespace, 
-        HashSet parentNamespaces,
-        HashSet localNamespaces
+        Namespace namespace
     ) {
-        if ( ! isIgnoreableNamespace( namespace, localNamespaces ) ) {
-            String attributeName = attributeNameForNamespace(namespace);
-            if ( localNamespaces == parentNamespaces ) {
-                localNamespaces = (HashSet) parentNamespaces.clone();
-            }
-            localNamespaces.add(namespace);
-            domElement.setAttribute(attributeName, namespace.getURI());
-        }
-        return localNamespaces;
-    }
-    
-    protected boolean isIgnoreableNamespace( Namespace namespace, Set declaredNamespaces ) {
-        if ( namespace.equals( Namespace.NO_NAMESPACE ) || namespace.equals( Namespace.XML_NAMESPACE ) ) {
-            return true;
-        }
-        return declaredNamespaces.contains( namespace );
+        String attributeName = attributeNameForNamespace(namespace);
+        //domElement.setAttributeNS("", attributeName, namespace.getURI());
+        domElement.setAttribute(attributeName, namespace.getURI());
     }
     
     protected String attributeNameForNamespace(Namespace namespace) {
@@ -288,6 +287,11 @@ public class DOMWriter {
     protected org.w3c.dom.Document createDomDocument(
         Document document
     ) throws DocumentException {
+        // lets try JAXP first
+        org.w3c.dom.Document answer = createDomDocumentViaJAXP();
+        if ( answer != null ) {
+            return answer;
+        }
         Class theClass = getDomDocumentClass();
         try {
             return (org.w3c.dom.Document) theClass.newInstance();
@@ -300,6 +304,38 @@ public class DOMWriter {
         }
     }
     
+    protected org.w3c.dom.Document createDomDocumentViaJAXP() throws DocumentException {
+        if ( ! SAXHelper.classNameAvailable( "javax.xml.parsers.DocumentBuilderFactory" ) ) {
+            // don't attempt to use JAXP if it is not in the ClassPath
+            return null;
+        }
+        
+        // try use JAXP to load the XMLReader...
+        try {
+            return JAXPHelper.createDocument( false, true );
+        }
+        catch (Throwable e) {
+            if ( ! loggedWarning ) {                    
+                loggedWarning = true;
+                if ( SAXHelper.isVerboseErrorReporting() ) {
+                    // log all exceptions as warnings and carry
+                    // on as we have a default SAX parser we can use
+                    System.out.println( 
+                        "Warning: Caught exception attempting to use JAXP to "
+                         + "create a W3C DOM document" 
+                    );
+                    System.out.println( "Warning: Exception was: " + e );
+                    e.printStackTrace();
+                }
+                else {
+                    System.out.println( 
+                        "Warning: Error occurred using JAXP to create a DOM document." 
+                    );
+                }
+            }
+        }
+        return null;
+    }
     protected org.w3c.dom.Document createDomDocument(
         Document document, 
         org.w3c.dom.DOMImplementation domImplementation
@@ -312,15 +348,24 @@ public class DOMWriter {
             namespaceURI, qualifiedName, docType 
         );
     }
-    
-    protected HashSet getDefaultNamespaces() {
-        if ( defaultNamespaces == null ) {
-            defaultNamespaces = new HashSet();
-            defaultNamespaces.add( Namespace.XML_NAMESPACE );
+
+    protected boolean isNamespaceDeclaration( Namespace ns ) {
+        if (ns != null && ns != Namespace.NO_NAMESPACE && ns != Namespace.XML_NAMESPACE) {
+            String uri = ns.getURI();
+            if ( uri != null && uri.length() > 0 ) {
+                if ( ! namespaceStack.contains( ns ) ) {
+                    return true;
+
+                }
+            }
         }
-        return defaultNamespaces;        
+        return false;
     }
     
+    protected void resetNamespaceStack() {
+        namespaceStack.clear();
+        namespaceStack.push( Namespace.XML_NAMESPACE );
+    }
 }
 
 

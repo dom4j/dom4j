@@ -261,6 +261,7 @@ public class SAXReader {
         } 
         catch (Exception e) {
             if (e instanceof SAXParseException) {
+                e.printStackTrace();
                 SAXParseException parseException = (SAXParseException) e;
                 String systemId = parseException.getSystemId();
                 if ( systemId == null ) {

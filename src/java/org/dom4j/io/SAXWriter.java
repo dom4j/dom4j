@@ -376,11 +376,11 @@ public class SAXWriter implements XMLReader {
     // Implementation methods    
     //-------------------------------------------------------------------------                
     
-    protected void writeContent( Branch branch, NamespaceStack namespaces ) throws SAXException {
+    protected void writeContent( Branch branch, NamespaceStack namespaceStack ) throws SAXException {
         for ( Iterator iter = branch.nodeIterator(); iter.hasNext(); ) {
             Object object = iter.next();
             if ( object instanceof Element ) {
-                write( (Element) object, namespaces );
+                write( (Element) object, namespaceStack );
             }
             else if ( object instanceof CharacterData ) { 
                 if ( object instanceof Text ) {
@@ -407,7 +407,7 @@ public class SAXWriter implements XMLReader {
                 write( (ProcessingInstruction) object );
             }
             else if ( object instanceof Namespace ) { 
-                // namespaces are written via write of element
+                // namespaceStack are written via write of element
             }
             else {
                 throw new SAXException( "Invalid Node in DOM4J content: " + object );
@@ -476,25 +476,25 @@ public class SAXWriter implements XMLReader {
         contentHandler.endDocument();
     }
     
-    protected void write( Element element, NamespaceStack namespaces ) throws SAXException {
-        int stackSize = namespaces.size();
-        AttributesImpl namespaceAttributes = startPrefixMapping(element, namespaces);
+    protected void write( Element element, NamespaceStack namespaceStack ) throws SAXException {
+        int stackSize = namespaceStack.size();
+        AttributesImpl namespaceAttributes = startPrefixMapping(element, namespaceStack);
         startElement(element, namespaceAttributes);
-        writeContent(element, namespaces);
+        writeContent(element, namespaceStack);
         endElement(element);
-        endPrefixMapping(namespaces, stackSize);
+        endPrefixMapping(namespaceStack, stackSize);
     }
     
-    /** Fires a SAX startPrefixMapping event for all the namespaces
+    /** Fires a SAX startPrefixMapping event for all the namespaceStack
       * which have just come into scope
       */
-    protected AttributesImpl startPrefixMapping( Element element, NamespaceStack namespaces ) throws SAXException {
+    protected AttributesImpl startPrefixMapping( Element element, NamespaceStack namespaceStack ) throws SAXException {
         AttributesImpl namespaceAttributes = null;
         List declaredNamespaces = element.declaredNamespaces();
         for ( int i = 0, size = declaredNamespaces.size(); i < size ; i++ ) {
             Namespace namespace = (Namespace) declaredNamespaces.get(i);
-            if ( ! isIgnoreableNamespace( namespace, namespaces ) ) {
-                namespaces.push( namespace );
+            if ( ! isIgnoreableNamespace( namespace, namespaceStack ) ) {
+                namespaceStack.push( namespace );
                 contentHandler.startPrefixMapping(
                     namespace.getPrefix(), namespace.getURI()
                 );
@@ -504,12 +504,12 @@ public class SAXWriter implements XMLReader {
         return namespaceAttributes;
     }
     
-    /** Fires a SAX endPrefixMapping event for all the namespaces which 
+    /** Fires a SAX endPrefixMapping event for all the namespaceStack which 
       * have gone out of scope
       */
-    protected void endPrefixMapping( NamespaceStack namespaces, int stackSize ) throws SAXException {                       
-        while ( namespaces.size() > stackSize ) {
-            Namespace namespace = namespaces.pop();
+    protected void endPrefixMapping( NamespaceStack namespaceStack, int stackSize ) throws SAXException {                       
+        while ( namespaceStack.size() > stackSize ) {
+            Namespace namespace = namespaceStack.pop();
             if ( namespace != null ) {
                 contentHandler.endPrefixMapping( namespace.getPrefix() );            
             }
@@ -582,7 +582,7 @@ public class SAXWriter implements XMLReader {
       * (such as Namespace.NO_NAMESPACE or Namespace.XML_NAMESPACE) or if the
       * namespace has already been declared in the current scope
       */
-    protected boolean isIgnoreableNamespace( Namespace namespace, NamespaceStack namespaces ) {
+    protected boolean isIgnoreableNamespace( Namespace namespace, NamespaceStack namespaceStack ) {
         if ( namespace.equals( Namespace.NO_NAMESPACE ) || namespace.equals( Namespace.XML_NAMESPACE ) ) {
             return true;
         }
@@ -590,7 +590,7 @@ public class SAXWriter implements XMLReader {
         if ( uri == null || uri.length() <= 0 ) {
             return true;
         }
-        return namespaces.containsPrefix( namespace.getPrefix() );
+        return namespaceStack.contains( namespace );
     }
 
     /** Ensures non-null content handlers?

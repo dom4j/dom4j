@@ -46,7 +46,7 @@ class SAXHelper {
       * or JAXP if the system property is not set.
       */
     public static XMLReader createXMLReader(boolean validating) throws SAXException {
-        XMLReader reader = createXMLReaderViaJAXP( validating );
+        XMLReader reader = createXMLReaderViaJAXP( validating, true );
         if ( reader == null ) {
             String className = null;
             try {
@@ -69,7 +69,7 @@ class SAXHelper {
       * This method uses reflection to avoid being dependent directly
       * on the JAXP classes.
       */
-    protected static XMLReader createXMLReaderViaJAXP(boolean validating) {
+    protected static XMLReader createXMLReaderViaJAXP(boolean validating, boolean namespaceAware) {
         if ( ! classNameAvailable( "javax.xml.parsers.SAXParserFactory" ) ) {
             // don't attempt to use JAXP if it is not in the ClassPath
             return null;
@@ -77,7 +77,7 @@ class SAXHelper {
         
         // try use JAXP to load the XMLReader...
         try {
-            return JAXPHelper.createXMLReader( validating );
+            return JAXPHelper.createXMLReader( validating, namespaceAware );
         }
         catch (Throwable e) {
             if ( ! loggedWarning ) {                    

@@ -7,44 +7,51 @@
  * $Id$
  */
 
-package org.dom4j.io;
+package dom;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
+import SAXDemo;
 
-import org.xml.sax.XMLReader;
+import java.io.StringReader;
+import java.io.StringWriter;
 
-/** <code>JAXPHelper</code> contains some helper methods for working with 
-  * JAXP. These methods are kept in a seperate class to avoid class loading 
-  * issues, such that dom4j can work without JAXP on the CLASSPATH
+import org.dom4j.Document;
+import org.dom4j.io.DOMReader;
+import org.dom4j.io.DOMWriter;
+import org.dom4j.io.XMLWriter;
+
+/** A simple program demonstrating a round trip from XML to dom4j to DOM to dom4j again
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-class JAXPHelper {
-
-    /** This method attempts to use JAXP to locate the  
-      * SAX2 XMLReader implementation.  
-      * This method uses reflection to avoid being dependent directly
-      * on the JAXP classes.
-      */
-    public static XMLReader createXMLReader(boolean validating, boolean namespaceAware) throws Exception {
-        SAXParserFactory factory = SAXParserFactory.newInstance();
-        factory.setValidating( validating );
-        factory.setNamespaceAware( namespaceAware );
-        SAXParser parser = factory.newSAXParser();
-        return parser.getXMLReader();
+public class RoundTripDemo extends SAXDemo {
+    
+    public static void main(String[] args) {
+        run( new RoundTripDemo(), args );
+    }    
+    
+    public RoundTripDemo() {
     }
     
-    public static org.w3c.dom.Document createDocument(boolean validating, boolean namespaceAware) throws Exception {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setValidating( validating );
-        factory.setNamespaceAware( namespaceAware );
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        return builder.newDocument();
-    }
+    /** Outputs the document to DOM, parse it back again then output it */
+    protected void process(Document document) throws Exception {
+    
+        System.out.println( "about to output: " + document );
+        
+        // output the document to DOM
+        DOMWriter writer = new DOMWriter();
+        org.w3c.dom.Document domDocument = writer.write( document );
+        
+        // parse back again
+        DOMReader reader = new DOMReader();
+        Document doc2 = reader.read( domDocument );
+        
+        System.out.println( "parsed back again: " + doc2 );
+        
+        // now lets output it again
+        XMLWriter xmlWriter = new XMLWriter( System.out );
+        xmlWriter.write( doc2 );
+    }    
 }
 
 

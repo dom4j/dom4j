@@ -31,6 +31,13 @@
                and there is a default namespace defined, this method was returning 
                a namespace instance with the incorrect URI. 
             </p>
+            <p>Patched DOM writer so that it uses JAXP if it is available on the CLASSPATH
+               using namespace aware mode by default.
+            </p>
+            <p>Fixed a number of issues relating to namespaces and the redefinition of namespace prefixes.
+              We now have a quite aggressive JUnit test harness to ensure that we handle namespace URIs
+              correctly when prefixes are mapped and unmapped.
+            </p>
           </section>
         </section>
         <section title="0.8 release">

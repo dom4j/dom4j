@@ -10,13 +10,21 @@
 package org.dom4j;
 
 import java.io.File;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import junit.framework.*;
 import junit.textui.TestRunner;
 
+import org.dom4j.io.DOMReader;
+import org.dom4j.io.DOMWriter;
 import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
 
 /** Test the use of namespaces
   *
@@ -146,11 +154,98 @@ public class TestNamespaces extends AbstractTestCase {
     }
     
         
+    public void testRedeclareNamespaces() throws Exception {
+        SAXReader reader = new SAXReader();
+        Document document = reader.read("xml/test/soap2.xml");
+        testRedeclareNamespaces( document );
+    }
+
+    public void testRedeclareNamespacesSAX() throws Exception {
+        SAXReader reader = new SAXReader();
+        Document document = reader.read("xml/test/soap2.xml");
+
+        StringWriter buffer = new StringWriter();
+        XMLWriter writer = new XMLWriter( buffer );
+        writer.write( document );
+        
+        StringReader in = new StringReader( buffer.toString() );
+        Document doc2 = reader.read( in );
+        
+        testRedeclareNamespaces( doc2 );
+    }
+
+    /** Parses a document via DOM then turns it into a dom4j document
+     * then validates the use of namespaces */
+    public void testRedeclareNamespacesDOM() throws Exception {
+        // lets make a DOM object
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setNamespaceAware( true );
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        org.w3c.dom.Document domDocument = builder.parse("xml/test/soap2.xml");
+        
+        // now lets read it back as a DOM4J object
+        DOMReader domReader = new DOMReader();        
+        Document doc2 = domReader.read( domDocument );
+        
+        testRedeclareNamespaces( doc2 );
+    }
+
+    public void testRedeclareNamespacesDOMRoundTrip() throws Exception {
+        SAXReader reader = new SAXReader();
+        Document document = reader.read("xml/test/soap2.xml");
+
+        // now lets make a DOM object
+        DOMWriter domWriter = new DOMWriter();
+        org.w3c.dom.Document domDocument = domWriter.write(document);
+        
+        // now lets read it back as a DOM4J object
+        DOMReader domReader = new DOMReader();        
+        Document doc2 = domReader.read( domDocument );
+        
+        testRedeclareNamespaces( doc2 );
+    }
+
+    public void testRedeclareNamespaces(Document document) throws Exception {
+        assertNamespaces( 
+            document.selectNodes( "//*[local-name()='Envelope'" ), 
+            "SOAP-ENV", "http://schemas.xmlsoap.org/soap/envelope/" 
+        );
+        assertNamespaces( 
+            document.selectNodes( "//*[local-name()='Body'" ), 
+            "SOAP-ENV", "http://schemas.xmlsoap.org/soap/envelope/" 
+        );
+        assertNamespaces( 
+            document.selectNodes( "//*[local-name()='bar'" ), 
+            "a", "barURI" 
+        );
+        assertNamespaces( 
+            document.selectNodes( "//*[local-name()='newBar'" ), 
+            "a", "newBarURI" 
+        );
+        assertNamespaces( 
+            document.selectNodes( "//*[local-name()='foo'" ), 
+            "", "fooURI" 
+        );
+        assertNamespaces( 
+            document.selectNodes( "//*[local-name()='newFoo'" ), 
+            "", "newFooURI" 
+        );
+    }
+    
+    
     // Implementation methods
     //-------------------------------------------------------------------------                    
     protected void setUp() throws Exception {
         SAXReader reader = new SAXReader();
         document = reader.read( "xml/test/test_schema.xml" );
+    }
+    
+    protected void assertNamespaces( List elements, String prefix, String uri ) throws Exception {
+        log( "Validating: " + elements.size() + " element(s) are in URI: " + uri );
+        for ( Iterator iter = elements.iterator(); iter.hasNext(); ) {
+            Element element = (Element) iter.next();
+            assertNamespace( element.getNamespace(), prefix, uri );
+        }
     }
     
     protected void assertNamespace(Namespace ns, String prefix, String uri) throws Exception {

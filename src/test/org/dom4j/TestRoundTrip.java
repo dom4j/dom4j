@@ -40,7 +40,8 @@ public class TestRoundTrip extends AbstractTestCase {
     
     //protected String xmlFile = "xml/test/encode.xml";
     //protected String xmlFile = "xml/fibo.xml";
-    protected String xmlFile = "xml/test/test_schema.xml";
+    protected String xmlFile = "xml/schema/personal-prefix.xsd";
+    //protected String xmlFile = "xml/test/test_schema.xml";
     
     public static void main( String[] args ) {
         TestRunner.run( suite() );

@@ -86,8 +86,8 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
     /** The Writer used to output to */
     protected Writer writer;
     
-    /** The Stack of namespaces written so far */
-    private NamespaceStack namespaces = new NamespaceStack();
+    /** The Stack of namespaceStack written so far */
+    private NamespaceStack namespaceStack = new NamespaceStack();
     
     /** The format used by this writer */
     private OutputFormat format;
@@ -240,17 +240,11 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         writer.write("<");
         writer.write(qualifiedName);
         
-        int previouslyDeclaredNamespaces = namespaces.size();
+        int previouslyDeclaredNamespaces = namespaceStack.size();
         Namespace ns = element.getNamespace();
-        if (ns != null && ns != Namespace.NO_NAMESPACE && ns != Namespace.XML_NAMESPACE) {
-            String uri = ns.getURI();
-            if ( uri != null && uri.length() > 0 ) {
-                String prefix = ns.getPrefix();
-                if ( ! namespaces.containsPrefix( prefix ) ) {
-                    namespaces.push(ns);
-                    write(ns);
-                }
-            }
+        if (isNamespaceDeclaration( ns ) ) {
+            namespaceStack.push(ns);
+            write(ns);
         }
 
         // Print out additional namespace declarations
@@ -259,9 +253,8 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
             Node node = element.node(i);
             if ( node instanceof Namespace ) {
                 Namespace additional = (Namespace) node;
-                String prefix = additional.getPrefix();
-                if ( ! namespaces.containsPrefix( prefix ) ) {
-                    namespaces.push(additional);
+                if (isNamespaceDeclaration( additional ) ) {
+                    namespaceStack.push(additional);
                     write(additional);
                 }
             }
@@ -305,9 +298,9 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
             writer.write(">");
         }
 
-        // remove declared namespaces from stack
-        while (namespaces.size() > previouslyDeclaredNamespaces) {
-            namespaces.pop();
+        // remove declared namespaceStack from stack
+        while (namespaceStack.size() > previouslyDeclaredNamespaces) {
+            namespaceStack.pop();
         }
         
         lastOutputNodeType = Node.ELEMENT_NODE;
@@ -738,10 +731,10 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
             Namespace ns = attribute.getNamespace();
             if (ns != null && ns != Namespace.NO_NAMESPACE && ns != Namespace.XML_NAMESPACE) {
                 String prefix = ns.getPrefix();           
-                String uri = namespaces.getURI(prefix);
+                String uri = namespaceStack.getURI(prefix);
                 if (!ns.getURI().equals(uri)) { // output a new namespace declaration
                     write(ns);
-                    namespaces.push(ns);
+                    namespaceStack.push(ns);
                 }
             }
             
@@ -976,6 +969,19 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         return answer;
     }
 
+    protected boolean isNamespaceDeclaration( Namespace ns ) {
+        if (ns != null && ns != Namespace.NO_NAMESPACE && ns != Namespace.XML_NAMESPACE) {
+            String uri = ns.getURI();
+            if ( uri != null && uri.length() > 0 ) {
+                if ( ! namespaceStack.contains( ns ) ) {
+                    return true;
+
+                }
+            }
+        }
+        return false;
+    }
+    
     protected void handleException(IOException e) throws SAXException {
         throw new SAXException(e);
     }
