@@ -57,6 +57,9 @@
     <!-- JDK1.1 collections -->
     <property name="coll.import" value="com.sun.java.util.collections"/>
     <available classname="${coll.import}.Collection" property="coll.present"/>
+
+    <!-- Gump support -->
+    <property name="jaxen.src" value="../jaxen/jaxen/src/java/main"/>
   </target>
 
   <!-- =================================================================== -->
@@ -381,6 +384,22 @@
     <gzip zipfile="${dist.target}/${name}-daily.tar.gz" src="${dist.target}/${name}-daily.tar"/>
   </target>
 
+
+  <!-- =================================================================== -->
+  <!-- Support for a Gump build                                            -->
+  <!-- =================================================================== -->
+  <target name="gump" depends="prepare-gump,package">
+  </target>
+
+  <target name="prepare-gump" depends="init">
+    <!-- create directories -->
+    <mkdir dir="${build.src}"/>
+
+    <!-- copy src files -->
+    <copy todir="${build.src}">
+      <fileset dir="${jaxen.src}" includes="org/jaxen/dom4j/**"/>
+    </copy>
+  </target>
 
   <!-- =================================================================== -->
   <!-- Performs a release on the website                                   -->
