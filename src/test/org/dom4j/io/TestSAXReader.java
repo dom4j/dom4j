@@ -96,6 +96,19 @@ public class TestSAXReader extends TestCase {
         }
     }
     
+    public void testBug833765() {
+        try {
+            URL location = TestSAXReader.class.getResource("/xml/dtd/external.xml");
+            File file = new File(location.getPath()); 
+            SAXReader xmlReader = new SAXReader("org.dom4j.io.aelfred2.SAXDriver");
+            xmlReader.setIncludeExternalDTDDeclarations(true);
+            Document doc = xmlReader.read(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+    }
+    
 }
 
 
