@@ -1,16 +1,16 @@
 /*
  * Copyright 2001 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j.tree;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +19,7 @@ import org.dom4j.DocumentFactory;
 import org.dom4j.QName;
 import org.dom4j.Namespace;
 
-/** <p><code>QNameCache</code> caches instances of <code>QName</code> 
+/** <p><code>QNameCache</code> caches instances of <code>QName</code>
   * for reuse both across documents and within documents.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
@@ -27,20 +27,20 @@ import org.dom4j.Namespace;
   */
 public class QNameCache {
 
-    /** Cache of {@link QName} instances with no namespace */ 
-    protected Map noNamespaceCache = new HashMap();
-    
-    /** Cache of {@link Map} instances indexed by namespace which contain 
+    /** Cache of {@link QName} instances with no namespace */
+    protected Map noNamespaceCache = new Hashtable();
+
+    /** Cache of {@link Map} instances indexed by namespace which contain
       * caches of {@link QName} for each name
-      */ 
-    protected Map namespaceCache = new HashMap();
+      */
+    protected Map namespaceCache = new Hashtable();
 
     /** The document factory associated with new QNames instances in this cache
-      * or null if no instances should be associated by default 
+      * or null if no instances should be associated by default
       */
     private DocumentFactory documentFactory;
-    
-    
+
+
     public QNameCache() {
     }
 
@@ -59,11 +59,17 @@ public class QNameCache {
         }
         return answer;
     }
-    
-    /** @return the QName for the given name and no namepsace 
+
+    /** @return the QName for the given name and no namepsace
       */
     public QName get(String name) {
-        QName answer = (QName) noNamespaceCache.get(name);
+        QName answer = null;
+        if (name!=null) {
+          answer=(QName) noNamespaceCache.get(name);
+        }
+        else {
+          name="";
+        }
         if (answer == null) {
             answer = createQName(name);
             answer.setDocumentFactory( documentFactory );
@@ -71,12 +77,18 @@ public class QNameCache {
         }
         return answer;
     }
-    
-    /** @return the QName for the given local name and namepsace 
+
+    /** @return the QName for the given local name and namepsace
       */
     public QName get(String name, Namespace namespace) {
         Map cache = getNamespaceCache(namespace);
-        QName answer = (QName) cache.get(name);
+        QName answer = null;
+        if (name!=null) {
+          answer=(QName) cache.get(name);
+        }
+        else {
+          name="";
+        }
         if (answer == null) {
             answer = createQName(name, namespace);
             answer.setDocumentFactory( documentFactory );
@@ -84,13 +96,20 @@ public class QNameCache {
         }
         return answer;
     }
-    
 
-    /** @return the QName for the given local name, qualified name and namepsace 
+
+    /** @return the QName for the given local name, qualified name and namepsace
       */
     public QName get(String localName, Namespace namespace, String qualifiedName) {
         Map cache = getNamespaceCache(namespace);
-        QName answer = (QName) cache.get(localName);
+        QName answer = null;
+        if (localName!=null) {
+          answer=(QName) cache.get(localName);
+        }
+        else {
+          localName="";
+        }
+
         if (answer == null) {
             answer = createQName(localName, namespace, qualifiedName);
             answer.setDocumentFactory( documentFactory );
@@ -99,7 +118,7 @@ public class QNameCache {
         return answer;
     }
 
-    
+
     public QName get(String qualifiedName, String uri) {
         int index = qualifiedName.indexOf( ':' );
         if ( index < 0 ) {
@@ -111,10 +130,10 @@ public class QNameCache {
             return get(name, Namespace.get( prefix, uri ));
         }
     }
-    
-    
+
+
     /** @return the cached QName instance if there is one or adds the given
-      * qname to the cache if not 
+      * qname to the cache if not
        */
     public QName intern(QName qname) {
         return get(qname.getName(), qname.getNamespace(), qname.getQualifiedName());
@@ -127,35 +146,38 @@ public class QNameCache {
         if (namespace == Namespace.NO_NAMESPACE) {
             return noNamespaceCache;
         }
-        Map answer = (Map) namespaceCache.get(namespace);
+        Map answer = null;
+        if (namespace!=null) {
+          answer=(Map) namespaceCache.get(namespace);
+        }
         if (answer == null) {
             answer = createMap();
             namespaceCache.put(namespace, answer);
         }
         return answer;
     }
-    
+
     /** A factory method
       * @return a newly created {@link Map} instance.
       */
     protected Map createMap() {
-        return new HashMap();
+        return new Hashtable();
     }
-    
+
     /** Factory method to create a new QName object
       * which can be overloaded to create derived QName instances
       */
     protected QName createQName(String name) {
         return new QName(name);
     }
-    
+
     /** Factory method to create a new QName object
       * which can be overloaded to create derived QName instances
       */
     protected QName createQName(String name, Namespace namespace) {
         return new QName(name, namespace);
     }
-    
+
     /** Factory method to create a new QName object
       * which can be overloaded to create derived QName instances
       */

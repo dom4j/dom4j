@@ -1,20 +1,20 @@
 /*
  * Copyright 2001 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
 package org.dom4j.tree;
 
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 
 import org.dom4j.Namespace;
 
-/** <p><code>NamespaceCache</code> caches instances of <code>DefaultNamespace</code> 
+/** <p><code>NamespaceCache</code> caches instances of <code>DefaultNamespace</code>
   * for reuse both across documents and within documents.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
@@ -22,18 +22,18 @@ import org.dom4j.Namespace;
   */
 public class NamespaceCache {
 
-    /** Cache of {@link Map} instances indexed by URI which contain 
+    /** Cache of {@link Map} instances indexed by URI which contain
       * caches of {@link Namespace} for each prefix
-      */ 
+      */
     protected static Map cache;
 
-    /** Cache of {@link Namespace} instances indexed by URI 
+    /** Cache of {@link Namespace} instances indexed by URI
       * for default namespaces with no prefixes
-      */ 
+      */
     protected static Map noPrefixCache;
 
 
-    /** @return the name model for the given name and namepsace 
+    /** @return the name model for the given name and namepsace
       */
     public synchronized Namespace get(String prefix, String uri) {
         Map cache = getURICache(uri);
@@ -44,9 +44,9 @@ public class NamespaceCache {
         }
         return answer;
     }
-    
 
-    /** @return the name model for the given name and namepsace 
+
+    /** @return the name model for the given name and namepsace
       */
     public synchronized Namespace get(String uri) {
         if ( noPrefixCache == null ) {
@@ -59,12 +59,12 @@ public class NamespaceCache {
         }
         return answer;
     }
-    
+
 
     /** @return the cache for the given namespace URI. If one does not
       * currently exist it is created.
       */
-    protected Map getURICache(String uri) {
+    protected synchronized Map getURICache(String uri) {
         if (cache == null) {
             cache = createURIMap();
         }
@@ -75,7 +75,7 @@ public class NamespaceCache {
         }
         return answer;
     }
-    
+
     /** A factory method to create {@link Namespace} instance
       * @return a newly created {@link Namespace} instance.
       */
@@ -86,14 +86,14 @@ public class NamespaceCache {
       * @return a newly created {@link Map} instance.
       */
     protected Map createPrefixMap() {
-        return new HashMap();
+        return new Hashtable();
     }
-    
+
     /** A factory method to create URI caches
       * @return a newly created {@link Map} instance.
       */
     protected Map createURIMap() {
-        return new HashMap();
+        return new Hashtable();
     }
 }
 
