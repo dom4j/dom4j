@@ -130,6 +130,9 @@ public class DocumentFactory implements Serializable {
     }
     
     public Text createText(String text) {
+        if ( text == null ) {
+            throw new IllegalArgumentException( "Adding text to an XML document must not be null" );
+        }
         return new DefaultText(text);
     }
     
