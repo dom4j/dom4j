@@ -43,6 +43,13 @@ public abstract class AbstractProcessingInstruction extends AbstractNode impleme
             : "processing-instruction()";
     }
     
+    public String getUniquePath() {
+        Element parent = getParent();
+        return ( parent != null ) 
+            ? parent.getUniquePath() + "/processing-instruction()"
+            : "processing-instruction()";
+    }
+    
     public String toString() {
         return super.toString() + " [ProcessingInstruction: &" + getName() + ";]";
     }

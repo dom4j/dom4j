@@ -7,69 +7,57 @@
  * $Id$
  */
 
-package org.dom4j.tree;
+package org.dom4j.util;
 
-import java.io.IOException;
-import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
+import org.dom4j.Attribute;
+import org.dom4j.Branch;
 import org.dom4j.Element;
 import org.dom4j.Entity;
-import org.dom4j.Visitor;
+import org.dom4j.Node;
+import org.dom4j.Namespace;
+import org.dom4j.QName;
+import org.dom4j.tree.BaseElement;
 
+import org.xml.sax.Attributes;
 
-/** <p><code>AbstractEntity</code> is an abstract base class for 
-  * tree implementors to use for implementation inheritence.</p>
+/** <p><code>NonLazyElement</code> is the default DOM4J default implementation
+  * of an XML element.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public abstract class AbstractEntity extends AbstractNode implements Entity {
+public class NonLazyElement extends BaseElement {
 
-    public AbstractEntity() {
-    }
-    
-    public short getNodeType() {
-        return ENTITY_REFERENCE_NODE;
-    }
-
-    public String getPath() {
-        // From XPaths perspective, entities are included in text
-        Element parent = getParent();
-        return ( parent != null ) 
-            ? parent.getPath() + "/text()"
-            : "text()";
-    }
-    
-    public String getUniquePath() {
-        // From XPaths perspective, entities are included in text
-        Element parent = getParent();
-        return ( parent != null ) 
-            ? parent.getUniquePath() + "/text()"
-            : "text()";
-    }
-    
-    public String toString() {
-        return super.toString() + " [Entity: &" + getName() + ";]";
+    public NonLazyElement(String name) { 
+        super(name);
+        this.attributes = createAttributeList();
+        this.content = createContentList();
     }
 
-    public String getStringValue() {
-        return "&" + getName() + ";";
+    public NonLazyElement(QName qname) { 
+        super(qname);
+        this.attributes = createAttributeList();
+        this.content = createContentList();
     }
-    
-    public String asXML() {
-        return "&" + getName() + ";";
+
+    public NonLazyElement(String name, Namespace namespace) { 
+        super(name, namespace);
+        this.attributes = createAttributeList();
+        this.content = createContentList();
     }
-    
-    public void write(Writer writer) throws IOException {
-        writer.write( "&" );
-        writer.write( getName() );
-        writer.write( ";" );
+
+    public NonLazyElement(QName qname, Attributes attributes) { 
+        super(qname, attributes);
+        int size = attributes.getLength();
+        this.attributes = createAttributeList( size );
+        this.content = createContentList();
     }
-    
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
-    }
-    
+
 }
 
 

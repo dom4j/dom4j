@@ -40,16 +40,11 @@ import org.xml.sax.Attributes;
 /** <p><code>DefaultElement</code> is the default DOM4J default implementation
   * of an XML element.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
 public class DefaultElement extends AbstractElement {
 
-    private static final int DEFAULT_CONTENT_LIST_SIZE = 5;
-    
-    protected static final List EMPTY_LIST = Collections.EMPTY_LIST;
-    protected static final Iterator EMPTY_ITERATOR = EMPTY_LIST.iterator();
-    
     /** The <code>QName</code> for this element */
     private QName qname;
     
@@ -68,7 +63,7 @@ public class DefaultElement extends AbstractElement {
     /** Lazily constructes list of attributes */
     private Object attributes;
 
-    
+
     
     public DefaultElement(String name) { 
         this.qname = getDocumentFactory().createQName(name);
@@ -689,6 +684,9 @@ public class DefaultElement extends AbstractElement {
     
     public void setAttributes(List attributes) {
         this.attributes = attributes;
+        if ( attributes instanceof ContentListFacade ) {
+            this.attributes = ((ContentListFacade) attributes).getBackingList();
+        }
     }
     
     public Iterator attributeIterator() {
@@ -827,7 +825,11 @@ public class DefaultElement extends AbstractElement {
         }
         return answer;
     }
+
     
+    
+    // Implementation methods
+    //-------------------------------------------------------------------------    
 
     protected void addNode(Node node) {
         if (node.getParent() != null) {
@@ -872,9 +874,8 @@ public class DefaultElement extends AbstractElement {
         return answer;
     }
 
-    // Implementation methods
     
-    protected List getContentList() {
+    protected List contentList() {
         if ( content instanceof List ) {
             return (List) content;
         }
@@ -910,50 +911,6 @@ public class DefaultElement extends AbstractElement {
     }
     
     
-    /** A Factory Method pattern which lazily creates 
-      * a List implementation used to store content
-      */
-    protected List createContentList() {
-        return new ArrayList( DEFAULT_CONTENT_LIST_SIZE );
-    }
-    
-    /** A Factory Method pattern which lazily creates 
-      * a List implementation used to store attributes
-      */
-    protected List createAttributeList() {
-        return new ArrayList( DEFAULT_CONTENT_LIST_SIZE );
-    }
-    
-    /** A Factory Method pattern which creates 
-      * a BackedList implementation used to store results of 
-      * a filtered content query such as 
-      * {@link #processingInstructions} or
-      * {@link #elements} which changes are reflected in the content
-      */
-    protected BackedList createResultList() {
-        return new BackedList( this, getContentList() );
-    }
-    
-    /** A Factory Method pattern which creates 
-      * a BackedList implementation which contains a single result
-      */
-    protected List createSingleResultList( Object result ) {
-        BackedList list = new BackedList( this, getContentList(), 1 );
-        list.addLocal( result );
-        return list;
-    }
-    
-    /** A Factory Method pattern which lazily creates an empty
-      * a BackedList implementation
-      */
-    protected List createEmptyList() {
-        return new BackedList( this, getContentList(), 0 );
-    }
-    
-    
-    protected Iterator createSingleIterator( Object result ) {
-        return new SingleIterator( result );
-    }
     
 }
 

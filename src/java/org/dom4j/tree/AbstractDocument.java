@@ -49,6 +49,10 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
         return "/";
     }
     
+    public String getUniquePath() {
+        return "/";
+    }
+    
     public Document getDocument() {
         return this;
     }

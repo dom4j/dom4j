@@ -38,6 +38,13 @@ public abstract class AbstractComment extends AbstractCharacterData implements C
             : "comment()";
     }
 
+    public String getUniquePath() {
+        Element parent = getParent();
+        return ( parent != null ) 
+            ? parent.getUniquePath() + "/comment()"
+            : "comment()";
+    }
+
     public String toString() {
         return super.toString() + " [Comment: \"" + getText() + "\"]";
     }

@@ -7,69 +7,51 @@
  * $Id$
  */
 
-package org.dom4j.tree;
+package org.dom4j.util;
 
-import java.io.IOException;
-import java.io.Writer;
-
+import org.dom4j.Attribute;
+import org.dom4j.Document;
+import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
-import org.dom4j.Entity;
-import org.dom4j.Visitor;
+import org.dom4j.Namespace;
+import org.dom4j.QName;
 
+import org.xml.sax.Attributes;
 
-/** <p><code>AbstractEntity</code> is an abstract base class for 
-  * tree implementors to use for implementation inheritence.</p>
+/** <p><code>NonLazyDocumentFactory</code> is a factory of XML objects which 
+  * avoid using the lazy creation pattern. This results in a slower
+  * creation of a Document and uses more memory but it means that the
+  * same Document instance can be shared across threads provided it is not
+  * modified.</p>
   *
-  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
+  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public abstract class AbstractEntity extends AbstractNode implements Entity {
-
-    public AbstractEntity() {
+public class NonLazyDocumentFactory extends DocumentFactory {
+    
+    /** The Singleton instance */
+    static NonLazyDocumentFactory singleton = new NonLazyDocumentFactory();
+    
+    
+    /** <p>Access to the singleton instance of this factory.</p>
+      *
+      * @return the default singleon instance
+      */
+    public static DocumentFactory getInstance() {
+        return singleton;
     }
     
-    public short getNodeType() {
-        return ENTITY_REFERENCE_NODE;
-    }
-
-    public String getPath() {
-        // From XPaths perspective, entities are included in text
-        Element parent = getParent();
-        return ( parent != null ) 
-            ? parent.getPath() + "/text()"
-            : "text()";
+        
+    // DocumentFactory methods
+    //-------------------------------------------------------------------------
+    
+    public Element createElement(QName qname) {
+        return new NonLazyElement(qname);
     }
     
-    public String getUniquePath() {
-        // From XPaths perspective, entities are included in text
-        Element parent = getParent();
-        return ( parent != null ) 
-            ? parent.getUniquePath() + "/text()"
-            : "text()";
+    public Element createElement(QName qname, Attributes attributes) {
+        return new NonLazyElement(qname, attributes);
     }
-    
-    public String toString() {
-        return super.toString() + " [Entity: &" + getName() + ";]";
-    }
-
-    public String getStringValue() {
-        return "&" + getName() + ";";
-    }
-    
-    public String asXML() {
-        return "&" + getName() + ";";
-    }
-    
-    public void write(Writer writer) throws IOException {
-        writer.write( "&" );
-        writer.write( getName() );
-        writer.write( ";" );
-    }
-    
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
-    }
-    
 }
 
 

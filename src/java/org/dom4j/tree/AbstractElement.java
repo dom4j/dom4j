@@ -12,6 +12,8 @@ package org.dom4j.tree;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -44,11 +46,17 @@ import org.dom4j.io.XMLWriter;
   */
 public abstract class AbstractElement extends AbstractBranch implements Element {
 
-    protected static final boolean VERBOSE_TOSTRING = false;
-        
     /** The <code>DocumentFactory</code> instance used by default */
     private static final DocumentFactory DOCUMENT_FACTORY = DocumentFactory.getInstance();
     
+    protected static final List EMPTY_LIST = Collections.EMPTY_LIST;
+    protected static final Iterator EMPTY_ITERATOR = EMPTY_LIST.iterator();
+    
+    
+    protected static final int DEFAULT_CONTENT_LIST_SIZE = 5;
+    
+    protected static final boolean VERBOSE_TOSTRING = false;
+        
     
     public AbstractElement() { 
     }
@@ -68,40 +76,6 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         return false;
     }
 
-    public boolean hasMixedContent() {
-        List content = getContentList();
-        if (content == null || content.isEmpty() || content.size() < 2) {
-            return false;
-        }
-
-        Class prevClass = null;
-        for ( Iterator iter = content.iterator(); iter.hasNext(); ) {
-            Object object = iter.next();
-            Class newClass = object.getClass();
-            if (newClass != prevClass) {
-               if (prevClass != null) {
-                  return true;
-               }
-               prevClass = newClass;
-            }
-        }
-        return false;
-    }
-    
-    public boolean isTextOnly() {
-        List content = getContentList();
-        if (content == null || content.isEmpty()) {
-            return true;
-        }
-        for ( Iterator iter = content.iterator(); iter.hasNext(); ) {
-            Object object = iter.next();
-            if ( ! ( object instanceof CharacterData) && ! ( object instanceof String ) ) {
-                return false;
-            }
-        }
-        return true;
-    }
-    
     public void setName(String name) {
         throw new UnsupportedOperationException("The name and namespace of this Element cannot be changed" );
     }
@@ -116,7 +90,13 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
             return "/" + getQualifiedName();
         }
         return parent.getPath() + "/" + getQualifiedName();
-/*        
+    }
+    
+    public String getUniquePath() {
+        Element parent = getParent();
+        if ( parent == null ) {
+            return "/" + getQualifiedName();
+        }
         StringBuffer buffer = new StringBuffer( parent.getPath() );
         buffer.append( "/" );
         buffer.append( getQualifiedName() );
@@ -131,7 +111,6 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
             
         }
         return buffer.toString();
-*/
     }
     
     public String asXML() {
@@ -176,7 +155,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         if ( VERBOSE_TOSTRING ) {
             return super.toString() + " [Element: <" + getQualifiedName() 
                 + " attributes: " + attributeList()
-                + " content: " + getContentList() + " />]";
+                + " content: " + contentList() + " />]";
         }
         else {
             return super.toString() + " [Element: <" + getQualifiedName() 
@@ -186,6 +165,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     
 
     // QName methods
+    //-------------------------------------------------------------------------    
     
     public Namespace getNamespace() {
         return getQName().getNamespace();
@@ -219,8 +199,165 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     
     
     
-    // Attribute methods
+    
+
+    // Node methods
+    //-------------------------------------------------------------------------    
+    public Node node(int index) {
+        if ( index >= 0 ) {
+            List list = contentList();
+            if ( index >= list.size() ) {
+                return null;
+            }
+            Object node = list.get(index);
+            if (node != null) {
+                if (node instanceof Node) {
+                    return (Node) node;
+                }
+                else {
+                    return new DefaultText(node.toString());
+                }
+            }
+        }
+        return null;
+    }
+    
+    public int indexOf(Node node) {
+        return contentList().indexOf( node );
+    }
+    
+    public int nodeCount() {
+        return contentList().size();
+    }
+    
+    public Iterator nodeIterator() {
+        return contentList().iterator();
+    }
+
+    
+    
+    
+    // Element methods
+    //-------------------------------------------------------------------------    
+    
+    public Element element(String name) {
+        List list = contentList();
+        int size = list.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = list.get(i);
+            if ( object instanceof Element ) {
+                Element element = (Element) object;
+                if ( name.equals( element.getName() ) ) {
+                    return element;
+                }
+            }
+        }
+        return null;
+    }
+    
+    public Element element(QName qName) {
+        List list = contentList();
+        int size = list.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = list.get(i);
+            if ( object instanceof Element ) {
+                Element element = (Element) object;
+                if ( qName.equals( element.getQName() ) ) {
+                    return element;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Element element(String name, Namespace namespace) {
+        return element( getDocumentFactory().createQName( name, namespace ) );
+    }
+    
+    
+    
+    public List elements() {
+        List list = contentList();
+        BackedList answer = createResultList();
+        int size = list.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = list.get(i);
+            if ( object instanceof Element ) {
+                answer.addLocal( object );
+            }
+        }
+        return answer;
+    }
+    
+    public List elements(String name) {
+        List list = contentList();
+        BackedList answer = createResultList();
+        int size = list.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = list.get(i);
+            if ( object instanceof Element ) {
+                Element element = (Element) object;
+                if ( name.equals( element.getName() ) ) {
+                    answer.addLocal( element );
+                }
+            }
+        }
+        return answer;
+    }
+    
+    public List elements(QName qName) {
+        List list = contentList();
+        BackedList answer = createResultList();
+        int size = list.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = list.get(i);
+            if ( object instanceof Element ) {
+                Element element = (Element) object;
+                if ( qName.equals( element.getQName() ) ) {
+                    answer.addLocal( element );
+                }
+            }
+        }
+        return answer;
+    }
+    
+    public List elements(String name, Namespace namespace) {
+        return elements( getDocumentFactory().createQName(name, namespace ) );
+    }
+    
+    public Iterator elementIterator() {
+        List list = contentList();
+        return new ElementIterator(list.iterator());
+    }
         
+    public Iterator elementIterator(String name) {
+        List list = contentList();
+        return new ElementNameIterator(list.iterator(), name);
+    }
+    
+    public Iterator elementIterator(QName qName) {
+        List list = contentList();
+        return new ElementQNameIterator(list.iterator(), qName);
+    }
+    
+    public Iterator elementIterator(String name, Namespace namespace) {
+        return elementIterator( getDocumentFactory().createQName( name, namespace ) );
+    }
+
+    
+    
+    
+    
+    
+    // Attribute methods
+    //-------------------------------------------------------------------------    
+    
+    
+    public List attributes() {
+        return new ContentListFacade(this, attributeList());
+    }
+    
+
     public Iterator attributeIterator() {
         return attributeList().iterator();
     }
@@ -233,6 +370,34 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         return attributeList().size();
     }
     
+    public Attribute attribute(String name) {
+        List list = attributeList();
+        int size = list.size();
+        for ( int i = 0; i < size; i++ ) {
+            Attribute attribute = (Attribute) list.get(i);
+            if ( name.equals( attribute.getName() ) ) {
+                return attribute;
+            }
+        }
+        return null;
+    }
+
+    public Attribute attribute(QName qName) {
+        List list = attributeList();
+        int size = list.size();
+        for ( int i = 0; i < size; i++ ) {
+            Attribute attribute = (Attribute) list.get(i);
+            if ( qName.equals( attribute.getQName() ) ) {
+                return attribute;
+            }
+        }
+        return null;
+    }
+
+    public Attribute attribute(String name, Namespace namespace) {
+        return attribute( getDocumentFactory().createQName( name, namespace ) );
+    }
+
     public String attributeValue(String name) {
         Attribute attrib = attribute(name);
         if (attrib == null) {
@@ -304,8 +469,93 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     }
     
 
+    public boolean remove(Attribute attribute) {
+        List list = attributeList();
+        boolean answer = list.remove(attribute);
+        if ( answer ) {
+            childRemoved(attribute);
+        }
+        else {
+            // we may have a copy of the attribute
+            Attribute copy = attribute( attribute.getQName() );
+            if ( copy != null ) {
+                list.remove( copy );
+                answer = true;
+            }
+        }
+
+        return answer;
+    }
+    
+
+    
+    // Processing instruction API
+    //-------------------------------------------------------------------------    
+    
+    public List processingInstructions() {
+        List list = contentList();
+        BackedList answer = createResultList();
+        int size = list.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = list.get(i);
+            if ( object instanceof ProcessingInstruction ) {
+                answer.addLocal( object );
+            }
+        }
+        return answer;
+    }
+    
+    public List processingInstructions(String target) {
+        List list = contentList();
+        BackedList answer = createResultList();
+        int size = list.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = list.get(i);
+            if ( object instanceof ProcessingInstruction ) {
+                ProcessingInstruction pi = (ProcessingInstruction) object;
+                if ( target.equals( pi.getName() ) ) {                  
+                    answer.addLocal( pi );
+                }
+            }
+        }
+        return answer;
+    }
+    
+    public ProcessingInstruction processingInstruction(String target) {
+        List list = contentList();
+        int size = list.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = list.get(i);
+            if ( object instanceof ProcessingInstruction ) {
+                ProcessingInstruction pi = (ProcessingInstruction) object;
+                if ( target.equals( pi.getName() ) ) {                  
+                    return pi;
+                }
+            }
+        }
+        return null;
+    }
+    
+    public boolean removeProcessingInstruction(String target) {
+        List list = contentList();
+        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
+            Object object = iter.next();
+            if ( object instanceof ProcessingInstruction ) {
+                ProcessingInstruction pi = (ProcessingInstruction) object;
+                if ( target.equals( pi.getName() ) ) {                  
+                    iter.remove();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    
+    
     
     // Content Model methods
+    //-------------------------------------------------------------------------    
     
     public Node getXPathResult(int index) {
         Node answer = node(index);
@@ -470,6 +720,41 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     
     
     // Helper methods
+    //-------------------------------------------------------------------------    
+    
+    public boolean hasMixedContent() {
+        List content = contentList();
+        if (content == null || content.isEmpty() || content.size() < 2) {
+            return false;
+        }
+
+        Class prevClass = null;
+        for ( Iterator iter = content.iterator(); iter.hasNext(); ) {
+            Object object = iter.next();
+            Class newClass = object.getClass();
+            if (newClass != prevClass) {
+               if (prevClass != null) {
+                  return true;
+               }
+               prevClass = newClass;
+            }
+        }
+        return false;
+    }
+    
+    public boolean isTextOnly() {
+        List content = contentList();
+        if (content == null || content.isEmpty()) {
+            return true;
+        }
+        for ( Iterator iter = content.iterator(); iter.hasNext(); ) {
+            Object object = iter.next();
+            if ( ! ( object instanceof CharacterData) && ! ( object instanceof String ) ) {
+                return false;
+            }
+        }
+        return true;
+    }
     
     public void setText(String text) {
         clearContent();
@@ -513,7 +798,6 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     }
         
     
-    // creates a copy
     
     /** <p>This returns a deep clone of this element.
       * The new element is detached from its parent, and getParent() on the 
@@ -548,6 +832,108 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         clone.appendContent(this);
         return clone;
     }
+
+    
+    
+    public Namespace getNamespaceForPrefix(String prefix) {
+        if ( prefix == null || prefix.length() <= 0 ) {
+            return Namespace.NO_NAMESPACE;
+        }
+        else if ( prefix.equals( getNamespacePrefix() ) ) {
+            return getNamespace();
+        }
+        else if ( prefix.equals( "xml" ) ) {
+            return Namespace.XML_NAMESPACE;
+        }
+        else {
+            List list = contentList();
+            int size = list.size();
+            for ( int i = 0; i < size; i++ ) {
+                Object object = list.get(i);
+                if ( object instanceof Namespace ) {
+                    Namespace namespace = (Namespace) object;
+                    if ( prefix.equals( namespace.getPrefix() ) ) {
+                        return namespace;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+   
+    public Namespace getNamespaceForURI(String uri) {
+        if ( uri == null || uri.length() <= 0 ) {
+            return Namespace.NO_NAMESPACE;
+        }
+        else if ( uri.equals( getNamespaceURI() ) ) {
+            return getNamespace();
+        }
+        else {
+            List list = contentList();
+            int size = list.size();
+            for ( int i = 0; i < size; i++ ) {
+                Object object = list.get(i);
+                if ( object instanceof Namespace ) {
+                    Namespace namespace = (Namespace) object;
+                    if ( uri.equals( namespace.getURI() ) ) {
+                        return namespace;
+                    }
+                }
+            }
+            return null;
+        }
+    }
+    
+    public List declaredNamespaces() {
+        BackedList answer = createResultList();
+        if ( getNamespaceURI().length() > 0 ) {
+            answer.addLocal( getNamespace() );
+        }
+        List list = contentList();
+        int size = list.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = list.get(i);
+            if ( object instanceof Namespace ) {
+                answer.addLocal( object );
+            }
+        }
+        return answer;
+    }
+    
+    public List additionalNamespaces() {
+        List list = contentList();
+        int size = list.size();
+        BackedList answer = createResultList();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = list.get(i);
+            if ( object instanceof Namespace ) {
+                Namespace namespace = (Namespace) object;
+                answer.addLocal( namespace );
+            }
+        }
+        return answer;
+    }
+    
+    public List additionalNamespaces(String defaultNamespaceURI) {
+        List list = contentList();
+        BackedList answer = createResultList();
+        int size = list.size();
+        for ( int i = 0; i < size; i++ ) {
+            Object object = list.get(i);
+            if ( object instanceof Namespace ) {
+                Namespace namespace = (Namespace) object;
+                if ( ! defaultNamespaceURI.equals( namespace.getURI() ) ) {
+                    answer.addLocal( namespace );
+                }
+            }
+        }
+        return answer;
+    }
+    
+    
+    // Implementation methods
+    //-------------------------------------------------------------------------    
+
     
     protected Element createElement(String name) {
         return getDocumentFactory().createElement(name);
@@ -558,6 +944,26 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     }
     
     
+    protected void addNode(Node node) {
+        if (node.getParent() != null) {
+            // XXX: could clone here
+            String message = "The Node already has an existing parent of \"" 
+                + node.getParent().getQualifiedName() + "\"";
+            throw new IllegalAddException(this, node, message);
+        }
+        
+        contentList().add( node );
+
+        childAdded(node);
+    }
+
+    protected boolean removeNode(Node node) {
+        boolean answer = contentList().remove(node);
+        if (answer) {
+            childRemoved(node);
+        }
+        return answer;
+    }
 
     /** Called when a new child node is added to
       * create any parent relationships
@@ -584,6 +990,57 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         return ( factory != null ) ? factory : DOCUMENT_FACTORY;
     }
     
+    /** A Factory Method pattern which creates 
+      * a List implementation used to store content
+      */
+    protected List createContentList() {
+        return new ArrayList( DEFAULT_CONTENT_LIST_SIZE );
+    }
+    
+    /** A Factory Method pattern which creates 
+      * a List implementation used to store attributes
+      */
+    protected List createAttributeList() {
+        return new ArrayList( DEFAULT_CONTENT_LIST_SIZE );
+    }
+    
+    /** A Factory Method pattern which creates 
+      * a List implementation used to store attributes
+      */
+    protected List createAttributeList( int size ) {
+        return new ArrayList( size );
+    }
+    
+    /** A Factory Method pattern which creates 
+      * a BackedList implementation used to store results of 
+      * a filtered content query such as 
+      * {@link #processingInstructions} or
+      * {@link #elements} which changes are reflected in the content
+      */
+    protected BackedList createResultList() {
+        return new BackedList( this, contentList() );
+    }
+    
+    /** A Factory Method pattern which creates 
+      * a BackedList implementation which contains a single result
+      */
+    protected List createSingleResultList( Object result ) {
+        BackedList list = new BackedList( this, contentList(), 1 );
+        list.addLocal( result );
+        return list;
+    }
+    
+    /** A Factory Method pattern which creates an empty
+      * a BackedList implementation
+      */
+    protected List createEmptyList() {
+        return new BackedList( this, contentList(), 0 );
+    }
+    
+    
+    protected Iterator createSingleIterator( Object result ) {
+        return new SingleIterator( result );
+    }
 }
 
 

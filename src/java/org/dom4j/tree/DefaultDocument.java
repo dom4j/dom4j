@@ -242,7 +242,7 @@ public class DefaultDocument extends AbstractDocument {
     
     // Implementation methods
     //-------------------------------------------------------------------------
-    protected List getContentList() {
+    protected List contentList() {
         if (contents == null) {
             contents = createContentList();
             if (rootElement != null) {
@@ -299,14 +299,14 @@ public class DefaultDocument extends AbstractDocument {
       * {@link #processingInstructions}
       */
     protected BackedList createResultList() {
-        return new BackedList( this, getContentList() );
+        return new BackedList( this, contentList() );
     }
     
     /** A Factory Method pattern which lazily creates an empty
       * a BackedList implementation
       */
     protected BackedList createEmptyList() {
-        return new BackedList( this, getContentList(), 0 );
+        return new BackedList( this, contentList(), 0 );
     }
     
     protected DocumentFactory getDocumentFactory() {

@@ -104,6 +104,13 @@ public abstract class AbstractAttribute extends AbstractNode implements Attribut
             : "@" + getName();
     }
     
+    public String getUniquePath() {
+        Element parent = getParent();
+        return ( parent != null ) 
+            ? parent.getUniquePath() + "/@" + getName() 
+            : "@" + getName();
+    }
+    
     protected Node createXPathResult(Element parent) {
         return new XPathAttribute(parent, getQName(), getValue());
     }

@@ -47,6 +47,11 @@ public abstract class AbstractDocumentType extends AbstractNode implements Docum
         return "";
     }
 
+    public String getUniquePath() {
+        // not available in XPath
+        return "";
+    }
+
     public String toString() {
         return super.toString() + " [DocumentType: " + asXML() + "]";
     }

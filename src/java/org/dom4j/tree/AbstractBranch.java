@@ -56,12 +56,12 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     }    
     
     public List content() {
-        List backingList = getContentList();
+        List backingList = contentList();
         return new ContentListFacade(this, backingList);
     }
     
     public String getText() {
-        List content = getContentList();
+        List content = contentList();
         if (content != null) {
             int size = content.size();
             if (size >= 1) {
@@ -286,7 +286,7 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     }
     
     /** @return the internal List used to manage the content */
-    protected abstract List getContentList();
+    protected abstract List contentList();
     
     protected abstract void addNode(Node node);
     
