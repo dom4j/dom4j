@@ -1,9 +1,9 @@
 /*
  * Copyright 2001 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -34,34 +34,34 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 /** <p><code>SAXReader</code> creates a DOM4J tree from SAX parsing events.</p>
   *
-  * <p>The actual SAX parser that is used by this class is configurable 
-  * so you can use your favourite SAX parser if you wish. DOM4J comes 
-  * configured with its own SAX parser so you do not need to worry about 
+  * <p>The actual SAX parser that is used by this class is configurable
+  * so you can use your favourite SAX parser if you wish. DOM4J comes
+  * configured with its own SAX parser so you do not need to worry about
   * configuring the SAX parser.</p>
   *
   * <p>To explicitly configure the SAX parser that is used via Java code you
-  * can use a constructor or use the 
+  * can use a constructor or use the
   * {@link #setXMLReader(XMLReader)} or
   * {@link #setXMLReaderClassName(String)} methods.</p>
   *
-  * <p>If the parser is not specified explicitly then the standard SAX 
-  * policy of using the <code>org.xml.sax.driver</code> system property is 
+  * <p>If the parser is not specified explicitly then the standard SAX
+  * policy of using the <code>org.xml.sax.driver</code> system property is
   * used to determine the implementation class of {@link XMLReader}.</p>
-  *  
-  * <p>If the <code>org.xml.sax.driver</code> system property is not defined 
-  * then JAXP is used via reflection (so that DOM4J is not explicitly dependent 
-  * on the JAXP classes) to load the JAXP configured SAXParser. 
-  * If there is any error creating a JAXP SAXParser an informational message is 
+  *
+  * <p>If the <code>org.xml.sax.driver</code> system property is not defined
+  * then JAXP is used via reflection (so that DOM4J is not explicitly dependent
+  * on the JAXP classes) to load the JAXP configured SAXParser.
+  * If there is any error creating a JAXP SAXParser an informational message is
   * output and  then the default (Aelfred) SAX parser is used instead.</p>
   *
-  * <p>If you are trying to use JAXP to explicitly set your SAX parser 
-  * and are experiencing problems, you can turn on verbose error reporting 
+  * <p>If you are trying to use JAXP to explicitly set your SAX parser
+  * and are experiencing problems, you can turn on verbose error reporting
   * by defining the system property <code>org.dom4j.verbose</code> to be "true"
-  * which will output a more detailed description of why JAXP could not find a 
+  * which will output a more detailed description of why JAXP could not find a
   * SAX parser</p>
   *
   * <p>
-  * For more information on JAXP please go to 
+  * For more information on JAXP please go to
   * <a href="http://java.sun.com/xml/">Sun's Java &amp; XML site</a></p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
@@ -71,48 +71,48 @@ public class SAXReader {
 
     /** <code>DocumentFactory</code> used to create new document objects */
     private DocumentFactory factory;
-    
+
     /** <code>XMLReader</code> used to parse the SAX events */
     private XMLReader xmlReader;
-    
+
     /** Whether validation should occur */
     private boolean validating;
-    
+
     /** DispatchHandler to call when each <code>Element</code> is encountered */
     private DispatchHandler dispatchHandler;
- 
+
     /** ErrorHandler class to use */
     private ErrorHandler errorHandler;
 
     /** The entity resolver */
     private EntityResolver entityResolver;
-    
+
     /** Should element & attribute names and namespace URIs be interned? */
     private boolean stringInternEnabled = true;
-    
+
     /** Should internal DTD declarations be expanded into a List in the DTD */
     private boolean includeInternalDTDDeclarations = false;
-    
+
     /** Should external DTD declarations be expanded into a List in the DTD */
     private boolean includeExternalDTDDeclarations = false;
-    
+
     /** Whether adjacent text nodes should be merged */
-    private boolean mergeAdjacentText = false;    
-    
+    private boolean mergeAdjacentText = false;
+
     /** Holds value of property stripWhitespaceText. */
     private boolean stripWhitespaceText = false;
-    
+
     /** Should we ignore comments */
     private boolean ignoreComments = false;
-    
-    
+
+
     //private boolean includeExternalGeneralEntities = false;
     //private boolean includeExternalParameterEntities = false;
-    
+
     /** The SAX filter used to filter SAX events */
     private XMLFilter xmlFilter;
-    
-    
+
+
     public SAXReader() {
     }
 
@@ -143,7 +143,7 @@ public class SAXReader {
             this.xmlReader = XMLReaderFactory.createXMLReader(xmlReaderClassName);
         }
     }
-    
+
     public SAXReader(String xmlReaderClassName, boolean validating) throws SAXException {
         if (xmlReaderClassName != null) {
             this.xmlReader = XMLReaderFactory.createXMLReader(xmlReaderClassName);
@@ -152,42 +152,42 @@ public class SAXReader {
     }
 
 
-    
+
     /** Allows a SAX property to be set on the underlying SAX parser.
       * This can be useful to set parser-specific properties
-      * such as the location of schema or DTD resources. 
+      * such as the location of schema or DTD resources.
       * Though use this method with caution as it has the possibility
       * of breaking the standard behaviour.
-      * An alternative to calling this method is to correctly configure an 
+      * An alternative to calling this method is to correctly configure an
       * XMLReader object instance and call the {@link #setXMLReader(XMLReader)} method
       *
       * @name is the SAX property name
       * @value is the value of the SAX property
       * @throws SAXException if the XMLReader could not be created or
-      * the property could not be changed. 
+      * the property could not be changed.
       */
     public void setProperty(String name, Object value) throws SAXException {
         getXMLReader().setProperty(name, value);
     }
-    
-    
+
+
     /** Sets a SAX feature on the underlying SAX parser.
-      * This can be useful to set parser-specific features. 
+      * This can be useful to set parser-specific features.
       * Though use this method with caution as it has the possibility
       * of breaking the standard behaviour.
-      * An alternative to calling this method is to correctly configure an 
+      * An alternative to calling this method is to correctly configure an
       * XMLReader object instance and call the {@link #setXMLReader(XMLReader)} method
       *
       * @name is the SAX feature name
       * @value is the value of the SAX feature
       * @throws SAXException if the XMLReader could not be created or
-      * the feature could not be changed. 
+      * the feature could not be changed.
       */
     public void setFeature(String name, boolean value) throws SAXException {
         getXMLReader().setFeature(name, value);
     }
-    
-        
+
+
     /** <p>Reads a Document from the given <code>File</code></p>
       *
       * @param file is the <code>File</code> to read from.
@@ -199,8 +199,8 @@ public class SAXReader {
         try {
             /*
              * We cannot convert the file to an URL because if the filename
-             * contains '#' characters, there will be problems with the 
-             * URL in the InputSource (because a URL like 
+             * contains '#' characters, there will be problems with the
+             * URL in the InputSource (because a URL like
              * http://myhost.com/index#anchor is treated the same as
              * http://myhost.com/index)
              * Thanks to Christian Oetterli
@@ -210,7 +210,7 @@ public class SAXReader {
             throw new MalformedURLException(e.getMessage());
         }
     }
-    
+
     /** <p>Reads a Document from the given <code>URL</code> using SAX</p>
       *
       * @param url <code>URL</code> to read from.
@@ -221,7 +221,7 @@ public class SAXReader {
         String systemID = url.toExternalForm();
         return read(new InputSource(systemID));
     }
-    
+
     /** <p>Reads a Document from the given URL or filename using SAX.</p>
       *
       * <p>
@@ -237,7 +237,7 @@ public class SAXReader {
       * @throws DocumentException if an error occurs during parsing.
       */
     public Document read(String systemId) throws DocumentException {
-        return read(new InputSource(systemId));        
+        return read(new InputSource(systemId));
     }
 
     /** <p>Reads a Document from the given stream using SAX</p>
@@ -285,7 +285,7 @@ public class SAXReader {
         source.setSystemId(SystemId);
         return read(source);
     }
-    
+
     /** <p>Reads a Document from the given <code>InputSource</code> using SAX</p>
       *
       * @param in <code>InputSource</code> to read from.
@@ -296,25 +296,18 @@ public class SAXReader {
     public Document read(InputSource in) throws DocumentException {
         try {
             XMLReader xmlReader = getXMLReader();
-            
+
             xmlReader = installXMLFilter(xmlReader);
-            
-            EntityResolver entityResolver = xmlReader.getEntityResolver();
-            if ( entityResolver == null ) {
-                entityResolver = this.entityResolver;
-                if ( entityResolver == null ) {
-                    entityResolver = createDefaultEntityResolver( in.getSystemId() );
-                }
-                xmlReader.setEntityResolver( entityResolver );
+
+            EntityResolver thatEntityResolver = this.entityResolver;
+            if (thatEntityResolver==null) {
+              thatEntityResolver = createDefaultEntityResolver( in.getSystemId() );
+              this.entityResolver=thatEntityResolver;
             }
-            else {
-                if ( this.entityResolver != null ) {
-                    xmlReader.setEntityResolver( this.entityResolver );
-                }
-            }
-            
+            xmlReader.setEntityResolver( thatEntityResolver );
+
             SAXContentHandler contentHandler = createContentHandler(xmlReader);
-            contentHandler.setEntityResolver( entityResolver );
+            contentHandler.setEntityResolver( thatEntityResolver );
             contentHandler.setInputSource( in );
             contentHandler.setIncludeInternalDTDDeclarations( isIncludeInternalDTDDeclarations() );
             contentHandler.setIncludeExternalDTDDeclarations( isIncludeExternalDTDDeclarations() );
@@ -324,10 +317,10 @@ public class SAXReader {
             xmlReader.setContentHandler(contentHandler);
 
             configureReader(xmlReader, contentHandler);
-        
+
             xmlReader.parse(in);
             return contentHandler.getDocument();
-        } 
+        }
         catch (Exception e) {
             if (e instanceof SAXParseException) {
                 //e.printStackTrace();
@@ -336,11 +329,11 @@ public class SAXReader {
                 if ( systemId == null ) {
                     systemId = "";
                 }
-                String message = "Error on line " 
+                String message = "Error on line "
                     + parseException.getLineNumber()
                     + " of document "  + systemId
                     + " : " + parseException.getMessage();
-                
+
                 throw new DocumentException(message, e);
             }
             else {
@@ -348,19 +341,19 @@ public class SAXReader {
             }
         }
     }
-    
 
-    
+
+
     // Properties
-    //-------------------------------------------------------------------------                
-    
-    /** @return the validation mode, true if validating will be done 
+    //-------------------------------------------------------------------------
+
+    /** @return the validation mode, true if validating will be done
       * otherwise false.
       */
     public boolean isValidating() {
         return validating;
     }
-    
+
     /** Sets the validation mode.
       *
       * @param validating indicates whether or not validation should occur.
@@ -368,14 +361,14 @@ public class SAXReader {
     public void setValidation(boolean validating) {
         this.validating = validating;
     }
-    
+
     /** @return whether internal DTD declarations should be expanded into the DocumentType
-      * object or not. 
+      * object or not.
       */
     public boolean isIncludeInternalDTDDeclarations() {
         return includeInternalDTDDeclarations;
     }
-    
+
     /** Sets whether internal DTD declarations should be expanded into the DocumentType
       * object or not.
       *
@@ -385,14 +378,14 @@ public class SAXReader {
     public void setIncludeInternalDTDDeclarations(boolean includeInternalDTDDeclarations) {
         this.includeInternalDTDDeclarations = includeInternalDTDDeclarations;
     }
-    
+
     /** @return whether external DTD declarations should be expanded into the DocumentType
-      * object or not. 
+      * object or not.
       */
     public boolean isIncludeExternalDTDDeclarations() {
         return includeExternalDTDDeclarations;
     }
-    
+
     /** Sets whether DTD external declarations should be expanded into the DocumentType
       * object or not.
       *
@@ -402,7 +395,7 @@ public class SAXReader {
     public void setIncludeExternalDTDDeclarations(boolean includeExternalDTDDeclarations) {
         this.includeExternalDTDDeclarations = includeExternalDTDDeclarations;
     }
-    
+
     /** Sets whether String interning
       * is enabled or disabled for element & attribute names and namespace URIs.
       * This proprety is enabled by default.
@@ -410,21 +403,21 @@ public class SAXReader {
     public boolean isStringInternEnabled() {
         return stringInternEnabled;
     }
-    
-    /** Sets whether String interning 
+
+    /** Sets whether String interning
       * is enabled or disabled for element & attribute names and namespace URIs
       */
     public void setStringInternEnabled(boolean stringInternEnabled) {
         this.stringInternEnabled = stringInternEnabled;
     }
-    
+
     /** Returns whether adjacent text nodes should be merged together.
       * @return Value of property mergeAdjacentText.
       */
     public boolean isMergeAdjacentText() {
         return mergeAdjacentText;
     }
-    
+
     /** Sets whether or not adjacent text nodes should be merged
       * together when parsing.
       * @param mergeAdjacentText New value of property mergeAdjacentText.
@@ -432,15 +425,15 @@ public class SAXReader {
     public void setMergeAdjacentText(boolean mergeAdjacentText) {
         this.mergeAdjacentText = mergeAdjacentText;
     }
-           
+
     /** Sets whether whitespace between element start and end tags should be ignored
-      * 
+      *
       * @return Value of property stripWhitespaceText.
       */
     public boolean isStripWhitespaceText() {
         return stripWhitespaceText;
     }
-    
+
     /** Sets whether whitespace between element start and end tags should be ignored.
       *
       * @param stripWhitespaceText New value of property stripWhitespaceText.
@@ -448,7 +441,7 @@ public class SAXReader {
     public void setStripWhitespaceText(boolean stripWhitespaceText) {
         this.stripWhitespaceText = stripWhitespaceText;
     }
-    
+
     /**
      * Returns whether we should ignore comments or not.
      * @return boolean
@@ -465,7 +458,7 @@ public class SAXReader {
         this.ignoreComments = ignoreComments;
     }
 
-    
+
     /** @return the <code>DocumentFactory</code> used to create document objects
       */
     public DocumentFactory getDocumentFactory() {
@@ -491,7 +484,7 @@ public class SAXReader {
         return errorHandler;
     }
 
-    /** Sets the <code>ErrorHandler</code> used by the SAX 
+    /** Sets the <code>ErrorHandler</code> used by the SAX
       * <code>XMLReader</code>.
       *
       * @param errorHandler is the <code>ErrorHandler</code> used by SAX
@@ -505,8 +498,8 @@ public class SAXReader {
     public EntityResolver getEntityResolver() {
         return entityResolver;
     }
-    
-    /** Sets the entity resolver used to resolve entities. 
+
+    /** Sets the entity resolver used to resolve entities.
      */
     public void setEntityResolver(EntityResolver entityResolver) {
         this.entityResolver = entityResolver;
@@ -529,18 +522,18 @@ public class SAXReader {
         this.xmlReader = xmlReader;
     }
 
-    /** Sets the class name of the <code>XMLReader</code> to be used 
+    /** Sets the class name of the <code>XMLReader</code> to be used
       * to parse SAX events.
       *
-      * @param xmlReaderClassName is the class name of the <code>XMLReader</code> 
+      * @param xmlReaderClassName is the class name of the <code>XMLReader</code>
       * to parse SAX events
       */
     public void setXMLReaderClassName(String xmlReaderClassName) throws SAXException {
         setXMLReader( XMLReaderFactory.createXMLReader(xmlReaderClassName) );
     }
 
-    
-    /** Adds the <code>ElementHandler</code> to be called when the 
+
+    /** Adds the <code>ElementHandler</code> to be called when the
       * specified path is encounted.
       *
       * @param path is the path to be handled
@@ -548,19 +541,19 @@ public class SAXReader {
       * by the event based processor.
       */
     public void addHandler(String path, ElementHandler handler) {
-        getDispatchHandler().addHandler(path, handler);   
+        getDispatchHandler().addHandler(path, handler);
     }
-    
+
     /** Removes the <code>ElementHandler</code> from the event based
       * processor, for the specified path.
       *
       * @param path is the path to remove the <code>ElementHandler</code> for.
       */
     public void removeHandler(String path) {
-        getDispatchHandler().removeHandler(path);   
+        getDispatchHandler().removeHandler(path);
     }
-    
-    /** When multiple <code>ElementHandler</code> instances have been 
+
+    /** When multiple <code>ElementHandler</code> instances have been
       * registered, this will set a default <code>ElementHandler</code>
       * to be called for any path which does <b>NOT</b> have a handler
       * registered.
@@ -568,18 +561,18 @@ public class SAXReader {
       * by the event based processor.
       */
     public void setDefaultHandler(ElementHandler handler) {
-        getDispatchHandler().setDefaultHandler(handler);   
+        getDispatchHandler().setDefaultHandler(handler);
     }
-    
+
     /**
     * This method clears out all the existing handlers and default handler
     * setting things back as if no handler existed.  Useful when reusing an
     * object instance.
     */
     public void resetHandlers() {
-        getDispatchHandler().resetHandlers();   
+        getDispatchHandler().resetHandlers();
     }
-    
+
     /** Returns the SAX filter being used to filter SAX events.
       *
       * @return the SAX filter being used or null if no SAX filter is installed
@@ -587,7 +580,7 @@ public class SAXReader {
     public XMLFilter getXMLFilter() {
         return xmlFilter;
     }
-    
+
     /** Sets the SAX filter to be used when filtering SAX events
       *
       * @param xmlFilter is the SAX filter to use or null to disable filtering
@@ -595,10 +588,10 @@ public class SAXReader {
     public void setXMLFilter(XMLFilter xmlFilter) {
         this.xmlFilter = xmlFilter;
     }
-    
-    // Implementation methods    
-    //-------------------------------------------------------------------------    
-    
+
+    // Implementation methods
+    //-------------------------------------------------------------------------
+
     /** Installs any XMLFilter objects required to allow the SAX event stream
       * to be filtered and preprocessed before it gets to dom4j.
       *
@@ -625,72 +618,72 @@ public class SAXReader {
         return xmlReader;
     }
 
-    
+
     protected DispatchHandler getDispatchHandler() {
         if (dispatchHandler == null) {
             dispatchHandler = new DispatchHandler();
         }
-        return dispatchHandler;   
+        return dispatchHandler;
     }
-    
+
     protected void setDispatchHandler(DispatchHandler dispatchHandler) {
         this.dispatchHandler = dispatchHandler;
     }
-    
-    /** Factory Method to allow alternate methods of 
+
+    /** Factory Method to allow alternate methods of
       * creating and configuring XMLReader objects
       */
     protected XMLReader createXMLReader() throws SAXException {
         return SAXHelper.createXMLReader( isValidating() );
     }
-    
+
     /** Configures the XMLReader before use */
-    protected void configureReader(XMLReader reader, DefaultHandler contentHandler) throws DocumentException {                
+    protected void configureReader(XMLReader reader, DefaultHandler contentHandler) throws DocumentException {
         // configure lexical handling
         SAXHelper.setParserProperty(
             reader,
-            "http://xml.org/sax/handlers/LexicalHandler", 
-            contentHandler
-        );
-        
-        // try alternate property just in case
-        SAXHelper.setParserProperty(
-            reader,
-            "http://xml.org/sax/properties/lexical-handler", 
+            "http://xml.org/sax/handlers/LexicalHandler",
             contentHandler
         );
 
-        // register the DeclHandler 
+        // try alternate property just in case
+        SAXHelper.setParserProperty(
+            reader,
+            "http://xml.org/sax/properties/lexical-handler",
+            contentHandler
+        );
+
+        // register the DeclHandler
         if ( includeInternalDTDDeclarations ) {
             SAXHelper.setParserProperty(
                 reader,
-                "http://xml.org/sax/properties/declaration-handler", 
+                "http://xml.org/sax/properties/declaration-handler",
                 contentHandler
             );
         }
-    
+
         // configure namespace support
         SAXHelper.setParserFeature(
             reader,
-            "http://xml.org/sax/features/namespaces", 
+            "http://xml.org/sax/features/namespaces",
             true
         );
 
         SAXHelper.setParserFeature(
             reader,
-            "http://xml.org/sax/features/namespace-prefixes", 
+            "http://xml.org/sax/features/namespace-prefixes",
             false
         );
 
         // string interning
         SAXHelper.setParserFeature(
             reader,
-            "http://xml.org/sax/features/string-interning", 
+            "http://xml.org/sax/features/string-interning",
             isStringInternEnabled()
         );
-        
+
         // external entites
-/*        
+/*
         SAXHelper.setParserFeature(
             reader,
             "http://xml.org/sax/properties/external-general-entities",
@@ -701,11 +694,11 @@ public class SAXReader {
             "http://xml.org/sax/properties/external-parameter-entities",
             includeExternalParameterEntities
         );
-*/        
+*/
         try {
             // configure validation support
             reader.setFeature(
-                "http://xml.org/sax/features/validation", 
+                "http://xml.org/sax/features/validation",
                 isValidating()
             );
             if (errorHandler != null) {
@@ -714,23 +707,23 @@ public class SAXReader {
             else {
                  reader.setErrorHandler(contentHandler);
             }
-        } 
+        }
         catch (Exception e) {
             if (isValidating()) {
-                throw new DocumentException( 
-                    "Validation not supported for XMLReader: " + reader, 
+                throw new DocumentException(
+                    "Validation not supported for XMLReader: " + reader,
                     e
                 );
             }
 
         }
     }
-        
+
     /** Factory Method to allow user derived SAXContentHandler objects to be used
       */
     protected SAXContentHandler createContentHandler(XMLReader reader) {
-        return new SAXContentHandler( 
-            getDocumentFactory(), dispatchHandler 
+        return new SAXContentHandler(
+            getDocumentFactory(), dispatchHandler
         );
     }
 
@@ -740,32 +733,32 @@ public class SAXReader {
             int idx = documentSystemId.lastIndexOf( '/' );
             if ( idx > 0 ) {
                 prefix = documentSystemId.substring(0, idx+1);
-                
+
             }
         }
         return new SAXEntityResolver(prefix);
     }
-    
+
     protected static class SAXEntityResolver implements EntityResolver, Serializable {
         String uriPrefix;
-        
+
         public SAXEntityResolver(String uriPrefix) {
             this.uriPrefix = uriPrefix;
         }
-        
-        public InputSource resolveEntity(String publicId, String systemId) {            
+
+        public InputSource resolveEntity(String publicId, String systemId) {
             // try create a relative URI reader...
             if ( systemId != null && systemId.length() > 0 ) {
                 if ( uriPrefix != null && systemId.indexOf( ':' ) <= 0 ) {
                     systemId = uriPrefix + systemId;
-                }                    
+                }
             }
             return new InputSource(systemId);
         }
     }
 
-    
-    
+
+
 }
 
 
