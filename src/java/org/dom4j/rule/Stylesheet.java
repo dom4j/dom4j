@@ -77,7 +77,12 @@ public class Stylesheet {
     
     public void applyTemplates( Object input, XPath xpath ) throws Exception {
         List list = xpath.selectNodes( input );
-        run( list );
+        for ( int i = 0, size = list.size(); i < size; i++ ) {
+            Object object = list.get(i);
+            if ( object != input && object instanceof Node ) {
+                run( (Node) object );
+            }
+        }
     }
     
     public void applyTemplates( Object input ) throws Exception {
@@ -94,11 +99,13 @@ public class Stylesheet {
                 List list = (List) input;
                 for ( int i = 0, size = list.size(); i < size; i++ ) {
                     Object object = list.get(i);
-                    if ( object instanceof Element ) {
-                        mode.applyTemplates( (Element) object );
-                    }
-                    else if ( object instanceof Document ) { 
-                        mode.applyTemplates( (Document) object );
+                    if ( object != input ) {
+                        if ( object instanceof Element ) {
+                            mode.applyTemplates( (Element) object );
+                        }
+                        else if ( object instanceof Document ) { 
+                            mode.applyTemplates( (Document) object );
+                        }
                     }
                 }
             }

@@ -4,8 +4,12 @@
     <title>Status</title>
     
     <section title="Change History">
+<!--
         <section title="Changes in CVS since last release">
-          <section title="Refactor of XPath engine to Jaxen">
+        </section>
+-->
+        <section title="0.9 release">
+          <section title="Full support for the Jaxen XPath engine">
             <p>The XPath engine in dom4j has been migrated to using <a href="http://jaxen.org">Jaxen</a>.
               This single XPath engine can be plugged into any model such that Jaxen will support
               DOM, dom4j, EXML and JDOM. Hopefully we'll get Jaxen working on Java Beans too.

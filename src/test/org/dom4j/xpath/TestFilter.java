@@ -31,10 +31,10 @@ public class TestFilter extends AbstractTestCase {
     protected static boolean VERBOSE = false;
     
     protected static String[] paths = {
-        "name()='author'",
-        "name()='XXXX'",
-        ".='James Strachan'",
-        ".='XXXX'"
+        ".[name()='author']",
+        ".[name()='XXXX']",
+        ".[.='James Strachan']",
+        ".[.='XXXX']"
     };
     
     
