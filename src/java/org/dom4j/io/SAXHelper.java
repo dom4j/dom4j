@@ -36,8 +36,24 @@ class SAXHelper {
             return true;
         } 
         catch (SAXNotSupportedException e) {
+            // ignore
         } 
         catch (SAXNotRecognizedException e) {
+            // ignore
+        }
+        return false;
+    }
+
+    public static boolean setParserFeature(XMLReader reader, String featureName, boolean value) {    
+        try {
+            reader.setFeature(featureName, value);
+            return true;
+        } 
+        catch (SAXNotSupportedException e) {
+            // ignore
+        } 
+        catch (SAXNotRecognizedException e) {
+            // ignore
         }
         return false;
     }

@@ -30,8 +30,11 @@ public class DefaultDocumentType extends AbstractDocumentType {
     /** Holds value of property systemID. */    
     private String systemID;
     
-    /** The DTD declarations */
-    private List declarations;
+    /** The internal DTD declarations */
+    private List internalDeclarations;
+    
+    /** The external DTD declarations */
+    private List externalDeclarations;
     
     public DefaultDocumentType() { 
     }
@@ -93,14 +96,20 @@ public class DefaultDocumentType extends AbstractDocumentType {
         this.systemID = systemID;
     }
     
-    /** Returns a list of declaration objects, defined in the {@link org.dom4j.dtd} package */    
-    public List getDeclarations() {
-        return declarations;
+    public List getInternalDeclarations() {
+        return internalDeclarations;
     }
     
-    /** Sets the list of declaration objects, defined in the {@link org.dom4j.dtd} package */    
-    public void setDeclarations(List declarations) {
-        this.declarations = declarations;
+    public void setInternalDeclarations(List internalDeclarations) {
+        this.internalDeclarations = internalDeclarations;
+    }
+    
+    public List getExternalDeclarations() {
+        return externalDeclarations;
+    }
+    
+    public void setExternalDeclarations(List externalDeclarations) {
+        this.externalDeclarations = externalDeclarations;
     }
 }
 

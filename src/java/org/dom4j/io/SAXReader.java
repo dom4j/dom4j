@@ -101,8 +101,18 @@ public class SAXReader {
     /** Should element & attribute names and namespace URIs be interned? */
     private boolean stringInternEnabled = true;
     
+    /** Should internal DTD declarations be expanded into a List in the DTD */
+    private boolean includeInternalDTDDeclarations = false;
+    
+    /** Should external DTD declarations be expanded into a List in the DTD */
+    private boolean includeExternalDTDDeclarations = false;
+    
+    //private boolean includeExternalGeneralEntities = false;
+    //private boolean includeExternalParameterEntities = false;
+    
     /** The SAX filter used to filter SAX events */
     private XMLFilter xmlFilter;
+    
     
     public SAXReader() {
     }
@@ -295,6 +305,8 @@ public class SAXReader {
             SAXContentHandler contentHandler = createContentHandler(xmlReader);
             contentHandler.setEntityResolver( entityResolver );
             contentHandler.setInputSource( in );
+            contentHandler.setIncludeInternalDTDDeclarations( isIncludeInternalDTDDeclarations() );
+            contentHandler.setIncludeExternalDTDDeclarations( isIncludeExternalDTDDeclarations() );
             xmlReader.setContentHandler(contentHandler);
 
             configureReader(xmlReader, contentHandler);
@@ -341,6 +353,40 @@ public class SAXReader {
       */
     public void setValidation(boolean validating) {
         this.validating = validating;
+    }
+    
+    /** @return whether internal DTD declarations should be expanded into the DocumentType
+      * object or not. 
+      */
+    public boolean isIncludeInternalDTDDeclarations() {
+        return includeInternalDTDDeclarations;
+    }
+    
+    /** Sets whether internal DTD declarations should be expanded into the DocumentType
+      * object or not.
+      *
+      * @param includeInternalDTDDeclarations whether or not DTD declarations should be expanded
+      * and included into the DocumentType object.
+      */
+    public void setIncludeInternalDTDDeclarations(boolean includeInternalDTDDeclarations) {
+        this.includeInternalDTDDeclarations = includeInternalDTDDeclarations;
+    }
+    
+    /** @return whether external DTD declarations should be expanded into the DocumentType
+      * object or not. 
+      */
+    public boolean isIncludeExternalDTDDeclarations() {
+        return includeExternalDTDDeclarations;
+    }
+    
+    /** Sets whether DTD external declarations should be expanded into the DocumentType
+      * object or not.
+      *
+      * @param includeInternalDTDDeclarations whether or not DTD declarations should be expanded
+      * and included into the DocumentType object.
+      */
+    public void setIncludeExternalDTDDeclarations(boolean includeExternalDTDDeclarations) {
+        this.includeExternalDTDDeclarations = includeExternalDTDDeclarations;
     }
     
     /** Sets whether String interning
@@ -536,47 +582,57 @@ public class SAXReader {
             "http://xml.org/sax/handlers/LexicalHandler", 
             contentHandler
         );
+        
         // try alternate property just in case
         SAXHelper.setParserProperty(
             reader,
             "http://xml.org/sax/properties/lexical-handler", 
             contentHandler
         );
-        
+
         // register the DeclHandler 
-        try {
-            reader.setProperty(
-                "http://xml.org/sax/properties/declaration-handler",
-                contentHandler);
-        } 
-        catch (SAXNotSupportedException e) {
-            // ignore
-        } 
-        catch (SAXNotRecognizedException e) {
-            // ignore
+        if ( includeInternalDTDDeclarations ) {
+            SAXHelper.setParserProperty(
+                reader,
+                "http://xml.org/sax/properties/declaration-handler", 
+                contentHandler
+            );
         }
+    
+        // configure namespace support
+        SAXHelper.setParserFeature(
+            reader,
+            "http://xml.org/sax/features/namespaces", 
+            true
+        );
 
+        SAXHelper.setParserFeature(
+            reader,
+            "http://xml.org/sax/features/namespace-prefixes", 
+            false
+        );
+
+        // string interning
+        SAXHelper.setParserFeature(
+            reader,
+            "http://xml.org/sax/features/string-interning", 
+            isStringInternEnabled()
+        );
+        
+        // external entites
+/*        
+        SAXHelper.setParserFeature(
+            reader,
+            "http://xml.org/sax/properties/external-general-entities",
+            includeExternalGeneralEntities
+        );
+        SAXHelper.setParserFeature(
+            reader,
+            "http://xml.org/sax/properties/external-parameter-entities",
+            includeExternalParameterEntities
+        );
+*/        
         try {
-            // configure namespace support
-            reader.setFeature(
-                "http://xml.org/sax/features/namespaces", 
-                true
-            );
-            reader.setFeature(
-                "http://xml.org/sax/features/namespace-prefixes", 
-                false
-            );
-            
-            try {
-                reader.setFeature(
-                    "http://xml.org/sax/features/string-interning", 
-                    isStringInternEnabled()
-                );
-            }
-            catch (SAXException e) {
-                // ignore
-            }
-
             // configure validation support
             reader.setFeature(
                 "http://xml.org/sax/features/validation", 

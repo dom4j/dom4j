@@ -36,11 +36,26 @@ public interface DocumentType extends Node {
     public String getSystemID();
     public void setSystemID(String systemID);
 
-    /** Returns a list of declaration objects, defined in the {@link org.dom4j.dtd} package */    
-    public List getDeclarations();
+    /** Returns a list of internal DTD declaration objects, 
+      * defined in the {@link org.dom4j.dtd} package 
+       */    
+    public List getInternalDeclarations();
     
-    /** Sets the list of declaration objects, defined in the {@link org.dom4j.dtd} package */    
-    public void setDeclarations(List declarations);
+    /** Sets the list of internal DTD declaration objects, 
+      * defined in the {@link org.dom4j.dtd} package 
+      */    
+    public void setInternalDeclarations(List declarations);
+
+    /** Returns a list of internal DTD declaration objects, 
+      * defined in the {@link org.dom4j.dtd} package 
+       */    
+    public List getExternalDeclarations();
+    
+    /** Sets the list of internal DTD declaration objects, 
+      * defined in the {@link org.dom4j.dtd} package 
+      */    
+    public void setExternalDeclarations(List declarations);
+
 }
 
 

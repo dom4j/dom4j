@@ -56,7 +56,7 @@ public abstract class AbstractDocumentType extends AbstractNode implements Docum
 
     /** Returns the text format of the declarations if applicable, or the empty String */
     public String getText() {
-        List list = getDeclarations();
+        List list = getInternalDeclarations();
         if ( list != null && list.size() > 0 ) {
             StringBuffer buffer = new StringBuffer();
             Iterator iter = list.iterator(); 
@@ -127,7 +127,7 @@ public abstract class AbstractDocumentType extends AbstractNode implements Docum
             writer.write( systemID );
             writer.write( "\"" );
         }
-        List list = getDeclarations();
+        List list = getInternalDeclarations();
         if ( list != null && list.size() > 0 ) {
             writer.write( " [" );
             for ( Iterator iter = list.iterator(); iter.hasNext(); ) {

@@ -46,7 +46,7 @@ public class TestDocType extends AbstractTestCase {
         DocumentType docType = document.getDocType();
         assertTrue( "Has DOCTYPE", docType!= null );
         
-        List declarations = docType.getDeclarations();
+        List declarations = docType.getInternalDeclarations();
         assertTrue( "DOCTYPE has declarations", declarations != null && declarations.size() == 1 );
         
         ElementDecl decl = (ElementDecl) declarations.get(0);
@@ -61,6 +61,7 @@ public class TestDocType extends AbstractTestCase {
     //-------------------------------------------------------------------------                    
     protected void setUp() throws Exception {
         SAXReader reader = new SAXReader();
+        reader.setIncludeInternalDTDDeclarations(true);
         document = reader.read( INPUT_XML_FILE );
     }
 }

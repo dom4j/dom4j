@@ -90,9 +90,12 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     /** declared namespaces that are not yet available for use */
     private List declaredNamespaceList = new ArrayList();
 
-    /** DTD declarations */
-    private List dtdDeclarations;
-
+    /** internal DTD declarations */
+    private List internalDTDDeclarations;
+    
+    /** external DTD declarations */
+    private List externalDTDDeclarations;
+    
     /** A <code>Set</code> of the entity names we should ignore */
     private Set ignoreEntityNames;
 
@@ -107,6 +110,18 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     /** The current element we are on */
     private Element currentElement;
     
+    /** Should internal DTD declarations be expanded into a List in the DTD */
+    private boolean includeInternalDTDDeclarations = false;
+    
+    /** Should external DTD declarations be expanded into a List in the DTD */
+    private boolean includeExternalDTDDeclarations = false;
+
+    /** The number of levels deep we are inside a startEntity / endEntity call */
+    private int entityLevel;
+    
+    /** Are we in an internal DTD subset? */
+    private boolean internalDTDsubset = false;
+
     
     public SAXContentHandler() {
         this( DocumentFactory.getInstance() );
@@ -272,20 +287,29 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
             document.addDocType(name, publicId, systemId);
         }
         insideDTDSection = true;
+        internalDTDsubset = true;
     }
 
     public void endDTD() throws SAXException {
         insideDTDSection = false;
-        if ( document != null && dtdDeclarations != null) {
+        if ( document != null ) {
             DocumentType docType = document.getDocType();
-            if ( docType != null ) {
-                docType.setDeclarations( dtdDeclarations );
+            if ( docType != null ) {                
+                if ( internalDTDDeclarations != null ) {
+                    docType.setInternalDeclarations( internalDTDDeclarations );
+                }
+                if ( internalDTDDeclarations != null ) {
+                    docType.setExternalDeclarations( externalDTDDeclarations );
+                }
             }
         }
-        dtdDeclarations = null;
+        internalDTDDeclarations = null;
+        externalDTDDeclarations = null;
     }
 
     public void startEntity(String name) throws SAXException {
+        ++entityLevel;
+        
         // Ignore DTD references
         entity = null;
         if (! insideDTDSection ) {
@@ -293,10 +317,22 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
                 entity = name;
             }
         }
+        
+        // internal DTD subsets can only appear outside of a
+        // startEntity/endEntity block
+        // see the startDTD method in
+        // http://dom4j.org/javadoc/org/xml/sax/ext/LexicalHandler.html
+        // or here:-
+        // http://dom4j.org/javadoc/org/xml/sax/ext/LexicalHandler.html#startDTD(java.lang.String, java.lang.String, java.lang.String)
+        internalDTDsubset = false;
     }
 
     public void endEntity(String name) throws SAXException {
+        --entityLevel;
         entity = null;
+        if ( entityLevel == 0 ) {
+            internalDTDsubset = true;
+        }
     }
 
     public void startCDATA() throws SAXException {
@@ -339,7 +375,16 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
      * @exception SAXException The application may raise an exception.
      */
     public void elementDecl(String name, String model) throws SAXException {
-        addDTDDeclaration( new ElementDecl( name, model ) );
+        if ( internalDTDsubset ) {
+            if ( includeInternalDTDDeclarations ) {
+                addDTDDeclaration( new ElementDecl( name, model ) );
+            }
+        }
+        else {
+            if ( includeExternalDTDDeclarations ) {
+                addExternalDTDDeclaration( new ElementDecl( name, model ) );
+            }
+        }
     }
 
     /**
@@ -367,7 +412,16 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
      * @exception SAXException The application may raise an exception.
      */
     public void attributeDecl(String eName,String aName,String type,String valueDefault,String value) throws SAXException {
-        addDTDDeclaration( new AttributeDecl( eName, aName, type, valueDefault, value) );
+        if ( internalDTDsubset ) {
+            if ( includeInternalDTDDeclarations ) {
+                addDTDDeclaration( new AttributeDecl( eName, aName, type, valueDefault, value) );
+            }
+        }
+        else {
+            if ( includeExternalDTDDeclarations ) {
+                addExternalDTDDeclaration( new AttributeDecl( eName, aName, type, valueDefault, value) );
+            }
+        }
     }
     
     /**
@@ -385,7 +439,16 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
      * @see org.xml.sax.DTDHandler#unparsedEntityDecl
      */
     public void internalEntityDecl(String name, String value) throws SAXException {
-        addDTDDeclaration( new InternalEntityDecl( name, value ) );
+        if ( internalDTDsubset ) {
+            if ( includeInternalDTDDeclarations ) {
+                addDTDDeclaration( new InternalEntityDecl( name, value ) );
+            }
+        }
+        else {
+            if ( includeExternalDTDDeclarations ) {
+                addExternalDTDDeclaration( new InternalEntityDecl( name, value ) );
+            }
+        }
     }
     
     /**
@@ -404,7 +467,16 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
      * @see org.xml.sax.DTDHandler#unparsedEntityDecl
      */
     public void externalEntityDecl(String name, String publicID, String systemID) throws SAXException {
-        addDTDDeclaration( new ExternalEntityDecl( name, publicID, systemID ) );
+        if ( internalDTDsubset ) {
+            if ( includeInternalDTDDeclarations ) {
+                addDTDDeclaration( new ExternalEntityDecl( name, publicID, systemID ) );
+            }
+        }
+        else {
+            if ( includeExternalDTDDeclarations ) {
+                addExternalDTDDeclaration( new ExternalEntityDecl( name, publicID, systemID ) );
+            }
+        }
     }
 
     
@@ -491,6 +563,40 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
         this.inputSource = inputSource;
     }
 
+    /** @return whether internal DTD declarations should be expanded into the DocumentType
+      * object or not. 
+      */
+    public boolean isIncludeInternalDTDDeclarations() {
+        return includeInternalDTDDeclarations;
+    }
+    
+    /** Sets whether internal DTD declarations should be expanded into the DocumentType
+      * object or not.
+      *
+      * @param includeInternalDTDDeclarations whether or not DTD declarations should be expanded
+      * and included into the DocumentType object.
+      */
+    public void setIncludeInternalDTDDeclarations(boolean includeInternalDTDDeclarations) {
+        this.includeInternalDTDDeclarations = includeInternalDTDDeclarations;
+    }
+    
+    /** @return whether external DTD declarations should be expanded into the DocumentType
+      * object or not. 
+      */
+    public boolean isIncludeExternalDTDDeclarations() {
+        return includeExternalDTDDeclarations;
+    }
+    
+    /** Sets whether DTD external declarations should be expanded into the DocumentType
+      * object or not.
+      *
+      * @param includeInternalDTDDeclarations whether or not DTD declarations should be expanded
+      * and included into the DocumentType object.
+      */
+    public void setIncludeExternalDTDDeclarations(boolean includeExternalDTDDeclarations) {
+        this.includeExternalDTDDeclarations = includeExternalDTDDeclarations;
+    }
+    
     
     // Implementation methods
     //-------------------------------------------------------------------------
@@ -582,12 +688,20 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
     }
 
 
-    /** Adds a DTD declaration to the list of declarations */
+    /** Adds an internal DTD declaration to the list of declarations */
     protected void addDTDDeclaration(Object declaration) {
-        if ( dtdDeclarations == null ) {
-            dtdDeclarations = new ArrayList();
+        if ( internalDTDDeclarations == null ) {
+            internalDTDDeclarations = new ArrayList();
         }
-        dtdDeclarations.add( declaration );
+        internalDTDDeclarations.add( declaration );
+    }
+    
+    /** Adds an external DTD declaration to the list of declarations */
+    protected void addExternalDTDDeclaration(Object declaration) {
+        if ( externalDTDDeclarations == null ) {
+            externalDTDDeclarations = new ArrayList();
+        }
+        externalDTDDeclarations.add( declaration );
     }
     
     protected ElementStack createElementStack() {
