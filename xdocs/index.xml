@@ -18,6 +18,8 @@
 
     <section name="News">
       <ul>
+        <li>The internal Aelfred2 parser has been removed from the dom4j codebase due to an incompatible license. You can download a version
+            of dom4j without Aelfred2 from the downloads page.</li>
         <li>A maintenance relase of dom4j is available. Click <a href="changes-report.html">here</a> to see what has changed in dom4j 1.5.1.</li>
         <li>dom4j 1.5 is finally released! A list of changes can be found <a href="changes-report.html">here</a>.</li>
         <li>dom4j now has an open source license for the use of <a href="http://www.cenqua.com/clover/">Clover</a></li>

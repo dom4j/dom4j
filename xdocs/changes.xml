@@ -7,7 +7,7 @@
 
   <body>
 
-    <release version="1.5.2" date="current">
+    <release version="1.5.2" date="2004-11-15">
       <action dev="maartenc" type="remove">
         Removed the internal Aelfred2 parser due to incompatible license.
       </action>
