@@ -108,6 +108,14 @@
 
     </section>
 
+    <section title="Performance">
+      <p>Dennis Sosnoski has recently published a set of benchmarks against a 
+        variety of XML document models for the Java platform including dom4j.
+        You can find the results 
+        <a href="http://www.sosnoski.com/opensrc/xmlbench/index.html">here</a>.
+      </p>
+    </section>
+
   </body>
 </document>
 

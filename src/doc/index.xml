@@ -30,7 +30,9 @@
         <a href="guide.html">quick start guide</a> or browsing the
         <a href="faq.html">FAQ</a> or the online 
         <a href="apidocs/index.html">JavaDoc</a>.
-        To see how <i>dom4j</i> compares to other XML object models you could try
+      </p>
+      
+      <p>To see how <i>dom4j</i> compares to other XML object models you could try
         reading our <a href="compare.html">comparison</a></p>
         
       <p>You can download the current $VERSION$ release 
