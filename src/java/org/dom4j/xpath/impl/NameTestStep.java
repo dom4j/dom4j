@@ -61,7 +61,7 @@ public class NameTestStep extends UnAbbrStep {
             Attribute attribute = (Attribute) node;
             List results = new ArrayList();
            
-            if ( attribute.getName().equals(_localName) ) {
+            if ( matchesAnyName || attribute.getName().equals(_localName) ) {
                 if ( matchesAnyNamespace || matchesPrefix( attribute ) ) {
                     results.add( node );
                 }
@@ -138,7 +138,7 @@ public class NameTestStep extends UnAbbrStep {
         if ( node instanceof Document ) {
             Element child = ((Document) node).getRootElement();
             
-            if ( child.getName().equals( _localName ) ) {
+            if ( matchesAnyName || child.getName().equals( _localName ) ) {
                 if ( ns == null ) {
                     results.add( child );
                 }
@@ -154,7 +154,7 @@ public class NameTestStep extends UnAbbrStep {
                 ns = element.getNamespaceForPrefix( _namespacePrefix );
             }
         
-            if ( matchesAnyName ) {
+            if ( matchesAnyName ) {                
                 Iterator iter = element.elementIterator();
                 if ( ns == null ) {
                     while ( iter.hasNext() ) {

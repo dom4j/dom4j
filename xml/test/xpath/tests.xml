@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests>
+  <document url="xml/moreover/sample.xml">
+    <context select="/">
+      <test select="/child::node()" count="1"/>
+
+      <test select="/*" count="1"/>
+
+      <test select="/*/*[@id]" count="20"/>
+
+      <test select="/moreovernews/article[@id='_13563275']">
+        <valueOf select="url">http://c.moreover.com/click/here.pl?x13563273</valueOf>
+      </test>
+      <test select="//article[@id='_13563275']">
+        <valueOf select="url">http://c.moreover.com/click/here.pl?x13563273</valueOf>
+      </test>
+      <test select="//*[@id='_13563275']">
+        <valueOf select="url">http://c.moreover.com/click/here.pl?x13563273</valueOf>
+      </test>
+      <test select="/child::node()/child::node()[@id='_13563275']">
+        <valueOf select="url">http://c.moreover.com/click/here.pl?x13563273</valueOf>
+      </test>
+      <test select="/*/*[@id='_13563275']">
+        <valueOf select="url">http://c.moreover.com/click/here.pl?x13563273</valueOf>
+      </test>
+    </context>
+  </document>
+</tests>

@@ -29,18 +29,14 @@ public class SingleIterator implements Iterator {
     }
 
     public boolean hasNext() {
-        if ( first ) {
-            first = false;
-            return true;
-        }
-        else {
-            object = null;
-            return false;
-        }
+        return first;
     }
 
     public Object next() {
-        return object;
+        Object answer = object;
+        object = null;
+        first = false;
+        return answer;
     }
 
     public void remove() {

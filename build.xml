@@ -442,11 +442,6 @@
     </junit>
   </target>
 
-  <target name="test-xpath" depends="compile-test">
-    <java classname="org.dom4j.xpath.TestNumber"/>
-    <java classname="org.dom4j.xpath.TestValueOf"/>
-  </target>
-
   <target name="test-clone" depends="compile-test">
     <java classname="org.dom4j.TestClone"/>
   </target>
@@ -466,6 +461,10 @@
   <target name="test-detach" depends="compile-test">
     <java classname="org.dom4j.TestAttributeDetach"/>
     <java classname="org.dom4j.TestDetach"/>
+  </target>
+
+  <target name="test-xpath" depends="compile-test">
+    <java classname="org.dom4j.TestXPathExamples"/>
   </target>
 
   <!-- =================================================================== -->

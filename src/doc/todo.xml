@@ -6,6 +6,12 @@
     <section title="Change History">
         <section title="Patches in CVS since release">
           <section title="Patches and bug fixes">
+            <p>Fixed bug in XPath engine found by Christophe Ponsard
+              for paths of the form /* which were not finding
+              anything. Now we have an extensible XPath test harness (in src/test/org/dom4j/TestXPathExamples.java)
+              which contains some test cases for these kinds of paths. We can extend these cases
+              to test other XPath expressions easily.
+            </p>
             <p>Fixed bug in elementByID() method found by Thomas Nichols that was resulting in
               the element not being found correctly.
             </p>
