@@ -56,26 +56,21 @@ public class BackedList extends ArrayList {
     }
     
     public void add(int index, Object object) {
-        int size = branchContent.size();
+        int size = size();
         if ( index < 0 ) {
             throw new IndexOutOfBoundsException( "Index value: " + index + " is less than zero" );
         }
         else if ( index > size ) {
             throw new IndexOutOfBoundsException( "Index value: " + index + " cannot be greater than the size: " + size );
         }
-        int realIndex = size;
-        if (index < realIndex) {
-            realIndex = branchContent.indexOf( get(index) );
-        }
-        if ( realIndex < 0 ) {
-            realIndex = ( index == 0 ) ? 0 : Integer.MAX_VALUE;
-        }
-        if ( realIndex < size ) {
-            branch.addNode(realIndex, asNode( object ) );
-        }
-        else {
-            branch.addNode( asNode( object ) );
-        }
+
+        int realIndex = size == 0
+                ? branchContent.size()                   // Insert at the end of branch
+                : index < size
+                ? branchContent.indexOf(get(index))      // Normal case: get position of element in branch
+                : branchContent.indexOf(get(size - 1));  // Insert after last item
+        
+        branch.addNode(realIndex, asNode( object ) );
         super.add(index, object);
     }
     
