@@ -183,7 +183,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
 
         writer.write("\"");
         
-        writer.write(escapeAttributeEntities(attribute.getValue()));
+        writeEscapeAttributeEntities(attribute.getValue());
         
         writer.write("\"");
         lastOutputNodeType = Node.ATTRIBUTE_NODE;
@@ -745,7 +745,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
             writer.write(" ");
             writer.write(attribute.getQualifiedName());
             writer.write("=\"");            
-            writer.write(escapeAttributeEntities(attribute.getValue()));            
+            writeEscapeAttributeEntities(attribute.getValue());            
             writer.write("\"");
         }
     }
@@ -759,12 +759,8 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
     protected void write(Attributes attributes, int index) throws IOException {       
         writer.write(" ");
         writer.write(attributes.getQName(index));
-        writer.write("=");
-
-        writer.write("\"");
-        
-        writer.write(escapeAttributeEntities(attributes.getValue(index)));
-
+        writer.write("=\"");        
+        writeEscapeAttributeEntities(attributes.getValue(index));
         writer.write("\"");
     }
 
@@ -922,6 +918,12 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         return answer;
     }
     
+    protected void writeEscapeAttributeEntities(String text) throws IOException {
+        if ( text != null ) {
+            String escapedText = escapeAttributeEntities( text );
+            writer.write( escapedText );
+        }
+    }
     /** This will take the pre-defined entities in XML 1.0 and
       * convert their character representation to the appropriate
       * entity reference, suitable for XML attributes.

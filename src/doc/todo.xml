@@ -29,6 +29,10 @@
             <p>Applied Theo's patch for cloning of Documents correctly 
               together with JUnit test cases to ensure this keeps working.
             </p>
+            <p>Applied Rob Wilson's patch that NullPointerExceptions 
+              were being thrown if a Document is output with the XMLWriter
+              and an attribute value is null.
+            </p>
             <p>Fixed some detach() bugs that were found with Attributes.
             </p>
             <p>Default encoding is now "UTF-8" rather than "UTF8". Thanks to
