@@ -175,7 +175,7 @@
     <p><xsl:apply-templates/><br/></p>
 
   </xsl:template>
-  <!-- Paragraphs are separated with one empty line -->x
+  <!-- Paragraphs are separated with one empty line -->
 
   <xsl:template match="body-note">
 
