@@ -53,35 +53,34 @@ public abstract class AbstractAttribute extends AbstractNode implements Attribut
         visitor.visit(this);
     }
     
-    // NameModel methods
+    // QName methods
     
     public Namespace getNamespace() {
-        return getNameModel().getNamespace();
+        return getQName().getNamespace();
     }
     
     public String getName() {
-        return getNameModel().getName();
+        return getQName().getName();
     }
     
     public String getNamespacePrefix() {
-        return getNameModel().getNamespacePrefix();
+        return getQName().getNamespacePrefix();
     }
 
     public String getNamespaceURI() {
-        return getNameModel().getNamespaceURI();
+        return getQName().getNamespaceURI();
     }
 
     public String getQualifiedName() {
-        return getNameModel().getQualifiedName();
+        return getQName().getQualifiedName();
     }
     
     protected Node createXPathNode(Element parent) {
-        return new XPathAttribute(parent, getNameModel(), getValue());
+        return new XPathAttribute(parent, getQName(), getValue());
     }
-    
-    /** Allows derived classes to override how the attribute is named */
-    protected abstract NameModel getNameModel();
 }
+    
+ 
 
 
 

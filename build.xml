@@ -71,21 +71,10 @@
     <echo message="   javadoc  --> generates the API documentation"/>
     <echo message="   clean    --> cleans up the directory"/>
     <echo message="   all      --> cleans then builds everything"/>
+    <echo message="   test     --> builds and runs the unit tests"/>
+    <echo message="   demo-all --> runs all the standard sample programs"/>
     <echo message=""/>
     <echo message="-------------------------------------------------------------"/>
-    <echo message=""/>
-    <echo message=" available sample programs are:"/>
-    <echo message=""/>
-    <echo message="   run-count   --> runs the count sample"/>
-    <echo message="   run-saxdemo --> runs the SAX sample"/>
-    <echo message="   run-domdemo --> runs the DOM sample"/>
-    <echo message="   run-war     --> runs the WAR reading sample"/>
-    <echo message="   run-xpath   --> runs the XPath sample"/>
-    <echo message="   run-all     --> runs all the sample programs"/>
-    <echo message=""/>
-    <echo message=" See the comments inside the build.xml file for more details."/>
-    <echo message="-------------------------------------------------------------"/>
-    <echo message=""/>
     <echo message=""/>
   </target>
 

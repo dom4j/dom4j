@@ -135,30 +135,28 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     }
 
     
-    // NameModel methods
+    // QName methods
     
     public Namespace getNamespace() {
-        return getNameModel().getNamespace();
+        return getQName().getNamespace();
     }
     
     public String getName() {
-        return getNameModel().getName();
+        return getQName().getName();
     }
     
     public String getNamespacePrefix() {
-        return getNameModel().getNamespacePrefix();
+        return getQName().getNamespacePrefix();
     }
 
     public String getNamespaceURI() {
-        return getNameModel().getNamespaceURI();
+        return getQName().getNamespaceURI();
     }
 
     public String getQualifiedName() {
-        return getNameModel().getQualifiedName();
+        return getQName().getQualifiedName();
     }
 
-    /** Allows derived classes to override how the element is named */
-    protected abstract NameModel getNameModel();
     
     
     

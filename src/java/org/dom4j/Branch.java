@@ -90,6 +90,14 @@ public interface Branch extends Node {
       */    
     public Element addElement(String name);
     
+    /** Adds a new <code>Element</code> node with the given {@link QName} 
+      * to this branch and returns a reference to the new node.
+      *
+      * @param qname is the qualified name for the <code>Element</code> node.
+      * @return the newly added <code>Element</code> node.
+      */    
+    public Element addElement(QName qname);
+    
     /** Adds a new <code>Element</code> node with the given name and namespace
       * prefix and URI to this branch and returns a reference to the new node.
       *

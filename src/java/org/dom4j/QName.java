@@ -7,52 +7,100 @@
  * $Id$
  */
 
-package org.dom4j.tree;
+package org.dom4j;
 
-import org.dom4j.Element;
-import org.dom4j.Namespace;
-import org.dom4j.Node;
+import org.dom4j.tree.QNameCache;
 
-/** <p><code>DefaultNamespace</code> is the DOM4J default implementation
-  * of <code>Namespace</code>.</p>
+/** <p><code>QName</code> represents a qualified name value of an XML element 
+  * or attribute. It consists of a local name and a {@link Namespace} 
+  * instance. This object is immutable.</p>
   *
+  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class DefaultNamespace extends AbstractNamespace {
+public class QName {
 
-    /** Cache of Namespace instances */
-    protected static final NamespaceCache cache = new NamespaceCache();
+    protected static QNameCache cache = new QNameCache();
     
-    /** The prefix mapped to this namespace */
-    private String prefix;
-
-    /** The URI for this namespace */
-    private String uri;
-
+    
+    /** The local name of the element or attribute */
+    private String name;
+    
+    /** The qualified name of the element or attribute */
+    private String qualifiedName;
+    
+    /** The Namespace of this element or attribute */
+    private Namespace namespace;
+    
     /** A cached version of the hashcode for efficiency */
     private int hashCode;
-
     
-    public static Namespace get(String prefix, String uri) {
-        return cache.get(prefix, uri);
+
+    public static synchronized QName get(String name) {
+        return cache.get(name);
     }
     
-    /** @param prefix is the prefix for this namespace
-      * @param uri is the URI for this namespace
+    public static synchronized QName get(String name, Namespace namespace) {
+        return cache.get(name, namespace);
+    }
+    
+    public QName(String name) {
+        this( name, Namespace.NO_NAMESPACE );
+    }
+    
+    public QName(String name, Namespace namespace) {
+        this.name = name;
+        this.namespace = namespace;
+    }
+
+    
+    /** @return the local name
       */
-    public DefaultNamespace(String prefix, String uri) {
-        this.prefix = prefix;
-        this.uri = uri;
+    public String getName() {
+        return name;
     }
-
+    
+    /** @return the qualified name in the format <code>prefix:localName</code>
+      */
+    public String getQualifiedName() {
+        if ( qualifiedName == null ) {
+            String prefix = getNamespacePrefix();
+            if ( prefix != null && prefix.length() > 0 ) {
+                qualifiedName = prefix + ":" + name;
+            }
+            else {
+                qualifiedName = name;
+            }
+        }
+        return qualifiedName;
+    }
+    
+    /** @return the namespace of this QName 
+      */
+    public Namespace getNamespace() {
+        return namespace;
+    }
+        
+    /** @return the namespace URI of this QName
+      */
+    public String getNamespacePrefix() {
+        return namespace.getPrefix();
+    }
+        
+    /** @return the namespace URI of this QName
+      */
+    public String getNamespaceURI() {
+        return namespace.getURI();
+    }
+        
     
     /** @return the hash code based on the qualified name and the URI of the 
       * namespace.
       */
     public int hashCode() {
         if ( hashCode == 0 ) {
-            hashCode = uri.hashCode() 
-                ^ prefix.hashCode();
+            hashCode = getQualifiedName().hashCode() 
+                ^ getNamespaceURI().hashCode();
             if ( hashCode == 0 ) {
                 hashCode = 0xbabe;
             }
@@ -64,33 +112,15 @@ public class DefaultNamespace extends AbstractNamespace {
         if ( this == object ) {
             return true;
         }
-        else if ( object instanceof Namespace ) {
-            Namespace that = (Namespace) object;
-            
+        else if ( object instanceof QName ) {
+            QName that = (QName) object;
             // we cache hash codes so this should be quick
             if ( hashCode() == that.hashCode() ) {
-                return uri.equals( that.getURI() ) 
-                    && prefix.equals( that.getPrefix() );
+                return getQualifiedName().equals( that.getQualifiedName() )
+                    && getNamespaceURI().equals( that.getNamespaceURI());
             }
         }
         return false;
-    }
-    
-    /** @return the prefix for this <code>Namespace</code>.
-      */
-    public String getPrefix() {
-        return prefix;
-    }
-
-    /** @return the URI for this <code>Namespace</code>.
-      */
-    public String getURI() {
-        return uri;
-    }
-
-
-    protected Node createXPathNode(Element parent) {
-        return new XPathNamespace( parent, getPrefix(), getURI() );
     }
 }
 

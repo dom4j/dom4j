@@ -9,94 +9,74 @@
 
 package org.dom4j.tree;
 
+import java.util.HashMap;
 import java.util.Map;
 
-import org.dom4j.Attribute;
-import org.dom4j.Element;
+import org.dom4j.QName;
 import org.dom4j.Namespace;
 
-/** <p><code>NameModel</code> is used to model the name of an XML element or
-  * attribute. 
-  * It is an immutable bean containing the local, qualified and namespace .</p>
+/** <p><code>QNameCache</code> caches instances of <code>QName</code> 
+  * for reuse both across documents and within documents.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class NameModel {
+public class QNameCache {
 
-    public static final NameModel EMPTY_NAME = new NameModel("");
+    /** Cache of {@link QName} instances with no namespace */ 
+    protected static Map noNamespaceCache = new HashMap();
     
-    /** Cache of name instances */
-    protected static NameModelCache cache = new NameModelCache();
-    
-    /** The name of the element */
-    private String name;
+    /** Cache of {@link Map} instances indexed by namespace which contain 
+      * caches of {@link QName} for each name
+      */ 
+    protected static Map namespaceCache = new HashMap();
 
-    /** The qualified name of the element */
-    private String qualifiedName;
 
-    /** The <code>Namespace</code> for this elemenet */
-    private Namespace namespace;
-
-    
-    public static NameModel get(String name) {
-        return cache.get(name);
-    }
-    
-    public static NameModel get(String name, Namespace namespace) {
-        return cache.get(name, namespace);
-    }
-    
-    
-    public NameModel(String name) { 
-        this.name = name;
-        this.namespace = Namespace.NO_NAMESPACE;
-    }
-
-    public NameModel(String name, Namespace namespace) { 
-        this.name = name;
-        this.namespace = namespace;
-    }
-
-    public NameModel(String name, String qualifiedName, Namespace namespace) { 
-        this.name = name;
-        this.qualifiedName = qualifiedName;
-        this.namespace = namespace;
-    }
-
-    public Namespace getNamespace() {
-        return namespace;
-    }
-    
-    public String getName() {
-        return name;
-    }
-    
-    public String getNamespacePrefix() {
-        return (namespace != null) ? namespace.getPrefix() : "";
-    }
-
-    public String getNamespaceURI() {
-        return (namespace != null) ? namespace.getURI() : "";
-    }
-
-    public String getQualifiedName() {
-        if ( qualifiedName == null ) {
-            qualifiedName = createQualifiedName();
+    /** @return the QName for the given name and no namepsace 
+      */
+    public QName get(String name) {
+        QName answer = (QName) noNamespaceCache.get(name);
+        if (answer == null) {
+            answer = new QName(name);
+            noNamespaceCache.put(name, answer);
         }
-        return qualifiedName;
+        return answer;
     }
     
-    protected String createQualifiedName() {
-        if (namespace != null ) {
-            String prefix = namespace.getPrefix();
-            if (prefix != null && prefix.length() > 0) {
-                return prefix + ":" + getName();
-            }
+    /** @return the QName for the given name and namepsace 
+      */
+    public QName get(String name, Namespace namespace) {
+        Map cache = getNamespaceCache(namespace);
+        QName answer = (QName) cache.get(name);
+        if (answer == null) {
+            answer = new QName(name, namespace);
+            cache.put(name, answer);
         }
-        return getName();
+        return answer;
     }
+    
 
+    /** @return the cache for the given namespace. If one does not
+      * currently exist it is created.
+      */
+    protected Map getNamespaceCache(Namespace namespace) {
+        if (namespace == Namespace.NO_NAMESPACE) {
+            return noNamespaceCache;
+        }
+        Map answer = (Map) namespaceCache.get(namespace);
+        if (answer == null) {
+            answer = createMap();
+            namespaceCache.put(namespace, answer);
+        }
+        return answer;
+    }
+    
+    /** A factory method
+      * @return a newly created {@link Map} instance.
+      */
+    protected Map createMap() {
+        return new HashMap();
+    }
 }
 
 

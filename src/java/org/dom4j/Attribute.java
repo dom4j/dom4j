@@ -17,6 +17,13 @@ package org.dom4j;
   */
 public interface Attribute extends Node {
     
+    /** <p>Returns the <code>QName</code> of this attribute which represents 
+      * the local name, the qualified name and the <code>Namespace</code>.</p>
+      *
+      * @return the <code>QName</code> associated with this attribute
+      */
+    public QName getQName();    
+    
     /** <p>Returns the <code>Namespace</code> of this element if one exists 
       * otherwise null is returned returned.</p>
       *

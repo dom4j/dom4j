@@ -29,6 +29,7 @@ import org.dom4j.Entity;
 import org.dom4j.IllegalAddNodeException;
 import org.dom4j.Node;
 import org.dom4j.Namespace;
+import org.dom4j.QName;
 import org.dom4j.ProcessingInstruction;
 import org.dom4j.Text;
 import org.dom4j.io.XMLWriter;
@@ -142,6 +143,12 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     
     public Element addElement(String name) {
         Element node = getContentFactory().createElement( name );
+        add( node );
+        return node;
+    }
+    
+    public Element addElement(QName qname) {
+        Element node = getContentFactory().createElement( qname );
         add( node );
         return node;
     }

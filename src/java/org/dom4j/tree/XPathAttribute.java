@@ -10,6 +10,7 @@
 package org.dom4j.tree;
 
 import org.dom4j.Element;
+import org.dom4j.QName;
 import org.dom4j.Namespace;
 
 /** <p><code>XPathAttribute</code> implements a doubly linked node which 
@@ -25,12 +26,12 @@ public class XPathAttribute extends DefaultAttribute {
     private Element parent;
 
     
-    public XPathAttribute(NameModel nameModel, String value) { 
-        super(nameModel, value);
+    public XPathAttribute(QName qname, String value) { 
+        super(qname, value);
     }
     
-    public XPathAttribute(Element parent, NameModel nameModel, String value) { 
-        super(nameModel, value);
+    public XPathAttribute(Element parent, QName qname, String value) { 
+        super(qname, value);
         this.parent = parent;
     }
     
@@ -68,16 +69,8 @@ public class XPathAttribute extends DefaultAttribute {
         this.parent = parent;
     }
 
-    public void setName(String name) {
-        setNameModel( NameModel.get(name, getNamespace()) );
-    }
-    
     public void setValue(String value) {
 	this.value = value;
-    }
-    
-    public void setNamespace(Namespace namespace) {
-        setNameModel( NameModel.get(getName(), namespace) );
     }
     
     public Element getParent() {
