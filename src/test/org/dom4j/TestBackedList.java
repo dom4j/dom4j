@@ -15,42 +15,26 @@ import java.util.List;
 import junit.framework.*;
 import junit.textui.TestRunner;
 
-/** A test harness to test XPath expression evaluation in DOM4J
+import org.dom4j.io.XMLWriter;
+
+/** A test harness to test the backed list feature of DOM4J
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class TestXPath extends AbstractTestCase {
+public class TestBackedList extends AbstractTestCase {
 
-    protected static boolean VERBOSE = true;
-    
-    protected static String[] paths = {
-        "root",
-        "text()",
-        "//author",
-        "//author[@location='UK']",
-        "//author/text()",
-        "//*[.='James Strachan']",
-        "//@location",
-        "//attribute::*",
-        "//namespace::*",
-        "normalize-space(/root)",
-        "normalize-space(/root/author)",
-        "normalize-space(' a  b  c  d ')"
-    };
-    
-    
-    public TestXPath(String name) {
+    public TestBackedList(String name) {
         super(name);
     }
 
     // Test case(s)
     //-------------------------------------------------------------------------                    
     public void testXPaths() throws Exception {        
-        int size = paths.length;
-        for ( int i = 0; i < size; i++ ) {
-            testXPath( paths[i] );
-        }
+        Element element = (Element) document.selectSingleNode( "/root" );
+        mutate(element);
+        element = (Element) document.selectSingleNode( "//author" );
+        mutate(element);
     }
         
     // JUnit stuff
@@ -60,17 +44,24 @@ public class TestXPath extends AbstractTestCase {
     }
     
     public static Test suite() {
-        return new TestSuite( TestXPath.class );
+        return new TestSuite( TestBackedList.class );
     }
     
-    protected void testXPath(String xpath) {
-        List list = document.selectNodes(xpath);
+    protected void mutate(Element element) throws Exception {
+        ContentFactory factory = ContentFactory.getInstance();
         
-        System.out.println( "Searched path: " + xpath + " found: " + list.size() + " result(s)" );
+        List list = element.getElements();
+        list.add(factory.createElement("last" ));
+        list.add(0, factory.createElement("first" ));
         
-        if ( VERBOSE ) {
-            System.out.println( list );
-        }
+        List list2 = element.getElements();
+        
+        assert( "Both lists should contain same number of elements", list.size() == list2.size() );
+        
+        XMLWriter writer = new XMLWriter( "  ", true );
+        
+        log( "Element content is now: " + element.getContent() );
+        writer.output( element, System.out );
     }
 
 }

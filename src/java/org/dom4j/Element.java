@@ -69,7 +69,10 @@ public interface Element extends Branch {
    /** <p>Returns any additional namespaces declarations for this element 
       * other than namespace returned via the {@link #getNamespace()} method. 
       * If no additional namespace declarations are present for this
-      * element then {@link Collections.EMPTY_LIST} will be returned.
+      * element then an empty list will be returned.
+      * 
+      * The list is backed by the element such that changes to the list will
+      * be reflected in the element though the reverse is not the case.</p>
       *
       * @return a list of any additional namespace declarations.
       */
@@ -77,7 +80,10 @@ public interface Element extends Branch {
     
    /** <p>Returns all the namespaces declared by this element. 
       * If no namespaces are declared for this element then 
-      * {@link Collections.EMPTY_LIST} will be returned.
+      * an empty list will be returned.
+      * 
+      * The list is backed by the element such that changes to the list will
+      * be reflected in the element though the reverse is not the case.</p>
       *
       * @return a list of namespaces declared for this element.
       */
@@ -233,9 +239,39 @@ public interface Element extends Branch {
     public Element getElementByID(String elementID);
     public Element getElement(String name);
     public Element getElement(String name, Namespace namespace);
-    
+
+    /** <p>Returns the elements contained in this element. 
+      * If this element does not contain any elements then this method returns
+      * an empty list.
+      *
+      * The list is backed by the element such that changes to the list will
+      * be reflected in the element though the reverse is not the case.</p>
+      *
+      * @return a list of all the elements in this element.
+      */
     public List getElements();
+    
+    /** <p>Returns the elements contained in this element with the given name
+      * and no namespace.
+      * If no elements are found then this method returns an empty list.
+      *
+      * The list is backed by the element such that changes to the list will
+      * be reflected in the element though the reverse is not the case.</p>
+      *
+      * @return a list of all the elements in this element for the given name
+      */
     public List getElements(String name);
+    
+    /** <p>Returns the elements contained in this element with the given name
+      * and namespace.
+      * If no elements are found then this method returns an empty list.
+      *
+      * The list is backed by the element such that changes to the list will
+      * be reflected in the element though the reverse is not the case.</p>
+      *
+      * @return a list of all the elements in this element for the 
+      * given name and namespace.
+      */
     public List getElements(String name, Namespace namespace);
 
     public Iterator elementIterator();

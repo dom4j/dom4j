@@ -54,7 +54,7 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
 
     
     public String getText() {
-        List content = getContent();
+        List content = getContentList();
         if (content != null) {
             int size = content.size();
             if (size >= 1) {
@@ -109,7 +109,7 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     }
 
     public boolean hasMixedContent() {
-        List content = getContent();
+        List content = getContentList();
         if (content == null || content.isEmpty() || content.size() < 2) {
             return false;
         }
@@ -214,6 +214,9 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
         return CONTENT_FACTORY;
     }
 
+    /** @return the internal List used to manage the content */
+    protected abstract List getContentList();
+    
     protected abstract void addNode(Node node);
     
     protected abstract boolean removeNode(Node node);

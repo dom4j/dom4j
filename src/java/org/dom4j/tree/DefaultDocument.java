@@ -117,7 +117,7 @@ public class DefaultDocument extends AbstractDocument {
     public List getProcessingInstructions() {
         List source = contents;
         if ( source == null ) {
-            return EMPTY_LIST;
+            return createEmptyList();
         }
         List answer = createResultList();
         int size = source.size();
@@ -133,7 +133,7 @@ public class DefaultDocument extends AbstractDocument {
     public List getProcessingInstructions(String target) {
         List source = contents;
         if ( source == null ) {
-            return EMPTY_LIST;
+            return createEmptyList();
         }
         List answer = createResultList();
         int size = source.size();
@@ -184,10 +184,8 @@ public class DefaultDocument extends AbstractDocument {
     }
     
     public List getContent() {
-        if (contents == null) {
-            contents = createContentList();
-        }
-        return contents;
+        List backingList = getContentList();
+        return new BackedList(this, backingList, backingList);
     }
     
     public void setContent(List contents) {
@@ -223,6 +221,13 @@ public class DefaultDocument extends AbstractDocument {
         return EMPTY_ITERATOR;
     }
 
+    protected List getContentList() {
+        if (contents == null) {
+            contents = createContentList();
+        }
+        return contents;
+    }
+    
     
     protected void addNode(Node node) {
         if (node.getDocument() != null) {
@@ -259,13 +264,20 @@ public class DefaultDocument extends AbstractDocument {
         return new ArrayList();
     }
     
-    /** A Factory Method pattern which lazily creates 
-      * a List implementation used to store results of 
+    /** A Factory Method pattern which creates 
+      * a BackedList implementation used to store results of 
       * a filtered content query such as 
       * {@link #getProcessingInstructions}
       */
-    protected List createResultList() {
-        return new ArrayList();
+    protected BackedList createResultList() {
+        return new BackedList( this, getContentList() );
+    }
+    
+    /** A Factory Method pattern which lazily creates an empty
+      * a BackedList implementation
+      */
+    protected BackedList createEmptyList() {
+        return new BackedList( this, getContentList(), 0 );
     }
     
 }
