@@ -63,17 +63,24 @@
             <td>No</td>
         </tr>
         <tr>
-            <td>Integrated XPath support</td>
+            <td>Integrated XPath API support</td>
             <td>No</td>
             <td>Yes</td>
             <td>No</td>
             <td>Partial</td>
         </tr>
         <tr>
+            <td>Bundled XPath implementation</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>Optional</td>
+            <td>Partial</td>
+        </tr>
+        <tr>
             <td>Support for JAXP/TRaX for XSLT integration</td>
             <td>Yes</td>
             <td>Yes</td>
-            <td>No</td>
+            <td>Optional</td>
             <td>No</td>
         </tr>
         <tr>
@@ -85,21 +92,21 @@
         </tr>
         <tr>
             <td>Capable of processing a continuous XML streams</td>
-            <td>Possible</td>
+            <td>Don't know</td>
             <td>Yes</td>
             <td>No</td>
             <td>No</td>
         </tr>
         <tr>
             <td>Capable of processing massive documents</td>
-            <td>Possible</td>
+            <td>Don't know</td>
             <td>Yes</td>
             <td>No</td>
             <td>No</td>
         </tr>
         <tr>
             <td>XML Schema Data Type support</td>
-            <td>DOM 3.0</td>
+            <td>No</td>
             <td>Yes (alpha)</td>
             <td>No</td>
             <td>No</td>
