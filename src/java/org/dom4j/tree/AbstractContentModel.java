@@ -10,6 +10,7 @@ import org.dom4j.Attribute;
 import org.dom4j.CDATA;
 import org.dom4j.CharacterData;
 import org.dom4j.Comment;
+import org.dom4j.ContentFactory;
 import org.dom4j.Element;
 import org.dom4j.Entity;
 import org.dom4j.Node;

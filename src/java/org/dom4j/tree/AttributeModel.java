@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.dom4j.Attribute;
+import org.dom4j.ContentFactory;
 import org.dom4j.Namespace;
 
 /** <p><code>AttributeModel</code> represents an XML attributes model for an 

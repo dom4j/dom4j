@@ -1,35 +1,40 @@
-package org.dom4j.tree;
+package org.dom4j;
 
 import java.util.Map;
 
-import org.dom4j.Attribute;
-import org.dom4j.CDATA;
-import org.dom4j.Comment;
-import org.dom4j.Element;
-import org.dom4j.Entity;
-import org.dom4j.Namespace;
-import org.dom4j.ProcessingInstruction;
-import org.dom4j.Text;
+import org.dom4j.tree.DefaultAttribute;
+import org.dom4j.tree.DefaultCDATA;
+import org.dom4j.tree.DefaultComment;
+import org.dom4j.tree.DefaultElement;
+import org.dom4j.tree.DefaultEntity;
+import org.dom4j.tree.DefaultNamespace;
+import org.dom4j.tree.DefaultText;
+import org.dom4j.tree.DefaultProcessingInstruction;
 
-/** <p><code>DefaultContentFactory</code> is the default content factory of 
-  * XML content nodes for an XML elements.</p>
+
+/** <p><code>ContentFactory</code> is a collection of factory methods to allow
+  * the easy creation of DOM4J XML content nodes. </p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class DefaultContentFactory implements ContentFactory {
+public class ContentFactory {
 
-    /** Singleton instance */
-    private static DefaultContentFactory singleton = new DefaultContentFactory();
-    
-    /** @return the singleton instance
+    /** The Singleton instance */
+    protected static ContentFactory singleton = new ContentFactory();
+ 
+    /** <p>Access to the Singleton instance of ContentFactory for
+      * the default implementation.</p>
+      *
+      * @return the default singleon instance
       */
     public static ContentFactory getInstance() {
         return singleton;
     }
     
-    public DefaultContentFactory() {
-    }
+    
+    
+    // Factory methods
     
     public Attribute createAttribute(String name, String value) {
         return new DefaultAttribute(name, value);

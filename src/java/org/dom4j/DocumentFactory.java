@@ -22,7 +22,7 @@ public class DocumentFactory {
     
     // Some static helper methods
     public static Document create() {
-        return getInstance().createDocument();
+        return singleton.createDocument();
     }
     
     /** <p>Access to singleton implementation of DocumentFactory which 

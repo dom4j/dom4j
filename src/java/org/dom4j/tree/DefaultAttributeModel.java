@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.dom4j.Attribute;
+import org.dom4j.ContentFactory;
 import org.dom4j.Namespace;
 
 /** <p><code>DefaultAttributeModel</code> is a default implementation of 

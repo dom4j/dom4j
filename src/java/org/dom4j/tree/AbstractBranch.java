@@ -12,6 +12,7 @@ import java.util.StringTokenizer;
 
 import org.dom4j.Branch;
 import org.dom4j.Comment;
+import org.dom4j.ContentFactory;
 import org.dom4j.Element;
 import org.dom4j.IllegalAddNodeException;
 import org.dom4j.Node;
@@ -31,7 +32,7 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     protected static final XMLWriter writer = new XMLWriter( "  ", true );
 
     /** The <code>ContentFactory</code> instance used by default */
-    private static final ContentFactory CONTENT_FACTORY = DefaultContentFactory.getInstance();
+    private static final ContentFactory CONTENT_FACTORY = ContentFactory.getInstance();
 
     
     public AbstractBranch() { 

@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.dom4j.Element;
-import org.dom4j.tree.ContentFactory;
+import org.dom4j.ContentFactory;
 
 import org.metastuff.coder.*;
 

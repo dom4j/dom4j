@@ -13,6 +13,7 @@ import java.util.StringTokenizer;
 import org.dom4j.Attribute;
 import org.dom4j.CDATA;
 import org.dom4j.Comment;
+import org.dom4j.ContentFactory;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Entity;
