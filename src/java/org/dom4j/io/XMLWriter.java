@@ -1029,10 +1029,19 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                     }
                 } else {
                     if (!textOnly && format.isPadText()) {
-                        writer.write(PAD_TEXT);
+                        // only add the PAD_TEXT if the text itself starts with
+                        // whitespace
+                        char firstChar = 'a';
+                        if (buff != null) {
+                            firstChar = buff.charAt(0);
+                        } else if (lastTextNode != null) {
+                            firstChar = lastTextNode.getText().charAt(0);
+                        }
+                        
+                        if (Character.isWhitespace(firstChar)) {
+                            writer.write(PAD_TEXT);
+                        }
                     }
-
-                    textOnly = false;
 
                     if (lastTextNode != null) {
                         if (buff != null) {
@@ -1049,13 +1058,25 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                         }
                     }
 
+                    textOnly = false;
                     writeNode(node);
                 }
             }
 
             if (lastTextNode != null) {
                 if (!textOnly && format.isPadText()) {
-                    writer.write(PAD_TEXT);
+                    // only add the PAD_TEXT if the text itself starts with
+                    // whitespace
+                    char firstChar = 'a';
+                    if (buff != null) {
+                        firstChar = buff.charAt(0);
+                    } else {
+                        firstChar = lastTextNode.getText().charAt(0);
+                    }
+                    
+                    if (Character.isWhitespace(firstChar)) {
+                        writer.write(PAD_TEXT);
+                    }
                 }
 
                 if (buff != null) {
@@ -1078,14 +1099,21 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                     lastTextNode = node;
                 } else {
                     if ((lastTextNode != null) && format.isPadText()) {
-                        writer.write(PAD_TEXT);
+                        // only add the PAD_TEXT if the text itself ends with
+                        // whitespace
+                        String txt = lastTextNode.getText();
+                        char lastChar = txt.charAt(txt.length() - 1);
+                        
+                        if (Character.isWhitespace(lastChar)) {
+                            writer.write(PAD_TEXT);
+                        }
                     }
 
                     writeNode(node);
 
-                    if ((lastTextNode != null) && format.isPadText()) {
-                        writer.write(PAD_TEXT);
-                    }
+//                    if ((lastTextNode != null) && format.isPadText()) {
+//                        writer.write(PAD_TEXT);
+//                    }
 
                     lastTextNode = null;
                 }

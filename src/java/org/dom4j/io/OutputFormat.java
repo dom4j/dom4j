@@ -315,6 +315,11 @@ public class OutputFormat implements Cloneable {
      * </p>
      * 
      * <p>
+     * The padding string will only be added if the text itself starts or ends
+     * with some whitespace characters.
+     * </p>
+     * 
+     * <p>
      * Default: false
      * </p>
      * 
@@ -524,6 +529,7 @@ public class OutputFormat implements Cloneable {
         format.setIndentSize(2);
         format.setNewlines(true);
         format.setTrimText(true);
+        format.setPadText(true);
 
         return format;
     }
