@@ -26,7 +26,7 @@ import org.saxpath.XPathReader;
 import org.saxpath.SAXPathException;
 import org.saxpath.helpers.XPathReaderFactory;
 
-import org.jaxen.JAXPathHandler;
+import org.jaxen.JaxenHandler;
 
 import java.io.StringReader;
 
@@ -339,7 +339,7 @@ public class DefaultXPath implements org.dom4j.XPath {
         try {
             XPathReader reader = XPathReaderFactory.createReader();
             
-            JAXPathHandler handler = new JAXPathHandler();
+            JaxenHandler handler = new JaxenHandler();
             
             handler.setXPathFactory( new DefaultXPathFactory() );
             

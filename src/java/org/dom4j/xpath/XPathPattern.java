@@ -22,7 +22,7 @@ import org.saxpath.XPathReader;
 import org.saxpath.SAXPathException;
 import org.saxpath.helpers.XPathReaderFactory;
 
-import org.jaxen.JAXPathHandler;
+import org.jaxen.JaxenHandler;
 
 import java.io.StringReader;
 

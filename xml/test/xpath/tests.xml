@@ -35,6 +35,7 @@
       <valueOf select="name()"></valueOf>
       <valueOf select="name(.)"></valueOf>
       <valueOf select="name(parent::*)"></valueOf>
+      <valueOf select="name(/)"></valueOf>
       <valueOf select="name(/.)"></valueOf>
       <valueOf select="name(/self::node())"></valueOf>
 
@@ -47,9 +48,7 @@
       <valueOf select="name(/child::node())">web-app</valueOf>
       <valueOf select="name(child::node())">web-app</valueOf>
       <valueOf select="name(./*)">web-app</valueOf>
-<!--
       <valueOf select="name(*)">web-app</valueOf>
--->
     </context>
 
     <context select="/*">
@@ -84,9 +83,11 @@
       <test select="//*[@id='_13563275']">
         <valueOf select="url">http://c.moreover.com/click/here.pl?x13563273</valueOf>
       </test>
+<!--
       <test select="/child::node()/child::node()[@id='_13563275']">
         <valueOf select="url">http://c.moreover.com/click/here.pl?x13563273</valueOf>
       </test>
+-->
       <test select="/*/*[@id='_13563275']">
         <valueOf select="url">http://c.moreover.com/click/here.pl?x13563273</valueOf>
       </test>

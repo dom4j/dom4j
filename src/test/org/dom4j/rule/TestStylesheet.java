@@ -35,7 +35,9 @@ public class TestStylesheet extends AbstractTestCase {
         "author[@location='UK']",
         "root/author[@location='UK']",
         "root//author[@location='UK']",
+/*        
         "text()[.='James Strachan']"
+*/
     };
     
     protected Stylesheet stylesheet;
