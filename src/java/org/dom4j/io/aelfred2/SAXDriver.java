@@ -67,6 +67,7 @@ import java.util.Vector;
 
 import org.xml.sax.*;
 import org.xml.sax.ext.*;
+import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.NamespaceSupport;
 
 
@@ -128,13 +129,12 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @see org.xml.sax.Parser
  */
 final public class SAXDriver
-    implements Locator, Attributes2, XMLReader, Parser, AttributeList
+    implements Locator, Attributes, XMLReader, Parser, AttributeList
 {
     private final DefaultHandler2	base = new DefaultHandler2 ();
     private XmlParser			parser;
 
     private EntityResolver		entityResolver = base;
-    private EntityResolver2		resolver2 = null;
     private ContentHandler		contentHandler = base;
     private DTDHandler			dtdHandler = base;
     private ErrorHandler 		errorHandler = base;
@@ -155,7 +155,7 @@ final public class SAXDriver
     private boolean			extGE = true;
     private boolean			extPE = true;
     private boolean			resolveAll = true;
-    private boolean			useResolver2 = true;
+    private boolean			useResolver2 = false;
     private boolean                     stringInterning = true;
 
     private int				attributeCount;
@@ -221,10 +221,6 @@ final public class SAXDriver
      */
     public void setEntityResolver (EntityResolver resolver)
     {
-	if (resolver instanceof EntityResolver2)
-	    resolver2 = (EntityResolver2) resolver;
-	else
-	    resolver2 = null;
 	if (resolver == null)
 	    resolver = base;
 	entityResolver = resolver;
@@ -419,7 +415,7 @@ final public class SAXDriver
 
 	// always returns isSpecified info
 	if ((FEATURE + "use-attributes2").equals (featureId))
-	    return true;
+	    return false;
 	
 	// meaningful between startDocument/endDocument
 	if ((FEATURE + "is-standalone").equals (featureId)) {
@@ -434,7 +430,7 @@ final public class SAXDriver
 
 	// optionally use resolver2 interface methods, if possible
 	if ((FEATURE + "use-entity-resolver2").equals (featureId))
-	    return useResolver2;
+	    return false;
 	
 	throw new SAXNotRecognizedException (featureId);
     }
@@ -576,9 +572,7 @@ final public class SAXDriver
     InputSource getExternalSubset (String name, String baseURI)
     throws SAXException, IOException
     {
-	if (resolver2 == null || !useResolver2 || !extPE)
 	    return null;
-	return resolver2.getExternalSubset (name, baseURI);
     }
 
     InputSource resolveEntity (boolean isPE, String name,
@@ -595,21 +589,11 @@ final public class SAXDriver
 
 	// ... or not
 	lexicalHandler.startEntity (name);
-	if (resolver2 != null && useResolver2) {
-	    source = resolver2.resolveEntity (name, in.getPublicId (),
-			baseURI, in.getSystemId ());
-	    if (source == null) {
-		in.setSystemId (absolutize (baseURI,
-				in.getSystemId (), false));
-		source = in;
-	    }
-	} else {
 	    in.setSystemId (absolutize (baseURI, in.getSystemId (), false));
 	    source = entityResolver.resolveEntity (in.getPublicId (),
 			in.getSystemId ());
 	    if (source == null)
 		source = in;
-	}
 	startExternalEntity (name, source.getSystemId (), true);
 	return source;
     }
