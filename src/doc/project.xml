@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="DOM4J" repository="dom4j" href="http://dom4j.org">
 
-  <title>DOM4J The Flexible XML Framework for Java</title>
+  <title>DOM4J: Open Source XML Framework for Java with integrated XPath</title>
 
+  <meta>
+    
+  </meta>
 
   <links>
     <table width="100%">
@@ -28,7 +31,7 @@
 
   <notice>
     Copyright 2000 (C) MetaStuff Ltd. All Rights Reserved. Hosted by <br/>
-    <a href="http://sourceforge.net"> 
+    <a href="http://sourceforge.net/projects/dom4j"> 
     <img src="http://sourceforge.net/sflogo.php?group_id=16035" width="88" height="31" border="0" alt="SourceForge Logo"/>
     </a> 
   </notice>

@@ -10,13 +10,32 @@
     <html lang="en">
     <head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
-      <meta name="author" content="{document/properties/author/.}"/>
-      <link rel="stylesheet" type="text/css" href="default.css"/>
+      <xsl:element name="META">
+        <xsl:attribute name="NAME">Keywords</xsl:attribute>
+        <xsl:attribute name="CONTENT">DOM4J, XML, Java, XML and Java, Open Source, 
+            XML software, Java software, XML API, Java API, XML parser, 
+            DOM, Document Object Model, SAX, XML Library, XPath, 
+            Java 2 Collections
+        </xsl:attribute>
+      </xsl:element>
+      <xsl:element name="META">
+        <xsl:attribute name="NAME">Description</xsl:attribute>
+        <xsl:attribute name="CONTENT">DOM4J is an Open Source XML framework 
+            for the Java Platform that combines the best of DOM and SAX 
+            together with integrated  XPath and Java 2 Collections support
+        </xsl:attribute>
+      </xsl:element>
+      <xsl:element name="META">
+        <xsl:attribute name="NAME">Copyright</xsl:attribute>
+        <xsl:attribute name="CONTENT">(c) 2001 MetaStuff Ltd.</xsl:attribute>
+      </xsl:element>
+
       <xsl:choose>
         <xsl:when test="/document/properties/title"><title><xsl:value-of select="/document/body/title"/></title></xsl:when>
         <xsl:when test="/document/body/title"><title><xsl:value-of select="/document/body/title"/></title></xsl:when>
         <xsl:otherwise><title><xsl:value-of select="$project/title"/></title></xsl:otherwise>
       </xsl:choose>
+      <link rel="stylesheet" type="text/css" href="default.css"/>
     </head>
 
     <body>
