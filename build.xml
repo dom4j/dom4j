@@ -1,6 +1,9 @@
 <project default="usage" basedir=".">
 
     <path id="compile.classpath">
+        <fileset dir="./lib/endorsed">
+            <include name="*.jar" />
+        </fileset>
         <fileset dir="./lib">
             <include name="*.jar" />
         </fileset>
@@ -13,6 +16,7 @@
         </fileset>
         <fileset dir="./lib/tools">
             <include name="jtidy*.jar" />
+            <include name="xalan*.jar" />
             <include name="xerces*.jar" /> <!-- required by msv -->
         </fileset>
         <pathelement location="."/>
@@ -290,6 +294,7 @@
       </classpath>
 
       <jvmarg value="-Djavax.xml.parsers.SAXParserFactory=org.dom4j.JAXPFactory" />
+      <jvmarg value="-Djavax.xml.transform.TransformerFactory=org.apache.xalan.processor.TransformerFactoryImpl" />
 
       <batchtest fork="yes" todir="${build.dir}/test-results/xml">
         <fileset dir="${test.dir}">
