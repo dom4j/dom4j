@@ -9,19 +9,9 @@
   <body>
     
     <section name="Download the current release">
-      <p>The current release is version $VERSION$.</p>
-      <p>It can be downloaded at
+      <p>The current release can be downloaded at
         <a href="http://sourceforge.net/project/showfiles.php?group_id=16035">SourceForge</a>
-        or directly via one of the following links:-
       </p>
-      <ul>
-          <li>
-            <a href="http://prdownloads.sourceforge.net/dom4j/dom4j-${pom.version}.zip">dom4j-${pom.version}.zip</a> for Windows platforms (ZIP)
-          </li>
-          <li>
-            <a href="http://prdownloads.sourceforge.net/dom4j/dom4j-${pom.version}.tar.gz">dom4j-${pom.version}.tar.gz</a> for all other platforms (Tarball)
-          </li>
-      </ul>
     </section>
 
     <section name="Download a snapshot build">
