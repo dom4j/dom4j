@@ -7,7 +7,7 @@
 
   <body>
 
-    <release version="1.5.1" date="2004-10-23">
+    <release version="1.5.1" date="2004-10-29">
       <action dev="maartenc" type="fix" due-to="Ara Vartanian">
         Fixed problem where the namespace prefix was lost using <code>DOMDocument</code>.
       </action>
