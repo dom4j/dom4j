@@ -44,6 +44,9 @@ import org.xml.sax.helpers.DefaultHandler;
   */
 public class SAXContentHandler extends DefaultHandler implements LexicalHandler {
 
+    /** Should standard entities be passed through? */
+    private static final boolean SHOW_STANDARD_ENTITIES = false;
+    
     /** The factory used to create new <code>Document</code> instances */
     private DocumentFactory documentFactory;
 
@@ -224,9 +227,11 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
 
     public void startEntity(String name) throws SAXException {
         // Ignore DTD references
-        if (! insideDTDSection && ! getIgnoreEntityNames().contains(name)) {
-            Element element = elementStack.peekElement();
-            entity = element.addEntity(name);
+        if (! insideDTDSection ) {
+            if ( SHOW_STANDARD_ENTITIES || ! getIgnoreEntityNames().contains(name)) {
+                Element element = elementStack.peekElement();
+                entity = element.addEntity(name);
+            }
         }
     }
 

@@ -7,7 +7,7 @@
     <tstamp/>
     <property name="Name" value="dom4j"/>
     <property name="name" value="dom4j"/>
-    <property name="version" value="0.3"/>
+    <property name="version" value="coming-soon-0.4"/>
     <property name="year" value="2001"/>
 
     <echo message="----------- ${Name} ${version} [${year}] ------------"/>
@@ -433,6 +433,8 @@
   <!-- =================================================================== -->
   <target name="demo-sax" depends="samples">
     <java classname="SAXDemo" args="${xml.format.options} xml/web.xml"/>
+    <java classname="SAXDemo" args="${xml.format.options} xml/cdata.xml"/>
+    <java classname="SAXDemo" args="${xml.format.options} xml/testPI.xml"/>
   </target>
 
   <target name="demo-sax2" depends="samples">
@@ -475,7 +477,7 @@
   </target>
 
   <target name="demo-visitor" depends="samples">
-    <java classname="VisitorDemo" args="xml/web.xml"/>
+    <java classname="VisitorDemo" args="xml/cdata.xml"/>
   </target>
 
   <target name="demo-count" depends="samples">
