@@ -110,6 +110,9 @@ public class BeanElement extends DefaultElement {
     protected List createAttributeList() {
         return new BeanAttributeList(this);
     }    
+    protected List createAttributeList(int size) {
+        return new BeanAttributeList(this);
+    }    
 }
 
 
