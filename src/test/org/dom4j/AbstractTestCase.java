@@ -81,7 +81,7 @@ public class AbstractTestCase extends TestCase {
         
         for ( int i = 0; i < c1; i++ ) {
             Attribute a1 = n1.attribute(i);
-            Attribute a2 = n2.attribute(i);
+            Attribute a2 = n2.attribute(a1.getQName());
             assertNodesEqual( a1, a2 );
         }
         
