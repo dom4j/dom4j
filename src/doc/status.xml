@@ -969,6 +969,9 @@ List customers
       <ul>
         <li>The internal subset does not pass through DOMReader and DOMWriter. This needs patching!
         </li>
+        <li>We should add support for Xerces XNI API via an XNIReader and XNIWriter. This would also allow
+          dom4j users to make good use of the NekoHTML parser thats layered on top of XNI.
+        </li>
         <li>Better documentation and user guides
         </li>
         <li>A lazy parser; implement a special Element implementation (or probably a special List)
