@@ -654,7 +654,7 @@ public class SAXReader {
         );
 
         // register the DeclHandler
-        if ( includeInternalDTDDeclarations ) {
+        if ( includeInternalDTDDeclarations || includeExternalDTDDeclarations ) {
             SAXHelper.setParserProperty(
                 reader,
                 "http://xml.org/sax/properties/declaration-handler",
