@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <name>dom4j</name>
   <id>dom4j</id>
-  <currentVersion>1.5.2</currentVersion>
+  <currentVersion>1.6-SNAPSHOT</currentVersion>
   
   <organization>
     <name>MetaStuff Ltd.</name>
@@ -36,10 +36,6 @@
     <packageGroup>
       <title>Swing helper classes</title>
       <packages>org.dom4j.swing</packages>
-    </packageGroup>
-    <packageGroup>
-      <title>Bundled Aelfred Parser</title>
-      <packages>org.dom4j.io.aelfred,org.dom4j.io.aelfred2</packages>
     </packageGroup>
     <packageGroup>
       <title>Implementation classes</title>
@@ -129,6 +125,7 @@
       <name>Maarten Coene</name>
       <id>maartenc</id>
       <email>maartenc@users.sourceforge.net</email>
+      <organization>Cronos</organization>
     </developer>
     <developer>
       <name>Michael Skells</name>
@@ -268,14 +265,6 @@
     <sourceDirectory>src/java</sourceDirectory>
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
 
-    <!-- Resources that are packaged up inside the JAR file -->
-    <resources>    	
-      <directory>src/java</directory>
-      <includes>
-        <include>**/*.properties</include>
-      </includes>
-    </resources>
-    
     <!-- Unit test classes -->
     <unitTest>
       <includes>
