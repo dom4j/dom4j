@@ -66,7 +66,7 @@ public class DefaultElement extends AbstractElement {
     private Object content;
     
     /** Lazily constructes list of attributes */
-    private List attributes;
+    private Object attributes;
 
     
     
@@ -81,9 +81,7 @@ public class DefaultElement extends AbstractElement {
     public DefaultElement(QName qname, Attributes attributes) { 
         this.qname = qname;
         int size = attributes.getLength();
-        if ( size > 0 ) {
-            // XXXX: may want to use lazy creation such that 
-            // XXXX: no List is created for elements with one attribute
+        if ( size > 1 ) {
             this.attributes = new ArrayList( size );
         }
     }
@@ -694,53 +692,76 @@ public class DefaultElement extends AbstractElement {
     }
     
     public Iterator attributeIterator() {
-        if ( attributes == null ) {
-            return EMPTY_ITERATOR;
+        if ( attributes instanceof List ) {
+            List list = (List) attributes;
+            return list.iterator();
         }
+        else if ( attributes != null ) {
+            return createSingleIterator( attributes );
+        } 
         else {
-            return attributeList().iterator();
+            return EMPTY_ITERATOR;
         }
     }
     
     public Attribute attribute(int index) {
-        if ( attributes == null ) {
-            return null;
+        if ( attributes instanceof List ) {
+            List list = (List) attributes;
+            return (Attribute) list.get(index);
+        }
+        else if ( attributes != null && index == 0 ) {
+            return (Attribute) attributes;
         }
         else {
-            return (Attribute) attributeList().get(index);
+            return null;
         }
     }
             
     public int attributeCount() {
-        if ( attributes == null ) {
-            return 0;
+        if ( attributes instanceof List ) {
+            List list = (List) attributes;
+            return list.size();
         }
         else {
-            return attributeList().size();
+            return ( attributes != null ) ? 1 : 0;
         }
     }
     
     public Attribute attribute(String name) {
-        if ( attributes != null ) {
-            int size = attributes.size();
+        if ( attributes instanceof List ) {
+            List list = (List) attributes;
+            int size = list.size();
             for ( int i = 0; i < size; i++ ) {
-                Attribute attribute = (Attribute) attributes.get(i);
+                Attribute attribute = (Attribute) list.get(i);
                 if ( name.equals( attribute.getName() ) ) {
                     return attribute;
                 }
+            }
+        }
+        else if ( attributes != null ) {
+            Attribute attribute = (Attribute) attributes;
+            if ( name.equals( attribute.getName() ) ) {
+                return attribute;
             }
         }
         return null;
     }
 
     public Attribute attribute(QName qName) {
-        if ( attributes != null ) {
-            int size = attributes.size();
+        if ( attributes instanceof List ) {
+            List list = (List) attributes;
+            int size = list.size();
             for ( int i = 0; i < size; i++ ) {
-                Attribute attribute = (Attribute) attributes.get(i);
+                Attribute attribute = (Attribute) list.get(i);
                 if ( qName.equals( attribute.getQName() ) ) {
                     return attribute;
                 }
+            }
+        }
+        else if ( attributes != null ) {
+            Attribute attribute = (Attribute) attributes;
+            if ( qName.equals( attribute.getQName() ) ) {
+                return attribute;
             }
         }
         return null;
@@ -750,11 +771,41 @@ public class DefaultElement extends AbstractElement {
         return attribute( getDocumentFactory().createQName( name, namespace ) );
     }
 
-    public boolean remove(Attribute attribute) {
-        if ( attributes == null ) {
-            return false;
+    public void add(Attribute attribute) {
+        if (attribute.getParent() != null) {
+            String message = 
+                "The Attribute already has an existing parent \"" 
+                + attribute.getParent().getQualifiedName() + "\"";
+            
+            throw new IllegalAddException( this, attribute, message );
         }
-        boolean answer = attributes.remove(attribute);
+        
+        if ( attributes == null ) {
+            attributes = attribute;
+        }
+        else {
+            attributeList().add(attribute);
+        }
+        
+        childAdded(attribute);
+    }
+    
+
+    
+    public boolean remove(Attribute attribute) {
+        boolean answer = false;
+        
+        if ( attributes instanceof List ) {
+            List list = (List) attributes;            
+            answer = list.remove(attribute);
+        }
+        else if ( attributes != null ) {
+            if ( attribute.equals( attributes ) ) {
+                attributes = null;
+                answer = true;
+            }
+        }
+        
         if ( answer ) {
             childRemoved(attribute);
         }
@@ -822,10 +873,20 @@ public class DefaultElement extends AbstractElement {
     }
 
     protected List attributeList() {
-        if ( attributes == null ) {
-            attributes = createAttributeList();
+        if ( attributes instanceof List ) {
+            return (List) attributes;
         }
-        return attributes;
+        else if ( attributes != null ) {
+            List list = createAttributeList();
+            list.add( attributes );
+            attributes = list;
+            return list;
+        }
+        else {
+            List list = createAttributeList();
+            attributes = list;
+            return list;
+        }
     }
     
     protected void setAttributeList(List attributes) {

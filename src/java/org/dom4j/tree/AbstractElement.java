@@ -143,28 +143,15 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         visitor.visit(this);
         
         // visit attributes
-        List attributes = attributeList();
-        if (attributes != null) {
-            for ( Iterator iter = attributes.iterator(); iter.hasNext(); ) {
-                Attribute attribute = (Attribute) iter.next();
-                visitor.visit(attribute);
-            }            
+        for ( int i = 0, size = attributeCount(); i < size; i++ ) {
+            Attribute attribute = attribute(i);
+            visitor.visit(attribute);
         }
         
         // visit content
-        List content = getContentList();
-        if (content != null) {
-            for ( Iterator iter = content.iterator(); iter.hasNext(); ) {
-                Object object = iter.next();
-                if (object instanceof String) {
-                    DefaultText text = new DefaultText((String) object);
-                    visitor.visit(text);
-                } 
-                else {
-                    Node node = (Node) object;
-                    node.accept(visitor);
-                }
-            }            
+        for ( int i = 0, size = nodeCount(); i < size; i++ ) {
+            Node node = node(i);
+            node.accept(visitor);
         }
     }
     
