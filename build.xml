@@ -196,6 +196,9 @@
     <jar jarfile="${build.dir}/${name}-all.jar"
          basedir="${build.dest}"
          includes="**"/>
+    <delete dir="${build.dest}/com"/>
+    <delete dir="${build.dest}/org/antlr"/>
+    <delete dir="${build.dest}/org/xml"/>
   </target>
 
   <!-- =================================================================== -->
