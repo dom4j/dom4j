@@ -1,6 +1,53 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.0//EN"
-               "http://www.oasis-open.org/docbook/xml/4.0/docbookx.dtd">
+<!--DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+              "http://www.oasis-open.org/docbook/xml/4.0/docbookx.dtd"-->
+<!--
+     Copyright 2002 (C) MetaStuff, Ltd. All Rights Reserved.
+     This software is open source. 
+ 
+   Redistribution and use of this software and associated documentation
+   ("Software"), with or without modification, are permitted provided
+   that the following conditions are met:
+  
+   1. Redistributions of source code must retain copyright
+      copy of this document.
+  
+   2. Redistributions in binary form must reproduce the
+      above copyright notice, this list of conditions and the
+      following disclaimer in the documentation and/or other
+      materials provided with the distribution.
+  
+   3. The name "DOM4J" must not be used to endorse or promote
+      products derived from this Software without prior written
+      permission of MetaStuff, Ltd.  For written permission,
+      please contact dom4j-info@metastuff.com.
+  
+   4. Products derived from this Software may not be called "DOM4J"
+      nor may "DOM4J" appear in their names without prior written
+      permission of MetaStuff, Ltd. DOM4J is a registered
+      trademark of MetaStuff, Ltd.
+  
+   5. Due credit should be given to the DOM4J Project
+      (http://dom4j.org/).
+  
+   THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS
+   ``AS IS'' AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
+   NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+   FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL
+   METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+   INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+   (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+   SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+   HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+   STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+   OF THE POSSIBILITY OF SUCH DAMAGE.
+  
+   Copyright 2002 (C) MetaStuff, Ltd. All Rights Reserved.
+  
+   $Id$ 
+-->
+
 <book>
 <bookinfo>
 <title>dom4j cookbook</title>
@@ -9,6 +56,31 @@
   <author><honorific>Mr</honorific><firstname>James</firstname><surname>Strachan</surname></author>
 </authorgroup>
 <revhistory>
+ <revision>
+    <revision>
+      <revnumber>0.1.0</revnumber>
+      <date>02-05-09</date>
+      <authorinitials>tradem</authorinitials>
+      <revdescription>
+        <itemizedlist>
+            <listitem><para>Fixed typos</para></listitem>
+            <listitem><para>Better understable description of some situations</para></listitem>
+            <listitem><para>Use of programlistingco for rule API</para></listitem>           
+      </itemizedlist>
+      </revdescription>
+    </revision>
+      <revnumber>0.0.9</revnumber>
+      <date>02-05-01</date>
+      <authorinitials>tradem</authorinitials>
+      <revdescription>
+        <itemizedlist>
+            <listitem><para>Added rule API description &amp; samples</para></listitem>
+            <listitem><para>Added JRV API sample to schemata chapter</para></listitem>
+            <listitem><para>Used width constrains for programlistings</para></listitem>           
+	    <listitem><para>Extented XPath samples</para></listitem>
+      </itemizedlist>
+      </revdescription>
+  </revision>
   <revision>
       <revnumber>0.0.8</revnumber>
       <date>01-09-25</date>
@@ -118,7 +190,7 @@ also desinged as a reference so that you don't have to read the entire document 
 <chapter>
 <title>Creation of an XML Object Model using dom4j</title>
 <para>
-Normally it all starts with a set of xml-files or a single xml file that you want to process, manipulate or navigate through to extract some
+Normally all starts with a set of xml-files or a single xml file that you want to process, manipulate or navigate through to extract some
 values necessary in your application. Most Java Open-Source projects using XML for deployment or as a replacement for property files in order
 to get easily readable property data.
 </para>
@@ -133,7 +205,7 @@ You can easily manipulate and navigate through that model.
 The following example shows how you can
 read your data using <application>dom4j</application> API.
 
-<programlisting>
+<programlisting width="59">
 import java.io.File;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -179,7 +251,7 @@ is overloaded so that you able to pass different kind of object that represents 
 So we decide to add more flexiblity to our <classname>DeployFileLoaderSample</classname> and add new methods.
 </para>
 
-<programlisting>
+<programlisting width="59">
 import java.io.File;
 
 import org.dom4j.Document;
@@ -240,7 +312,7 @@ behaviour and want to save memory ressources by transforming it in a <applicatio
 You are able to transform a DOM Document, a <acronym>DOM</acronym> node branch and a single element.
 </para>
 
-<programlisting>
+<programlisting width="59">
 import org.sax.Document;
 
 import org.dom4j.Document;
@@ -268,7 +340,7 @@ some other useful instances. This makes the <classname>DocumentFactory</classnam
 one of these instances by yourself.
 </section>
 
-<programlisting>
+<programlisting width="59">
 
 import org.dom4j.DocumentFactory;
 import org.dom4j.Document;
@@ -301,7 +373,7 @@ If your class uses DocumentFactory a lot or uses a different DocumentFactory ins
 you could add it as a member variable and initiate it via getInstance in your constructor.
 </para>
 
-<programlisting>
+<programlisting width="59">
 
 import org.dom4j.DocumentFactory;
 import org.dom4j.Document;
@@ -333,7 +405,7 @@ interfaces have a number of helper methods for creating an XML document programm
 in a simple way.
 </para>
 
-<programlisting>
+<programlisting width="59">
 
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -400,7 +472,7 @@ This can be configured with the overloaded constructor or via the
 <classname>setOutputStream()</classname> or <classname>setReader()</classname> methods.
 Let's have a look at a example.
 
-<programlisting>
+<programlisting width="59">
 
 import java.io.OutputStream;
 
@@ -444,7 +516,7 @@ create a default pretty printing format that you can further customize if you wi
 </para>
 
 
-<programlisting>
+<programlisting width="59">
 
 import java.io.OutputStream;
 
@@ -479,7 +551,7 @@ as to output the XML declaration.
 The <classname>close()</classname> method closes the underlying <classname>Writer</classname>.
 </para>
 
-<programlisting>
+<programlisting width="59">
 
 import java.io.OutputStream;
 
@@ -534,7 +606,7 @@ format as in <acronym>XML</acronym> and also supports many HTML element which ha
 such as for &lt;BR&gt; and &lt;P&gt;
 </para>
 
-<programlisting>
+<programlisting width="59">
 
 import java.io.OutputStream;
 
@@ -575,7 +647,7 @@ into a <acronym>DOM</acronym> tree, because you are currently refactoring your a
 (see <anchor id="dom4j2SAX">Generating SAX Events</anchor>). Let's move to an example:
 </para>
 
-<programlisting>
+<programlisting width="59">
 import org.w3c.dom.Document;
 
 import org.dom4j.Document;
@@ -602,7 +674,7 @@ code, you can use the <classname>org.dom4j.SAXWriter</classname> clas.
 </para>
 
 
-<programlisting>
+<programlisting width="59">
 import org.xml.ConentHandler;
 
 import org.dom4j.Document;
@@ -655,7 +727,7 @@ Now let's move to an living example of it in dom4j.
 </para>
 </section>
 
-<programlisting>
+<programlisting width="59">
 
 import java.util.Iterator;
 
@@ -683,7 +755,7 @@ The above example might be a little bit confusing if you are not too familiar wi
 Casting is necessary when you want to acess the object. Java Generics will solve this problem in future.
 </para>
 
-<programlisting>
+<programlisting width="59">
 import java.util.Iterator;
 
 import org.dom4j.Document;
@@ -718,7 +790,7 @@ high performance environment.
 To help this situation, <application>dom4j</application> provides a fast index based looping as follows.
 </para>
 
-<programlisting>
+<programlisting width="59">
   public void treeWalk(Document document) {
     treeWalk( document.getRootElement() );
   }
@@ -745,7 +817,7 @@ using a backed <classname>List</classname> such that modifications to the
 It also means that all of the methods on <classname>List</classname> can be used.
 </para>
 
-<programlisting>
+<programlisting width="59">
 import java.util.List;
 
 import org.dom4j.Document;
@@ -780,7 +852,7 @@ along with the <citation>Zvon</citation> Zvon tutorial.
 </para>
 </section>
 
-<programlisting>
+<programlisting width="59">
 import java.util.Iterator;
 
 import org.dom4j.Documet;
@@ -794,6 +866,12 @@ public class DeployFileLoaderSample {
   private org.dom4j.Element root;
 
   public void browseRootChildren() {
+
+    /* 
+      Let's look how many "James" are in our XML Document an iterate them  
+      ( Yes, there are three James in this project ;) )
+    */
+      
     XPath xpathSelector = DocumentHelper.createXPath("/people/person[@name='James']");
     List results = xpathSelector.selectNodes(doc);
     for ( Iterator iter = result.iterator(); iter.hasNext(); ) {
@@ -801,10 +879,18 @@ public class DeployFileLoaderSample {
       System.out.println(element.getName();
     }
 
-<!-- won't work in dom4j 1.0 - Document interface has no method "valueOf(..)" and no "numberValueOf(..)"
+    // select all childs of address element having person element with attribute and value "Toby" as parent    
     String address = doc.valueOf( "//person[@name='Toby']/address" );
+
+    // gime Bob's hobby
+    String hobby = doc.valueOf( "//person[@name='Bob']/hobby/@name" );
+
+    // gime the second persion that lives in UK
+    String name = doc.value( "/people[@country='UK']/person[2]" );
+    
+    // select pepole elements which have location attriute with the value "London"
     Number count = doc.numberValueOf( "//people[@location='London']" );
--->
+   
   }
 
 }
@@ -813,12 +899,10 @@ public class DeployFileLoaderSample {
 <para>
 As selectNodes returns a List we can apply <classname>Iterator</classname>
 or any other operation avaliable on <classname>java.util.List</classname>.
-<!--  won't work in dom4j 1.0 - Document interface has no method "valueOf(..)" and no "numberValueOf(..)"
 You can also select a single node via <classname>selectSingleNode()</classname>
 as well as to select a String expression via <classname>valueOf()</classname>
 or Number
-value of an XPath expression via <classname>numberVvalueOf()</classname>.
--->
+value of an XPath expression via <classname>numberValueOf()</classname>.
 </para>
 
 
@@ -833,7 +917,7 @@ This document doesn't explain Vistor Pattern in deepth,
 <citation>GoF98</citation> covers more information.
 </para>
 
-<programlisting>
+<programlisting width="59">
 import java.util.Iterator;
 
 import org.dom4j.Visitor;
@@ -889,7 +973,7 @@ An empty <classname>Document</classname> should be created via <classname>org.do
 <classname>org.dom4j.Element</classname> is a powerfull interface providing lots of methods for manipulation an Element.
 </para>
 
-<programlisting>
+<programlisting width="59">
 
   public void changeElementName(String aName) {
     this.element.setName(aName);
@@ -910,7 +994,7 @@ An empty <classname>Document</classname> should be created via <classname>org.do
   Names that are provided by <classname>org.dom4j.QName</classname> instances.
   </para>
 
-  <programlisting>
+  <programlisting width="59">
 
   import org.dom4j.Element;
   import org.dom4j.Document;
@@ -940,7 +1024,7 @@ An empty <classname>Document</classname> should be created via <classname>org.do
   causes no problems. The following expample shows how it could be done.
   </para>
 
-  <programlisting>
+  <programlisting width="59">
 
     public void insertElementAt(Element newElement, int index) {
       Element parent = this.element.getParent();
@@ -976,7 +1060,7 @@ An empty <classname>Document</classname> should be created via <classname>org.do
   will be cloned. Now we have a short look <emphasis>how</emphasis> dom4j cloning mechanism is used.
   </para>
 
-  <programlisting>
+  <programlisting width="59">
 
   import org.dom4j.Document;
   import org.dom4j.Element;
@@ -1035,7 +1119,7 @@ Since JaXP 1.1 TraX is the common API for proceeding a XSL Stylesheet inside of 
 Whereas <classname>org.dom4j.io.DocumentResult</classname> contains a <classname>org.dom4j.Document</classname> as result tree, <classname>DocumentSource</classname> takes dom4j <classname>Document</classname>s and pepare them for transformation. Both classes are build on top of TraX own SAX classes. This is much more perfomant as a DOM adaptation. The following example explains the use of XSLT with TraX and dom4j.
 </para>
 
-<programlisting>
+<programlisting width="59">
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
@@ -1054,7 +1138,7 @@ public class DocumentStyler
         transformer = factory.newTransformer( aStyleSheet );
     }
 
-    public Document transform(Document aDocument) throws Exception {
+    public Document transform(Document aDocument, Source aStyleSheet) throws Exception {
 
         // perform the transformation
         DocumentSource source = new DocumentSource( aDocument );
@@ -1111,7 +1195,7 @@ on top of Suns Tranquilo (xsdlib.jar) but we use MSV now, because its uses
 offers the same Tranquilo plus exiting additional features we discuss later.
 </para>
 
-<programlisting>
+<programlisting width="59">
 import java.util.List;
 
 import org.dom4j.Document;
@@ -1182,7 +1266,7 @@ work according the following rules valdation should be no problem.
   <listitem><para>Output Validation/Parse Errors errors.</para></listitem>
 </itemizedlist>
 
-<programlisting>
+<programlisting width="59">
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
@@ -1247,132 +1331,501 @@ documents. The Multi Schema Validator (MSV) supports following kinds of Schmemat
 </itemizedlist>
 
 <para>
-You are able to use the MSV and dom4j in order to validate your Documents. The following examples shows you how to use
-the MSV and with dom4j.
+Currently its not clear if XML Schema will be the next standard for validation. Relax NG gots a even more growing
+lobby. If you want to build a open application that is not fixed to a specific XML parser and specific XML Schematas you should use this powerfull
+tool. As the pure usage of MSV is not trivial the next section shows how to use it in simplier way.
+</para>
+
+  </section>
+  <section><title>Simplified Multi-Schema Validation by using Java API for RELAX Verifiers (JARV)</title>
+  
+<para>
+The Java API for RELAX Verifiers <citation>JARV</citation> defines a set of Interfaces and provide
+a schemata and vendor netural API for validation of XML documents. The above explained
+MSV offers a Factory that supports JARV. So you can use the JARV API on top of MSV and dom4j
+to validate a dom4j documents.
 </para>
 
 <programlisting>
-import com.sun.msv.grammar.Grammar;
-import com.sun.msv.reader.util.GrammarLoader;
-import com.sun.msv.reader.util.IgnoreController;
-import com.sun.msv.verifier.DocumentDeclaration;
-import com.sun.msv.verifier.ValidityViolation;
-import com.sun.msv.verifier.Verifier;
-import com.sun.msv.verifier.VerificationErrorHandler;
+import org.iso_relax.verifier.Schema;
+import org.iso_relax.verifier.Verifier;
+import org.iso_relax.verifier.VerifierFactory;
+import org.iso_relax.verifier.VerifierHandler;
 
-import javax.xml.parsers.SAXParserFactory;
+import com.sun.msv.verifier.jarv.TheFactoryImpl;
+
+import org.apache.log4j.Category;
 
 import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.io.SAXReader;
 import org.dom4j.io.SAXWriter;
 
-import org.xml.sax.ContentHandler;
 import org.xml.sax.ErrorHandler;
-import org.xml.sax.Locator;
 import org.xml.sax.SAXParseException;
 
-import java.net.URL;
-import java.io.File;
+public class Validator {
 
-public class Schema {
+  private final static CATEGORY = Category.getInstance(Validator.class);
+  private String schemaURI;
+  private Document document;
 
-    public static void main(String argv[]) {
-        try {
-            String filename = argv[0];
-            String schema = argv[1];
-
-            URL fileURL = new File(filename).toURL();
-            URL schemaURL = new File(schema).toURL();
-
-            SAXReader reader = new SAXReader();
-            Document doc = reader.read(fileURL);
-            validate(doc, schemaURL.toExternalForm());
-        } catch (Exception e) {
-            e.printStackTrace(System.err);
-        }
-    }
-
-    static public void validate(Document doc, String schema)
-        throws Exception {
-
-        // Turn on Namespace handling in theJAXP SAXParserFactory
-        SAXParserFactory saxFactory = SAXParserFactory.newInstance();
-        saxFactory.setNamespaceAware(true);
-
-        // create MSVs DocumentDeclaration by overriding
-        // a IgnoreController in an anonyous inner class
-        DocumentDeclaration docDeclaration =
-            GrammarLoader.loadVGM(schema, new IgnoreController() {
-
-                    public void error(Locator[] locations,
-                                      String message,
-                                      Exception exception) {
-                        System.out.println("ERROR: " + message);
+  public Validator(Document document, String schemaURI) {
+    this.schemaURI = schemaURI;
+    this.document = document;
+  }
+  
+  public boolean validate() throws Exception {
+  
+    // (1) use autodetection of schemas
+    VerifierFactory factory = new com.sun.msv.verifier.jarv.TheFactoryImpl();
+    Schema schema = factory.compileSchema( schemaURI );
+    
+    // (2) configure a Vertifier
+    Verifier verifier = schema.newVerifier();
+        verifier.setErrorHandler(
+            new ErrorHandler() {
+                public void error(SAXParseException saxParseEx) {
+                   CATEGORY.error( "Error during validation.", saxParseEx);
+                }
+                
+                public void fatalError(SAXParseException saxParseEx) {
+                   CATEGORY.fatal( "Fatal error during validation.", saxParseEx);
+                }
+                
+                public void warning(SAXParseException saxParseEx) {
+                   CATEGORY.warn( saxParseEx );
+                }
             }
-
-            public void error(Locator[] locations, String message) {
-                System.out.println("WARNING: " + message);
-            }
-        }, saxFactory);
-
-        // create a new Verifier that reports vlidation errors
-        // using an anonymous inner class
-        Verifier verifier =
-            new Verifier(docDeclaration, new VerificationErrorHandler() {
-
-                    public void onError(ValidityViolation e) {
-                        System.out.println("Document invalid! Error: " + e);
-                    }
-
-                    public void onWarning(ValidityViolation e) {
-                        System.out.println("Document invalid! Warning: " + e);
-                    }
-                });
-
-        SAXWriter writer = new SAXWriter((ContentHandler) verifier);
-        writer.setErrorHandler(new ErrorHandler() {
-
-                public void error(SAXParseException e) {
-                    System.out.println("ERROR:" + e);
-                }
-
-                public void fatalError(SAXParseException e) {
-                    System.out.println("Fatal:" + e);
-                }
-
-                public void warning(SAXParseException e) {
-                    System.out.println("Warning:" + e);
-                }
-        });
-
-        // validate now!
-        writer.write(doc);
-        if (verifier.isValid())
-            System.err.println("The document was valid");
-        else
-            System.err.println("The document was not valid");
-    }
+        );    
+        
+    // (3) starting validation by resolving the dom4j document into sax     
+    VerifierHandler handler = verifier.getVerifierHandler();
+    SAXWriter writer = new SAXWriter( handler );
+    writer.write( document );   
+    
+    return handler.isValid();
+  }
+  
+  }
+  
 }
 </programlisting>
 
 <para>
-At the first look the use of MSV looks not trival. The Xerces validation is
-easier to use in code, but not so powerfull. Currently its not clear if XML Schema
-will be the next standard for validation. Relax NG gots a even more growing
-lobby. If you want to build a open application that is not fixed to a
-specific XML parser and specific XML Schematas you should use this powerfull
-tool.
+The whole work in the above example is done in <methodname>validate()</methodname> method.
+Foremost the we create a <emphasis>Factory</emphasis> instance and use it to create a JAVR 
+<classname>org.iso_relax.verifier.Schema</classname> instance.
+In second step we create and configure a <classname>org.iso_relax.verifier.Verifier</classname>
+using a <classname>org.sax.ErrorHandler</classname>. I use Apaches Log4j API
+to log possibles error, fatal errors or warnings· You can also use <methodname>System.out.println()</methodname>
+or, depenging of the applications desired robustness, any other method to get noticed about possible
+failures. Third and last step resolves the <classname>org.dom4j.Document</classname>
+instance using SAX in order to start the validiation. Finally we return a boolean
+value that informs about the success of the validation. 
+</para>
+
+<para>
+Using the teamwork of dom4j, MSV, JAVR and good-old SAX simplifies the usage
+of multi schemata validation but gains the power of MSV. This benefit is sold
+with another layer of abstraction, but in my opition it doesn't mattern, because
+the couple Java and XML ends always in a war of JAR.
 </para>
 
   </section>
  </section>
 </chapter>
 
+<chapter><title>Declarative Rule Processing</title>
+<para>
+XSLT defines a declarative rule based way to transform a XML tree into
+plain text, HTML, FO or any other XML based format. XSLT is very powerfull,
+but ironcally doesn't need variable declaration to hold data.
+As Michael Kay <citation>XSLTReference</citation> says: "This style of coding without assingment statements, is
+called <emphasis>Functional Programming</emphasis>. The earliest and most
+famous functional programming language was Lisp ..., while modern examples
+include ML and Scheme." In XSLT you define a so called <emphasis>template</emphasis>
+that matches a certain XPath expression. The XSLT Processor traverse the
+source tree using a recursive tree descent algorithm and performs the commands you defined when a specific tree branch
+matches the template rule.
+</para>
+
+<para>
+dom4j offers an API that supports XSLT similar rule based processing. The
+API can be found in <classname>org.dom4j.rule</classname> package and this 
+chapter will guide you through this powerfull feature of dom4j.
+</para>
+
+<section><title>Introducing dom4j's declarative rule processing</title>
+  <para>
+  This section will demonstrate the usage of dom4j's rule API by example.
+  Consider we have the follwing XML document, but that we want to transform
+  into another XML document, that carring less information.  
+  </para>
+  
+  <programlisting>
+  <![CDATA[
+    <?xml version="1.0" encoding="UTF-8" ?>
+    <Songs>
+     <song>
+       <mp3 kbs="128" size="6128">
+         <id3>
+          <title>Simon</title>
+          <artist>Lifehouse</artist>
+          <album>No Name Face</album>
+          <year>2000</year>
+          <genre>Alternative Rock</genre>
+          <track>6</track>     
+         </id3>
+       </mp3>
+      </song>
+      <song>
+       <mp3 kbs="128" size="6359">
+         <id3>
+          <title>Hands Clean</title>
+          <artist>Alanis Morrisette</artist>
+          <album>Under Rug Swept</album>
+          <year>2002</year>
+          <genre>Alternative Rock</genre>
+          <track>3</track>
+         </id3>
+       </mp3>
+      </song>
+      <song>
+       <mp3 kbs="256" size="6460">
+         <id3>
+          <title>Alive</title>
+          <artist>Payable On Deatch</artist>
+          <album>Satellit</album>
+          <year>2002</year>
+          <genre>Metal</genre>
+          <track/>
+         </id3>
+       </mp3>
+       <mp3 kbs="256" size="4203">
+         <id3>
+          <title>Crawling In The Dark</title>
+          <artist>Hoobastank</artist>
+          <album>Hoobastank (Selftitled)</album>
+          <year>2002</year>
+          <genre>Alternative Rock</genre>
+          <track/>
+         </id3>
+       </mp3>
+     </song>
+    </Songs>
+  ]]>
+  </programlisting>
+
+  <para>
+   All common method to transform a Document into another is XSLT. It's quite
+   powerfull but it is not Java and use another paradigm as OO. Such a StyleSheet may look like
+   this. 
+  </para>
+
+    <programlisting>
+    <![CDATA[
+      <xsl:stylesheet version="1.0"
+           xmlns:xsl="http://www.w3.org/1999/XSL/Transform"    
+           xmlns:fo="http://www.w3.org/1999/XSL/Format"
+       >    
+        <xsl:output method="xml" indent="yes"/>
+
+        <xsl:template match="/">
+         <Song-Titles>
+           <xsl:apply-templates/>
+         </Song-Tiltes>
+        </xsl:template>
+        
+        <xsl:template match="/Songs/song/mp3">     
+          <Song>
+            <xsl:apply-template/>
+          </Song>
+        </xsl:template>
+    
+        <xsl:template match="/Songs/song/mp3/title">
+          <xsl:text> <xsl:value-of select="."/> </xsl:text>
+        </xsl:template> 
+   
+      </xsl:stylesheet> 
+     ]]>
+   </programlisting>
+
+  <para>
+  This stylesheets filters all song tiltles and creates a xml wrapper for it.
+  After applying a stylesheet processor on the source and the stylesheet you will
+  get the following xml document.
+  </para>
+
+
+    <programlisting>
+    <![CDATA[
+      <?xml version="1.0" encoding="UTF-8" ?>
+      <Song-Titles>
+ 	<song>Simon</song>
+	<song>Hands Clean</song>
+        <song>Alive</song>
+        <song>Crawling in the Dark</song>
+      </Song-Titles>
+     ]]>
+   </programlisting>
+
+
+ <para>
+   Okay. Know it's time to present a possible solution using dom4j's rule API. As you
+   will see this API is very compact. So the Classes you have to write are neighter complex nor
+   extremly hard to understand. We want to get the same result as your former stylesheet.
+ </para>
+
+
+ <programlistingco>
+   <areaspec>
+     <areaset id="example.rule.step1" coord="">
+       <area id="example.rule.root" coords='32'/>
+       <area id="example.rule.doc" coords='33'/>
+     </areaset>
+     <areaset id="example.rule.step2">
+       <area id="example.rule.rule1" coords="35"/>
+       <area id="example.rule.rule2" coords="39"/>
+     </areaset>
+     <areaset id="example.rule.step3">
+       <area id="example.rule.pattern1" coords="36"/>
+       <area id="example.rule.action1" coords="37"/>
+       <area id="example.rule.pattern2" coords="40"/>
+       <area id="example.rule.action2" coords="41"/>
+     </areaset>
+     <areaset id="example.rule.step4">
+       <area id="example.rule.actionclass1" coords="55"/>
+       <area id="example.rule.actionclass2" coords="64"/>
+     </areaset>
+     <area id="example.rule.step5" coords="43"/>
+     <area id="example.rule.step6" coords="47"/>
+   </areaspec> 
+ <programlisting>
+  import java.io.File;
+
+  import org.dom4j.DocumentHelper;
+  import org.dom4j.Document;
+  import org.dom4j.DocumentException;
+  import org.dom4j.Element;
+  import org.dom4j.Node;
+
+  import org.dom4j.io.SAXReader;
+  import org.dom4j.io.XMLWriter;
+  import org.dom4j.io.OutputFormat;
+
+  import org.dom4j.rule.Action;
+  import org.dom4j.rule.Pattern;
+  import org.dom4j.rule.Stylesheet;
+  import org.dom4j.rule.Rule;
+
+  public class SongFilter {
+    
+    private Document resultDoc;
+    private Element songElement;
+    private Element currentSongElement;
+    private Stylesheet style;
+    
+
+    public SongFilter() {
+        this.songElement = DocumentHelper.createElement( "song" );
+    }
+
+    
+    public Document filtering(org.dom4j.Document doc) throws Exception {
+        Element resultRoot = DocumentHelper.createElement( "Song-Titles" );
+        this.resultDoc = DocumentHelper.createDocument( resultRoot );               
+        
+        Rule songElementRule = new Rule();
+        songElementRule.setPattern( DocumentHelper.createPattern( "/Songs/song/mp3/id3" ) );
+        songElementRule.setAction( new SongElementBuilder() );
+        
+        Rule titleTextNodeFilter = new Rule();
+        titleTextNodeFilter.setPattern( DocumentHelper.createPattern( "/Songs/song/mp3/id3/title" ) );
+        titleTextNodeFilter.setAction( new NodeTextFilter() );
+        
+        this.style = new Stylesheet();
+        this.style.addRule( songElementRule );
+        this.style.addRule( titleTextNodeFilter );
+        
+        style.run( doc );
+        
+        return this.resultDoc;
+    }
+    
+    
+    
+    
+    private class SongElementBuilder implements Action {
+        public void run(Node node) throws Exception {
+           currentSongElement = songElement.createCopy();
+           resultDoc.getRootElement().add ( currentSongElement );
+           
+           style.applyTemplates(node);
+        }
+    }
+    
+    private class NodeTextFilter implements Action {       
+        public void run(Node node) throws Exception {
+          if ( currentSongElement != null )
+          {
+            currentSongElement.setText( node.getText() );
+          }
+        }        
+    }
+        
+      
+}
+ </programlisting>
+ <calloutlist>
+   <callout arearefs="example.rule.step1">
+     <para>Define the root element or another container element for the filtered out information.</para> 
+   </callout>
+   <callout arearefs="example.rule.step2">
+     <para>Create as many instances of <classname>org.dom4j.rule.Rule</classname> as needed.</para> 
+   </callout>
+   <callout arearefs="example.rule.step3">
+     <para>
+     Install for each rule a instance of <classname>org.dom4j.rule.Pattern</classname> and 
+     <classname>org.dom4j.rule.Action</classname>. A <classname>org.dom4j.rule.Pattern</classname>
+     consists of a XPath Expression, which is used for Node matching.
+     </para>
+   </callout>
+   <callout arearefs="example.rule.step4">
+     <para>A <classname>org.dom4j.rule.Action</classname> defines the process if a matching occured.</para> 
+   </callout>
+   <callout arearefs="example.rule.step5">
+     <para>Create a instance of <classname>org.dom4j.rule.Stylesheet</classname></para> 
+   </callout>
+   <callout arearefs="example.rule.step6">
+     <para>Start the processing</para> 
+   </callout>
+</calloutlist>
+</programlistingco>
+
+  
+ <!--para>
+  Following steps are recommended to uses this API correctly.
+ </para>
+   
+ <itemizedlist>
+  <listitem><para>Define the root element or another container element for the filtered out information.</para></listitem>
+  <listitem><para>Create as many instances of <classname>org.dom4j.rule.Rule</classname> as needed.</para></listitem>
+  <listitem>
+    <para>
+    Install for each rule a instance of <classname>org.dom4j.rule.Pattern</classname> and 
+    <classname>org.dom4j.rule.Action</classname>. A <classname>org.dom4j.rule.Pattern</classname>
+    consists of a XPath Expression, which is used for Node matching.
+    </para>
+  </listitem>
+  <listitem><para>A <classname>org.dom4j.rule.Action</classname> defines the process if a matching occured.</para></listitem>
+ </itemizedlist-->
+
+ <para>
+   If you are familar with Java Threads you may encounter similarities bewetween <classname>java.lang.Runnable</classname> and <classname>org.dom4j.rule.Action</classname>
+   from the perspectiv of usage. Both acting as a kind of plugin or listener. And yes this Observer Pattern has a wide
+   usage in the OO and especially in Java.
+   We implemented them here as private inner classes. You may decide to decleare them as outter classes as well. 
+   If you do that, it gains more complex because you need the proper instance of 
+   <classname>org.dom4j.rule.StyleSheet</classname> shared.
+ </para>
+   
+ <note><title>Anonymous adapters</title>
+ <para>
+  Moreover it's possible to create a anonymous inner class for <classname>org.dom4j.rule.Action</classname> interface.
+  Some wondering if the seen a anonymous inner class applied on a interface frist. Don't worry about that. A Java compiler
+  generates a innner class thats implements the interface an you are able to use that. Most Swing programmers 
+  sould be familar with that features.
+ </para>
+ </note>
+  
+</section>
+
+<section><title>Understanding dom4j's rule API</title>
+
+<para>
+<table frame="all"><title>Comparing Visitor with Rule API</title>
+  <tgroup cols="2" align="left" colsep="0" rowsep="0">
+  <colspec colname="c1"/>
+  <colspec colname="c2"/>
+  <colspec colname="c3"/>
+  <colspec colnum="5" colname="c5">
+	  <spanspec spanname="hspan" namest="c1" nameend="c2" align="center"/>
+  </colspec>	  
+  <thead>
+  <row>
+    <entry spanname="hspan">Visitor</entry>
+    <entry spanname="hspan">Declartive Rule Processing</entry>
+  </row>
+</thead>
+<tbody>
+<row>
+  <entry>Use of Interfaces in desing</entry>
+  <entry>Use of Interfaces in desing</entry>
+</row>
+<row>
+  <entry>Uncontrolled automatic recrusive descent traversal</entry>
+  <entry>Rule controled automatic recrusive descent traversal</entry>
+</row>
+<row>
+  <entry>Needs knowlege of Visitor pattern (advanced heaviness) to understand</entry>
+  <entry>Knowlege of Observer/Publish-Subscriber (ligua franca pattern beside Singleton) pattern usefull</entry>
+</row>
+<row>
+  <entry>Provides adpater class to simplify usage of interface</entry>
+  <entry>Adapter not necessary due to interface using single method</entry>
+</row>
+<row>
+  <entry>Basic knowlege of dom4j's tree object model necessary</entry>
+  <entry>Additional XPath knowlege for pattern specification necessary</entry>
+</row>
+<row>
+  <entry>Produces less codes</entry>
+  <entry>More code necessary to define the rules and action</entry>
+</row>
+<row>
+  <entry>High and easy modularity</entry>
+  <entry>High modularity for controlled recursive processing, but more complex handling if you abandon inner or annoymous inner classes.</entry>
+</row>
+</tbody>
+</tgroup>
+</table>   
+</para>
+
+
+<para>
+As shown above, dom4j's uses a very flexible OO-Representation of a XSLT Stylesheet. The smart handling of actions
+produces compact code.
+</para>
+
+<para>
+The rule API is a OO representation of W3C XSLT. The API defines another way of traversing the in-memory dom4j tree.
+The traversal algorithm is called <emphasis>recrusive descent</emphasis> and is the same as XSLT defines. Thus algorithms 
+are also used in compiler construction and mentioned a lot in that kind of literature. 
+</para>
+
+<para>
+XSLT defines a way of tree merging or filtering. If you output an eXtensible stylsheet result to another xml you merge an
+existing tree to another one using the instruction of the Stylesheet and if output to plain text a styling is used for
+filtering. First usage is address by this API. The second is also possible but not so easy to implement as XSLT does.
+</para>
+
+<para>
+How does the rule API work? Each Stylesheet has a rule. A rule consits of an action and and a pattern. Patterns are described
+with XPath. You start the processing of a Stylesheet on a specifc source with must be a dom4j <classname>Node</classname>.
+Calling method <classname>style.applyTemplates(node);</classname> traverse the <classname>Node</classname> using 
+a recrusive descent algorithm - branch after branch. If a pattern matches the assinged action is activated an processed.
+</para>
+
+<para>
+If you are interested more in the way a xml document is traversed by XSLT processors I recommend 
+Michael Kay's book <citation>XSLTReference</citation>.
+</para>
+
+</section>
+
+</chapter>
 
 <bibliography>
-<title>Further Reading</title>
-
+  <title>Further Reading</title>
 <bibliodiv><title>Books</title>
 <biblioentry>
   <abbrev>XSLTReference</abbrev>
@@ -1485,6 +1938,13 @@ tool.
     <holder>http://www.w3.org/XML/Schema http://www.w3.org/XML/1998/06/xmlspec-report</holder>
   </copyright>
   <title>XML Schema</title>
+</biblioentry>
+<biblioentry>
+  <abbrev>JARV</abbrev>
+  <copyright>
+    <holder>http://iso-relax.sourceforge.net/JARV/</holder>
+  </copyright>
+  <title>Java API for RELAX Verifiers</title>
 </biblioentry>
 </bibliodiv>
 </book>
