@@ -21,6 +21,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.XMLWriter;
 import org.xml.sax.EntityResolver;
@@ -133,6 +134,14 @@ public class TestSAXReader extends TestCase {
         assertEquals("hi there", ((Element)l.get(0)).getStringValue());
         assertEquals("hello world", ((Element)l.get(1)).getStringValue());
     }
+    
+    public void testEscapedComment() throws Exception {
+    	Document doc = DocumentHelper.parseText("<eg>&lt;!-- declarations for &lt;head> &amp; &lt;body> --&gt;</eg>");
+    	Element eg = doc.getRootElement();
+    	System.out.println(doc.asXML());
+    	assertEquals("<!-- declarations for <head> & <body> -->", eg.getText());
+    }
+
     
 }
 
