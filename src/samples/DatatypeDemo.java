@@ -18,13 +18,13 @@ import org.dom4j.schema.SchemaDocumentFactory;
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class SchemaDemo extends AbstractDemo {
+public class DatatypeDemo extends AbstractDemo {
     
     public static void main(String[] args) {
-        run( new SchemaDemo(), args );
+        run( new DatatypeDemo(), args );
     }    
     
-    public SchemaDemo() {
+    public DatatypeDemo() {
     }
     
     protected Document parse( String xmlFile ) throws Exception {

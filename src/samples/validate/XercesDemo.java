@@ -21,18 +21,18 @@ import org.dom4j.util.XMLErrorHandler;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXParseException;
 
-/** Parses a document using Xerces and an XML Schema.
+/** Validates a document using Xerces and an XML Schema.
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class ValidatorDemo extends AbstractDemo {
+public class XercesDemo extends AbstractDemo {
     
     public static void main(String[] args) {
-        run( new ValidatorDemo(), args );
+        run( new XercesDemo(), args );
     }    
     
-    public ValidatorDemo() {
+    public XercesDemo() {
     }
     
     public void run(String[] args) throws Exception {    
@@ -65,7 +65,7 @@ public class ValidatorDemo extends AbstractDemo {
         // now lets output the errors as XML        
         XMLWriter writer = new XMLWriter( OutputFormat.createPrettyPrint() );
         writer.write( errorHandler.getErrors() );        
-        
+
         return document;
     }
 }

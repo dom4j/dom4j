@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<addressBook>
+  <card>
+    <email>js@example.com</email>
+  </card>
+  <card>
+    <name>Fred Bloggs</name>
+  </card>
+  <card>
+    <wrongname>Fred Bloggs</wrongname>
+  </card>
+  <card>
+  </card>
+</addressBook>
