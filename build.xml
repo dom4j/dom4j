@@ -20,6 +20,7 @@
     <property name="src.dir" value="./src/java"/>
     <property name="doc.dir" value="./src/doc"/>
     <property name="samples.dir" value="./src/samples"/>
+    <property name="test.dir" value="./src/test"/>
     <property name="lib.dir" value="./lib"/>
     <property name="packages" value="org.dom4j.*"/>
 
@@ -159,6 +160,19 @@
            destdir="${build.dest}"
            debug="${debug}"
            optimize="${optimize}"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Compiles the source directory                                       -->
+  <!-- =================================================================== -->
+  <target name="compile-test" depends="compile">
+    <javac srcdir="${test.dir}"
+           destdir="${build.dest}"
+           debug="${debug}"
+           optimize="${optimize}"/>
+    <copy  todir="${build.dest}">
+      <fileset dir="${test.dir}" includes="**/*.properties"/>
+    </copy>
   </target>
 
   <!-- =================================================================== -->
@@ -310,6 +324,27 @@
     <delete file="${name}-${version}.tar.gz"/>
     <delete file="${name}-${version}.tar"/>
     <delete file="${name}-${version}.zip"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Unit Testing Targets                                                -->
+  <!-- =================================================================== -->
+  <target name="test" depends="compile-test">
+    <junit printsummary="yes" haltonfailure="yes">
+      <formatter type="plain"/>
+
+      <classpath>
+        <pathelement location="${build.dest}" />
+        <pathelement path="${java.class.path}" />
+      </classpath>
+
+      <batchtest fork="yes">
+        <fileset dir="${test.dir}">
+          <include name="**/Test*.java" />
+          <exclude name="**/AllTests.java,**/Abstract*.java" />
+        </fileset>
+      </batchtest>
+    </junit>
   </target>
 
   <!-- =================================================================== -->
