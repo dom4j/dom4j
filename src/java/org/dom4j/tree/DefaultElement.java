@@ -45,6 +45,8 @@ import org.xml.sax.Attributes;
   */
 public class DefaultElement extends AbstractElement {
 
+    private static final int DEFAULT_CONTENT_LIST_SIZE = 5;
+    
     protected static final List EMPTY_LIST = Collections.EMPTY_LIST;
     protected static final Iterator EMPTY_ITERATOR = EMPTY_LIST.iterator();
     
@@ -837,14 +839,14 @@ public class DefaultElement extends AbstractElement {
       * a List implementation used to store content
       */
     protected List createContentList() {
-        return new ArrayList();
+        return new ArrayList( DEFAULT_CONTENT_LIST_SIZE );
     }
     
     /** A Factory Method pattern which lazily creates 
       * a List implementation used to store attributes
       */
     protected List createAttributeList() {
-        return new ArrayList();
+        return new ArrayList( DEFAULT_CONTENT_LIST_SIZE );
     }
     
     /** A Factory Method pattern which creates 
