@@ -191,7 +191,6 @@
     <unjar src="${lib.dir}/sax2.jar" dest="${build.dest}"/>
     <unjar src="${lib.dir}/sax2-ext.jar" dest="${build.dest}"/>
     <unjar src="${lib.dir}/werken.xpath.jar" dest="${build.dest}"/>
-    <unjar src="${lib.dir}/antlr-runtime.jar" dest="${build.dest}"/>
     <delete dir="${build.dest}/META-INF"/>
 
     <jar jarfile="${build.dir}/${name}-all.jar"
