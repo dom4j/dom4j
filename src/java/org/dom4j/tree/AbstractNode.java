@@ -154,7 +154,7 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
     
     public Object selectObject(String xpathExpression) {
         XPath xpath = createXPath(xpathExpression);
-        return xpath.selectObject(this);
+        return xpath.evaluate(this);
     }
     
     public List selectNodes(String xpathExpression) {
