@@ -600,7 +600,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
 
     public void characters(char[] ch, int start, int length) throws SAXException {
-        if (ch == null || ch.length == 0) {
+        if (ch == null || ch.length == 0 || length <= 0) {
             return;
         }
         
