@@ -13,6 +13,8 @@
 
     <section title="News">
       <ul>
+        <li>The new <a href="status.html">dom4j 1.3</a> release is out featuring numerous bug fixes and patches.
+        </li>
         <li>Check out Dennis Sosnoski's new <a href="http://www-106.ibm.com/developerworks/library/x-injava2/">article</a> for IBM comparing various XML object models - its good stuff.
         </li>
         <li>Toby's <a href="cookbook/cookbook.html">cookbook</a> is now available as a <a href="cookbook/cookbook.pdf">PDF</a> or <a href="cookbook/cookbook.ps">PS</a> file

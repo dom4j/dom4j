@@ -11,8 +11,8 @@
 
   <product id="dom4j">
     <name>dom4j</name>
-    <version>1.2</version>
-    <last-release>20020214</last-release>
+    <version>1.3</version>
+    <last-release>20020317</last-release>
     <info-url>http://dom4j.org/</info-url>
     <changes>
 dom4j is a simple and flexible open source library for working with XML,

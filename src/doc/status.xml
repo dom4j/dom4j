@@ -5,13 +5,19 @@
 
     <section title="Change History">
 
+<!--
       <section title="Changes in CVS since last release">
+      </section>
+-->
+      <section title="1.3 Release">
         <section title="Patches">
         <p>Applied patch to bug found by Mike Skells that was causing XPath.matches() to return true for absolute XPaths which returned different nodes to the node provided to the XPath.
         </p>
         <p>Applied patch provided by Stefan that was causing IndexOutOfBoundsException when using the evaluate() method in DefaultXPath on an empty result set. Also added a test case to org.dom4j.TestXPathBug called testStefan().
         </p>
         <p>Applied patch suggested by Frank Walinsky, that XPath objects are now Serializable. 
+        </p>
+        <p>Applied patch provided by Bill Burton that fixes union pattern matching. 
         </p>
         </section>
       </section>
