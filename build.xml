@@ -8,7 +8,7 @@
     <property name="Name" value="DOM4J"/>
     <property name="name" value="dom4j"/>
     <property name="version" value="0.1"/>
-    <property name="year" value="2000"/>
+    <property name="year" value="2001"/>
 
     <echo message="----------- ${Name} ${version} [${year}] ------------"/>
 
@@ -214,7 +214,7 @@
              noindex="false"
              windowtitle="${Name} API"
              doctitle="${Name}"
-             bottom="Copyright &#169; ${year} James Strachan. All Rights Reserved."
+             bottom="Copyright &#169; ${year} MetaStuff Ltd. All Rights Reserved."
     />
   </target>
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="DOM4J" repository="dom4j" href="http://www.dom4j.org">
+<project name="DOM4J" repository="dom4j" href="http://dom4j.org">
 
   <title>DOM4J The Flexible XML Framework for Java</title>
 
@@ -20,7 +20,7 @@
   </links>
 
   <notice>
-    Copyright 2000 (C) James Strachan. All Rights Reserved. Hosted by <br/>
+    Copyright 2000 (C) MetaStuff Ltd. All Rights Reserved. Hosted by <br/>
     <a href="http://sourceforge.net"> 
     <img src="http://sourceforge.net/sflogo.php?group_id=16035" width="88" height="31" border="0" alt="SourceForge Logo"/>
     </a> 
