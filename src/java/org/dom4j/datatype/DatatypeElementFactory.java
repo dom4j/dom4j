@@ -1,9 +1,9 @@
 /*
  * Copyright 2001 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -23,12 +23,13 @@ import org.dom4j.QName;
 
 import org.xml.sax.Attributes;
 
-/** <p><code>DatatypeElementFactory</code> is a factory for a specific Element 
-  * in an XML Schema.</p>
-  *
-  * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
-  * @version $Revision$
-  */
+/** <p><code>DatatypeElementFactory</code> is a factory for a specific Element
+ * in an XML Schema.</p>
+ *
+ * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
+ * @author Yuxin Ruan
+ * @version $Revision$
+ */
 public class DatatypeElementFactory extends DocumentFactory {
     
     private QName elementQName;
@@ -38,52 +39,55 @@ public class DatatypeElementFactory extends DocumentFactory {
         this.elementQName = elementQName;
     }
     
-    /** Cache of <code>XSDatatype</code> instances per 
-      * Attribute <code>QName</code> */
+    /** Cache of <code>XSDatatype</code> instances per
+     * Attribute <code>QName</code> */
     private Map attributeXSDatatypes = new HashMap();
     
-    /** Cache of <code>XSDatatype</code> instances per 
-      * child Element <code>QName</code> */
+    /** Cache of <code>XSDatatype</code> instances per
+     * child Element <code>QName</code> */
     private Map childrenXSDatatypes = new HashMap();
     
     
-
+    
     /** @return the QName this element factory is associated with */
     public QName getQName() {
         return elementQName;
     }
-
+    
     /** @return the <code>XSDatatype</code> associated with the given Attribute
-      * QName
-      */
+     * QName
+     */
     public XSDatatype getAttributeXSDatatype( QName attributeQName ) {
         return (XSDatatype) attributeXSDatatypes.get( attributeQName );
     }
     
-    /** Registers the given <code>XSDatatype</code> for the given 
-      * &lt;attribute&gt; QNames
-      */
+    /** Registers the given <code>XSDatatype</code> for the given
+     * &lt;attribute&gt; QNames
+     */
     public void setAttributeXSDatatype( QName attributeQName, XSDatatype dataType ) {
         attributeXSDatatypes.put( attributeQName, dataType );
     }
     
- 
-    /** @return the <code>XSDatatype</code> associated with the given child 
-      * Element QName
-      */
+    
+    /** @return the <code>XSDatatype</code> associated with the given child
+     * Element QName
+     */
     public XSDatatype getChildElementXSDatatype( QName qname ) {
         return (XSDatatype) childrenXSDatatypes.get( qname );
     }
     
-   public void setChildElementXSDatatype( QName qname, XSDatatype dataType ) {
+    public void setChildElementXSDatatype( QName qname, XSDatatype dataType ) {
         childrenXSDatatypes.put( qname, dataType );
     }
-
+    
     
     // DocumentFactory methods
     //-------------------------------------------------------------------------
     public Element createElement(QName qname) {
-        XSDatatype dataType = getChildElementXSDatatype( qname );
+        //the element may have its own element factory!
+        //use factory from the qname for datatype
+        DatatypeElementFactory factory=(DatatypeElementFactory)qname.getDocumentFactory();
+        XSDatatype dataType = factory.getChildElementXSDatatype( qname );
         if ( dataType == null ) {
             return super.createElement( qname );
         }
@@ -91,7 +95,7 @@ public class DatatypeElementFactory extends DocumentFactory {
             return new DatatypeElement(qname, dataType);
         }
     }
-
+    
     public Attribute createAttribute(Element owner, QName qname, String value) {
         XSDatatype dataType = getAttributeXSDatatype(qname);
         if ( dataType == null ) {
