@@ -10,6 +10,9 @@ documentation. Any contributions will be greatly received.
 Development Tasks
 =================
 
+* Implement a Saxon adapter so that the SAxon XSLT engine can work
+  natively on top of dom4j.
+
 * implement a proper lazy tree parsing mechanism using the XPP pull parser.
 
 * support for setExpandEntities(true) to expand entities, so that
