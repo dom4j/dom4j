@@ -35,9 +35,9 @@
     <property name="dist.dir" value="${dist.root}/${name}-${version}"/>
     <property name="dist.target" value="${dist.root}"/>
 
-    <property name="web.htdocs" value="../htdocs"/>
+    <property name="web.htdocs" value="./build/htdocs"/>
     <property name="web.dist" value="${web.htdocs}/dist"/>
-    <property name="web.ftp" value="../ftp"/>
+    <property name="web.ftp" value="./build/ftp"/>
 
     <filter token="year" value="${year}"/>
     <filter token="version" value="${version}"/>
@@ -299,7 +299,6 @@
   <target name="release" depends="clean,dist-zip,dist-tgz,dist-jar">
     <mkdir dir="${web.htdocs}"/>
     <mkdir dir="${web.dist}"/>
-    <mkdir dir="${web.ftp}"/>
     <copy todir="${web.htdocs}" overwrite="yes" filtering="yes">
       <fileset dir="${build.doc}"/>
     </copy>
@@ -308,6 +307,17 @@
       <fileset dir="${dist.root}" includes="*.jar, *.zip, *.tar, *.gz"/>
     </copy>
 
+<!--
+    <jar jarfile="${build.dir}/${name}-website.jar"
+         basedir="${web.htdocs}"/>
+-->
+    <tar tarfile="${build.dir}/${name}-website.tar" basedir="${web.htdocs}"/>
+    <gzip zipfile="${build.dir}/${name}-website.tar.gz" src="${build.dir}/${name}-website.tar"/>
+  </target>
+
+
+  <target name="ftp" depends="dist-zip,dist-tgz,dist-jar">
+    <mkdir dir="${web.ftp}"/>
     <copy todir="${web.ftp}" overwrite="yes">
       <fileset dir="${dist.root}" includes="*.jar, *.zip, *.tar, *.gz"/>
     </copy>
