@@ -38,6 +38,10 @@
               We now have a quite aggressive JUnit test harness to ensure that we handle namespace URIs
               correctly when prefixes are mapped and unmapped.
             </p>
+            <p>Applied patch from Andrew Wason for HTMLWriter to support the full
+              HTML 4.01 DTD elements which do not require proper XML element closes.
+              The new elements are PARAM, AREA, LINK, COL, BASE and META.
+            </p>
           </section>
         </section>
         <section title="0.8 release">
