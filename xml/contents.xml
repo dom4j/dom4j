@@ -11,6 +11,8 @@
               xmlns:unused="http://www.unused.com"
               ora:category="Java" 
 > 
+  <!-- comment one -->
+  <!-- comment two -->
  <JavaXML:Title>Java and XML</JavaXML:Title>
  <JavaXML:Contents xmlns:topic="http://www.oreilly.com/topics">
   <JavaXML:Chapter topic:focus="XML">
