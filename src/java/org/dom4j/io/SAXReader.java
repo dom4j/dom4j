@@ -179,7 +179,7 @@ public class SAXReader {
     }
     
     
-    /** Allows a SAX featuer on the underlying SAX parser.
+    /** Sets a SAX feature on the underlying SAX parser.
       * This can be useful to set parser-specific features. 
       * Though use this method with caution as it has the possibility
       * of breaking the standard behaviour.
