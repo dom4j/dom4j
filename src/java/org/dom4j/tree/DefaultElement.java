@@ -153,8 +153,10 @@ public class DefaultElement extends AbstractElement {
                         Object node = list.get(i);
                         String string = getContentAsStringValue( node ); 
                         if ( string.length() > 0 ) {
-                            if ( buffer.length() > 0 ) {
-                                buffer.append( ' ' );
+                            if ( USE_STRINGVALUE_SEPARATOR ) {
+                                if ( buffer.length() > 0 ) {
+                                    buffer.append( ' ' );
+                                }
                             }
                             buffer.append( string );
                         }

@@ -57,6 +57,10 @@ Document doc = reader.read( "soap.xml" );
           were not correctly handling namespaces correctly. The test case is demonstrated in
           dom4j/src/test/org/dom4j/xpath/TestSelectSingleNode.java
         </p>
+        <p>Added patch found by Howard Moore when using XTags that XPath string values which contained
+        strings with entities, such as the use of &amp;amp; in a text, would result in redundant spaces
+        occuring, breaking URLs.
+        </p>
         </section>
       </section>
 

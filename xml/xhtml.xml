@@ -27,6 +27,8 @@
     <p>God forts&auml;ttning p&aring; det nya millenniet!</p>
     <br/>
 
+    <link>http://foo.com/bar?a=123&amp;b=456&amp;d=d9d9d</link>
+
     <img src="http://foo.com/bar?a=123&amp;b=456&amp;d=d9d9d" alt="something"/>
 
 

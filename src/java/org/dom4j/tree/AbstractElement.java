@@ -56,7 +56,8 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     
     
     protected static final boolean VERBOSE_TOSTRING = false;
-        
+    protected static final boolean USE_STRINGVALUE_SEPARATOR = false;
+
     
     public AbstractElement() { 
     }
@@ -922,8 +923,10 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
                     Object node = list.get(i);
                     String string = getContentAsStringValue( node ); 
                     if ( string.length() > 0 ) {
-                        if ( buffer.length() > 0 ) {
-                            buffer.append( ' ' );
+                        if ( USE_STRINGVALUE_SEPARATOR ) {
+                            if ( buffer.length() > 0 ) {
+                                buffer.append( ' ' );
+                            }
                         }
                         buffer.append( string );
                     }

@@ -435,22 +435,32 @@
   <!-- Unit Testing Targets                                                -->
   <!-- =================================================================== -->
   <target name="test" depends="compile-test">
-    <mkdir dir="${build.dir}/test-results"/>
+    <mkdir dir="${build.dir}/test-results/xml"/>
     <junit printsummary="yes" haltonfailure="yes">
-      <formatter type="plain"/>
+      <formatter type="xml"/>
 
       <classpath>
         <pathelement location="${build.dest}" />
         <pathelement path="${java.class.path}" />
       </classpath>
 
-      <batchtest fork="yes" todir="${build.dir}/test-results">
+      <batchtest fork="yes" todir="${build.dir}/test-results/xml">
         <fileset dir="${test.dir}">
           <include name="**/Test*.java" />
           <exclude name="**/AllTests.java,**/Abstract*.java" />
         </fileset>
       </batchtest>
     </junit>
+  </target>
+
+  <target name="test-report" depends="test">
+    <mkdir dir="${build.dir}/test-results"/>
+    <junitreport todir="${build.dir}/test-results">
+      <fileset dir="${build.dir}/test-results/xml">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="${build.dir}/test-results/html"/>
+    </junitreport>
   </target>
 
   <target name="test-clone" depends="compile-test">
