@@ -59,9 +59,10 @@ public class TestSAXReader extends TestCase {
     
     public void testRussian() {
         try {
-            File file = new File( "d:/russArticle.xml" ); 
+            URL location = TestSAXReader.class.getResource("/russArticle.xml");
+            File file = new File(location.toString()); 
             SAXReader xmlReader = new SAXReader(); 
-            Document doc = xmlReader.read( file ); 
+            Document doc = xmlReader.read( location ); 
             Element el = doc.getRootElement();
             
             StringWriter writer = new StringWriter();
@@ -69,7 +70,7 @@ public class TestSAXReader extends TestCase {
             OutputFormat format = OutputFormat.createPrettyPrint();
             format.setEncoding("koi8-r");
             xmlWriter.write(doc);
-            //System.out.println(writer.toString());
+            System.out.println(writer.toString());
         } catch (Exception e) {
             e.printStackTrace();
             fail(e.getMessage());
@@ -78,17 +79,17 @@ public class TestSAXReader extends TestCase {
     
     public void testRussian2() {
         try {
-            File file = new File( "d:/russArticle.xml" );
+            URL location = TestSAXReader.class.getResource("/russArticle.xml");
+            File file = new File(location.toString()); 
             SAXReader xmlReader = new SAXReader();
-            Document doc = xmlReader.read( file );
+            Document doc = xmlReader.read( location );
             XMLWriter xmlWriter = new XMLWriter( new OutputFormat ( "", false, "koi8-r" ) );
-            xmlWriter.setOutputStream( new FileOutputStream( new File ( "d:/russArticle2.xml" ) ) );
-//            ByteArrayOutputStream out = new ByteArrayOutputStream();
-//            xmlWriter.setOutputStream(out);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            xmlWriter.setOutputStream(out);
             xmlWriter.write( doc );
             xmlWriter.flush();
             xmlWriter.close();
-//            System.out.println(out.toString());
+            System.out.println(out.toString());
         } catch (Exception e) {
             e.printStackTrace();
             fail(e.getMessage());
