@@ -74,14 +74,6 @@ public class IndexedElement extends DefaultElement {
         return asElementList( elementIndex().get(qName) );
     }
         
-    public Iterator elementIterator(String name) {
-        return asElementIterator( elementIndex().get(name) );
-    }
-    
-    public Iterator elementIterator(QName qName) {
-        return asElementIterator( elementIndex().get(qName) );
-    }
-    
     
     // Implementation methods
     //-------------------------------------------------------------------------    
@@ -114,15 +106,11 @@ public class IndexedElement extends DefaultElement {
         return createEmptyList();
     }
     
+    /**
+     * @deprecated  WILL BE REMOVED IN dom4j-1.6 !!
+     */
     protected Iterator asElementIterator(Object object) {
-        if ( object instanceof Element ) {
-            return createSingleIterator( object );
-        }
-        else if ( object != null ) {
-            List list = (List) object;
-            return list.iterator();
-        }
-        return EMPTY_ITERATOR;
+        return asElementList(object).iterator();
     }
     
     

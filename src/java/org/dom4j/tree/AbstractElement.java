@@ -585,25 +585,25 @@ public abstract class AbstractElement
 
     public Iterator elementIterator() {
 
-        List list = contentList();
+        List list = elements();
 
-        return new ElementIterator(list.iterator());
+        return list.iterator();
 
     }
 
     public Iterator elementIterator(String name) {
 
-        List list = contentList();
+        List list = elements(name);
 
-        return new ElementNameIterator(list.iterator(), name);
+        return list.iterator();
 
     }
 
     public Iterator elementIterator(QName qName) {
 
-        List list = contentList();
+        List list = elements(qName);
 
-        return new ElementQNameIterator(list.iterator(), qName);
+        return list.iterator();
 
     }
 

@@ -20,6 +20,7 @@ import org.dom4j.Element;
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
+  * @deprecated  THIS CLASS WILL BE REMOVED IN dom4j-1.6 !!
   */
 public class ElementNameIterator extends FilterIterator {
     

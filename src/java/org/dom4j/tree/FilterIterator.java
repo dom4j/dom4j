@@ -17,6 +17,7 @@ import java.util.NoSuchElementException;
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
+  * @deprecated  THIS CLASS WILL BE REMOVED IN dom4j-1.6 !!
   */
 public abstract class FilterIterator implements Iterator {
     

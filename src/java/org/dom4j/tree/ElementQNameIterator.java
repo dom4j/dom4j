@@ -21,6 +21,7 @@ import org.dom4j.QName;
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
+  * @deprecated  THIS CLASS WILL BE REMOVED IN dom4j-1.6 !!
   */
 public class ElementQNameIterator extends FilterIterator {
     
