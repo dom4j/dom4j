@@ -73,13 +73,36 @@ public class TestXPath extends AbstractTestCase {
         
         List list = xpath.selectNodes( document );
         
-        log( "Searched path: " + xpathExpression + " found: " + list.size() + " result(s)" );
+        log( "Searched path: " + xpathExpression );
+        log( "Found        : " + list.size() + " result(s)" );
         
         if ( VERBOSE ) {
-            log( "XPath:   " + xpath );
+            log( "..........................................." );
+            log( "XPath:       :" + xpath );
+            log( "..........................................." );
         }
         
-        log( "Results: "+ list );
+        log( "Results" );
+        if ( list == null ) {
+            log( "null" );
+        }
+        else {
+            log( "[" );
+            for ( int i = 0, size = list.size(); i < size; i++ ) {
+                Object object = list.get(i);
+                String text = "null";
+                if ( object instanceof Node ) {
+                    Node node = (Node) object;
+                    text = node.asXML();
+                }
+                else if ( object != null ) {
+                    text = object.toString();
+                }
+                log( "    " + text );
+            }
+            log( "]" );
+        }
+        log( "..........................................." );
     }
 
 }
