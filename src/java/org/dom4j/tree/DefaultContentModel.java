@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.dom4j.Attribute;
 import org.dom4j.CDATA;
+import org.dom4j.CharacterData;
 import org.dom4j.Comment;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -33,24 +34,22 @@ public class DefaultContentModel extends AbstractContentModel {
     
     /** Cache the first Text node to delay creating the content list for 
       * elements with no other content other than a single text node */
-    private Text firstTextNode;
+    private Node firstNode;
     
     public String getText() {
-        if ( firstTextNode != null ) {
-            return firstTextNode.getText();
+        if ( contents == null ) {
+            if ( firstNode != null ) {
+                if ( firstNode instanceof CharacterData ) {
+                    return firstNode.getText();
+                }
+            }
+            return "";
         }
-        return super.getText();
+        else {
+            return super.getText();
+        }
     }
     
-    public Text addText(ContentFactory factory, String text) {
-        Text node = factory.createText( text );
-        if ( contents != null ) {
-            addNode( node );
-        }
-        firstTextNode = ( firstTextNode != null ) ? null : node;
-        return node;
-    }
-
     public Namespace getNamespaceForPrefix(String prefix) {
         List source = contents;
         if ( source != null ) {
@@ -63,6 +62,13 @@ public class DefaultContentModel extends AbstractContentModel {
                         return namespace;
                     }
                 }
+            }
+        }
+        else 
+        if ( firstNode instanceof Namespace ) {
+            Namespace namespace = (Namespace) firstNode;
+            if ( prefix.equals( namespace.getPrefix() ) ) {
+                return namespace;
             }
         }
         return null;
@@ -82,13 +88,29 @@ public class DefaultContentModel extends AbstractContentModel {
                 }
             }
         }
+        else 
+        if ( firstNode instanceof Namespace ) {
+            Namespace namespace = (Namespace) firstNode;
+            if ( uri.equals( namespace.getURI() ) ) {
+                return namespace;
+            }
+        }
         return null;
     }
     
     public List getAdditionalNamespaces(String defaultNamespaceURI) {
         List source = contents;
         if ( source == null ) {
-            return EMPTY_LIST;
+            if ( firstNode instanceof Namespace ) {
+                List answer = createResultList();
+                Namespace namespace = (Namespace) firstNode;
+                if ( ! defaultNamespaceURI.equals( namespace.getURI() ) ) {
+                    return createSingleResultList( namespace );
+                }
+            }
+            else {
+                return EMPTY_LIST;
+            }
         }
         List answer = createResultList();
         int size = source.size();
@@ -110,6 +132,9 @@ public class DefaultContentModel extends AbstractContentModel {
     public List getProcessingInstructions() {
         List source = contents;
         if ( source == null ) {
+            if ( firstNode instanceof ProcessingInstruction ) {
+                return createSingleResultList( firstNode );
+            }
             return EMPTY_LIST;
         }
         List answer = createResultList();
@@ -126,6 +151,12 @@ public class DefaultContentModel extends AbstractContentModel {
     public List getProcessingInstructions(String target) {
         List source = contents;
         if ( source == null ) {
+            if ( firstNode instanceof ProcessingInstruction ) {
+                ProcessingInstruction pi = (ProcessingInstruction) firstNode;
+                if ( target.equals( pi.getName() ) ) {                  
+                    return createSingleResultList( pi );
+                }
+            }
             return EMPTY_LIST;
         }
         List answer = createResultList();
@@ -144,7 +175,15 @@ public class DefaultContentModel extends AbstractContentModel {
     
     public ProcessingInstruction getProcessingInstruction(String target) {
         List source = contents;
-        if ( source != null ) {
+        if ( source == null ) {
+            if ( firstNode instanceof ProcessingInstruction ) {
+                ProcessingInstruction pi = (ProcessingInstruction) firstNode;
+                if ( target.equals( pi.getName() ) ) {                  
+                    return pi;
+                }
+            }
+        }
+        else {
             int size = source.size();
             for ( int i = 0; i < size; i++ ) {
                 Object object = source.get(i);
@@ -161,7 +200,16 @@ public class DefaultContentModel extends AbstractContentModel {
     
     public boolean removeProcessingInstruction(String target) {
         List source = contents;
-        if ( source != null ) {
+        if ( source == null ) {
+            if ( firstNode instanceof ProcessingInstruction ) {
+                ProcessingInstruction pi = (ProcessingInstruction) firstNode;
+                if ( target.equals( pi.getName() ) ) {                  
+                    firstNode = null;
+                    return true;
+                }
+            }
+        }
+        else {
             for ( Iterator iter = source.iterator(); iter.hasNext(); ) {
                 Object object = iter.next();
                 if ( object instanceof ProcessingInstruction ) {
@@ -178,7 +226,16 @@ public class DefaultContentModel extends AbstractContentModel {
     
     public Element getElementByID(String elementID) {
         List source = contents;
-        if ( source != null ) {
+        if ( source == null ) {
+            if ( firstNode instanceof Element ) {
+                Element element = (Element) firstNode;
+                String id = getElementID(element);
+                if ( id != null && id.equals( elementID ) ) {
+                    return element;
+                }
+            }
+        }
+        else {
             int size = source.size();
             for ( int i = 0; i < size; i++ ) {
                 Object object = source.get(i);
@@ -196,7 +253,17 @@ public class DefaultContentModel extends AbstractContentModel {
     
     public Element getElement(String name, Namespace namespace) {
         List source = contents;
-        if ( source != null ) {
+        if ( source == null ) {
+            if ( firstNode instanceof Element ) {
+                Element element = (Element) firstNode;
+                String uri = namespace.getURI();
+                if ( name.equals( element.getName() )
+                    && uri.equals( element.getNamespaceURI() ) ) {
+                    return element;
+                }
+            }
+        }
+        else {
             String uri = namespace.getURI();
             int size = source.size();
             for ( int i = 0; i < size; i++ ) {
@@ -216,6 +283,14 @@ public class DefaultContentModel extends AbstractContentModel {
     public List getElements(String name, Namespace namespace) {
         List source = contents;
         if ( source == null ) {
+            if ( firstNode instanceof Element ) {
+                Element element = (Element) firstNode;
+                String uri = namespace.getURI();
+                if ( name.equals( element.getName() )
+                    && uri.equals( element.getNamespaceURI() ) ) {
+                    return createSingleResultList( element );
+                }
+            }
             return EMPTY_LIST;
         }
         List answer = createResultList();
@@ -237,6 +312,10 @@ public class DefaultContentModel extends AbstractContentModel {
     public List getElements() {
         List source = contents;
         if ( source == null ) {
+            if ( firstNode instanceof Element ) {
+                Element element = (Element) firstNode;
+                return createSingleResultList( element );
+            }
             return EMPTY_LIST;
         }
         List answer = createResultList();
@@ -251,28 +330,42 @@ public class DefaultContentModel extends AbstractContentModel {
     }
     
     public Iterator elementIterator() {
-        if (contents == null) {
+        List source = contents;
+        if ( source == null ) {
+            if ( firstNode instanceof Element ) {
+                Element element = (Element) firstNode;
+                return createSingleIterator( element );
+            }
             return EMPTY_ITERATOR;
         }
         else {
-            return new ElementIterator(contents.iterator());
+            return new ElementIterator(source.iterator());
         }
     }
         
     public Iterator elementIterator(String name, Namespace namespace) {
-        if (contents == null) {
+        List source = contents;
+        if ( source == null ) {
+            if ( firstNode instanceof Element ) {
+                Element element = (Element) firstNode;
+                String uri = namespace.getURI();
+                if ( name.equals( element.getName() )
+                    && uri.equals( element.getNamespaceURI() ) ) {
+                    return createSingleIterator( element );
+                }
+            }
             return EMPTY_ITERATOR;
         }
         else {
-            return new ElementNameIterator(contents.iterator(), name, namespace);
+            return new ElementNameIterator(source.iterator(), name, namespace);
         }
     }
     
     public List getContent() {
         if (contents == null) {
             contents = createContentList();
-            if ( firstTextNode != null ) {
-                contents.add( firstTextNode );
+            if ( firstNode != null ) {
+                contents.add( firstNode );
             }
         }
         return contents;
@@ -284,7 +377,7 @@ public class DefaultContentModel extends AbstractContentModel {
     
     public void clearContent() {
         contents = null;
-        firstTextNode = null;
+        firstNode = null;
     }
     
     
@@ -292,7 +385,7 @@ public class DefaultContentModel extends AbstractContentModel {
     // such as Text etc.
     public Node getNode(int index) {
         if (contents == null) {
-            return null;
+            return firstNode;
         }
         Object object = contents.get(index);
         if (object instanceof Node) {
@@ -305,28 +398,54 @@ public class DefaultContentModel extends AbstractContentModel {
     }
     
     public int getNodeCount() {
-        return (contents != null) ? contents.size() : 0;
+        if ( contents == null ) {
+            return ( firstNode != null ) ? 1 : 0;
+        }
+        return contents.size();
     }
     
     public Iterator nodeIterator() {
-        return (contents != null) ? contents.iterator() : EMPTY_ITERATOR;
+        if ( contents == null ) {
+            if ( firstNode != null ) {
+                return createSingleIterator( firstNode );
+            }
+        }
+        else {
+            if (contents != null) {
+                return contents.iterator();
+            }
+        }
+        return EMPTY_ITERATOR;
     }
 
     public void addNode(Node node) {
         if (contents == null) {
-            contents = createContentList();
-            if ( firstTextNode != null ) {
-                contents.add( firstTextNode );
+            if ( firstNode == null ) {
+                firstNode = node;
+                return;
+            }
+            else {
+                contents = createContentList();
+                contents.add( firstNode );
+                contents.add(node);
             }
         }
-        contents.add(node);
+        else {
+            contents.add(node);
+        }
     }
 
     public boolean removeNode(Node node) {
         if (contents == null) {
+            if ( firstNode == node ) {
+                firstNode = null;
+                return true;
+            }
             return false;
         }
-        return contents.remove(node);
+        else {
+            return contents.remove(node);
+        }
     }
 
     // Implementation methods
@@ -347,6 +466,19 @@ public class DefaultContentModel extends AbstractContentModel {
       */
     protected List createResultList() {
         return new ArrayList();
+    }
+    
+    /** A Factory Method pattern which lazily creates 
+      * a List implementation which contains a single result
+      */
+    protected List createSingleResultList( Object result ) {
+        ArrayList list = new ArrayList(1);
+        list.add( result );
+        return list;
+    }
+
+    protected Iterator createSingleIterator( Object result ) {
+        return new SingleIterator( result );
     }
     
     /** @return the ID of the given <code>Element</code>

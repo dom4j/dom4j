@@ -33,13 +33,16 @@ public abstract class AbstractContentModel implements ContentModel {
                 Object first = content.get(0);
                 if (first != null) {
                     // If we hold only a String, return it directly
-                    if (size == 1 ) {
+                    if (size == 1) {
                         if ( first instanceof String) {
                             return (String) first;
                         }
-                        else if ( first instanceof Text ) {
-                            Text text = (Text) first;
+                        else if ( first instanceof CharacterData ) {
+                            CharacterData text = (CharacterData) first;
                             return text.getText();
+                        }
+                        else {
+                            return "";
                         }
                     }
                     
