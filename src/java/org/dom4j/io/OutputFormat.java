@@ -1,9 +1,9 @@
 /*
  * Copyright 2001 (C) MetaStuff, Ltd. All Rights Reserved.
- * 
- * This software is open source. 
+ *
+ * This software is open source.
  * See the bottom of this file for the licence.
- * 
+ *
  * $Id$
  */
 
@@ -19,7 +19,7 @@ public class OutputFormat implements Cloneable {
 
     /** standard value to indent by, if we are indenting **/
     protected static final String STANDARD_INDENT = "  ";
-    
+
     /** Whether or not to suppress the XML declaration - default is <code>false</code> */
     private boolean suppressDeclaration = false;
 
@@ -47,6 +47,13 @@ public class OutputFormat implements Cloneable {
     /** pad string-element boundaries with whitespace **/
     private boolean padText = false;
 
+    /** Whether or not to use XHTML standard. */
+    private boolean doXHTML = false;
+
+    /** Controls when to output a line.separtor every so many tags in case of no lines and total text trimming.*/
+    private int newLineAfterNTags = 0;  //zero means don't bother.
+
+
     /** Creates an <code>OutputFormat</code> with
       * no additional whitespace (indent or new lines) added.
       * The whitespace from the element text content is fully preserved.
@@ -56,19 +63,19 @@ public class OutputFormat implements Cloneable {
 
     /** Creates an <code>OutputFormat</code> with the given indent added but
       * no new lines added. All whitespace from element text will be included.
-      * 
-      * @param indent is the indent string to be used for indentation 
+      *
+      * @param indent is the indent string to be used for indentation
       * (usually a number of spaces).
       */
     public OutputFormat(String indent) {
         this.indent = indent;
     }
 
-    /** Creates an <code>OutputFormat</code> with the given indent added 
-      * with optional newlines between the Elements. 
+    /** Creates an <code>OutputFormat</code> with the given indent added
+      * with optional newlines between the Elements.
       * All whitespace from element text will be included.
-      * 
-      * @param indent is the indent string to be used for indentation 
+      *
+      * @param indent is the indent string to be used for indentation
       *     (usually a number of spaces).
       * @param newlines whether new lines are added to layout the
       */
@@ -77,11 +84,11 @@ public class OutputFormat implements Cloneable {
         this.newlines = newlines;
     }
 
-    /** Creates an <code>OutputFormat</code> with the given indent added 
+    /** Creates an <code>OutputFormat</code> with the given indent added
       * with optional newlines between the Elements
       * and the given encoding format.
-      * 
-      * @param indent is the indent string to be used for indentation 
+      *
+      * @param indent is the indent string to be used for indentation
       *     (usually a number of spaces).
       * @param newlines whether new lines are added to layout the
       * @param encoding is the text encoding to use for writing the XML
@@ -96,7 +103,7 @@ public class OutputFormat implements Cloneable {
         return lineSeparator;
     }
 
-    
+
     /** <p>This will set the new-line separator. The default is
       * <code>\n</code>. Note that if the "newlines" property is
       * false, this value is irrelevant.  To make it output the system
@@ -135,9 +142,9 @@ public class OutputFormat implements Cloneable {
         return omitEncoding;
     }
 
-    /** <p> This will set whether the XML declaration 
+    /** <p> This will set whether the XML declaration
       * (<code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;</code>)
-      * includes the encoding of the document. 
+      * includes the encoding of the document.
       * It is common to suppress this in protocols such as WML and SOAP.</p>
       *
       * @param omitEncoding <code>boolean</code> indicating whether or not
@@ -147,7 +154,7 @@ public class OutputFormat implements Cloneable {
         this.omitEncoding = omitEncoding;
     }
 
-    /** <p> This will set whether the XML declaration 
+    /** <p> This will set whether the XML declaration
       * (<code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;</code>)
       * is included or not.
       * It is common to suppress this in protocols such as WML and SOAP.</p>
@@ -165,12 +172,12 @@ public class OutputFormat implements Cloneable {
     public boolean isSuppressDeclaration() {
         return suppressDeclaration;
     }
-    
+
     public boolean isExpandEmptyElements() {
         return expandEmptyElements;
     }
-    
-    /** <p>This will set whether empty elements are expanded from 
+
+    /** <p>This will set whether empty elements are expanded from
       * <code>&lt;tagName&gt;</code> to
       * <code>&lt;tagName&gt;&lt;/tagName&gt;</code>.</p>
       *
@@ -200,18 +207,18 @@ public class OutputFormat implements Cloneable {
     public boolean isPadText() {
         return padText;
     }
-    
+
     /** <p> Ensure that text immediately preceded by or followed by an
       * element will be "padded" with a single space.  This is used to
       * allow make browser-friendly HTML, avoiding trimText's
-      * transformation of, e.g., 
+      * transformation of, e.g.,
       * <code>The quick &lt;b&gt;brown&lt;/b&gt; fox</code> into
       * <code>The quick&lt;b&gt;brown&lt;/b&gt;fox</code> (the latter
       * will run the three separate words together into a single word).
       *
       * This setting is not too useful if you haven't also called
       * {@link #setTrimText}.</p>
-      * 
+      *
       * <p>Default: false </p>
       *
       * @param padText <code>boolean</code> if true, pad string-element boundaries
@@ -223,7 +230,7 @@ public class OutputFormat implements Cloneable {
     public String getIndent() {
         return indent;
     }
-    
+
     /** <p> This will set the indent <code>String</code> to use; this
       * is usually a <code>String</code> of empty spaces. If you pass
       * null, or the empty string (""), then no indentation will
@@ -246,7 +253,7 @@ public class OutputFormat implements Cloneable {
       * @param doIndent if true, set indenting on; if false, set indenting off
       */
     public void setIndent(boolean doIndent) {
-        if (doIndent) { 
+        if (doIndent) {
             this.indent = STANDARD_INDENT;
         }
         else {
@@ -267,14 +274,49 @@ public class OutputFormat implements Cloneable {
         }
         this.indent = indentBuffer.toString();
     }
-    
-    /** Parses command line arguments of the form 
+
+    /** <p> Whether or not to use the XHTML standard: like HTML but passes an XML parser with real,
+     *  closed tags.  Also, XHTML CDATA sections  will be output with the CDATA delimiters:
+     *  ( &quot;<b>&lt;![CDATA[</b>&quot; and &quot;<b>]]&gt;</b>&quot; )
+     *  otherwise, the class HTMLWriter will output the CDATA text, but not the delimiters.</p>
+     *
+     *  <p> Default is <code>false</code></p>
+     */
+    public boolean isXHTML(){return doXHTML;}
+
+    /** <p> This will set whether or not to use the XHTML standard: like HTML but passes an XML parser with real,
+     *  closed tags.  Also, XHTML CDATA sections
+     *  will be output with the CDATA delimiters: ( &quot;<b>&lt;[CDATA[</b>&quot; and &quot;<b>]]&lt;</b> )
+     *  otherwise, the class HTMLWriter will output the CDATA text, but not the delimiters.</p>
+     *
+      * <p>Default: false </p>
+      *
+      * @param xhtml <code>boolean</code> true=>conform to XHTML, false=>conform to HTML, can have unclosed tags, etc.
+      */
+    public void setXHTML(boolean xhtml){
+        doXHTML = xhtml;
+    }
+
+    public int getNewLineAfterNTags(){
+        return newLineAfterNTags;
+    }
+
+    /** Controls output of a line.separator every tagCount tags when isNewlines is false.
+     *  If tagCount equals zero, it means don't do anything special.  If greater than zero, then a line.separator
+     *  will be output after tagCount tags have been output.  Used when you would like to squeeze the html as
+     *  much as possible, but some browsers don't like really long lines. A tag count of 10 would
+     *  produce a line.separator in the output after 10 close tags (including single tags).*/
+    public void setNewLineAfterNTags(int tagCount){
+        newLineAfterNTags = tagCount;
+    }
+
+    /** Parses command line arguments of the form
       * <code>-omitEncoding -indentSize 3 -newlines -trimText</code>
       *
       * @param args is the array of command line arguments
       * @param i is the index in args to start parsing options
       * @return the index of first parameter that we didn't understand
-      */      
+      */
     public int parseOptions(String[] args, int i) {
         for ( int size = args.length; i < size; i++ ) {
             if (args[i].equals("-suppressDeclaration")) {
@@ -307,18 +349,21 @@ public class OutputFormat implements Cloneable {
             else if (args[i].equals("-padText")) {
                 setPadText(true);
             }
+            else if (args[i].startsWith("-xhtml")) {
+                setXHTML(true);
+            }
             else {
                 return i;
             }
         }
         return i;
-    } 
-    
+    }
+
 
     /** A static helper method to create the default pretty printing format.
       * This format consists of an indent of 2 spaces, newlines after each
-      * element and all other whitespace trimmed 
-      */    
+      * element and all other whitespace trimmed, and XMTML is false.
+      */
     public static OutputFormat createPrettyPrint() {
         OutputFormat format = new OutputFormat();
         format.setIndentSize( 2 );
@@ -328,9 +373,9 @@ public class OutputFormat implements Cloneable {
     }
 
     /** A static helper method to create the default compact format.
-      * This format does not have any indentation or newlines after an alement 
-      * and all other whitespace trimmed 
-      */    
+      * This format does not have any indentation or newlines after an alement
+      * and all other whitespace trimmed
+      */
     public static OutputFormat createCompactFormat() {
         OutputFormat format = new OutputFormat();
         format.setIndent(false);
@@ -338,7 +383,7 @@ public class OutputFormat implements Cloneable {
         format.setTrimText(true);
         return format;
     }
-    
+
 }
 
 
