@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.dom4j.DocumentFactory;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
 
@@ -26,6 +27,9 @@ import org.dom4j.QName;
   */
 class NamespaceStack {
  
+    /** The factory used to create new <code>Namespace</code> instances */
+    private DocumentFactory documentFactory;
+    
     /** The Stack of namespaces */
     private ArrayList namespaceStack = new ArrayList();
 
@@ -40,6 +44,11 @@ class NamespaceStack {
 
     
     public NamespaceStack() {
+        this.documentFactory = DocumentFactory.getInstance();
+    }
+  
+    public NamespaceStack(DocumentFactory documentFactory) {
+        this.documentFactory = documentFactory;
     }
   
     /** Pushes the given namespace onto the stack so that its prefix
@@ -193,13 +202,14 @@ class NamespaceStack {
       * interns the QName
       */
     protected QName createQName( String localName, String qualifiedName, Namespace namespace ) {
-        return QName.get( localName, namespace, qualifiedName );
+        return documentFactory.createQName( localName, namespace );
     }
+    
     /** Factory method to creeate new Namespace instances. By default this method
       * interns the Namespace
       */
     protected Namespace createNamespace( String prefix, String namespaceURI ) {
-        return Namespace.get( prefix, namespaceURI );
+        return documentFactory.createNamespace( prefix, namespaceURI );
     }
 }
 

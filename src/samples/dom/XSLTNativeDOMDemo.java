@@ -7,61 +7,76 @@
  * $Id$
  */
 
+package dom;
 
-import java.util.Iterator;
-import java.util.List;
+import java.net.URL;
 
-import org.dom4j.*;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamSource;
+
+import org.dom4j.Document;
+import org.dom4j.dom.DOMDocumentFactory;
+import org.dom4j.io.DocumentResult;
+import org.dom4j.io.DOMWriter;
+import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
-/** A sample program to demonstrate the use of XPath expressions.
+import XSLTDemo;
+
+
+/** This sample program peforms XSLT on the native DOM implementation of 
+  * dom4j.
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class XPathDemo extends SAXDemo {
-    
-    protected String xpath = "*";
+public class XSLTNativeDOMDemo extends XSLTDemo {
     
     
     public static void main(String[] args) {
-        run( new XPathDemo(), args );
+        run( new XSLTNativeDOMDemo(), args );
     }    
     
-    public XPathDemo() {
-    }
-        
-    public void run(String[] args) throws Exception {    
-        if ( args.length < 2 ) {
-            printUsage( "<XML document URL> <XPath expression>" );
-            return;
-        }
-
-        String xmlFile = args[0];
-        xpath = args[1];
-        
-        writer = createXMLWriter();        
-        
-        Document document = parse( xmlFile );
-        process( document );
+    public XSLTNativeDOMDemo() {
     }
     
+    protected Document parse( URL url ) throws Exception {
+        SAXReader reader = new SAXReader( DOMDocumentFactory.getInstance() );
+        return reader.read(url);
+    }
+    /** Perform XSLT on the stylesheet */
     protected void process(Document document) throws Exception {
-        println( "Evaluating XPath: " + xpath );
+        // load the transformer
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Transformer transformer = factory.newTransformer( 
+            new StreamSource( xsl.toString() ) 
+        );
         
-        List list = document.selectNodes( xpath );
+        // Since we are using the native DOM implementation 
+        // converting the tree to DOM should be really fast...
+        DOMWriter domWriter = new DOMWriter();
         
-        println( "Found: " + list.size() + " node(s)" );        
-        println( "Results:" );
+        long start = System.currentTimeMillis();
+        org.w3c.dom.Document domDocument = domWriter.write( document );
+        long end = System.currentTimeMillis();
         
-        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
-            Object object = iter.next();
-            writer.write( object );
-            writer.println();
-        }
+        System.out.println( "Converting to a W3C Document took: " + (end - start) + " milliseconds" );
         
-        writer.flush();
-   }
+        // now lets create the TRaX source and result
+        // objects and do the transformation
+        Source source = new DOMSource( domDocument );
+        DocumentResult result = new DocumentResult();
+        transformer.transform( source, result );
+
+        // output the transformed document
+        Document transformedDoc = result.getDocument();
+        writer.write( transformedDoc );
+    }
+
 }
 
 

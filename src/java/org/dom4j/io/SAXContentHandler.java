@@ -54,7 +54,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     private ElementStack elementStack;
 
     /** stack of <code>Namespace</code> and <code>QName</code> objects */
-    private NamespaceStack namespaceStack = new NamespaceStack();
+    private NamespaceStack namespaceStack;
 
     /** the <code>ElementHandler</code> called as the elements are complete */
     private ElementHandler elementHandler;
@@ -82,22 +82,25 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     
     
     public SAXContentHandler() {
-        this.documentFactory = DocumentFactory.getInstance();
+        this( DocumentFactory.getInstance() );
     }
     
     public SAXContentHandler(DocumentFactory documentFactory) {
         this.documentFactory = documentFactory;
+        this.namespaceStack = new NamespaceStack(documentFactory);
     }
 
     public SAXContentHandler(DocumentFactory documentFactory, ElementHandler elementHandler) {
         this.documentFactory = documentFactory;
         this.elementHandler = elementHandler;
+        this.namespaceStack = new NamespaceStack(documentFactory);
     }
 
     public SAXContentHandler(DocumentFactory documentFactory, ElementHandler elementHandler, ElementStack elementStack) {
         this.documentFactory = documentFactory;
         this.elementHandler = elementHandler;
         this.elementStack = elementStack;
+        this.namespaceStack = new NamespaceStack(documentFactory);
     }
 
     /** @return the document that has been or is being built 

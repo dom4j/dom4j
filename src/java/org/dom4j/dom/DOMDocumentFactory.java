@@ -19,6 +19,7 @@ import org.dom4j.DocumentFactory;
 import org.dom4j.DocumentType;
 import org.dom4j.Element;
 import org.dom4j.Entity;
+import org.dom4j.Namespace;
 import org.dom4j.ProcessingInstruction;
 import org.dom4j.QName;
 import org.dom4j.Text;
@@ -84,6 +85,11 @@ public class DOMDocumentFactory extends DocumentFactory implements org.w3c.dom.D
     public Entity createEntity(String name, String text) {
         return new DOMEntityReference(name, text);
     }
+
+    public Namespace createNamespace(String prefix, String uri) {
+        return new DOMNamespace(prefix, uri);
+    }
+    
     
     public ProcessingInstruction createProcessingInstruction(String target, String data) {
         return new DOMProcessingInstruction(target, data);

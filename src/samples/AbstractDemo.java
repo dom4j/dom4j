@@ -85,6 +85,9 @@ public abstract class AbstractDemo {
     }
 
     protected void process(Document document) throws Exception {
+        if ( writer == null ) {
+            writer = createXMLWriter();
+        }
         writer.write(document);
     }
         

@@ -8,60 +8,70 @@
  */
 
 
-import java.util.Iterator;
-import java.util.List;
+package dom;
 
-import org.dom4j.*;
+import java.net.URL;
+
+import org.dom4j.Document;
+import org.dom4j.io.DOMReader;
+import org.dom4j.io.DOMWriter;
+import org.dom4j.io.SAXContentHandler;
+import org.dom4j.io.SAXReader;
+import org.dom4j.io.SAXWriter;
 import org.dom4j.io.XMLWriter;
 
-/** A sample program to demonstrate the use of XPath expressions.
+import AbstractDemo;
+
+/** This sample program parses an XML document as a DOM4J tree using
+  * SAX, it then creates a W3C DOM tree which is then used as input for
+  * creating a new DOM4J tree which is then output to SAX which is then
+  * parsed into another DOM4J tree which is then output as XML.
+  *
+  * This is clearly not terribly useful but demonstrates how to convert from 
+  * SAX <-> DOM4J and DOM4J <-> DOM and DOM4J <-> text
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class XPathDemo extends SAXDemo {
-    
-    protected String xpath = "*";
-    
+public class SAXDOMDemo extends AbstractDemo {
     
     public static void main(String[] args) {
-        run( new XPathDemo(), args );
+        run( new SAXDOMDemo(), args );
     }    
     
-    public XPathDemo() {
-    }
-        
-    public void run(String[] args) throws Exception {    
-        if ( args.length < 2 ) {
-            printUsage( "<XML document URL> <XPath expression>" );
-            return;
-        }
-
-        String xmlFile = args[0];
-        xpath = args[1];
-        
-        writer = createXMLWriter();        
-        
-        Document document = parse( xmlFile );
-        process( document );
+    public SAXDOMDemo() {
     }
     
-    protected void process(Document document) throws Exception {
-        println( "Evaluating XPath: " + xpath );
+    protected Document parse( URL url ) throws Exception {
+        SAXReader saxReader = new SAXReader();
+        Document document = saxReader.read(url);
         
-        List list = document.selectNodes( xpath );
+        println( "Parsed to DOM4J tree using SAX: " + document );
         
-        println( "Found: " + list.size() + " node(s)" );        
-        println( "Results:" );
+        // now lets make a DOM object
+        DOMWriter domWriter = new DOMWriter();
+        org.w3c.dom.Document domDocument = domWriter.write(document);
         
-        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
-            Object object = iter.next();
-            writer.write( object );
-            writer.println();
-        }
+        println( "Converted to DOM tree: " + domDocument );
         
-        writer.flush();
-   }
+        // now lets read it back as a DOM4J object
+        DOMReader domReader = new DOMReader();        
+        document = domReader.read( domDocument );
+        
+        println( "Converted to DOM4J tree using DOM: " + document );
+        
+        // now lets write it back as SAX events to
+        // a SAX ContentHandler which should build up a new document
+        SAXContentHandler contentHandler = new SAXContentHandler();
+        SAXWriter saxWriter = new SAXWriter( contentHandler, null, contentHandler );
+        
+        saxWriter.write( document );
+        document = contentHandler.getDocument();
+        
+        println( "Converted DOM4J to SAX events then back to DOM4J: " + document );
+        
+        return document;
+    }
 }
 
 

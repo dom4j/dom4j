@@ -7,61 +7,86 @@
  * $Id$
  */
 
+package org.dom4j.dom;
 
-import java.util.Iterator;
-import java.util.List;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
 
-import org.dom4j.*;
-import org.dom4j.io.XMLWriter;
-
-/** A sample program to demonstrate the use of XPath expressions.
+/** <p><code>DOMAttributeNodeMap</code> implements a W3C NameNodeMap
+  * for the attributes of an element.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class XPathDemo extends SAXDemo {
-    
-    protected String xpath = "*";
-    
-    
-    public static void main(String[] args) {
-        run( new XPathDemo(), args );
-    }    
-    
-    public XPathDemo() {
-    }
-        
-    public void run(String[] args) throws Exception {    
-        if ( args.length < 2 ) {
-            printUsage( "<XML document URL> <XPath expression>" );
-            return;
-        }
+public class DOMAttributeNodeMap implements org.w3c.dom.NamedNodeMap {
 
-        String xmlFile = args[0];
-        xpath = args[1];
-        
-        writer = createXMLWriter();        
-        
-        Document document = parse( xmlFile );
-        process( document );
+    private DOMElement element;
+    
+    public DOMAttributeNodeMap(DOMElement element) { 
+        this.element = element;
+    }
+
+    
+    // org.w3c.dom.NamedNodeMap interface
+    //-------------------------------------------------------------------------        
+    public void foo() throws DOMException {
+        DOMNodeHelper.notSupported();
     }
     
-    protected void process(Document document) throws Exception {
-        println( "Evaluating XPath: " + xpath );
-        
-        List list = document.selectNodes( xpath );
-        
-        println( "Found: " + list.size() + " node(s)" );        
-        println( "Results:" );
-        
-        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
-            Object object = iter.next();
-            writer.write( object );
-            writer.println();
+    public Node getNamedItem(String name) {
+        return element.getAttributeNode(name);
+    }
+
+    public Node setNamedItem(Node arg) throws DOMException {
+        if ( arg instanceof Attr ) {
+            return element.setAttributeNode( (org.w3c.dom.Attr) arg );
         }
-        
-        writer.flush();
-   }
+        else {
+            throw new DOMException( DOMException.NOT_SUPPORTED_ERR, "Node is not an Attr: " + arg );
+        }
+    }
+
+    public Node removeNamedItem(String name) throws DOMException {
+        org.w3c.dom.Attr attr = element.getAttributeNode(name);
+        if ( attr != null ) {
+            return element.removeAttributeNode( attr );
+        }
+        return attr;
+    }
+
+    public Node item(int index) {
+        return DOMNodeHelper.asDOMAttr( element.attribute(index) );
+    }
+
+    public int getLength() {
+        return element.attributeCount();
+    }
+
+    public Node getNamedItemNS(String namespaceURI, String localName) {
+        return element.getAttributeNodeNS( namespaceURI, localName );
+    }
+
+    public Node setNamedItemNS(Node arg) throws DOMException {
+        if ( arg instanceof Attr ) {
+            return element.setAttributeNodeNS( (org.w3c.dom.Attr) arg );
+        }
+        else {
+            throw new DOMException( DOMException.NOT_SUPPORTED_ERR, "Node is not an Attr: " + arg );
+        }
+    }
+
+    public Node removeNamedItemNS(String namespaceURI, String localName) throws DOMException {
+        org.w3c.dom.Attr attr = element.getAttributeNodeNS( namespaceURI, localName );
+        if ( attr != null ) {
+            return element.removeAttributeNode( attr );
+        }
+        return attr;
+    }
+
 }
 
 

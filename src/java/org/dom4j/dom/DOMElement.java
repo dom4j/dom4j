@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.dom4j.Attribute;
+import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.Node;
@@ -31,6 +32,10 @@ import org.w3c.dom.NodeList;
   * @version $Revision$
   */
 public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
+
+    /** The <code>DocumentFactory</code> instance used by default */
+    private static final DocumentFactory DOCUMENT_FACTORY = DOMDocumentFactory.getInstance();
+    
 
     public DOMElement(String name) { 
         super(name);
@@ -108,7 +113,7 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     }
 
     public NamedNodeMap getAttributes() {
-        return DOMNodeHelper.getAttributes(this);
+        return new DOMAttributeNodeMap( this );
     }
     
     public Document getOwnerDocument() {
@@ -138,7 +143,7 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     }
 
     public boolean hasChildNodes() {
-        return DOMNodeHelper.hasChildNodes(this);
+        return nodeCount() > 0;
     }
 
     public org.w3c.dom.Node cloneNode(boolean deep) {
@@ -289,6 +294,10 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     
     // Implementation methods
     //-------------------------------------------------------------------------            
+    protected DocumentFactory getDocumentFactory() {
+        return DOCUMENT_FACTORY;
+    }
+    
     protected Attribute attribute(org.w3c.dom.Attr attr) {
         return attribute( 
             QName.get( 

@@ -18,21 +18,17 @@ import javax.xml.transform.stream.StreamSource;
 import org.dom4j.Document;
 import org.dom4j.io.DocumentResult;
 import org.dom4j.io.DocumentSource;
-import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
-import org.xml.sax.InputSource;
-
-
-/** A simple test program to demonstrate using SAX to create a DOM4J tree
+/** A sample program to demonstrate using XSLT to transform a dom4j Document.
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
 public class XSLTDemo extends SAXDemo {
     
-    private URL xsl;
+    protected URL xsl;
     
     
     public static void main(String[] args) {
