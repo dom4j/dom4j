@@ -3,9 +3,19 @@
                "http://www.oasis-open.org/docbook/xml/4.0/docbookx.dtd">
 <book>
 <bookinfo>
-<title>DOM4J Cookbook</title>
+<title>dom4j cookbook</title>
 <author><firstname>Tobias</firstname><surname>Rademacher</surname></author>
 <revhistory>
+  <revision>
+    <revnumber>0.0.6</revnumber>
+    <date>01-08-03</date>
+    <authorinitials>jstrachan</authorinitials>
+    <revdescription>
+      <itemizedlist>
+        <listitem><para>Fixed a few typos and corrected the odd bit of grammar and code.</para></listitem>
+      </itemizedlist>
+    </revdescription>
+  </revision>
   <revision>
     <revnumber>0.0.5</revnumber>
     <date>01-07-09</date>
@@ -53,9 +63,9 @@
   </revdescription>
   </revision>
 </revhistory>
-<pubdate>Beta Hopefully in July 2001</pubdate>
+<pubdate>August 2001</pubdate>
 <abstract>
-  <para>This document provides a practical instruction to dom4j. It guides you through by using a lot of examples and is based on dom4j v0.6</para>
+  <para>This document provides a practical introduction to dom4j. It guides you through by using a lot of examples and is based on dom4j v0.8</para>
 </abstract>
 </bookinfo>
 <preface>
@@ -66,29 +76,39 @@
 <chapter>
 <title>Introducing dom4j</title>
 <para>
-Most readers already knowing that <application>dom4j</application> is a object model representing an XML Tree in memory. <application>dom4j</application>
-offers a easy-to-use API that provides a powerfull set of functions to process, manipulate or navigate with that XML tree. The Designers of
-<application>dom4j</application> concentrate on a interface-based pattern-centric architecture in order to provide a resuable high configurable object
-model. You are able to create your own tree builder's by relying on the existing infrastructure and extending them. Thus
-simplictiy in resuablity comes with a little bit more effort by understandig the architecture in depth. This
-document will guide you through <application>dom4j</application>'s freatures in a pratical way. It uses a lot of explained examples to achive that. The document is
+<application>dom4j</application> is a object model representing an XML Tree in memory. 
+<application>dom4j</application> offers a easy-to-use API that provides a powerfull set of 
+features to process, manipulate or navigate XML and work with XPath and XSLT as well as integrate with SAX, JAXP and DOM.
+</para>
+<para>
+<application>dom4j</application> is designed to be interface-based in order to provide highly configurable implementation strategies. 
+You are able to create your own XML tree implementations by simply providing a DocumentFactory implementation.
+This makes it very simple to resuse much of the dom4j code while extending it to provide whatever implementation features you wish.
+</para>
+<para>
+This
+document will guide you through <application>dom4j</application>'s features in a pratical way. 
+It uses a lot of examples with source code to achive that. The document is
 also desinged as a reference so that you don't have to read the entire document right now. This guide concentrates on daily work with
 <application>dom4j</application> and is therefore called <emphasis>cookbook</emphasis>.
 </para>
 </chapter>
 <chapter>
-<title>Creation of a XML Object Model using DOM4J</title>
+<title>Creation of an XML Object Model using dom4j</title>
 <para>
 Normally it all starts with a set of xml-files or a single xml file that you want to process, manipulate or navigate through to extract some
-values necessary in your application. Most Java Open-Source project using XML for deploying or substiute their property fieles in order
-to get easy readable property data.
+values necessary in your application. Most Java Open-Source projects using XML for deployment or as a replacement for property files in order
+to get easily readable property data.
 </para>
 
 <section><title>Reading XML data</title>
 <para>
-Who does <application>dom4j</application> helps you to get the data store in XML? <application>dom4j</application> comes with a set of
-Builder classes that parses the xml data and creating
-a tree like object structure in memory. You can mainpulate or nativate through that image now. Following example shows how you can
+How does <application>dom4j</application> help you to get at the data stored in XML? 
+<application>dom4j</application> comes with a set of
+builder classes that parses the xml data and creating
+a tree like object structure in memory. 
+You can easily manipulate and navigate through that model. 
+The following example shows how you can
 read your data using <application>dom4j</application> API.
 
 <programlisting>
@@ -99,7 +119,7 @@ import org.dom4j.io.SAXReader;
 
 public class DeployFileLoaderSample {
 
-  /** DOM4J object model representation of a xml document. Note: We use the interface(!) not its implementation */
+  /** dom4j object model representation of a xml document. Note: We use the interface(!) not its implementation */
   private Document doc;
 
   /**
@@ -111,24 +131,26 @@ public class DeployFileLoaderSample {
     SAXReader xmlReader = new SAXReader();
     this.doc = xmlReader.read(aFile);
   }
-
 }
 </programlisting>
 
 </para>
 
 <para>
-The above example code should  clarify the use of <classname>org.dom4j.io.SAXReader</classname> to build a complete <application>dom4j</application>-Tree from a given file.
-The io package of <application>dom4j</application> contains a set of clases for creating and serializing <acronym>XML</acronym> memory images. As read() method
-is a overloaded method you are able to pass different kind of object that represents a source.
+The above example code should clarify the use of <classname>org.dom4j.io.SAXReader</classname> to 
+build a complete <application>dom4j</application>-tree from a given file.
+The org.dom4j.io package of <application>dom4j</application> contains a set of classes 
+for creating and serializing <acronym>XML</acronym> objects. 
+The read() method
+is overloaded so that you able to pass different kind of object that represents a source.
 </para>
 
 <itemizedlist>
+  <listitem><para><classname>java.lang.String</classname> - a SystemId is a String that contains a URI e.g. a URL to a XML file</para></listitem>
   <listitem><para><classname>java.net.URL</classname> - represents a Uniform Ressource Loader or a Uniform Ressource Identifier encasulate in a URL instance</para></listitem>
   <listitem><para><classname>java.io.InputStream</classname> - a open input stream that transports xml data</para></listitem>
   <listitem><para><classname>java.io.Reader</classname> - more compartable puls the abiltiy of setting the encoding scheme</para></listitem>
   <listitem><para><classname>org.sax.InputSource</classname> - a single input source for a <acronym>XML</acronym> entity.</para></listitem>
-  <listitem><para><classname>java.lang.String</classname> - a SystemId is a String that contains a URI e.g. a URL to a XML file</para></listitem>
 </itemizedlist>
 
 <para>
@@ -144,7 +166,7 @@ import org.dom4j.io.SAXReader;
 
 public class DeployFileLoaderSample {
 
-  /** DOM4J object model representation of a xml document. Note: We use the interface(!) not its implementation */
+  /** dom4j object model representation of a xml document. Note: We use the interface(!) not its implementation */
   private Document doc;
 
   /**
@@ -173,31 +195,40 @@ public class DeployFileLoaderSample {
 }
 </programlisting>
 
+<!-- XXXX don't understand?
+
 <para>
 Using Reflection API provides the most flexbility for handling all kinds of <classname>org.dom4j.io.SAXReader</classname> Sources, but that
 and even a check with instanceof needs a good exception management while you suspend and a lot of
 xml driven application will not need this flexiblity.
 </para>
 
+-->
+
 </section>
 
 <section>
-<title>Integrating orginal XML APIs</title>
+<title>Integrating with other XML APIs</title>
 <para>
-We have talked about reading a document with SAX now. <application>dom4j</application> offers also some classes for integration of
-the two original XML processing APIs - SAX and DOM. <classname>org.dom4j.SAXContentHandler</classname> implements some
-SAX interfaces. Thus you are able to use them to create a specific SAX-based Reader class.
+<application>dom4j</application> offers also classes for integration with
+the two original XML processing APIs - SAX and DOM. 
+So far we have been talking about reading a document with SAX. 
+The <classname>org.dom4j.SAXContentHandler</classname> class implements several
+SAX interfaces directly (such as ContentHandler) so that you can embed <application>dom4j</application> 
+directly inside any SAX application. 
+You can also use this class to implement your own specific SAX-based Reader class if you need to.
 </para>
 
 <para>
-The <classname>DOMReader</classname> class allows you to recycle a existing <acronym>DOM</acronym> tree. This could be usefull if you already used DOM
-and want to replace it step by step with <application>dom4j</application> or if you just needs some of <acronym>DOM</acronym>'s behaviors and want to save
-memory ressources by transforming it in a <application>dom4j</application> Model. Your are able to transform a DOM Document, a <acronym>DOM</acronym> node branch and
-a single element.
+The <classname>DOMReader</classname> class allows you to convert an existing <acronym>DOM</acronym> tree
+into a <application>dom4j</application> tree.
+This could be usefull if you already used DOM and want to replace it step by step 
+with <application>dom4j</application> or if you just needs some of <acronym>DOM</acronym>'s 
+behaviour and want to save memory ressources by transforming it in a <application>dom4j</application> Model. 
+You are able to transform a DOM Document, a <acronym>DOM</acronym> node branch and a single element.
 </para>
 
 <programlisting>
-
 import org.sax.Document;
 
 import org.dom4j.Document;
@@ -206,11 +237,10 @@ import org.dom4j.io.DOMReader;
 
 public class DOMIntegratorSample {
 
-  private Document doc;
-
-  public void buildDOM4JTree(org.sax.Document saxDoc) {
+  /** converts a W3C DOM document into a dom4j document */
+  public Document buildDocment(org.w3c.dom.Document domDocument) {
     DOMReader xmlReader = new DOMReader();
-    this.doc = xmlReader.read(saxDoc);
+    return xmlReader.read(domDocument);
   }
 }
 
@@ -218,11 +248,11 @@ public class DOMIntegratorSample {
 </section>
 
 <section><title>The secret of DocumentFactory</title>
-Right now we have talked a lot of reading exisiting XML information e.g. form files, URL's or even Streams.
+Right now we have talked a lot of reading exisiting XML information e.g. from files, URL's or even Streams.
 Sometimes it's necessary to generate a XML document from scratch within a running Java Application.
-The class <classname>org.dom4j.DocumentFactory</classname> defines a set of factory methods in order to create empty documents, document
-types, elements, attributes, unparsed character data (CDATA), a namespace, instance regarding <acronym>XPath</acronym>, a Nodefilter and
-some other usefull instances. This makes the <classname>DocumentFactory</classname> class to a central class whenever you have to create
+The class <classname>org.dom4j.DocumentFactory</classname> defines a set of factory methods to create documents, document
+types, elements, attributes, unparsed character data (CDATA), a namespace, an <acronym>XPath</acronym> object, a NodeFilter and
+some other useful instances. This makes the <classname>DocumentFactory</classname> class to a central class whenever you have to create
 one of these instances by yourself.
 </section>
 
@@ -234,11 +264,12 @@ import org.dom4j.Element;
 
 public class DeployFileCreator {
 
+  private DocumentFactory factory = DocumentFactory.getInstance();
   private Document doc;
 
   public void generateDoc(String aRootElement) {
-   Element root = DocumentFacotry.getInstance().createElement(aRootElement);
-   this.doc = DocumentFactory.getInstance().createDocument(root);
+    doc = DocumentFactory.getInstance().createDocument();
+    Element root = doc.addElement(aRootElement);
   }
 
 }
@@ -246,10 +277,16 @@ public class DeployFileCreator {
 </programlisting>
 
 <para>
-The listing shows how two generate a new Document from scratch. The method <classname>generateDoc(String aRootElement)</classname> takes a String instance of argument. The string value contains the name of
-the root element of the new document. As you can see <classname>org.dom4j.DocumentFactory</classname> is a singleton that is accessable via <classname>getInstance()</classname> as most Java singeltons are.
-After we obtained the instance we can <classname>DocumentFacotry</classname> methods. They follow the <emphasis>createXXX()</emphasis> naming convention, so if you want to create a Attribute you would
-call <emphasis>createAttribute()</emphasis> instead. If your class uses DocumentFactory a lot you should add it as a member variable and initiate it via getInstance in your constructor.
+The listing shows how to generate a new Document from scratch. 
+The method <classname>generateDoc(String aRootElement)</classname> takes a String parameter. 
+The string value contains the name of the root element of the new document. 
+As you can see <classname>org.dom4j.DocumentFactory</classname> is a singleton 
+that is accessable via <classname>getInstance()</classname> as most Java singletons are.
+After we obtained the instance we can <classname>DocumentFactory</classname> methods. 
+They follow the <emphasis>createXXX()</emphasis> naming convention, so if you want to create a Attribute you would
+call <emphasis>createAttribute()</emphasis> instead. 
+If your class uses DocumentFactory a lot or uses a different DocumentFactory instance then
+you could add it as a member variable and initiate it via getInstance in your constructor.
 </para>
 
 <programlisting>
@@ -268,18 +305,59 @@ public class GranuatedDeployFileCreator {
  }
 
  public void generateDoc(String aRootElement) {
-   Element root = this.factory.createElement(aRootElement);
-   this.doc = this.factory.createDocument(root);
+    doc = factory.createDocument();
+    Element root = doc.addElement(aRootElement);
  }
 
 }
 
 </programlisting>
 
+
+
 <para>
-As mentioned earlier <application>dom4j</application> is a interface based API. This means that DocumentFacotry and the Reader classes in io package always returning this
-interfaces. So you are forced to uses interfaces to work with the object model. Collection API and <acronym>W3C</acronym>'s <acronym>DOM</acronym> itselfs are another APIs
-that uses this approach. Why that is such a wide spread desing is described by <citation>BillVenners</citation>.
+The <classname>Document</classname> and <classname>Element</classname>
+interfaces have a number of helper methods for creating an XML document programmatically
+in a simple way.
+</para>
+
+<programlisting>
+
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+
+public class Foo {
+
+  public Document createDocument() {
+    Document document = DocumentHelper.createDocument();
+    Element root = document.addElement( "root" );
+
+    Element author2 = root.addElement( "author" )
+      .addAttribute( "name", "Toby" )
+      .addAttribute( "location", "Germany" )
+      .addText( "Tobias Rademacher" );
+
+    Element author1 = root.addElement( "author" )
+      .addAttribute( "name", "James" )
+      .addAttribute( "location", "UK" )
+      .addText( "James Strachan" );
+    
+    return document;
+  }
+}
+
+</programlisting>
+
+
+
+<para>
+As mentioned earlier <application>dom4j</application> is an interface based API. 
+This means that DocumentFactory and the reader classes in the org.dom4j.io package always use the org.dom4j interfaces
+rather than any concrete implementation classes.
+The Collection API and <acronym>W3C</acronym>'s <acronym>DOM</acronym> are other examples of APIs that
+use this design aproach.
+This wide spread design is described by <citation>BillVenners</citation>.
 </para>
 
 </chapter>
@@ -288,8 +366,9 @@ that uses this approach. Why that is such a wide spread desing is described by <
 <title>Serialization and Output</title>
 
 <para>
-Once you have parsed or created a document you want to serialized it to disk or into a plain (or encrypted) stream. <application>dom4j</application> provides a set of classes to serialize
-your DOM4J tree in four ways:
+Once you have parsed or created a document you want to serialize it to disk or 
+into a plain (or encrypted) stream. <application>dom4j</application> provides a set of classes to serialize
+your dom4j tree in four ways:
 </para>
 
 <itemizedlist>
@@ -300,9 +379,14 @@ your DOM4J tree in four ways:
 </itemizedlist>
 
 <section><title>Serializing to XML</title>
-<classname>org.dom4j.io.XMLWriter</classname> is a easy-to-use and easy-to-understand class used to serialize a <application>dom4j</application> Tree to a plain <acronym>XML</acronym>. You are able
-to write these <acronym>XML</acronym> tree with either a <classname>java.io.OutputStream</classname> or a <classname>java.io.Writer</classname>. This can be configured with the overloaded constructor.
-Writer's can be installed after instantion also. Let's have a look at a example.
+<classname>org.dom4j.io.XMLWriter</classname> is a easy-to-use and easy-to-understand class used 
+to serialize a <application>dom4j</application> tree to a plain <acronym>XML</acronym>. 
+You are able
+to write the <acronym>XML</acronym> tree to either an <classname>java.io.OutputStream</classname> 
+or a <classname>java.io.Writer</classname>. 
+This can be configured with the overloaded constructor or via the 
+<classname>setOutputStream()</classname> or <classname>setReader()</classname> methods.
+Let's have a look at a example.
 
 <programlisting>
 
@@ -328,14 +412,23 @@ public class DeployFileCreator {
 </programlisting>
 
 <para>
-We use the constructor to wrap a given <classname>OutputStream</classname> with the appropriate encoding. You should use a <classname>Writer</classname> rather than a <classname>OutputStream</classname>, because you are able to control the encoding of your XML application. Since write()-Method is overloaded you are able to write all Object of which DOM4J consits.
+We use the constructor of <classname>XMLWriter</classname> to pass a to given 
+<classname>OutputStream</classname> along with the required character encoding. 
+It is easier to use a <classname>Writer</classname> rather than an <classname>OutputStream</classname>, 
+because the <classname>Writer</classname>  is String based and so has ness 
+character encoding issues.
+The write() methods of <classname>Writer</classname> are overloaded so that you can write all of the dom4j objects individually if required.
 </para>
 
 
-<section><title>Influencing the output format</title>
+<section><title>Customizing the output format</title>
 <para>
-There are two way to influence the output format: <classname>org.dom4j.io.OutputFormater</classname> and <classname>org.dom4j.io.XMLWriter</classname>. Both provide methods for formatting the output e.g setting of indent
-or new line.
+The default output format is to write the XML document as-is.
+If you want to change the output format then there is a class 
+<classname>org.dom4j.io.OutputFormat</classname> which allows you to define pretty printing options, 
+to suppress the output of the XML declaration, change the line ending and so on.
+There is also a helper method <classname>OutputFormat.createPrettyPrint()</classname> which will
+create a default pretty printing format that you can further customize if you wish.
 </para>
 
 
@@ -364,12 +457,14 @@ public class DeployFileCreator {
 </programlisting>
 
 <para>
-<classname>XMLWriter</classname> has a default OutputFormat, but that is only a unconfigured instance of <classname>OutputFormat</classname>, so whenever you want to get a good readable output you should configure it.
-Whereas <classname>OutputFormat</classname> gains you more control and information about the applied format <classname>XMLWriter</classname> has confortable methods that provide nearly the same functionability. Another interesting feature of <classname>OutputFormat</classname> the ability of setting the encoding. It is a good idiom to use <classname>OutputFormat</classname> for setting the encoding.
+An interesting feature of <classname>OutputFormat</classname> the ability to set 
+the character encoding. It is a good idiom to use this mechansim for setting the encoding
+as the XMLWriter will be able to use this encoding to create an OutputStream as well
+as to output the XML declaration.
 </para>
 
 <para>
-The <classname>close()</classname> method is necessary to close the underlying <classname>Writer</classname>. So if you consider to use a <classname>OutputStream</classname> you should use <classname>flush()</classname> instead.
+The <classname>close()</classname> method closes the underlying <classname>Writer</classname>. 
 </para>
 
 <programlisting>
@@ -393,29 +488,25 @@ public class DeployFileCreator {
    this.outFormat = outFormat;
  }
 
- public void serilizeToXML(OutputStream out) throws Exception {
+ public void writeAsXML(OutputStream out) throws Exception {
    XMLWriter writer = new XMLWriter(outFormat, this.outFormat);
    writer.write(this.doc);
-   writer.flush();
  }
 
- public void serilizeToXML(OutputStream out, String encoding) throws Exception {
+ public void writeAsXML(OutputStream out, String encoding) throws Exception {
    this.outFormat.setEncoding(encoding);
-   this.serzializeToXML(out);
+   this.writeAsXML(out);
  }
 
 }
 </programlisting>
 
 <para>
-The serialization methods in our little example will now set encoding using <classname>OutputFormater</classname>. If you use the parameterless construtor and the seriazliation method takes only
-an <classname>java.io.OutputStream</classname> <acronym>UTF8</acronym> is used for encoding. If you need a simple output on screen for debbuing or testing you can omit setting of a <classname>Writer</classname> or an <classname>OutputStream</classname> completly
-because <application>dom4j</application>.<classname>org.io.XMLWriter</classname> standard Stream is <classname>System.out</classname>.
-</para>
-
-<para>
-When you use a <classname>java.io.OutputStream</classname> you should use the <classname>flush()</classname> method, when you use a writer its recommended to use
-<classname>close()</classname>.
+The serialization methods in our little example will now set encoding using <classname>OutputFormater</classname>. 
+The default encoding if none is specifed will be <acronym>UTF-8</acronym>. 
+If you need a simple output on screen for debbuing or testing you can omit setting of 
+a <classname>Writer</classname> or an <classname>OutputStream</classname> completely
+as <classname>XMLWriter</classname> will default to <classname>System.out</classname>.
 </para>
 
 </section>
@@ -424,8 +515,11 @@ When you use a <classname>java.io.OutputStream</classname> you should use the <c
 
 <section><title>Printing HTML</title>
 <para>
-<classname>HTMLWriter</classname> takes a <application>dom4j</application> tree and formats it to a stream as <acronym>HTML</acronym>. This formatter is similar to
-<classname>XMLWriter</classname> but outputs the text of CDATA and Entity sections rather than the serialised format as in <acronym>XML</acronym> and also supports certain element which have no corresponding close tag such as for &lt;BR&gt; and &lt;P&gt;
+<classname>HTMLWriter</classname> takes a <application>dom4j</application> tree 
+and formats it to a stream as <acronym>HTML</acronym>. This formatter is similar to
+<classname>XMLWriter</classname> but outputs the text of CDATA and Entity sections rather than the serialised 
+format as in <acronym>XML</acronym> and also supports many HTML element which have no corresponding close tag 
+such as for &lt;BR&gt; and &lt;P&gt;
 </para>
 
 <programlisting>
@@ -449,7 +543,7 @@ public class DeployFileCreator {
    this.outFormat = outFormat;
  }
 
- public void serilizeToHTML(OutputStream out) throws Exception {
+ public void writeAsHTML(OutputStream out) throws Exception {
    HTMLWriter writer = new HTMLWriter(outFormat, this.outFormat);
    writer.write(this.doc);
    writer.flush();
@@ -460,11 +554,13 @@ public class DeployFileCreator {
 
 </section>
 
-<section><title>Building a DOM-Tree</title>
+<section><title>Building a DOM tree</title>
 <para>
-Sometimes it's necessary to transform your <application>dom4j</application> tree into an <acronym>DOM</acronym> tree, because you are currently refactoring your application.
-<application>dom4j</application> is very convient for step-to-step substitution of older <acronym>XML</acronym> <acronym>API</acronym>'s like dom or even <acronym>SAX</acronym>
-(see <anchor id="DOM4J2SAX">Generating SAX Events</anchor>). Let's move to an example:
+Sometimes it's necessary to transform your <application>dom4j</application> tree 
+into a <acronym>DOM</acronym> tree, because you are currently refactoring your application.
+<application>dom4j</application> is very convient for integration with older <acronym>XML</acronym> 
+<acronym>API</acronym>'s like <acronym>DOM</acronym> or <acronym>SAX</acronym>
+(see <anchor id="dom4j2SAX">Generating SAX Events</anchor>). Let's move to an example:
 </para>
 
 <programlisting>
@@ -478,8 +574,8 @@ public class DeployFileLoaderSample {
   private org.dom4j.Document doc;
 
   public org.w3c.dom.Document transformtoDOM() {
-     DOMWriter writer = new DOMWriter();
-     return writer.createDomDocument(this.doc);
+    DOMWriter writer = new DOMWriter(); 
+    return writer.write(this.doc);
   }
 }
 
@@ -487,9 +583,10 @@ public class DeployFileLoaderSample {
 
 </section>
 
-<section id="DOM4J2SAX"><title>Generating SAX Events</title>
+<section id="dom4j2SAX"><title>Generating SAX Events</title>
 <para>
-When you want to resolve a existing document into sax events in order to process it by origin classes <application>dom4j</application> provides <classname>org.dom4j.SAXWriter</classname>.
+If you want to output a document as sax events in order to integrate with some existing SAX
+code, you can use the <classname>org.dom4j.SAXWriter</classname> clas.
 </para>
 
 
@@ -513,30 +610,36 @@ public class DeployFileLoaderSample {
 </programlisting>
 
 <para>
-Using <classname>SAXWriter</classname> is fairly easy as you can see. You can resolve also <classname>org.dom.Element</classname> which means that you are able to process a single element branch with <acronym>SAX</acronym>.
+Using <classname>SAXWriter</classname> is fairly easy as you can see. 
+You can resolve also <classname>org.dom.Element</classname> which means that 
+you are able to process a single element branch or even a single node with <acronym>SAX</acronym>.
 </para>
 </section>
 </chapter>
 
 <chapter>
-<title>Navigation in DOM4J</title>
+<title>Navigation in dom4j</title>
 <para>
-dom4j offers powerfully methods for navigating through a document. These methods are:
+dom4j offers several powerful mechansims for navigating through a document:-
 </para>
 
 <itemizedlist>
-  <listitem><para>Sun Implementation of GOF's Iterator Pattern in Collection API (java.util.Iterator and java.util.ListIterator)</para></listitem>
-  <listitem><para>Index based navigation with List.get()</para></listitem>
-  <listitem><para>In-Build XPath support</para></listitem>
+  <listitem><para>Using Iterators</para></listitem>
+  <listitem><para>Fast index based navigation</para></listitem>
+  <listitem><para>Using a backed List</para></listitem>
+  <listitem><para>Using XPath</para></listitem>
   <listitem><para>In-Build GOF Visitor Pattern</para></listitem>
 </itemizedlist>
 
 <section><title>Using Iterator</title>
 <para>
-Most Java developers have already used java.util.Iterator or it's ancestor <classname>java.util.Enumeration</classname>. Both classe are fairly involed into the Collection API and used
-to visit the elements of a collection. The Iterator is appylied usually with a while loop and Iterator methods hasNext() and next() item. Right now Collection API
-dont support Generic Type (like C++ Templates), but there's already a Early Access Implemention avaialbe. We talked a lot of Iterator for now let's move to an living
-example of it in dom4j.
+Most Java developers have already used java.util.Iterator or it's ancestor 
+<classname>java.util.Enumeration</classname>. 
+Both classe are fairly involed into the Collection API and used
+to visit the elements of a collection. The Iterator is appylied usually with a while 
+loop and Iterator methods hasNext() and next() item. Right now Collection API
+dont support Generic Type (like C++ Templates), but there's already a Early Access Implemention available. 
+Now let's move to an living example of it in dom4j.
 </para>
 </section>
 
@@ -556,17 +659,22 @@ public class DeployFileLoaderSample {
     root = this.doc.getRootElement();
     Iterator elementIterator = root.elementIterator();
     while(elementIterator.hasNext()){
-      System.out.println(((Element)elementIterator.next()).getName());
+      Element elmeent = (Element)elementIterator.next();
+      System.out.println(element.getName());
     }
-
   }
 }
 </programlisting>
 
 <para>
-The above example might be a little bit confusing if you are not close to Collection API. Casting is necessary when you want to acess the object. Sometimes casting
-can be dangerous because of a <classname>java.lang.ClassCastException</classname>. dom4j normally uses a clean object model that such a exception never occurs. There's another interesting
-approach in API may be usefull.
+The above example might be a little bit confusing if you are not too familiar with the Collections API. 
+Casting is necessary when you want to acess the object. 
+<!--
+XXXX - not relevant yet?
+Sometimes casting can be dangerous because of a <classname>java.lang.ClassCastException</classname>. 
+dom4j normally uses a clean object model that such a exception never occurs. 
+There's another interesting approach in API may be usefull.
+-->
 </para>
 
 <programlisting>
@@ -584,7 +692,8 @@ public class DeployFileLoaderSample {
     root = this.doc.getRootElement();
     Iterator elementIterator = root.elementIterator(aFilterElementName);
     while(elementIterator.hasNext()){
-      System.out.println(((Element)elementIterator.next()).getName());
+      Element elmeent = (Element)elementIterator.next();
+      System.out.println(element.getName());
     }
   }
 }
@@ -595,10 +704,39 @@ Now the the method iterates on such Elements that have the <emphasis>same name</
 filter applied on top of Collection API's Iterator.
 </para>
 
-<section><title>Index based Navigation</title>
+<section><title>Fast index based Navigation</title>
 <para>
-Sometimes it's nessary to access an Element directly by it's index. The following example is a modification of our <classname>Iterator</classname> example
-explaining index addressing in <application>dom4j</application>.
+Sometimes if you need to walk a large tree very quickly, creating an <classname>java.io.Iterator</classname>
+instance to loop through each <classname>Element</classname>'s children can be expensive in
+high performance environment.
+To help this situation, <application>dom4j</application> provides a fast index based looping as follows.
+</para>
+
+<programlisting>
+  public void treeWalk(Document document) {
+    treeWalk( document.getRootElement() );
+  }
+
+  public void treeWalk(Element element) {
+    for ( int i = 0, size = element.nodeCount(); i &lt; size; i++ ) {
+      Node node = element.node(i);
+      if ( node instanceof Element ) {
+        treeWalk( (Element) node );
+      }
+      else {
+        // do something....
+      }
+    }
+  }
+</programlisting>
+
+
+<section><title>Using a backed List</title>
+<para>
+You can navigate through an <classname>Element</classname>'s children
+using a backed <classname>List</classname> such that modifications to the
+<classname>List</classname> are reflected back into the <classname>Element</classname>.
+It also means that all of the methods on <classname>List</classname> can be used.
 </para>
 
 <programlisting>
@@ -610,30 +748,29 @@ import org.dom4j.Element;
 public class DeployFileLoaderSample {
 
   private org.dom4j.Document doc;
-  private org.dom4j.Element root;
 
   public void iterateRootChildren() {
-    root = this.doc.getRootElement();
+    Element root = doc.getRootElement();
+
     List elements = root.elements;
-    for(int i=0; i &lt; list.size(); i++) {
-      System.out.println(((Element)elements.get(i)).getName());
+
+    // we have access to the size() and other List methods
+    if ( elements.size() > 4 ) {
+      // now lets remove a range of elements  
+      elements.subList( 3, 4 ).clear();
     }
   }
 }
 </programlisting>
 
-<para>
-Remember that this form of Navigation is unsafe. You have to deal with <classname>IndexOutOfBoundsException</classname> and should choose this form of Navigation  only when fast
-<emphasis>direct access</emphasis> is necessary.
-</para>
-
-
 </section>
 
-<section><title>The XPath Implementation</title>
+<section><title>Using XPath</title>
 <para>
-<acronym>XPath</acronym> is is one of the most usefull features of <application>dom4j</application>. You can use it to retrieval element brances from any location
-your currently are. A good XPath Refercence can be found in Micheal Kay's XSLT book <citation>XSLTReference</citation>.
+<acronym>XPath</acronym> is is one of the most usefull features of <application>dom4j</application>. 
+You can use it to retrieve nodes from any location as well as evaluating complex expressions.
+A good XPath refercence can be found in Micheal Kay's XSLT book <citation>XSLTReference</citation>
+along with the <citation>Zvon</citation> Zvon tutorial.
 </para>
 </section>
 
@@ -649,23 +786,39 @@ public class DeployFileLoaderSample {
   private org.dom4j.Element root;
 
   public void browseRootChildren() {
-  Iterator xpathResult = this.doc.selectNodes("/*").iterator();
-  while(xpathPathResult.hasNext(){
-   System.out.println(((Element)elementIterator.next()).getName());
+    List results = doc.selectNodes("/people/person[@name='Toby']")
+    for ( Iterator iter = result.iterator(); iter.hasNext(); ) {
+      Element element = (Element) iter.next();
+      System.out.println(element.getName();
+    }
+
+    String address = doc.valueOf( "//person[@name='Toby']/address" );
+    Number count = doc.numberValueOf( "//people[@location='London']" );
   }
 
 }
 </programlisting>
 
 <para>
-As selectNodes returns a List we can apply <classname>Iterator</classname> or any other Operation avaliable on <classname>java.util.List</classname>. It's also able to select a singel node when you use a fully qualified XPath.
+As selectNodes returns a List we can apply <classname>Iterator</classname> 
+or any other operation avaliable on <classname>java.util.List</classname>. 
+You can also select a single node via <classname>selectSingleNode()</classname>
+as well as to select a String expression via <classname>valueOf()</classname>
+or Number 
+value of an XPath expression via <classname>numberVvalueOf()</classname>.
 </para>
+
 
 <section><title>Using Visitor Pattern</title>
 <para>
-The visitor pattern has a recrusive behavior and acts like <acronym>SAX</acronym> in the way that partical traversal is <emphasis>not</emphasis> possible. This means the complete document or the complete element branch will be visited. You should consider wisely when you want to use Visitor pattern, but then it offers a powerfull and elegant way of navigation. This document doesn't explain Vistor Pattern in deepth, <citation>GoF98</citation> covers more information.
+The visitor pattern has a recrusive behavior and acts like <acronym>SAX</acronym> 
+in the way that partical traversal is <emphasis>not</emphasis> possible. 
+This means the complete document or the complete element branch will be visited.
+ You should consider wisely when you want to use Visitor pattern, but then it 
+offers a powerful and elegant way of navigation. 
+This document doesn't explain Vistor Pattern in deepth, 
+<citation>GoF98</citation> covers more information.
 </para>
-</section>
 
 <programlisting>
 import java.util.Iterator;
@@ -680,35 +833,41 @@ public class VisitorSample {
   public void demo(Document doc) {
 
     Visitor visitor = new VisitorSupport() {
-
-    public void visit(Element element) {
-            System.out.println(
-                "Entity name: " + element.getName()  + "text " + element.getText();
-            );
-        }
+      public void visit(Element element) {
+        System.out.println(
+          "Entity name: " + element.getName()  + "text " + element.getText();
+        );
+      }
     };
 
-  doc.accept( visitor );
- }
-
+    doc.accept( visitor );
+  }
 }
 
 </programlisting>
 
 <para>
-As you can see we used a anonymous inner class to override the <classname>VisitorSupport</classname> callback apdapter method visit(Element element), wherase accept starts
-the inbuild vistor implemention. Please keep in mind that the <emphasis>complete</emphasis> element branch is visited.
+As you can see we used a anonymous inner class to override the 
+<classname>VisitorSupport</classname> callback adapter method 
+visit(Element element) and the accept() method starts
+the vistor mechansim. 
+Please keep in mind that the <emphasis>complete</emphasis> element branch is visited.
 </para>
+</section>
+</section>
 </chapter>
 
-<chapter><title>Mainpulation with DOM4J</title>
+
+<chapter><title>Manipulating dom4j</title>
 <para>
 Accessing XML content statically alone would not very special. Thus dom4j offers several methods for manipulation a documents content.
 </para>
 
 <section><title>What <classname>org.dom4j.Document</classname> provides</title>
 <para>
-A <classname>org.dom4j.Document</classname> allows you to configure and retreive the root element. You are also able to set the DOCTYPE or a SAX based <classname>EntityResolver</classname>. An empty <classname>Document</classname> should be created via <classname>org.dom4j.DocumentFactory</classname>.
+A <classname>org.dom4j.Document</classname> allows you to configure and retreive the root element. 
+You are also able to set the DOCTYPE or a SAX based <classname>EntityResolver</classname>. 
+An empty <classname>Document</classname> should be created via <classname>org.dom4j.DocumentFactory</classname>.
 </para>
 </section>
 
@@ -796,7 +955,7 @@ A <classname>org.dom4j.Document</classname> allows you to configure and retreive
 
   </section>
 
-<section><title>Cloning - Who many sheeps do you need?</title>
+<section><title>Cloning - How many sheeps do you need?</title>
   <para>
   Elements can be cloned as well. Usually cloning is supported in Java with clone() method that is derived from <classname>Object</classname>, but a cloneable Object have to
   implement interface <classname>Clonable</classname>. Java support shallow copying by simply returning <emphasis>this</emphasis> for standard. dom4j supporting  deep cloning
@@ -839,7 +998,7 @@ A <classname>org.dom4j.Document</classname> allows you to configure and retreive
 </section>
 </chapter>
 
-<chapter><title>Using dom4j for XSLT</title>
+<chapter><title>Using dom4j with XSLT</title>
 <para>
 With eXtensible Stylesheet Language XML got's a powerfull method of transforming itself into other formats. Developing  Exportfilter's for dataformats are normally a hard job and so for XML XSL simpliefs that work. The aronym XSLT means the process of transformation, that is usally done by an XSL compliant Processor. XSL covers following subjects:
 </para>
@@ -975,6 +1134,13 @@ Imagine that you use XSLT to process a XML Schema in order to generate a empty t
     <holder>http://www.artima.com/designtechniques/interfaces.html</holder>
   </copyright>
   <title>Designing with Interfaces - One Programmer's Struggle to Understand the Interface</title>
+</biblioentry>
+<biblioentry>
+  <abbrev>Zvon</abbrev>
+  <copyright>
+    <holder>http://www.zvon.org/xxl/XPathTutorial/General/examples.html</holder>
+  </copyright>
+  <title>Zvon XPath tutorial</title>
 </biblioentry>
 </bibliodiv>
 </book>
