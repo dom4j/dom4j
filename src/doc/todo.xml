@@ -3,17 +3,6 @@
   <body>
     <title>To Do List</title>
     
-    <section title="Known problems">    
-      <p>The following functions are not yet fully supported in the inbuilt
-        XPath engine</p>
-      <ul>
-        <li>id()</li>
-        <li>generate-id()</li>
-        <li>format-number()</li>
-      </ul>
-      <p>The optional DOM implementation is not yet at full DOM compliance</p>
-    </section>
-
     <section title="To Do List">
       <ul>
         <li>Better documentation and user guides
@@ -24,34 +13,36 @@
         </li>
         <li>Build an XML Schema Data Types aware DocumentFactory
         </li>
-        <li>Build validators using dom4j API such as:-
+        <li>Build validators using dom4j API using schema and validation technologies such as:-
           <ul>
             <li><a href="http://www.w3.org/XML/Schema">XML Schema</a></li>
             <li><a href="http://xml.ascc.net/xml/resource/schematron/schematron.html">Schematron</a></li>
             <li><a href="http://www.thaiopensource.com/trex/">TReX</a></li>
           </ul>
         </li>
-        <li>Implement XSLT engine on top of DOM4J
+        <li>Implement XSLT engine on top of <i>dom4j</i>
         </li>
-        <li>XML Query implementation on top of DOM4J
+        <li>XML Query implementation on top of <i>dom4j</i>
         </li>
       </ul>
     </section>
 
     <section title="Change History">
-        <section title="(soon to be released) 0.2 release">
+        <section title="0.2 release">
           <p>There following new features were added:-
           </p>
           <ul>
             <li>Clean integration with XSLT via JAXP / TRaX API.
             </li>
-            <li>API modified to avoid clashes with WC3 DOM such that a dual 
-                implementation of dom4j and DOM is now possible. An early alpha
-                release of a DOM implementation of dom4j is available.
+            <li>New SAXValidator to allow validation on prebuild Document instances
             </li>
             <li>XMLWriter and HTMLWriter rewritten so that they work at either 
                 the SAX level or the dom4j level. 
                 API much improved and more like Reader and Writer in the JDK.
+            </li>
+            <li>API modified to avoid clashes with WC3 DOM such that a dual 
+                implementation of dom4j and DOM is now possible. An early alpha
+                release of a DOM implementation of dom4j is available.
             </li>
             <li>New sorting method added to Node for easier selections of nodes
               which are sorted via an XPath expression. The following
@@ -82,6 +73,18 @@ List customers
             support and integrated XPath
           </p>
         </section>
+    </section>
+
+    <section title="Known problems">    
+      <p>The following functions are not yet fully supported in the inbuilt
+        XPath engine</p>
+      <ul>
+        <li>id()</li>
+        <li>generate-id()</li>
+        <li>format-number()</li>
+      </ul>
+      <p>The optional W3C DOM implementation of the dom4j API is not yet at 
+      full DOM compliance</p>
     </section>
 
   </body>

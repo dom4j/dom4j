@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="DOM4J" repository="dom4j" href="http://dom4j.org">
 
-  <title>DOM4J: Open Source XML Framework for Java with integrated XPath</title>
+  <title>dom4j: Open Source XML Framework for Java with integrated XPath</title>
 
   <meta>
     
@@ -17,14 +17,14 @@
         <td align="right" valign="center">
           <font size="2">
             <a href="faq.html">FAQ</a> 
-            | <a href="compare.html">Comparison</a> 
-            | <a href="guide.html">Quick Start</a> 
+            | <a href="compare.html">comparison</a> 
+            | <a href="guide.html">quick start</a> 
             | <a href="apidocs/index.html">API</a> 
-            | <a href="javadoc/index.html">Full JavaDoc</a> 
-            | <a href="download.html">Download</a>
-            | <a href="goals.html">Goals</a> 
-            | <a href="todo.html">Status</a> 
-            | <a href="http://sourceforge.net/projects/dom4j/">Project Page</a>
+            | <a href="javadoc/index.html">full JavaDoc</a> 
+            | <a href="download.html">download</a>
+            | <a href="goals.html">goals</a> 
+            | <a href="todo.html">status</a> 
+            | <a href="http://sourceforge.net/projects/dom4j/">project page</a>
           </font>
         </td>
       </tr>

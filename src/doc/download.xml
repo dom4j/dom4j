@@ -45,7 +45,7 @@
         <pre>
 cvs -d:pserver:anonymous@cvs.dom4j.org:/cvsroot/dom4j login 
 
-cvs -z3 -d:pserver:anonymous@cvs.dom4j.org:/cvsroot/dom4j co dom4j
+cvs -d:pserver:anonymous@cvs.dom4j.org:/cvsroot/dom4j co dom4j
         </pre>
         <p>Updates from within the module's directory do not need the -d parameter.
         </p>
@@ -62,7 +62,7 @@ cvs -z3 -d:pserver:anonymous@cvs.dom4j.org:/cvsroot/dom4j co dom4j
         <pre>
 export CVS_RSH=ssh 
  
-cvs -z3 -d:ext:developername@cvs.dom4j.org:/cvsroot/dom4j co dom4j
+cvs -d:ext:developername@cvs.dom4j.org:/cvsroot/dom4j co dom4j
         </pre>
       </section>
 

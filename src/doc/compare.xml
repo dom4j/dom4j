@@ -16,7 +16,7 @@
         <tr>
             <th align="left">Feature</th>
             <th align="left"><a href="http://www.w3.org/DOM/">WC3 DOM</a></th>
-            <th align="left"><a href="http://dom4j.org">dom4j</a></th>
+            <th align="left"><a href="http://dom4j.org"><i>dom4j</i></a></th>
             <th align="left"><a href="http://www.jdom.org">JDOM</a></th>
             <th align="left"><a href="http://www.themindelectric.com/products/xml/xml.html">Electric XML</a></th>
         </tr>

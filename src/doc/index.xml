@@ -27,7 +27,7 @@
 
     <section title="Getting Started">
       <p>For a quick overview of <i>dom4j</i> and how to use it try the reading the
-        <a href="guide.html">Quick Start Guide</a> or browsing the
+        <a href="guide.html">quick start guide</a> or browsing the
         <a href="faq.html">FAQ</a> or the online 
         <a href="apidocs/index.html">JavaDoc</a>.
         To see how <i>dom4j</i> compares to other XML object models you could try
