@@ -66,6 +66,9 @@
 
     <!-- Activate support for fop in Ant (tradem) / Must be in classpath -->
     <path id="fop.classpath">
+      <fileset dir="${lib.dir}/fop">
+        <include name="**/*.jar"/>
+      </fileset>
       <fileset dir="${lib.dir}">
         <include name="**/*.jar"/>
       </fileset>
