@@ -34,11 +34,11 @@ public class BeanElement extends DefaultElement {
     
     
     public BeanElement(String name, Object bean) { 
-        this( QName.get(name), bean );
+        this( DOCUMENT_FACTORY.createQName(name), bean );
     }
 
     public BeanElement(String name,Namespace namespace, Object bean) { 
-        this( QName.get(name, namespace), bean );
+        this( DOCUMENT_FACTORY.createQName(name, namespace), bean );
     }
 
     public BeanElement(QName qname, Object bean) { 

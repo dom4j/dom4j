@@ -21,6 +21,7 @@ import org.dom4j.tree.DefaultElement;
 import org.dom4j.tree.DefaultEntity;
 import org.dom4j.tree.DefaultProcessingInstruction;
 import org.dom4j.tree.DefaultText;
+import org.dom4j.tree.QNameCache;
 import org.dom4j.tree.XPathEntity;
 import org.dom4j.xpath.DefaultXPath;
 import org.dom4j.xpath.XPathPattern;
@@ -41,6 +42,8 @@ public class DocumentFactory {
 
     /** The Singleton instance */
     private static DocumentFactory singleton;
+    
+    protected transient QNameCache cache;
 
     static {
         String className = System.getProperty( 
@@ -59,7 +62,10 @@ public class DocumentFactory {
     public static DocumentFactory getInstance() {
         return singleton;
     }
-    
+
+    public DocumentFactory() {
+        cache = new QNameCache(this);
+    }
     
     // Factory methods
     
@@ -135,11 +141,19 @@ public class DocumentFactory {
     }
     
     public QName createQName(String localName, Namespace namespace) {
-        return QName.get(localName, namespace);
+        return cache.get(localName, namespace);
     }
     
     public QName createQName(String localName) {
-        return QName.get(localName);
+        return cache.get(localName);
+    }
+    
+    public QName createQName(String name, String prefix, String uri) {
+        return cache.get(name, Namespace.get( prefix, uri ));
+    }
+
+    public QName createQName(String qualifiedName, String uri) {
+        return cache.get(qualifiedName, uri);
     }
     
     /** <p><code>createXPath</code> parses an XPath expression

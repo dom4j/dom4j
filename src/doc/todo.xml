@@ -35,6 +35,13 @@
     </section>
 
     <section title="Change History">
+        <section title="coming soon, the 0.4 release">
+          <p>Applied Theo's patch for the XPath <code>substring</code> function 
+            that was causing the incorrect string indexes to be returned.
+            The <code>substring</code> now returns the correct answer.
+          </p>
+        </section>
+
         <section title="0.3 release">
           <p>The <code>org.dom4j.io.OutputFormat</code> class now has a new helper
             method to make it easier to create pretty print formatting objects.

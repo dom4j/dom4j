@@ -153,6 +153,32 @@ transformer.transform( source, result );
     </section>
 
     
+    <section title="How can I parse a document from a String?">
+      <p>Sometimes you have a String (or StringBuffer) which contains the XML 
+        to be parsed. This can be parsed using <code>SAXReader</code>
+        and the <code>StringReader</code> from the JDK. For example:-
+      </p>
+      <pre>
+import java.io.IOException;
+import java.io.StringReader;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.io.SAXReader;
+
+public class Foo {
+    private String xmlText 
+      = "&lt;root&gt; &lt;child id='1'&gt;James&lt;/child&gt; &lt;/root&gt;";
+
+    protected Document parse() throws IOException, DocumentException {
+        SAXReader reader = new SAXReader();
+        return reader.read( new StringReader( xmlText ) );
+    }
+}
+      </pre>
+    </section>
+
+
     <section title="How does dom4j handle very large XML documents?">
       <p><i>dom4j</i> provides an event based model for processing XML documents.
         Using this event based model allows developers to prune the XML tree

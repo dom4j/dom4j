@@ -300,7 +300,7 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     
     protected Attribute attribute(org.w3c.dom.Attr attr) {
         return attribute( 
-            QName.get( 
+            DOCUMENT_FACTORY.createQName( 
                 attr.getLocalName(), 
                 attr.getPrefix(), 
                 attr.getNamespaceURI() 
@@ -328,11 +328,11 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
         if ( uri != null && uri.length() > 0 ) {
             Namespace namespace = getNamespaceForURI( uri );
             if ( namespace != null ) {
-                qname = QName.get( name, namespace );
+                qname = DOCUMENT_FACTORY.createQName( name, namespace );
             }
         }
         if ( qname == null ) {
-            qname = QName.get( name );
+            qname = DOCUMENT_FACTORY.createQName( name );
         }
         return new DOMAttribute( qname, newAttr.getValue() );
     }
@@ -345,7 +345,7 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
             prefix = qualifiedName.substring(0, index);
             localName = qualifiedName.substring(index+1);
         }
-        return QName.get( localName, prefix, namespaceURI );
+        return DOCUMENT_FACTORY.createQName( localName, prefix, namespaceURI );
     }
 }
 

@@ -118,7 +118,7 @@ public class DOMDocumentFactory extends DocumentFactory implements org.w3c.dom.D
     ) throws org.w3c.dom.DOMException {
         DocumentType docType = asDocumentType( documentType );
         DOMDocument document = new DOMDocument( docType );
-        document.addElement( QName.get( qualifiedName, namespaceURI ) );
+        document.addElement( createQName( qualifiedName, namespaceURI ) );
         return document;
    }
 

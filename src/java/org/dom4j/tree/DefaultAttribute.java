@@ -47,7 +47,7 @@ public class DefaultAttribute extends AbstractAttribute {
       * @param value is the value of the attribute
       */
     public DefaultAttribute(String name, String value) {
-        this.qname = QName.get(name);
+        this.qname = getDocumentFactory().createQName(name);
         this.value = value;
     }
 
@@ -59,7 +59,7 @@ public class DefaultAttribute extends AbstractAttribute {
       * @param namespace is the namespace of the attribute
       */
     public DefaultAttribute(String name, String value, Namespace namespace) {
-        this.qname = QName.get(name, namespace);
+        this.qname = getDocumentFactory().createQName(name, namespace);
         this.value = value;
     }
     

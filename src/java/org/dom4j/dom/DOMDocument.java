@@ -231,7 +231,7 @@ public class DOMDocument extends DefaultDocument implements org.w3c.dom.Document
     }
 
     public org.w3c.dom.Attr createAttribute(String name) throws DOMException {
-        return new DOMAttribute( QName.get(name) );
+        return new DOMAttribute( DOCUMENT_FACTORY.createQName(name) );
     }
     
     public org.w3c.dom.EntityReference createEntityReference(String name) throws DOMException {
@@ -248,14 +248,14 @@ public class DOMDocument extends DefaultDocument implements org.w3c.dom.Document
     public org.w3c.dom.Element createElementNS(
         String namespaceURI, String qualifiedName
     ) throws DOMException {
-        QName qname = QName.get( qualifiedName, namespaceURI );
+        QName qname = DOCUMENT_FACTORY.createQName( qualifiedName, namespaceURI );
         return new DOMElement( qname );
     }
 
     public org.w3c.dom.Attr createAttributeNS(
         String namespaceURI, String qualifiedName
     ) throws DOMException {
-        QName qname = QName.get( qualifiedName, namespaceURI );
+        QName qname = DOCUMENT_FACTORY.createQName( qualifiedName, namespaceURI );
         return new DOMAttribute( qname );
     }
 

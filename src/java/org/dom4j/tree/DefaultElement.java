@@ -67,7 +67,7 @@ public class DefaultElement extends AbstractElement {
     
     
     public DefaultElement(String name) { 
-        this.qname = QName.get(name);
+        this.qname = getDocumentFactory().createQName(name);
     }
 
     public DefaultElement(QName qname) { 
@@ -75,7 +75,7 @@ public class DefaultElement extends AbstractElement {
     }
 
     public DefaultElement(String name, Namespace namespace) { 
-        this.qname = QName.get(name, namespace);
+        this.qname = getDocumentFactory().createQName(name, namespace);
     }
 
     public Element getParent() {
@@ -466,7 +466,7 @@ public class DefaultElement extends AbstractElement {
     }
 
     public Element element(String name, Namespace namespace) {
-        return element( QName.get( name, namespace ) );
+        return element( getDocumentFactory().createQName( name, namespace ) );
     }
     
     
@@ -548,7 +548,7 @@ public class DefaultElement extends AbstractElement {
     }
     
     public List elements(String name, Namespace namespace) {
-        return elements( QName.get(name, namespace ) );
+        return elements( getDocumentFactory().createQName(name, namespace ) );
     }
     
     public Iterator elementIterator() {
@@ -598,7 +598,7 @@ public class DefaultElement extends AbstractElement {
     }
     
     public Iterator elementIterator(String name, Namespace namespace) {
-        return elementIterator( QName.get( name, namespace ) );
+        return elementIterator( getDocumentFactory().createQName( name, namespace ) );
     }
     
     public void setContent(List content) {
@@ -735,7 +735,7 @@ public class DefaultElement extends AbstractElement {
     }
 
     public Attribute attribute(String name, Namespace namespace) {
-        return attribute( QName.get( name, namespace ) );
+        return attribute( getDocumentFactory().createQName( name, namespace ) );
     }
 
     public boolean remove(Attribute attribute) {

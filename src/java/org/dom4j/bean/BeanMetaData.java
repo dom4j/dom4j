@@ -17,6 +17,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.dom4j.DocumentFactory;
 import org.dom4j.QName;
 
 /** <p><code>BeanMetaData</code> contains metadata about a bean class.</p>
@@ -32,6 +33,7 @@ public class BeanMetaData {
     /** Singleton cache */
     private static Map singletonCache = new HashMap();
     
+    private static final DocumentFactory DOCUMENT_FACTORY = BeanDocumentFactory.getInstance();
     
     /** The class of the bean */
     private Class beanClass;
@@ -84,7 +86,7 @@ public class BeanMetaData {
         for ( int i = 0; i < size; i++ ) {
             PropertyDescriptor propertyDescriptor = propertyDescriptors[i];
             String name = propertyDescriptor.getName();
-            QName qName = QName.get( name );
+            QName qName = DOCUMENT_FACTORY.createQName( name );
             qNames[i] = qName;
             readMethods[i] = propertyDescriptor.getReadMethod();
             writeMethods[i] = propertyDescriptor.getWriteMethod();

@@ -159,7 +159,7 @@ public class DOMReader {
                 prefix = qualifiedName.substring(0, index);
                 localName = qualifiedName.substring(index + 1);
             }
-            QName qName = QName.get(localName, prefix, namespaceUri);
+            QName qName = factory.createQName(localName, prefix, namespaceUri);
             element = current.addElement(qName);
         }
         else {
@@ -203,7 +203,7 @@ public class DOMReader {
                 String value = attribute.getNodeValue();
                 if ( prefix != null && prefix.length() > 0 ) {
                     Namespace namespace = (Namespace) localNamespaces.get(prefix);
-                    element.setAttributeValue( QName.get( attribute.getLocalName(), namespace ), value  );
+                    element.setAttributeValue( factory.createQName( attribute.getLocalName(), namespace ), value  );
                 }
                 else {
                     element.setAttributeValue( attribute.getNodeName(), value );
@@ -218,82 +218,7 @@ public class DOMReader {
             readTree( child, element, localNamespaces );
         }
     }
-/*    
-    protected void readElement(org.w3c.dom.Node node, Branch current, HashMap declaredNamespaces) {
-        Namespace elementNamespace = null;
-        HashMap localNamespaces = declaredNamespaces;
-        org.w3c.dom.NamedNodeMap attributeList = node.getAttributes();
-        List attributes = null;
-        if ( attributeList != null ) {
-            int size = attributeList.getLength();
-            attributes = new ArrayList(size);
-            for ( int i = 0; i < size; i++ ) {
-                org.w3c.dom.Node attribute = attributeList.item(i);
-
-                // Distinguish between namespace and attribute
-                String name = attribute.getNodeName();
-                if (name.startsWith("xmlns")) {                        
-                    String uri = attribute.getNodeValue();
-                    int index = name.indexOf( ':', 5 );
-                    if ( index > 0 ) {
-                        String prefix = name.substring(index + 1);
-                        Namespace namespace = getNamespace(prefix, uri);
-                        if ( localNamespaces == declaredNamespaces ) {
-                            localNamespaces = (HashMap) declaredNamespaces.clone();
-                        }
-                        localNamespaces.put(prefix, namespace);
-                    }
-                    else {
-                        elementNamespace = getNamespace("", uri);
-                    }
-                } 
-                else {
-                    attributes.add( attribute );
-                }
-            }
-        }
-
-        Element element = null;
-        String qualifiedName = node.getNodeName();
-        int index = qualifiedName.indexOf( ':' );
-        if ( index >= 0 ) {
-            String prefix = qualifiedName.substring(0, index);
-            String localName = qualifiedName.substring(index + 1);
-            Namespace namespace = (Namespace) localNamespaces.get(prefix);
-            element = current.addElement(localName, namespace);
-        } else {
-            if ( elementNamespace != null ) {
-                element = current.addElement(qualifiedName, elementNamespace);
-            }
-            else {
-                element = current.addElement(qualifiedName);
-            }
-        }
-
-        if ( attributes != null ) {
-            for ( int i = 0, size = attributes.size(); i < size; i++ ) {
-                org.w3c.dom.Node attribute = (org.w3c.dom.Node) attributes.get(i);
-                String localName = attribute.getLocalName();
-                String prefix = attribute.getPrefix();
-                String value = attribute.getNodeValue();
-                if ( prefix != null && prefix.length() > 0 ) {
-                    Namespace namespace = (Namespace) localNamespaces.get(prefix);
-                    element.setAttributeValue( localName, value, namespace );
-                }
-                else {
-                    element.setAttributeValue( localName, value );
-                }
-            }
-        }
-
-        // Recurse on child nodes
-        org.w3c.dom.NodeList children = node.getChildNodes();
-        for ( int i = 0, size = children.getLength(); i < size; i++ ) {
-            org.w3c.dom.Node child = children.item(i);
-            readTree( child, element, localNamespaces );
-        }
-    }
-*/    
+    
     protected Namespace getNamespace(String prefix, String uri) {
         return getDocumentFactory().createNamespace(prefix, uri);
     }

@@ -45,6 +45,9 @@ import org.dom4j.io.XMLWriter;
 public abstract class AbstractElement extends AbstractBranch implements Element {
 
     protected static final boolean VERBOSE_TOSTRING = false;
+        
+    /** The <code>DocumentFactory</code> instance used by default */
+    private static final DocumentFactory DOCUMENT_FACTORY = DocumentFactory.getInstance();
     
     
     public AbstractElement() { 
@@ -596,6 +599,12 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     /** @return the internal List used to store attributes
       */
     protected abstract List attributeList();
+    
+    protected DocumentFactory getDocumentFactory() {
+        DocumentFactory factory = getQName().getDocumentFactory();
+        return ( factory != null ) ? factory : DOCUMENT_FACTORY;
+    }
+    
 }
 
 
