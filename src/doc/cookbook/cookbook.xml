@@ -1044,28 +1044,26 @@ import org.dom4j.Document;
 import org.dom4j.io.DocumentResult;
 import org.dom4j.io.DocumentSource;
 
-public class TemplateGeneratorSample {
+public class DocumentStyler
+{
+    private Transformer transformer;
 
- public Source styleSheet;
- public Source source;
- public DocumentResult result;
- public Transformer transformer;
+    public DocumentStyler(Source aStyleSheet) throws Exception {
+        // create the transformer
+        TransformerFactory factory = TransformerFactory.newInstance();
+        transformer = factory.newTransformer( aStyleSheet );
+    }
 
- public class TemplateGenerator(Document aDocument, Source aStyleSheet) {
-   this.styleSheet = aStyleSheet;
-   this.source = new DocumentSource( aDocument );
-   this.result = new DocumentResult();
-   this.transformer = TransformerFactory.newTransformer(new StreamSource(this.styleSheet.getSystemId()));
-   this.start();
- }
+    public Document transform(Document aDocument, Source aStyleSheet) throws Exception {
 
- public void start() {
-   this.transformer.transform(this.source, this.result);
- }
+        // perform the transformation
+        DocumentSource source = new DocumentSource( aDocument );
+        DocumentResult result = new DocumentResult();
+        transformer.transform(source, result);
 
- public Document getTemplate() {
-   return this.result.getDocument();
- }
+        // return the resulting document
+        return result.getDocument();
+    }
 }
 
 </programlisting>
