@@ -44,9 +44,9 @@ public class DOMNamespace extends DefaultNamespace implements org.w3c.dom.Node {
         return DOMNodeHelper.getNamespaceURI(this);
     }
 
-    public String getPrefix() {
-        return DOMNodeHelper.getPrefix(this);
-    }
+//    public String getPrefix() {
+//        return DOMNodeHelper.getPrefix(this);
+//    }
     
     public void setPrefix(String prefix) throws DOMException {
         DOMNodeHelper.setPrefix(this, prefix);

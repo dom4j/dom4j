@@ -11,6 +11,7 @@ package org.dom4j.dom;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.StringReader;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -73,6 +74,17 @@ public class TestDOM extends AbstractTestCase {
             + " attributes: " + attributes 
             + " characters: " + characters 
         );
+    }
+    
+    public void testNamespace() throws Exception {
+    	String xml = "<prefix:root xmlns:prefix=\"myuri\" />";
+    	SAXReader xmlReader = new SAXReader(DOMDocumentFactory.getInstance());
+    	DOMDocument d = (DOMDocument) xmlReader.read(new StringReader(xml));
+    	
+    	assertEquals("namespace prefix not correct", "prefix", d.getRootElement().getNamespace().getPrefix());
+    	assertEquals("namespace uri not correct", "myuri", d.getRootElement().getNamespace().getURI());
+    	
+    	System.out.println(d.asXML());
     }
 
     /** Tests the bug found by Soumanjoy */
