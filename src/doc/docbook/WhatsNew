@@ -1,132 +1,111 @@
-Changes since version 1.28 (2001-01-12)
+Changes since version 1.50.0 (2002-03-21)
 
-Changes to docbook/*
+Changes to xsl/*
 
-  | 2001-01-30  Norman Walsh  <ndw@nwalsh.com>
+  | 2002-03-25  Norman Walsh <nwalsh@users.sourceforge.net>
   | 
-  | 	* VERSION: Version 1.29 released.
+  | 	* Makefile: Updated xhtml generation
   | 
-
-Changes to docbook/common/*
-
-  | 2001-01-30  Norman Walsh  <ndw@nwalsh.com>
-  | 
-  | 	* en.xml: Added index symbols entry
-  | 
-  | 2001-01-28  Norman Walsh  <ndw@nwalsh.com>
-  | 
-  | 	* common.xsl: Support suppressing anchors in referenced
-  | 	  titles; support imageobjectco
-  | 
-  | 	* hu.xml: Tweak chapter title xref template
+  | 	* VERSION: Version 1.50.1-EXP released.
   | 
 
-Changes to docbook/docsrc/*
+Changes to xsl/common/*
 
-  | 2001-01-30  Norman Walsh  <ndw@nwalsh.com>
+  | 2002-03-24  Norman Walsh <nwalsh@users.sourceforge.net>
   | 
-  | 	* documentation.xml: Fixed system identifier
-  | 
-
-Changes to docbook/fo/*
-
-  | 2001-01-30  Norman Walsh  <ndw@nwalsh.com>
-  | 
-  | 	* index.xsl, param.xsl: Added support for indexing, with
-  | 	  PassiveTeX support for sorted index page numbers
-  | 
-  | 	* inline.xsl: Added varname
-  | 
-  | 2001-01-28  Norman Walsh  <ndw@nwalsh.com>
-  | 
-  | 	* admon.xsl: Improve support for admon graphics
-  | 
-  | 	* autotoc.xsl, index.xsl: First attempt at support for
-  | 	  automatic indexing
-  | 
-  | 	* biblio.xsl: Support shortaffil and jobtitle in bibliomixed
-  | 
-  | 	* graphics.xsl: Fix bug with content-width/content-height vs.
-  | 	  width/height in graphics
-  | 
-  | 	* lists.xsl: Improve list formatting; fix bug that caused
-  | 	  fo:block to be omitted from list labels sometimes
-  | 
-  | 	* pagesetup.xsl: Remove unnecessary rule; put region-after
-  | 	  after region-before
-  | 
-  | 	* param.xsl: Added admon.graphics.extension, default.units,
-  | 	  and generate.index
-  | 
-  | 	* sections.xsl: Keep section titles with next element
-  | 
-  | 	* table.xsl: Remove unnecessary doctype declaration
+  | 	* common.xsl: Change comment: personname is no longer
+  | 	  experimental
   | 
 
-Changes to docbook/html/*
+Changes to xsl/docsrc/*
 
-  | 2001-01-30  Norman Walsh  <ndw@nwalsh.com>
+  | 2002-03-25  Norman Walsh <nwalsh@users.sourceforge.net>
   | 
-  | 	* autotoc.xsl: Added support for section TOCs and refentrys in
-  | 	  components
+  | 	* Makefile: The lib documenation is now built with Literate
+  | 	  XML
   | 
-  | 	* index.xsl: Proper support for grouping symbol entries in the
-  | 	  index. Thanks again Jeni.
-  | 
-  | 	* lists.xsl: Added summary attribute to simplelist tables
-  | 
-  | 	* param.xsl, sections.xsl: Added support for section TOCs
-  | 
-  | 2001-01-28  Norman Walsh  <ndw@nwalsh.com>
-  | 
-  | 	* autotoc.xsl, index.xsl: Support automatic indexing
-  | 
-  | 	* biblio.xsl: Support shortaffil and jobtitle in bibliomixed
-  | 
-  | 	* component.xsl: Allow anchors in component titles
-  | 
-  | 	* division.xsl: Support ToCs and PartIntros in References
-  | 
-  | 	* graphics.xsl: Process mediaobjectco and imageobjectco (just
-  | 	  do the graphic, ignore the callouts)
-  | 
-  | 	* inline.xsl: Fix precedence bug processing of function params
-  | 
-  | 	* param.xsl: Added generate.reference.toc and generate.index
-  | 
-  | 	* refentry.xsl: Handle Reference ToC correctly
-  | 
-  | 	* sections.xsl: Allow anchors in section titles
-  | 
-  | 	* synop.xsl, verbatim.xsl: Handle synopsis as a proper
-  | 	  verbatim environment
+  | 	* reference.xml: Update documentation build to reflect use of
+  | 	  lib.xweb
   | 
 
-Changes to docbook/lib/*
+Changes to xsl/fo/*
 
-  | 2001-01-28  Norman Walsh  <ndw@nwalsh.com>
+  | 2002-03-25  Norman Walsh <nwalsh@users.sourceforge.net>
   | 
-  | 	* lib.xsl: Moved string.subst to lib; added length-magnitude
-  | 	  and length-units templates for parsing lengths
+  | 	* component.xsl: Handle prefaceinfo
+  | 
+  | 	* formal.xsl: Handle textobject in tables
+  | 
+  | 	* graphics.xsl: Add template for mediaobjectco
+  | 
+  | 	* inline.xsl: Support personname
+  | 
+  | 	* math.xsl: Handle alt
+  | 
+  | 	* xref.xsl: Support xrefs to editor, othercredit, and
+  | 	  personname
+  | 
+  | 2002-03-22  Norman Walsh <nwalsh@users.sourceforge.net>
+  | 
+  | 	* titlepage.xsl: Output blocks instead of wrappers around
+  | 	  authors
   | 
 
-Changes to docbook/test/*
+Changes to xsl/html/*
 
-  | 2001-01-30  Norman Walsh  <ndw@nwalsh.com>
+  | 2002-03-25  Norman Walsh <nwalsh@users.sourceforge.net>
   | 
-  | 	* Makefile: Changes
+  | 	* autotoc.xsl, chunk-common.xsl, pi.xsl: Handle links across
+  | 	  dbhtml-specified relative directories correctly
   | 
-  | 2001-01-28  Norman Walsh  <ndw@nwalsh.com>
+  | 	* formal.xsl: Support longdesc on tables
   | 
-  | 	* Makefile: Tweaks
+  | 	* table.xsl: Use the textobject/phrase for the table summary
+  | 	  attribute, if one is present
   | 
-  | 	* book.xml, graphics.xml, idxbook.xml, test.xml: Hacking
+  | 2002-03-24  Norman Walsh <nwalsh@users.sourceforge.net>
+  | 
+  | 	* graphics.xsl: Remove style from longdesc link; added support
+  | 	  for textdata in textobject
+  | 
+  | 	* inline.xsl: Support personname
+  | 
+  | 	* xref.xsl: Handle xref to editor, othercredit, and personname
   | 
 
-Changes to docbook/indexing/*
+Changes to xsl/lib/*
 
-  | 2001-01-28  Norman Walsh  <ndw@nwalsh.com>
+  | 2002-03-25  Norman Walsh <nwalsh@users.sourceforge.net>
   | 
-  | 	* chunk.xsl, docbook.xsl: Hacking
+  | 	* .cvsignore: Ignore lib.xsl too
+  | 
+  | 	* .cvsignore, Makefile, lib.xsl, lib.xweb: Use Literate XML to
+  | 	  generate lib.xsl
+  | 
+  | 	* Makefile: Update documentation build to reflect use of
+  | 	  lib.xweb
+  | 
+
+Changes to xsl/xhtml/*
+
+  | 2002-03-25  Norman Walsh <nwalsh@users.sourceforge.net>
+  | 
+  | 	* Makefile: Improved rules
+  | 
+
+Changes to xsl/doc/*
+
+  | 2002-03-25  Norman Walsh <nwalsh@users.sourceforge.net>
+  | 
+  | 	* Makefile: Update documentation build to reflect use of
+  | 	  lib.xweb
+  | 
+
+Changes to xsl/doc/lib/*
+
+  | 2002-03-25  Norman Walsh <nwalsh@users.sourceforge.net>
+  | 
+  | 	* Makefile: Update documentation build to reflect use of
+  | 	  lib.xweb
   | 
 
