@@ -8,6 +8,10 @@
   <body>
 
     <release version="1.5-dev" date="in CVS">
+      <action dev="maartenc" type="fix" due-to="Robert Koberg">
+        Fixed bug in <code>BackedList</code> causing new elements to always
+        be added at the first position if the size of the list is 1.
+      </action>
       <action dev="maartenc" type="update">
         Upgraded the internal Aelfred2 parser to the latest version.
       </action>
