@@ -165,8 +165,13 @@ class DispatchHandler implements ElementHandler
                 defaultHandler.onEnd(elementPath);
             }
         }
+        
         // Set path back to its parent
-        path = (String)pathStack.remove( pathStack.size() - 1 );
+        path = (String) pathStack.remove( pathStack.size() - 1 );
+        
+        if (pathStack.size() == 0) {
+            atRoot = true;
+        }
     }   
 }
 
