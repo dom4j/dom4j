@@ -23,7 +23,7 @@ import org.dom4j.ElementHandler;
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class PruningElementStack extends ElementStack {
+class PruningElementStack extends ElementStack {
 
     /** ElementHandler to call when pruning occurs */
     private ElementHandler elementHandler;
@@ -85,7 +85,8 @@ public class PruningElementStack extends ElementStack {
     protected void pathMatches(Element parent, Element selectedNode) {
         //System.out.println( "Matched: " + selectedNode + " about to call handler" );
         
-        elementHandler.handle( selectedNode );
+        //elementHandler.handle( selectedNode );
+        elementHandler.onEnd(this);
         
         //System.out.println( "Pruning: removing " + selectedNode + " from parent: " + parent );
         parent.remove( selectedNode );
