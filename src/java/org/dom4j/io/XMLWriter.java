@@ -1183,7 +1183,8 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         int i, last = 0, size = text.length();
         for ( i = 0; i < size; i++ ) {
             String entity = null;
-            switch( text.charAt(i) ) {
+            char c = text.charAt(i);
+            switch( c ) {
                 case '<' :
                     entity = "&lt;";
                     break;
@@ -1192,6 +1193,14 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                     break;
                 case '&' :
                     entity = "&amp;";
+                    break;
+                case '\t': case '\n': case '\r':
+                    // don't encode standard whitespace characters
+                    break;
+                default:
+                    // encode low and high characters as entities
+                    if ((c < 32) || (c >= 127))
+                        entity = "&#" + (int)c + ";";
                     break;
             }
             if (entity != null) {
@@ -1232,7 +1241,8 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         int i, last = 0, size = text.length();
         for ( i = 0; i < size; i++ ) {
             String entity = null;
-            switch( text.charAt(i) ) {
+            char c = text.charAt(i);
+            switch( c ) {
                 case '<' :
                     entity = "&lt;";
                     break;
@@ -1247,6 +1257,14 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                     break;
                 case '&' :
                     entity = "&amp;";
+                    break;
+                case '\t': case '\n': case '\r':
+                    // don't encode standard whitespace characters
+                    break;
+                default:
+                    // encode low and high characters as entities
+                    if ((c < 32) || (c >= 127))
+                        entity = "&#" + (int)c + ";";
                     break;
             }
             if (entity != null) {

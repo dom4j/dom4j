@@ -11,6 +11,8 @@
     <section name="Change History">
 
       <section name="Changes in CVS since last release">
+        <p>Added patch supplied by Dan Jacobs that fixes some entity encoding problems in XMLWriter - cheers Dan!
+        </p>
         <p>Patched the DOMElement replaceChild method to return the correct Node and to throw a DOMException when trying to replace a non-existing child.
         </p>
         <p>Added patch to BackedList that could cause IndexOutOfBoundsExceptions to be thrown
