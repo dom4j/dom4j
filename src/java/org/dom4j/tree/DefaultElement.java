@@ -627,8 +627,6 @@ public class DefaultElement extends AbstractElement {
     }
     
     
-    // node navigation API - return content as nodes
-    // such as Text etc.
     public Node node(int index) {
         if ( index >= 0 ) {
             Object node = content;
