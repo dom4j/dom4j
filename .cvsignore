@@ -1,7 +1,7 @@
-velocity.log
-.project
+velocity.log*
 build
 target
 dist
-junit-*.properties
+junit*.properties
 *.log
+
