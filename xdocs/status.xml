@@ -7,6 +7,10 @@
  </properties>
  
   <body>
+      <section name="CVS">
+        <p>Fixed bug in XMLWriter causing padding to be disabled, even if enabled in the specified outputformat (reported by Bo Gundersen).</p>
+        <p>Added initial support for STaX streams (contributed by Christian Niles).</p>
+      </section>
 
       <section name="1.5 beta 1">
         <p>Fixed encoding bug in Document.asXML() and DocumentHelper.parseText().</p>
@@ -19,7 +23,7 @@
         <p>Ignore attribute order when comparing Elements in <code>NodeComparator</code>.</p>
         <p>Fixed bug in XMLWriter where namespace declarations were duplicated.</p>
         <p>Fixed bug in parsing a Processing Instruction (reported by Vladimir Kralik).</p>
-        <p>Added support for Stylesheet modes.</p>
+        <p>Added support for Stylesheet modes (reported by Mark Diggory).</p>
         <p>Don't escape &quot; and &apos; characters in attribute values if it's not necessary (contributed by Christian Niles).</p>
         <p>Fixed some <code>DOMNodeHelper</code> issues (reported by Henner Kollmann).</p>
         <p>Fixed some datatype issues (reported by Thomas Draier).</p>
