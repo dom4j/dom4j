@@ -71,6 +71,8 @@ import org.xml.sax.ext.LexicalHandler;
   */
 public class XMLWriter implements ContentHandler, LexicalHandler {
 
+    private static final boolean ESCAPE_XML_ENTITIES = true;
+    
     protected static final OutputFormat DEFAULT_FORMAT = new OutputFormat();
 
     /** Stores the last type of node written so algorithms can refer to the 
@@ -165,7 +167,10 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         writer.write("=");
 
         writer.write("\"");
-        writer.write(escapeAttributeEntities(attribute.getValue()));
+        
+        //writer.write(escapeAttributeEntities(attribute.getValue()));
+        writeEscapeAttributeEntities( writer, attribute.getValue() );
+        
         writer.write("\"");
         lastOutputNodeType = Node.ATTRIBUTE_NODE;
     }
@@ -405,12 +410,15 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
                     writer.write(padText);
                 }
             }
+/*            
             text = escapeElementEntities(text);
             if (trimText) {
                 StringTokenizer tokenizer = new StringTokenizer(text);
                 while (tokenizer.hasMoreTokens()) {
                     String token = tokenizer.nextToken();
+                    
                     writer.write(token);
+                    
                     if (tokenizer.hasMoreTokens()) {
                         writer.write(" ");
                     }
@@ -419,6 +427,24 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
             else {                    
                 writer.write(text);
             }
+*/
+            text = escapeElementEntities(text);
+            if (trimText) {
+                StringTokenizer tokenizer = new StringTokenizer(text);
+                while (tokenizer.hasMoreTokens()) {
+                    String token = tokenizer.nextToken();
+                    
+                    writeEscapeElementEntities( writer, token );
+                    
+                    if (tokenizer.hasMoreTokens()) {
+                        writer.write(" ");
+                    }
+                }
+            } 
+            else {                    
+                writeEscapeElementEntities( writer, text );
+            }
+            
             lastOutputNodeType = Node.TEXT_NODE;
         }
     }
@@ -693,8 +719,6 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         // two different URIs. For attributes on the same element
         // this is illegal; but as yet we don't throw an exception
         // if someone tries to do this
-        Set prefixes = new HashSet();
-
         for ( int i = 0, size = element.attributeCount(); i < size; i++ ) {
             Attribute attribute = element.attribute(i);
             Namespace ns = attribute.getNamespace();
@@ -712,7 +736,10 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
             writer.write("=");
 
             writer.write("\"");
-            writer.write(escapeAttributeEntities(attribute.getValue()));
+            
+            //writer.write(escapeAttributeEntities(attribute.getValue()));
+            writeEscapeAttributeEntities( writer, attribute.getValue() );
+            
             writer.write("\"");
         }
     }
@@ -729,7 +756,10 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         writer.write("=");
 
         writer.write("\"");
-        writer.write(escapeAttributeEntities(attributes.getValue(index)));
+        
+        //writer.write(escapeAttributeEntities(attributes.getValue(index)));
+        writeEscapeAttributeEntities( writer, attributes.getValue(index) );
+
         writer.write("\"");
     }
 
@@ -903,6 +933,44 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         return buff.toString();
     }
 
+    
+    /** This will take the five pre-defined entities in XML 1.0 and
+      * convert their character representation to the appropriate
+      * entity reference, suitable for XML attributes.
+      *
+      */
+    protected void writeEscapeAttributeEntities(Writer writer, String st) throws IOException {
+        if ( ESCAPE_XML_ENTITIES ) {
+            char[] block = st.toCharArray();
+            for ( int i = 0, last = 0, size = block.length; i < size; i++ ) {
+                char ch = block[i];
+                switch (ch) {
+                    case '<' :
+                        writer.write( "&lt;" );
+                        break;
+                    case '>' :
+                        writer.write( "&gt;" );
+                        break;
+                    case '\'' :
+                        writer.write( "&apos;" );
+                        break;
+                    case '\"' :
+                        writer.write( "&quot;" );
+                        break;
+                    case '&' :
+                        writer.write( "&amp;" );
+                        break;
+                    default :
+                        writer.write( ch );
+                }
+            }
+        }
+        else {
+            writer.write( st );
+        }
+    }
+
+    
 
 
     /**
@@ -948,6 +1016,36 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         }
 
         return buff.toString();
+    }
+
+    /** This will take the five pre-defined entities in XML 1.0 and
+      * convert their character representation to the appropriate
+      * entity reference, suitable for XML attributes.
+      *
+      */
+    protected void writeEscapeElementEntities(Writer writer, String st) throws IOException {
+        if ( ESCAPE_XML_ENTITIES ) {
+            char[] block = st.toCharArray();
+            for ( int i = 0, last = 0, size = block.length; i < size; i++ ) {
+                char ch = block[i];
+                switch (ch) {
+                    case '<' :
+                        writer.write( "&lt;" );
+                        break;
+                    case '>' :
+                        writer.write( "&gt;" );
+                        break;
+                    case '&' :
+                        writer.write( "&amp;" );
+                        break;
+                    default :
+                        writer.write( ch );
+                }
+            }
+        }
+        else {
+            writer.write( st );
+        }
     }
 
     protected void handleException(IOException e) throws SAXException {

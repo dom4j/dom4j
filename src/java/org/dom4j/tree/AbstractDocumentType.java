@@ -9,6 +9,8 @@
 
 package org.dom4j.tree;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -74,6 +76,32 @@ public abstract class AbstractDocumentType extends AbstractNode implements Docum
         }
         buffer.append(">");
         return buffer.toString();
+    }
+    
+    public void write(Writer writer) throws IOException {
+        writer.write( "<!DOCTYPE " );
+        writer.write( getElementName() );
+        
+        boolean hasPublicID = false;
+        String publicID = getPublicID();
+        
+        if ( publicID != null && publicID.length() > 0 ) {
+            writer.write( " PUBLIC \"" );
+            writer.write( publicID );
+            writer.write( "\"" );
+            hasPublicID = true;
+        }
+        
+        String systemID = getSystemID();
+        if ( systemID != null && systemID.length() > 0 ) {
+            if (!hasPublicID) {
+                writer.write(" SYSTEM");
+            }
+            writer.write( " \"" );
+            writer.write( systemID );
+            writer.write( "\"" );
+        }
+        writer.write(">");
     }
     
     public void accept(Visitor visitor) {

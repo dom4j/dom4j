@@ -9,6 +9,9 @@
 
 package org.dom4j.tree;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import org.dom4j.Attribute;
 import org.dom4j.Element;
 import org.dom4j.Node;
@@ -61,6 +64,13 @@ public abstract class AbstractAttribute extends AbstractNode implements Attribut
         return getQualifiedName() + "=\"" + getValue() + "\"";
     }
     
+    public void write(Writer writer) throws IOException {
+        writer.write( getQualifiedName() );
+        writer.write( "=\"" );
+        writer.write( getValue() );
+        writer.write( "\"" );
+    }
+        
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }

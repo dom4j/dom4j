@@ -9,6 +9,9 @@
 
 package org.dom4j.tree;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -46,6 +49,14 @@ public abstract class AbstractProcessingInstruction extends AbstractNode impleme
 
     public String asXML() {
         return "<?" + getName() + " " + getText() + "?>";
+    }
+    
+    public void write(Writer writer) throws IOException {
+        writer.write( "<?" );
+        writer.write( getName() );
+        writer.write( " " );
+        writer.write( getText() );
+        writer.write( "?>" );
     }
     
     public void accept(Visitor visitor) {

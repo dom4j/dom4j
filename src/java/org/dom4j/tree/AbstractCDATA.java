@@ -9,6 +9,9 @@
 
 package org.dom4j.tree;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import org.dom4j.CDATA;
 import org.dom4j.Visitor;
 
@@ -33,6 +36,12 @@ public abstract class AbstractCDATA extends AbstractCharacterData implements CDA
 
     public String asXML() {
         return "<![CDATA[" + getText() + "]]>";
+    }
+    
+    public void write(Writer writer) throws IOException {
+        writer.write( "<![CDATA[" );
+        writer.write( getText() );
+        writer.write( "]]>" );
     }
     
     public void accept(Visitor visitor) {

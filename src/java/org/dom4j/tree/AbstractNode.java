@@ -9,9 +9,10 @@
 
 package org.dom4j.tree;
 
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.List;
 
 import org.dom4j.Document;
@@ -118,8 +119,8 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
     }
     
     
-    public void write(PrintWriter writer) {
-        writer.print( asXML() );
+    public void write(Writer writer) throws IOException {
+        writer.write( asXML() );
     }
         
 

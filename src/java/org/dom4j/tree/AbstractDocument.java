@@ -11,7 +11,7 @@ package org.dom4j.tree;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
 
@@ -65,14 +65,9 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
         }
     }
 
-    public void write(PrintWriter out) {
-        try {
-            XMLWriter writer = new XMLWriter( out, outputFormat );
-            writer.write(this);
-        }
-        catch (IOException e) {
-            throw new RuntimeException("Wierd IOException while generating textual representation: " + e.getMessage());
-        }
+    public void write(Writer out) throws IOException {
+        XMLWriter writer = new XMLWriter( out, outputFormat );
+        writer.write(this);
     }
         
     /** <p><code>accept</code> method is the <code>Visitor Pattern</code> method.

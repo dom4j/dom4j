@@ -9,7 +9,9 @@
 
 package org.dom4j;
 
-import java.io.PrintWriter;
+import java.io.IOException;
+import java.io.Writer;
+
 import java.util.List;
 
 /** <p><code>Node</code> defines the polymorphic behavior 
@@ -198,9 +200,9 @@ public interface Node extends Cloneable {
       * (such as for pretty printing, changing the indentation policy etc.) 
       * then please use {@link org.dom4j.io.XMLWriter} or its derivations.
       *
-      * @param writer is the <code>PrintWriter</code> to output the XML to
+      * @param writer is the <code>Writer</code> to output the XML to
       */
-    public void write(PrintWriter writer);    
+    public void write(Writer writer) throws IOException;
 
     
     /** Returns the code according to the type of node. 

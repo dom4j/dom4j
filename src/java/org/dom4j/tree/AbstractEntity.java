@@ -9,6 +9,9 @@
 
 package org.dom4j.tree;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import org.dom4j.Element;
 import org.dom4j.Entity;
 import org.dom4j.Visitor;
@@ -47,6 +50,12 @@ public abstract class AbstractEntity extends AbstractNode implements Entity {
     
     public String asXML() {
         return "&" + getName() + ";";
+    }
+    
+    public void write(Writer writer) throws IOException {
+        writer.write( "&" );
+        writer.write( getName() );
+        writer.write( ";" );
     }
     
     public void accept(Visitor visitor) {
