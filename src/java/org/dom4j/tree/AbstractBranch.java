@@ -68,32 +68,16 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
             int size = content.size();
             if (size >= 1) {
                 Object first = content.get(0);
-                if (first != null) {
-                    // If we hold only a String, return it directly
-                    if (size == 1) {
-                        if ( first instanceof String) {
-                            return (String) first;
-                        }
-                        else if ( first instanceof Text ) {
-                            Text text = (Text) first;
-                            return text.getText();
-                        }
-                        else {
-                            return "";
-                        }
-                    }
-                    
-                    // Else build String up
-                    StringBuffer buffer = new StringBuffer();
-                    for ( Iterator i = content.iterator(); i.hasNext(); ) {
-                        Object node = i.next();
-                        if ( node instanceof String ) {
-                            buffer.append( (String) node );
-                        } 
-                        else if ( node instanceof Text ) {
-                            Text text = (Text) first;
-                            buffer.append( text.getText() );
-                        }
+                String firstText = getContentAsText( first );
+                if (size == 1) {
+                    // optimised to avoid StringBuffer creation
+                    return firstText;
+                }
+                else {
+                    StringBuffer buffer = new StringBuffer( firstText );
+                    for ( int i = 1; i < size; i++ ) {
+                        Object node = content.get(i);
+                        buffer.append( getContentAsText( node ) );
                     }
                     return buffer.toString();
                 }
@@ -102,6 +86,47 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
         return "";
     }
 
+    /** @return the text value of the given content object
+     * as text which returns the text value of CDATA, Entity or Text nodes
+     */
+    protected String getContentAsText(Object content) {
+        if ( content instanceof Node) {
+            Node node = (Node) content;
+            switch ( node.getNodeType() ) {
+                case CDATA_SECTION_NODE:
+                //case ENTITY_NODE:
+                case ENTITY_REFERENCE_NODE:
+                case TEXT_NODE:
+                    return node.getText();
+            }
+        }
+        else if ( content instanceof String) {
+            return (String) content;
+        }
+        return "";
+    }
+
+    /** @return the XPath defined string-value of the given content object
+     */
+    protected String getContentAsStringValue(Object content) {
+        if ( content instanceof Node) {
+            Node node = (Node) content;
+            switch ( node.getNodeType() ) {
+                case CDATA_SECTION_NODE:
+                //case ENTITY_NODE:
+                case ENTITY_REFERENCE_NODE:
+                case TEXT_NODE:
+                case ELEMENT_NODE:
+                    return node.getString();
+            }
+        }
+        else if ( content instanceof String) {
+            return (String) content;
+        }
+        return "";
+    }
+
+    
     public String getTextTrim() {
         String text = getText();
 

@@ -306,7 +306,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
             case COMMENT_NODE:
                 add((Comment) node);
                 break;
-/*                
+/*  XXXX: to do!              
             case DOCUMENT_TYPE_NODE:
                 add((DocumentType) node);
                 break;
