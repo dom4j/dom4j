@@ -70,11 +70,14 @@ public interface Element extends Branch {
       */
     public Namespace getNamespaceForPrefix(String prefix);
 
-    /** <p>Returns the <code>Namespace</code> which is mapped to the given
-      * URI or null if it could not be found.</p>
-      *
-      * @return the <code>Namespace</code> associated with the given URI
-      */
+    /**
+     * <p>Returns the <code>Namespace</code> which is mapped to the given
+     * URI or null if it could not be found. If there is more than one
+     * <code>Namespace</code> mapped to the URI, which of them will be 
+     * returned is undetermined.</p>
+     *
+     * @return the <code>Namespace</code> associated with the given URI
+     */
     public Namespace getNamespaceForURI(String uri);
     
     /** <p>Returns the namespace prefix of this element if one exists 
