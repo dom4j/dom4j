@@ -14,10 +14,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-/** <p><code>Branch</code> interface defines common behaviour 
-  * for XML elements and XML documents so that they can be treated in a 
-  * polymorphic manner.</p>
-  *
+/** <p><code>Branch</code> interface defines the common behaviour 
+  * for Nodes which can contain child nodes (content) such as 
+  * XML elements and documents. 
+  * This interface allows both elements and documents to be treated in a 
+  * polymorphic manner when changing or navigating child nodes (content).</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
@@ -142,7 +143,16 @@ public interface Branch extends Node {
 
     
     
-    /** Adds the given <code>Comment</code> to this element.
+    /** Adds the given <code>Node</code> or throws {@link IllegalAddException} 
+      * if the given node is not of a valid type. This is a polymorphic method 
+      * which will call the typesafe method for the node type such as 
+      * add(Element) or add(Comment).
+      *
+      * @param node is the given node to add
+      */    
+    public void add(Node node);
+    
+    /** Adds the given <code>Comment</code> to this branch.
       * If the given node already has a parent defined then an
       * <code>InvalidAddNodeException</code> will be thrown.
       *
@@ -150,7 +160,7 @@ public interface Branch extends Node {
       */
     public void add(Comment comment);
     
-    /** Adds the given <code>Element</code> to this element.
+    /** Adds the given <code>Element</code> to this branch.
       * If the given node already has a parent defined then an
       * <code>InvalidAddNodeException</code> will be thrown.
       *
@@ -158,7 +168,7 @@ public interface Branch extends Node {
       */
     public void add(Element element);
     
-    /** Adds the given <code>ProcessingInstruction</code> to this element.
+    /** Adds the given <code>ProcessingInstruction</code> to this branch.
       * If the given node already has a parent defined then an
       * <code>InvalidAddNodeException</code> will be thrown.
       *
@@ -166,21 +176,30 @@ public interface Branch extends Node {
       */
     public void add(ProcessingInstruction pi);
         
-    /** Removes the given <code>Comment</code> from this element.
+    /** Removes the given <code>Node</code> if the node is in this branch.
+      * This is a polymorphic method which will call the typesafe method 
+      * for the node type such as remove(Element) or remove(Comment).
+      *
+      * @param node is the given node to be removed
+      * @return true if the node was removed
+      */    
+    public boolean remove(Node node);
+    
+    /** Removes the given <code>Comment</code> from this branch.
       *
       * @param comment is the comment to be removed
       * @return true if the comment was removed
       */
     public boolean remove(Comment comment);
     
-    /** Removes the given <code>Element</code> from this element.
+    /** Removes the given <code>Element</code> from this branch.
       *
       * @param element is the element to be removed
       * @return true if the element was removed
       */
     public boolean remove(Element element);
     
-    /** Removes the given <code>ProcessingInstruction</code> from this element.
+    /** Removes the given <code>ProcessingInstruction</code> from this branch.
       *
       * @param pi is the processing instruction to be removed
       * @return true if the processing instruction was removed

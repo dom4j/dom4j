@@ -50,7 +50,7 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
         }
     }
 
-    public void writeXML(PrintWriter out) {
+    public void write(PrintWriter out) {
         try {
             writer.write(this, out);
         }

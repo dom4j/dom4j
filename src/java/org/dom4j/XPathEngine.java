@@ -42,7 +42,7 @@ public interface XPathEngine {
       * on the current node and returns the result as a <code>List</code> of 
       * <code>Node</code> instances.</p>
       *
-      * @param contextNode is the context node of this element on which to 
+      * @param contextNode is the context node on which to 
       *     process the XPath expression
       * @param xpath is the XPath expression to evaluate
       * @return a list of <code>Node</code> instances 
@@ -53,12 +53,23 @@ public interface XPathEngine {
       * on the current node and returns the result as a single
       * <code>Node</code> instance.</p>
       *
-      * @param contextNode is the context node of this element on which to 
+      * @param contextNode is the context node on which to 
       *     process the XPath expression
       * @param xpath is the XPath expression to evaluate
       * @return a single matching <code>Node</code> instance
       */
     public Node selectSingleNode(Node contextNode, XPath xpath);
+    
+    /** <p><code>valueOf</code> evaluates an XPath expression
+      * and returns the textual representation of the results using the 
+      * XPath string() function.</p>
+      *
+      * @param contextNode is the context node on which to 
+      *     process the XPath expression
+      * @param xpath is the XPath expression to be evaluated
+      * @return the string representation of the results of the XPath expression
+      */
+    public String valueOf(Node contextNode, XPath xpath);
     
 }
 

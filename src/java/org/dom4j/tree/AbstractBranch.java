@@ -186,8 +186,42 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     }
     
     
+    // polymorphic node methods    
 
+    public void add(Node node) {
+        if ( node instanceof Element ) {
+            add((Element) node);
+        }
+        else if ( node instanceof Comment ) {
+            add((Comment) node);
+        }
+        else if ( node instanceof ProcessingInstruction ) {
+            add((ProcessingInstruction) node);
+        }
+        else {
+            invalidNodeTypeAddException(node);
+        }
+    }
+    
+    public boolean remove(Node node) {
+        if ( node instanceof Element ) {
+            return remove((Element) node);
+        }
+        else
+        if ( node instanceof Comment ) {
+            return remove((Comment) node);
+        }
+        else
+        if ( node instanceof ProcessingInstruction ) {
+            return remove((ProcessingInstruction) node);
+        }
+        else {
+            return false;
+        }
+    }
+    
     // typesafe versions using node classes
+    
     public void add(Comment comment) {
         addNode(comment);
     }
@@ -217,11 +251,6 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     
     // Implementation methods
     
-    /** Allows derived classes to override the factory behaviour */
-    protected DocumentFactory getDocumentFactory() {
-        return CONTENT_FACTORY;
-    }
-
     /** @return the internal List used to manage the content */
     protected abstract List getContentList();
     
@@ -242,6 +271,18 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
       */
     protected abstract void childRemoved(Node node);
     
+    /** Called when an invalid node has been added. 
+      * Throws an {@link IllegalAddException}.
+      */
+    protected void invalidNodeTypeAddException(Node node) {
+        throw new IllegalAddException( "Invalid node type. Cannot add node: " + node + " to this branch: " + this );
+    }
+    
+    /** Allows derived classes to override the factory behaviour */
+    protected DocumentFactory getDocumentFactory() {
+        return CONTENT_FACTORY;
+    }
+
 }
 
 

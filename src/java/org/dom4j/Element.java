@@ -418,6 +418,13 @@ public interface Element extends Branch {
       */
     public boolean remove(Namespace namespace);
     
+    /** Removes the given <code>Text</code> from this element.
+      *
+      * @param text is the text to be removed
+      * @return true if the text was removed
+      */
+    public boolean remove(Text text);
+    
     
     /** Appends the attributes of the given element to me.
       * This method behaves like the {@link Collection#addAll(java.util.Collection)} 
@@ -448,22 +455,6 @@ public interface Element extends Branch {
     public Element createCopy(String name);
     public Element createCopy(String name, Namespace namespace);
     
-    
-    /** <p>Removes this element from its parent if there is one. 
-      * If this element is the root element of a document then it is removed
-      * from the document as well.</p>
-      *
-      * <p>This method is useful if you want to remove
-      * an element from its source document and add it to another document.
-      * For example</p>
-      *
-      * <code>
-      *     Element element = ...;
-      *     element.detach();
-      *     Document document = DocumentFactory.newDocument( element );
-      * </code>
-      */
-    public void detach();
 }
 
 

@@ -64,6 +64,19 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
         return this;
     }
 
+    public void detach() {
+        Element parent = getParent();
+        if ( parent != null ) {
+            parent.remove( this );
+        }
+        Document document = getDocument();
+        if ( document != null ) {
+            document.remove( this );
+        }
+        setParent(null);
+        setDocument(null);
+    }
+    
     public String getName() {
         return null;
     }
@@ -81,7 +94,7 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
     }
     
     
-    public void writeXML(PrintWriter writer) {
+    public void write(PrintWriter writer) {
         writer.print( asXML() );
     }
         
@@ -118,6 +131,16 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
         XPathEngine engine = getXPathEngine();
         XPath xpath = engine.createXPath(xpathExpression);
         return engine.selectSingleNode(this, xpath);
+    }
+    
+    public String valueOf(XPath xpath) {
+        return getXPathEngine().valueOf(this, xpath);
+    }
+    
+    public String valueOf(String xpathExpression) {
+        XPathEngine engine = getXPathEngine();
+        XPath xpath = engine.createXPath(xpathExpression);
+        return engine.valueOf(this, xpath);
     }
     
     public Node asXPathNode(Element parent) {

@@ -15,7 +15,7 @@
     <property name="build.compiler" value="classic"/>
     <property name="debug" value="on"/>
     <property name="optimize" value="on"/>
-    <property name="deprecation" value="on"/>
+    <property name="deprecation" value="off"/>
 
     <property name="src.dir" value="./src/java"/>
     <property name="doc.dir" value="./src/doc"/>
@@ -151,7 +151,8 @@
     <javac srcdir="${build.src}"
            destdir="${build.dest}"
            debug="${debug}"
-           optimize="${optimize}"/>
+           optimize="${optimize}"
+           deprecation="${deprecation}"/>
   </target>
 
   <!-- =================================================================== -->

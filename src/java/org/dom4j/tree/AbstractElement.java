@@ -21,6 +21,7 @@ import java.util.StringTokenizer;
 
 import org.dom4j.Attribute;
 import org.dom4j.CDATA;
+import org.dom4j.CharacterData;
 import org.dom4j.Comment;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Document;
@@ -74,7 +75,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         }
     }
 
-    public void writeXML(PrintWriter out) {
+    public void write(PrintWriter out) {
         try {
             writer.write(this, out);
         }
@@ -271,25 +272,106 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     }
 
 
+    // polymorphic node methods    
+    public void add(Node node) {
+        if ( node instanceof Element ) {
+            add((Element) node);
+        }
+        else if ( node instanceof CharacterData ) {
+            if ( node instanceof Text ) {
+                add((Text) node);
+            }
+            else if ( node instanceof CDATA ) {
+                add((CDATA) node);
+            }
+            else if ( node instanceof Comment ) {
+                add((Comment) node);
+            }
+            else {
+                invalidNodeTypeAddException(node);
+            }
+        }
+        else if ( node instanceof Entity ) {
+            add((Entity) node);
+        }
+        else if ( node instanceof Namespace ) {
+            add((Namespace) node);
+        }
+        else if ( node instanceof ProcessingInstruction ) {
+            add((ProcessingInstruction) node);
+        }
+        else {
+            invalidNodeTypeAddException(node);
+        }
+    }
+    
+    public boolean remove(Node node) {
+        if ( node instanceof Element ) {
+            return remove((Element) node);
+        }
+        else if ( node instanceof CharacterData ) {
+            if ( node instanceof Text ) {
+                return remove((Text) node);
+            }
+            else if ( node instanceof CDATA ) {
+                return remove((CDATA) node);
+            }
+            else if ( node instanceof Comment ) {
+                return remove((Comment) node);
+            }
+        }
+        else if ( node instanceof Entity ) {
+            return remove((Entity) node);
+        }
+        else if ( node instanceof Namespace ) {
+            return remove((Namespace) node);
+        }
+        else if ( node instanceof ProcessingInstruction ) {
+            return remove((ProcessingInstruction) node);
+        }
+        return false;
+    }
+    
     // typesafe versions using node classes
     public void add(CDATA cdata) {
         addNode(cdata);
+    }
+    
+    public void add(Comment comment) {
+        addNode(comment);
+    }
+    
+    public void add(Element element) {
+        addNode(element);
     }
     
     public void add(Entity entity) {
         addNode(entity);
     }
     
-    public void add(Text text) {
-        addNode(text);
-    }
-    
     public void add(Namespace namespace) {
         addNode(namespace);
     }
     
+    public void add(ProcessingInstruction pi) {
+        addNode(pi);
+    }
+    
+    public void add(Text text) {
+        addNode(text);
+    }
+    
+
     public boolean remove(CDATA cdata) {
         return removeNode(cdata);
+    }
+    
+    public boolean remove(Comment comment) {
+        return removeNode(comment);
+    }
+    
+    public boolean remove(Element element) {
+        return removeNode(element);
     }
     
     public boolean remove(Entity entity) {
@@ -298,6 +380,14 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     
     public boolean remove(Namespace namespace) {
         return removeNode(namespace);
+    }
+    
+    public boolean remove(ProcessingInstruction pi) {
+        return removeNode(pi);
+    }
+    
+    public boolean remove(Text text) {
+        return removeNode(text);
     }
     
     
@@ -419,19 +509,6 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
         return clone;
     }
 
-    public void detach() {
-        Element parent = getParent();
-        if ( parent != null ) {
-            parent.remove( this );
-        }
-        Document document = getDocument();
-        if ( document != null ) {
-            document.remove( this );
-        }
-        setParent(null);
-        setDocument(null);
-    }
-    
     protected Element createElement(String name) {
         return getDocumentFactory().createElement(name);
     }
