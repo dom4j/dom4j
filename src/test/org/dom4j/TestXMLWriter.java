@@ -226,18 +226,27 @@ public class TestXMLWriter extends AbstractTestCase {
         writer.write(doc);
     }
 
+    public void testAttributeQuotes() throws Exception {
+        Document doc = DocumentFactory.getInstance().createDocument();
+        doc.addElement("root").addAttribute("test", "text with ' in it");
+        StringWriter out = new StringWriter();
+        XMLWriter writer = new XMLWriter(out, OutputFormat.createCompactFormat());
+        writer.write(doc);
+        System.out.println(out.toString());
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root test=\"text with ' in it\"/>", out.toString());
+    }
     
     protected void generateXML(ContentHandler handler) throws SAXException {
-    handler.startDocument();
-    AttributesImpl attrs = new AttributesImpl();
-    attrs.clear();
-    attrs.addAttribute("","","name","CDATA", "arvojoo");
-    handler.startElement("","","processes",attrs);
-    String text="jeejee";
-    char textch[] = text.toCharArray();
-    handler.characters(textch,0,textch.length);
-    handler.endElement("","","processes" );
-    handler.endDocument();
+        handler.startDocument();
+        AttributesImpl attrs = new AttributesImpl();
+        attrs.clear();
+        attrs.addAttribute("","","name","CDATA", "arvojoo");
+        handler.startElement("","","processes",attrs);
+        String text="jeejee";
+        char textch[] = text.toCharArray();
+        handler.characters(textch,0,textch.length);
+        handler.endElement("","","processes" );
+        handler.endDocument();
     }
 }
 
