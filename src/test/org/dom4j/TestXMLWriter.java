@@ -25,6 +25,10 @@ import org.dom4j.io.XMLWriter;
 import org.dom4j.tree.BaseElement;
 import org.dom4j.tree.DefaultDocument;
 
+import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
+
 /** A simple test harness to check that the XML Writer works
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
@@ -110,6 +114,40 @@ public class TestXMLWriter extends AbstractTestCase {
         
         Element zot = (Element) joe.elementIterator().next();
         assertEquals( "zot has correct namespace", "ns1", zot.getNamespaceURI() );
+    }
+    
+    /** This test harness was supplied by Lari Hotari */
+    public void testContentHandler() throws Exception {
+        StringWriter out = new StringWriter();
+	OutputFormat format = OutputFormat.createPrettyPrint();
+	format.setEncoding("iso-8859-1");
+	XMLWriter writer = new XMLWriter(out, format);
+        generateXML(writer);
+	writer.close();
+	String text = out.toString();
+
+        if ( VERBOSE ) {
+            log( "Created XML" );
+            log( text );
+        }
+        
+        // now lets parse the output and test it with XPath
+        Document doc = DocumentHelper.parseText( text );
+        String value = doc.valueOf( "/processes[@name='arvojoo']" );
+        assertEquals( "Document contains the correct text", "jeejee", value );
+    }
+
+    protected void generateXML(ContentHandler handler) throws SAXException {
+	handler.startDocument();
+	AttributesImpl attrs = new AttributesImpl();
+	attrs.clear();
+	attrs.addAttribute("","","name","CDATA", "arvojoo");
+	handler.startElement("","","processes",attrs);
+	String text="jeejee";
+	char textch[] = text.toCharArray();
+	handler.characters(textch,0,textch.length);
+	handler.endElement("","","processes" );
+	handler.endDocument();
     }
 }
 
