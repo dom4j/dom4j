@@ -99,7 +99,7 @@ public class DocumentFactory {
       */
     protected XPathEngine createXPathEngine() {
         // use the default
-        return XPathHelper.getDefaultXPathEngine();
+        return XPathHelper.getInstance();
     }
 
     

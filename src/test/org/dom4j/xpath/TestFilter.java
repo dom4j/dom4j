@@ -7,59 +7,79 @@
  * $Id$
  */
 
-package org.dom4j;
+package org.dom4j.xpath;
 
+import java.util.Iterator;
 import java.util.List;
 
-/** <p><code>XPathEngine</code> implements an XPath engine for
-  * creating XPath objects and navigation using a DOM4J Document model.</p>
+import junit.framework.*;
+import junit.textui.TestRunner;
+
+import org.dom4j.AbstractTestCase;
+import org.dom4j.Node;
+import org.dom4j.XPath;
+import org.dom4j.NodeFilter;
+import org.dom4j.XPathHelper;
+
+/** Test harness for XPath filters
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public interface XPathEngine {
+public class TestFilter extends AbstractTestCase {
 
-    /** <p><code>createXPath</code> parses an XPath expression
-      * and creates a new XPath <code>XPath</code> instance.</p>
-      *
-      * @param xpathExpression is the XPath expression to create
-      * @return a new <code>XPath</code> instance
-      */
-    public XPath createXPath(String xpathExpression);
+    protected static boolean VERBOSE = true;
     
-    /** <p><code>NodeFilter</code> parses a NodeFilter
-      * from the given XPath filter expression.
-      * XPath filter expressions occur within XPath expressions such as
-      * <code>self::node()[ filterExpression ]</code></p>
-      *
-      * @param xpathFilterExpression is the XPath filter expression 
-      * to create
-      * @return a new <code>NodeFilter</code> instance
-      */
-    public NodeFilter createXPathFilter(String xpathFilterExpression);
+    protected static String[] paths = {
+        "name()='author'",
+        "name()='XXXX'",
+        ".='James Strachan'",
+        ".='XXXX'"
+    };
     
-    /** <p><code>selectNodes</code> evaluates an XPath expression
-      * on the current node and returns the result as a <code>List</code> of 
-      * <code>Node</code> instances.</p>
-      *
-      * @param contextNode is the context node of this element on which to 
-      *     process the XPath expression
-      * @param xpath is the XPath expression to evaluate
-      * @return a list of <code>Node</code> instances 
-      */
-    public List selectNodes(Node contextNode, XPath xpath);
     
-    /** <p><code>selectSingleNode</code> evaluates an XPath expression
-      * on the current node and returns the result as a single
-      * <code>Node</code> instance.</p>
-      *
-      * @param contextNode is the context node of this element on which to 
-      *     process the XPath expression
-      * @param xpath is the XPath expression to evaluate
-      * @return a single matching <code>Node</code> instance
-      */
-    public Node selectSingleNode(Node contextNode, XPath xpath);
+    public TestFilter(String name) {
+        super(name);
+    }
+
+    // Test case(s)
+    //-------------------------------------------------------------------------                    
+    public void testXPaths() throws Exception {        
+        int size = paths.length;
+        for ( int i = 0; i < size; i++ ) {
+            testXPath( paths[i] );
+        }
+    }
+        
+    // JUnit stuff
+    //-------------------------------------------------------------------------                    
+    public static void main( String[] args ) {
+        TestRunner.run( suite() );
+    }
     
+    public static Test suite() {
+        return new TestSuite( TestFilter.class );
+    }
+    
+    protected void testXPath(String xpathExpression) {
+        NodeFilter nodeFilter = XPathHelper.createXPathFilter( xpathExpression );
+        assert( "No NodeFilter object was created", nodeFilter != null );
+        
+        log( "Evaluating XPathFilter: " + xpathExpression + " using NodeFilter: " + nodeFilter );
+        
+        List list = document.selectNodes("//author");
+        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
+            Node node = (Node) iter.next();
+            
+            if ( nodeFilter.matches( node ) ) {
+                log( "Matches node: "+ node );
+            }
+            else {
+                log( "No match for node: "+ node );
+            }
+            
+        }
+    }
 }
 
 

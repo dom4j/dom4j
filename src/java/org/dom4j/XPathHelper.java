@@ -10,24 +10,63 @@
 package org.dom4j;
 
 /** <p><code>XPathHelper</code> contains some helper methods for using 
-  * <code>{@link XPathEngine}</code> instances.</p>
+  * and creating {@link XPathEngine} instances.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
 public class XPathHelper {
 
+    /** The singleton XPath engine for this JVM. */
+    private static XPathEngine singleton;
     
-    /** <p><code>getDefaultXPathEngine</code> returns the default 
-      * implementation of XPathEngine using the class name that is 
-      * specified in the <code>org.dom4j.XPathEngine</code> 
-      * system property.</p>
+    
+    /** <p><code>getInstance</code> returns the singleton
+      * implementation of the XPath engine.
+      * By default the implementation is loaded from the value
+      * of the <code>org.dom4j.xpath.driver</code> system property.
+      * If the system property is not set it defaults to the
+      * Werken XPath implementation.</p>
       *
       * @return a new <code>XPathEngine</code> instance
       */
-    public static XPathEngine getDefaultXPathEngine() {
+    public static XPathEngine getInstance() {
+        if ( singleton == null ) {
+            singleton = createXPathEngine();
+        }
+        return singleton;
+    }
+    
+    /** <p><code>createXPathEngine</code> creates a new XPath engine.
+      * The implementation class used is taken from the value
+      * of the <code>org.dom4j.xpath.driver</code> system property.
+      * If the system property is not set it defaults to the
+      * Werken XPath implementation.</p>
+      *
+      * @param className is the name of the class which implements the
+      * {@link XPathEngine} interface
+      * @return a new <code>XPathEngine</code> instance or 
+      * null if it could not be loaded.
+      */
+    public static XPathEngine createXPathEngine() {
+        String className = System.getProperty( 
+            "org.dom4j.xpath.driver", 
+            "com.werken.xpath.DOM4JXPathEngine" 
+        );
+        return createXPathEngine( className );
+    }
+    
+        
+    /** <p><code>createXPathEngine</code> creates a new XPath engine
+      * from the given XPath engine class name.</p>
+      *
+      * @param className is the name of the class which implements the
+      * {@link XPathEngine} interface
+      * @return a new <code>XPathEngine</code> instance or 
+      * null if it could not be loaded.
+      */
+    public static XPathEngine createXPathEngine(String className) {
         // let's try and class load an implementation?
-        String className = System.getProperty( "org.dom4j.XPathEngine", "com.werken.xpath.DOM4JXPathEngine" );
         try {
             // I'll use the current class loader
             // that loaded me to avoid problems in J2EE and web apps
@@ -43,6 +82,36 @@ public class XPathHelper {
             return null;
         }
     }    
+    
+
+    // Static helper methods using the singleton
+    
+    /** <p><code>createXPath</code> parses an XPath expression
+      * and creates a new XPath <code>XPath</code> instance
+      * using the singleton {@link XPathEngine}.</p>
+      *
+      * @param xpathExpression is the XPath expression to create
+      * @return a new <code>XPath</code> instance
+      */
+    public static XPath createXPath(String xpathExpression) {
+        return getInstance().createXPath(xpathExpression);
+    }
+    
+    /** <p><code>NodeFilter</code> parses a NodeFilter
+      * from the given XPath filter expression using the singleton
+      * {@link XPathEngine}.
+      * XPath filter expressions occur within XPath expressions such as
+      * <code>self::node()[ filterExpression ]</code></p>
+      *
+      * @param xpathFilterExpression is the XPath filter expression 
+      * to create
+      * @return a new <code>NodeFilter</code> instance
+      */
+    public static NodeFilter createXPathFilter(String xpathFilterExpression) {
+        return getInstance().createXPathFilter(xpathFilterExpression);
+    }
+    
+    
 }
 
 

@@ -95,7 +95,7 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
             answer = document.getXPathEngine();
         }
         if ( answer == null ) {
-            answer = XPathHelper.getDefaultXPathEngine();
+            answer = XPathHelper.getInstance();
         }
         return answer;
     }

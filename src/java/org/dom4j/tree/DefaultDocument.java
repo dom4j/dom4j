@@ -97,7 +97,7 @@ public class DefaultDocument extends AbstractDocument {
     
     public XPathEngine getXPathEngine() {
         if ( xpathEngine == null ) {
-            xpathEngine = XPathHelper.getDefaultXPathEngine();
+            xpathEngine = XPathHelper.getInstance();
         }
         return xpathEngine;
     }

@@ -9,57 +9,22 @@
 
 package org.dom4j;
 
-import java.util.List;
-
-/** <p><code>XPathEngine</code> implements an XPath engine for
-  * creating XPath objects and navigation using a DOM4J Document model.</p>
+/** <p><code>NodeFilter</code> defines the behavior for
+  * a filter or predicate which acts on a DOM4J Node.
+  * Instances can be generated from an {@link XPathEngine}.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public interface XPathEngine {
+public interface NodeFilter {
 
-    /** <p><code>createXPath</code> parses an XPath expression
-      * and creates a new XPath <code>XPath</code> instance.</p>
+    /** <p><code>matches</code> returns true if the given node matches 
+      * the filter condition.</p>
       *
-      * @param xpathExpression is the XPath expression to create
-      * @return a new <code>XPath</code> instance
+      * @return true if this filter matches the given node
       */
-    public XPath createXPath(String xpathExpression);
-    
-    /** <p><code>NodeFilter</code> parses a NodeFilter
-      * from the given XPath filter expression.
-      * XPath filter expressions occur within XPath expressions such as
-      * <code>self::node()[ filterExpression ]</code></p>
-      *
-      * @param xpathFilterExpression is the XPath filter expression 
-      * to create
-      * @return a new <code>NodeFilter</code> instance
-      */
-    public NodeFilter createXPathFilter(String xpathFilterExpression);
-    
-    /** <p><code>selectNodes</code> evaluates an XPath expression
-      * on the current node and returns the result as a <code>List</code> of 
-      * <code>Node</code> instances.</p>
-      *
-      * @param contextNode is the context node of this element on which to 
-      *     process the XPath expression
-      * @param xpath is the XPath expression to evaluate
-      * @return a list of <code>Node</code> instances 
-      */
-    public List selectNodes(Node contextNode, XPath xpath);
-    
-    /** <p><code>selectSingleNode</code> evaluates an XPath expression
-      * on the current node and returns the result as a single
-      * <code>Node</code> instance.</p>
-      *
-      * @param contextNode is the context node of this element on which to 
-      *     process the XPath expression
-      * @param xpath is the XPath expression to evaluate
-      * @return a single matching <code>Node</code> instance
-      */
-    public Node selectSingleNode(Node contextNode, XPath xpath);
-    
+    public boolean matches(Node node);
+
 }
 
 

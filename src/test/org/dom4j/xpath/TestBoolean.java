@@ -18,7 +18,6 @@ import junit.textui.TestRunner;
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Node;
 import org.dom4j.XPath;
-import org.dom4j.XPathEngine;
 import org.dom4j.XPathHelper;
 
 /** Test harness for the boolean expressions
@@ -28,15 +27,17 @@ import org.dom4j.XPathHelper;
   */
 public class TestBoolean extends AbstractTestCase {
 
-    protected static XPathEngine xpathEngine = XPathHelper.getDefaultXPathEngine();
-    
     protected static boolean VERBOSE = true;
     
     protected static String[] paths = {
         ".[name()='author']",
         ".[.='James Strachan']",
+        ".[name()='XXXX']",
+        ".[.='XXXX']",
         "name()='author'",
-        ".='James Strachan'"
+        "name()='XXXX'",
+        ".='James Strachan'",
+        ".='XXXX'"
     };
     
     
@@ -64,7 +65,7 @@ public class TestBoolean extends AbstractTestCase {
     }
     
     protected void testXPath(String xpathExpression) {
-        XPath xpath = xpathEngine.createXPath( xpathExpression );
+        XPath xpath = XPathHelper.createXPath( xpathExpression );
         assert( "No xpath object was created", xpath != null );
         
         log( "Evaluating xpath: " + xpath );
