@@ -702,19 +702,14 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
             if ( textOnly ) {
                 // we have at least one text node so lets assume
                 // that its non-empty
-                for ( int i = 0; i < size; i++ ) {
-                    Node node = element.node(i);
-                    writeNode(node);
-                }
+                writeElementContent(element);
             }
             else {
                 // we know it's not null or empty from above
                 ++indentLevel;
                 
-                for ( int i = 0; i < size; i++ ) {
-                    Node node = element.node(i);
-                    writeNode(node);
-                }
+                writeElementContent(element);
+                
                 --indentLevel;                
 
                 writePrintln();
@@ -733,6 +728,61 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         lastOutputNodeType = Node.ELEMENT_NODE;
     }
     
+    /** Outputs the content of the given element. If whitespace trimming is
+     * enabled then all adjacent text nodes are appended together before
+     * the whitespace trimming occurs to avoid problems with multiple 
+     * text nodes being created due to text content that spans parser buffers 
+     * in a SAX parser.
+     */
+    protected void writeElementContent(Element element) throws IOException {
+        if (format.isTrimText()) {
+            // concatenate adjacent text nodes together 
+            // so that whitespace trimming works properly
+            Text lastTextNode = null;
+            StringBuffer buffer = null;
+            for ( int i = 0, size = element.nodeCount(); i < size; i++ ) {
+                Node node = element.node(i);
+                if ( node instanceof Text ) {
+                    if ( lastTextNode == null ) {
+                        lastTextNode = (Text) node;
+                    }
+                    else {
+                        buffer = new StringBuffer( lastTextNode.getText() );
+                        buffer.append( ((Text) node).getText() );
+                    }
+                }
+                else {
+                    if ( lastTextNode != null ) { 
+                        if ( buffer != null ) {
+                            writeString( buffer.toString() );
+                            buffer = null;
+                        }
+                        else {
+                            writeString( lastTextNode.getText() );
+                        }
+                        lastTextNode = null;
+                    }
+                    writeNode(node);
+                }
+            }
+            if ( lastTextNode != null ) { 
+                if ( buffer != null ) {
+                    writeString( buffer.toString() );
+                    buffer = null;
+                }
+                else {
+                    writeString( lastTextNode.getText() );
+                }
+                lastTextNode = null;
+            }
+        }
+        else {
+            for ( int i = 0, size = element.nodeCount(); i < size; i++ ) {
+                Node node = element.node(i);
+                writeNode(node);
+            }
+        }
+    }
     protected void writeCDATA(String text) throws IOException {
         writer.write( "<![CDATA[" );
         writer.write( text );
