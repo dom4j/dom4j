@@ -396,14 +396,16 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
             int size = attributes.getLength();
             for ( int i = 0; i < size; i++ ) {
                 String attributeQualifiedName = attributes.getQName(i);
-                String attributeURI = attributes.getURI(i);
-                String attributeLocalName = attributes.getLocalName(i);
-                String attributeValue = attributes.getValue(i);
+                if ( ! attributeQualifiedName.startsWith( "xmlns" ) ) {
+                    String attributeURI = attributes.getURI(i);
+                    String attributeLocalName = attributes.getLocalName(i);
+                    String attributeValue = attributes.getValue(i);
 
-                QName attributeQName = namespaceStack.getQName( 
-                    attributeURI, attributeLocalName, attributeQualifiedName 
-                );
-                element.addAttribute(attributeQName, attributeValue);
+                    QName attributeQName = namespaceStack.getQName( 
+                        attributeURI, attributeLocalName, attributeQualifiedName 
+                    );
+                    element.addAttribute(attributeQName, attributeValue);
+                }
             }
         }
     }

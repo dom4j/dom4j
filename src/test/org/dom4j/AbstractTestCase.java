@@ -24,6 +24,8 @@ import org.dom4j.util.NodeComparator;
   */
 public class AbstractTestCase extends TestCase {
 
+    protected static final boolean COMPARE_TEXT = false;
+    
     protected Document document;
     
     
@@ -37,23 +39,29 @@ public class AbstractTestCase extends TestCase {
     
     
     public void assertDocumentsEqual(Document doc1, Document doc2) throws Exception {
-        assertTrue( "Doc1 not null", doc1 != null );
-        assertTrue( "Doc2 not null", doc2 != null );
- 
-        doc1.normalize();
-        doc2.normalize();
-        
-        assertNodesEqual(doc1, doc2);
-        
-        NodeComparator comparator = new NodeComparator();
-        assertTrue( "Documents are equal", comparator.compare( doc1, doc2 ) == 0 );
-        
-/*        
-        String text1 = doc1.asXML();
-        String text2 = doc2.asXML();
-        
-        assertEquals( "Text of documents is equal", text1, text2 );
-*/
+        try {
+            assertTrue( "Doc1 not null", doc1 != null );
+            assertTrue( "Doc2 not null", doc2 != null );
+
+            doc1.normalize();
+            doc2.normalize();
+
+            assertNodesEqual(doc1, doc2);
+
+            NodeComparator comparator = new NodeComparator();
+            assertTrue( "Documents are equal", comparator.compare( doc1, doc2 ) == 0 );
+
+            if ( COMPARE_TEXT ) {
+                String text1 = doc1.asXML();
+                String text2 = doc2.asXML();
+
+                assertEquals( "Text of documents is equal", text1, text2 );
+            }
+        }
+        catch (Exception e) {
+            log( "Failed during comparison of: " + doc1 + " and: " + doc2 );
+            throw e;
+        }
     }
 
     

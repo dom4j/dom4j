@@ -19,6 +19,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.net.URL;
 
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
 import junit.framework.*;
 import junit.textui.TestRunner;
 
@@ -26,6 +33,8 @@ import org.w3c.tidy.Tidy;
 
 import org.dom4j.io.DOMReader;
 import org.dom4j.io.DOMWriter;
+import org.dom4j.io.DocumentResult;
+import org.dom4j.io.DocumentSource;
 import org.dom4j.io.SAXContentHandler;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.SAXWriter;
@@ -38,10 +47,13 @@ import org.dom4j.io.XMLWriter;
   */
 public class TestRoundTrip extends AbstractTestCase {
     
-    //protected String xmlFile = "xml/test/encode.xml";
-    //protected String xmlFile = "xml/fibo.xml";
-    protected String xmlFile = "xml/schema/personal-prefix.xsd";
-    //protected String xmlFile = "xml/test/test_schema.xml";
+    protected String[] testDocuments = {
+        //"xml/test/encode.xml",
+        "xml/fibo.xml",
+        "xml/schema/personal-prefix.xsd",
+        //"xml/test/soap2.xml",
+        "xml/test/test_schema.xml",
+    };
     
     public static void main( String[] args ) {
         TestRunner.run( suite() );
@@ -58,24 +70,38 @@ public class TestRoundTrip extends AbstractTestCase {
     // Test case(s)
     //-------------------------------------------------------------------------                    
     public void testTextRoundTrip() throws Exception {
-        roundTripText( document );
+        for ( int i = 0, size = testDocuments.length; i < size; i++ ) {
+            Document doc = parseDocument( testDocuments[i] );
+            roundTripText( doc );
+        }
     }
-
     
     public void testSAXRoundTrip() throws Exception {
-        roundTripSAX( document );
+        for ( int i = 0, size = testDocuments.length; i < size; i++ ) {
+            Document doc = parseDocument( testDocuments[i] );
+            roundTripSAX( doc );
+        }
     }
     
     public void testDOMRoundTrip() throws Exception {
-        roundTripDOM( document );
+        for ( int i = 0, size = testDocuments.length; i < size; i++ ) {
+            Document doc = parseDocument( testDocuments[i] );
+            roundTripDOM( doc );
+        }
+    }
+    
+    public void testJAXPRoundTrip() throws Exception {
+        for ( int i = 0, size = testDocuments.length; i < size; i++ ) {
+            Document doc = parseDocument( testDocuments[i] );
+            roundTripJAXP( doc );
+        }
     }
     
     public void testFullRoundTrip() throws Exception {        
-        Document doc2 = roundTripDOM( document );
-        Document doc3 = roundTripSAX( doc2 );
-        Document doc4 = roundTripText( doc3 );
-
-        assertDocumentsEqual( document, doc4 );
+        for ( int i = 0, size = testDocuments.length; i < size; i++ ) {
+            Document doc = parseDocument( testDocuments[i] );
+            roundTripFull( doc );
+        }
     }
 
     public void testJTidyRoundTrip() throws Exception {
@@ -95,8 +121,11 @@ public class TestRoundTrip extends AbstractTestCase {
     // Implementation methods
     //-------------------------------------------------------------------------                    
     protected void setUp() throws Exception {
+    }
+
+    protected Document parseDocument(String file) throws Exception {
         SAXReader reader = new SAXReader();
-        document = reader.read( xmlFile );
+        return reader.read( file );
     }
     
     protected Document loadHTML( String xmlFile ) throws Exception {
@@ -127,6 +156,33 @@ public class TestRoundTrip extends AbstractTestCase {
         DOMReader domReader = new DOMReader();        
         Document newDocument = domReader.read( domDocument );
         
+        // lets ensure names are same
+        newDocument.setName( document.getName() );
+        
+        assertDocumentsEqual( document, newDocument );
+        
+        return newDocument;
+    }
+    
+    protected Document roundTripJAXP(Document document) throws Exception {
+        // output the document to a text buffer via JAXP
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Transformer transformer = factory.newTransformer();
+
+        StringWriter buffer = new StringWriter();        
+        StreamResult streamResult = new StreamResult(buffer);
+        DocumentSource documentSource = new DocumentSource(document);
+
+        transformer.transform(documentSource, streamResult);
+
+        // now lets parse it back again via JAXP
+        DocumentResult documentResult = new DocumentResult();
+        StreamSource streamSource = new StreamSource( new StringReader( buffer.toString() ) );
+
+        transformer.transform(streamSource, documentResult);
+
+        Document newDocument = documentResult.getDocument();
+            
         // lets ensure names are same
         newDocument.setName( document.getName() );
         
@@ -174,6 +230,15 @@ public class TestRoundTrip extends AbstractTestCase {
         return newDocument;
     }
     
+    protected Document roundTripFull(Document document) throws Exception {
+        Document doc2 = roundTripDOM( document );
+        Document doc3 = roundTripSAX( doc2 );
+        Document doc4 = roundTripText( doc3 );
+
+        assertDocumentsEqual( document, doc4 );
+        
+        return doc4;
+    }
 }
 
 

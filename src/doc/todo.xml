@@ -55,6 +55,10 @@
               the easy configuration of custom parser properties via SAXReader, such
               as being able to specify the location of schema or DTD resources.
             </p>
+            <p>Fixed bug that when round tripping into JAXP and back again, sometimes
+              additional namespace attributes were appearing.
+              Now the TestRoundTrip JUnit test case includes JAXP round tripping.
+            </p>
           </section>
         </section>
         <section title="0.8 release">
