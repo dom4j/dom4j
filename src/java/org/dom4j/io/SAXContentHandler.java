@@ -38,7 +38,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.ext.DeclHandler;
 import org.xml.sax.ext.LexicalHandler;
-import org.xml.sax.ext.Locator2;
 import org.xml.sax.helpers.DefaultHandler;
 
 /** <p><code>SAXContentHandler</code> builds a dom4j tree via SAX events.</p>
@@ -733,12 +732,8 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler,
             return null;
         }
         
-        // try to use the Locator2 interface
-        if (locator instanceof Locator2) {
-            return ((Locator2) locator).getEncoding();
-        }
-        
-        // use reflection as fallback plan
+        // use reflection to avoid dependency on Locator2 
+        // or other locator implemenations.
         try {
             Method m = locator.getClass().getMethod("getEncoding", new Class[]{});
             if (m != null) {
