@@ -316,6 +316,19 @@ public class OutputFormat implements Cloneable {
         return i;
     } 
     
+
+    /** A static helper method to create the default pretty printing format.
+      * This format consists of an indent of 2 spaces, newlines after each
+      * element and all other whitespace trimmed 
+      */    
+    public static OutputFormat createPrettyPrint() {
+        OutputFormat format = new OutputFormat();
+        format.setIndentSize( 2 );
+        format.setNewlines(true);
+        format.setTrimText(true);
+        return format;
+    }
+    
 }
 
 

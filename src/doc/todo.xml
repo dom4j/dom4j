@@ -11,6 +11,13 @@
         </li>
         <li>Ensure that the optional DOM implementation passes the DOM compliance tests
         </li>
+        <li>Implement a ValidatingDocumentFactory and an EncodingDocumentFactory
+          which can be used by developers where invalid strings may be specified
+          allowing validation or encoding of names or text values to be
+          done in one place for use across parsers or application code.
+          This would avoid any performance hit by making this kind of validation 
+          the default behaviour.
+        </li>
         <li>Build an XML Schema Data Types aware DocumentFactory
         </li>
         <li>Build validators using dom4j API using schema and validation technologies such as:-
@@ -29,6 +36,18 @@
 
     <section title="Change History">
         <section title="(coming soon) 0.3 release">
+          <p>The <code>org.dom4j.io.OutputFormat</code> class now has a new helper
+            method to make it easier to create pretty print formatting objects.
+            The new method is <code>OutputFormat.createPrettyPrint()</code>.
+            So to pretty print some XML (trimming all whitespace and indenting nicely)
+            the following code should do the job...
+          </p>
+<pre>
+    OutputFormat format = OutputFormat.createPrettyPrint();
+    XMLWriter writer = new XMLWriter( out, format );
+    writer.write( document );
+    writer.close();
+</pre>
           <p><code>SAXReader.read(String url)</code> can now accept either 
             a URL or a file name which makes things a little easier.
             The logic uses the existence of a ':' in the url String to determine if
@@ -91,6 +110,9 @@ matrix-concat( 'thanks ', /root/contributor, ' for working on ', '/@project' )
 "thanks Bob McWhirter for working on dom4j"
 </pre>
 
+      <p>Fixed bug where <code>XMLWriter.write(Object)</code> was not correctly
+        writing a Document instance.
+      </p>
       <p>Finally, a couple of small issues with the build process have been fixed.
       The dom4j.jar no longer contains any SAX or DOM classes (they are all in dom4j-full.jar)
       And the Antlr grammar files for the XPath parser are now corrrectly 

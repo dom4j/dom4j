@@ -377,12 +377,17 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
             case Node.COMMENT_NODE:
                 write((Comment) node);
                 break;
+            case Node.DOCUMENT_NODE:
+                write((Document) node);
+                break;                
             case Node.DOCUMENT_TYPE_NODE:
                 write((DocumentType) node);
                 break;
             case Node.NAMESPACE_NODE:
                 write((Namespace) node);
                 break;
+            default:
+                throw new IOException( "Invalid node type: " + node );
         }
     }
     
@@ -405,7 +410,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
             }
         }
         else if (object != null) {
-            write( object.toString());
+            throw new IOException( "Invalid object: " + object );
         }
     }
     

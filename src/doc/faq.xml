@@ -130,6 +130,27 @@ transformer.transform( source, result );
       </p>
     </section>
 
+    <section title="How can I pretty print my XML document?">
+      <p>You can control the format of the XML text output by
+        <a href="apidocs/org/dom4j/io/XMLWriter.html">XMLWriter</a>
+        by using the
+        <a href="apidocs/org/dom4j/io/OutputFormat.html">OutputFormat</a>
+        object.
+        You can explicitly set the various formatting options via the 
+        properties methods of the OutputFormat object. There is also a helper
+        method <code>OutputFormat.createPrettyPrint()</code> which creates 
+        the default pretty-print format.
+      </p>
+      <p>So to pretty print some XML (trimming all whitespace and indenting nicely)
+        the following code should do the job...
+      </p>
+<pre>
+    OutputFormat format = OutputFormat.createPrettyPrint();
+    XMLWriter writer = new XMLWriter( out, format );
+    writer.write( document );
+    writer.close();
+</pre>
+    </section>
 
     
     <section title="How does dom4j handle very large XML documents?">

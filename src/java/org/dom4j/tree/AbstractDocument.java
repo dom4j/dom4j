@@ -46,7 +46,7 @@ public abstract class AbstractDocument extends AbstractBranch implements Documen
     }
 
     public String getPath() {
-        return ".";
+        return "/";
     }
     
     public Document getDocument() {
