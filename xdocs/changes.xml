@@ -7,15 +7,19 @@
 
   <body>
 
-    <release version="dev" date="in CVS">
+    <release version="1.5.1" date="2004-10-17">
       <action dev="maartenc" type="fix" due-to="David Karlsen">
         Fixed bug in <code>Document.asXML()</code> which ignored the encoding
         of the document.
       </action>
+      <action dev="maartenc" type="update">
+        Updated <code>NamespaceCache</code> to use <code>WeakReference</code>s
+        to allow <code>Namespace</code> objects to be garbage collected.
+      </action>
       <action dev="maartenc" type="update" due-to="Wonne Keysers">
         Updated <code>JAXBReader</code> to allow ElementHandlers to be notified 
-		when the specified path is encountered, without having to unmarshall 
-		XML content.
+	when the specified path is encountered, without having to unmarshall 
+	XML content.
       </action>
       <action dev="maartenc" type="fix" due-to="Daniel Hopper">
         Fixed a bug in <code>XMLWriter</code> where a <code>NullPointerException</code>

@@ -36,7 +36,7 @@
     <tstamp/>
     <property name="Name" value="dom4j"/>
     <property name="name" value="dom4j"/>
-    <property name="version" value="1.5"/>
+    <property name="version" value="1.5.1"/>
     <property name="year" value="2004"/>
 
     <echo message="----------- ${Name} ${version} [${year}] ------------"/>
