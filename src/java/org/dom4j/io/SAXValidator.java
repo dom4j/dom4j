@@ -14,6 +14,7 @@ import java.io.IOException;
 import org.dom4j.Document;
 
 import org.xml.sax.ContentHandler;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
@@ -33,6 +34,9 @@ public class SAXValidator {
     /** <code>XMLReader</code> used to parse the SAX events */
     private XMLReader xmlReader;
     
+    /** ErrorHandler class to use */
+    private ErrorHandler errorHandler;
+
     
     
     public SAXValidator() {
@@ -53,6 +57,9 @@ public class SAXValidator {
     public void validate(Document document) throws SAXException {
         if (document != null) {       
             XMLReader xmlReader = getXMLReader();
+            if ( errorHandler != null ) {
+                xmlReader.setErrorHandler( errorHandler );
+            }
             try {
                 xmlReader.parse( new DocumentInputSource( document ) );
             }
@@ -87,7 +94,21 @@ public class SAXValidator {
         configureReader();
     }
 
-    
+    /** @return the <code>ErrorHandler</code> used by SAX
+      */
+    public ErrorHandler getErrorHandler() {
+        return errorHandler;
+    }
+
+    /** Sets the <code>ErrorHandler</code> used by the SAX 
+      * <code>XMLReader</code>.
+      *
+      * @param errorHandler is the <code>ErrorHandler</code> used by SAX
+      */
+    public void setErrorHandler(ErrorHandler errorHandler) {
+        this.errorHandler = errorHandler;
+    }
+
     // Implementation methods
     //-------------------------------------------------------------------------                
     /** Factory Method to allow alternate methods of 

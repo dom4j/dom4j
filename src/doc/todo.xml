@@ -87,6 +87,11 @@ List nodes = xpath.selectNodes( document );
             and the various sub-document write() methods 
             are called such as write(Element), write(Attribute), write(Node), write(Namespace) etc.
           </p>
+          <p>
+            Added new helper class <code>org.dom4j.util.XMLErrorHandler</code> which 
+            turns SAX ErrorHandler callbacks into XML that can then be output in a JAXM or SOAP message
+            or styled via XSLT or whatever.
+          </p>
         </section>
         <section title="0.9 release">
           <section title="Full support for the Jaxen XPath engine">

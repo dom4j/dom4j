@@ -615,7 +615,23 @@
   </target>
 
   <target name="demo-validate" depends="samples">
-    <java classname="ValidateDemo" args="xml/nitf/sample.xml"/>
+    <java classname="validate.ValidatorDemo" fork="yes">
+      <arg value="xml/schema/invalid.xml"/>
+     <classpath>
+       <pathelement location="lib/tool/xerces.jar"/>
+       <pathelement path="${build.dest}"/>
+     </classpath>
+    </java>
+  </target>
+
+  <target name="demo-saxvalidate" depends="samples">
+    <java classname="validate.SAXValidatorDemo" fork="yes">
+      <arg value="xml/nitf/invalid.xml"/>
+     <classpath>
+       <pathelement location="lib/tool/xerces.jar"/>
+       <pathelement path="${build.dest}"/>
+     </classpath>
+    </java>
   </target>
 
   <target name="demo-schema" depends="samples">

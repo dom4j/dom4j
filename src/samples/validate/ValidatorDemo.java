@@ -7,90 +7,68 @@
  * $Id$
  */
 
+package validate;
+
+import AbstractDemo;
+
 import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentType;
+import org.dom4j.Element;
+import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
-import org.dom4j.io.SAXValidator;
+import org.dom4j.io.XMLWriter;
+import org.dom4j.util.XMLErrorHandler;
 
-import org.xml.sax.SAXException;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXParseException;
 
-/** A sample program demonstrating the use of validation using SAXValidator
+/** Parses a document using Xerces and an XML Schema.
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$
   */
-public class ValidateDemo extends AbstractDemo {
+public class ValidatorDemo extends AbstractDemo {
     
     public static void main(String[] args) {
-        run( new ValidateDemo(), args );
+        run( new ValidatorDemo(), args );
     }    
     
-    public ValidateDemo() {
+    public ValidatorDemo() {
     }
-        
+    
     public void run(String[] args) throws Exception {    
-        if ( args.length < 1 ) {
-            printUsage( "<xmlFileNameOrURL> <onParse>" );
-        }
-
-        String fileName = args[0];
-        boolean validateOnParse  = false;
-        if ( args.length > 1 ) {
-            String boolText = args[1];
-            if ( boolText.equalsIgnoreCase( "true" ) ) {
-                validateOnParse = true;
-            }
+        if ( args.length < 1) {
+            printUsage( "no XML document URL specified" );
+            return;
         }
         
-        validate( fileName, validateOnParse );
-    }
+        parse( args[0] );
+    }    
     
-    
-    protected void validate( String url, boolean validateOnParse ) throws Exception {        
-        println( "Parsing: " + url + " with validation mode: " + validateOnParse );
+    protected Document parse(String uri) throws Exception {
+        SAXReader reader = new SAXReader();
         
-        if ( validateOnParse ) {
-            // validate as we parse
-            SAXReader reader = new SAXReader( true );
-            try {
-                Document document = reader.read( url );
-                println( "Document: " + url + " is valid!" );
-            }
-            catch (DocumentException e) {
-                println( "Document: " + url + " is not valid" );
-                println( "Exception: " + e );
-            }
-        }
-        else {
-            // parse without validating, then do that later
-            SAXReader reader = new SAXReader();
-            Document document = reader.read( url );
-                        
-            println( "Document URI: " + document.getName() );
-            
-            // now lets set a doc type if one isn't set
-            DocumentType docType = document.getDocType();
-            if ( docType == null ) {
-                println( "Adding an NITF doc type" );
-                document.addDocType( "nitf", null, "nitf.dtd" );
-            }
+        reader.setValidation(true);
+        
+        // specify the schema to use
+        reader.setProperty( 
+            "http://apache.org/xml/properties/schema/external-noNamespaceSchemaLocation", 
+            "personal.xsd" 
+        );
+    
+        // add an error handler which turns any errors into XML
+        XMLErrorHandler errorHandler = new XMLErrorHandler();
+        reader.setErrorHandler( errorHandler );
 
-            // now lets validate
-            try {
-                SAXValidator validator = new SAXValidator();
-                validator.validate( document );
+        // now lets parse the document
+        Document document = reader.read(uri);
 
-                println( "Document: " + url + " is valid!" );
-            }
-            catch (SAXException e) {
-                println( "Document: " + url + " is not valid" );
-                println( "Exception: " + e );
-            }
-        }
+        // now lets output the errors as XML        
+        XMLWriter writer = new XMLWriter( OutputFormat.createPrettyPrint() );
+        writer.write( errorHandler.getErrors() );        
+        
+        return document;
     }
 }
-
 
 
 
