@@ -316,6 +316,10 @@
       <fileset dir="${build.doc}" excludes="*.gif"/>
     </copy>
 
+    <delete>
+      <fileset dir="${web.htdocs}/style/images" includes="*.gif"/>
+    </delete>
+
     <copy todir="${web.dist}" overwrite="yes">
       <fileset dir="${dist.root}" includes="*.jar, *.zip, *.gz"/>
     </copy>

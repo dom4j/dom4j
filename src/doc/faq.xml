@@ -105,7 +105,7 @@ protected void foo(Document doc) {
         public void visit(Entity entity) {
             System.out.println( 
                 "Entity name: " + entity.getName() 
-                + " content: " + entity.getContent() 
+                + " text: " + entity.getText() 
             );
         }
     };
