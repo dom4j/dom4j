@@ -74,7 +74,7 @@ public abstract class TreeReader {
       */
     public Document read(URL url) throws TreeException {
         try {
-            Document document = read(url.openStream());
+            Document document = read(new BufferedInputStream(url.openStream()));
             document.setName( url.toString() );
             return document;
         }
