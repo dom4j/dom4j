@@ -1,7 +1,5 @@
 #! /bin/sh
 
-# 
-
 if [ -z "$JAVA_HOME" ] ; then
   JAVA=`which java`
   if [ -z "$JAVA" ] ; then
@@ -15,7 +13,7 @@ fi
 JAVA=$JAVA_HOME/bin/java
 
 CLASSPATH=`echo lib/*.jar | tr ' ' ':'`:$CLASSPATH
-CLASSPATH=build/classes/:$CLASSPATH:$JAVA_HOME/lib/tools.jar
+CLASSPATH=build/classes:$CLASSPATH:$JAVA_HOME/lib/tools.jar
 
 
 $JAVA -classpath $CLASSPATH -Dant.home=lib org.apache.tools.ant.Main "$@" -buildfile build.xml
