@@ -152,7 +152,19 @@ public class Namespace extends AbstractNode {
     }
 
     public String asXML() {
-        return "xmlns:" + getPrefix() + "=\"" + getURI() + "\"";
+        StringBuffer asxml = new StringBuffer(10);
+        String prefix = getPrefix();
+        if ( prefix != null && prefix.length() > 0 ) {
+            asxml.append("xmlns:");
+            asxml.append(prefix);
+            asxml.append("=\"");
+        }
+        else {
+            asxml.append("xmlns=\"");
+        }
+        asxml.append(getURI());
+        asxml.append("\"");
+        return asxml.toString();
     }
     
     public void accept(Visitor visitor) {
