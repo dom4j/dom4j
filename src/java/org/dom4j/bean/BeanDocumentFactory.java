@@ -82,7 +82,7 @@ public class BeanDocumentFactory extends DocumentFactory {
     }
     
     protected Object createBean( QName qname, Attributes attributes ) {
-        String value = attributes.getValue( "className" );
+        String value = attributes.getValue( "class" );
         if ( value != null ) {
             try {
                 Class beanClass = Class.forName( value );
