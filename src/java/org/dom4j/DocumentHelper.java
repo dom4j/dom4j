@@ -10,6 +10,7 @@
 package org.dom4j;
 
 import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
