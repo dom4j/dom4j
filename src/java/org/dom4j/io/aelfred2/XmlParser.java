@@ -156,15 +156,17 @@ final class XmlParser
 	try {
 	    // pushURL first to ensure locator is correct in startDocument
 	    // ... it might report an IO or encoding exception.
-	    // FIXME that could call endDocument without startDocument!
+	    handler.startDocument ();
 	    pushURL (false, "[document]",
 			// default baseURI: null
 		    new String [] { publicId, systemId, null},
 		    reader, stream, encoding, false);
 
-	    handler.startDocument ();
 	    parseDocument ();
-	} finally {
+	} catch (EOFException e){
+	    //empty input
+	    error("empty document, with no root element.");
+	}finally {
 	    if (reader != null)
 		try { reader.close ();
 		} catch (IOException e) { /* ignore */ }
@@ -574,9 +576,13 @@ final class XmlParser
 	require ("version");
 	parseEq ();
 	checkLegalVersion (version = readLiteral (flags));
-	if (!version.equals ("1.0"))
+	if (!version.equals ("1.0")){
+	    if(version.equals ("1.1"))
+	    	xmlVersion = XML_11;
 	    handler.warn ("expected XML version 1.0, not: " + version);
-
+	}
+	else
+	    xmlVersion = XML_10;
 	// Try reading an encoding declaration.
 	boolean white = tryWhitespace ();
 
@@ -1763,6 +1769,82 @@ loop:
     parseCharRef (true /* do flushDataBuffer by default */);
   }
 
+  /**
+   * Try to read a character reference without consuming data from buffer.
+   * <pre>
+   * [66] CharRef ::= '&#' [0-9]+ ';' | '&#x' [0-9a-fA-F]+ ';'
+   * </pre>
+   * <p>NOTE: the '&#' has already been read.
+   */
+  private int tryReadCharRef ()
+  throws SAXException, IOException
+  {
+  	int value = 0;
+	char c;
+
+	if (tryRead ('x')) {
+loop1:
+	    while (true) {
+		c = readCh ();
+		int n;
+		switch (c) {
+		case '0': case '1': case '2': case '3': case '4':
+		case '5': case '6': case '7': case '8': case '9':
+		    n = c - '0';
+		    break;
+		case 'a': case 'b': case 'c': case 'd': case 'e': case 'f':
+		    n = (c - 'a') + 10;
+		    break;
+		case 'A': case 'B': case 'C': case 'D': case 'E': case 'F':
+		    n = (c - 'A') + 10;
+		    break;
+		case ';':
+		    break loop1;
+		default:
+		    error ("illegal character in character reference", c, null);
+		    break loop1;
+		}
+		value *= 16;
+		value += n;
+	    }
+	} else {
+loop2:
+	    while (true) {
+		c = readCh ();
+		switch (c) {
+		case '0': case '1': case '2': case '3': case '4':
+		case '5': case '6': case '7': case '8': case '9':
+		    value *= 10;
+		    value += c - '0';
+		    break;
+		case ';':
+		    break loop2;
+		default:
+		    error ("illegal character in character reference", c, null);
+		    break loop2;
+		}
+	    }
+	}
+
+	// check for character refs being legal XML
+	if ((value < 0x0020
+		&& ! (value == '\n' || value == '\t' || value == '\r'))
+		|| (value >= 0xD800 && value <= 0xDFFF)
+		|| value == 0xFFFE || value == 0xFFFF
+		|| value > 0x0010ffff)
+	    error ("illegal XML character reference U+"
+		    + Integer.toHexString (value));
+
+	// Check for surrogates: 00000000 0000xxxx yyyyyyyy zzzzzzzz
+	//  (1101|10xx|xxyy|yyyy + 1101|11yy|zzzz|zzzz:
+	if (value > 0x0010ffff) {
+	    // too big for surrogate
+	    error ("character reference " + value + " is too large for UTF-16",
+		   new Integer (value).toString (), null);
+	}
+	return value;
+  }
+  
     /**
      * Read and interpret a character reference.
      * <pre>
@@ -1962,7 +2044,7 @@ loop2:
     throws Exception
     {
 	boolean peFlag = false;
-	int flags = LIT_DISABLE_CREF;
+	int flags = 0;
 
 	// Check for a parameter entity.
 	expandPE = false;
@@ -2399,6 +2481,7 @@ loop:
 	// Read the literal.
 	try {
 	    c = readCh ();
+	    boolean ampRead = false;
 loop:
 	    while (! (c == delim && readBuffer == ourBuf)) {
 		switch (c) {
@@ -2422,20 +2505,48 @@ loop:
 			    dataBufferAppend ('&');
 			    break;
 			}
-      parseCharRef (false /* Do not do flushDataBuffer */);
+                        parseCharRef (false /* Do not do flushDataBuffer */);
 
 			// exotic WFness risk: this is an entity literal,
 			// dataBuffer [dataBufferPos - 1] == '&', and
 			// following chars are a _partial_ entity/char ref
-
+                        
+                        if (dataBuffer [dataBufferPos - 1] == '&'
+                            && !ampRead){
+                            //after & there must be a: 
+                            //  char ref     ( & already read) 
+                            // 	| entity ref ( & already read) 
+                            // to be WF  	
+                            
+                            //workaround for possible input pop before marking
+                            //the buffer reading position	
+                            char t = readCh ();
+                            unread (t);
+                            int bufferPosMark = readBufferPos;
+                            t = readCh ();
+                            if (t  == '#'){ 
+                               //try to match a character ref
+                               tryReadCharRef ();
+                            }
+                            else if (Character.isLetter(t)){
+                            	//looks like an entity ref
+                            	unread (t);
+                            	readNmtoken (true);
+                        	require (';');
+                            }
+                            readBufferPos = bufferPosMark;
+                            ampRead = false;
+                        }
+                       
 		    // It looks like an entity ref ...
 		    } else {
 			unread (c);
 			// Expand it?
 			if ((flags & LIT_ENTITY_REF) > 0) {
 			    parseEntityRef (false);
-
-			// Is it just data?
+			    if (String.valueOf (readBuffer).equals("&#38;"))
+			    	ampRead = true;
+                        //Is it just data?
 			} else if ((flags & LIT_DISABLE_EREF) != 0) {
 			    dataBufferAppend ('&');
 
@@ -3365,7 +3476,9 @@ loop:
 	} else {
 	    if (c == '<') {
 		/* the most common return to parseContent () ... NOP */
-	    } else if ((c < 0x0020 && (c != '\t') && (c != '\r')) || c > 0xFFFD)
+	    } else if (((c < 0x0020 && (c != '\t') && (c != '\r')) || c > 0xFFFD)
+	    		|| ((c >= 0x007f) && (c <= 0x009f) && (c != 0x0085) 
+	    		   && xmlVersion == XML_11)) 
 		error ("illegal XML character U+"
 			+ Integer.toHexString (c));
 
@@ -4391,6 +4504,17 @@ loop:
 		    if (c < 0x0080)
 			encodingError ("Illegal two byte UTF-8 sequence",
 				c, 0);
+		    //Sec 2.11
+		    // [1] the two-character sequence #xD #xA
+		    // [2] the two-character sequence #xD #x85
+		    if ((c == 0x0085 || c == 0x000a) && sawCR)
+		       	continue;
+		    
+		    // Sec 2.1
+		    // [3] the single character #x85
+		    // [4] the single character #x2028
+		    if(c == 0x0085 || c == 0x2028)
+		    	readBuffer[j++] = '\r';
 		} else if ((b1 & 0xf0) == 0xe0) {
 		    // 3-byte sequence:
 		    // zzzzyyyyyyxxxxxx = 1110zzzz 10yyyyyy 10xxxxxx
@@ -4809,4 +4933,11 @@ loop:
     // Utility flag: are we in CDATA?  If so, whitespace isn't ignorable.
     // 
     private boolean	inCDATA;
+    
+    //
+    // Xml version.
+    //  
+    private static final int XML_10 = 0; 
+    private static final int XML_11 = 1; 
+    private int 	xmlVersion = XML_10;
 }
