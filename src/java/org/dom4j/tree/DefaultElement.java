@@ -828,14 +828,25 @@ public class DefaultElement extends AbstractElement {
             throw new IllegalAddException( this, attribute, message );
         }
         
-        if ( attributes == null ) {
-            attributes = attribute;
+        if ( attribute.getValue() == null ) {
+            // try remove a previous attribute with the same
+            // name since adding an attribute with a null value
+            // is equivalent to removing it.
+            Attribute oldAttribute = attribute( attribute.getQName() );
+            if ( oldAttribute != null ) {                
+                remove(oldAttribute);
+            }
         }
         else {
-            attributeList().add(attribute);
+            if ( attributes == null ) {
+                attributes = attribute;
+            }
+            else {
+                attributeList().add(attribute);
+            }
+
+            childAdded(attribute);
         }
-        
-        childAdded(attribute);
     }
     
 

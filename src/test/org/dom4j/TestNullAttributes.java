@@ -75,6 +75,10 @@ public class TestNullAttributes extends AbstractTestCase {
     public void testAttributes() throws Exception {
         
         Attribute attribute = factory.createAttribute( element, "v", null );
+        
+        assertTrue( attribute.getText() == null );
+        assertTrue( attribute.getValue() == null );
+        
         element.add( attribute );
         attribute = element.attribute( "v" );
         assertTrue( attribute == null );

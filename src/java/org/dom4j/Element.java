@@ -138,7 +138,10 @@ public interface Element extends Branch {
     //-------------------------------------------------------------------------        
 
     /** <p>Adds the attribute value of the given local name. 
-      * If an attribute already exists for the given name it will be replaced.</p>
+      * If an attribute already exists for the given name it will be replaced.
+      * Attributes with null values are silently ignored.
+      * If the value of the attribute is null then this method call will 
+      * remove any attributes with the given name.</p>
       *
       * @param name is the name of the attribute whose value is to be added 
       * or updated
@@ -148,7 +151,10 @@ public interface Element extends Branch {
     public Element addAttribute(String name, String value);
     
     /** <p>Adds the attribute value of the given fully qualified name. 
-      * If an attribute already exists for the given name it will be replaced.</p>
+      * If an attribute already exists for the given name it will be replaced.
+      * Attributes with null values are silently ignored.
+      * If the value of the attribute is null then this method call will 
+      * remove any attributes with the given name.</p>
       *
       * @param qName is the fully qualified name of the attribute 
       * whose value is to be added or updated
@@ -221,6 +227,9 @@ public interface Element extends Branch {
     /** Adds the given <code>Attribute</code> to this element.
       * If the given node already has a parent defined then an
       * <code>InvalidAddNodeException</code> will be thrown.
+      * Attributes with null values are silently ignored.
+      * If the value of the attribute is null then this method call will 
+      * remove any attributes with the QName of this attribute.</p>
       *
       * @param attribute is the attribute to be added
       */
