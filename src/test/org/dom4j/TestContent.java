@@ -114,6 +114,9 @@ public class TestContent extends AbstractTestCase {
         document.addElement( "root" );
         
         List list = document.content();
+        
+        assertNotNull(list);
+        assertEquals(2, list.size());
         Object pi = list.get(0);
         Object root = list.get(1);
         
@@ -127,6 +130,9 @@ public class TestContent extends AbstractTestCase {
         );
         
         list = document.content();
+        
+        assertNotNull(list);
+        assertEquals(2, list.size());
         pi = list.get(0);
         root = list.get(1);
         
@@ -179,7 +185,23 @@ public class TestContent extends AbstractTestCase {
         assertEquals( "foo", body.node(0).getName() );
         assertEquals( "bar", body.node(1).getName() );
     }
-        
+     
+    public void testAddAtIndex2() throws Exception {
+    	Document doc = factory.createDocument();
+    	Element parent = doc.addElement("parent");
+    	Element child = parent.addElement("child");
+    	Element anotherChild = factory.createElement("child2");
+    	
+    	List elements = parent.elements();
+    	int index = elements.indexOf(child);
+    	
+    	assertEquals(0, index);
+    	
+    	elements.add(1, anotherChild);
+    	elements = parent.elements();
+    	assertEquals(child, elements.get(0));
+    	assertEquals(anotherChild, elements.get(1));
+    }
     
         
     // Implementation methods
