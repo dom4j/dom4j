@@ -146,8 +146,10 @@ public class SAXWriter implements XMLReader {
       * @throw SAXException if there is a SAX error processing the events
       */
     public void write( String text ) throws SAXException {
-        char[] chars = text.toCharArray();
-        contentHandler.characters( chars, 0, chars.length );
+        if ( text != null ) {
+            char[] chars = text.toCharArray();
+            contentHandler.characters( chars, 0, chars.length );
+        }
     }
     
     /** Generates SAX events for the given CDATA

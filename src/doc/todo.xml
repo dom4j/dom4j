@@ -11,6 +11,10 @@
           return a Node throw a meaningful exception (not ClassCastException) informing the user of
           why the XPath expression did not succeed.
         </p>
+        <p>Added patch found by Kesav Kumar that a document containing null Strings would cause a NullPointerException
+          to be thrown if it was passed into SAXWriter (used by the JAXP - XSLT code). Now the SAXWriter will
+          quietly ignore null Strings, as will XMLWriter.
+        </p>
         </section>
       </section>
 
