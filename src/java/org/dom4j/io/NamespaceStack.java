@@ -70,7 +70,7 @@ class NamespaceStack {
       */
     public Namespace pop() {
         Namespace namespace = (Namespace) namespaceStack.remove( namespaceStack.size() - 1 );
-        remove( namespace );
+        remove( namespace );        
         return namespace;
     }
     

@@ -72,6 +72,8 @@ import org.xml.sax.ext.LexicalHandler;
 public class XMLWriter implements ContentHandler, LexicalHandler {
 
     private static final boolean ESCAPE_XML_ENTITIES = true;
+    private static final boolean ESCAPE_TEXT = false;
+    private static final boolean SUPPORT_PAD_TEXT = true;
     
     protected static final OutputFormat DEFAULT_FORMAT = new OutputFormat();
 
@@ -170,8 +172,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
 
         writer.write("\"");
         
-        //writer.write(escapeAttributeEntities(attribute.getValue()));
-        writeEscapeAttributeEntities( attribute.getValue() );
+        writer.write(escapeAttributeEntities(attribute.getValue()));
         
         writer.write("\"");
         lastOutputNodeType = Node.ATTRIBUTE_NODE;
@@ -215,20 +216,24 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
       */
     public void write(Element element) throws IOException {
         int size = element.nodeCount();
+        String qualifiedName = element.getQualifiedName();
         
         writePrintln();
         indent();
         
         writer.write("<");
-        writer.write(element.getQualifiedName());
+        writer.write(qualifiedName);
         
         int previouslyDeclaredNamespaces = namespaces.size();
         Namespace ns = element.getNamespace();
         if (ns != null && ns != Namespace.NO_NAMESPACE && ns != Namespace.XML_NAMESPACE) {
-            String prefix = ns.getPrefix();        
-            if ( ! namespaces.containsPrefix( prefix ) ) {
-                namespaces.push(ns);
-                write(ns);
+            String uri = ns.getURI();
+            if ( uri != null && uri.length() > 0 ) {
+                String prefix = ns.getPrefix();
+                if ( ! namespaces.containsPrefix( prefix ) ) {
+                    namespaces.push(ns);
+                    write(ns);
+                }
             }
         }
 
@@ -241,10 +246,8 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
                 namespaces.push(additional);
                 write(additional);
             }
-            else {             
-                if ( textOnly && ! ( node instanceof Text) ) {
-                    textOnly = false;
-                }
+            else if ( node instanceof Element) {
+                textOnly = false;
             }
         }
 
@@ -253,36 +256,20 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         lastOutputNodeType = Node.ELEMENT_NODE;
         
         if ( size <= 0 ) {
-            writeEmptyElementClose(element);
+            writeEmptyElementClose(qualifiedName);
         }
         else {
+            writer.write(">");
             if ( textOnly ) {
-                if ( format.isTrimText() ) {
-                    String text = element.getTextTrim();
-                    if (text == null || text.length() <= 0 ) {
-                        writeEmptyElementClose(element);
-                    }
-                    else {
-                        // we know it's not null or empty from above
-                        writer.write(">");
-                        writer.write( text );
-                        writeClose(element);
-                    }
-                }
-                else {
-                    // we have at least one text node so lets assume
-                    // that its non-empty
-                    writer.write(">");
-                    for ( int i = 0; i < size; i++ ) {
-                        Node node = element.node(i);
-                        writer.write(node.getText());
-                    }
-                    writeClose(element);
+                // we have at least one text node so lets assume
+                // that its non-empty
+                for ( int i = 0; i < size; i++ ) {
+                    Node node = element.node(i);
+                    write(node);
                 }
             }
             else {
                 // we know it's not null or empty from above
-                writer.write(">");        
                 ++indentLevel;
                 
                 for ( int i = 0; i < size; i++ ) {
@@ -293,9 +280,10 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
 
                 writePrintln();
                 indent();
-
-                writeClose(element);
             }
+            writer.write("</");
+            writer.write(qualifiedName);
+            writer.write(">");
         }
 
         // remove declared namespaces from stack
@@ -305,13 +293,16 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         
         lastOutputNodeType = Node.ELEMENT_NODE;
     }
-    
+        
     /** Writes the given {@link CDATA}.
       *
       * @param cdata <code>CDATA</code> to output.
       */
     public void write(CDATA cdata) throws IOException {
-        cdata.write(writer);
+        writer.write( "<![CDATA[" );
+        writer.write( cdata.getText() );
+        writer.write( "]]>" );
+        
         lastOutputNodeType = Node.CDATA_SECTION_NODE;
     }
     
@@ -326,7 +317,10 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
             }
             indent();
         }
-        comment.write(writer);
+        writer.write( "<!--" );
+        writer.write( comment.getText() );
+        writer.write( "-->" );
+        
         writePrintln();
 
         lastOutputNodeType = Node.COMMENT_NODE;
@@ -369,7 +363,10 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
       * @param entity <code>Entity</code> to output.
       */
     public void write(Entity entity) throws IOException {
-        entity.write(writer);
+        writer.write( "&" );
+        writer.write( entity.getName() );
+        writer.write( ";" );
+        
         lastOutputNodeType = Node.ENTITY_REFERENCE_NODE;
     }
     
@@ -400,8 +397,13 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
       */
     public void write(ProcessingInstruction processingInstruction) throws IOException {
         //indent();
-        processingInstruction.write(writer);
+        writer.write( "<?" );
+        writer.write( processingInstruction.getName() );
+        writer.write( " " );
+        writer.write( processingInstruction.getText() );
+        writer.write( "?>" );
         writePrintln();
+        
         lastOutputNodeType = Node.PROCESSING_INSTRUCTION_NODE;
     }
     
@@ -411,25 +413,25 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
       * @param text is the text to output
       */
     public void write(String text) throws IOException {
-        boolean trimText = format.isTrimText();
-        if ( trimText ) {
-            text = text.trim();
-        }
         if ( text.length() > 0 ) {
-            if (lastOutputNodeType == Node.ELEMENT_NODE) {
-                String padText = getPadText();
-                if ( padText != null ) {
-                    writer.write(padText);
+            if ( ESCAPE_TEXT ) {
+                text = escapeElementEntities(text);
+            }
+            
+            if ( SUPPORT_PAD_TEXT ) {
+                if (lastOutputNodeType == Node.ELEMENT_NODE) {
+                    String padText = getPadText();
+                    if ( padText != null ) {
+                        writer.write(padText);
+                    }
                 }
             }
-            text = escapeElementEntities(text);
-            if (trimText) {
+            
+            if (format.isTrimText()) {
                 StringTokenizer tokenizer = new StringTokenizer(text);
                 while (tokenizer.hasMoreTokens()) {
                     String token = tokenizer.nextToken();
-                    
                     writer.write(token);
-                    
                     if (tokenizer.hasMoreTokens()) {
                         writer.write(" ");
                     }
@@ -437,8 +439,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
             } 
             else {                    
                 writer.write(text);
-            }
-            
+            }            
             lastOutputNodeType = Node.TEXT_NODE;
         }
     }
@@ -466,7 +467,8 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
                 write((Attribute) node);
                 break;
             case Node.TEXT_NODE:
-                write((Text) node);
+                write(node.getText());
+                //write((Text) node);
                 break;
             case Node.CDATA_SECTION_NODE:
                 write((CDATA) node);
@@ -728,13 +730,8 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
             
             writer.write(" ");
             writer.write(attribute.getQualifiedName());
-            writer.write("=");
-
-            writer.write("\"");
-            
-            //writer.write(escapeAttributeEntities(attribute.getValue()));
-            writeEscapeAttributeEntities( attribute.getValue() );
-            
+            writer.write("=\"");            
+            writer.write(escapeAttributeEntities(attribute.getValue()));            
             writer.write("\"");
         }
     }
@@ -752,8 +749,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
 
         writer.write("\"");
         
-        //writer.write(escapeAttributeEntities(attributes.getValue(index)));
-        writeEscapeAttributeEntities( attributes.getValue(index) );
+        writer.write(escapeAttributeEntities(attributes.getValue(index)));
 
         writer.write("\"");
     }
@@ -762,8 +758,8 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
     
     protected void indent() throws IOException {
         String indent = format.getIndent();
-        if (indent != null && !indent.equals("")) {
-            for (int i = 0; i < indentLevel; i++) {
+        if ( indent != null && indent.length() > 0 ) {
+            for ( int i = 0; i < indentLevel; i++ ) {
                 writer.write(indent);
             }
         }
@@ -848,15 +844,6 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
         }
     }
     
-    /** Writes the empty close of an {@link Element}.
-      *
-      * @param element <code>Element</code> to close.
-      */
-    protected void writeEmptyElementClose(Element element) throws IOException {
-        writeEmptyElementClose( element.getQualifiedName() );
-    }
-    
-    
     protected void writeClose(String qualifiedName) throws IOException {
         writer.write("</");
         writer.write(qualifiedName);
@@ -883,34 +870,10 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
       * convert their character representation to the appropriate
       * entity reference, suitable for XML attributes.
       */
-    protected void writeEscapeElementEntities(String text) throws IOException {
-        if ( ESCAPE_XML_ENTITIES ) {
-            text = escapeElementEntities( text );
-        }
-        writer.write( text );
-    }
-
-    
-    /** This will take the pre-defined entities in XML 1.0 and
-      * convert their character representation to the appropriate
-      * entity reference, suitable for XML attributes.
-      */
-    protected void writeEscapeAttributeEntities(String text) throws IOException {
-        if ( ESCAPE_XML_ENTITIES ) {
-            text = escapeAttributeEntities( text );
-        }
-        writer.write( text );
-    }
-
-    
-    /** This will take the pre-defined entities in XML 1.0 and
-      * convert their character representation to the appropriate
-      * entity reference, suitable for XML attributes.
-      */
     protected String escapeElementEntities(String text) {
         char[] block = text.toCharArray();
-        int i, last = 0;
-        for ( i = 0; i < block.length; i++ ) {
+        int i, last = 0, size = block.length;
+        for ( i = 0; i < size; i++ ) {
             String entity = null;
             switch(block[i]) {
                 case '<' :
@@ -946,8 +909,8 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
       */
     protected String escapeAttributeEntities(String text) {
         char[] block = text.toCharArray();
-        int i, last = 0;
-        for ( i = 0; i < block.length; i++ ) {
+        int i, last = 0, size = block.length;
+        for ( i = 0; i < size; i++ ) {
             String entity = null;
             switch(block[i]) {
                 case '<' :
