@@ -316,10 +316,7 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     
     /** A Factory Method pattern which creates 
       * a BackedList implementation used to store results of 
-      * a filtered content query such as 
-      * {@link #processingInstructions} or
-      * {@link #elements} which changes are reflected in the content
-      */
+      * a filtered content query.     */
     protected BackedList createResultList() {
         return new BackedList( this, contentList() );
     }
