@@ -62,6 +62,8 @@ Document doc = reader.read( "soap.xml" );
         </section>
 
         <section title="Patches">
+        <p>Updated the MSV support to comply with the latest MSV version, 1.12 (Nov 01 2001).
+        </p>
         <p>Applied patches supplied by Steen Lehmann that fixes handling of external DTD entities in SAXContentHandler 
           and fix the XML output of the ExternalEntityDecl
         </p>

@@ -491,10 +491,10 @@
   </target>
 
   <target name="test-schema" depends="compile-test">
-    <java classname="org.dom4j.datatype.TestDataTypes"/>
-<!--
-    <java classname="org.dom4j.datatype.TestAutoSchema"/>
     <java classname="org.dom4j.datatype.TestManualSchema"/>
+    <java classname="org.dom4j.datatype.TestDataTypes"/>
+    <java classname="org.dom4j.datatype.TestAutoSchema"/>
+<!--
 -->
   </target>
 

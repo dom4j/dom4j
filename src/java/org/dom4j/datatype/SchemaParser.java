@@ -112,10 +112,11 @@ public class SchemaParser {
 
         if ( type != null ) {
             // register type with this element name
-            XSDatatype dataType=getTypeByName(type);
+            XSDatatype dataType = getTypeByName(type);
             if (dataType!=null) {
                 elementFactory.setChildElementXSDatatype( qname, dataType );
-            } else {
+            } 
+            else {
                 QName typeQName=getQName(type);
                 namedTypeResolver.registerTypedElement(xsdElement,typeQName,parentFactory);
             }
@@ -311,7 +312,7 @@ public class SchemaParser {
                 boolean fixed = AttributeHelper.booleanValue( element, "fixed" );
 
                 // add facet
-                incubator.add( name, value, fixed, context );
+                incubator.addFacet( name, value, fixed, context );
             }
             // derive a new type by those facets
             String newTypeName = null;
@@ -341,20 +342,26 @@ public class SchemaParser {
     protected XSDatatype getTypeByName( String type ) {
         XSDatatype dataType = (XSDatatype) dataTypeCache.get( type );
         if ( dataType == null ) {
-            dataType = DatatypeFactory.getTypeByName( type );
-            if ( dataType == null ) {
+            try {
                 // maybe a prefix is being used
                 int idx = type.indexOf(':');
                 if (idx >= 0 ) {
                     String localName = type.substring(idx + 1);
                     dataType = DatatypeFactory.getTypeByName( localName );
                 }
+                if ( dataType == null ) {
+                    dataType = DatatypeFactory.getTypeByName( type );
+                }
             }
-            // store in cache for later
-            dataTypeCache.put( type, dataType );
+            catch (DatatypeException e) {
+            }
+            if ( dataType != null ) {
+                // store in cache for later
+                dataTypeCache.put( type, dataType );
+            }
         }
         return dataType;
-    }
+    }    
 
     protected QName getQName( String name ) {
         return documentFactory.createQName(name);

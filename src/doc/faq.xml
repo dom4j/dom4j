@@ -196,6 +196,52 @@ public class Foo {
     </section>
 
 
+    <section title="How do I compare 2 nodes for equality?">
+      <p><i>dom4j</i> by default uses identity based equality for performance.
+        It avoids having to walk entire documents or document fragments when
+        putting nodes in collections.
+      </p>
+      <p>To compare 2 nodes (attributes, elements, documents etc) for equality
+      the <a href="apidocs/org/dom4j/util/NodeComparator.html">NodeComparator</a> can be
+      used.
+      </p>
+<pre>
+    Node node1 = ...;
+    Node node2 = ...;
+    NodeComparator comparator = new NodeComparator();
+    if ( comparator.compare( node1, node2 ) == 0 ) {
+        // nodes are equal!
+    }
+</pre>
+
+    <p>If you are having problems comparing documents that you think
+      are equal but the NodeComparator decides that they are different, 
+     you might find the following useful.
+    </p>
+
+    <p>In dom4j/test/src/org/dom4j/AbstractTestCase.java is-a JUnit TestCase and is
+      an abstract base class for dom4j test cases. It contains a whole bunch of
+      useful assertion helper methods for testing documents, nodes and fragments
+      being equal. The nice thing is that you get useful messages telling you
+      exactly why they are different, so its pretty easy to track down.
+      For example.
+    </p>
+<pre>    
+public MyTest extends AbstractTestCase {
+    ...
+    public void testSomething() {
+        Document doc1 = ...;
+        Document doc2 = ...;
+
+        assertDocumentsEqual( doc1, doc2 );
+        ...
+
+        assertNodesEqual( doc1.getRootElement(), doc2.getRootElement() );
+    }
+}
+</pre>
+    </section>
+
     <section title="How does dom4j handle very large XML documents?">
       <p><i>dom4j</i> provides an event based model for processing XML documents.
         Using this event based model allows developers to prune the XML tree
@@ -414,6 +460,31 @@ java -Dorg.dom4j.verbose=true MyApp
     </section>
 
 
+    <section title="How do I import dom4j into VAJ?">
+
+    <p>VisualAge for Java checks all dependencies in a JAR and displays
+      warnings if there are any unresolved links.
+      To avoid any warnings the following steps should be followed
+      (thanks to Jan Haluza for this).
+    </p>
+    <ol>
+      <li>Uninstall all the packages having anything in common with the xml 
+        (com.ibm.xml* , org.w3c.dom ..) (these packages contains older
+        definitions DOM ver. 1 ...
+      </li>
+      <li>Install the following jars<pre>
+dom4j.jar
+xalan.jar
+PullParser.jar  
+relaxng.jar
+msv.jar
+isorelax.jar
+xsdlib.jar
+crimson.jar
+</pre>
+      </li>
+    </ol>
+    </section>
 
   </body>
 </document>

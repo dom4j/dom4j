@@ -72,6 +72,11 @@ public class DatatypeElement extends DefaultElement implements SerializationCont
     
     // ValidationContext interface
     //-------------------------------------------------------------------------    
+    public String getBaseUri() {
+        // XXXX: could we use a Document for this?
+        return null;
+    }
+    
     public boolean isNotation(String notationName) {
         // XXXX: no way to do this yet in dom4j so assume false
         return false;
