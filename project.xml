@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <version>2</version>
+  <pomVersion>3</pomVersion>
   <name>dom4j</name>
   <id>dom4j</id>
-  <currentVersion>1.0-dev</currentVersion>
+  <currentVersion>1.4</currentVersion>
+  
   <organization>
 	  <name>MetaStuff Ltd.</name>
 	  <url>http://dom4j.org</url>
   </organization>
+  
   <inceptionYear>2002</inceptionYear>
   <package>org.dom4j</package>
   <shortDescription>dom4j : XML framework for Java</shortDescription>
@@ -54,109 +56,107 @@
   
   <dependencies>
 
-<!--    
     <dependency>
-      <name>jaxp</name>
-      <type>required</type>
-      <version>1.1</version>
-      <jar>jaxp-1.1.jar</jar>
+      <id>xml-apis</id>
+      <version>1.0.b2</version>
     </dependency>
--->
 
     <dependency>
-      <name>jaxen</name>
-      <type>required</type>
+      <id>jaxen</id>
       <version>1.0-FCS-full</version>
-      <jar>jaxen-1.0-FCS-full.jar</jar>
     </dependency>
 
     <dependency>
-      <name>saxpath</name>
-      <type>required</type>
+      <id>saxpath</id>
       <version>1.0-FCS</version>
-      <jar>saxpath-1.0-FCS.jar</jar>
     </dependency>
 
     <dependency>
-      <name>msv</name>
-      <type>required</type>
+      <id>msv</id>
       <version>20020414</version>
-      <jar>msv-20020414.jar</jar>
     </dependency>
 
     <dependency>
-      <name>xsdlib</name>
-      <type>required</type>
+      <id>xsdlib</id>
       <version>20020414</version>
-      <jar>xsdlib-20020414.jar</jar>
     </dependency>
 
     <dependency>
-      <name>relaxngDatatype</name>
-      <type>required</type>
-      <version>1.0</version>
-      <jar>relaxngDatatype.jar</jar>
+      <id>relaxngDatatype</id>
+      <version>20020414</version>
     </dependency>
 
 	<!-- ### still required? -->
     <dependency>
-      <name>isorelax</name>
-      <type>required</type>
-      <version>1.0</version>
-      <jar>isorelax.jar</jar>
-    </dependency>
-
-	<!-- ### move to XPP 3 ASAP -->
-    <dependency>
-      <name>PullParser</name>
-      <type>required</type>
-      <version>2</version>
-      <jar>PullParser2.jar</jar>
+      <id>isorelax</id>
+      <version>20020414</version>
     </dependency>
 
 	<!-- testing dependencies -->
 	
     <dependency>
-      <name>Tidy</name>
-      <type>required</type>
-      <version>1.0</version>
-      <jar>Tidy.jar</jar>
-    </dependency>
-
-<!--
-    <dependency>
-      <name>xercesImpl</name>
-      <type>required</type>
-      <version>2.0.0</version>
-      <jar>xercesImpl-2.0.0.jar</jar>
+      <id>junit</id>
+      <version>3.8.1</version>
     </dependency>
     
     <dependency>
-      <name>xmlParseAPIs</name>
-      <type>required</type>
-      <version>2.0.0</version>
-      <jar>xmlParserAPIs-2.0.0.jar</jar>
+      <id>junitperf</id>
+      <version>1.8</version>
     </dependency>
--->    
+    
+    <dependency>
+      <id>xerces</id>
+      <version>2.0.2</version>
+    </dependency>
+
+    <dependency>
+      <id>xalan</id>
+      <version>2.3.1</version>
+    </dependency>
+
+    <dependency>
+      <id>jtidy</id>
+      <version>4aug2000r7-dev</version>
+    </dependency>
+
+	<!-- ### move to XPP 3 ASAP -->
+    <dependency>
+      <id>pull-parser</id>
+      <version>2</version>
+    </dependency>
+
   </dependencies>
   
   <build>
-    <sourceDirectories>
-      <sourceDirectory>src/java</sourceDirectory>
-    </sourceDirectories>
+    <sourceDirectory>src/java</sourceDirectory>
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
-    <aspectSourceDirectories></aspectSourceDirectories>
-    <unitTestPatterns>
-      <unitTestPattern>include = **/Test*.java</unitTestPattern>
-    </unitTestPatterns>
 
-    <jarResources>
-   	  <jarResource>include = **/*.properties</jarResource>
-    </jarResources>
-
-    <jars></jars>
+    <!-- Resources that are packaged up inside the JAR file -->
+    <resources>    	
+    	<directory>src/java</directory>
+      <includes>
+        <include>**/*.properties</include>
+      </includes>
+    </resources>
     
-    <!-- ### -->
+    <!-- Unit test classes -->
+    <unitTest>
+      <includes>
+        <include>**/Test*.java</include>
+      </includes>
+		<resources>
+			<resource>
+				<directory>src/test</directory>
+				<includes>
+					<include>**/*.xml</include>
+					<include>**/*.xsl</include>
+					<include>**/*.rng</include>
+					<include>**/*.dtd</include>
+				</includes>
+			</resource>
+		</resources>
+    </unitTest>
+    
     <nagEmailAddress>dom4j-dev@lists.sourceforge.net</nagEmailAddress>
   </build>
 </project>
