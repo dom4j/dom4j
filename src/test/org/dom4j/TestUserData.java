@@ -68,6 +68,17 @@ public class TestUserData extends AbstractTestCase {
         assertTrue( "Cloned new instance", cloned != root );
         assertUserData( cloned, userData );
     }
+    
+    public void testCloneAttribute() throws Exception {
+        Element root = getRootElement();
+        root.addAttribute("name", "value");
+        Attribute attribute = root.attribute("name");
+        assertTrue(attribute instanceof UserDataAttribute);
+        
+        Element cloned = (Element) root.clone();
+        Attribute clonedAttribute = cloned.attribute("name");
+        assertTrue(clonedAttribute instanceof UserDataAttribute);
+    }
         
     public void testNewAdditions() throws Exception {
         Element root = getRootElement();
