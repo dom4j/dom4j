@@ -23,12 +23,6 @@
 
         <maven:addPath id="maven.dependency.classpath"
                        refid="test.extra.classpath"/>
-
-        <ant:pathconvert property="classpath"
-                         refid="maven.dependency.classpath" 
-                         targetOS="unix"/>
-
-        <echo>classpath: ${classpath}</echo>
     </preGoal>
 
     <preGoal name="site:deploy">
