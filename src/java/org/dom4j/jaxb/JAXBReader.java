@@ -30,6 +30,8 @@ import org.xml.sax.InputSource;
  * Reads an XML document and creates a DOM4J tree from SAX parsing events.
  * {@link JAXBObjectHandler} objects can be registered to automatically receive
  * unmarshalled XML fragments. 
+ * Registered {@link org.dom4j.ElementHandler} implementations are notified
+ * when a certain element path is encountered
  * 
  * @see org.dom4j.io.SAXReader
  * @see javax.xml.bind.JAXBContext
@@ -239,13 +241,34 @@ public class JAXBReader extends JAXBSupport {
    public void removeObjectHandler(String path) {
       getReader().removeHandler(path);
    }
-
-   /**
-    * Removes all registered {@link JAXBObjectHandler} instances from the event based processor.
+  
+   /** Adds the <code>ElementHandler</code> to be called when the
+    * specified path is encounted.
+    *
+    * @param path is the path to be handled
+    * @param handler is the <code>ElementHandler</code> to be called
+    * by the event based processor.
     */
-   public void resetObjectHandlers() {
-      getReader().resetHandlers();
-   }
+  public void addHandler(String path, ElementHandler handler) {
+     getReader().addHandler(path, handler);
+  }
+
+  /** Removes the <code>ElementHandler</code> from the event based
+    * processor, for the specified path.
+    *
+    * @param path is the path to remove the <code>ElementHandler</code> for.
+    */
+  public void removeHandler(String path) {
+      getReader().removeHandler(path);
+  }
+  
+  /**
+   * Removes all registered {@link JAXBObjectHandler} and {@link org.dom4j.ElementHandler}
+   * instances from the event based processor.
+   */
+  public void resetHandlers() {
+     getReader().resetHandlers();
+  }
 
    /**
     * When 'true', the DOM4J document will not be kept in memory while parsing.
