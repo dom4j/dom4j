@@ -208,7 +208,11 @@ public class DOMNodeHelper {
     }
 
     public static boolean hasAttributes(Node node) {
-        return false;
+        if (node != null && node instanceof Element) {
+            return ((Element) node).attributeCount() > 0;
+        } else {
+            return false;
+        }
     }
 
 
