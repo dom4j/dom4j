@@ -35,7 +35,7 @@ public class NumberFunction implements Function {
         }
         else {
             String text = StringFunction.evaluate(obj);
-            System.out.println( "converting: " + text + " into a number" );
+            //System.out.println( "converting: " + text + " into a number" );
             return Double.valueOf( text );
         }
     }
