@@ -90,7 +90,7 @@ public class DocumentFactory {
     }
     
     public Element createElement(QName qname, Attributes attributes) {
-        return createElement(qname);
+        return new DefaultElement(qname, attributes);
     }
     
     public Element createElement(String name) {
