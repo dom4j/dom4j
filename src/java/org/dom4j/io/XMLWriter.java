@@ -1355,11 +1355,8 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 			if (encoding.equals("US-ASCII")) {
 				return 127;
 			}			
-			else if (encoding.startsWith("ISO-")) {
-				return 255;
-			}
 		}
-		// no encoding for things like UTF-8 or UTF-16
+		// no encoding for things like ISO-*, UTF-8 or UTF-16
 		return -1;
 	}
 
