@@ -22,6 +22,24 @@
             <p>Fixed bug found my James Elson that the normalize() method was being quite agressive and removing 
               all text nodes! New JUnit test case added to ensure this doesn't break again.
             </p>
+            <p>Improved the setContent() semantics on Branch (and so Element and Document) such that the 
+              parent and document relationships are correctly removed for old content and added for new content.
+              As a helper method, the setContent() method will clone any content nodes which are already
+              part of an existing document. So for example the following code will clone the content of a document.
+<pre>
+    Document doc1 = ...;
+    Document doc2 = DocumentHelper.createDocument();  
+    doc2.setContent( doc1.content() );
+</pre>
+              Though this behaviour is much more useful when used with elements...
+<pre>
+    Element sourceElement;
+    Element destElement;
+
+    // copy the content of sourceElemenet
+    destElement.setContent( sourceElement.content() );
+</pre>
+            </p>
           </section>
         </section>
         <section title="0.6 release">

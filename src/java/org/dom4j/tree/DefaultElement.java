@@ -606,13 +606,42 @@ public class DefaultElement extends AbstractElement {
     }
     
     public void setContent(List content) {
-        this.content = content;
         if ( content instanceof ContentListFacade ) {
-            this.content = ((ContentListFacade) content).getBackingList();
+            content = ((ContentListFacade) content).getBackingList();
+        }
+        if ( content == null ) {
+            this.content = null;
+        }
+        else {
+            int size = content.size();
+            List newContent = createContentList( size );
+            for ( int i = 0; i < size; i++ ) {
+                Object object = content.get(i);
+                if ( object instanceof Node ) {
+                    Node node = (Node) object;
+                    Element parent = node.getParent();
+                    if ( parent != null && parent != this ) {
+                        node = (Node) node.clone();
+                    }
+                    newContent.add( node );
+                    childAdded( node );
+                }
+                else if ( object != null ) {
+                    String text = object.toString();
+                    Node node = getDocumentFactory().createText( text );
+                    newContent.add( node );
+                    childAdded( node );
+                }
+            }
+            contentRemoved();
+            this.content = newContent;
         }
     }
     
     public void clearContent() {
+        if ( content != null ) {
+            contentRemoved();
+        }
         content = null;
     }
     

@@ -55,8 +55,6 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     protected static final Iterator EMPTY_ITERATOR = EMPTY_LIST.iterator();
     
     
-    protected static final int DEFAULT_CONTENT_LIST_SIZE = 5;
-    
     protected static final boolean VERBOSE_TOSTRING = false;
         
     
@@ -154,16 +152,30 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     }
     
     public String toString() {
-        if ( VERBOSE_TOSTRING ) {
-            return super.toString() + " [Element: <" + getQualifiedName() 
-                + " uri: " + getNamespaceURI()
-                + " attributes: " + attributeList()
-                + " content: " + contentList() + " />]";
+        String uri = getNamespaceURI();
+        if ( uri != null && uri.length() > 0 ) {
+            if ( VERBOSE_TOSTRING ) {
+                return super.toString() + " [Element: <" + getQualifiedName() 
+                    + " uri: " + uri
+                    + " attributes: " + attributeList()
+                    + " content: " + contentList() + " />]";
+            }
+            else {
+                return super.toString() + " [Element: <" + getQualifiedName() 
+                    + " uri: " + uri
+                    + " attributes: " + attributeList() + "/>]";
+            }
         }
         else {
-            return super.toString() + " [Element: <" + getQualifiedName() 
-                + " uri: " + getNamespaceURI()
-                + " attributes: " + attributeList() + "/>]";
+            if ( VERBOSE_TOSTRING ) {
+                return super.toString() + " [Element: <" + getQualifiedName() 
+                    + " attributes: " + attributeList()
+                    + " content: " + contentList() + " />]";
+            }
+            else {
+                return super.toString() + " [Element: <" + getQualifiedName() 
+                    + " attributes: " + attributeList() + "/>]";
+            }
         }
     }
     
@@ -1155,13 +1167,6 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     }
     
     /** A Factory Method pattern which creates 
-      * a List implementation used to store content
-      */
-    protected List createContentList() {
-        return new ArrayList( DEFAULT_CONTENT_LIST_SIZE );
-    }
-    
-    /** A Factory Method pattern which creates 
       * a List implementation used to store attributes
       */
     protected List createAttributeList() {
@@ -1174,33 +1179,6 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     protected List createAttributeList( int size ) {
         return new ArrayList( size );
     }
-    
-    /** A Factory Method pattern which creates 
-      * a BackedList implementation used to store results of 
-      * a filtered content query such as 
-      * {@link #processingInstructions} or
-      * {@link #elements} which changes are reflected in the content
-      */
-    protected BackedList createResultList() {
-        return new BackedList( this, contentList() );
-    }
-    
-    /** A Factory Method pattern which creates 
-      * a BackedList implementation which contains a single result
-      */
-    protected List createSingleResultList( Object result ) {
-        BackedList list = new BackedList( this, contentList(), 1 );
-        list.addLocal( result );
-        return list;
-    }
-    
-    /** A Factory Method pattern which creates an empty
-      * a BackedList implementation
-      */
-    protected List createEmptyList() {
-        return new BackedList( this, contentList(), 0 );
-    }
-    
     
     protected Iterator createSingleIterator( Object result ) {
         return new SingleIterator( result );

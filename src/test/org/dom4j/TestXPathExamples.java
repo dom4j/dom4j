@@ -100,6 +100,10 @@ public class TestXPathExamples extends TestCase {
             Element test = (Element) iter.next();
             runTest( documentTest, context, test );
         }
+        for ( Iterator iter = context.elementIterator( "valueOf" ); iter.hasNext(); ) {
+            Element valueOf = (Element) iter.next();
+            testValueOf( documentTest, context, valueOf );
+        }
     }
         
     protected void runTest(Element documentTest, Element context, Element test) throws Exception {
@@ -138,6 +142,17 @@ public class TestXPathExamples extends TestCase {
         }
     }
         
+    protected void testValueOf(Element documentTest, Element context, Element valueOf) throws Exception {
+        String xpath = valueOf.attributeValue( "select" );
+        String description = "valueOf: " + xpath;
+        String expected = valueOf.getText();
+        String result = testContext.valueOf( xpath );            
+
+        log( description );
+        log( "\texpected: " + expected + " result: " + result );
+
+        assertEquals( description, expected, result );
+    }
 }
 
 

@@ -43,7 +43,7 @@ public class DefaultDocument extends AbstractDocument {
     private Element rootElement;
     
     /** Store the contents of the document as a lazily created <code>List</code> */
-    private List contents;
+    private List content;
     
     /** The document type for this document */
     private DocumentType docType;
@@ -118,7 +118,7 @@ public class DefaultDocument extends AbstractDocument {
     public Object clone() {
         DefaultDocument document = (DefaultDocument) super.clone();
         document.rootElement = null;
-        document.contents = null;
+        document.content = null;
         document.appendContent(this);
         return document;
     }    
@@ -182,30 +182,46 @@ public class DefaultDocument extends AbstractDocument {
         return false;
     }
     
-    public void setContent(List contents) {
-        if ( contents instanceof ContentListFacade ) {
-            contents = ((ContentListFacade) contents).getBackingList();
+    
+    public void setContent(List content) {
+        rootElement = null;
+        contentRemoved();
+        if ( content instanceof ContentListFacade ) {
+            content = ((ContentListFacade) content).getBackingList();
         }
-        Element newRoot = null;
-        if ( contents != null ) {
-            for ( Iterator iter = contents.iterator(); iter.hasNext(); ) {
-                Object object = iter.next();
-                if ( object instanceof Element ) {
-                    if ( newRoot == null ) {
-                        newRoot = (Element) object;
+        if ( content == null ) {
+            this.content = null;
+        }
+        else {
+            int size = content.size();
+            List newContent = createContentList( size );
+            for ( int i = 0; i < size; i++ ) {
+                Object object = content.get(i);
+                if ( object instanceof Node ) {
+                    Node node = (Node) object;
+                    Document doc = node.getDocument();
+                    if ( doc != null && doc != this ) {
+                        node = (Node) node.clone();
                     }
-                    else {
-                        throw new IllegalAddException( "A document may only contain one Element: " + contents );
+                    if ( node instanceof Element ) {
+                        if ( rootElement == null ) {
+                            rootElement = (Element) node;
+                        }
+                        else {
+                            throw new IllegalAddException( "A document may only contain one Element: " + content );
+                        }
                     }
+                    newContent.add( node );
+                    childAdded( node );
                 }
             }
+            this.content = newContent;
         }
-        this.contents = contents;
-        this.rootElement = newRoot;
     }
     
     public void clearContent() {
-        contents = null;
+        contentRemoved();
+        content = null;
         rootElement = null;
     }
     
@@ -218,13 +234,13 @@ public class DefaultDocument extends AbstractDocument {
     // Implementation methods
     //-------------------------------------------------------------------------
     protected List contentList() {
-        if (contents == null) {
-            contents = createContentList();
+        if (content == null) {
+            content = createContentList();
             if (rootElement != null) {
-                contents.add( rootElement );
+                content.add( rootElement );
             }
         }
-        return contents;
+        return content;
     }
     
     
@@ -257,29 +273,6 @@ public class DefaultDocument extends AbstractDocument {
         element.setDocument(this);
     }
     
-    
-    /** A Factory Method pattern which lazily creates 
-      * a List implementation used to store content
-      */
-    protected List createContentList() {
-        return new ArrayList();
-    }
-    
-    /** A Factory Method pattern which creates 
-      * a BackedList implementation used to store results of 
-      * a filtered content query such as 
-      * {@link #processingInstructions}
-      */
-    protected BackedList createResultList() {
-        return new BackedList( this, contentList() );
-    }
-    
-    /** A Factory Method pattern which lazily creates an empty
-      * a BackedList implementation
-      */
-    protected BackedList createEmptyList() {
-        return new BackedList( this, contentList(), 0 );
-    }
     
     protected DocumentFactory getDocumentFactory() {
         return documentFactory;
