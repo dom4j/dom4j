@@ -7,12 +7,12 @@
  * $Id$
  */
 
-import org.dom4j.DocumentException;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 
@@ -66,23 +66,28 @@ public abstract class AbstractDemo {
         else {
             writer = createXMLWriter();
             
-            parse( args[idx] );
+            Document document = parse( args[idx] );
+            process(document);
         }
     }
     
     
-    protected void parse( URL url ) throws Exception {
-        throw new RuntimeException( "parse(URL url) not implemented in this demo" );
-    }
-    
-        
-    protected void parse( String xmlFile ) throws Exception {
+    protected Document parse( String xmlFile ) throws Exception {
         URL url = getURL( xmlFile );
         if ( url != null ) {
-            parse( url );
+            return parse( url );
         }
+        return null;
     }
     
+    protected Document parse( URL url ) throws Exception {
+        throw new RuntimeException( "parse(URL url) not implemented in this demo" );
+    }
+
+    protected void process(Document document) throws Exception {
+        writer.write(document);
+    }
+        
     /** @return the {@link URL} for the given file
       * where the given file name can be either a name of a file or a URL
       */

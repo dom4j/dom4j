@@ -39,7 +39,8 @@ public class LargeDocumentDemo extends SAXDemo implements ElementHandler {
         String xmlFile = args[0];
         pruningPath = args[1];
         
-        parse( xmlFile );
+        Document document = parse( xmlFile );
+        process(document);
     }
     
     // ElementHandler interface     
@@ -49,7 +50,7 @@ public class LargeDocumentDemo extends SAXDemo implements ElementHandler {
         );
     }
     
-    protected void parse( URL url ) throws Exception {
+    protected Document parse( URL url ) throws Exception {
         SAXReader reader = new SAXReader();        
 
         println( "Parsing document:   " + url );
@@ -61,6 +62,8 @@ public class LargeDocumentDemo extends SAXDemo implements ElementHandler {
         Document document = reader.read(url);
         
         // the document will be complete but have the prunePath elements pruned
+        
+        return document;
     }
 }
 

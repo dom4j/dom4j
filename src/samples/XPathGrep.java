@@ -25,7 +25,7 @@ import org.dom4j.io.XMLWriter;
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class XPathGrep extends AbstractDemo {
+public class XPathGrep extends SAXDemo {
     
     protected XPath xpath;    
     protected boolean verbose;
@@ -54,7 +54,8 @@ public class XPathGrep extends AbstractDemo {
                     setXPath( arg );
                 }
                 else {
-                    parse( arg );
+                    Document document = parse( arg );
+                    process(document);
                 }
             }
         }
@@ -64,10 +65,7 @@ public class XPathGrep extends AbstractDemo {
         xpath = DocumentHelper.createXPath( xpathExpression );
     }
     
-    protected void parse( URL url ) throws Exception {
-        SAXReader reader = new SAXReader();
-        Document document = reader.read( url );
-        
+    protected void process(Document document) throws Exception {
         // perform XPath
         if ( verbose ) {
             println( "About to evalute: " + xpath );
@@ -79,8 +77,6 @@ public class XPathGrep extends AbstractDemo {
         if ( verbose ) {
             println( ": " + list );
         }
-        
-        writer = createXMLWriter();        
         
         for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
             Object object = iter.next();

@@ -10,7 +10,7 @@
 
 package bean;
 
-import AbstractDemo;
+import SAXDemo;
 
 import java.awt.Component;
 import java.net.URL;
@@ -30,7 +30,7 @@ import org.dom4j.io.SAXReader;
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class BeanDemo extends AbstractDemo {
+public class BeanDemo extends SAXDemo {
     
     public static void main(String[] args) {
         run( new BeanDemo(), args );
@@ -45,20 +45,14 @@ public class BeanDemo extends AbstractDemo {
             return;
         }
         
-        parse( args[0] );
-    }
-    
-    protected void parse( String xmlFile ) throws Exception {
-        URL url = getURL( xmlFile );
-        if ( url != null ) {
-            parse( url );
-        }
-    }
-    
-    protected void parse( URL url ) throws Exception {
-        SAXReader reader = new SAXReader( BeanDocumentFactory.getInstance() );
-        Document document = reader.read(url);
+        Document document = parse( args[0] );
         process(document);
+    }
+    
+    
+    protected Document parse( URL url ) throws Exception {
+        SAXReader reader = new SAXReader( BeanDocumentFactory.getInstance() );
+        return reader.read(url);
     }
     
     protected void process(Document document) throws Exception {

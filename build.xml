@@ -517,6 +517,10 @@
     <java classname="XPathDemo" args="xml/much_ado.xml //ACT/TITLE"/>
   </target>
 
+  <target name="demo-xslt" depends="samples">
+    <java classname="XSLTDemo" args="xml/nitf_sample.xml xml/nitf_ashtml.xsl"/>
+  </target>
+
   <target name="demo-bigdoc" depends="samples">
     <java classname="LargeDocumentDemo" args="xml/much_ado.xml /PLAY/ACT"/>
   </target>

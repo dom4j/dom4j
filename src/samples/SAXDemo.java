@@ -29,16 +29,11 @@ public class SAXDemo extends AbstractDemo {
     public SAXDemo() {
     }
     
-    protected void parse( URL url ) throws Exception {
+    protected Document parse( URL url ) throws Exception {
         SAXReader reader = new SAXReader();
-        Document document = reader.read(url);
-        process(document);
+        return reader.read(url);
     }
     
-    protected void process(Document document) throws Exception {
-        writer.write(document);
-    }
-
 }
 
 

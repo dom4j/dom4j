@@ -38,7 +38,7 @@ public class SAXDOMDemo extends AbstractDemo {
     public SAXDOMDemo() {
     }
     
-    protected void parse( URL url ) throws Exception {
+    protected Document parse( URL url ) throws Exception {
         SAXReader saxReader = new SAXReader();
         Document document = saxReader.read(url);
         
@@ -66,12 +66,7 @@ public class SAXDOMDemo extends AbstractDemo {
         
         println( "Converted DOM4J to SAX events then back to DOM4J: " + document );
         
-        process( document );
-    }
-    
-    
-    protected void process(Document document) throws Exception {
-        writer.write(document);
+        return document;
     }
 }
 

@@ -39,10 +39,10 @@ public class NativeDOMDemo extends AbstractDemo {
             return;
         }
 
-        parse( args[0] );
+        parseDOM( args[0] );
     }
     
-    protected void parse( String xmlFile ) throws Exception {
+    protected void parseDOM( String xmlFile ) throws Exception {
 
         println( "Loading document: " + xmlFile );
         
@@ -54,15 +54,14 @@ public class NativeDOMDemo extends AbstractDemo {
         if ( document instanceof org.w3c.dom.Document ) {
             org.w3c.dom.Document domDocument = (org.w3c.dom.Document) document;
             println( "Created W3C DOM document: " + domDocument );
-            process(domDocument);
+            processDOM(domDocument);
         }
         else {
             println( "FAILED to make a native W3C DOM document!!" );
-            
         }
     }
     
-    protected void process(org.w3c.dom.Document document) throws Exception {
+    protected void processDOM(org.w3c.dom.Document document) throws Exception {
     }
 }
 

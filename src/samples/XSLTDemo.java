@@ -10,80 +10,80 @@
 
 import java.net.URL;
 
-import org.dom4j.*;
-import org.dom4j.io.SAXReader;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stream.StreamResult;
 
-/** This is an abstract base class for any demo which uses a 
-  * {@link SAXReader} implementation such as {@link SAXReader} and parses
-  * and processes a document.
+import org.dom4j.Document;
+import org.dom4j.io.DocumentSource;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
+
+import org.xml.sax.InputSource;
+
+
+/** A simple test program to demonstrate using SAX to create a DOM4J tree
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class AbstractReaderDemo extends SAXDemo {
+public class XSLTDemo extends SAXDemo {
     
-    /** The DocumentFactory class name to use */
-    protected String documentFactoryClassName;
+    private URL xsl;
     
-    public AbstractReaderDemo() {
-    }
-        
-    /** The program entry point.
-      *
-      * @param args the command line arguments
-      */
+    
     public static void main(String[] args) {
-        run( new AbstractReaderDemo(), args );
+        run( new XSLTDemo(), args );
     }    
     
+    public XSLTDemo() {
+    }
+    
     public void run(String[] args) throws Exception {    
-        if ( args.length < 1 ) {
-            printUsage( "<XML document URL> [<Document Factory Class Name>]" );
+        if ( args.length < 2) {
+            printUsage();
             return;
         }
-
-        String xmlFile = args[0];
         
-        documentFactoryClassName = (args.length > 1) 
-            ? args[1] : null;
-
-        parse( xmlFile );
-    }
-    
-    protected void parse( URL url ) throws Exception {
-        SAXReader reader = createSAXReader();
-        Document document = reader.read(url);
-        process(document);
-    }
-    
-    protected SAXReader createSAXReader() throws Exception {
-        println( "Using SAX parser: " + System.getProperty( "org.xml.sax.driver", "default" ) );
-        
-        SAXReader answer = new SAXReader();        
-        
-        // allow the DocumentFactory used by the SAXReader to be configured
-        DocumentFactory factory = createDocumentFactory();
-        if ( factory != null ) {
-            println( "DocumentFactory:  " + factory );
-            answer.setDocumentFactory( factory );
+        int idx = format.parseOptions( args, 0 );
+        if ( args.length - idx < 2 ) {
+            printUsage();
+            return;
         }
-        return answer;
+        else {
+            writer = createXMLWriter();
+            
+            Document document = parse( args[idx++] );
+            
+            xsl = getURL( args[idx++] );
+            
+            process(document);
+        }
     }
     
-    protected DocumentFactory createDocumentFactory() {
-        if ( documentFactoryClassName != null ) {
-            try {
-                Class theClass = Class.forName( documentFactoryClassName );
-                return (DocumentFactory) theClass.newInstance();
-            }
-            catch (Exception e) {
-                println( "ERROR: Failed to create an instance of DocumentFactory: " + documentFactoryClassName );
-                println( "Exception: " + e );
-                e.printStackTrace();
-            }
-        }
-        return null;
+    protected void printUsage() {
+        printUsage( "<XML URL> <XSLT URL>" );
     }
+    
+    
+    /** Perform XSLT on the stylesheet */
+    protected void process(Document document) throws Exception {
+        // lets load our transformer using TRaX
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Source xslSource = new SAXSource( new InputSource( xsl.toString() ) );
+        Transformer transformer = factory.newTransformer( xslSource );
+        
+        // now lets create the TRaX source and result
+        // objects and do the transformation
+        Source source = new DocumentSource( document );
+        Result result = new StreamResult( System.out ); 
+        transformer.transform( source, result );
+    }
+
 }
 
 

@@ -33,7 +33,7 @@ public class DOMDemo extends AbstractDemo {
     public DOMDemo() {
     }
     
-    protected void parse( URL url ) throws Exception {
+    protected Document parse( URL url ) throws Exception {
         // parse a DOM tree
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
@@ -50,7 +50,7 @@ public class DOMDemo extends AbstractDemo {
         
         println( "Created DOM4J document: " + document );
         
-        process(document);
+        return document;
     }
     
     protected void process(Document document) throws Exception {

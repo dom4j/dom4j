@@ -43,12 +43,7 @@ public class VisitorDemo2 extends VisitorDemo {
         documentFactoryClassName = (args.length > 1) 
             ? args[1] : null;
             
-        parse( xmlFile );
-    }
-    
-    protected void parse( URL url ) throws Exception {
-        SAXReader reader = createSAXReader();
-        Document document = reader.read(url);
+        Document document = parse( xmlFile );
         process(document);
     }
     

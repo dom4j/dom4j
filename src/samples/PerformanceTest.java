@@ -59,7 +59,7 @@ public class PerformanceTest extends SAXDemo {
             loopCount = Integer.parseInt(args[2]);
         }        
 
-        parse( xmlFile );
+        loopParse( getURL( xmlFile ) );
     }
     
     /** Parses the XML document at the given <code>URL</code> 
@@ -67,7 +67,7 @@ public class PerformanceTest extends SAXDemo {
       *
       * @param url is the <code>URL</code> to read 
       */
-    protected void parse( URL url ) throws Exception {
+    protected void loopParse( URL url ) throws Exception {
         SAXReader reader = createSAXReader();
                     
         println( "Parsing url:      " + url );
@@ -129,6 +129,7 @@ public class PerformanceTest extends SAXDemo {
         average = total / (loopCount - 2);
         
         println( "Average (excluding first & second run): " + average + " (ms)" );
+        return;
     }
 
     /** Parses the XML document at the given URL and times how long it takes.
