@@ -140,10 +140,9 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
         }
     }
     
-    public Comment addComment(String comment) {
+    public void addComment(String comment) {
         Comment node = getDocumentFactory().createComment( comment );
         add( node );
-        return node;
     }
     
     public Element addElement(String name) {

@@ -90,13 +90,11 @@ public interface Branch extends Node {
     public void setProcessingInstructions(List listOfPIs);
     
     
-    /** Adds a new <code>Comment</code> node with the given text to this branch
-      * and returns a reference to the new node.
+    /** Adds a new <code>Comment</code> node with the given text to this branch.
       *
       * @param comment is the text for the <code>Comment</code> node.
-      * @return the newly added <code>Comment</code> node.
       */    
-    public Comment addComment(String comment);
+    public void addComment(String comment);
     
     /** Adds a new <code>Element</code> node with the given name to this branch
       * and returns a reference to the new node.

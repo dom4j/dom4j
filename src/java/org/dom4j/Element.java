@@ -312,21 +312,17 @@ public interface Element extends Branch {
 
     // builder methods 
     
-    /** Adds a new <code>CDATA</code> node with the given text to this element
-      * and returns a reference to the new node.
+    /** Adds a new <code>CDATA</code> node with the given text to this element.
       *
       * @param cdata is the text for the <code>CDATA</code> node.
-      * @return the newly added <code>CDATA</code> node.
       */    
-    public CDATA addCDATA(String cdata);
+    public void addCDATA(String cdata);
     
-    /** Adds a new <code>Text</code> node with the given text to this element
-      * and returns a reference to the new node.
+    /** Adds a new <code>Text</code> node with the given text to this element.
       *
       * @param text is the text for the <code>Text</code> node.
-      * @return the newly added <code>Text</code> node.
       */    
-    public Text addText(String text);    
+    public void addText(String text);    
     
     /** Adds a new <code>Entity</code> node with the given name to this element
       * and returns a reference to the new node.

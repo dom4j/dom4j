@@ -242,16 +242,14 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     // Content Model methods
     
     
-    public CDATA addCDATA(String cdata) {
+    public void addCDATA(String cdata) {
         CDATA node = getDocumentFactory().createCDATA(cdata);
         add(node);
-        return node;
     }
     
-    public Text addText(String text) {
+    public void addText(String text) {
         Text node = getDocumentFactory().createText(text);
         add(node);
-        return node;
     }
     
     public Entity addEntity(String name) {
