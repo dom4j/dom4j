@@ -716,6 +716,28 @@
     </java>
   </target>
 
+  <target name="demo-jarv2" depends="samples">
+    <java classname="validate.JARVDemo2" fork="yes">
+      <arg value="xml/relaxng/address.xml"/>
+      <arg value="xml/relaxng/address.rng"/>
+    </java>
+    <java classname="validate.JARVDemo2" fork="yes">
+      <arg value="xml/relaxng/bad_address.xml"/>
+      <arg value="xml/relaxng/address.rng"/>
+    </java>
+  </target>
+
+  <target name="demo-jarv" depends="samples">
+    <java classname="validate.JARVDemo" fork="yes">
+      <arg value="xml/relaxng/address.xml"/>
+      <arg value="xml/relaxng/address.rng"/>
+    </java>
+    <java classname="validate.JARVDemo" fork="yes">
+      <arg value="xml/relaxng/bad_address.xml"/>
+      <arg value="xml/relaxng/address.rng"/>
+    </java>
+  </target>
+
   <target name="demo-schema" depends="samples">
     <java classname="SchemaDemo" args="xml/schema/personal-schema.xml"/>
     <java classname="VisitorDemo">
