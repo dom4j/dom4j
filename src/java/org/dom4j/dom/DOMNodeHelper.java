@@ -338,6 +338,28 @@ public class DOMNodeHelper {
         }
     }
 
+    public static org.w3c.dom.Element asDOMElement(Node element) {
+        if ( element instanceof org.w3c.dom.Element ) {
+            return (org.w3c.dom.Element) element;
+        }
+        else {
+            // Use DOMWriter?
+            notSupported();
+            return null;
+        }
+    }
+
+    public static org.w3c.dom.Attr asDOMAttr(Node attribute) {
+        if ( attribute instanceof org.w3c.dom.Attr ) {
+            return (org.w3c.dom.Attr) attribute;
+        }
+        else {
+            // Use DOMWriter?
+            notSupported();
+            return null;
+        }
+    }
+
     /** Called when a method has not been implemented yet 
       */
     public static void notSupported() {

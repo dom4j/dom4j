@@ -680,7 +680,6 @@ public class DefaultElement extends AbstractElement {
             for ( int i = 0; i < size; i++ ) {
                 Attribute attribute = (Attribute) attributes.get(i);
                 if ( name.equals( attribute.getName() ) ) {
-                    childRemoved(attribute);
                     return attribute;
                 }
             }
@@ -694,7 +693,6 @@ public class DefaultElement extends AbstractElement {
             for ( int i = 0; i < size; i++ ) {
                 Attribute attribute = (Attribute) attributes.get(i);
                 if ( qName.equals( attribute.getQName() ) ) {
-                    childRemoved(attribute);
                     return attribute;
                 }
             }

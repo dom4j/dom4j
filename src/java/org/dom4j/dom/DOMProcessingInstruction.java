@@ -9,41 +9,47 @@
 
 package org.dom4j.dom;
 
+import java.util.Map;
+
 import org.dom4j.Element;
+import org.dom4j.ProcessingInstruction;
 import org.dom4j.QName;
-import org.dom4j.tree.XPathAttribute;
+import org.dom4j.tree.XPathProcessingInstruction;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
-/** <p><code>DOMAttribute</code> implements a doubly linked attribute which 
+/** <p><code>DOMText</code> implements a Text node which 
   * supports the W3C DOM API.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class DOMAttribute extends XPathAttribute implements org.w3c.dom.Attr {
+public class DOMProcessingInstruction extends XPathProcessingInstruction implements org.w3c.dom.ProcessingInstruction {
 
-    
-    public DOMAttribute(QName qname, String value) { 
-        super(qname, value);
-    }
-    
-    public DOMAttribute(Element parent, QName qname, String value) { 
-        super(parent, qname, value);
+    public DOMProcessingInstruction(String target, Map values) {
+        super(target, values);
     }
 
+    public DOMProcessingInstruction(String target, String values) {
+        super(target, values);
+    }
+
+    public DOMProcessingInstruction(Element parent, String target, String values) {
+        super(parent, target, values);
+    }
+    
     
     // org.w3c.dom.Node interface
     //-------------------------------------------------------------------------        
     public String getNamespaceURI() {
-        return getQName().getNamespaceURI();
+        return DOMNodeHelper.getNamespaceURI(this);
     }
 
     public String getPrefix() {
-        return getQName().getNamespacePrefix();
+        return DOMNodeHelper.getPrefix(this);
     }
     
     public void setPrefix(String prefix) throws DOMException {
@@ -51,7 +57,7 @@ public class DOMAttribute extends XPathAttribute implements org.w3c.dom.Attr {
     }
 
     public String getLocalName() {
-        return getQName().getName();
+        return DOMNodeHelper.getPrefix(this);
     }
 
     public String getNodeName() {
@@ -147,24 +153,29 @@ public class DOMAttribute extends XPathAttribute implements org.w3c.dom.Attr {
         return DOMNodeHelper.hasAttributes(this);
     }
     
-    
-    // org.w3c.dom.Attr interface
+    // org.w3c.dom.ProcessingInstruction interface
     //-------------------------------------------------------------------------            
     
-    //public String getName();
+    //public String getTarget();
 
-    public boolean getSpecified() {
-        return false;
-    }
-
-    //public String getValue();
-    
-    //public void setValue(String value) throws DOMException;
-
-    public org.w3c.dom.Element getOwnerElement() {
-        return DOMNodeHelper.asDOMElement( getParent() );
+    public String getData() {
+        return getText();
     }
     
+    public void setData(String data) throws DOMException {
+        if ( isReadOnly() ) {
+            throw new DOMException( 
+                DOMException.NO_MODIFICATION_ALLOWED_ERR, 
+                "This ProcessingInstruction is read only" 
+            );
+        }
+        else {
+            setText(data);
+        }
+    }
+    
+    // Implementation methods
+    //-------------------------------------------------------------------------            
 }
 
 

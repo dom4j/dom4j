@@ -9,41 +9,46 @@
 
 package org.dom4j.dom;
 
+import java.util.Map;
+
 import org.dom4j.Element;
+import org.dom4j.DocumentType;
 import org.dom4j.QName;
-import org.dom4j.tree.XPathAttribute;
+import org.dom4j.tree.DefaultDocumentType;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
-/** <p><code>DOMAttribute</code> implements a doubly linked attribute which 
+/** <p><code>DOMDocumentType</code> implements a DocumentType node which 
   * supports the W3C DOM API.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class DOMAttribute extends XPathAttribute implements org.w3c.dom.Attr {
+public class DOMDocumentType extends DefaultDocumentType implements org.w3c.dom.DocumentType {
 
-    
-    public DOMAttribute(QName qname, String value) { 
-        super(qname, value);
-    }
-    
-    public DOMAttribute(Element parent, QName qname, String value) { 
-        super(parent, qname, value);
+    public DOMDocumentType() { 
     }
 
+    public DOMDocumentType(String elementName, String systemID) {
+        super( elementName, systemID );
+    }
+
+    public DOMDocumentType(String elementName, String publicID, String systemID) {
+        super( elementName, publicID, systemID );
+    }
+    
     
     // org.w3c.dom.Node interface
     //-------------------------------------------------------------------------        
     public String getNamespaceURI() {
-        return getQName().getNamespaceURI();
+        return DOMNodeHelper.getNamespaceURI(this);
     }
 
     public String getPrefix() {
-        return getQName().getNamespacePrefix();
+        return DOMNodeHelper.getPrefix(this);
     }
     
     public void setPrefix(String prefix) throws DOMException {
@@ -51,7 +56,7 @@ public class DOMAttribute extends XPathAttribute implements org.w3c.dom.Attr {
     }
 
     public String getLocalName() {
-        return getQName().getName();
+        return DOMNodeHelper.getPrefix(this);
     }
 
     public String getNodeName() {
@@ -147,24 +152,27 @@ public class DOMAttribute extends XPathAttribute implements org.w3c.dom.Attr {
         return DOMNodeHelper.hasAttributes(this);
     }
     
-    
-    // org.w3c.dom.Attr interface
+    // org.w3c.dom.DocumentType interface
     //-------------------------------------------------------------------------            
-    
-    //public String getName();
-
-    public boolean getSpecified() {
-        return false;
+    public NamedNodeMap getEntities() {
+        return null;
     }
 
-    //public String getValue();
-    
-    //public void setValue(String value) throws DOMException;
-
-    public org.w3c.dom.Element getOwnerElement() {
-        return DOMNodeHelper.asDOMElement( getParent() );
+    public NamedNodeMap getNotations() {
+        return null;
     }
-    
+
+    public String getPublicId() {
+        return getPublicID();
+    }
+
+    public String getSystemId() {
+        return getSystemID();
+    }
+
+    public String getInternalSubset() {
+        return getElementName();
+    }
 }
 
 

@@ -11,12 +11,16 @@ package org.dom4j.dom;
 
 import java.util.Map;
 
-import org.dom4j.DocumentFactory;
 import org.dom4j.Attribute;
+import org.dom4j.CDATA;
+import org.dom4j.Comment;
+import org.dom4j.Document;
+import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
+import org.dom4j.Entity;
+import org.dom4j.ProcessingInstruction;
 import org.dom4j.QName;
-import org.dom4j.tree.DefaultAttribute;
-import org.dom4j.tree.DefaultElement;
+import org.dom4j.Text;
 
 import org.xml.sax.Attributes;
 
@@ -41,13 +45,52 @@ public class DOMDocumentFactory extends DocumentFactory {
     
     
     // Factory methods
-/*    
-    public Attribute createAttribute(QName qname, String value) {
-        return new SaxonAttribute(qname, value);
-    }
+    
+    public Document createDocument() {
+/*        
+        DOMDocument answer = new DOMDocument();
+        answer.setDocumentFactory( this );
+        return answer;
 */
-
-    // SAXON helper methods
+        return null;
+    }
+    
+    
+    public Element createElement(QName qname) {
+        return new DOMElement(qname);
+    }
+    
+    public Attribute createAttribute(QName qname, String value) {
+        return new DOMAttribute(qname, value);
+    }
+    
+    public CDATA createCDATA(String text) {
+        return new DOMCDATA(text);
+    }
+    
+    public Comment createComment(String text) {
+        return new DOMComment(text);
+    }
+    
+    public Text createText(String text) {
+        return new DOMText(text);
+    }
+    
+    public Entity createEntity(String name) {
+        return new DOMEntityReference(name);
+    }
+    
+    public Entity createEntity(String name, String text) {
+        return new DOMEntityReference(name, text);
+    }
+    
+    public ProcessingInstruction createProcessingInstruction(String target, String data) {
+        return new DOMProcessingInstruction(target, data);
+    }
+    
+    public ProcessingInstruction createProcessingInstruction(String target, Map data) {
+        return new DOMProcessingInstruction(target, data);
+    }
     
     // Implementation methods
     
