@@ -22,7 +22,7 @@ import junit.textui.TestRunner;
   */
 public class TestXPath extends AbstractTestCase {
 
-    protected static boolean VERBOSE = true;
+    protected static boolean VERBOSE = false;
     
     protected static String[] paths = {
         "root",

@@ -27,7 +27,8 @@ import org.dom4j.io.XMLWriter;
   */
 public class XPathGrep extends AbstractDemo {
     
-    protected XPath xpath;
+    protected XPath xpath;    
+    protected boolean verbose;
     
     
     public static void main(String[] args) {
@@ -69,6 +70,10 @@ public class XPathGrep extends AbstractDemo {
         Document document = reader.read( url );
         
         // perform XPath
+        if ( verbose ) {
+            println( "About to evalute: " + xpath );
+            println( "Results:" );
+        }
         List list = xpath.selectNodes( document );
         
         XMLWriter writer = createXMLWriter();
@@ -106,6 +111,9 @@ public class XPathGrep extends AbstractDemo {
     }
     
     protected void readOptions( String arg ) {
+        if ( arg.indexOf( 'v' ) >= 0 ) {
+            verbose = true;
+        }
     }
 }
 

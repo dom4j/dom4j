@@ -4,13 +4,12 @@
     <title>To Do List</title>
     
     <section title="Known problems">    
-      <p>The following features are not yet fully supported in the inbuilt
+      <p>The following functions are not yet fully supported in the inbuilt
         XPath engine</p>
       <ul>
-        <li>positional predicates such as <code>/a/b[2]</code>
-        </li>
-        <li>functions id(), generate-id() and format-number()
-        </li>
+        <li>id()</li>
+        <li>generate-id()</li>
+        <li>format-number()</li>
       </ul>
     </section>
 
