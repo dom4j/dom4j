@@ -2,17 +2,21 @@
 
   <!-- define the classpath used to run examples -->
   <goal name="create-classpath" prereqs="java:compile,test:compile">
-		<path id="test.classpath">
-			<pathelement path="${maven.build.dest}"/>
-			<pathelement path="target/classes"/>
-			<pathelement path="target/test-classes"/>
-			<pathelement path="src/"/>
-			<path refid="maven.dependency.classpath"/>
-		</path>
+    <path id="test.classpath">
+      <pathelement path="${maven.build.dest}"/>
+      <pathelement path="target/classes"/>
+      <pathelement path="target/test-classes"/>
+      <pathelement path="src/"/>
+      <path refid="maven.dependency.classpath"/>
+    </path>
   </goal>
 
-	<preGoal name="site:deploy">
-		<attainGoal name="docbook:transform"/>
-	</preGoal>
+  <preGoal name="site:deploy">
+    <attainGoal name="docbook:transform"/>
+  </preGoal>
+
+  <preGoal name="xdoc:jelly-transform">
+    <attainGoal name="faq"/>
+  </preGoal>  
 
 </project>
