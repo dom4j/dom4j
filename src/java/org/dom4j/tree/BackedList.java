@@ -64,11 +64,21 @@ public class BackedList extends ArrayList {
     }
     
     public void add(int index, Object object) {
-        int realIndex = branchContent.indexOf( get(index) );
-        if ( realIndex < 0 ) {
-            realIndex = ( index == 0 ) ? 0 : Integer.MAX_VALUE;
+        int size = branchContent.size();
+        if ( index < 0 ) {
+            throw new IndexOutOfBoundsException( "Index value: " + index + " is less than zero" );
         }
-        if ( realIndex < branchContent.size() ) {
+        else if ( index > size ) {
+            throw new IndexOutOfBoundsException( "Index value: " + index + " cannot be greater than the size: " + size );
+        }
+        int realIndex = size;
+        if (index < realIndex) {
+            realIndex = branchContent.indexOf( get(index) );
+        }
+        if ( realIndex < 0 ) {
+            realIndex = ( index == 0 ) ? 0 :Integer.MAX_VALUE;
+        }
+        if ( realIndex < size ) {
             branchContent.add(realIndex, object);
         }
         else {
