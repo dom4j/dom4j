@@ -135,9 +135,4 @@
         <attainGoal name="faq"/>
     </preGoal>
 
-    <postGoal name="xdoc:register-reports">
-        <attainGoal name="maven-checkstyle-plugin:deregister"/>
-        <attainGoal name="dom4j-clover:register"/>
-    </postGoal>
-
 </project>
