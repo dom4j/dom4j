@@ -26,6 +26,7 @@ import org.dom4j.CDATA;
 import org.dom4j.CharacterData;
 import org.dom4j.Comment;
 import org.dom4j.Document;
+import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.Entity;
 import org.dom4j.IllegalAddException;
@@ -42,7 +43,11 @@ import org.dom4j.Text;
   * @version $Revision$
   */
 public class DefaultElement extends AbstractElement {
+    
+    /** The <code>DocumentFactory</code> instance used by default */
+    private static final DocumentFactory DOCUMENT_FACTORY = DocumentFactory.getInstance();
 
+    
     /** The <code>QName</code> for this element */
     private QName qname;
     
@@ -64,7 +69,7 @@ public class DefaultElement extends AbstractElement {
 
     
     public DefaultElement(String name) { 
-        this.qname = getDocumentFactory().createQName(name);
+        this.qname = DOCUMENT_FACTORY.createQName(name);
     }
 
     public DefaultElement(QName qname) { 
@@ -79,7 +84,7 @@ public class DefaultElement extends AbstractElement {
     }
 
     public DefaultElement(String name, Namespace namespace) { 
-        this.qname = getDocumentFactory().createQName(name, namespace);
+        this.qname = DOCUMENT_FACTORY.createQName(name, namespace);
     }
 
     public Element getParent() {
@@ -956,9 +961,12 @@ public class DefaultElement extends AbstractElement {
     
     protected void setAttributeList(List attributes) {
         this.attributes = attributes;
+    }    
+    
+    protected DocumentFactory getDocumentFactory() {
+        DocumentFactory factory = qname.getDocumentFactory();
+        return ( factory != null ) ? factory : DOCUMENT_FACTORY;
     }
-    
-    
     
 }
 
