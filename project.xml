@@ -7,22 +7,34 @@
   <currentVersion>1.4</currentVersion>
   
   <organization>
-	  <name>MetaStuff Ltd.</name>
-	  <url>http://dom4j.org</url>
+	<name>MetaStuff Ltd.</name>
+	<url>http://dom4j.org</url>
+    <logo>http://sourceforge.net/sflogo.php?group_id=16035</logo>
   </organization>
+  <logo>http://dom4j.org/images/logo.gif</logo>
   
   <inceptionYear>2002</inceptionYear>
   <package>org.dom4j</package>
   <shortDescription>dom4j : XML framework for Java</shortDescription>
-  <gumpRepositoryId>jakarta</gumpRepositoryId>
+  <gumpRepositoryId>dom4j</gumpRepositoryId>
+
   <description>dom4j: the flexible XML framework for Java</description>
   <url>http://dom4j.org</url>
+
   <cvsWebUrl>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/dom4j/dom4j/</cvsWebUrl>
   <cvsModule>dom4j/dom4j</cvsModule>
   <issueTrackingUrl>http://sourceforge.net/tracker/?group_id=16035</issueTrackingUrl>
+
   <siteAddress>dom4j.org</siteAddress>
   <siteDirectory>/home/d/do/dom4j/htdocs</siteDirectory>
-  
+
+
+  <repository>
+    <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/dom4j:anonymous</connection>
+    <developerConnection>scm:cvs:ext:${maven.username}@cvs.sourceforge.net:/cvsroot/dom4j:dom4j</developerConnection>
+    <url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/dom4j/dom4j/</url>
+  </repository>
+   
   <mailingLists>
   
     <mailingList>

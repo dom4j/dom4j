@@ -16,27 +16,19 @@
       </p>
       <ul>
           <li>
-            <a href="http://prdownloads.sourceforge.net/dom4j/dom4j-$VERSION$.zip">dom4j-$VERSION$.zip</a> for Windows platforms (ZIP)
+            <a href="http://prdownloads.sourceforge.net/dom4j/dom4j-${pom.version}.zip">dom4j-${pom.version}.zip</a> for Windows platforms (ZIP)
           </li>
           <li>
-            <a href="http://prdownloads.sourceforge.net/dom4j/dom4j-$VERSION$.tar.gz">dom4j-$VERSION$.tar.gz</a> for all other platforms (Tarball)
+            <a href="http://prdownloads.sourceforge.net/dom4j/dom4j-${pom.version}.tar.gz">dom4j-${pom.version}.tar.gz</a> for all other platforms (Tarball)
           </li>
       </ul>
     </section>
 
-    <section name="Download a daily build">
-      <ul>
-        <!--
-        For FTP access use <url>ftp://dom4j.sourceforge.net/pub/dom4j</url>.
-        -->
-
-        <li><a href="../../dist/dom4j-daily.zip">dom4j-daily.zip</a> 
-            for Windows platforms (ZIP)
-        </li>
-        <li><a href="../../dist/dom4j-daily.tar.gz">dom4j-daily.tar.gz</a>
-            for all other platforms (Tarball)
-        </li>
-      </ul>
+    <section name="Download a snapshot build">
+    	<p>
+    		You can download an interim snapshot build from the 
+    		<a href="http://www.ibiblio.org/maven/dom4j/jars/">Maven repository</a>
+    	</p>     
     </section>
 
     <section name="Obtaining the latest CVS snapshot">

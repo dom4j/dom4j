@@ -11,14 +11,15 @@
     <section name="Change History">
 
       <section name="Changes in CVS since last release">
+      </section>
+      
+      <section name="1.4 Release">
         <p>Added patch supplied by Dan Jacobs that fixes some entity encoding problems in XMLWriter - cheers Dan!
         </p>
         <p>Patched the DOMElement replaceChild method to return the correct Node and to throw a DOMException when trying to replace a non-existing child.
         </p>
         <p>Added patch to BackedList that could cause IndexOutOfBoundsExceptions to be thrown
         	that was kindly supplied by Andy Yang - thanks Andy!	
-        </p>
-        <p>Removed internal Aelfred distribution. So dom4j.jar now requires a parser such as crimson.jar or xerces.jar to be on the classpath, preferably along with JAXP.
         </p>
         <p>Update of Cookbook containing a chapter about rule API.
         </p>

@@ -3,7 +3,7 @@
     <classpathentry kind="src" path="src/test"/>
     <classpathentry kind="src" path="src/java"/>
     <classpathentry kind="src" path="src/samples"/>
-    <classpathentry kind="var" path="JRE_LIB" rootpath="JRE_SRCROOT" sourcepath="JRE_SRC"/>
+    <classpathentry kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
     <classpathentry kind="lib" path="lib/ant.jar"/>
     <classpathentry kind="lib" path="lib/crimson.jar"/>
     <classpathentry kind="lib" path="lib/isorelax.jar"/>
@@ -22,5 +22,5 @@
     <classpathentry kind="lib" path="lib/xml-apis.jar"/>
     <classpathentry kind="lib" path="lib/xmldb.jar"/>
     <classpathentry kind="lib" path="lib/xsdlib.jar"/>
-    <classpathentry kind="output" path="build/classes"/>
+    <classpathentry kind="output" path="bin"/>
 </classpath>
