@@ -1,0 +1,134 @@
+<document>
+
+  <properties>
+    <title>dom4j changes</title>
+    <author email="maartenc@users.sourceforge.net">Maarten Coene</author>
+  </properties>
+
+  <body>
+
+    <release version="1.5 dev" date="in CVS">
+      <action dev="maartenc" type="fix" due-to="Wonne Keysers">
+        Fixed bug in <code>BeanElement</code> which prevented proper execution of the bean samples.
+      </action>
+      <action dev="maartenc" type="update" due-to="Christian Niles">
+        <code>STAXEventWriter</code> now uses <code>XMLEventConsumer</code> instead of <code>XMLEventWriter</code>
+      </action>
+      <action dev="maartenc" type="fix" due-to="Paul Libbrecht">
+        Fixed bug in <code>SAXReader</code> that caused problems parsing files in OSX.
+      </action>
+      <action dev="maartenc" type="fix" due-to="Paul Libbrecht">
+        Fixed bug in <code>XMLWriter</code> that caused whitespace to be added between successive calls of the <code>characters(...)</code> method.
+      </action>
+      <action dev="maartenc" type="update" due-to="Brett Finnell">
+        Improved performance of <code>NamespaceCache</code> in multithreaded environments.
+      </action>
+    </release>
+
+    <release version="1.5 beta 2" date="2004-05-12">
+      <action dev="wolfftw" type="add">
+        Added flag to <code>OutputFormat</code> that supresses newline after XML declaration.
+      </action>
+      <action dev="maartenc" type="update">
+        Upgraded dependencies to their latest version on ibiblio.
+      </action>
+      <action dev="maartenc" type="add" due-to="Todd Wolff">
+        Added method to <code>DocumentHelper</code> that allows user to specify encoding when parsing an xml <code>String</code>.
+      </action>
+      <action dev="maartenc" type="fix">
+        Fixed a ClassCastException bug in <code>BeanElement</code>.
+      </action>
+      <action dev="maartenc" type="fix">
+        Fixed a bug in <code>SAXContentHandler</code> which caused a <code>NullPointerException</code> in some situations.
+      </action>
+      <action dev="maartenc" type="fix" due-to="Todd Wolff">
+        Fixed bug which prevented an element's namespace prefix from being registered for use in xpath expressions.
+      </action>
+      <action dev="maartenc" type="fix" due-to="Todd Wolff">
+        Fixed bug in <code>XMLWriter</code> that caused duplication of the default namespace declaration.
+      </action>
+      <action dev="maartenc" type="fix" due-to="Curt Arnold">
+        Added a bunch of patches to make the dom4j DOM classes more DOM compliant.
+      </action>
+      <action dev="maartenc" type="update" due-to="Ricardo Leon">
+        Fixed bug in <code>DispatchHandler</code> which made the handler not reusable.
+      </action>
+      <action dev="maartenc" type="fix" due-to="Todd Wolff">
+        Fixed bug in <code>SAXContentHandler</code> that caused incorrect CDATA section parsing.
+      </action>
+      <action dev="maartenc" type="fix">
+        Fixed bug in <code>SAXContentHandler</code> that caused incorrect entity handling.
+      </action>
+      <action dev="maartenc" type="fix" due-to="Bo Gundersen">
+        Fixed bug in <code>XMLWriter</code> causing padding to be disabled, even if enabled in the specified outputformat.
+      </action>
+      <action dev="maartenc" type="add" due-to="Christian Niles">
+        Added initial support for STaX streams.
+      </action>
+    </release>
+
+    <release version="1.5 beta 1" date="2004-03-25">
+      <action dev="maartenc" type="fix">
+        Fixed encoding bug in <code>Document.asXML()</code> and <code>DocumentHelper.parseText()</code>.
+      </action>
+      <action dev="maartenc" type="fix" due-to="Kohsuke Kawaguchi">
+        Fixed bug in <code>SAXReader</code> that caused problems resolving relative URIs when parsing <code>java.io.File</code> Objects.
+      </action>
+      <action dev="maartenc" type="update">
+        The iterators returned by the <code>Element.elementIterator(...)</code> methods now support <code>remove()</code>.
+      </action>
+      <action dev="maartenc" type="update" due-to="Geert Dendoncker and Joury Gokel">
+        <code>DOMWriter</code> writes now DOM Level 2 attributes and elements.
+      </action>
+      <action dev="maartenc" type="update">
+        Use latest implementation of the Aelfred parser.
+      </action>
+      <action dev="maartenc" type="fix" due-to="Bryan Thompson">
+        Fixed some problems with internal/external DTD declarations.
+      </action>
+      <action dev="maartenc" type="update">
+        Upgraded to Jaxen 1.1 beta 2.
+      </action>
+      <action dev="maartenc" type="update">
+        Ignore attribute order when comparing elements in <code>NodeComparator</code>.
+      </action>
+      <action dev="maartenc" type="update">
+        Fixed bug in <code>XMLWriter</code> where namespace declarations were duplicated.
+      </action>
+      <action dev="maartenc" type="fix" due-to="Vladimir Kralik">
+        Fixed bug in parsing a <code>ProcessingInstruction</code>.
+      </action>
+      <action dev="maartenc" type="fix" due-to="Mark Diggory">
+        Added support for <code>Stylesheet</code> modes.
+      </action>
+      <action dev="maartenc" type="update" due-to="Christian Niles">
+        Don't escape &quot; and &apos; characters in attribute values if it's not necessary.
+      </action>
+      <action dev="maartenc" type="fix" due-to="Henner Kollmann">
+        Fixed some <code>DOMNodeHelper</code> issues.
+      </action>
+      <action dev="maartenc" type="fix" due-to="Thomas Draier">
+        Fixed some datatype issues.
+      </action>
+      <action dev="maartenc" type="fix">
+        Fixed an bug where the EntityResolver was not set on the XMLReader.
+      </action>
+      <action dev="slehmann" type="fix">
+        Fixed multithreaded access on <code>DefaultElement</code>.
+      </action>
+      <action dev="maartenc" type="fix" due-to="Geoffrey Vlassaks">
+        Fixed problem parsing XML Files.
+      </action>
+      <action dev="ddlucas" type="update">
+        Added xml:space attribute support based on XML Specification 1.0.
+      </action>
+      <action dev="maartenc" type="update">
+        Maven build of dom4j is now nearly complete. Maven is now used for the website generation.
+      </action>
+      <action dev="maartenc" type="fix" due-to="Alessandro Vernet">
+        Fixed some bugs in BackedList.
+      </action>
+    </release>
+
+  </body>
+</document>
