@@ -36,7 +36,8 @@ public class DefaultElementTest extends AbstractTestCase {
         String text = message.getStringValue();
         assertEquals("String value incorrect", "This should work", text.trim());
         
-        String xpathText = (String) doc.selectObject("normalize-space(/message)");
+        String xpathText = (String) doc
+                .selectObject("normalize-space(/message)");
         assertEquals("xpath value incorrect", "This should work", xpathText);
     }
     
