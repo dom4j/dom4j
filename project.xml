@@ -262,17 +262,6 @@
       <url>http://xml.apache.org/xalan-j/index.html</url>
     </dependency>
 
-    <!-- clover dependencies -->
-    <dependency>
-      <groupId>clover</groupId>
-      <artifactId>clover</artifactId>
-      <version>1.3-rc4</version>
-      <properties>
-        <classloader>root</classloader>
-      </properties>
-      <url>http://www.cenqua.com/clover/</url>
-    </dependency>
-
   </dependencies>
   
   <build>
@@ -300,7 +289,7 @@
   <reports>
      <report>maven-changelog-plugin</report>
      <report>maven-changes-plugin</report>
-     <report>dom4j-clover</report>
+     <report>maven-clover</report>
      <report>maven-developer-activity-plugin</report>
      <report>maven-faq-plugin</report>
      <report>maven-file-activity-plugin</report>
