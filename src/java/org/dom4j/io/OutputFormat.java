@@ -47,8 +47,6 @@ public class OutputFormat implements Cloneable {
     /** pad string-element boundaries with whitespace **/
     private boolean padText = false;
 
-    protected String padTextString = " ";
-
     /** Creates an <code>OutputFormat</code> with
       * no additional whitespace (indent or new lines) added.
       * The whitespace from the element text content is fully preserved.

@@ -5,8 +5,12 @@
     
     <section title="Change History">
         <section title="Changes in CVS since last release">
+          <p>Added helper method setXMLFilter() to SAXReader making it easier to install SAX filters to filter or preprocess SAX events
+          before a dom4j Document is created. Also added a new sample program called sax.FilterDemo that demonstrates how to use a SAX filter
+          with dom4j.
+          </p>
           <p>Added patch so that patterns such as <code>@id='123'</code> and <code>name()='foo'</code> are now
-            working properly again.
+            working properly again. Also patterns such as <code>not(@id='123')</code> work now too.
           </p>
           <p>Patched the dynamic loading of classes to fix some ClassLoader issues found with some application servers.
           </p>

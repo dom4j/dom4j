@@ -37,6 +37,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.SAXParseException;
+import org.xml.sax.XMLFilter;
 import org.xml.sax.XMLReader;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.DefaultHandler;
@@ -97,7 +98,8 @@ public class SAXReader {
     /** Should element & attribute names and namespace URIs be interned? */
     private boolean stringInternEnabled = true;
     
-    
+    /** The SAX filter used to filter SAX events */
+    private XMLFilter xmlFilter;
     
     public SAXReader() {
     }
@@ -277,22 +279,23 @@ public class SAXReader {
       */
     public Document read(InputSource in) throws DocumentException {
         try {
-            XMLReader reader = getXMLReader();
-
             XMLReader xmlReader = getXMLReader();
+            
+            xmlReader = installXMLFilter(xmlReader);
+            
             EntityResolver entityResolver = xmlReader.getEntityResolver();
             if ( entityResolver == null ) {
                 entityResolver = createDefaultEntityResolver( in.getSystemId() );
             }
             
-            SAXContentHandler contentHandler = createContentHandler(reader);
+            SAXContentHandler contentHandler = createContentHandler(xmlReader);
             contentHandler.setEntityResolver( entityResolver );
             contentHandler.setInputSource( in );
-            reader.setContentHandler(contentHandler);
+            xmlReader.setContentHandler(contentHandler);
 
-            configureReader(reader, contentHandler);
+            configureReader(xmlReader, contentHandler);
         
-            reader.parse(in);
+            xmlReader.parse(in);
             return contentHandler.getDocument();
         } 
         catch (Exception e) {
@@ -444,8 +447,53 @@ public class SAXReader {
         getDispatchHandler().setDefaultHandler(handler);   
     }
     
+    
+    /** Returns the SAX filter being used to filter SAX events.
+      *
+      * @return the SAX filter being used or null if no SAX filter is installed
+      */
+    public XMLFilter getXMLFilter() {
+        return xmlFilter;
+    }
+    
+    /** Sets the SAX filter to be used when filtering SAX events
+      *
+      * @param xmlFilter is the SAX filter to use or null to disable filtering
+      */
+    public void setXMLFilter(XMLFilter xmlFilter) {
+        this.xmlFilter = xmlFilter;
+    }
+    
     // Implementation methods    
-    //-------------------------------------------------------------------------                    
+    //-------------------------------------------------------------------------    
+    
+    /** Installs any XMLFilter objects required to allow the SAX event stream
+      * to be filtered and preprocessed before it gets to dom4j.
+      *
+      * @return the new XMLFilter if applicable or the original XMLReader if no
+      * filter is being used.
+      */
+    protected XMLReader installXMLFilter(XMLReader xmlReader) {
+        XMLFilter xmlFilter = getXMLFilter();
+        if ( xmlFilter != null ) {
+            // find the root XMLFilter
+            XMLFilter root = xmlFilter;
+            while (true) {
+                XMLReader parent = root.getParent();
+                if ( parent instanceof XMLFilter ) {
+                    root = (XMLFilter) parent;
+                }
+                else {
+                    break;
+                }
+            }
+            root.setParent(xmlReader);
+            return xmlFilter;
+        }
+        return xmlReader;
+    }
+
+    
     protected DispatchHandler getDispatchHandler() {
         if (dispatchHandler == null) {
             dispatchHandler = new DispatchHandler();
