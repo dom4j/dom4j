@@ -48,7 +48,7 @@ public class CreateXMLDemo extends AbstractDemo {
     }
     
     protected Document createDocument() throws Exception {
-        Document document = DocumentFactory.create();
+        Document document = DocumentFactory.newDocument();
         Element root = document.addElement( "system" );
         
         Properties properties = System.getProperties();

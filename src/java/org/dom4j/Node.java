@@ -203,7 +203,7 @@ public interface Node extends Cloneable {
       *
       * @param visitor is the visitor in the Visitor Pattern
       */
-    public void accept(TreeVisitor visitor);
+    public void accept(Visitor visitor);
 
     
     

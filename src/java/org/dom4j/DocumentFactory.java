@@ -9,7 +9,18 @@
 
 package org.dom4j;
 
+import java.util.Map;
+
+import org.dom4j.tree.DefaultAttribute;
+import org.dom4j.tree.DefaultCDATA;
+import org.dom4j.tree.DefaultComment;
 import org.dom4j.tree.DefaultDocument;
+import org.dom4j.tree.DefaultDocumentType;
+import org.dom4j.tree.DefaultElement;
+import org.dom4j.tree.DefaultEntity;
+import org.dom4j.tree.DefaultNamespace;
+import org.dom4j.tree.DefaultProcessingInstruction;
+import org.dom4j.tree.DefaultText;
 
 /** <p><code>DocumentFactory</code> is a collection of factory methods to allow
   * easy custom building of DOM4J trees. The default tree that is built uses
@@ -30,14 +41,6 @@ public class DocumentFactory {
     protected XPathEngine XPathEngine;
     
     // Some static helper methods
-    
-    public static Document create() {
-        return singleton.createDocument();
-    }
-    
-    public static Document create(Element rootElement) {
-        return singleton.createDocument(rootElement);
-    }
     
     /** <p>Access to singleton implementation of DocumentFactory which 
       * is used if no DocumentFactory is specified when building using the 
@@ -74,6 +77,89 @@ public class DocumentFactory {
         this.XPathEngine = XPathEngine;
     }
 
+
+    // Static helper methods
+    
+    public static Document newDocument() {
+        return singleton.createDocument();
+    }
+    
+    public static Document newDocument(Element rootElement) {
+        return singleton.createDocument(rootElement);
+    }
+
+    
+    public static Element newElement(QName qname) {
+        return singleton.createElement(qname);
+    }
+    
+    public static Element newElement(String name) {
+        return singleton.createElement(name);
+    }
+    
+    public static Element newElement(String name, String prefix, String uri) {
+        return singleton.createElement(name, prefix, uri);
+    }
+    
+    public static Element newElement(String name, Namespace namespace) {
+        return singleton.createElement(name, namespace);
+    }
+    
+    
+    public static Attribute newAttribute(QName qname, String value) {
+        return singleton.createAttribute(qname, value);
+    }
+    
+    public static Attribute newAttribute(String name, String value) {
+        return singleton.createAttribute(name, value);
+    }
+    
+    public static Attribute newAttribute(String name, String value, Namespace namespace) {
+        return singleton.createAttribute(name, value, namespace);
+    }
+
+    public static CDATA newCDATA(String text) {
+        return singleton.createCDATA(text);
+    }
+    
+    public static Comment newComment(String text) {
+        return singleton.createComment(text);
+    }
+    
+    public static Text newText(String text) {
+        return singleton.createText(text);
+    }
+    
+    
+    public static Entity newEntity(String name) {
+        return singleton.createEntity(name);
+    }
+    
+    public static Entity newEntity(String name, String text) {
+        return singleton.createEntity(name, text);
+    }
+    
+    public static Namespace newNamespace(String prefix, String uri) {
+        return singleton.createNamespace(prefix, uri);
+    }
+    
+    public static ProcessingInstruction newProcessingInstruction(String target, String data) {
+        return singleton.createProcessingInstruction(target, data);
+    }
+    
+    public static ProcessingInstruction newProcessingInstruction(String target, Map data) {
+        return singleton.createProcessingInstruction(target, data);
+    }
+    
+    public static QName newQName(String localName, Namespace namespace) {
+        return singleton.createQName(localName, namespace);
+    }
+    
+    public static QName newQName(String localName) {
+        return singleton.createQName(localName);
+    }
+    
+    
     
     // Factory methods
     
@@ -90,6 +176,77 @@ public class DocumentFactory {
         return answer;
     }
     
+    
+    
+    public Element createElement(QName qname) {
+        return new DefaultElement(qname);
+    }
+    
+    public Element createElement(String name) {
+        return createElement(createQName(name));
+    }
+    
+    public Element createElement(String name, String prefix, String uri) {
+        return createElement(createQName(name, createNamespace(prefix, uri)));
+    }
+    
+    public Element createElement(String name, Namespace namespace) {
+        return createElement(createQName(name, namespace));
+    }
+    
+    
+    public Attribute createAttribute(QName qname, String value) {
+        return new DefaultAttribute(qname, value);
+    }
+    
+    public Attribute createAttribute(String name, String value) {
+        return createAttribute(createQName(name), value);
+    }
+    
+    public Attribute createAttribute(String name, String value, Namespace namespace) {
+        return createAttribute(createQName(name, namespace), value);
+    }
+
+    public CDATA createCDATA(String text) {
+        return new DefaultCDATA(text);
+    }
+    
+    public Comment createComment(String text) {
+        return new DefaultComment(text);
+    }
+    
+    public Text createText(String text) {
+        return new DefaultText(text);
+    }
+    
+    
+    public Entity createEntity(String name) {
+        return new DefaultEntity(name);
+    }
+    
+    public Entity createEntity(String name, String text) {
+        return new DefaultEntity(name, text);
+    }
+    
+    public Namespace createNamespace(String prefix, String uri) {
+        return DefaultNamespace.get(prefix, uri);
+    }
+    
+    public ProcessingInstruction createProcessingInstruction(String target, String data) {
+        return new DefaultProcessingInstruction(target, data);
+    }
+    
+    public ProcessingInstruction createProcessingInstruction(String target, Map data) {
+        return new DefaultProcessingInstruction(target, data);
+    }
+    
+    public QName createQName(String localName, Namespace namespace) {
+        return QName.get(localName, namespace);
+    }
+    
+    public QName createQName(String localName) {
+        return QName.get(localName);
+    }
     
     /** <p>A Factory Method pattern to create the default 
       * <code>{@link XPathEngine}</code> instance which will be used for 

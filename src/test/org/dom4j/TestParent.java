@@ -35,7 +35,7 @@ public class TestParent extends AbstractTestCase {
         
     public void testFragment() throws Exception {        
         
-        ContentFactory factory = new ContentFactory();
+        DocumentFactory factory = new DocumentFactory();
         Element root = factory.createElement( "root" );
         Element first = root.addElement( "child" );
         Element second = root.addElement( "child" );

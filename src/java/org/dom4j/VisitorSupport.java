@@ -9,30 +9,49 @@
 
 package org.dom4j;
 
-/** <p><code>IllegalAddNodeException</code> is thrown when a node
-  * is added incorrectly to an <code>{@link Element}</code></p>
+/** <p><code>VisitorSupport</code> is an abstract base class
+  * which is useful for implementation inheritence or when using anonymous 
+  * inner classes to create simple <code>Visitor</code>
+  * implementations.</p>
   *
+  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class IllegalAddNodeException extends IllegalArgumentException {
+public abstract class VisitorSupport implements Visitor {
+    
+    public VisitorSupport() {
+    }
 
-    public IllegalAddNodeException(String reason) {
-        super(reason);
+    public void visit(Document document) {
+    }
+
+    public void visit(DocumentType documentType) {
     }
     
-    public IllegalAddNodeException(Element parent, Node node, String reason) {
-        super( "The node \"" + node.toString() 
-            + "\" could not be added to the element \"" 
-            + parent.getQualifiedName() + "\" because: " + reason 
-        );
+    public void visit(Element node) {
     }
-    
-    public IllegalAddNodeException(Branch parent, Node node, String reason) {
-        super( "The node \"" + node.toString() 
-            + "\" could not be added to the branch \"" 
-            + parent.getName() + "\" because: " + reason 
-        );
+
+    public void visit(Attribute node) {
     }
+
+    public void visit(CDATA node) {
+    }
+
+    public void visit(Comment node) {
+    }
+
+    public void visit(Entity node) {
+    }
+
+    public void visit(Namespace namespace) {
+    }
+
+    public void visit(ProcessingInstruction node) {
+    }
+
+    public void visit(Text node) {
+    }
+
 }
 
 

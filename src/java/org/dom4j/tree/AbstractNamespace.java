@@ -10,7 +10,7 @@
 package org.dom4j.tree;
 
 import org.dom4j.Namespace;
-import org.dom4j.TreeVisitor;
+import org.dom4j.Visitor;
 
 /** <p><code>AbstractNamespace</code> is an abstract base class for 
   * tree implementors to use for implementation inheritence.</p>
@@ -54,7 +54,7 @@ public abstract class AbstractNamespace extends AbstractNode implements Namespac
         return "xmlns:" + getPrefix() + "=\"" + getURI() + "\"";
     }
     
-    public void accept(TreeVisitor visitor) {
+    public void accept(Visitor visitor) {
         visitor.visit(this);
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Node;
-import org.dom4j.TreeVisitor;
+import org.dom4j.Visitor;
 import org.dom4j.XPath;
 import org.dom4j.XPathEngine;
 import org.dom4j.XPathHelper;

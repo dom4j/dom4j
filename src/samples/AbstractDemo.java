@@ -7,7 +7,7 @@
  * $Id$
  */
 
-import org.dom4j.TreeException;
+import org.dom4j.DocumentException;
 
 /** An abstract base class for the demo programs.
   *
@@ -26,7 +26,7 @@ public abstract class AbstractDemo {
         try {
             demo.run(args);
         }
-        catch (TreeException e) {
+        catch (DocumentException e) {
             System.out.println( "Exception occurred: " + e );
             Exception nestedException = e.getNestedException();
             if ( nestedException != null ) {

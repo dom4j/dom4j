@@ -12,7 +12,7 @@ package org.dom4j.tree;
 import org.dom4j.Comment;
 import org.dom4j.Element;
 import org.dom4j.Node;
-import org.dom4j.TreeVisitor;
+import org.dom4j.Visitor;
 
 /** <p><code>DefaultComment</code> is the default DOM4J implementation of a 
   * singly linked read only XML Comment.</p>

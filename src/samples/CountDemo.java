@@ -43,7 +43,7 @@ public class CountDemo extends SAXDemo {
         numProcessingInstructions = 0;
         
         
-        TreeVisitor visitor = new TreeVisitorSupport() {
+        Visitor visitor = new VisitorSupport() {
             
             public void visit(Element node) {
                 ++numElements;

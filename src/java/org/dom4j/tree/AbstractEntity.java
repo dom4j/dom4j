@@ -10,7 +10,7 @@
 package org.dom4j.tree;
 
 import org.dom4j.Entity;
-import org.dom4j.TreeVisitor;
+import org.dom4j.Visitor;
 
 
 /** <p><code>AbstractEntity</code> is an abstract base class for 
@@ -32,7 +32,7 @@ public abstract class AbstractEntity extends AbstractNode implements Entity {
         return "&" + getName() + ";";
     }
     
-    public void accept(TreeVisitor visitor) {
+    public void accept(Visitor visitor) {
         visitor.visit(this);
     }
     

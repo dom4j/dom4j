@@ -11,7 +11,7 @@
 import java.net.URL;
 
 import org.dom4j.*;
-import org.dom4j.io.TreeReader;
+import org.dom4j.io.DocumentReader;
 import org.dom4j.io.SAXReader;
 
 /** This demo uses the Visitor Pattern in DOM4J to display the effect
@@ -52,15 +52,15 @@ public class VisitorDemo2 extends VisitorDemo {
     }
     
     protected void parse( URL url ) throws Exception {
-        TreeReader reader = createTreeReader();
+        DocumentReader reader = createDocumentReader();
         Document document = reader.read(url);
         process(document);
     }
     
-    protected TreeReader createTreeReader() throws Exception {
+    protected DocumentReader createDocumentReader() throws Exception {
         println( "Using SAX parser: " + System.getProperty( "org.xml.sax.driver", "default" ) );
         
-        TreeReader answer = new SAXReader();        
+        DocumentReader answer = new SAXReader();        
         if ( documentFactoryClassName != null ) {
             try {
                 Class theClass = Class.forName( documentFactoryClassName );

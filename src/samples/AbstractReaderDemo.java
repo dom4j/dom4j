@@ -11,11 +11,11 @@
 import java.net.URL;
 
 import org.dom4j.*;
-import org.dom4j.io.TreeReader;
+import org.dom4j.io.DocumentReader;
 import org.dom4j.io.SAXReader;
 
 /** This is an abstract base class for any demo which uses a 
-  * {@link TreeReader} implementation such as {@link SAXReader} and parses
+  * {@link DocumentReader} implementation such as {@link SAXReader} and parses
   * and processes a document.
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
@@ -52,17 +52,17 @@ public class AbstractReaderDemo extends SAXDemo {
     }
     
     protected void parse( URL url ) throws Exception {
-        TreeReader reader = createTreeReader();
+        DocumentReader reader = createDocumentReader();
         Document document = reader.read(url);
         process(document);
     }
     
-    protected TreeReader createTreeReader() throws Exception {
+    protected DocumentReader createDocumentReader() throws Exception {
         println( "Using SAX parser: " + System.getProperty( "org.xml.sax.driver", "default" ) );
         
-        TreeReader answer = new SAXReader();        
+        DocumentReader answer = new SAXReader();        
         
-        // allow the DocumentFactory used by the TreeReader to be configured
+        // allow the DocumentFactory used by the DocumentReader to be configured
         DocumentFactory factory = createDocumentFactory();
         if ( factory != null ) {
             println( "DocumentFactory:  " + factory );

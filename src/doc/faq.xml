@@ -66,7 +66,7 @@ protected void foo(Node node) {
 
     <section title="Does DOM4J support the Visitor Pattern?">
       <p>Yes. <b>DOM4J</b> supports the visitor pattern via the 
-          <a href="apidocs/org/jdom/TreeVisitor.html">TreeVisitor</a> interface.
+          <a href="apidocs/org/jdom/Visitor.html">Visitor</a> interface.
       </p>
       <p>Here is an example.
       </p>
@@ -76,7 +76,7 @@ protected void foo(Document doc) {
     // lets use the Visitor Pattern to 
     // navigate the document for entities
 
-    TreeVisitor visitor = new TreeVisitorSupport() {
+    Visitor visitor = new VisitorSupport() {
         public void visit(Entity entity) {
             System.out.println( 
                 "Entity name: " + entity.getName() 

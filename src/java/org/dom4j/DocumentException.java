@@ -7,72 +7,77 @@
  * $Id$
  */
 
-package org.dom4j.tree;
+package org.dom4j;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.StringTokenizer;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 
-import org.dom4j.DocumentType;
-import org.dom4j.Visitor;
-
-/** <p><code>AbstractDocumentType</code> is an abstract base class for 
-  * tree implementors to use for implementation inheritence.</p>
+/** <p><code>DocumentException</code> is a nested Exception which may be thrown
+  * during the processing of a DOM4J document.
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public abstract class AbstractDocumentType extends AbstractNode implements DocumentType {
+public class DocumentException extends Exception {
 
-    public AbstractDocumentType() {
-    }
+    /** A wrapped <code>Exception</code> */
+    private Exception nestedException;
     
-    public String toString() {
-        return super.toString() + " [DocumentType: " + asXML() + "]";
+
+    public DocumentException() {
+        super("Error occurred in DOM4J application.");
     }
 
-    public String getName() {
-        return getElementName();
+    public DocumentException(String message) {
+        super(message);
     }
     
-    public void setName(String name) {
-        setElementName(name);
+    public DocumentException(Exception nestedException) {
+        super(nestedException.getMessage());    
+        this.nestedException = nestedException;
+    }    
+
+    public DocumentException(String message,Exception nestedException) {
+        super(message);    
+        this.nestedException = nestedException;
+    }    
+
+    public Exception getNestedException() {
+        return nestedException;
     }
     
-    public String asXML() {
-        StringBuffer buffer = new StringBuffer( "<!DOCTYPE " );
-        buffer.append( getElementName() );
-        
-        boolean hasPublicID = false;
-        String publicID = getPublicID();
-        
-        if ( publicID != null && publicID.length() > 0 ) {
-            buffer.append( " PUBLIC \"" );
-            buffer.append( publicID );
-            buffer.append( "\"" );
-            hasPublicID = true;
+    public String getMessage() {
+        if (nestedException != null) {
+            return super.getMessage() + " Nested exception: " + nestedException.getMessage();
+        } else {
+            return super.getMessage();
         }
-        
-        String systemID = getSystemID();
-        if ( systemID != null && systemID.length() > 0 ) {
-            if (!hasPublicID) {
-                buffer.append(" SYSTEM");
-            }
-            buffer.append( " \"" );
-            buffer.append( systemID );
-            buffer.append( "\"" );
-        }
-        buffer.append(">");
-        return buffer.toString();
     }
-    
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
+
+    public void printStackTrace() {
+        super.printStackTrace();
+        if (nestedException != null) {
+            System.err.print("Nested exception: ");
+            nestedException.printStackTrace();
+        }
+    }
+
+    public void printStackTrace(PrintStream out) {
+        super.printStackTrace(out);
+        if (nestedException != null) {
+            out.println("Nested exception: ");
+            nestedException.printStackTrace(out);
+        }
+    }
+
+    public void printStackTrace(PrintWriter writer) {
+        super.printStackTrace(writer);
+        if (nestedException != null) {
+            writer.println("Nested exception: ");
+            nestedException.printStackTrace(writer);
+        }
     }
 }
-
-
 
 
 

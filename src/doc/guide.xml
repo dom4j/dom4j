@@ -11,12 +11,12 @@
 import java.net.URL;
 
 import org.dom4j.Document;
-import org.dom4j.TreeException;
+import org.dom4j.DocumentException;
 import org.dom4j.io.SAXReader;
 
 public class Foo {
 
-    public Document parse(URL url) throws TreeException {
+    public Document parse(URL url) throws DocumentException {
         SAXReader reader = new SAXReader();
         Document document = reader.read(url);
         return document;
@@ -30,7 +30,7 @@ public class Foo {
         methods. For example
       </p>
 <pre>
-    public void bar(Document document) throws TreeException {
+    public void bar(Document document) throws DocumentException {
 
         Element root = document.getRootElement();
 
@@ -48,7 +48,7 @@ public class Foo {
         on the Document or any Node in the tree. For example.
       </p>
 <pre>
-    public void bar(Document document) throws TreeException {
+    public void bar(Document document) throws DocumentException {
         List list = document.selectNodes( "foo/bar" );
 
         System.out.println( "Found:        " + list.size() + " nodes(s)" );
@@ -74,7 +74,7 @@ import org.dom4j.Element;
 public class Foo {
 
     public Document createDocument() {
-        Document document = DocumentFactory.create();
+        Document document = DocumentFactory.newDocument();
         Element root = document.addElement( "root" );
 
         Element author1 = root.addElement( "author" );

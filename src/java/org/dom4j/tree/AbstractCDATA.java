@@ -10,7 +10,7 @@
 package org.dom4j.tree;
 
 import org.dom4j.CDATA;
-import org.dom4j.TreeVisitor;
+import org.dom4j.Visitor;
 
 /** <p><code>AbstractCDATA</code> is an abstract base class for 
   * tree implementors to use for implementation inheritence.</p>
@@ -31,7 +31,7 @@ public abstract class AbstractCDATA extends AbstractCharacterData implements CDA
         return "<![CDATA[" + getText() + "]]>";
     }
     
-    public void accept(TreeVisitor visitor) {
+    public void accept(Visitor visitor) {
         visitor.visit(this);
     }
 }

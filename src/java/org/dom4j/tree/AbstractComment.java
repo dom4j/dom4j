@@ -10,7 +10,7 @@
 package org.dom4j.tree;
 
 import org.dom4j.Comment;
-import org.dom4j.TreeVisitor;
+import org.dom4j.Visitor;
 
 /** <p><code>AbstractComment</code> is an abstract base class for 
   * tree implementors to use for implementation inheritence.</p>
@@ -31,7 +31,7 @@ public abstract class AbstractComment extends AbstractCharacterData implements C
         return "<!--" + getText() + "-->";
     }
     
-    public void accept(TreeVisitor visitor) {
+    public void accept(Visitor visitor) {
         visitor.visit(this);
     }
 }

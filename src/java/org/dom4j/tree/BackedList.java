@@ -20,7 +20,7 @@ import org.dom4j.Comment;
 import org.dom4j.CDATA;
 import org.dom4j.Element;
 import org.dom4j.Entity;
-import org.dom4j.IllegalAddNodeException;
+import org.dom4j.IllegalAddException;
 import org.dom4j.Namespace;
 import org.dom4j.Node;
 import org.dom4j.Text;
@@ -141,7 +141,7 @@ public class BackedList extends ArrayList {
             return (Node) object;
         }
         else {
-            throw new IllegalAddNodeException( "This list must contain instances of Node. Invalid type: "+ object );
+            throw new IllegalAddException( "This list must contain instances of Node. Invalid type: "+ object );
         }
     }    
 }

@@ -18,7 +18,7 @@ import org.dom4j.Comment;
 import org.dom4j.Document;
 import org.dom4j.DocumentType;
 import org.dom4j.Element;
-import org.dom4j.IllegalAddNodeException;
+import org.dom4j.IllegalAddException;
 import org.dom4j.Node;
 import org.dom4j.ProcessingInstruction;
 import org.dom4j.XPathEngine;
@@ -234,7 +234,7 @@ public class DefaultDocument extends AbstractDocument {
             // XXX: could clone here
             String message = "The Node already has an existing document of \"" 
                 + node.getDocument().getName() + "\"";
-            throw new IllegalAddNodeException(this, node, message);
+            throw new IllegalAddException(this, node, message);
         }
         if (contents == null) {
             contents = createContentList();

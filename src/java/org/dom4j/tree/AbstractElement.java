@@ -22,16 +22,16 @@ import java.util.StringTokenizer;
 import org.dom4j.Attribute;
 import org.dom4j.CDATA;
 import org.dom4j.Comment;
-import org.dom4j.ContentFactory;
+import org.dom4j.DocumentFactory;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Entity;
-import org.dom4j.IllegalAddNodeException;
+import org.dom4j.IllegalAddException;
 import org.dom4j.Node;
 import org.dom4j.Namespace;
 import org.dom4j.ProcessingInstruction;
 import org.dom4j.Text;
-import org.dom4j.TreeVisitor;
+import org.dom4j.Visitor;
 
 /** <p><code>AbstractElement</code> is an abstract base class for 
   * tree implementors to use for implementation inheritence.</p>
@@ -86,9 +86,9 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     /** <p><code>accept</code> method is the <code>Visitor Pattern</code> method.
       * </p>
       *
-      * @param visitor <code>TreeVisitor</code> is the visitor.
+      * @param visitor <code>Visitor</code> is the visitor.
       */
-    public void accept(TreeVisitor visitor) {
+    public void accept(Visitor visitor) {
         visitor.visit(this);
         
         // visit attributes
@@ -193,11 +193,11 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     public void setAttributeValue(String name, String value) {
         Attribute attribute = getAttribute(name);
         if (attribute == null ) {
-            add(getContentFactory().createAttribute(name, value));
+            add(getDocumentFactory().createAttribute(name, value));
         }
         else if (attribute.isReadOnly()) {
             remove(attribute);
-            add(getContentFactory().createAttribute(name, value));
+            add(getDocumentFactory().createAttribute(name, value));
         }
         else {
             attribute.setValue(value);
@@ -207,11 +207,11 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     public void setAttributeValue(String name, String value, Namespace namespace) {
         Attribute attribute = getAttribute(name, namespace);
         if (attribute == null ) {
-            add(getContentFactory().createAttribute(name, value, namespace));
+            add(getDocumentFactory().createAttribute(name, value, namespace));
         }
         else if (attribute.isReadOnly()) {
             remove(attribute);
-            add(getContentFactory().createAttribute(name, value, namespace));
+            add(getDocumentFactory().createAttribute(name, value, namespace));
         }
         else {
             attribute.setValue(value);
@@ -224,7 +224,7 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
                 "The Attribute already has an existing parent \"" 
                 + attribute.getParent().getQualifiedName() + "\"";
             
-            throw new IllegalAddNodeException( this, attribute, message );
+            throw new IllegalAddException( this, attribute, message );
         }        
         getAttributes().add(attribute);
         childAdded(attribute);
@@ -236,31 +236,31 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
     
     
     public CDATA addCDATA(String cdata) {
-        CDATA node = getContentFactory().createCDATA(cdata);
+        CDATA node = getDocumentFactory().createCDATA(cdata);
         add(node);
         return node;
     }
     
     public Text addText(String text) {
-        Text node = getContentFactory().createText(text);
+        Text node = getDocumentFactory().createText(text);
         add(node);
         return node;
     }
     
     public Entity addEntity(String name) {
-        Entity node = getContentFactory().createEntity(name);
+        Entity node = getDocumentFactory().createEntity(name);
         add(node);
         return node;
     }
     
     public Entity addEntity(String name, String text) {
-        Entity node = getContentFactory().createEntity(name, text);
+        Entity node = getDocumentFactory().createEntity(name, text);
         add(node);
         return node;
     }
     
     public Namespace addAdditionalNamespace(String prefix, String uri) {
-        Namespace node = getContentFactory().createNamespace(prefix, uri);
+        Namespace node = getDocumentFactory().createNamespace(prefix, uri);
         add(node);
         return node;
     }
@@ -438,11 +438,11 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
 
     
     protected Element createElement(String name) {
-        return getContentFactory().createElement(name);
+        return getDocumentFactory().createElement(name);
     }
     
     protected Element createElement(String name, Namespace namespace) {
-        return getContentFactory().createElement(name, namespace);
+        return getDocumentFactory().createElement(name, namespace);
     }
     
     

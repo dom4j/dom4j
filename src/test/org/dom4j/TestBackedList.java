@@ -48,7 +48,7 @@ public class TestBackedList extends AbstractTestCase {
     }
     
     protected void mutate(Element element) throws Exception {
-        ContentFactory factory = ContentFactory.getInstance();
+        DocumentFactory factory = DocumentFactory.getInstance();
         
         List list = element.getElements();
         list.add(factory.createElement("last" ));

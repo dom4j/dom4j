@@ -29,7 +29,7 @@ public class VisitorDemo extends SAXDemo {
     }    
     
     protected void process(Document document) throws Exception {
-        TreeVisitor visitor = new TreeVisitorSupport() {
+        Visitor visitor = new VisitorSupport() {
             
             public void visit(Document document) {
                 println( document.toString() );

@@ -19,25 +19,25 @@ import java.net.URL;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
-import org.dom4j.TreeException;
+import org.dom4j.DocumentException;
 
-/** <p><code>TreeReader</code> is an abstract base class for all readers
+/** <p><code>DocumentReader</code> is an abstract base class for all readers
   * of DOM4J XML trees.</p>
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public abstract class TreeReader {
+public abstract class DocumentReader {
 
     /** <code>DocumentFactory</code> used to create new document objects */
     private DocumentFactory factory = DocumentFactory.getInstance();
     
     
     
-    public TreeReader() {
+    public DocumentReader() {
     }
 
-    public TreeReader(DocumentFactory factory) {
+    public DocumentReader(DocumentFactory factory) {
         this.factory = factory;
     }
     
@@ -65,10 +65,10 @@ public abstract class TreeReader {
       *
       * @param file is the <code>File</code> to read from.
       * @return the newly created Document instance
-      * @throws TreeException if an error occurs during parsing.
+      * @throws DocumentException if an error occurs during parsing.
       * @throws FileNotFoundException if the file could not be found
       */
-    public Document read(File file) throws TreeException, FileNotFoundException {
+    public Document read(File file) throws DocumentException, FileNotFoundException {
         Document document = read(new BufferedInputStream(new FileInputStream(file)));
         document.setName( file.getAbsolutePath() );
         return document;
@@ -79,16 +79,16 @@ public abstract class TreeReader {
       *
       * @param url <code>URL</code> to read from.
       * @return the newly created Document instance
-      * @throws TreeException if an error occurs during parsing.
+      * @throws DocumentException if an error occurs during parsing.
       */
-    public Document read(URL url) throws TreeException {
+    public Document read(URL url) throws DocumentException {
         try {
             Document document = read(new BufferedInputStream(url.openStream()));
             document.setName( url.toString() );
             return document;
         }
         catch (IOException e) {
-            throw new TreeException(e);
+            throw new DocumentException(e);
         }
     }
     
@@ -96,9 +96,9 @@ public abstract class TreeReader {
       *
       * @param in <code>InputStream</code> to read from.
       * @return the newly created Document instance
-      * @throws TreeException if an error occurs during parsing.
+      * @throws DocumentException if an error occurs during parsing.
       */
-    public abstract Document read(InputStream in) throws TreeException;
+    public abstract Document read(InputStream in) throws DocumentException;
 
 
     // Implementation methods

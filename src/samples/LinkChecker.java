@@ -7,72 +7,56 @@
  * $Id$
  */
 
-package org.dom4j.tree;
 
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.StringTokenizer;
+import java.util.List;
 
-import org.dom4j.DocumentType;
-import org.dom4j.Visitor;
+import org.dom4j.*;
+import org.dom4j.io.XMLWriter;
 
-/** <p><code>AbstractDocumentType</code> is an abstract base class for 
-  * tree implementors to use for implementation inheritence.</p>
+/** A sample program to demonstrate the use of XPath in DOM4J to find
+  * all the hypertext links in a source file.
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public abstract class AbstractDocumentType extends AbstractNode implements DocumentType {
-
-    public AbstractDocumentType() {
-    }
+public class LinkChecker extends SAXDemo {
     
-    public String toString() {
-        return super.toString() + " [DocumentType: " + asXML() + "]";
+    public LinkChecker() {
     }
-
-    public String getName() {
-        return getElementName();
-    }
-    
-    public void setName(String name) {
-        setElementName(name);
-    }
-    
-    public String asXML() {
-        StringBuffer buffer = new StringBuffer( "<!DOCTYPE " );
-        buffer.append( getElementName() );
         
-        boolean hasPublicID = false;
-        String publicID = getPublicID();
-        
-        if ( publicID != null && publicID.length() > 0 ) {
-            buffer.append( " PUBLIC \"" );
-            buffer.append( publicID );
-            buffer.append( "\"" );
-            hasPublicID = true;
+    public static void main(String[] args) {
+        run( new LinkChecker(), args );
+    }    
+    
+    public void run(String[] args) throws Exception {    
+        if ( args.length < 1 ) {
+            printUsage( "<XML document URL>" );
+            return;
         }
+        parse( args[0] );
+    }
+    
+    protected void process(Document document) throws Exception {
         
-        String systemID = getSystemID();
-        if ( systemID != null && systemID.length() > 0 ) {
-            if (!hasPublicID) {
-                buffer.append(" SYSTEM");
+        List list = document.selectNodes( "//a" );
+        
+        println( "Found: " + list.size() + " links(s)" );        
+        println( "Results:" );
+        
+        XMLWriter writer = createXMLWriter();
+        
+        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
+            Object object = iter.next();
+            if ( object instanceof Node ) {
+                writer.outputNode( (Node) object, System.out  );
             }
-            buffer.append( " \"" );
-            buffer.append( systemID );
-            buffer.append( "\"" );
+            else {
+                writer.output( object.toString(), System.out );
+            }
         }
-        buffer.append(">");
-        return buffer.toString();
-    }
-    
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
     }
 }
-
-
 
 
 

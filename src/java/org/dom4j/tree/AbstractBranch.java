@@ -23,10 +23,10 @@ import org.dom4j.Branch;
 import org.dom4j.CDATA;
 import org.dom4j.CharacterData;
 import org.dom4j.Comment;
-import org.dom4j.ContentFactory;
+import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.Entity;
-import org.dom4j.IllegalAddNodeException;
+import org.dom4j.IllegalAddException;
 import org.dom4j.Node;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
@@ -45,8 +45,8 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     /** The XML writer used by default */
     protected static final XMLWriter writer = new XMLWriter( "  ", false );
 
-    /** The <code>ContentFactory</code> instance used by default */
-    private static final ContentFactory CONTENT_FACTORY = ContentFactory.getInstance();
+    /** The <code>DocumentFactory</code> instance used by default */
+    private static final DocumentFactory CONTENT_FACTORY = DocumentFactory.getInstance();
 
     
     public AbstractBranch() { 
@@ -136,43 +136,43 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     }
     
     public Comment addComment(String comment) {
-        Comment node = getContentFactory().createComment( comment );
+        Comment node = getDocumentFactory().createComment( comment );
         add( node );
         return node;
     }
     
     public Element addElement(String name) {
-        Element node = getContentFactory().createElement( name );
+        Element node = getDocumentFactory().createElement( name );
         add( node );
         return node;
     }
     
     public Element addElement(QName qname) {
-        Element node = getContentFactory().createElement( qname );
+        Element node = getDocumentFactory().createElement( qname );
         add( node );
         return node;
     }
     
     public Element addElement(String name, String prefix, String uri) {
-        Element node = getContentFactory().createElement( name, prefix, uri );
+        Element node = getDocumentFactory().createElement( name, prefix, uri );
         add( node );
         return node;
     }
     
     public Element addElement(String name, Namespace namespace) {
-        Element node = getContentFactory().createElement( name, namespace );
+        Element node = getDocumentFactory().createElement( name, namespace );
         add( node );
         return node;
     }
     
     public ProcessingInstruction addProcessingInstruction(String target, String data) {
-        ProcessingInstruction node = getContentFactory().createProcessingInstruction( target, data );
+        ProcessingInstruction node = getDocumentFactory().createProcessingInstruction( target, data );
         add( node );
         return node;
     }
     
     public ProcessingInstruction addProcessingInstruction(String target, Map data) {
-        ProcessingInstruction node = getContentFactory().createProcessingInstruction( target, data );
+        ProcessingInstruction node = getDocumentFactory().createProcessingInstruction( target, data );
         add( node );
         return node;
     }
@@ -210,7 +210,7 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     // Implementation methods
     
     /** Allows derived classes to override the factory behaviour */
-    protected ContentFactory getContentFactory() {
+    protected DocumentFactory getDocumentFactory() {
         return CONTENT_FACTORY;
     }
 

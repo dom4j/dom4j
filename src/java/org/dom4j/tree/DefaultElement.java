@@ -27,7 +27,7 @@ import org.dom4j.Comment;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Entity;
-import org.dom4j.IllegalAddNodeException;
+import org.dom4j.IllegalAddException;
 import org.dom4j.Node;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
@@ -627,7 +627,7 @@ public class DefaultElement extends AbstractElement {
             // XXX: could clone here
             String message = "The Node already has an existing parent of \"" 
                 + node.getParent().getQualifiedName() + "\"";
-            throw new IllegalAddNodeException(this, node, message);
+            throw new IllegalAddException(this, node, message);
         }
         if (contents == null) {
             if ( firstNode == null ) {

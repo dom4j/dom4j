@@ -298,7 +298,7 @@
     <mkdir dir="${web.htdocs}"/>
     <mkdir dir="${web.dist}"/>
     <copy todir="${web.htdocs}" overwrite="yes" filtering="yes">
-      <fileset dir="${build.doc}"/>
+      <fileset dir="${build.doc}" excludes="*.gif"/>
     </copy>
 
     <copy todir="${web.dist}" overwrite="yes">
@@ -454,6 +454,11 @@
   <target name="demo-bigdoc" depends="samples">
     <java classname="LargeDocumentDemo" args="xml/much_ado.xml /PLAY/ACT"/>
   </target>
+
+  <target name="demo-link" depends="samples">
+    <java classname="LinkChecker" args="xml/xhtml/xhtml-basic.xml"/>
+  </target>
+
 
 
   <target name="demo-all" depends="demo-sax,demo-visitor,demo-count,demo-xpath,demo-html"/>

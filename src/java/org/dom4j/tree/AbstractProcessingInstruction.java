@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import org.dom4j.ProcessingInstruction;
-import org.dom4j.TreeVisitor;
+import org.dom4j.Visitor;
 
 /** <p><code>AbstractProcessingInstruction</code> is an abstract base class for 
   * tree implementors to use for implementation inheritence.</p>
@@ -36,7 +36,7 @@ public abstract class AbstractProcessingInstruction extends AbstractNode impleme
         return "<?" + getName() + " " + getText() + "?>";
     }
     
-    public void accept(TreeVisitor visitor) {
+    public void accept(Visitor visitor) {
         visitor.visit(this);
     }
 

@@ -13,7 +13,7 @@ import org.dom4j.Attribute;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.Namespace;
-import org.dom4j.TreeVisitor;
+import org.dom4j.Visitor;
 
 /** <p><code>AbstractNamespace</code> is an abstract base class for 
   * tree implementors to use for implementation inheritence.</p>
@@ -49,7 +49,7 @@ public abstract class AbstractAttribute extends AbstractNode implements Attribut
         return getQualifiedName() + "=\"" + getValue() + "\"";
     }
     
-    public void accept(TreeVisitor visitor) {
+    public void accept(Visitor visitor) {
         visitor.visit(this);
     }
     
