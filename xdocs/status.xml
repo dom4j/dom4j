@@ -9,6 +9,7 @@
   <body>
 
       <section name="1.5 beta 1">
+        <p>Fixed encoding bug in Document.asXML() and DocumentHelper.parseText().</p>
         <p>Fixed bug in SAXReader that caused problems resolving relative URIs when parsing java.io.File Objects (reported by Kohsuke Kawaguchi).</p>
         <p>The iterators returned by the Element.elementIterator(...) methods now support remove().</p>
         <p>DOMWriter writes now DOM Level 2 attributes and elements (reported by Geert Dendoncker and Joury Gokel).</p>
