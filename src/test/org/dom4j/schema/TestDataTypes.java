@@ -10,6 +10,8 @@
 package org.dom4j.schema;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -50,52 +52,51 @@ public class TestDataTypes extends AbstractDataTypeTest {
     // Test case(s)
     //-------------------------------------------------------------------------                    
     
-/** The commented tests below are commented out due to current limitations
-  * with Sun's xsdlib
-  */
-
 /*    
     public void testDuration() throws Exception {        
-        testNodes( "//durationTag", Object.class );
+        testNodes( "//durationTag", Calendar.class );
     }
+    public void testgMonthDay() throws Exception {        
+        testNodes( "//gMonthDayTag", Calendar.class );
+    }
+    public void testgDay() throws Exception {        
+        testNodes( "//gDayTag", Calendar.class );
+    }
+    public void testgMonth() throws Exception {        
+        testNodes( "//gMonthTag", Calendar.class );
+    }
+*/
+    
     public void testDate() throws Exception {        
-        testNodes( "//dateTag", Date.class );
+        testNodes( "//dateTag", Calendar.class );
     }
+    
     public void testTime() throws Exception {        
-        testNodes( "//timeTag", Number.class );
+        testNodes( "//timeTag", Calendar.class );
     }
     public void testDateTime() throws Exception {        
-        testNodes( "//dateTimeTag", Date.class );
+        testNodes( "//dateTimeTag", Calendar.class );
     }
     
     public void testgYearMonth() throws Exception {        
-        testNodes( "//gYearMonthTag", String.class );
+        testNodes( "//gYearMonthTag", Calendar.class );
     }
     public void testgYear() throws Exception {        
-        testNodes( "//gYearTag", Integer.class );
+        testNodes( "//gYearTag", Calendar.class );
     }
-    public void testgMonthDay() throws Exception {        
-        testNodes( "//gMonthDayTag", String.class );
-    }
-    public void testgDay() throws Exception {        
-        testNodes( "//gDayTag", Integer.class );
-    }
-    public void testgMonth() throws Exception {        
-        testNodes( "//gMonthTag", Integer.class );
-    }
-*/    
+    
 
     public void testBoolean() throws Exception {        
         testNodes( "//booleanTag", Boolean.class );
     }
-/*    
+   
     public void testBase64Binary() throws Exception {        
         testNodes( "//base64BinaryTag", byte[].class );
     }
     public void testHexBinary() throws Exception {        
         testNodes( "//hexBinaryTag", byte[].class  );
     }
-*/
+
     
     
     
@@ -112,20 +113,19 @@ public class TestDataTypes extends AbstractDataTypeTest {
     public void testDecimal() throws Exception {        
         testNodes( "//decimalTag", BigDecimal.class );
     }
-/*    
+
     public void testInteger() throws Exception {        
-        testNodes( "//integerTag", Integer.class );
+        testNodes( "//integerTag", BigInteger.class );
     }
 
     
     public void testNonPositiveInteger() throws Exception {        
-        testNodes( "//nonPositiveIntegerTag", Integer.class );
+        testNodes( "//nonPositiveIntegerTag", BigInteger.class );
     }
     
     public void testNegativeInteger() throws Exception {        
-        testNodes( "//negativeIntegerTag", Integer.class );
+        testNodes( "//negativeIntegerTag", BigInteger.class );
     }
-*/    
     
     public void testLong() throws Exception {        
         testNodes( "//longTag", Long.class );
@@ -140,15 +140,14 @@ public class TestDataTypes extends AbstractDataTypeTest {
         testNodes( "//byteTag", Byte.class );
     }
     
-/*    
     public void testNonNegativeInteger() throws Exception {        
-        testNodes( "//nonNegativeIntegerTag", Integer.class );
+        testNodes( "//nonNegativeIntegerTag", BigInteger.class );
     }
     
     public void testUnsignedLong() throws Exception {        
-        testNodes( "//unsignedLongTag", Long.class );
+        testNodes( "//unsignedLongTag", BigInteger.class );
     }
-*/    
+    
     public void testUnsignedInt() throws Exception {        
         testNodes( "//unsignedIntTag", Long.class );
     }
@@ -159,11 +158,9 @@ public class TestDataTypes extends AbstractDataTypeTest {
         testNodes( "//unsignedByteTag", Short.class );
     }
     
-/*    
     public void testPositiveInteger() throws Exception {        
-        testNodes( "//positiveIntegerTag", Integer.class );
+        testNodes( "//positiveIntegerTag", BigInteger.class );
     }
-*/    
 
     // Implementation methods
     //-------------------------------------------------------------------------                        

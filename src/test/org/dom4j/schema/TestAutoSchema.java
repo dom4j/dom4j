@@ -9,6 +9,8 @@
 
 package org.dom4j.schema;
 
+import java.math.BigInteger;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -60,21 +62,21 @@ public class TestAutoSchema extends AbstractDataTypeTest {
         testNodes( "//person/note", String.class );
     }
 
+    public void testDate() throws Exception {        
+        testNodes( "//person/@d", Calendar.class );
+    }
+    
+    public void testDateTime() throws Exception {        
+        testNodes( "//person/@dt", Calendar.class );
+    }
+    
+    public void testInteger() throws Exception {        
+        testNodes( "//person/@age", BigInteger.class );
+    }
 /*
  * these don't yet work due to a bug in Sun's xsdlib 
  *
  
-    public void testDate() throws Exception {        
-        testNodes( "//person/@d", Date.class );
-    }
-    
-    public void testDateTime() throws Exception {        
-        testNodes( "//person/@dt", Date.class );
-    }
-    
-    public void testInteger() throws Exception {        
-        testNodes( "//person/@age", Integer.class );
-    }
 */
 
     
