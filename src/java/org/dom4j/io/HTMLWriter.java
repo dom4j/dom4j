@@ -88,14 +88,14 @@ public class HTMLWriter extends XMLWriter {
       * @param cdata <code>CDATA</code> to output.
       */
     public void write(CDATA cdata) throws IOException {
-        writer.write(cdata.getText());
+        writer.write( escapeElementEntities( cdata.getText() ) );
         lastOutputNodeType = Node.CDATA_SECTION_NODE;
     }
     
     /** Writes the given {@link Entity}.
       *
       * @param entity <code>Entity</code> to output.
-      */
+      */    
     public void write(Entity entity) throws IOException {
         writer.write(entity.getText());
         lastOutputNodeType = Node.ENTITY_REFERENCE_NODE;

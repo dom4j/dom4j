@@ -303,7 +303,7 @@ public interface Node extends Cloneable {
       * and returns the result as a single <code>Node</code> instance.</p>
       *
       * @param xpathExpression is the XPath expression to be evaluated
-      * @return the <code>Node<code> matching the XPath expression
+      * @return the <code>Node</code> matching the XPath expression
       */
     public Node selectSingleNode(String xpathExpression);
 
@@ -345,7 +345,7 @@ public interface Node extends Cloneable {
       * If the node does not support the parent relationship then a new node
       * will be created which is linked to its parent and returned.
       *
-      * @return a <code>Node<code> which supports the parent relationship
+      * @return a <code>Node</code> which supports the parent relationship
       */
     public Node asXPathResult(Element parent);
 

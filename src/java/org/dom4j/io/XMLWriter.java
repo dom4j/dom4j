@@ -207,7 +207,7 @@ public class XMLWriter implements ContentHandler, LexicalHandler {
             write( node );
         }
         writePrintln();
-        flush();
+        //flush();
     }
 
     /** <p>Writes the <code>{@link Element}</code>, including
