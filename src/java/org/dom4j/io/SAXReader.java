@@ -8,9 +8,12 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.Reader;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
+import org.dom4j.ElementHandler;
 import org.dom4j.TreeException;
 
 import org.xml.sax.ContentHandler;
@@ -38,8 +41,14 @@ public class SAXReader extends TreeReader {
     /** Whether validation should occur */
     private boolean validating;
 
+    /** ElementHandler to use */
+    private ElementHandler elementHandler;
+ 
     /** ErrorHandler class to use */
-    private ErrorHandler errorHandler = null;
+    private ErrorHandler errorHandler;
+ 
+    /** The pruning path to use if any */
+    private String[] pruningPath;
  
     
     
@@ -68,6 +77,10 @@ public class SAXReader extends TreeReader {
         this.xmlReader = XMLReaderFactory.createXMLReader(xmlReaderClassName);
         this.validating = validating;
     }
+
+    
+    
+    // Properties
     
     /** @return the validation mode, true if validating will be done 
       * otherwise false.
@@ -127,6 +140,66 @@ public class SAXReader extends TreeReader {
         setXMLReader( XMLReaderFactory.createXMLReader(xmlReaderClassName) );
     }
 
+    /** Returns the <code>ElementHandler</code> called when pruning 
+      * large documents.
+      *
+      * @return the handler of elements which are about to be pruned
+      */
+    public ElementHandler getElementHandler() {
+        return elementHandler;
+    }
+
+    /** Sets the <code>ElementHandler</code> called when pruning 
+      * large documents.
+      *
+      * @param elementHandler is the handler of elements to use when pruning
+      */
+    public void setElementHandler(ElementHandler elementHandler) {
+        this.elementHandler = elementHandler;
+    }
+
+    /** Returns the pruning patch used when parsing SAX events. The pruning path
+      * allows large documents to be parsed.
+      *
+      * @return the pruningPath to use when reading documents
+      */
+    public String[] getPruningPath() {
+        return pruningPath;
+    }
+
+    /** Sets the pruning patch used when parsing SAX events. The pruning path
+      * allows large documents to be parsed.
+      *
+      * @param pruningPath is the pruningPath to use
+      */
+    public void setPruningPath(String[] pruningPath) {
+        this.pruningPath = pruningPath;
+    }
+
+    /** Sets the pruning patch used when parsing SAX events. The pruning path
+      * allows large documents to be parsed. It should contain the '/' character
+      * to seperate paths such as "A/B/C".
+      *
+      * @param pruningPath is the pruningPath to use
+      */
+    public void setPruningPath(String path) {
+        ArrayList list = new ArrayList();
+        if ( path.charAt(0) == '/' ) {
+            path = path.substring(1);
+        }
+        for ( StringTokenizer enum = new StringTokenizer( path, "/" ); enum.hasMoreTokens(); ) {
+            list.add( enum.nextToken() );
+        }
+        System.out.println( "Parsed: " + path + " into: " + list );
+        pruningPath = new String[ list.size() ];
+        list.toArray( pruningPath );
+    }
+
+
+    
+    
+    // TreeReader API
+    
     /** <p>Reads a Document from the given <code>File</code></p>
       *
       * @param file is the <code>File</code> to read from.
@@ -250,9 +323,9 @@ public class SAXReader extends TreeReader {
         }
     }
     
+
     
-    // Implementation methods
-    
+    // Implementation methods    
     
     protected void configureReader(XMLReader reader, DefaultHandler contentHandler) throws TreeException {                
         // configure lexical handling
@@ -319,7 +392,12 @@ public class SAXReader extends TreeReader {
     /** Factory Method to allow user derived SAXContentHandler objects to be used
       */
     protected DefaultHandler createContentHandler( Document document ) {
-        return new SAXContentHandler(document);
+        if ( pruningPath != null ) {
+            return new SAXContentHandler(document, new PruningElementStack( pruningPath, elementHandler ));
+        }
+        else {
+            return new SAXContentHandler(document);
+        }
     }
     
     /** Factory Method to allow alternate methods of 

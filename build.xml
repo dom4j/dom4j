@@ -398,6 +398,10 @@
     <java classname="XPathDemo" args="xml/much_ado.xml //ACT/TITLE"/>
   </target>
 
+  <target name="demo-bigdoc" depends="samples">
+    <java classname="LargeDocumentDemo" args="xml/much_ado.xml /PLAY/ACT"/>
+  </target>
+
   <target name="demo-readdtd" depends="compile">
     <java classname="org.dom4j.dtd.DTDReader" args="xml/xhtml/xhtml-basic.xml"/>
 <!--

@@ -1,0 +1,15 @@
+<!ELEMENT moreovernews (article*)>
+<!ELEMENT article (url,headline_text,source,media_type,cluster,tagline,document_url,harvest_time,access_registration,access_status)>
+<!ATTLIST article id ID #IMPLIED>
+<!ELEMENT url (#PCDATA)>
+<!ELEMENT headline_text (#PCDATA)>
+<!ELEMENT source (#PCDATA)>
+<!ELEMENT media_type (#PCDATA)>
+<!ELEMENT cluster (#PCDATA)>
+<!ELEMENT tagline (#PCDATA)>
+<!ELEMENT document_url (#PCDATA)>
+<!ELEMENT harvest_time (#PCDATA)>
+<!ELEMENT access_registration (#PCDATA)>
+<!ELEMENT access_status (#PCDATA)>
+
+

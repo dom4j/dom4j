@@ -35,7 +35,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     private Document document;
 
     /** stack of <code>Element</code> objects */
-    private ArrayList stack = new ArrayList();
+    private ElementStack elementStack;
 
     /** Used when inside an entity block */
     private Entity entity;
@@ -63,11 +63,16 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
         this.document = document;
     }
 
+    public SAXContentHandler(Document document, ElementStack elementStack) {
+        this.document = document;
+        this.elementStack = elementStack;
+    }
+
     
     // ContentHandler interface
     
     public void processingInstruction(String target, String data) throws SAXException {
-        peekElement().addProcessingInstruction(target, data);
+        elementStack.peekElement().addProcessingInstruction(target, data);
     }
 
     public void startPrefixMapping(String prefix, String uri) throws SAXException {
@@ -76,6 +81,15 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
 
     public void endPrefixMapping(String prefix, String uri) throws SAXException {
         removeDeclaredNamespace( getNamespace(prefix, uri) );
+    }
+
+    public void startDocument() throws SAXException {
+        if ( elementStack == null ) {
+            elementStack = createElementStack();
+        }
+        else {
+            elementStack.clear();
+        }
     }
     
     public void startElement(String namespaceURI, String localName, String qName, Attributes attributes) throws SAXException {
@@ -124,12 +138,12 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
             }
         }
 
-        pushElement(element);
+        elementStack.pushElement(element);
     }
 
     
     public void endElement(String namespaceURI, String localName, String qName) {
-        Element element = popElement();
+        Element element = elementStack.popElement();
         if (element != null) {
             List list = element.getAdditionalNamespaces();
             for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
@@ -141,7 +155,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
 
     public void characters(char[] ch, int start, int end) throws SAXException {
         String text = new String(ch, start, end);
-        Element element = peekElement();
+        Element element = elementStack.peekElement();
         
         if (entity != null) {
             // #### should we append context or replace?
@@ -184,7 +198,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     public void startEntity(String name) throws SAXException {
         // Ignore DTD references
         if (! insideDTDSection && ! getIgnoreEntityNames().contains(name)) {
-            Element element = peekElement();
+            Element element = elementStack.peekElement();
             entity = element.addEntity(name);
         }
     }
@@ -204,7 +218,7 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     public void comment(char[] ch, int start, int end) throws SAXException {
         String text = new String(ch, start, end);
         if (!insideDTDSection && text.length() > 0) {
-            Element element = peekElement();
+            Element element = elementStack.peekElement();
             element.addComment(text);
         }
     }
@@ -224,30 +238,6 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
         if (document != null) {
             document.setRootElement(element);
         }
-    }
-    
-    /** @return the current element on the stack 
-      */
-    protected Element peekElement() {
-        int size = stack.size();
-        if ( size < 1 ) {
-            return null;
-        }
-        return (Element) stack.get( size - 1 );
-    }
-    
-    /** Pops the element off the stack
-      * @return the element that has just been popped off the stack 
-      */
-    protected Element popElement() {
-        return (Element) stack.remove( stack.size() - 1 );
-    }
-    
-    /** @return pushes the new element onto the stack and add it to its parent
-      * if there is one.
-      */
-    protected void pushElement(Element element) {
-        stack.add(element);
     }
     
     /** @return the set of entity names which are ignored
@@ -321,16 +311,21 @@ public class SAXContentHandler extends DefaultHandler implements LexicalHandler 
     }
 
     protected Element createElement(String localName, Namespace namespace) {
-        Element parent = peekElement();
+        Element parent = elementStack.peekElement();
         return (parent != null)
             ? parent.addElement(localName, namespace)
             : getDocument().addElement(localName, namespace);
     }
     
     protected Element createElement(String localName) {
-        Element parent = peekElement();
+        Element parent = elementStack.peekElement();
         return (parent != null)
             ? parent.addElement(localName)
             : getDocument().addElement(localName);
     }
+    
+    protected ElementStack createElementStack() {
+        return new ElementStack();
+    }
+    
 }
