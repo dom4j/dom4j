@@ -331,7 +331,7 @@
     <fixcrlf srcdir="${dist.dir}" includes="build.sh"     cr="remove"/>
     <fixcrlf srcdir="${dist.dir}" includes="build.bat"    cr="add"/>
 
-    <chmod perm="ugo+rx" file="${dist.dir}/**/*.sh"/>
+    <chmod perm="ugo+rx" file="${dist.dir}/*.sh"/>
   </target>
 
   <!-- =================================================================== -->
