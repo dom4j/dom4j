@@ -5,7 +5,7 @@
   <!-- =================================================================== -->
   <target name="init">
     <tstamp/>
-    <property name="Name" value="DOM4J"/>
+    <property name="Name" value="dom4j"/>
     <property name="name" value="dom4j"/>
     <property name="version" value="0.3"/>
     <property name="year" value="2001"/>
@@ -37,7 +37,8 @@
     <property name="xpath.parser.dir" value="${build.src}/org/dom4j/xpath/parser"/>
 
     <property name="dist.root" value="./dist"/>
-    <property name="dist.dir" value="${dist.root}/${name}-${version}"/>
+    <property name="dist.dir" value="${dist.root}/tmp/${name}-${version}"/>
+    <property name="dist.jar.dir" value="${dist.root}/tmp"/>
     <property name="dist.target" value="${dist.root}"/>
 
     <property name="web.htdocs" value="../htdocs"/>
@@ -210,14 +211,17 @@
   <target name="package" depends="compile">
     <fixcrlf srcdir="." includes="*.bat" cr="add"/>
     <fixcrlf srcdir="." includes="*.sh" cr="remove"/>
-    <jar jarfile="${build.dir}/${name}.jar"
-         basedir="${build.dest}"
-         includes="org/dom4j/**"/>
 
      <!-- add dependent JARs -->
     <mkdir dir="${build.tmp}"/>
     <unjar src="${lib.dir}/antlr-runtime.jar" dest="${build.tmp}"/>
+
+    <jar jarfile="${build.dir}/${name}.jar"
+         basedir="${build.dest}"
+         includes="org/dom4j/**"/>
+
     <delete dir="${build.tmp}/META-INF"/>
+
     <copy todir="${build.tmp}">
       <fileset dir="${build.dest}"/>
     </copy>
@@ -336,21 +340,21 @@
   <!-- Packages the distribution as .zip                                   -->
   <!-- =================================================================== -->
   <target name="dist-zip" depends="dist">
-    <zip zipfile="${dist.target}/${name}-daily.zip" basedir="${dist.dir}"/>
+    <zip zipfile="${dist.target}/${name}-daily.zip" basedir="${dist.jar.dir}"/>
   </target>
 
   <!-- =================================================================== -->
   <!-- Packages the distribution as .jar                                   -->
   <!-- =================================================================== -->
   <target name="dist-jar" depends="dist">
-    <jar jarfile="${dist.target}/${name}-daily.jar" basedir="${dist.dir}"/>
+    <jar jarfile="${dist.target}/${name}-daily.jar" basedir="${dist.jar.dir}"/>
   </target>
 
   <!-- =================================================================== -->
   <!-- Packages the distribution with .tar.gzip                            -->
   <!-- =================================================================== -->
   <target name="dist-tgz" depends="dist">
-    <tar tarfile="${dist.target}/${name}-daily.tar" basedir="${dist.dir}"/>
+    <tar tarfile="${dist.target}/${name}-daily.tar" basedir="${dist.jar.dir}"/>
     <gzip zipfile="${dist.target}/${name}-daily.tar.gz" src="${dist.target}/${name}-daily.tar"/>
   </target>
 
