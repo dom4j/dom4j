@@ -127,7 +127,19 @@ public class DOMNodeHelper {
         org.w3c.dom.Node newChild, 
         org.w3c.dom.Node refChild
     ) throws DOMException {
-        throw new DOMException( DOMException.HIERARCHY_REQUEST_ERR, "Children not allowed for this node: " + node );
+        if ( node instanceof Branch ) {
+            Branch branch = (Branch) node;
+            List list = branch.content();
+            int index = list.indexOf(refChild);
+            if ( index < 0 ) {
+                index = 0;
+            }
+            list.add(index, newChild);
+            return newChild;
+        }
+        else {
+            throw new DOMException( DOMException.HIERARCHY_REQUEST_ERR, "Children not allowed for this node: " + node );
+        }
     }
 
     public static org.w3c.dom.Node replaceChild(
@@ -135,13 +147,30 @@ public class DOMNodeHelper {
         org.w3c.dom.Node newChild, 
         org.w3c.dom.Node oldChild
     ) throws DOMException {
-        throw new DOMException( DOMException.HIERARCHY_REQUEST_ERR, "Children not allowed for this node: " + node );
+        if ( node instanceof Branch ) {
+            Branch branch = (Branch) node;
+            List list = branch.content();
+            int index = list.indexOf(oldChild);
+            if ( index < 0 ) {
+                index = 0;
+            }
+            list.set(index, newChild);
+            return newChild;
+        }
+        else {        
+            throw new DOMException( DOMException.HIERARCHY_REQUEST_ERR, "Children not allowed for this node: " + node );
+        }
     }
 
     public static org.w3c.dom.Node removeChild(
         Node node, 
         org.w3c.dom.Node oldChild
     ) throws DOMException {
+        if ( node instanceof Branch ) {
+            Branch branch = (Branch) node;
+            branch.remove((Node) oldChild);
+            return oldChild;
+        }
         throw new DOMException( DOMException.HIERARCHY_REQUEST_ERR, "Children not allowed for this node: " + node );
     }
 
@@ -149,6 +178,11 @@ public class DOMNodeHelper {
         Node node, 
         org.w3c.dom.Node newChild
     ) throws DOMException {
+        if ( node instanceof Branch ) {
+            Branch branch = (Branch) node;
+            branch.add( (Node) newChild );
+            return newChild;
+        }
         throw new DOMException( DOMException.HIERARCHY_REQUEST_ERR, "Children not allowed for this node: " + node );
     }
 

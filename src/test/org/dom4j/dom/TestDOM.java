@@ -83,8 +83,13 @@ public class TestDOM extends AbstractTestCase {
     /** Tests the bug found by Soumanjoy */
     public void testClassCastBug() throws Exception {
         DOMDocument oDocument = new DOMDocument("Root");
-        oDocument.createElement("Parent"); 
+        org.w3c.dom.Element oParent = oDocument.createElement("Parent"); 
         //<-- Fails here when the code is broken.
+        
+        oParent.setAttribute("name", "N01");
+        oParent.setAttribute("id", "ID01");
+
+        oDocument.appendChild(oParent); //<-- Fails here, Error message is below
     }
         
     // Implementation methods
