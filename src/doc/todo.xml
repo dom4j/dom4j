@@ -33,6 +33,14 @@
                which can be overloaded to perform a deep copy of any user data
                objects if required.               
             </p>
+            <p>Minor patch for dom4j implementors wishing to create their own 
+              QName implementations. Previously the DocumentFactory class was
+              hardwired to use QNameCache internally which was hard wired to 
+              only create QName instances.
+              Now some factory methods have been added such that you can derive 
+              your own DocumentFactory which uses your own
+              QNameCache which creates your own QName classes.
+            </p>
           </section>
         </section>
         <section title="0.7 release">

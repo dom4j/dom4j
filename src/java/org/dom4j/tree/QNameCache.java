@@ -32,7 +32,9 @@ public class QNameCache {
       */ 
     protected Map namespaceCache = new HashMap();
 
-    /** The document factory used for new QNames in this cache by default */
+    /** The document factory associated with new QNames instances in this cache
+      * or null if no instances should be associated by default 
+      */
     private DocumentFactory documentFactory;
     
     
@@ -48,7 +50,7 @@ public class QNameCache {
     public QName get(String name) {
         QName answer = (QName) noNamespaceCache.get(name);
         if (answer == null) {
-            answer = new QName(name);
+            answer = createQName(name);
             answer.setDocumentFactory( documentFactory );
             noNamespaceCache.put(name, answer);
         }
@@ -61,7 +63,7 @@ public class QNameCache {
         Map cache = getNamespaceCache(namespace);
         QName answer = (QName) cache.get(name);
         if (answer == null) {
-            answer = new QName(name, namespace);
+            answer = createQName(name, namespace);
             answer.setDocumentFactory( documentFactory );
             cache.put(name, answer);
         }
@@ -75,7 +77,7 @@ public class QNameCache {
         Map cache = getNamespaceCache(namespace);
         QName answer = (QName) cache.get(localName);
         if (answer == null) {
-            answer = new QName(localName, namespace, qualifiedName);
+            answer = createQName(localName, namespace, qualifiedName);
             answer.setDocumentFactory( documentFactory );
             cache.put(localName, answer);
         }
@@ -123,6 +125,27 @@ public class QNameCache {
       */
     protected Map createMap() {
         return new HashMap();
+    }
+    
+    /** Factory method to create a new QName object
+      * which can be overloaded to create derived QName instances
+      */
+    protected QName createQName(String name) {
+        return new QName(name);
+    }
+    
+    /** Factory method to create a new QName object
+      * which can be overloaded to create derived QName instances
+      */
+    protected QName createQName(String name, Namespace namespace) {
+        return new QName(name, namespace);
+    }
+    
+    /** Factory method to create a new QName object
+      * which can be overloaded to create derived QName instances
+      */
+    protected QName createQName(String name, Namespace namespace, String qualifiedName) {
+        return new QName(name, namespace, qualifiedName);
     }
 }
 

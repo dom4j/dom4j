@@ -66,8 +66,9 @@ public class DocumentFactory implements Serializable {
     }
 
     public DocumentFactory() {
-        cache = new QNameCache(this);
+        cache = createQNameCache();
     }
+    
     
     // Factory methods
     
@@ -252,6 +253,14 @@ public class DocumentFactory implements Serializable {
     protected QName intern(QName qname) {
         return cache.intern(qname);
     }
+
+    /** Factory method to create the QNameCache. This method should be overloaded 
+      * if you wish to use your own derivation of QName.
+      */
+    protected QNameCache createQNameCache() {
+        return new QNameCache(this);
+    }
+
 }
 
 
