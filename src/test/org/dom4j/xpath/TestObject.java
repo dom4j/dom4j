@@ -9,7 +9,6 @@
 
 package org.dom4j.xpath;
 
-import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,25 +16,21 @@ import junit.framework.*;
 import junit.textui.TestRunner;
 
 import org.dom4j.AbstractTestCase;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Namespace;
+import org.dom4j.Node;
 import org.dom4j.XPath;
-import org.dom4j.io.SAXReader;
 
-/** Test harness for the namespace axis 
+/** Test harness for numeric XPath expressions
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class TestNamespace extends AbstractTestCase {
+public class TestObject extends AbstractTestCase {
 
-    protected static boolean VERBOSE = false;
+    protected static boolean VERBOSE = true;
     
     protected static String[] paths = {
-        "namespace::*",
-        "/Template/Application1/namespace::*",
-        "/Template/Application1/namespace::xplt",
-        "//namespace::*"
+        "/.name()",
+        "name()"
     };
     
     
@@ -44,54 +39,36 @@ public class TestNamespace extends AbstractTestCase {
     }
     
     public static Test suite() {
-        return new TestSuite( TestNamespace.class );
+        return new TestSuite( TestObject.class );
     }
     
-    public TestNamespace(String name) {
+    public TestObject(String name) {
         super(name);
     }
 
     // Test case(s)
     //-------------------------------------------------------------------------                    
     public void testXPaths() throws Exception {        
+        Node element = document.selectSingleNode( "//author" );
         int size = paths.length;
         for ( int i = 0; i < size; i++ ) {
-            testXPath( paths[i] );
+            testXPath( document, paths[i] );
+            testXPath( element, paths[i] );
         }
     }
         
     // Implementation methods
     //-------------------------------------------------------------------------                    
-    protected void testXPath(String xpathText) {
-        XPath xpath = DocumentHelper.createXPath(xpathText);
-        List list = xpath.selectNodes( document );
-        
-        log( "Searched path: " + xpathText + " found: " + list.size() + " result(s)" );
-        
+    protected void testXPath(Node node, String xpathText) {
+        XPath xpath = node.createXPath( xpathText );
+        Object object = xpath.selectObject( node );
+
+        log( "Searched path: " + xpath + " found: " + object );
+
         if ( VERBOSE ) {
-            log( "xpath: " + xpath );
-            log( "results: " + list );
+            log( "    xpath: " + xpath );        
+            log( "    for: " + node );        
         }
-        
-        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
-            Object object = iter.next();
-            
-            log( "Found Result: " + object );
-            
-            assert( "Results should be Namespace objects", object instanceof Namespace );
-            
-            Namespace namespace = (Namespace) object;
-            
-            log( "Parent node: " + namespace.getParent() );
-            
-            assert( "Results should support the parent relationship", namespace.supportsParent() );
-            assert( "Results should contain reference to the parent element", namespace.getParent() != null );
-            assert( "Results should contain reference to the owning document", namespace.getDocument() != null );
-        }
-    }
-    
-    protected void setUp() throws Exception {
-        document = new SAXReader().read( new File( "xml/testNamespaces.xml" ) );
     }
 }
 

@@ -22,76 +22,67 @@ import org.dom4j.Namespace;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 
-/** Test harness for the namespace axis 
+/** Test harness for the matrix-concat extension function
   *
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class TestNamespace extends AbstractTestCase {
+public class TestMatrixConcat extends AbstractTestCase {
 
-    protected static boolean VERBOSE = false;
-    
-    protected static String[] paths = {
-        "namespace::*",
-        "/Template/Application1/namespace::*",
-        "/Template/Application1/namespace::xplt",
-        "//namespace::*"
-    };
-    
-    
     public static void main( String[] args ) {
         TestRunner.run( suite() );
     }
     
     public static Test suite() {
-        return new TestSuite( TestNamespace.class );
+        return new TestSuite( TestMatrixConcat.class );
     }
     
-    public TestNamespace(String name) {
+    public TestMatrixConcat(String name) {
         super(name);
     }
 
     // Test case(s)
     //-------------------------------------------------------------------------                    
-    public void testXPaths() throws Exception {        
-        int size = paths.length;
-        for ( int i = 0; i < size; i++ ) {
-            testXPath( paths[i] );
-        }
+    public void testMatrixConcat() throws Exception {          
+        String[] results1 = {
+            "EQUITY_CF1",
+            "EQUITY_CF2",
+            "EQUITY_CF3"
+        };
+        
+        String[] results2 = {
+            "EQUITY_BAR_CF1",
+            "EQUITY_BAR_CF2",
+            "EQUITY_BAR_CF3"
+        };
+        
+        testMatrixConcat( "matrix-concat('EQUITY_',/product/cashflows/CashFlow/XREF)", results1 );
+        testMatrixConcat( "matrix-concat('EQUITY_','BAR_',/product/cashflows/CashFlow/XREF)", results2 );
+        testMatrixConcat( "matrix-concat(/product/equity/IDENTIFIER,/product/cashflows/CashFlow/XREF)", results1 );
     }
         
     // Implementation methods
     //-------------------------------------------------------------------------                    
-    protected void testXPath(String xpathText) {
-        XPath xpath = DocumentHelper.createXPath(xpathText);
-        List list = xpath.selectNodes( document );
+    protected void testMatrixConcat(String path, String[] results) throws Exception {          
+        log( "Using XPath: "  + path );
         
-        log( "Searched path: " + xpathText + " found: " + list.size() + " result(s)" );
+        List list = document.selectNodes( path );
         
-        if ( VERBOSE ) {
-            log( "xpath: " + xpath );
-            log( "results: " + list );
-        }
+        log( "Found: "  + list );
         
-        for ( Iterator iter = list.iterator(); iter.hasNext(); ) {
-            Object object = iter.next();
-            
-            log( "Found Result: " + object );
-            
-            assert( "Results should be Namespace objects", object instanceof Namespace );
-            
-            Namespace namespace = (Namespace) object;
-            
-            log( "Parent node: " + namespace.getParent() );
-            
-            assert( "Results should support the parent relationship", namespace.supportsParent() );
-            assert( "Results should contain reference to the parent element", namespace.getParent() != null );
-            assert( "Results should contain reference to the owning document", namespace.getDocument() != null );
+        //Object object = list.get(0);
+        //log( "(0) = " + object + " type: " + object.getClass() );
+        
+        int size = results.length;
+        assert( "List should contain " + size + " results: " + list, list.size() == size );
+        
+        for ( int i = 0; i < size; i++ ) {
+            assertEquals( list.get(i), results[i] );
         }
     }
-    
+        
     protected void setUp() throws Exception {
-        document = new SAXReader().read( new File( "xml/testNamespaces.xml" ) );
+        document = new SAXReader().read( new File( "xml/test/product.xml" ) );
     }
 }
 

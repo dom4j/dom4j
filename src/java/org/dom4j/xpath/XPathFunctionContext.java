@@ -137,6 +137,14 @@ public class XPathFunctionContext implements FunctionContext {
 
         addFunction( "round",
                      new RoundFunction());
+
+        
+        // ----------------------------------------
+        //     Extension Functions
+        // ----------------------------------------
+
+        addFunction( "matrix-concat",
+                     new MatrixConcatFunction());        
     }
 
     /** Add a function to this FunctionContext
