@@ -295,7 +295,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
       * @param entity <code>Entity</code> to output.
       */
     public void write(Entity entity) throws IOException {
-        writeEntityRef( entity.getName() );
+        writeEntity( entity );
         
         if ( autoFlush ) {
             flush();
@@ -884,7 +884,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                 writeCDATA(node.getText());
                 break;
             case Node.ENTITY_REFERENCE_NODE:
-                writeEntityRef( node.getName() );
+                writeEntity((Entity) node);
                 break;
             case Node.PROCESSING_INSTRUCTION_NODE:
                 writeProcessingInstruction((ProcessingInstruction) node);
@@ -953,6 +953,10 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         writePrintln();
     }
 
+    protected void writeEntity(Entity entity) throws IOException {
+        writeEntityRef( entity.getName() );
+    }
+    
     protected void writeEntityRef(String name) throws IOException {
         writer.write( "&" );
         writer.write( name );

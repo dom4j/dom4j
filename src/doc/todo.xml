@@ -117,6 +117,8 @@ Document doc = reader.read( "soap.xml" );
         </section>
 
         <section title="Patches">
+        <p>Applied patch to HTMLWriter to fix bug found by Dominik Deimling that was not correctly outputting CDATA sections correctly.
+        </p>
         <p>Patched the setName() method on Element so that elements can be renamed. Also added a new setQName() to the Element interface so that elements can be renamed in a namespace aware manner. Thanks to Robert Lebowitz for this.
         </p>
         <p>Applied fix to bug found by Manfred Lotz that XMLWriter in whitespace trimming mode would sometimes not correctly insert a space when text is seperated by newlines. The Test case testWhitespaceBug() in org.dom4j.TestXMLWriter reproduces the bug that has now been fixed.

@@ -81,22 +81,17 @@ public class HTMLWriter extends XMLWriter {
     public void endCDATA() throws SAXException {
     }
     
-    
-    
-    /** Writes the given {@link CDATA}.
-      *
-      * @param cdata <code>CDATA</code> to output.
-      */
-    public void write(CDATA cdata) throws IOException {
-        writer.write( escapeElementEntities( cdata.getText() ) );
+
+    // Overloaded methods
+
+    protected void writeCDATA(String text) throws IOException {
+        // XXX: Should we escape entities?
+        // writer.write( escapeElementEntities( text ) );
+        writer.write( text );
         lastOutputNodeType = Node.CDATA_SECTION_NODE;
     }
     
-    /** Writes the given {@link Entity}.
-      *
-      * @param entity <code>Entity</code> to output.
-      */    
-    public void write(Entity entity) throws IOException {
+    protected void writeEntity(Entity entity) throws IOException {
         writer.write(entity.getText());
         lastOutputNodeType = Node.ENTITY_REFERENCE_NODE;
     }
