@@ -299,6 +299,24 @@ public class TestXMLWriter extends AbstractTestCase {
         assertEquals(expected, xml.substring(start, end));
     }
 
+    public void testEscapeXML() throws Exception {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        OutputFormat format = new OutputFormat(null,false,"ISO-8859-2");
+        format.setSuppressDeclaration(true);
+        XMLWriter writer = new XMLWriter(os,format);
+        
+        Document document = DocumentFactory.getInstance().createDocument();
+        Element root = document.addElement("root");
+        root.setText("bla &#c bla");
+        
+        writer.write(document);
+        String result = os.toString();
+        System.out.println(result);
+        Document doc2 = DocumentHelper.parseText(result);
+        doc2.normalize();       // merges adjacant Text nodes
+        System.out.println(doc2.getRootElement().getText());
+        assertNodesEqual(document, doc2);
+    }
     
     protected org.dom4j.Document parseDocument(String file) throws Exception {
         SAXReader reader = new SAXReader();
