@@ -28,21 +28,27 @@ public class LocalNameFunction implements Function {
         if (args.size() == 0) {
             return evaluate( context );
         }
-        return evaluate( context.duplicate( args ) );
+        return nameOfList( args );
     }
 
     public static String evaluate(Context context) {
-        List list = context.getNodeSet();
+        return nameOfList( context.getNodeSet() );
+    }
+    
+    public static String nameOfList(List list) {
         if ( ! list.isEmpty() ) {            
             Object first = list.get(0);
-            if (first instanceof Document) {
+            if (first instanceof List) {
+                return nameOfList( (List) first );
+            }
+            else if (first instanceof Document) {
                 Document document = (Document) first;
                 Element element = document.getRootElement();
                 if (element != null) {
                     return element.getName();
                 }
             }
-            if (first instanceof Element) {
+            else if (first instanceof Element) {
                 return ((Element) first).getName();
             }
             else if (first instanceof Attribute) {
