@@ -328,11 +328,12 @@ public interface Element extends Branch {
       * and appends the text values together.
       * 
       * @return the textual content of this Element. Child elements are not navigated.
+      * This method does not return null;
       */
     public String getText();    
    
     /** @return the trimmed text value where whitespace is trimmed and
-      * normalised into single spaces
+      * normalised into single spaces. This method does not return null.
       */
     public String getTextTrim();
 
