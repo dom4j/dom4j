@@ -4,6 +4,19 @@
     <title>Status</title>
     
     <section title="Change History">
+        <section title="Patches in CVS since last release">
+          <section title="Patches and bug fixes">
+            <p>Fixed bug found by Chris Nokleberg when using the UserDataElement
+               that the clone() and createCopy() methods were not correctly 
+               copying the user data object. A JUnit test case has been added that
+               tests this fix (org.dom4j.TestUserData).
+               If any deep copying of user data objects is required then
+               UserDataElement now has a method getCopyOfUserData()
+               which can be overloaded to perform a deep copy of any user data
+               objects if required.               
+            </p>
+          </section>
+        </section>
         <section title="0.7 release">
           <section title="Integration with SAXPath">
             <p>The <a href="http://saxpath.org">SAXPath</a> project is a 

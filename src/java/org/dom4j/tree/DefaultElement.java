@@ -166,6 +166,17 @@ public class DefaultElement extends AbstractElement {
         return "";
     }
     
+    public Object clone() {
+        DefaultElement answer = (DefaultElement) super.clone();
+        if ( answer != this ) {
+            answer.content = null;
+            answer.attributes = null;
+            answer.appendAttributes(this);
+            answer.appendContent(this);
+        }
+        return answer;
+    }
+    
     
     public Namespace getNamespaceForPrefix(String prefix) {
         if ( prefix == null || prefix.length() <= 0 ) {

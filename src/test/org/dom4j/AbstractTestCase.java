@@ -227,6 +227,14 @@ public class AbstractTestCase extends TestCase {
     protected Document createDocument() {
         return DocumentHelper.createDocument();
     }
+    
+    /** @return the root element of the document */
+    protected Element getRootElement() {
+        Element root = document.getRootElement();
+        assertTrue( "Document has root element", root != null );
+        return root;
+    }
+
         
 }
 

@@ -68,6 +68,41 @@ public class UserDataElement extends DefaultElement {
     public void setData(Object data) {
         this.data = data;
     }    
+    
+    public String toString() {
+        return super.toString() + " userData: " + data;
+    }
+    
+    public Object clone() {
+        UserDataElement answer = (UserDataElement) super.clone();
+        if ( answer != this ) {
+            answer.data = getCopyOfUserData();
+        }
+        return answer;
+    }
+
+    // Implementation methods
+    //-------------------------------------------------------------------------    
+    
+    /** If a deep copy of user data is required whenever the clone() or createCopy()
+      * methods are called on this element then this method should return a clone 
+      * of the user data
+      */
+    protected Object getCopyOfUserData() {
+        return data;            
+    }
+
+    protected Element createElement(String name) {
+        Element answer = getDocumentFactory().createElement(name);
+        answer.setData( getCopyOfUserData() );
+        return answer;
+    }
+    
+    protected Element createElement(QName qName) {
+        Element answer = getDocumentFactory().createElement(qName);
+        answer.setData( getCopyOfUserData() );
+        return answer;
+    }
 }
 
 

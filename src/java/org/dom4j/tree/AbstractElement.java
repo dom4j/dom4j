@@ -964,13 +964,14 @@ public abstract class AbstractElement extends AbstractBranch implements Element 
       *
       * @return the clone of this element
       */
+/*    
     public Object clone() {
         Element clone = createElement(getQName());
         clone.appendAttributes(this);
         clone.appendContent(this);
         return clone;
     }
-
+*/
     public Element createCopy() {
         Element clone = createElement(getQName());
         clone.appendAttributes(this);
