@@ -129,8 +129,14 @@ public class DOMDocumentFactory extends DocumentFactory implements org.w3c.dom.D
         String qualifiedName,
         org.w3c.dom.DocumentType documentType
     ) throws org.w3c.dom.DOMException {
-        DOMDocumentType docType = asDocumentType( documentType );
-        DOMDocument document = new DOMDocument( docType );
+        DOMDocument document;
+        if (documentType != null) {
+            DOMDocumentType docType = asDocumentType( documentType );
+            document = new DOMDocument( docType );
+        } else {
+            document = new DOMDocument();
+        }
+        
         document.addElement( createQName( qualifiedName, namespaceURI ) );
         return document;
    }
