@@ -86,8 +86,11 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     };
 
     private static final boolean SUPPORT_PAD_TEXT = false;
-
+    
     protected static final OutputFormat DEFAULT_FORMAT = new OutputFormat();
+
+    /** Should entityRefs by resolved when writing ? */
+    private boolean resolveEntityRefs = false;
 
     /** Stores the last type of node written so algorithms can refer to the
       * previous node type */
@@ -1056,7 +1059,11 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     }
 
     protected void writeEntity(Entity entity) throws IOException {
-        writeEntityRef( entity.getName() );
+        if (!resolveEntityRefs()) {
+            writeEntityRef( entity.getName() );
+        } else {
+            writer.write(entity.getText());
+        }
     }
 
     protected void writeEntityRef(String name) throws IOException {
@@ -1393,6 +1400,14 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
       */
     protected OutputFormat getOutputFormat() {
         return format;
+    }
+    
+    public boolean resolveEntityRefs() {
+        return resolveEntityRefs;
+    }
+    
+    public void setResolveEntityRefs(boolean resolve) {
+        this.resolveEntityRefs = resolve;
     }
 }
 
