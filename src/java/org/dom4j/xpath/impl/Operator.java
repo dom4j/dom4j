@@ -91,7 +91,7 @@ class Operator {
             return node.getString();
         }
         else {
-            return obj.toString();
+            return (obj != null ) ? obj.toString() : "";
         }
     }
     
