@@ -47,17 +47,12 @@ public class FunctionExpr extends Expr {
         }
         
         List resolved = new ArrayList(_args.size());
-        
-        Iterator exprIter = _args.iterator();
-        Expr each = null;
-        
-        while (exprIter.hasNext())
-        {
-            each = (Expr) exprIter.next();
-            
-            resolved.add( each.evaluate( context ) );
+
+        for ( Iterator iter = _args.iterator(); iter.hasNext(); ) {
+            Expr each = (Expr) iter.next();
+            Context newContext = context.duplicate();
+            resolved.add( each.evaluate( newContext ) );
         }
-        
         return resolved;
     }
     

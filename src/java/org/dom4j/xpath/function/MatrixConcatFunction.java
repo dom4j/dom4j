@@ -37,7 +37,7 @@ public class MatrixConcatFunction implements Function {
         ArrayList matrix = new ArrayList();       
         
         Iterator argIter = list.iterator();
-        
+
         while (argIter.hasNext()) {
             ArrayList v = new ArrayList();
             Object obj = argIter.next();
@@ -52,8 +52,6 @@ public class MatrixConcatFunction implements Function {
             }
             matrix.add(v);
         }
-        
-        System.out.println( "Evaluating matrix: " + matrix );
         
         ArrayList result = new ArrayList();
         Enumeration elemList = new MatrixEnum( matrix );
