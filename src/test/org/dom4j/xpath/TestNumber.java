@@ -26,15 +26,15 @@ import org.dom4j.XPath;
   */
 public class TestNumber extends AbstractTestCase {
 
-    protected static boolean VERBOSE = true;
+    protected static boolean VERBOSE = false;
     
     protected static String[] paths = {
         "count(//author)",
         "count(//author/attribute::*)",
         "sum(count(//author),count(//author/attribute::*))",
-        "count(ancestor::author)",
         "count(descendant::author)",
         "count(ancestor::*)",
+        "count(ancestor::author)",
         "count(descendant::*)",
         "count(descendant::author)+1",
         "10 + (count(descendant::author) * 5)",
@@ -64,21 +64,30 @@ public class TestNumber extends AbstractTestCase {
             testXPath( document, paths[i] );
             testXPath( element, paths[i] );
         }
+        log( "Finished successfully" );
     }
         
     // Implementation methods
     //-------------------------------------------------------------------------                    
-    protected void testXPath(Node node, String xpathText) {
-        XPath xpath = node.createXPath( xpathText );
-        Number number = xpath.numberValueOf( node );
+    protected void testXPath(Node node, String xpathText) throws Exception {
+        try {
+            XPath xpath = node.createXPath( xpathText );
+            Number number = xpath.numberValueOf( node );
 
-        log( "Searched path: " + xpath + " found: " + number );
+            log( "Searched path: " + xpathText + " found: " + number );
 
-        if ( VERBOSE ) {
-            log( "    xpath: " + xpath );        
-            log( "    for: " + node );        
+            if ( VERBOSE ) {
+                log( "    xpath: " + xpath );        
+                log( "    for: " + node );        
+            }
+        }
+        catch (Throwable e) {
+            log( "Caught exception: " + e );
+            e.printStackTrace();
+            assert( "Failed to process:  " + xpathText + " caught exception: " + e, false );
         }
     }
+    
 }
 
 

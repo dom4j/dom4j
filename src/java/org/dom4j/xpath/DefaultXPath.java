@@ -341,12 +341,15 @@ public class DefaultXPath implements org.dom4j.XPath {
             _expr = recog.xpath();
         }
         catch (RecognitionException e) {
+            System.err.println( "Caught: " + e );
             e.printStackTrace();
         }
         catch (TokenStreamException e) {
+            System.err.println( "Caught: " + e );
             e.printStackTrace();
         }
         if ( _expr == null ) {
+            System.err.println( "Invalid XPath expression: " + _xpath );
             throw new RuntimeException( "Invalid XPath expression: " + _xpath );
         }
     }

@@ -279,14 +279,15 @@ public abstract class UnAbbrStep extends Step {
     public List applyToAncestor(Object node, ContextSupport support) {
         List results = new ArrayList();
         
-        results.addAll( applyToParent( node, support ) );
-        
+        //results.addAll( applyToParent( node, support ) );
         Object parent = ParentStep.findParent( node );        
         if ( parent != null ) {
+            results.addAll( applyToSelf( parent, support ) );
+        
             results.addAll( 
                 applyToAncestor( parent, support ) 
             );
-        }        
+        }
         return results;
     }
     

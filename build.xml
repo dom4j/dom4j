@@ -418,6 +418,7 @@
   </target>
 
   <target name="test-xpath" depends="compile-test">
+    <java classname="org.dom4j.xpath.TestNumber"/>
     <java classname="org.dom4j.xpath.TestValueOf"/>
   </target>
 

@@ -8,6 +8,7 @@
  */
 package org.dom4j.xpath.impl;
 
+import org.dom4j.Document;
 import org.dom4j.Node;
 import org.dom4j.Element;
 
@@ -29,7 +30,10 @@ public class ParentStep extends AbbrStep {
     }
     
     public static Object findParent(Object node) {
-        if ( node instanceof Node ) {
+        if ( node instanceof Document ) {
+            return null;
+        }
+        else if ( node instanceof Node ) { 
             Node aNode = (Node) node;
             Node parent = aNode.getParent();
             if ( parent == null ) {

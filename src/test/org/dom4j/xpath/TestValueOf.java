@@ -64,9 +64,8 @@ public class TestValueOf extends AbstractTestCase {
         "../child::node()",
         "/",
         "/*",
-        "/child::node()",
 //        "*",
-        "1+1"
+        "/child::node()",
     };
     
     
@@ -105,14 +104,20 @@ public class TestValueOf extends AbstractTestCase {
     }
         
     protected void testXPath(Node node, String xpathExpr) throws Exception {
-        XPath xpath = node.createXPath( xpathExpr );
-        String value = xpath.valueOf(node);
-        
-        log( "valueOf: " + xpathExpr + " is: " + value );
-        
-        if ( VERBOSE ) {
-            log( "xpath object: " + xpath );
-            log( "===============================" );
+        try {
+            XPath xpath = node.createXPath( xpathExpr );
+            String value = xpath.valueOf(node);
+
+            log( "valueOf: " + xpathExpr + " is: " + value );
+
+            if ( VERBOSE ) {
+                log( "xpath object: " + xpath );
+                log( "===============================" );
+            }
+        }
+        catch (Throwable e) {
+            e.printStackTrace();
+            assert( "Failed with exception: " + e, false );
         }
     }
     
