@@ -533,6 +533,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     public void endDocument() throws SAXException {
         super.endDocument();
+        
+        if ( autoFlush ) {
+            try {
+                flush();
+            } catch ( IOException e) {}
+        }
     }
 
     public void startPrefixMapping(String prefix, String uri) throws SAXException {
