@@ -261,7 +261,6 @@ public class TestNamespaces extends AbstractTestCase {
         // element ("schema"), but the element itself is not in the default
         // namespace. Test that declaredNamespaces on the root element also
         // returns the default namespace declaration.
-        System.out.println("Document: " + document + ", ns: " + document.getRootElement().declaredNamespaces().size());
         Iterator iter = document.getRootElement().declaredNamespaces().iterator();
             while (iter.hasNext()) {
                 Namespace ns = (Namespace)iter.next();
