@@ -1,4 +1,5 @@
 <project default="jar:jar" 
+         xmlns:j="jelly:core" 
          xmlns:ant="jelly:ant"
          xmlns:maven="jelly:maven" >
 
@@ -11,6 +12,62 @@
             <pathelement path="src/"/>
             <path refid="maven.dependency.classpath"/>
         </path>
+    </goal>
+
+    <goal name="maven-clover-plugin:report">
+    <attainGoal name="test:test"/>
+        <ant:taskdef resource="clovertasks">
+            <classpath>
+                <pathelement path="${basedir}/lib/tools/clover-1.3-rc2.jar"/>
+            </classpath>
+        </ant:taskdef>    
+        <ant:typedef resource="clovertypes">
+            <classpath>
+                <pathelement path="${basedir}/lib/tools/clover-1.3-rc2.jar"/>
+            </classpath>
+        </ant:typedef>
+
+        <ant:mkdir dir="${basedir}/target/clover/database" />
+        <ant:clover-setup initstring="${basedir}/target/clover/database/dom4j_clover_coverage.db">
+            <j:forEach var="srcDir" items="${srcDirs}">
+                <ant:fileset dir="${srcDir}">
+                    <ant:include name="org/dom4j/**"/>
+                </ant:fileset>
+            </j:forEach>
+            <files excludes="org/xml/sax/**,org/dom4j/io/aelfred/**,org/dom4j/io/aelfred2/**" />
+        </ant:clover-setup>
+
+    <!-- Make sure that the report is generated whether the tests pass or 
+         not -->
+    <j:set var="ignoreTestFailureOld" value="${maven.test.failure.ignore}"/>
+    <j:set var="junitForkOld" value="${maven.junit.fork}"/>
+     
+    <j:set var="maven.test.failure.ignore" scope="parent" value="true"/>
+    <j:set var="maven.junit.fork" scope="parent" value="true"/>
+    <j:set var="tmp" value="${basedir}/target/clover/classes"/>
+    <j:set var="mavenBuildDestJavaOld" value="${pom.getPluginContext('maven-java-plugin').getVariable('maven.build.dest')}"/>
+    ${pom.getPluginContext('maven-java-plugin').setVariable('maven.build.dest',tmp)}
+    <j:set var="mavenBuildDestTestOld" value="${pom.getPluginContext('maven-test-plugin').getVariable('maven.build.dest')}"/>
+    ${pom.getPluginContext('maven-test-plugin').setVariable('maven.build.dest',tmp)}
+    
+    <attainGoal name="test:test"/>
+
+	<ant:clover-report>
+      <current 
+      	outfile="${basedir}/target/clover/html_report" 
+      	title="${pom.name} - ${pom.currentVersion}">
+        <format type="html" orderBy="${maven.clover.orderBy}"/>
+      </current>
+    </ant:clover-report>
+
+    ${pom.getPluginContext('maven-test-plugin').setVariable('maven.build.dest',mavenBuildDestTestOld)}
+    ${pom.getPluginContext('maven-java-plugin').setVariable('maven.build.dest',mavenBuildDestJavaOld)}
+
+    ${pom.getContext().removeVariable('build.compiler')}
+    
+    <j:set var="maven.test.failure.ignore" scope="parent" value="${ignoreTestFailureOld}"/>
+    <j:set var="maven.junit.fork" scope="parent" value="${junitForkOld}"/>
+
     </goal>
 
     <postGoal name="dist:prepare-bin-filesystem">
@@ -49,7 +106,8 @@
     </preGoal>
 
     <postGoal name="xdoc:register-reports">
-        <attainGoal name="maven-checkstyle-plugin:deregister"/>  
+        <attainGoal name="maven-checkstyle-plugin:deregister"/>
+        <attainGoal name="maven-clover-plugin:register"/>
     </postGoal>
 
 </project>

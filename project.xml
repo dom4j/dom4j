@@ -209,6 +209,17 @@
       <version>4aug2000r7-dev</version>
     </dependency>
 
+    <!-- clover dependencies -->
+    <dependency>
+      <groupId>clover</groupId>
+      <artifactId>clover</artifactId>
+      <version>1.3-rc2</version>
+      <properties>
+        <classloader>root</classloader>
+      </properties>
+    </dependency>
+
+
   </dependencies>
   
   <build>
