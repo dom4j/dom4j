@@ -177,59 +177,75 @@
     <!-- compilation dependencies -->
 
     <dependency>
-      <id>jaxen</id>
+      <groupId>jaxen</groupId>
+      <artifactId>jaxen</artifactId>
       <version>1.1-beta-4</version>
+      <url>http://jaxen.codehaus.org/</url>
     </dependency>
 
     <dependency>
       <groupId>msv</groupId>
       <artifactId>xsdlib</artifactId>
       <version>20030807</version>
+      <url>https://msv.dev.java.net/</url>
     </dependency>
 
     <dependency>
       <groupId>msv</groupId>
       <artifactId>relaxngDatatype</artifactId>
       <version>20030807</version>
+      <url>https://msv.dev.java.net/</url>
     </dependency>
 
     <dependency>
-      <id>pull-parser</id>
+      <groupId>pull-parser</groupId>
+      <artifactId>pull-parser</artifactId>
       <version>2</version>
+      <url>http://www.extreme.indiana.edu/xgws/xsoap/xpp/</url>
     </dependency>
 
     <dependency>
-      <id>stax</id>
+      <groupId>stax</groupId>
+      <artifactId>stax</artifactId>
       <version>1.0</version>
+      <url>http://jcp.org/aboutJava/communityprocess/final/jsr173/index.html</url>
     </dependency>
 
     <dependency>
-      <id>xml-apis</id>
+      <groupId>xml-apis</groupId>
+      <artifactId>xml-apis</artifactId>
       <version>2.0.2</version>
+      <url>http://xml.apache.org/xerces2-j/index.html</url>
     </dependency>
 
     <!-- testing dependencies -->
     
     <dependency>
-      <id>junitperf</id>
+      <groupId>junitperf</groupId>
+      <artifactId>junitperf</artifactId>
       <version>1.8</version>
+      <url>http://www.clarkware.com/software/JUnitPerf.html</url>
     </dependency>
     
     <dependency>
-      <id>jtidy</id>
+      <groupId>jtidy</groupId>
+      <artifactId>jtidy</artifactId>
       <version>4aug2000r7-dev</version>
+      <url>http://jtidy.sourceforge.net/</url>
     </dependency>
 
     <dependency>
       <groupId>xerces</groupId>
       <artifactId>xercesImpl</artifactId>
       <version>2.6.2</version>
+      <url>http://xml.apache.org/xerces2-j/index.html</url>
     </dependency>
 
     <dependency>
       <groupId>xalan</groupId>
       <artifactId>xalan</artifactId>
       <version>2.5.1</version>
+      <url>http://xml.apache.org/xalan-j/index.html</url>
     </dependency>
 
     <!-- clover dependencies -->
@@ -240,6 +256,7 @@
       <properties>
         <classloader>root</classloader>
       </properties>
+      <url>http://www.thecortex.net/clover/index.html</url>
     </dependency>
 
   </dependencies>
