@@ -12,6 +12,8 @@ package org.dom4j.io;
 import java.util.ArrayList;
 
 import org.dom4j.Element;
+import org.dom4j.ElementPath;
+import org.dom4j.ElementHandler;
 
 /** <p><code>ElementStack</code> is used internally inside the 
   * {@link SAXContentHandler} to maintain a stack of {@link Element} 
@@ -22,13 +24,15 @@ import org.dom4j.Element;
   * @author <a href="mailto:james.strachan@metastuff.com">James Strachan</a>
   * @version $Revision$
   */
-public class ElementStack {
+class ElementStack implements ElementPath {
 
     /** stack of <code>Element</code> objects */
     protected Element[] stack;
     
     /** index of the item at the top of the stack or -1 if the stack is empty */
     protected int lastElementIndex = -1;
+    
+    private DispatchHandler handler = null;
 
     
     public ElementStack() {
@@ -37,6 +41,11 @@ public class ElementStack {
     
     public ElementStack(int defaultCapacity) {
         stack = new Element[defaultCapacity];
+    }
+    
+    public void setDispatchHandler(DispatchHandler handler)
+    {
+        this.handler = handler;   
     }
     
     /** Peeks at the top element on the stack without changing the contents
@@ -90,6 +99,64 @@ public class ElementStack {
         Element[] oldStack = stack;
         stack = new Element[ size ];
         System.arraycopy( oldStack, 0, stack, 0, oldStack.length );
+    }
+    
+    // The ElementPath Interface
+    //
+    public int size()
+    {
+        return stack.length;
+    }
+    
+    public Element getElement(int depth)
+    {
+        Element element;
+        try {
+            element = (Element)stack[depth];   
+        }
+        catch (ArrayIndexOutOfBoundsException e)
+        {
+            element = null;   
+        }
+        return element;
+    }
+    
+    public String getPath()
+    {
+        if (handler == null) {
+            setDispatchHandler(new DispatchHandler());
+        }
+        return handler.getPath();
+    }
+    
+    public Element getCurrent()
+    {
+        return peekElement();   
+    }
+    
+    public void addHandler(String path, ElementHandler handler) {
+        this.handler.addHandler(getHandlerPath(path), handler);
+    }
+    
+    public void removeHandler(String path) {
+        this.handler.removeHandler(getHandlerPath(path));
+    }
+    
+    private String getHandlerPath(String path) {
+        String handlerPath;
+        if (this.handler == null) {
+            setDispatchHandler(new DispatchHandler());
+        }
+        if (path.startsWith("/")) {
+            handlerPath = path;   
+        }
+        else if (getPath().equals("/")) {
+            handlerPath = getPath() + path;
+        }
+        else {
+            handlerPath = getPath() + "/" + path;   
+        }
+        return handlerPath;
     }
 }
 
