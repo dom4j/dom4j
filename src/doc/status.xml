@@ -5,12 +5,10 @@
 
     <section title="Change History">
 
-<!--
       <section title="Changes in CVS since last release">
-      </section>
--->
-      <section title="1.3 Release">
-        <section title="Patches">
+        <p>Applied patch to bug found by Tom Oehser that XPath expressions using elements or attributes whose name starts 
+        with '_' were not being handled correctly. It turns out this was a SAXPath issue.
+        </p>
         <p>Applied patch to fix bug found by David Frankson. Adding attributes with null values causes problems in XSLT engines
             so now adding a null valued attribute is equivalent to removing the attribute. So null attribute values are silently ignored.
             e.g.
@@ -26,6 +24,10 @@ attribute = element.attribute( "foo" );
 assertTrue( attribute == null );
 </pre>
         </p>
+      </section>
+      
+      <section title="1.3 Release">
+        <section title="Patches">
         <p>Applied patch to bug found by Mike Skells that was causing XPath.matches() to return true for absolute XPaths which returned different nodes to the node provided to the XPath.
         </p>
         <p>Applied patch provided by Stefan that was causing IndexOutOfBoundsException when using the evaluate() method in DefaultXPath on an empty result set. Also added a test case to org.dom4j.TestXPathBug called testStefan().
