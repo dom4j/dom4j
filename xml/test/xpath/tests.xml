@@ -25,4 +25,14 @@
       </test>
     </context>
   </document>
+
+
+  <!-- test positioning -->
+
+  <document url="xml/fibo.xml">
+    <context select="/">
+      <test select="/*/fibonacci[position() &lt; 10]" count="9"/>
+    </context>
+  </document>
+
 </tests>
