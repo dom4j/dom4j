@@ -18,9 +18,8 @@ import org.dom4j.io.DocumentSource;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
-import sun.security.krb5.internal.crypto.e;
 
-public class PerfDOM4J
+public class PerfDOM4JAttr
 {
 
     public static void main(String args[])
@@ -32,73 +31,75 @@ public class PerfDOM4J
             int numrec=1;
 	       
             numrec=10000;
-            System.out.println("\n10000 Elements ------------------");
-            doc = PerfDOM4J.createDocument(numrec,20,1);
-            PerfDOM4J.createW3CDOM(doc);
-            PerfDOM4J.write(doc,"dom4j_" + numrec + ".xml");
-            //PerfDOM4J.parse(numrec,1);
-            //PerfDOM4J.transform(doc,"item.xslt",1);
-            PerfDOM4J.xpath(doc,"/*/*/Attr1x1",1);
-            PerfDOM4J.xpath(doc,"/*/*/Attr1x5000",1);
-            PerfDOM4J.xpath(doc,"/*/*/Attr1x9999",1);
-            PerfDOM4J.xpathNodes(doc,"/*/*/Attr1x1",1);
-            PerfDOM4J.xpathNodes(doc,"/*/*/Attr1x5000",1);
-            PerfDOM4J.xpathNodes(doc,"/*/*/Attr1x9999",1);
-            PerfDOM4J.xpathNodes(doc,"/*/Item",3);
+            System.out.println("\n1000 Elements -------------------");
+            doc = PerfDOM4JAttr.createDocument(numrec,20,1);
+            PerfDOM4JAttr.createW3CDOM(doc);
+            PerfDOM4JAttr.write(doc,"DOM4JAttr_" + numrec + ".xml");
+            PerfDOM4JAttr.parse(numrec,1);
+			//PerfDOM4JAttr.transform(doc,"item.xslt",1);
+            PerfDOM4JAttr.xpath(doc,"/ItemResultSet/Item[@guid=\"1\"]",3);
+            PerfDOM4JAttr.xpath(doc,"/ItemResultSet/Item[@guid=\"500\"]",3);
+            PerfDOM4JAttr.xpath(doc,"/ItemResultSet/Item[@guid=\"999\"]",3);
+            PerfDOM4JAttr.xpathNodes(doc,"/ItemResultSet/Item[@guid=\"1\"]",3);
+            PerfDOM4JAttr.xpathNodes(doc,"/ItemResultSet/Item[@guid=\"500\"]",3);
+            PerfDOM4JAttr.xpathNodes(doc,"/ItemResultSet/Item[@guid=\"999\"]",3);
+            PerfDOM4JAttr.xpathNodes(doc,"/*/Item",100);
 
             numrec=1000;
             System.out.println("\n1000 Elements -------------------");
-            doc = PerfDOM4J.createDocument(numrec,20,1);
-            PerfDOM4J.createW3CDOM(doc);
-            PerfDOM4J.write(doc,"dom4j_" + numrec + ".xml");
-            PerfDOM4J.parse(numrec,3);
-            PerfDOM4J.transform(doc,"item.xslt",3);
-            PerfDOM4J.xpath(doc,"/*/*/Attr1x1",3);
-            PerfDOM4J.xpath(doc,"/*/*/Attr1x500",3);
-            PerfDOM4J.xpath(doc,"/*/*/Attr1x999",3);
-            PerfDOM4J.xpathNodes(doc,"/*/*/Attr1x1",3);
-            PerfDOM4J.xpathNodes(doc,"/*/*/Attr1x500",3);
-            PerfDOM4J.xpathNodes(doc,"/*/*/Attr1x999",3);
-            PerfDOM4J.xpathNodes(doc,"/*/Item",10);
+            doc = PerfDOM4JAttr.createDocument(numrec,20,1);
+            PerfDOM4JAttr.createW3CDOM(doc);
+            PerfDOM4JAttr.write(doc,"DOM4JAttr_" + numrec + ".xml");
+            PerfDOM4JAttr.parse(numrec,3);
+            PerfDOM4JAttr.transform(doc,"item.xslt",3);
+            PerfDOM4JAttr.xpath(doc,"/ItemResultSet/Item[@guid=\"1\"]",3);
+            PerfDOM4JAttr.xpath(doc,"/ItemResultSet/Item[@guid=\"500\"]",3);
+            PerfDOM4JAttr.xpath(doc,"/ItemResultSet/Item[@guid=\"999\"]",3);
+            PerfDOM4JAttr.xpathNodes(doc,"/ItemResultSet/Item[@guid=\"1\"]",3);
+            PerfDOM4JAttr.xpathNodes(doc,"/ItemResultSet/Item[@guid=\"500\"]",3);
+            PerfDOM4JAttr.xpathNodes(doc,"/ItemResultSet/Item[@guid=\"999\"]",3);
+            PerfDOM4JAttr.xpathNodes(doc,"/*/Item",100);
 
             numrec=100;
             System.out.println("\n100 Elements --------------------");
-            doc = PerfDOM4J.createDocument(numrec,20,10);
-            PerfDOM4J.createW3CDOM(doc);
-            PerfDOM4J.write(doc,"dom4j_" + numrec + ".xml");
-            PerfDOM4J.parse(numrec,10);
-            PerfDOM4J.transform(doc,"item.xslt",10);
-            PerfDOM4J.xpath(doc,"/*/*/Attr1x1",10);
-            PerfDOM4J.xpath(doc,"/*/*/Attr1x50",10);
-            PerfDOM4J.xpath(doc,"/*/*/Attr1x99",10);
-            PerfDOM4J.xpathNodes(doc,"/*/*/Attr1x1",10);
-            PerfDOM4J.xpathNodes(doc,"/*/*/Attr1x50",10);
-            PerfDOM4J.xpathNodes(doc,"/*/*/Attr1x99",10);
-            PerfDOM4J.xpathNodes(doc,"/*/Item",100);
+            doc = PerfDOM4JAttr.createDocument(numrec,20,10);
+            PerfDOM4JAttr.createW3CDOM(doc);
+            PerfDOM4JAttr.write(doc,"DOM4JAttr_" + numrec + ".xml");
+            PerfDOM4JAttr.parse(numrec,10);
+            PerfDOM4JAttr.transform(doc,"item.xslt",10);
+            PerfDOM4JAttr.xpath(doc,"/ItemResultSet/Item[@guid=\"1\"]",10);
+            PerfDOM4JAttr.xpath(doc,"/ItemResultSet/Item[@guid=\"50\"]",10);
+            PerfDOM4JAttr.xpath(doc,"/ItemResultSet/Item[@guid=\"99\"]",10);
+            PerfDOM4JAttr.xpathNodes(doc,"/ItemResultSet/Item[@guid=\"1\"]",10);
+            PerfDOM4JAttr.xpathNodes(doc,"/ItemResultSet/Item[@guid=\"50\"]",10);
+            PerfDOM4JAttr.xpathNodes(doc,"/ItemResultSet/Item[@guid=\"99\"]",10);
+            PerfDOM4JAttr.xpathNodes(doc,"/*/Item",100);
 
             numrec=10;
             System.out.println("\n10 Elements ---------------------");
-            doc = PerfDOM4J.createDocument(numrec,20,100);
-            PerfDOM4J.createW3CDOM(doc);
-            PerfDOM4J.write(doc,"dom4j_" + numrec + ".xml");
-            PerfDOM4J.parse(numrec,100);
-			PerfDOM4J.transform(doc,"item.xslt",10);
-            PerfDOM4J.xpath(doc,"/*/*/Attr1x5",1000);
-            PerfDOM4J.xpathNodes(doc,"/*/*/Attr1x1",1000);
-            PerfDOM4J.xpathNodes(doc,"/*/*/Attr1x5",1000);
-            PerfDOM4J.xpathNodes(doc,"/*/*/Attr1x9",1000);
-            PerfDOM4J.xpathNodes(doc,"/*/Item",1000);
+            doc = PerfDOM4JAttr.createDocument(numrec,20,100);
+            PerfDOM4JAttr.createW3CDOM(doc);
+            PerfDOM4JAttr.write(doc,"DOM4JAttr_" + numrec + ".xml");
+            PerfDOM4JAttr.parse(numrec,100);
+			PerfDOM4JAttr.transform(doc,"item.xslt",10);
+            PerfDOM4JAttr.xpath(doc,"/ItemResultSet/Item[@guid=\"1\"]",100);
+            PerfDOM4JAttr.xpath(doc,"/ItemResultSet/Item[@guid=\"5\"]",100);
+            PerfDOM4JAttr.xpath(doc,"/ItemResultSet/Item[@guid=\"9\"]",100);
+            PerfDOM4JAttr.xpathNodes(doc,"/ItemResultSet/Item[@guid=\"1\"]",100);
+            PerfDOM4JAttr.xpathNodes(doc,"/ItemResultSet/Item[@guid=\"5\"]",100);
+            PerfDOM4JAttr.xpathNodes(doc,"/ItemResultSet/Item[@guid=\"9\"]",100);
+            PerfDOM4JAttr.xpathNodes(doc,"/*/Item",100);
 			            
             numrec=1;
             System.out.println("\n1 Element -----------------------");
-            doc = PerfDOM4J.createDocument(numrec,20,100);
-            PerfDOM4J.createW3CDOM(doc);
-            PerfDOM4J.write(doc,"dom4j_" + numrec + ".xml");
-            PerfDOM4J.parse(numrec,100);
-            PerfDOM4J.transform(doc,"item.xslt",10);
-			PerfDOM4J.xpath(doc,"/*/*/Attr1x1",1000);
-            PerfDOM4J.xpathNodes(doc,"/*/*/Attr1x1",1000);
-            PerfDOM4J.xpathNodes(doc,"/*/Item",1000);
+            doc = PerfDOM4JAttr.createDocument(numrec,20,100);
+            PerfDOM4JAttr.createW3CDOM(doc);
+            PerfDOM4JAttr.write(doc,"DOM4JAttr_" + numrec + ".xml");
+            PerfDOM4JAttr.parse(numrec,100);
+            PerfDOM4JAttr.transform(doc,"item.xslt",10);
+            PerfDOM4JAttr.xpath(doc,"/ItemResultSet/Item[@guid=\"1\"]",100);
+            PerfDOM4JAttr.xpathNodes(doc,"/ItemResultSet/Item[@guid=\"1\"]",100);
+            PerfDOM4JAttr.xpathNodes(doc,"/*/Item",100);
 
         } catch (IOException ie)
         {
@@ -118,10 +119,10 @@ public class PerfDOM4J
         for (int ii=0;ii<iNumRecs;ii++)
         {
 
-            Element Record = root.addElement( "Item" );
+            Element Record = root.addElement( "Item" ).addAttribute("guid",""+ii);
             for (int jj=0;jj<iNumFlds;jj++)
             {
-                Record.addElement("Attr" +jj+ "x" + ii).addText("123456789");
+                Record.addAttribute("Attr" +jj,"123456789");
             }
 
 
@@ -138,10 +139,10 @@ public class PerfDOM4J
 
     public static Document parse(int iNumRecs,int kk) {
 
-	    File file = new File("dom4j_" + iNumRecs + ".xml");
+	    File file = new File("DOM4JAttr_" + iNumRecs + ".xml");
 	    double start = System.currentTimeMillis();
 		Document document = null;
-			for (int pp = 0 ; pp< kk; pp++) {
+			for (int pp= 0 ; pp < kk ; pp++) {
 				try {
 				SAXReader SAXrd = new SAXReader();
 				SAXrd.read(file);		
@@ -199,7 +200,7 @@ public class PerfDOM4J
 
         long end = System.currentTimeMillis();
 
-        System.err.println("DOM4J File write time 		:"  + (end-start) + "  " + name);
+        System.err.println("DOM4JAttr File write time 		:"  + (end-start) + "  " + name);
     }
 
 
@@ -207,7 +208,7 @@ public class PerfDOM4J
     public static void transform(Document xmlDoc,String xslFile, int kk)
     {
 
-        System.err.println("DOM4J start transform ");
+        System.err.println("DOM4JAttr start transform ");
         int ii = 1;
         try
         {
@@ -224,7 +225,7 @@ public class PerfDOM4J
 	        }
             long end = System.currentTimeMillis();
 			
-            System.err.println("DOM4J transform  time 		:"  + (end-start)/ii );
+            System.err.println("DOM4JAttr transform  time 		:"  + (end-start)/ii );
         } catch (Exception e)
         {
             e.printStackTrace();
@@ -241,15 +242,15 @@ public class PerfDOM4J
         for(int ii=0;ii<kk;ii++)
         {
         	Node node = xpath.selectSingleNode( document );
-	
+	 
           if ((node != null) & (ii==0)) {
           	String val = node.getStringValue();
-	              	//System.out.println(val);
+	        //System.out.println("xpath OK:"+val);
           }
         }
 
         long end = System.currentTimeMillis();
-        System.err.println("DOM4J xpath  time 		:"  + (end-start)/kk );
+        System.err.println("DOM4JAttr xpath  time 		:"  + (end-start)/kk );
     }
 
     public static void xpathNodes(Document document, String xpathExp,int kk)
@@ -269,7 +270,7 @@ public class PerfDOM4J
 	              Node node = (Node)nodeList.get(0);
 	              if ((node != null) & (ii==0)){
 	              	String val = node.getStringValue();
-	              	//System.out.println(val);
+	              	//System.out.println("xpathNodes OK:"+val);
 	              }
               }
           }
@@ -284,7 +285,7 @@ public class PerfDOM4J
 
         long end = System.currentTimeMillis();
 
-        System.err.println("DOM4J xpath Nodes time 		:"  + 1.000*(end-start)/kk );
+        System.err.println("DOM4JAttr xpath Nodes time 		:"  + 1.000*(end-start)/kk );
     }
 
 

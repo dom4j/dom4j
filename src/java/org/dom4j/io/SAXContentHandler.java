@@ -50,7 +50,7 @@ import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.ext.DeclHandler;
 import org.xml.sax.helpers.DefaultHandler;
 
-/** <p><code>SAXHandler</code> builds a DOM4J tree via SAX events.</p>
+/** <p><code>SAXContentHandler</code> builds a dom4j tree via SAX events.</p>
   *
   * @author <a href="mailto:jstrachan@apache.org">James Strachan</a>
   * @version $Revision$

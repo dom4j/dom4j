@@ -454,7 +454,7 @@
     <copy todir="${web.dist}" file="${build.dir}/${name}.jar"/>
 
     <copy todir="${web.htdocs}" overwrite="yes">
-      <fileset dir="${build.doc}" includes="**/*.html, **/*.css, **/*.pdf, **/*.ps, **/*.fo"/>
+      <fileset dir="${build.doc}" includes="**/*.html, **/*.css, **/*.pdf, **/*.ps, **/*.fo, benchmarks/**/*.*"/>
     </copy>
 
     <copy todir="${web.dist}" overwrite="yes">

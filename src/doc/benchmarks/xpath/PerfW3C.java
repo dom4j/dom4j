@@ -38,7 +38,7 @@ public class PerfW3C
         System.out.println("\n1000 Elements ---------------------------------");
         doc= PerfW3C.createDocument(numrec,20,1);
         PerfW3C.write(doc,"w3c_" + numrec + ".xml");
-        PerfW3C.parse(numrec);
+        PerfW3C.parse(numrec,1);
         PerfW3C.transform(doc,"item.xslt",1);
         PerfW3C.xpath(doc,"/*/*/Attr1x1",1);
         PerfW3C.xpath(doc,"/*/*/Attr1x500",1);
@@ -54,7 +54,7 @@ public class PerfW3C
         doc= PerfW3C.createDocument(numrec,20,1);
         PerfW3C.write(doc,"w3c_" + numrec + ".xml");
         PerfW3C.transform(doc,"item.xslt",10);
-        PerfW3C.parse(numrec);
+        PerfW3C.parse(numrec,10);
         PerfW3C.xpath(doc,"/*/*/Attr0x1",10);
         PerfW3C.xpath(doc,"/*/*/Attr0x50",10);
         PerfW3C.xpath(doc,"/*/*/Attr0x99",10);
@@ -67,7 +67,7 @@ public class PerfW3C
         System.out.println("\n10 Elements -----------------------------------");
         doc= PerfW3C.createDocument(numrec,20,10);
         PerfW3C.write(doc,"w3c_" + numrec + ".xml");
-        PerfW3C.parse(numrec);
+        PerfW3C.parse(numrec,50);
         PerfW3C.transform(doc,"item.xslt",10);
         PerfW3C.xpath(doc,"/*/*/Attr5",100);
         PerfW3C.xpathNodes(doc,"/*/*/Attr1x5",100);
@@ -77,7 +77,7 @@ public class PerfW3C
         System.out.println("\n1 Elements ------------------------------------");
         doc= PerfW3C.createDocument(numrec,20,10);
         PerfW3C.write(doc,"w3c_" + numrec + ".xml");
-        PerfW3C.parse(numrec);
+        PerfW3C.parse(numrec,100);
         PerfW3C.transform(doc,"item.xslt",10);
         PerfW3C.xpath(doc,"/*/*/Attr1x0",100);
         PerfW3C.xpathNodes(doc,"/*/*/Attr1x0",100);
@@ -160,16 +160,13 @@ public class PerfW3C
         System.err.println("W3C File write time :"  + (end-start) + "  " + name);
     }
 
-    public static Document parse(int iNumRecs) {
+    public static Document parse(int iNumRecs, int kk) {
 
 	    File file = new File("dom4j_" + iNumRecs + ".xml");
 	    double start = System.currentTimeMillis();
 		Document document = null;
-		int kk = 1;
-		if (iNumRecs > 100) {
-		}
-		else {
-			for (kk = 0 ; kk < 100 ; kk++) {
+		
+			for (int pp = 0 ; pp < kk; pp++) {
 				try {
 				SAXReader SAXrd = new SAXReader();
 				SAXrd.read(file);		
@@ -177,7 +174,7 @@ public class PerfW3C
 					e.printStackTrace();
 				}
 			}
-		}
+	
 	    double end = System.currentTimeMillis();
 
         //   System.err.println("DOM4J createDocument:" + "Num Rec. = " + iNumRecs + " Num. Fld.=" + iNumFlds);
