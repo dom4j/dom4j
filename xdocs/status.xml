@@ -8,6 +8,7 @@
  
   <body>
       <section name="CVS">
+        <p>Fixed bug in <code>DispatchHandler</code> which made the handler not reusable (reported by Ricardo Leon).</p>
         <p>Fixed bug in <code>SAXContentHandler</code> that caused incorrect CDATA section parsing (contributed by Todd Wolff).</p>
         <p>Fixed bug in <code>SAXContentHandler</code> that caused incorrect entity handling.</p>
         <p>Fixed bug in <code>XMLWriter</code> causing padding to be disabled, even if enabled in the specified outputformat (reported by Bo Gundersen).</p>
