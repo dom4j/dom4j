@@ -153,6 +153,7 @@ final public class SAXDriver
     private boolean			extPE = true;
     private boolean			resolveAll = true;
     private boolean			useResolver2 = true;
+    private boolean     stringInterning = true;
 
     private int				attributeCount = 0;
     private boolean			attributes;
@@ -393,9 +394,9 @@ final public class SAXDriver
 	if ((FEATURE + "lexical-handler/parameter-entities").equals (featureId))
 	    return true;
 
-	// always interns
+	// default is true
 	if ((FEATURE + "string-interning").equals (featureId))
-	    return true;
+	    return stringInterning;
 	
 	// EXTENSIONS 1.1
 
@@ -744,28 +745,47 @@ final public class SAXDriver
 	if (namespaces) {
 	    int	index;
 
-	    // default NS declaration?
-	    if ("xmlns".equals (qname)) {
-		declarePrefix ("", value);
-		if (!xmlNames)
-		    return;
-	    }
-
-	    // NS prefix declaration?
-	    else if ((index = qname.indexOf (':')) == 5
-		    && qname.startsWith ("xmlns")) {
-		String		prefix = qname.substring (6);
-
-		if (value.length () == 0) {
-		    verror ("missing URI in namespace decl attribute: "
-				+ qname);
-		} else
-		    declarePrefix (prefix, value);
-		if (!xmlNames)
-		    return;
-	    }
-	}
-
+      // default NS declaration?
+      if (getFeature (FEATURE + "string-interning")) {
+        if ("xmlns" == qname) {
+          declarePrefix ("", value);
+          if (!xmlNames)
+            return;
+        }
+        // NS prefix declaration?
+        else if ((index = qname.indexOf (':')) == 5
+                 && qname.startsWith ("xmlns")) {
+          String		prefix = qname.substring (6);
+          
+          if (value.length () == 0) {
+            verror ("missing URI in namespace decl attribute: "
+                    + qname);
+          } else
+            declarePrefix (prefix, value);
+          if (!xmlNames)
+            return;
+        }
+      } else {
+        if ("xmlns".equals(qname)) {
+          declarePrefix ("", value);
+          if (!xmlNames)
+            return;
+        }
+        // NS prefix declaration?
+        else if ((index = qname.indexOf (':')) == 5
+                 && qname.startsWith ("xmlns")) {
+          String		prefix = qname.substring (6);
+          
+          if (value.length () == 0) {
+            verror ("missing URI in namespace decl attribute: "
+                    + qname);
+          } else
+            declarePrefix (prefix, value);
+          if (!xmlNames)
+            return;
+        }
+      }
+  }
 	// remember this attribute ...
 
 	if (attributeCount == attributeSpecified.length) { 	// grow array?
@@ -814,9 +834,14 @@ final public class SAXDriver
 		String	qname = (String) attributeNames.elementAt (i);
 		int	index;
 
-		// default NS declaration?
-		if ("xmlns".equals (qname))
+    // default NS declaration?
+    if (getFeature (FEATURE + "string-interning")) {
+      if ("xmlns" == qname)
 		    continue;
+    } else {
+      if ("xmlns".equals(qname))
+		    continue;
+    }
 
 		index = qname.indexOf (':');
 
@@ -1001,8 +1026,8 @@ final public class SAXDriver
 	if (type == null)
 	    return "CDATA";
 	// ... use DeclHandler.attributeDecl to see enumerations
-	if ("ENUMERATION".equals (type))
-	    return "NMTOKEN";
+      if (type == "ENUMERATION")
+        return "NMTOKEN";
 	return type;
     }
 
