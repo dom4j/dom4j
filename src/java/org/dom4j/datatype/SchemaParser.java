@@ -23,6 +23,7 @@ import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
 import org.dom4j.util.AttributeHelper;
+import org.dom4j.DocumentFactory;
 
 import org.relaxng.datatype.DatatypeException;
 import org.relaxng.datatype.ValidationContext;
@@ -51,19 +52,16 @@ public class SchemaParser {
     /** Cache of <code>XSDatatype</code> instances loaded or created during this build */
     private Map dataTypeCache = new HashMap();
 
-    /**  map of names types */
-    private Map namedDatatypeElementFactoryMap = new HashMap();
-
-    /**  map of Elements with unresolved types */
-    private Map elementWithUnresolvedTypeMap = new HashMap();
-
+    /** NamedTypeResolver */
+    private NamedTypeResolver namedTypeResolver;
 
     public SchemaParser() {
-        this.documentFactory = DatatypeDocumentFactory.singleton;
+        this(DatatypeDocumentFactory.singleton);
     }
 
     public SchemaParser(DatatypeDocumentFactory documentFactory) {
         this.documentFactory = documentFactory;
+        this.namedTypeResolver=new NamedTypeResolver(documentFactory);
     }
 
 
@@ -77,7 +75,7 @@ public class SchemaParser {
             //handle elements
             Iterator iter = root.elementIterator( XSD_ELEMENT );
             while ( iter.hasNext() ) {
-                onDatatypeElement( (Element) iter.next() );
+                onDatatypeElement( (Element) iter.next() , documentFactory);
             }
 
             //hanlde named complex types
@@ -85,30 +83,14 @@ public class SchemaParser {
             while ( iter.hasNext() ) {
                 onNamedSchemaComplexType((Element) iter.next());
             }
-            resolveNamedTypes();
 
-        }
-    }
-
-    /** Resolved named types
-     *
-     */
-    private void resolveNamedTypes() {
-        Iterator iter=elementWithUnresolvedTypeMap.keySet().iterator();
-        while (iter.hasNext()) {
-            Element element=(Element)iter.next();
-
-            QName type=(QName)elementWithUnresolvedTypeMap.get(element);
-            //QName typeQName=getQName(type);
-
-            DatatypeElementFactory factory=
-                (DatatypeElementFactory)namedDatatypeElementFactoryMap.get(type);
-
-            String name=element.attributeValue("name");
-            if (name!=null) {
-                QName qname=getQName(name);
-                qname.setDocumentFactory(factory);
+            //handle named simple types
+            iter = root.elementIterator( XSD_SIMPLETYPE );
+            while ( iter.hasNext() ) {
+                onNamedSchemaSimpleType((Element) iter.next());
             }
+
+            namedTypeResolver.resolveNamedTypes();
 
         }
     }
@@ -119,7 +101,7 @@ public class SchemaParser {
 
     /** processes an XML Schema &lt;element&gt; tag
      */
-    protected void onDatatypeElement( Element xsdElement ) {
+    protected void onDatatypeElement( Element xsdElement , DocumentFactory parentFactory ) {
         String name = xsdElement.attributeValue( "name" );
         String type = xsdElement.attributeValue( "type" );
         QName qname = getQName( name );
@@ -133,7 +115,7 @@ public class SchemaParser {
                 elementFactory.setChildElementXSDatatype( qname, dataType );
             } else {
                 QName typeQName=getQName(type);
-                elementWithUnresolvedTypeMap.put(xsdElement,typeQName);
+                namedTypeResolver.registerTypedElement(xsdElement,typeQName,parentFactory);
             }
             return;
         }
@@ -165,7 +147,7 @@ public class SchemaParser {
         QName qname=getQName(name);
         DatatypeElementFactory elementFactory=new DatatypeElementFactory(qname);
         onSchemaComplexType(schemaComplexType,elementFactory);
-        namedDatatypeElementFactoryMap.put(qname,elementFactory);
+        namedTypeResolver.registerComplexType(qname,elementFactory);
     }
 
     /** processes an XML Schema &lt;complexTypegt; tag
@@ -196,7 +178,7 @@ public class SchemaParser {
             Iterator iter2 = schemaSequence.elementIterator( XSD_ELEMENT );
             while ( iter2.hasNext() ) {
                 Element xsdElement = (Element) iter2.next();
-                onDatatypeElement(xsdElement);
+                onDatatypeElement(xsdElement,elementFactory);
             }
         }
     }
@@ -241,6 +223,17 @@ public class SchemaParser {
             dataType = loadXSDatatypeFromSimpleType( xsdSimpleType );
         }
         return dataType;
+    }
+
+    /** processes an named XML Schema &lt;complexTypegt; tag
+      */
+    protected void onNamedSchemaSimpleType(Element schemaSimpleType) {
+        Attribute nameAttr=schemaSimpleType.attribute("name");
+        if (nameAttr==null) return;
+        String name=nameAttr.getText();
+        QName qname=getQName(name);
+        XSDatatype datatype=loadXSDatatypeFromSimpleType(schemaSimpleType);
+        namedTypeResolver.registerSimpleType(qname,datatype);
     }
 
     /** Loads a XSDatatype object from a <simpleType> attribute schema element */
