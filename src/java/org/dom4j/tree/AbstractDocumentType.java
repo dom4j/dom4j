@@ -54,6 +54,25 @@ public abstract class AbstractDocumentType extends AbstractNode implements Docum
         return "";
     }
 
+    /** Returns the text format of the declarations if applicable, or the empty String */
+    public String getText() {
+        List list = getDeclarations();
+        if ( list != null && list.size() > 0 ) {
+            StringBuffer buffer = new StringBuffer();
+            Iterator iter = list.iterator(); 
+            if ( iter.hasNext() ) {
+                Object decl = iter.next();
+                buffer.append( decl.toString() );
+                while ( iter.hasNext() ) {
+                    decl = iter.next();
+                    buffer.append( "\n" );
+                    buffer.append( decl.toString() );
+                }
+            }
+            return buffer.toString();
+        }
+        return "";
+    }
     public String toString() {
         return super.toString() + " [DocumentType: " + asXML() + "]";
     }
