@@ -29,6 +29,13 @@ public class TestNumber extends AbstractTestCase {
     protected static boolean VERBOSE = false;
     
     protected static String[] paths = {
+        "2+2",
+        "2 + 2",
+        "10 + count(descendant::author) * 5",
+        "10 + (count(descendant::author) * 5)",
+        "2 + (2 * 5)",
+        "sum(count(//author),count(//author/attribute::*))",
+        "12 + sum(count(//author),count(//author/attribute::*)) div 2",
         "count(//author)",
         "count(//author/attribute::*)",
         "count(descendant::author)",
@@ -36,14 +43,6 @@ public class TestNumber extends AbstractTestCase {
         "count(ancestor::author)",
         "count(descendant::*)",
         "count(descendant::author)+1",
-        "2 + 2",
-/*        
-        "10 + count(descendant::author) * 5",
-        "10 + (count(descendant::author) * 5)",
-        "2 + (2 * 5)",
-        "sum(count(//author),count(//author/attribute::*))",
-        "12 + sum(count(//author),count(//author/attribute::*)) / 2",
-*/
     };
     
     

@@ -14,7 +14,7 @@ import org.dom4j.xpath.impl.Context;
 
 class OpNumberAny extends Operator {
     
-    static Object evaluate(
+    public static Object evaluate(
         Context context, Op op, Object lhsValue, Object rhsValue
     ) {
         Double lhs = convertToNumber(lhsValue);
@@ -52,6 +52,76 @@ class OpNumberAny extends Operator {
             //System.out.println( "#### I can't handle operator: " + op );
         }
         return null;
+    }
+    
+    public static Object plus( Object lhsValue, Object rhsValue ) {
+        if ( rhsValue != null ) {
+            Double rhs = convertToNumber(rhsValue);
+            if ( rhs != null ) {
+                Double lhs = convertToNumber(lhsValue);
+                if ( lhs == null ) {
+                    return rhs;
+                }
+                return new Double( lhs.doubleValue() + rhs.doubleValue() );
+            }
+        }
+        return lhsValue;
+    }
+    
+    public static Object minus( Object lhsValue, Object rhsValue ) {
+        if ( rhsValue != null ) {
+            Double rhs = convertToNumber(rhsValue);
+            if ( rhs != null ) {
+                Double lhs = convertToNumber(lhsValue);
+                if ( lhs == null ) {
+                    return rhs;
+                }
+                return new Double( lhs.doubleValue() - rhs.doubleValue() );
+            }
+        }
+        return lhsValue;
+    }
+    
+    public static Object multiply( Object lhsValue, Object rhsValue ) {
+        if ( rhsValue != null ) {
+            Double rhs = convertToNumber(rhsValue);
+            if ( rhs != null ) {
+                Double lhs = convertToNumber(lhsValue);
+                if ( lhs == null ) {
+                    return rhs;
+                }
+                return new Double( lhs.doubleValue() * rhs.doubleValue() );
+            }
+        }
+        return lhsValue;
+    }
+    
+    public static Object div( Object lhsValue, Object rhsValue ) {
+        if ( rhsValue != null ) {
+            Double rhs = convertToNumber(rhsValue);
+            if ( rhs != null ) {
+                Double lhs = convertToNumber(lhsValue);
+                if ( lhs == null ) {
+                    return rhs;
+                }
+                return new Double( lhs.doubleValue() / rhs.doubleValue() );
+            }
+        }
+        return lhsValue;
+    }
+    
+    public static Object mod( Object lhsValue, Object rhsValue ) {
+        if ( rhsValue != null ) {
+            Double rhs = convertToNumber(rhsValue);
+            if ( rhs != null ) {
+                Double lhs = convertToNumber(lhsValue);
+                if ( lhs == null ) {
+                    return rhs;
+                }
+                return new Double( lhs.doubleValue() % rhs.doubleValue() );
+            }
+        }
+        return lhsValue;
     }
 }
 
@@ -92,7 +162,7 @@ class OpNumberAny extends Operator {
  * METASTUFF, LTD. OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
  * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * SERVICES; LOSS OF USE, DATA OR PROFITS; OR BUSINESS INTERRUPTION)
  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED

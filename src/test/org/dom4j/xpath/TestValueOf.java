@@ -64,7 +64,7 @@ public class TestValueOf extends AbstractTestCase {
         "../child::node()",
         "/",
         "/*",
-//        "*",
+        "*",
         "/child::node()",
     };
     

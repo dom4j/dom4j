@@ -41,6 +41,16 @@ public class UnionExpr extends Expr implements org.jaxpath.expr.UnionExpr {
         return _rhs;
     }
 
+    public org.jaxpath.expr.Expr simplify() {
+        if ( _lhs != null ) {
+            _lhs = (Expr) _lhs.simplify();
+        }
+        if ( _rhs != null ) {
+            _rhs = (Expr) _rhs.simplify();
+        }
+        return this;
+    }
+    
     public Object evaluate(Context context) {        
         Object lhsValue = null;
         Object rhsValue = null;

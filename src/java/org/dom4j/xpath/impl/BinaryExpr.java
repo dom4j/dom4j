@@ -39,6 +39,16 @@ public class BinaryExpr extends Expr implements org.jaxpath.expr.BinaryExpr {
         _rhs = rhs;
     }
     
+    public org.jaxpath.expr.Expr simplify() {
+        if ( _lhs != null ) {
+            _lhs = (Expr) _lhs.simplify();
+        }
+        if ( _rhs != null ) {
+            _rhs = (Expr) _rhs.simplify();
+        }
+        return this;
+    }
+    
     public org.jaxpath.expr.Expr getLHS() {
         return _lhs;
     }
@@ -50,8 +60,6 @@ public class BinaryExpr extends Expr implements org.jaxpath.expr.BinaryExpr {
     public Object evaluate(Context context) {
         
         //System.err.println( "Evaluating: " + _op + " " + _lhs + " " + _rhs );
-        
-        Context duplicateContext = context.duplicate();
         
         Object result = null;
         
@@ -70,6 +78,7 @@ public class BinaryExpr extends Expr implements org.jaxpath.expr.BinaryExpr {
                 return Boolean.TRUE;
             }
             
+            Context duplicateContext = context.duplicate();        
             rhsValue = _rhs.evaluate( duplicateContext );
             
             if (BooleanFunction.evaluate(rhsValue).booleanValue()) {
@@ -83,6 +92,7 @@ public class BinaryExpr extends Expr implements org.jaxpath.expr.BinaryExpr {
                 return Boolean.FALSE;
             }
             
+            Context duplicateContext = context.duplicate();        
             rhsValue = _rhs.evaluate( duplicateContext );
             
             if ( ! BooleanFunction.evaluate(rhsValue).booleanValue()) {
@@ -91,7 +101,10 @@ public class BinaryExpr extends Expr implements org.jaxpath.expr.BinaryExpr {
             return Boolean.TRUE;
         }
         else {
+            Context duplicateContext = context.duplicate();        
             rhsValue = _rhs.evaluate( duplicateContext );
+            
+            //System.out.println( "Evaluating lhs: " + lhsValue + " rhs: " + rhsValue + " operation: " + _op );
             
             result = Operator.evaluate(
                 duplicateContext, _op, lhsValue, rhsValue

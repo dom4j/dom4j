@@ -23,13 +23,26 @@ class Operator {
     static Object evaluate(
         Context context, Op op, Object lhsValue, Object rhsValue
     ) {
-        Object result = null;
-        
         if ( op == Op.OR ) {
-            
+            return null;
         }
         else if ( op == Op.AND ) {
-            
+            return null;
+        }
+        else if ( op == Op.PLUS ) {
+            return OpNumberAny.plus( lhsValue, rhsValue );
+        }
+        else if ( op == Op.MINUS ) {
+            return OpNumberAny.minus( lhsValue, rhsValue );
+        }
+        else if ( op == Op.DIV ) {
+            return OpNumberAny.div( lhsValue, rhsValue );
+        }
+        else if ( op == Op.MULTIPLY ) {
+            return OpNumberAny.multiply( lhsValue, rhsValue );
+        }
+        else if ( op == Op.MOD ) {
+            return OpNumberAny.mod( lhsValue, rhsValue );
         }
         else {
             // This cascading-if implments section 3.4 ("Booleans") of
@@ -37,28 +50,28 @@ class Operator {
             // short-circuit evaluation (meaning everything except AND and OR);
             
             if (Operator.bothAreNodeSets(lhsValue, rhsValue)) {
-                // result = opNodeSetNodeSet();
-                result = OpNodeSetNodeSet.evaluate(
+                // return opNodeSetNodeSet();
+                return OpNodeSetNodeSet.evaluate(
                     context, op, lhsValue, rhsValue
                 );
             }
             else if (Operator.eitherIsNodeSet(lhsValue, rhsValue)) {
-                result = OpNodeSetAny.evaluate(
+                return OpNodeSetAny.evaluate(
                     context, op, lhsValue, rhsValue
                 );
             }
             else if (Operator.eitherIsBoolean(lhsValue, rhsValue)) {
-                result = OpBooleanAny.evaluate(
+                return OpBooleanAny.evaluate(
                     context, op, lhsValue, rhsValue
                 );
             }
             else if (Operator.eitherIsNumber(lhsValue, rhsValue)) {
-                result = OpNumberAny.evaluate(
+                return OpNumberAny.evaluate(
                     context, op, lhsValue, rhsValue
                 );
             }
             else if (Operator.eitherIsString(lhsValue, rhsValue)) {
-                result = OpStringAny.evaluate(
+                return OpStringAny.evaluate(
                     context, op, lhsValue, rhsValue
                 );
             }
@@ -72,7 +85,7 @@ class Operator {
             }
         }        
         //return Collections.EMPTY_LIST;
-        return result;
+        return null;
     }
     
     protected static boolean eitherIsNodeSet(Object lhs, Object rhs) {
@@ -110,7 +123,20 @@ class Operator {
             return (Double) obj;
         }
         else {
-            return Double.valueOf( convertToString(obj) );
+            String s = convertToString(obj);
+            return Double.valueOf( s );
+/*            
+            if ( s != null && s.length() > 0 ) {
+                //System.out.println( "Converting: " + s + " to number" );
+                return Double.valueOf( s );
+            }
+            else {
+                System.out.println( "#### converting blank string to number!" );
+                RuntimeException e = new RuntimeException();
+                e.printStackTrace();
+            }
+            return null;
+*/            
         }
     }
     
