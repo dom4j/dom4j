@@ -78,11 +78,21 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
     }
 
     public Object clone() {
-        if ( ! isReadOnly() ) {
-            throw new RuntimeException( "clone() not implemented yet for "
-                + "this type which is not read-only" );
+        if ( isReadOnly() ) {
+            return this;
         }
-        return this;
+        else {
+            try {
+                Node answer = (Node) super.clone();
+                answer.setParent( null );
+                answer.setDocument( null );
+                return answer;
+            }
+            catch (CloneNotSupportedException e) {
+                // should never happen
+                throw new RuntimeException( "This should never happen. Caught: " + e );
+            }
+        }
     }
 
     public void detach() {

@@ -53,6 +53,10 @@ public class XPathText extends DefaultText {
         return true;
     }
 
+    public boolean isReadOnly() {
+        return false;
+    }
+
 }
 
 
