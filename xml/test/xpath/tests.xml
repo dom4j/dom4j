@@ -50,8 +50,8 @@
 
   <document url="xml/web.xml">
     <context select="/">
-      <test select="/descendant-or-self::*" count="20"/>
-      <test select="descendant-or-self::*" count="20"/>
+      <test select="/descendant-or-self::*" count="19"/>
+      <test select="descendant-or-self::*" count="19"/>
       <test select="/descendant-or-self::servlet" count="2"/>
       <test select="descendant-or-self::servlet" count="2"/>
       <test select="/descendant::servlet" count="2"/>
@@ -332,9 +332,9 @@
     <context select="/PLAY/ACT/SCENE[1]">
       <test select="/descendant::ACT" count="5"/>
       <test select="../../descendant::ACT" count="5"/>
-      <valueOf select="count(ancestor::*)">3</valueOf>
+      <valueOf select="count(ancestor::*)">2</valueOf>
       <valueOf select="count(ancestor::PLAY)">1</valueOf>
-      <valueOf select="5+count(ancestor::*)-1">7</valueOf>
+      <valueOf select="5+count(ancestor::*)-1">6</valueOf>
     </context>
   </document>
 
