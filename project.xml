@@ -288,7 +288,6 @@
      <report>maven-junit-report-plugin</report>
      <report>maven-jxr-plugin</report>
      <report>maven-license-plugin</report>
-     <report>maven-linkcheck-plugin</report>
   </reports>
 
 </project>
