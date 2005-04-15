@@ -59,7 +59,8 @@
       <action dev="ddlucas" type="add">
         Added a <code>SingletonStrategy</code> class for managing singletons. This 
         allows to use different strategies for singletons, like: one instance per 
-        VM, one instance per thread, ...
+        VM, one instance per thread, ... This change removed the usage of 
+        <code>ThreadLocal</code>s.
       </action>
     </release>
 
