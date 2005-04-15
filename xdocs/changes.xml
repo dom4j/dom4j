@@ -7,7 +7,7 @@
 
   <body>
 
-    <release version="1.6-dev" date="in CVS">
+    <release version="1.6" date="2005-04-15">
       <action dev="maartenc" type="add" due-to="Filip Jirsak">
         Added a methods to <code>SAXReader</code> allowing to specify the encoding
         used when reading XML sources.

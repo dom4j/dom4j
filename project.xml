@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <name>dom4j</name>
   <id>dom4j</id>
-  <currentVersion>1.6-SNAPSHOT</currentVersion>
+  <currentVersion>1.6</currentVersion>
   
   <organization>
     <name>MetaStuff Ltd.</name>
