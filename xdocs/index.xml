@@ -18,6 +18,9 @@
 
     <section name="News">
       <ul>
+        <li>dom4j 1.6 has been released! Take a look at the <a href="changes-report.html">changelog</a> to see what has changed.</li>
+        <li><a href="http://www.jetbrains.com/">JetBrains</a> was so kind to provide an open-source license of its famous 
+            <a href="http://www.jetbrains.com/idea/index.html">IntelliJ IDEA</a> product.</li>
         <li>The internal Aelfred2 parser has been removed from the dom4j codebase due to an incompatible license. You can download a version
             of dom4j without Aelfred2 from the downloads page.</li>
         <li>A maintenance relase of dom4j is available. Click <a href="changes-report.html">here</a> to see what has changed in dom4j 1.5.1.</li>
