@@ -119,6 +119,16 @@ public class XPathExamplesTest extends AbstractTestCase {
 
         String description = "Path: " + xpath;
 
+        String exception = test.attributeValue("exception");
+        if ((exception != null) && exception.equals("true")) {
+            try {
+                testContext.selectNodes(xpath);
+                fail("Exception was not thrown");
+            } catch (XPathException e) {
+                return;
+            }
+        }
+        
         String count = test.attributeValue("count");
 
         if (count != null) {

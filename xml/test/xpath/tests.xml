@@ -360,7 +360,7 @@
   <document url="xml/test/defaultNamespace.xml">
     <context select="/">
       <test select="/a/b/c" count="0"/>
-      <test select="/x:a/x:b/x:c" count="0"/>
+      <test select="/x:a/x:b/x:c" count="0" exception="true"/>
     </context>
   </document>
 
