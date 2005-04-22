@@ -67,7 +67,7 @@ public class DocumentFactory implements Serializable {
             String singletonClass = System.getProperty(
                     "org.dom4j.DocumentFactory.singleton.strategy",
                     "org.dom4j.util.SimpleSingleton");
-            Class clazz = DocumentFactory.class.forName(singletonClass);
+            Class clazz = Class.forName(singletonClass);
             result = (SingletonStrategy) clazz.newInstance();
         } catch (Exception e) {
             result = new SimpleSingleton();

@@ -36,11 +36,11 @@ public class QName implements Serializable {
                 String singletonClass = defaultSingletonClass;
                 singletonClass = System.getProperty(
                         "org.dom4j.QName.singleton.strategy", singletonClass);
-                clazz = QName.class.forName(singletonClass);
+                clazz = Class.forName(singletonClass);
             } catch (Exception exc1) {
                 try {
                     String singletonClass = defaultSingletonClass;
-                    clazz = QName.class.forName(singletonClass);
+                    clazz = Class.forName(singletonClass);
                 } catch (Exception exc2) {
                 }
             }

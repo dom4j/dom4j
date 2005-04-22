@@ -42,7 +42,7 @@ public class PerThreadSingleton implements SingletonStrategy {
         if (ref == null || ref.get() == null) {
             Class clazz = null;
             try {
-                clazz = Thread.currentThread().getClass().forName(
+                clazz = Thread.currentThread().getContextClassLoader().loadClass(
                         singletonClassName);
                 singletonInstancePerThread = clazz.newInstance();
             } catch (Exception ignore) {
