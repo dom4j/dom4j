@@ -358,10 +358,9 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
             return new Dom4jXPath(text);
         } catch (JaxenException e) {
             throw new InvalidXPathException(text, e.getMessage());
-        } catch (RuntimeException e) {
+        } catch (Throwable t) {
+        	throw new InvalidXPathException(text, t);
         }
-
-        throw new InvalidXPathException(text);
     }
 
     protected void setNSContext(Object context) {

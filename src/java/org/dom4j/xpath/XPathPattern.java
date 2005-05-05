@@ -55,8 +55,8 @@ public class XPathPattern implements org.dom4j.rule.Pattern {
             this.pattern = PatternParser.parse(text);
         } catch (SAXPathException e) {
             throw new InvalidXPathException(text, e.getMessage());
-        } catch (RuntimeException e) {
-            throw new InvalidXPathException(text);
+        } catch (Throwable t) {
+            throw new InvalidXPathException(text, t);
         }
     }
 
