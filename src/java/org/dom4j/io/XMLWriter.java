@@ -1289,6 +1289,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
             lastOutputNodeType = Node.TEXT_NODE;
             writer.write(text);
+            lastChar = text.charAt(text.length() - 1);
         }
     }
 
