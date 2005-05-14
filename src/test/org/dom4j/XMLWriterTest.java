@@ -39,41 +39,62 @@ public class XMLWriterTest extends AbstractTestCase {
 
     // Test case(s)
     // -------------------------------------------------------------------------
+    public void testBug1180791() throws Exception {
+        String xml = "<?xml version=\"1.0\"?><root><foo>bar</foo></root>";
+
+        SAXReader reader = new SAXReader();
+        Document doc = reader.read(new StringReader(xml));
+        // of with newlines
+        OutputFormat format = new OutputFormat();
+        format.setNewlines(true);
+        //format.setTrimText(true);
+        // first time
+        StringWriter writer = new StringWriter();
+        XMLWriter xmlwriter = new XMLWriter(writer, format);
+        xmlwriter.write(doc);
+        System.out.println(writer.toString());
+
+        // 2nd time
+        doc = reader.read(new StringReader(writer.toString()));
+        writer = new StringWriter();
+        xmlwriter = new XMLWriter(writer, format);
+        xmlwriter.write(doc);
+        System.out.println(writer.toString());
+    }
+
     public void testBug1119733() throws Exception {
         Document doc = DocumentHelper
                 .parseText("<root><code>foo</code> bar</root>");
-        
+
         StringWriter out = new StringWriter();
         XMLWriter writer = new XMLWriter(out, OutputFormat.createPrettyPrint());
         writer.write(doc);
         writer.close();
-        
+
         String xml = out.toString();
 
         System.out.println(xml);
         assertEquals("whitespace problem", -1, xml.indexOf("</code>bar"));
     }
-    
+
     public void testBug1119733WithSAXEvents() throws Exception {
         StringWriter out = new StringWriter();
         XMLWriter writer = new XMLWriter(out, OutputFormat.createPrettyPrint());
         writer.startDocument();
         writer.startElement(null, "root", "root", new AttributesImpl());
         writer.startElement(null, "code", "code", new AttributesImpl());
-        writer.characters(new char[] {'f', 'o', 'o'}, 0, 3);
+        writer.characters(new char[] { 'f', 'o', 'o' }, 0, 3);
         writer.endElement(null, "code", "code");
-        writer.characters(new char[] {' ', 'b', 'a', 'r'}, 0, 4);
+        writer.characters(new char[] { ' ', 'b', 'a', 'r' }, 0, 4);
         writer.endElement(null, "root", "root");
         writer.endDocument();
         writer.close();
-        
+
         String xml = out.toString();
 
         System.out.println(xml);
         assertEquals("whitespace problem", -1, xml.indexOf("</code>bar"));
     }
-    
-    
 
     public void testWriter() throws Exception {
         Object object = document;
@@ -187,8 +208,7 @@ public class XMLWriterTest extends AbstractTestCase {
     /**
      * This test harness was supplied by Lari Hotari
      * 
-     * @throws Exception
-     *             DOCUMENT ME!
+     * @throws Exception DOCUMENT ME!
      */
     public void testContentHandler() throws Exception {
         StringWriter out = new StringWriter();
@@ -215,8 +235,7 @@ public class XMLWriterTest extends AbstractTestCase {
     /**
      * This test was provided by Manfred Lotz
      * 
-     * @throws Exception
-     *             DOCUMENT ME!
+     * @throws Exception DOCUMENT ME!
      */
     public void testWhitespaceBug() throws Exception {
         String notes = "<notes> This is a      multiline\n\rentry</notes>";
@@ -250,8 +269,7 @@ public class XMLWriterTest extends AbstractTestCase {
     /**
      * This test was provided by Manfred Lotz
      * 
-     * @throws Exception
-     *             DOCUMENT ME!
+     * @throws Exception DOCUMENT ME!
      */
     public void testWhitespaceBug2() throws Exception {
         Document doc = DocumentHelper.createDocument();
