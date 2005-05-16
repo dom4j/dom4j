@@ -6,3 +6,4 @@ junit*.properties
 *.log
 .classpath
 .project
+bin
