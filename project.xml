@@ -188,7 +188,7 @@
     <dependency>
       <groupId>jaxen</groupId>
       <artifactId>jaxen</artifactId>
-      <version>20050419.192021</version>
+      <version>1.1-beta-6</version>
       <url>http://jaxen.codehaus.org/</url>
     </dependency>
 
