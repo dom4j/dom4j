@@ -21,7 +21,7 @@
       <item name="Changes"                href="/changes-report.html"/>  -->
       <item name="Download"               href="/download.html"/>
       <item name="License"                href="/license.html"/>
-      <item name="Javadoc (1.6)"          href="/apidocs/index.html" class="newWindow" title="New Window" target="_blank"/>
+      <item name="Javadoc (1.6.1)"        href="/apidocs/index.html" class="newWindow" title="New Window" target="_blank"/>
       <item name="Javadoc (1.5.2)"        href="http://www.dom4j.org/dom4j-1.5.2/apidocs/index.html" class="newWindow" title="New Window" target="_blank"/>
       <item name="Javadoc (1.4)"          href="http://www.dom4j.org/dom4j-1.4/apidocs/index.html" class="newWindow" title="New Window" target="_blank"/>
     </menu>

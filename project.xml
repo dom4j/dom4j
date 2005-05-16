@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <name>dom4j</name>
   <id>dom4j</id>
-  <currentVersion>1.7-SNAPSHOT</currentVersion>
+  <currentVersion>1.6.1</currentVersion>
   
   <organization>
     <name>MetaStuff Ltd.</name>
@@ -57,12 +57,17 @@
   <siteAddress>dom4j.org</siteAddress>
   <siteDirectory>/home/groups/d/do/dom4j/htdocs</siteDirectory>
 
-
   <repository>
     <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/dom4j:dom4j</connection>
     <developerConnection>scm:cvs:ext:${maven.username}@cvs.sourceforge.net:/cvsroot/dom4j:dom4j</developerConnection>
     <url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/dom4j/dom4j/</url>
   </repository>
+
+  <branches>
+    <branch>
+      <tag>DOM4J_1_X_BRANCH</tag>
+    </branch>
+  </branches>
    
   <mailingLists>
   

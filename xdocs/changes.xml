@@ -7,6 +7,20 @@
 
   <body>
 
+    <release version="1.6.1" date="2005-05-16">
+      <action dev="maartenc" type="update" due-to="Wolfgang Baer">
+        Updated the XPP2 implementation to version 2.1.10.
+      </action>
+      <action dev="maartenc" type="fix" due-to="Thomas Fromm">
+        Fixed a problem with <code>XMLWriter</code> that was causing too many
+        new lines to be written to the resulting XML.
+      </action>
+      <action dev="maartenc" type="update" due-to="Gili Tzabari">
+        Include more information about the cause if an <code>XPathException</code>
+        or <code>InvalidXPathException</code> is thrown.
+      </action>
+    </release>
+
     <release version="1.6" date="2005-04-15">
       <action dev="maartenc" type="add" due-to="Filip Jirsak">
         Added a methods to <code>SAXReader</code> allowing to specify the encoding
