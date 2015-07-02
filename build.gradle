@@ -1,0 +1,36 @@
+apply plugin: 'java'
+
+version = '2.0.0'
+
+sourceCompatibility = 1.5
+
+compileJava {
+	options.encoding = 'UTF-8'
+};
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile(
+					'jaxen:jaxen:1.1.6',
+
+					'net.java.dev.msv:xsdlib:2013.6.1',
+					'org.ogce:xpp5:1.2.8',
+					'pull-parser:pull-parser:2',
+	)
+
+	testCompile(
+					'org.testng:testng:6.8.21',
+
+					'junitperf:junitperf:1.8',
+
+					'xerces:xercesImpl:2.11.0',
+					'xalan:xalan:2.7.2',
+	)
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '2.4'
+}
