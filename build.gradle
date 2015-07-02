@@ -1,6 +1,8 @@
 apply plugin: 'java'
+apply plugin: 'maven'
 
-version = '2.0.0'
+group = 'org.dom4j'
+version = '2.0.0-RC1'
 
 sourceCompatibility = 1.5
 
