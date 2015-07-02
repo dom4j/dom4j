@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<product>
+    <equity>
+        <IDENTIFIER>EQUITY_</IDENTIFIER>
+    </equity>
+    <cashflows>
+        <CashFlow>
+            <XREF>CF1</XREF>
+            <VAL>11.11</VAL>
+        </CashFlow>
+        <CashFlow>
+            <XREF>CF2</XREF>
+            <VAL>22.22</VAL>
+        </CashFlow>
+        <CashFlow>
+            <XREF>CF3</XREF>
+            <VAL>33.33</VAL>
+        </CashFlow>
+    </cashflows>
+</product>

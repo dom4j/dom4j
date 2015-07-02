@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<import>
+
+  <stuff name="first">
+	first text
+  </stuff>
+
+  <stuff name="second">
+	second text
+  </stuff>
+
+  <stuff name="third">
+	third text
+  </stuff>
+
+</import>

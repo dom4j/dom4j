@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests>
+
+  <!-- test the use of text() -->
+  <document url="xml/test/test_text.xml">
+    <context select="/">
+      <valueOf select="normalize-space(/message)">This should work</valueOf>
+    </context>
+  </document>
+
+  <!-- test cases for the use of = with nodesets -->
+  <document url="xml/web.xml">
+    <context select="/">
+      <pattern match="/web-app/servlet/servlet-name = 'file'"/>
+      <pattern match="/web-app/servlet/servlet-name = 'snoop'"/>
+    </context>
+  </document>
+
+  <!-- test the use of 'or' -->
+  <document url="xml/test/sample.xml">
+    <context select="/">
+      <test select="/products/product[@id='2' or colour='green']" count="2"/>
+    </context>
+  </document>
+
+  <document url="xml/test/DavidHooker.xml">
+    <context select="/"> 
+      <test select="/*/oi:thing-info/@triggering-document-expression" count="1"/>
+      <test select="/atomic:thing/oi:thing-info/@triggering-document-expression" count="1"/>
+      <test select="//@triggering-document-expression" count="1"/>
+    </context>
+  </document>
+
+  <!-- test Axes -->
+  <document url="xml/xhtml.xml">
+    <context select="/">
+      <valueOf select="/html/body/link">http://foo.com/bar?a=123&amp;b=456&amp;d=d9d9d</valueOf>
+    </context>
+  </document>
+
+  <document url="xml/web.xml">
+    <context select="/">
+      <test select="/descendant-or-self::*" count="19"/>
+      <test select="descendant-or-self::*" count="19"/>
+      <test select="/descendant-or-self::servlet" count="2"/>
+      <test select="descendant-or-self::servlet" count="2"/>
+      <test select="/descendant::servlet" count="2"/>
+      <test select="descendant::*" count="19"/>
+      <test select="/descendant::*" count="19"/>
+      <test select="descendant::servlet" count="2"/>
+      <test select="/*/servlet" count="2"/>
+      <valueOf select="count(/*/servlet)">2</valueOf>
+      <test select="//servlet" count="2"/>
+      <valueOf select="count(//servlet)">2</valueOf>
+    </context>
+    <context select="/web-app">
+      <test select="/descendant-or-self::servlet" count="2"/>
+      <test select="descendant-or-self::servlet" count="2"/>
+      <test select="/descendant::servlet" count="2"/>
+      <test select="descendant::servlet" count="2"/>
+    </context>
+    <context select="/web-app/servlet[2]/servlet-name">
+      <test select="preceding::*" count="3"/>
+    </context>
+
+    <context select="/web-app/servlet[2]/servlet-name">
+      <test select="following::*" count="13"/>
+    </context>
+  </document>
+
+  <document url="xml/axis.xml">
+
+    <context select="/root">
+      <test select="preceding-sibling::*" count="0"/>
+    </context>
+
+    <context select="/root/a/a.3">
+      <test select="preceding::*" count="2"/>
+    </context>
+
+    <context select="/root/a/a.3">
+      <test select="preceding-sibling::*" count="2"/>
+    </context>
+
+    <context select="/">
+      <valueOf select="name(/root/a/a.3/preceding-sibling::*[1])">a.2</valueOf>
+      <valueOf select="name(/root/a/a.3/preceding-sibling::*[2])">a.1</valueOf>
+    </context>
+
+    <context select="/">
+      <valueOf select="name(/root/a/a.3/following-sibling::*[1])">a.4</valueOf>
+      <valueOf select="name(/root/a/a.3/following-sibling::*[2])">a.5</valueOf>
+    </context>
+
+  </document>
+
+  <!-- test predicates -->
+
+  <document url="xml/web.xml">
+    <context select="/">
+      <test select="/web-app/servlet/servlet-name[.='file']" count="1"/>
+      <test select="/web-app/servlet/servlet-name[text()='file']" count="1"/>
+    </context>
+  </document>
+
+  <!-- test `s -->
+  <!-- patterns are used in XSLT <xsl:template match="pattern"/> tags -->
+  <document url="xml/web.xml">
+    <context select="/">
+      <pattern match="/"/>
+      <test select="web-app/servlet" count="2"/>
+    </context>
+    <context select="//servlet[1]">
+      <pattern match="*"/>
+      <pattern match="servlet"/>
+      <pattern match="servlet[servlet-name='snoop']"/>
+      <pattern match="web-app/servlet"/>
+      <pattern match="*/servlet"/>
+      <pattern match="/*/servlet"/>
+    </context>
+  </document>
+
+  <document url="xml/test/sample.xml">
+    <context select="/products/product[@id='2']">
+      <pattern match=".[@id='2']"/>
+      <pattern match=".[colour='blue']"/>
+      <pattern match="@id='2'"/>
+      <pattern match="colour='blue'"/>
+      <pattern match="name()='product'"/>
+      <pattern match="not(id='3')"/>
+    </context>
+  </document>
+
+  <!-- test filters -->
+  <document url="xml/web.xml">
+    <context select="/">
+      <filter match="/"/>
+    </context>
+    <context select="//servlet[1]">
+      <filter match="."/>
+      <filter match="name()='servlet'"/>
+    </context>
+  </document>
+
+  <document url="xml/test/sample.xml">
+    <context select="/products/product[@id='2']">
+      <filter match=".[@id='2']"/>
+      <filter match=".[colour='blue']"/>
+      <filter match="@id='2'"/>
+      <filter match="colour='blue'"/>
+      <filter match="name()='product'"/>
+      <filter match="not(id='3')"/>
+    </context>
+  </document>
+
+
+  <!-- test name -->
+
+  <document url="xml/web.xml">
+    <context select="/">
+ 
+      <test select="*" count="1">
+        <valueOf select="name()">web-app</valueOf>
+      </test>
+
+      <!-- NOTE that the child::node() tests only work if the
+           XML document does not comments or PIs
+      -->
+ 
+      <test select="./*" count="1">
+        <valueOf select="name()">web-app</valueOf>
+      </test>
+      <test select="child::*" count="1">
+        <valueOf select="name()">web-app</valueOf>
+      </test>
+      <test select="/*" count="1">
+        <valueOf select="name()">web-app</valueOf>
+      </test>
+      <test select="/child::node()" count="1">
+        <valueOf select="name(.)">web-app</valueOf>
+      </test>
+      <test select="child::node()" count="1">
+        <valueOf select="name(.)">web-app</valueOf>
+      </test>
+
+      <!-- empty names -->
+
+      <valueOf select="name()"></valueOf>
+      <valueOf select="name(.)"></valueOf>
+      <valueOf select="name(parent::*)"></valueOf>
+      <valueOf select="name(/)"></valueOf>
+      <valueOf select="name(/.)"></valueOf>
+      <valueOf select="name(/self::node())"></valueOf>
+
+      <!-- name of root elemet -->
+      <valueOf select="name(node())">web-app</valueOf>
+      <valueOf select="name(/node())">web-app</valueOf>
+      <valueOf select="name(/*)">web-app</valueOf>
+      <valueOf select="name(/child::*)">web-app</valueOf>
+      <valueOf select="name(/child::node())">web-app</valueOf>
+      <valueOf select="name(/child::node())">web-app</valueOf>
+      <valueOf select="name(child::node())">web-app</valueOf>
+      <valueOf select="name(./*)">web-app</valueOf>
+      <valueOf select="name(*)">web-app</valueOf>
+
+    </context>
+
+    <context select="/*">
+      <!-- empty names -->
+      <valueOf select="name(..)"></valueOf>
+      <valueOf select="name(parent::node())"></valueOf>
+      <valueOf select="name(parent::*)"></valueOf>
+
+      <!-- name of root elemet -->
+      <valueOf select="name()">web-app</valueOf>
+      <valueOf select="name(.)">web-app</valueOf>
+      <valueOf select="name(../*)">web-app</valueOf>
+      <valueOf select="name(../child::node())">web-app</valueOf>
+    </context>
+  </document>
+
+
+
+  <!-- test predicates -->
+
+  <document url="xml/nitf/sample.xml">
+    <context select="/nitf/head/docdata">
+      <test select="doc-id[@regsrc='AP' and @id-string='D76UIMO80']" count="1"/>
+    </context>
+    <context select="/nitf/head">
+      <test select="meta[@name='ap-cycle']" count="1"/>
+      <test select="meta[@content='AP']" count="1"/>
+      <test select="meta[@name and @content]" count="8"/>
+      <test select="meta[@name='ap-cycle' and @content='AP']" count="1"/>
+      <test select="meta[@name != 'ap-cycle']" count="7"/>
+    </context>
+    <context select="/">
+      <test select="/nitf/head/meta[@name='ap-cycle']" count="1"/>
+      <test select="/nitf/head/meta[@content='AP']" count="1"/>
+      <test select="/nitf/head/meta[@name and @content]" count="8"/>
+      <test select="/nitf/head/meta[@name='ap-cycle' and @content='AP']" count="1"/>
+      <test select="/nitf/head/meta[@name != 'ap-cycle']" count="7"/>
+    </context>
+  </document>
+  
+  <document url="xml/moreover/sample.xml">
+    <context select="/">
+      <test select="/child::node()" count="1"/>
+      <test select="/*" count="1"/>
+
+      <test select="/*/article" count="20"/>
+      <test select="//*" count="221"/>
+      <test select="//*[local-name()='article']" count="20"/>
+      <test select="//article" count="20"/>
+      <test select="/*/*[@id]" count="20"/>
+
+      <test select="/moreovernews/article[@id='_13563275']" count="1"/>
+
+      <test select="/moreovernews/article[@id='_13563275']">
+        <valueOf select="url">http://c.moreover.com/click/here.pl?x13563273</valueOf>
+      </test>
+      <test select="/*/article[@id='_13563275']">
+        <valueOf select="url">http://c.moreover.com/click/here.pl?x13563273</valueOf>
+      </test>
+      <test select="//article[@id='_13563275']">
+        <valueOf select="url">http://c.moreover.com/click/here.pl?x13563273</valueOf>
+      </test>
+      <test select="//*[@id='_13563275']">
+        <valueOf select="url">http://c.moreover.com/click/here.pl?x13563273</valueOf>
+      </test>
+      <test select="/child::node()/child::node()[@id='_13563275']">
+        <valueOf select="url">http://c.moreover.com/click/here.pl?x13563273</valueOf>
+      </test>
+      <test select="/*/*[@id='_13563275']">
+        <valueOf select="url">http://c.moreover.com/click/here.pl?x13563273</valueOf>
+      </test>
+    </context>
+  </document>
+
+
+
+  <!-- test other node types-->
+
+  <document url="xml/contents.xml">
+    <context select="/">
+      <test select="processing-instruction()" count="3"/>
+      <test select="/processing-instruction()" count="3"/>
+      <test select="/comment()" count="1"/>
+      <test select="comment()" count="1"/>
+      <test select="/child::node()/comment()" count="2"/>
+      <test select="/*/comment()" count="2"/>
+      <test select="//comment()" count="3"/>
+    </context>
+  </document>
+
+
+
+  <!-- test positioning -->
+
+  <document url="xml/fibo.xml">
+    <context select="/">
+      <test select="/*/fibonacci[position() &lt; 10]" count="9"/>
+      <valueOf select="sum(//fibonacci)">196417</valueOf>
+      <valueOf select="sum(//fibonacci/@index)">325</valueOf>
+    </context>
+  </document>
+
+
+  <!-- test mumber functions -->
+
+  <document url="xml/much_ado.xml">
+    <context select="/">
+      <test select="/descendant::ACT" count="5"/>
+      <test select="descendant::ACT" count="5"/>
+      <valueOf select="/PLAY/TITLE">Much Ado about Nothing</valueOf>
+      <valueOf select="2+2">4</valueOf>
+      <valueOf select="5 * 4 + 1">21</valueOf>
+      <valueOf select="count(descendant::ACT)">5</valueOf>
+      <valueOf select="10 + count(descendant::ACT) * 5">35</valueOf>
+      <valueOf select="(10 + count(descendant::ACT)) * 5">75</valueOf>
+    </context>
+    <context select="/PLAY/ACT/SCENE[1]">
+      <test select="/descendant::ACT" count="5"/>
+      <test select="../../descendant::ACT" count="5"/>
+      <valueOf select="count(ancestor::*)">2</valueOf>
+      <valueOf select="count(ancestor::PLAY)">1</valueOf>
+      <valueOf select="5+count(ancestor::*)-1">6</valueOf>
+    </context>
+  </document>
+
+
+  <!-- test namespace -->
+
+  <document url="xml/test/namespaces.xml">
+    <context select="/">
+      <test select="/*" count="1"/>
+      <test select="/foo:a" count="1"/>
+      <test select="/foo:a/b" count="1"/>
+      <test select="/foo:a/bar:f" count="1"/>
+      <test select="/*[namespace-uri()='fooNamespace' and local-name()='a']" count="1"/>
+      <test select="/*[local-name()='a' and namespace-uri()='fooNamespace']/*[local-name()='x' and namespace-uri()='fooNamespace']" count="1"/>
+      <test select="/*[local-name()='a' and namespace-uri()='fooNamespace']/*[local-name()='x' and namespace-uri()='fooNamespace']/*[local-name()='y' and namespace-uri()='fooNamespace']" count="1"/>
+    </context>
+    <context select="/">
+      <valueOf select="/foo:a/b/c">Hello</valueOf>
+      <valueOf select="/foo:a/foo:d/foo:e">Hey</valueOf>
+      <valueOf select="/foo:a/alias:x/alias:y">Hey3</valueOf>
+      <valueOf select="/foo:a/foo:x/foo:y">Hey3</valueOf>
+      <valueOf select="/*[local-name()='a' and namespace-uri()='fooNamespace']/*[local-name()='x' and namespace-uri()='fooNamespace']/*[local-name()='y' and namespace-uri()='fooNamespace']">Hey3</valueOf>
+    </context>
+    <context select="/foo:a/b">
+      <valueOf select="/foo:a/b/c">Hello</valueOf>
+      <valueOf select="/foo:a/foo:d/foo:e">Hey</valueOf>
+      <valueOf select="/foo:a/alias:x/alias:y">Hey3</valueOf>
+      <valueOf select="/foo:a/foo:x/foo:y">Hey3</valueOf>
+    </context>
+  </document>
+
+
+  <document url="xml/test/defaultNamespace.xml">
+    <context select="/">
+      <test select="/a/b/c" count="0"/>
+      <test select="/x:a/x:b/x:c" count="0" exception="true"/>
+    </context>
+  </document>
+
+  <document url="xml/testNamespaces.xml">
+    <context select="/">
+      <test select="namespace::*" count="0" debug="off"/>
+      <test select="/namespace::*" count="0" debug="off"/>
+      <test select="/Template/Application1/namespace::*" count="3" debug="off"/>
+      <test select="/Template/Application2/namespace::*" count="3" debug="off"/>
+      <test select="/Template/Application2/namespace::*" count="3" debug="off"/>
+      <test select="//namespace::*" count="25" debug="off"/>
+    </context>
+    <context select="/Template/Application1">
+      <test select="namespace::*" count="3" debug="off"/>
+      <test select="/namespace::*" count="0" debug="off"/>
+      <test select="/Template/Application1/namespace::*" count="3" debug="off"/>
+      <test select="/Template/Application2/namespace::*" count="3" debug="off"/>
+      <test select="/Template/Application2/namespace::*" count="3" debug="off"/>
+      <test select="//namespace::*" count="25" debug="off"/>
+    </context>
+  </document>
+ </tests>

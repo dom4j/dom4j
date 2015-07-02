@@ -1,0 +1,1160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "xhtml1-strict.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>XHTML Basic</title>
+<link rel="stylesheet" type="text/css" href="xhtml-basic.css"  />
+<link rel="stylesheet" type="text/css"
+      href="http://www.w3.org/StyleSheets/TR/W3C-REC"  />
+</head>
+<body>
+<div class="head">
+<p><a href="http://www.w3.org/"><img alt="W3C" height="48" width="72"
+src="http://www.w3.org/Icons/w3c_home" /></a></p>
+
+<h1><acronym title="Extensible HyperText Markup Language">XHTML</acronym><span
+class="tm">&#8482;</span> Basic</h1>
+
+<h2><acronym title="World Wide Web Consortium">W3C</acronym> Recommendation
+19 December 2000</h2>
+
+  <dl>
+    <dt>This version:</dt>
+    <dd><a href="http://www.w3.org/TR/2000/REC-xhtml-basic-20001219"
+      >http://www.w3.org/TR/2000/REC-xhtml-basic-20001219</a><br />
+     (<a href="xhtml-basic.txt">Plain text version</a>,
+     <a href="xhtml-basic.ps">PostScript version</a>,
+     <a href="xhtml-basic.pdf"><acronym
+     title="Portable Document Format">PDF</acronym> version</a>,
+     <a href="xhtml-basic.zip">ZIP archive</a>, or
+     <a href="xhtml-basic.tgz">Gzip'd TAR archive</a>)
+    </dd>
+    <dt>Latest version:</dt>
+    <dd><a href="http://www.w3.org/TR/xhtml-basic"
+      >http://www.w3.org/TR/xhtml-basic</a>
+    </dd>
+    <dt>Previous version:</dt>
+    <dd><a href="http://www.w3.org/TR/2000/PR-xhtml-basic-20001103"
+      >http://www.w3.org/TR/2000/PR-xhtml-basic-20001103</a></dd>
+    <dt>Editors:</dt>
+    <dd><a href="mailto:Mark.A.Baker@canada.sun.com">Mark Baker</a>,
+      Sun Microsystems</dd>
+    <dd><a href="mailto:mimasa@w3.org">Masayasu Ishikawa</a>,
+      <acronym title="World Wide Web Consortium">W3C</acronym></dd>
+    <dd><a href="mailto:matsui@isl.mei.co.jp">Shinichi Matsui</a>,
+       Panasonic</dd>
+    <dd><a href="mailto:peter.stark@ecs.ericsson.se">Peter Stark</a>,
+       Ericsson</dd>
+    <dd><a href="mailto:ted.wugofski@openwave.com">Ted Wugofski</a>,
+       Openwave Systems</dd>
+    <dd><a href="mailto:yam@access.co.jp">Toshihiko Yamakami</a>,
+       ACCESS <abbr title="Company">Co.</abbr>,
+      <abbr title="Limited">Ltd.</abbr></dd>
+  </dl>
+
+<p class="copyright"><a
+href="http://www.w3.org/Consortium/Legal/ipr-notice-20000612#Copyright"
+>Copyright</a> &#169; 1999-2000 <a href="http://www.w3.org/"><acronym
+title="World Wide Web Consortium">W3C</acronym></a><span
+class="reg">&#174;</span> (<a href="http://www.lcs.mit.edu/"><acronym
+title="Massachusetts Institute of Technology">MIT</acronym></a>,
+<a href="http://www.inria.fr/"><acronym xml:lang="fr"
+title="Institut National de Recherche en Informatique et Automatique"
+>INRIA</acronym></a>, <a href="http://www.keio.ac.jp/">Keio</a>), All Rights
+Reserved. <acronym title="World Wide Web Consortium">W3C</acronym> <a
+href="http://www.w3.org/Consortium/Legal/ipr-notice-20000612#Legal_Disclaimer"
+>liability</a>,
+<a href="http://www.w3.org/Consortium/Legal/ipr-notice-20000612#W3C_Trademarks"
+>trademark</a>,
+<a href="http://www.w3.org/Consortium/Legal/copyright-documents-19990405"
+>document use</a> and <a
+href="http://www.w3.org/Consortium/Legal/copyright-software-19980720">software
+licensing</a> rules apply.</p>
+</div>
+
+
+<h2 id="abstract">Abstract</h2>
+
+<p>The <acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+Basic document type includes the minimal set of modules required to be
+an <acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+host language document type, and in addition it includes images, forms,
+basic tables, and object support.
+It is designed for Web clients that do not support the full set of
+<acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+features; for example, Web clients such as mobile phones,
+<acronym title="Personal Digital Assistant">PDA</acronym>s,
+pagers, and settop boxes. The document type is rich enough for
+content authoring.</p>
+
+<p><acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+Basic is designed as a common base that may be extended. For example,
+an event module that is more generic than the traditional <acronym
+title="HyperText Markup Language">HTML</acronym> 4 event system could
+be added or it could be extended by additional modules from <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym>
+Modularization such as the Scripting Module. The goal of
+<acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+Basic is to serve as a common language supported by various kinds of
+user agents.</p>
+
+<p>The document type definition is implemented using
+<acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+modules as defined in "<cite>Modularization of
+<acronym title="Extensible HyperText Markup Language">XHTML</acronym></cite>"
+[<a href="#ref_xhtmlmod">XHTMLMOD</a>].</p>
+
+
+<h2 id="status">Status of this Document</h2>
+
+<p><em>This section describes the status of this document at the time of
+its publication. Other documents may supersede this document.
+The latest status of this document series is maintained at
+the <acronym title="World Wide Web Consortium">W3C</acronym>.</em></p>
+
+<p>This document has been reviewed by
+<acronym title="World Wide Web Consortium">W3C</acronym> Members and other
+interested parties and has been endorsed by the Director as a
+<a href="http://www.w3.org/Consortium/Process/Process-19991111/tr.html#RecsW3C"
+><acronym title="World Wide Web Consortium">W3C</acronym> Recommendation</a>.
+It is a stable document and may be used as reference material or cited
+as a normative reference from another document.
+<acronym title="World Wide Web Consortium">W3C</acronym>'s role
+in making the Recommendation is to draw attention to the specification
+and to promote its widespread deployment.
+This enhances the functionality and interoperability of the Web.</p>  
+
+
+<p>This document has been produced by the
+<a href="http://www.w3.org/MarkUp/Group/"><acronym
+title="World Wide Web Consortium">W3C</acronym> <acronym
+title="HyperText Markup Language">HTML</acronym> Working Group</a>
+(<em><a href="http://cgi.w3.org/MemberAccess/AccessRequest">members
+only</a></em>) as part of the <a href="http://www.w3.org/MarkUp/"><acronym
+title="World Wide Web Consortium">W3C</acronym> <acronym
+title="HyperText Markup Language">HTML</acronym> Activity</a>.
+It integrates feedback from the <a href="http://www.wapforum.org/"><acronym
+title="Wireless Application Protocol">WAP</acronym> Forum</a>
+and members of the <a href="http://www.w3.org/Mobile/Group/IG/"><acronym
+title="World Wide Web Consortium">W3C</acronym> Mobile Access Interest
+Group</a> (<em><a href="http://cgi.w3.org/MemberAccess/AccessRequest">members
+only</a></em>). This document will be used by
+the <acronym title="World Wide Web Consortium">W3C</acronym>
+<acronym title="HyperText Markup Language">HTML</acronym> Working Group
+and the <acronym title="World Wide Web Consortium">W3C</acronym> Mobile
+Access Interest Group to find a common ground for future markup languages
+aimed at content for small information appliances.</p>
+
+<p>"<cite>Modularization of <acronym
+title="Extensible HyperText Markup Languge">XHTML</acronym></cite>"
+[<a href="#ref_xhtmlmod">XHTMLMOD</a>] defines the <acronym
+title="Extensible HyperText Markup Languge">XHTML</acronym> modules 
+used in the <acronym title="Extensible HyperText Markup Languge"
+>XHTML</acronym> Basic document type. At the time of this publication, the
+<a href="http://www.w3.org/Consortium/Process/Process-19991111/tr.html#RecsCR"
+>Candidate Recommendation</a> review period for "Modularization of
+<acronym title="Extensible HyperText Markup Languge">XHTML</acronym>" has
+closed. Based on that review, the <acronym title="World Wide Web Consortium"
+>W3C</acronym> <acronym title="HyperText Markup Language">HTML</acronym>
+Working Group believes that the definition of modules used in <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> Basic is
+stable, and the Working Group does not expect to make changes to
+"Modularization of <acronym title="Extensible HyperText Markup Language"
+>XHTML</acronym>" that would be incompatible with <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> Basic.</p>
+
+<p>Public discussion of <acronym
+title="HyperText Markup Language">HTML</acronym> takes place on
+<a href="mailto:www-html@w3.org">www-html@w3.org</a>
+(<a href="http://lists.w3.org/Archives/Public/www-html/">archive</a>).
+To subscribe send an email to
+<a href="mailto:www-html-request@w3.org">www-html-request@w3.org</a>
+with the word <em>subscribe</em> in the subject line.</p>
+
+<p>Please report errors in this document to
+<a href="mailto:www-html-editor@w3.org">www-html-editor@w3.org</a> (<a
+href="http://lists.w3.org/Archives/Public/www-html-editor/">archive</a>).
+The list of <a href="http://www.w3.org/2000/12/REC-xhtml-basic-20001219-errata"
+>known errors</a> in this document is available at
+http://www.w3.org/2000/12/REC-xhtml-basic-20001219-errata.</p>
+
+<p>The English version of this specification is the only normative version.
+Information about <a href="http://www.w3.org/MarkUp/translations">translations
+of this document</a> is available at http://www.w3.org/MarkUp/translations.</p>
+
+<p>A list of current <acronym title="World Wide Web Consortium">W3C</acronym>
+Recommendations and other technical documents can be found at
+<a href="http://www.w3.org/TR">http://www.w3.org/TR</a>.</p>
+
+
+<h2 id="contents">Table of Contents</h2>
+
+<div class="toc">
+<ul>
+  <li>1. <a href="#s_intro">Introduction</a>
+  <ul>
+    <li>1.1. <a href="#s1.1"><acronym
+      title="Extensible HyperText Markup Language">XHTML</acronym> for
+      Small Information Appliances</a></li>
+    <li>1.2. <a href="#s1.2">Background and Requirements</a></li>
+    <li>1.3. <a href="#s1.3">Design Rationale</a></li>
+  </ul>
+  </li>
+  <li>2. <a href="#s_conformance">Conformance</a>
+  <ul>
+    <li>2.1. <a href="#s2.1">Document Conformance</a></li>
+    <li>2.2. <a href="#s2.2">User Agent Conformance</a></li>
+  </ul>
+  </li>
+  <li>3. <a href="#s_xhtmlmodules">The <acronym
+    title="Extensible HyperText Markup Language">XHTML</acronym> Basic
+    Document Type</a></li>
+  <li>4. <a href="#s_howtouse">How to Use
+    <acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+    Basic</a></li>
+  <li>5. <a href="#s_acknowledgements">Acknowledgements</a></li>
+  <li>A. <a href="#a_refs">References</a>
+  <ul>
+    <li>A.1. <a href="#a_normrefs">Normative References</a></li>
+    <li>A.2. <a href="#a_inforefs">Informative References</a></li>
+  </ul>
+  </li>
+  <li>B. <a href="#a_dtd"><acronym title="Extensible HyperText Markup Language"
+    >XHTML</acronym> Basic Document Type Definition</a>
+  <ul>
+    <li>B.1. <a href="#a_catalog"><acronym
+      title="Standard Generalized Markup Language">SGML</acronym> Open Catalog
+      Entry for <acronym title="Extensible HyperText Markup Language"
+      >XHTML</acronym> Basic</a></li>
+    <li>B.2. <a href="#a_driver"><acronym
+      title="Extensible HyperText Markup Language">XHTML</acronym> Basic
+      Driver</a></li>
+    <li>B.3. <a href="#a_customization"><acronym
+      title="Extensible HyperText Markup Language">XHTML</acronym> Basic
+      Customizations</a></li>
+  </ul>
+  </li>
+</ul>
+</div>
+
+
+<h2 id="s_intro">1. Introduction</h2>
+
+<h3 id="s1.1">1.1. <acronym title="Extensible HyperText Markup Language"
+>XHTML</acronym> for Small Information Appliances</h3>
+
+<p><acronym title="HyperText Markup Language">HTML</acronym> 4 is
+a powerful language for authoring Web content, but its design does not
+take into consideration issues
+pertinent to small devices, including the implementation cost (in
+power, memory, <abbr title="et cetera" xml:lang="la">etc.</abbr>)
+of the full feature set.
+Consumer devices with limited resources cannot generally afford to
+implement the full feature set of
+<acronym title="HyperText Markup Language">HTML</acronym> 4.
+Requiring a full-fledged computer for access to the
+World Wide Web excludes a large portion of the population from
+consumer device access of online information and services.</p>
+
+<p>Because there are many ways to subset
+<acronym title="HyperText Markup Language">HTML</acronym>, there are
+many almost identical subsets defined by organizations and companies.
+Without a common base set of features, developing applications for
+a wide range of Web clients is difficult.</p>
+
+<p>The motivation for <acronym title="Extensible HyperText Markup Language"
+>XHTML</acronym> Basic is to provide an <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym>
+document type that can be shared across communities
+(<acronym title="exempli gratia" xml:lang="lt">e.g.</acronym> desktop,
+<acronym title="Television">TV</acronym>, and mobile phones), and that is
+rich enough to be used for simple content authoring. New community-wide
+document types can be defined by extending <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> Basic in
+such a way that <acronym title="Extensible HyperText Markup Language"
+>XHTML</acronym> Basic documents are in the set of valid documents of
+the new document type. Thus an <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> Basic
+document can be presented on the maximum number of Web clients.</p>
+
+<p>The document type definition for <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> Basic is
+implemented based on the <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> modules
+defined in Modularization of <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym>
+[<a href="#ref_xhtmlmod">XHTMLMOD</a>].</p>
+
+<h3 id="s1.2">1.2. Background and Requirements</h3>
+
+<p>Information appliances are targeted for particular uses. They support
+the features they need for the functions they are designed to fulfill.
+The following are examples of different information appliances:</p>
+
+<ul>
+  <li>Mobile phones</li>
+  <li>Televisions</li>
+  <li><acronym title="Personal Digital Assistant">PDA</acronym>s</li>
+  <li>Vending machines</li>
+  <li>Pagers</li>
+  <li>Car navigation systems</li>
+  <li>Mobile game machines</li>
+  <li>Digital book readers</li>
+  <li>Smart watches</li>
+</ul>
+
+<p>Existing subsets and variants of <acronym
+title="HyperText Markup Language">HTML</acronym> for these clients include
+Compact <acronym title="HyperText Markup Language">HTML</acronym>
+[<a href="#ref_chtml">CHTML</a>], the Wireless Markup Language
+[<a href="#ref_wml">WML</a>], and the "<acronym
+title="HyperText Markup Language">HTML</acronym> 4.0 Guidelines for
+Mobile Access" [<a href="#ref_mhtml">GUIDELINES</a>].
+The common features found in these document types include:</p>
+
+<ul>
+  <li>Basic text (including headings, paragraphs, and lists)</li>
+  <li>Hyperlinks and links to related documents</li>
+  <li>Basic forms</li>
+  <li>Basic tables</li>
+  <li>Images</li>
+  <li>Meta information</li>
+</ul>
+
+<p>This set of <acronym title="HyperText Markup Language">HTML</acronym>
+features has been the starting point for the design of <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> Basic.
+Since many content developers are familiar with these
+<acronym title="HyperText Markup Language">HTML</acronym> features,
+they comprise a useful host language that may be combined with
+markup modules from other languages according to the methods described in
+"<cite>Modularization of
+<acronym title="Extensible HyperText Markup Language">XHTML</acronym></cite>"
+[<a href="#ref_xhtmlmod">XHTMLMOD</a>]. For example, <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> Basic may
+be extended with an event module that is more generic than the traditional
+<acronym title="HyperText Markup Language">HTML</acronym> 4 event system
+or it could be extended by additional modules from <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym>
+Modularization such as the Scripting Module.</p>
+
+<p>It is not the intention of <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> Basic to
+limit the functionality of future languages. But since the features
+in <acronym title="HyperText Markup Language">HTML</acronym> 4 (frames,
+advanced tables, a fixed set of attribute event handlers, <abbr
+title="et cetera">etc.</abbr>) were developed for a desktop computer type
+of client, they have proved to be inappropriate for many non-desktop devices.
+<acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+Basic will be extended and built upon.
+Extending <acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+from a common and basic set of features, instead of almost identical subsets
+or the too-large set of functions in <acronym
+title="HyperText Markup Language">HTML</acronym> 4, will be good for
+interoperability on the Web, as well as for scalability.</p>
+
+<p>Compared to the rich functionality of <acronym
+title="HyperText Markup Language">HTML</acronym> 4, <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> Basic
+may look like one step back, but in fact, it is two steps forward for
+clients that do not need what is in <acronym
+title="HyperText Markup Language">HTML</acronym> 4 and for content
+developers who get one <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> subset
+instead of many.</p>
+
+<h3 id="s1.3">1.3. Design Rationale</h3>
+
+<p>This section explains why certain <acronym title="HyperText Markup Language"
+>HTML</acronym> features are not part of <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> Basic.</p>
+
+<h4 id="s1.3.1">1.3.1. Style Sheets</h4>
+
+<p>The <code>style</code> element is not supported. External style sheets
+are recommended. The <code>link</code> element can be used to include
+external style sheets. The <code>div</code> and <code>span</code>
+elements and the <code>class</code> attribute are supported to hook
+style information onto the structure. Separation between structure and
+presentation allows user agents to download the style sheets if they
+support style sheets; user agents that do not support style sheets
+can ignore the external stylesheet. The <code>media</code> attribute can be
+used to select the appropriate style sheets. See the section on "<a
+href="http://www.w3.org/TR/html4/present/styles.html#h-14.2.4">Media
+types</a>" in the <acronym title="HyperText Markup Language">HTML</acronym>
+4.01 specification ([<a href="#ref_html4">HTML4</a>], section 14.2.4)
+for more details.</p>
+
+<h4 id="s1.3.2">1.3.2. Script and Events</h4>
+
+<p>The <code>script</code> and <code>noscript</code> elements are
+not supported. Usually small devices have limited memory and
+<acronym title="Central Processing Unit">CPU</acronym> power.
+Execution of script programs may not be supported. Contents
+should be readable even if scripts are not executed.</p>
+
+<p>Event handler attributes used to invoke script programs are not supported.
+Events are device dependent. An incoming-call event is unlikely to happen
+in a television. A generic event handling mechanism would be more appropriate
+than hardwiring the event names in the document type definition.</p>
+
+<h4 id="s1.3.3">1.3.3. Presentation</h4>
+
+<p>Many simple Web clients cannot display fonts other than monospace.
+Bi-directional text, bold faced font, and other text extension elements
+are not supported.</p>
+
+<p>It is recommended that style sheets be used to create a presentation
+that is appropriate for the device.</p>
+
+<h4 id="s1.3.4">1.3.4. Forms</h4>
+
+<p><a href="http://www.w3.org/TR/xhtml-modularization/abstract_modules.html#s_sformsmodule">Basic
+<acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+forms</a> ([<a href="#ref_xhtmlmod">XHTMLMOD</a>], section 5.5.1) are
+supported. Since only devices with a local file system can take advantage
+of file and image input types in forms, they are not included in the basic
+forms. Also, content developers should keep in mind that users may not be
+able to input many characters from some devices (<acronym
+title="exempli gratia" xml:lang="lt">e.g.</acronym> from a mobile phone).</p>
+
+<h4 id="s1.3.5">1.3.5. Tables</h4>
+
+<p><a href="http://www.w3.org/TR/xhtml-modularization/abstract_modules.html#s_simpletablemodule">Basic
+<acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+tables</a> ([<a href="#ref_xhtmlmod">XHTMLMOD</a>], section 5.6.1) are
+supported, but tables can be difficult to display on small devices.
+It is recommended that content developers follow
+the Web Content Accessibility Guidelines 1.0 for
+<a href="http://www.w3.org/TR/1999/WAI-WEBCONTENT-19990505/#gl-table-markup"
+>creating accessible tables</a>
+([<a href="#ref_wai-webcontent">WCAG10</a>], Guideline 5).
+Note that in the Basic Tables Module, nesting of tables is prohibited.</p>
+
+<h4 id="s1.3.6">1.3.6. Frames</h4>
+
+<p>Frames are not supported. Frames depend on a screen interface and
+may not be applicable to some small appliances like phones, pagers,
+and watches.</p>
+
+
+<h2 id="s_conformance">2. Conformance</h2>
+
+<p>This section is <em>normative.</em></p>
+
+<h3 id="s2.1">2.1. Document Conformance</h3>
+
+<p>A Conforming <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> Basic
+document is a document that requires only the facilities described as
+mandatory in this specification. Such a document must meet all of
+the following criteria:</p>
+
+<ol>
+  <li>The document must conform to the constraints expressed in
+    <a href="#a_dtd">Appendix B</a>.</li>
+  <li>The root element of the document must be <code>&lt;html&gt;</code>.</li>
+  <li>The name of the default namespace on the root element must be the
+    <acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+    namespace name, <code>http://www.w3.org/1999/xhtml</code>.</li>
+  <li>There must be a DOCTYPE declaration in the document prior to
+    the root element.
+    If present, the public identifier included in the DOCTYPE declaration must
+    reference the <acronym title="Document Type Definition">DTD</acronym> found
+    in <a href="#a_dtd">Appendix B</a> using its Formal Public Identifier.
+    The system identifier may be modified appropriately.
+<pre class="dtd">
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.0//EN"
+    "http://www.w3.org/TR/xhtml-basic/xhtml-basic10.dtd">
+</pre>
+  </li>
+  <li>The <acronym title="Document Type Definition">DTD</acronym> subset
+    must not be used to override any parameter entities in the
+    <acronym title="Document Type Definition">DTD</acronym>.</li>
+</ol>
+
+<h3 id="s2.2">2.2. User Agent Conformance</h3>
+
+<p>The user agent must conform to the
+"<a href="http://www.w3.org/TR/2000/REC-xhtml1-20000126/#uaconf">User Agent Conformance</a>"
+section of the <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> 1.0 specification
+([<a href="#ref_xhtml1">XHTML1</a>], section 3.2).</p>
+
+
+<h2 id="s_xhtmlmodules">3.
+The <acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+Basic Document Type</h2>
+
+<p>This section is <em>normative</em>.</p>
+
+<p>The <acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+Basic document type is defined as a set of <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> modules.
+All <acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+modules are defined in the "<cite>Modularization of <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym></cite>"
+specification [<a href="#ref_xhtmlmod">XHTMLMOD</a>].</p>
+
+<p><acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+Basic consists of the following <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> modules:</p>
+
+<dl>
+  <dt>Structure Module*</dt>
+  <dd><code>body, head, html, title</code></dd>
+  <dt><a>Text Module</a>*</dt>
+  <dd><code>abbr, acronym, address, blockquote, br, cite, code, dfn, div, em,
+    h1, h2, h3, h4, h5, h6, kbd, p, pre, q, samp, span, strong, var</code></dd>
+  <dt>Hypertext Module*</dt>
+  <dd><code>a</code></dd>
+  <dt>List Module*</dt>
+  <dd><code>dl, dt, dd, ol, ul, li</code></dd>
+  <dt>Basic Forms Module</dt>
+  <dd><code>form, input, label, select, option, textarea</code></dd>
+  <dt>Basic Tables Module</dt>
+  <dd><code>caption, table, td, th, tr</code></dd>
+  <dt>Image Module</dt>
+  <dd><code>img</code></dd>
+  <dt>Object Module</dt>
+  <dd><code>object, param</code></dd>
+  <dt>Metainformation Module</dt>
+  <dd><code>meta</code></dd>
+  <dt>Link Module</dt>
+  <dd><code>link</code></dd>
+  <dt>Base Module</dt>
+  <dd><code>base</code></dd>
+</dl>
+
+<p><em>(*) = This module is a required <a href=
+"http://www.w3.org/TR/xhtml-modularization/conformance.html#s_conform_document_type"
+>XHTML Host Language</a> module.</em></p>
+
+<p>An <acronym title="Extensible Markup Language">XML</acronym> 1.0
+<acronym title="Document Type Definition">DTD</acronym> is available in
+<a href="#a_dtd">Appendix B.</a></p>
+
+<div class="note">
+<p><strong>NOTE:</strong>
+Since the <acronym title="HyperText Markup Language">HTML</acronym>
+event handler attributes are not included in <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> Basic,
+form controls outside forms may not function as expected by the user.</p>
+</div>
+
+
+<h2 id="s_howtouse">4. How to Use <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> Basic</h2>
+
+<p>Although <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> Basic can
+be used as it is - a simple <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> language
+with text, links, and images - the intention of its simple design is
+for use as a host language. A host language can contain a mix of
+vocabularies all rolled into one document type. It is natural that
+<acronym title="Extensible HyperText Markup Language">XHTML</acronym> is
+the host language, since that is what most Web developers are used to.</p>
+
+<p>When markup from other languages is added to <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> Basic,
+the resulting document type will be an extension of <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> Basic.
+Content developers can develop for <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> Basic or
+take advantage of the extensions. The goal of
+<acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+Basic is to serve as a common language supported by various kinds of
+user agents.</p>
+
+
+<h2 id="s_acknowledgements">5. Acknowledgements</h2>
+
+<p>This specification was prepared by
+the <acronym title="World Wide Web Consortium">W3C</acronym>
+<acronym title="HyperText Markup Language">HTML</acronym> Working Group.
+The members were:</p>
+
+<ul>
+<li>Steven Pemberton, <acronym title="Centrum voor Wiskunde en Informatica"
+xml:lang="nl">CWI</acronym> (<acronym
+title="HyperText Markup Language">HTML</acronym> Working Group Chair)</li>
+<li>Robert Adams, Intel (until November 2000)</li>
+<li>Murray Altheim, Sun Microsystems</li>
+<li>Takuya Asada, <acronym title="World Wide Web Consortium">W3C</acronym>
+(until October 2000)</li>
+<li>Daniel Austin, Mozquito Technologies</li>
+<li>Mark Baker, Sun Microsystems</li>
+<li>Wayne Carr, Intel</li>
+<li>Tantek &#199;elik, Microsoft</li>
+<li>Andrew W. Donoho,
+<acronym title="International Business Machines">IBM</acronym></li>
+<li>Herman Elenbaas, Philips Electronics</li>
+<li>Beth Epperson, Netscape/<acronym title="America Online">AOL</acronym></li>
+<li>Masayasu Ishikawa, <acronym title="World Wide Web Consortium">W3C</acronym>
+(<acronym title="HyperText Markup Language">HTML</acronym> Activity Lead)</li>
+<li>Shin'ichi Matsui, Panasonic</li>
+<li>Shane McCarron, Applied Testing and Technology</li>
+<li>Ann Navarro, WebGeek, <abbr title="Incorporated">Inc.</abbr></li>
+<li>Dave Raggett,
+<acronym title="World Wide Web Consortium">W3C</acronym>/Openwave Systems</li>
+<li>Sebastian Schnitzenbaumer, Mozquito Technologies
+(until September 2000)</li>
+<li>Peter Stark, Ericsson</li>
+<li>Michel Suignard, Microsoft</li>
+<li>Markku Vartiainen, Openwave Systems</li>
+<li>Jeremy Wadsworth, Quark <abbr title="Incorporated">Inc.</abbr></li>
+<li>Malte Wedel, Mozquito Technologies</li>
+<li>Linda Welsh, Intel</li>
+<li>Ted Wugofski, Openwave Systems</li>
+</ul>
+
+<p>Thanks to Gary Adams (Sun Microsystems), Jonny Axelsson (Metastasis design),
+Peter Chen (Philips), Dan Connolly
+(<acronym title="World Wide Web Consortium">W3C</acronym>),
+John Cowan (Reuters), Martin J. D&#252;rst
+(<acronym title="World Wide Web Consortium">W3C</acronym>),
+Johan Hjelm (Ericsson), Ian Jacobs
+(<acronym title="World Wide Web Consortium">W3C</acronym>),
+Susan Lesch (<acronym title="World Wide Web Consortium">W3C</acronym>),
+Louis Theran (Nokia), Quinton Zondervan (Lotus), members of 
+the <acronym title="World Wide Web Consortium">W3C</acronym>
+Mobile Access Interest Group,
+the <acronym title="World Wide Web Consortium">W3C</acronym>
+Synchronized Multimedia Working Group,
+the <acronym title="World Wide Web Consortium">W3C</acronym>
+<acronym title="Web Accessibility Initiative">WAI</acronym>
+Protocols and Formats Working Group,
+and the <acronym title="Wireless Application Protocol">WAP</acronym> Forum,
+for contributing, reviewing and commenting on this document.</p>
+
+
+<h2 id="a_refs">A. References</h2>
+
+<h3 id="a_normrefs">A.1. Normative References</h3>
+
+<dl>
+  <dt class="normref" id="ref_html4">[HTML4]</dt>
+  <dd>"<cite><a href="http://www.w3.org/TR/1999/REC-html401-19991224"
+    ><acronym title="HyperText Markup Language">HTML</acronym> 4.01
+    Specification</a></cite>",
+    <acronym title="World Wide Web Consortium">W3C</acronym> Recommendation, D.
+    Raggett, A. Le&#160;Hors, I. Jacobs, <abbr title="editors">eds.</abbr>,
+    24 December 1999. Available at:
+    <a href="http://www.w3.org/TR/1999/REC-html401-19991224"
+    >http://www.w3.org/TR/1999/REC-html401-19991224</a><br />
+    The latest version is available at: <a href="http://www.w3.org/TR/html4"
+    >http://www.w3.org/TR/html4</a>
+  </dd>
+  <dt class="normref" id="ref_xhtml1">[XHTML1]</dt>
+  <dd>"<cite><a href="http://www.w3.org/TR/2000/REC-xhtml1-20000126"
+    ><acronym title="Extensible HyperText Markup Language">XHTML</acronym> 1.0:
+    The Extensible HyperText Markup Language - A Reformulation of
+    <acronym title="HyperText Markup Language">HTML</acronym> 4 in
+    <acronym title="Extensible Markup Language">XML</acronym> 1.0</a></cite>",
+    <acronym title="World Wide Web Consortium">W3C</acronym> Recommendation,
+    Steven Pemberton et al., 26 January 2000. Available at:
+    <a href="http://www.w3.org/TR/2000/REC-xhtml1-20000126"
+    >http://www.w3.org/TR/2000/REC-xhtml1-20000126</a><br />
+    The latest version is available at:
+    <a href="http://www.w3.org/TR/xhtml1">http://www.w3.org/TR/xhtml1</a>
+  </dd>
+  <dt class="normref" id="ref_xhtmlmod">[XHTMLMOD]</dt>
+  <dd>"<cite><a
+    href="http://www.w3.org/TR/2000/CR-xhtml-modularization-20001020"
+    >Modularization of <acronym
+    title="Extensible HyperText Markup Language">XHTML</acronym></a></cite>",
+    <acronym title="World Wide Web Consortium">W3C</acronym> Candidate
+    Recommendation, R. Adams, M. Altheim, F. Boumphrey, S. Dooley, S. McCarron,
+    S. Schnitzenbaumer, T. Wugofski, <abbr title="editors">eds.</abbr>,
+    20 October 2000. Available at:
+    <a href="http://www.w3.org/TR/2000/CR-xhtml-modularization-20001020"
+    >http://www.w3.org/TR/2000/CR-xhtml-modularization-20001020</a><br />
+    The latest version is available at:
+    <a href="http://www.w3.org/TR/xhtml-modularization"
+    >http://www.w3.org/TR/xhtml-modularization</a>
+  </dd>
+  <dt class="normref" id="ref_xml">[XML]</dt>
+  <dd>"<cite><a href="http://www.w3.org/TR/2000/REC-xml-20001006"
+    >Extensible Markup Language (<acronym
+    title="Extensible Markup Language">XML</acronym>) 1.0
+    (Second Edition)</a></cite>",
+    <acronym title="World Wide Web Consortium">W3C</acronym> Recommendation,
+    T. Bray, J. Paoli, C. M. Sperberg-McQueen, E. Maler,
+    <abbr title="editors">eds.</abbr>, 6 October 2000. Available at:
+    <a href="http://www.w3.org/TR/2000/REC-xml-20001006"
+    >http://www.w3.org/TR/2000/REC-xml-20001006</a><br />
+    The latest version is available at:
+    <a href="http://www.w3.org/TR/REC-xml">http://www.w3.org/TR/REC-xml</a>
+  </dd>
+</dl>
+
+<h3 id="a_inforefs">A.2. Informative References</h3>
+
+<dl>
+  <dt id="ref_chtml">[CHTML]</dt>
+  <dd>"<cite><a
+    href="http://www.w3.org/TR/1998/NOTE-compactHTML-19980209"
+    >Compact <acronym title="HyperText Markup Language">HTML</acronym>
+    for Small Information Appliances</a></cite>",
+    <acronym title="World Wide Web Consortium">W3C</acronym> Note,
+    T. Kamada, 9 February 1998. Available at:
+    <a href="http://www.w3.org/TR/1998/NOTE-compactHTML-19980209"
+    >http://www.w3.org/TR/1998/NOTE-compactHTML-19980209</a>
+  </dd>
+  <dt id="ref_mhtml">[GUIDELINES]</dt>
+  <dd>"<cite><a href="http://www.w3.org/TR/1999/NOTE-html40-mobile-19990315"
+    ><acronym title="HyperText Markup Language">HTML</acronym> 4.0
+    Guidelines for Mobile Access</a></cite>,
+    <acronym title="World Wide Web Consortium">W3C</acronym> Note,
+    T. Kamada, T. Asada, M. Ishikawa, S. Matsui,
+    <abbr title="editors">eds.</abbr>, 15 March 1999. Available at:
+    <a href="http://www.w3.org/TR/1999/NOTE-html40-mobile-19990315"
+    >http://www.w3.org/TR/1999/NOTE-html40-mobile-19990315</a><br />
+    The latest version is available at:
+    <a href="http://www.w3.org/TR/NOTE-html40-mobile"
+    >http://www.w3.org/TR/NOTE-html40-mobile</a>
+  </dd>
+  <dt id="ref_wai-webcontent">[WCAG10]</dt>
+  <dd>"<cite><a href="http://www.w3.org/TR/1999/WAI-WEBCONTENT-19990505"
+    >Web Content Accessibility Guidelines 1.0</a></cite>",
+    <acronym title="World Wide Web Consortium">W3C</acronym> Recommendation,
+    W. Chisholm, G. Vanderheiden, I. Jacobs, <abbr title="editors">eds.</abbr>,
+    5 May 1999. Available at:
+    <a href="http://www.w3.org/TR/1999/WAI-WEBCONTENT-19990505"
+    >http://www.w3.org/TR/1999/WAI-WEBCONTENT-19990505</a><br />
+    The latest version is available at:
+    <a href="http://www.w3.org/TR/WCAG10"
+    >http://www.w3.org/TR/WCAG10</a>
+  </dd>
+  <dt id="ref_wml">[WML]</dt>
+  <dd>"<cite>Wireless Markup Language Specification</cite>",
+    <acronym title="Wireless Application Protocol">WAP</acronym> Forum
+    <abbr title="Limited">Ltd</abbr>. Available from
+    <a href="http://www.wapforum.org/what/technical.htm"
+    >http://www.wapforum.org/what/technical.htm</a>
+  </dd>
+</dl>
+
+
+<h2 id="a_dtd">B.
+<acronym title="Extensible HyperText Markup Language">XHTML</acronym> Basic
+Document Type Definition</h2>
+
+<p>This appendix is <em>normative</em>.</p>
+
+<h3 id="a_catalog">B.1.
+<acronym title="Standard Generalized Markup Language">SGML</acronym> Open
+Catalog Entry for <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym> Basic</h3>
+
+<p>This section contains the <acronym
+title="Standard Generalized Markup Language">SGML</acronym> Open
+Catalog-format definition of the <acronym
+title="Extensible HyperText Markup Language">XHTML</acronym>
+Basic <acronym title="Formal Public Identifier">FPI</acronym>.</p>
+
+<pre class="dtd">
+-- .......................................................................... --
+-- File catalog  ............................................................ --
+
+--  XHTML Basic Catalog Data File
+
+    Revision:  $Id: xhtml-basic.xml,v 1.2 2002/05/20 08:14:17 jstrachan Exp $ SMI
+
+    See "Entity Management", SGML Open Technical Resolution 9401 for detailed
+    information on supplying and using catalog data. This document is available
+    from OASIS at URL:
+
+        &lt;http://www.oasis-open.org/html/tr9401.html>
+--
+
+-- .......................................................................... --
+-- SGML declaration associated with XML  .................................... --
+
+OVERRIDE YES
+
+SGMLDECL "xml1.dcl"
+
+-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: --
+
+-- XHTML Basic DTD modular driver file  ..................................... --
+
+PUBLIC "-//W3C//DTD XHTML Basic 1.0//EN"                       "xhtml-basic10.dtd"
+
+-- XHTML Basic framework module ............................................. --
+
+PUBLIC "-//W3C//ENTITIES XHTML Basic 1.0 Document Model 1.0//EN"  "xhtml-basic10-model-1.mod"
+
+
+-- End of catalog data  ..................................................... --
+-- .......................................................................... --
+</pre>
+
+<h3 id="a_driver">B.2.
+<acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+Basic Driver</h3>
+
+<p>This section contains the driver for
+the <acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+Basic document type implementation as
+an <abbr title="Extensible Markup Language">XML</abbr>
+<acronym title="Document Type Definition">DTD</acronym>. It relies upon
+<acronym title="Extensible HyperText Markup Language">XHTML</acronym> module
+implementations defined in [<a href="#ref_xhtmlmod">XHTMLMOD</a>].</p>
+
+<pre class="dtd">
+&lt;!-- XHTML Basic 1.0 DTD  ...................................................... -->
+&lt;!-- file: xhtml-basic10.dtd -->
+
+&lt;!-- XHTML Basic 1.0 DTD
+
+     This is XHTML Basic, a proper subset of XHTML.
+
+     The Extensible HyperText Markup Language (XHTML)
+     Copyright 1998-2000 World Wide Web Consortium
+        (Massachusetts Institute of Technology, Institut National de
+         Recherche en Informatique et en Automatique, Keio University).
+         All Rights Reserved.
+
+     Permission to use, copy, modify and distribute the XHTML Basic DTD
+     and its accompanying documentation for any purpose and without fee is
+     hereby granted in perpetuity, provided that the above copyright notice
+     and this paragraph appear in all copies.  The copyright holders make
+     no representation about the suitability of the DTD for any purpose.
+
+     It is provided "as is" without expressed or implied warranty.
+
+        Editors:    Murray M. Altheim &lt;mailto:altheim@eng.sun.com>
+                    Peter Stark       &lt;mailto:Peter.Stark@ecs.ericsson.se>
+        Revision:   $Id: xhtml-basic.xml,v 1.2 2002/05/20 08:14:17 jstrachan Exp $ SMI
+
+-->
+&lt;!-- This is the driver file for version 1.0 of the XHTML Basic DTD.
+
+     This DTD is identified by the PUBLIC and SYSTEM identifiers:
+
+     PUBLIC: "-//W3C//DTD XHTML Basic 1.0//EN"
+     SYSTEM: "http://www.w3.org/TR/xhtml-basic/xhtml-basic10.dtd"
+-->
+&lt;!ENTITY % XHTML.version  "-//W3C//DTD XHTML Basic 1.0//EN" >
+
+&lt;!-- Use this URI to identify the default namespace:
+
+         "http://www.w3.org/1999/xhtml"
+
+     See the Qualified Names module for information
+     on the use of namespace prefixes in the DTD.
+-->
+&lt;!ENTITY % NS.prefixed "IGNORE" >
+&lt;!ENTITY % XHTML.prefix  "" >
+
+&lt;!-- Reserved for use with the XLink namespace:
+-->
+&lt;!ENTITY % XLINK.xmlns "" >
+&lt;!ENTITY % XLINK.xmlns.attrib "" >
+
+&lt;!-- For example, if you are using XHTML Basic 1.0 directly, use
+     the FPI in the DOCTYPE declaration, with the xmlns attribute
+     on the document element to identify the default namespace:
+
+         &lt;?xml version="1.0"?>
+         &lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.0//EN"
+             "http://www.w3.org/TR/xhtml-basic/xhtml-basic10.dtd" >
+         &lt;html xmlns="http://www.w3.org/1999/xhtml"
+               xml:lang="en" >
+         ...
+         &lt;/html>
+-->
+
+&lt;!-- reserved for future use with document profiles -->
+&lt;!ENTITY % XHTML.profile  "" >
+
+&lt;!-- Bidirectional Text features
+     This feature-test entity is used to declare elements
+     and attributes used for bidirectional text support.
+-->
+&lt;!ENTITY % XHTML.bidi  "IGNORE" >
+
+&lt;?doc type="doctype" role="title" { XHTML Basic 1.0 } ?>
+
+&lt;!-- :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+
+&lt;!ENTITY % xhtml-events.module   "IGNORE" >
+&lt;!ENTITY % xhtml-bdo.module      "%XHTML.bidi;" >
+
+&lt;!ENTITY % xhtml-model.mod
+     PUBLIC "-//W3C//ENTITIES XHTML Basic 1.0 Document Model 1.0//EN"
+            "xhtml-basic10-model-1.mod" >
+
+&lt;!ENTITY % xhtml-framework.mod
+     PUBLIC "-//W3C//ENTITIES XHTML Modular Framework 1.0//EN"
+            "xhtml-framework-1.mod" >
+%xhtml-framework.mod;
+
+&lt;!ENTITY % pre.content
+     "( #PCDATA
+      | %InlStruct.class;
+      %InlPhras.class;
+      %Anchor.class;
+      %Inline.extra; )*"
+>
+
+&lt;!ENTITY % xhtml-text.mod
+     PUBLIC "-//W3C//ELEMENTS XHTML Text 1.0//EN"
+            "xhtml-text-1.mod" >
+%xhtml-text.mod;
+
+&lt;!ENTITY % xhtml-hypertext.mod
+     PUBLIC "-//W3C//ELEMENTS XHTML Hypertext 1.0//EN"
+            "xhtml-hypertext-1.mod" >
+%xhtml-hypertext.mod;
+
+&lt;!ENTITY % xhtml-list.mod
+     PUBLIC "-//W3C//ELEMENTS XHTML Lists 1.0//EN"
+            "xhtml-list-1.mod" >
+%xhtml-list.mod;
+
+&lt;!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+
+&lt;!-- Image Module  ............................................... -->
+&lt;!ENTITY % xhtml-image.module "INCLUDE" >
+&lt;![%xhtml-image.module;[
+&lt;!ENTITY % xhtml-image.mod
+     PUBLIC "-//W3C//ELEMENTS XHTML Images 1.0//EN"
+            "xhtml-image-1.mod" >
+%xhtml-image.mod;]]&gt;
+
+&lt;!-- Tables Module ............................................... -->
+&lt;!ENTITY % xhtml-table.module "INCLUDE" >
+&lt;![%xhtml-table.module;[
+&lt;!ENTITY % xhtml-table.mod
+     PUBLIC "-//W3C//ELEMENTS XHTML Basic Tables 1.0//EN"
+            "xhtml-basic-table-1.mod" >
+%xhtml-table.mod;]]&gt;
+
+&lt;!-- Forms Module  ............................................... -->
+&lt;!ENTITY % xhtml-form.module "INCLUDE" >
+&lt;![%xhtml-form.module;[
+&lt;!ENTITY % xhtml-form.mod
+     PUBLIC "-//W3C//ELEMENTS XHTML Basic Forms 1.0//EN"
+            "xhtml-basic-form-1.mod" >
+%xhtml-form.mod;]]&gt;
+
+&lt;!-- Link Element Module  ........................................ -->
+&lt;!ENTITY % xhtml-link.module "INCLUDE" >
+&lt;![%xhtml-link.module;[
+&lt;!ENTITY % xhtml-link.mod
+     PUBLIC "-//W3C//ELEMENTS XHTML Link Element 1.0//EN"
+            "xhtml-link-1.mod" >
+%xhtml-link.mod;]]&gt;
+
+&lt;!-- Document Metainformation Module  ............................ -->
+&lt;!ENTITY % xhtml-meta.module "INCLUDE" >
+&lt;![%xhtml-meta.module;[
+&lt;!ENTITY % xhtml-meta.mod
+     PUBLIC "-//W3C//ELEMENTS XHTML Metainformation 1.0//EN"
+            "xhtml-meta-1.mod" >
+%xhtml-meta.mod;]]&gt;
+
+&lt;!-- Base Element Module  ........................................ -->
+&lt;!ENTITY % xhtml-base.module "INCLUDE" >
+&lt;![%xhtml-base.module;[
+&lt;!ENTITY % xhtml-base.mod
+     PUBLIC "-//W3C//ELEMENTS XHTML Base Element 1.0//EN"
+            "xhtml-base-1.mod" >
+%xhtml-base.mod;]]&gt;
+
+&lt;!-- Param Element Module  ....................................... -->
+&lt;!ENTITY % xhtml-param.module "INCLUDE" >
+&lt;![%xhtml-param.module;[
+&lt;!ENTITY % xhtml-param.mod
+     PUBLIC "-//W3C//ELEMENTS XHTML Param Element 1.0//EN"
+            "xhtml-param-1.mod" >
+%xhtml-param.mod;]]&gt;
+
+&lt;!-- Embedded Object Module  ..................................... -->
+&lt;!ENTITY % xhtml-object.module "INCLUDE" >
+&lt;![%xhtml-object.module;[
+&lt;!ENTITY % xhtml-object.mod
+     PUBLIC "-//W3C//ELEMENTS XHTML Embedded Object 1.0//EN"
+            "xhtml-object-1.mod" >
+%xhtml-object.mod;]]&gt;
+
+&lt;!ENTITY % xhtml-struct.mod
+     PUBLIC "-//W3C//ELEMENTS XHTML Document Structure 1.0//EN"
+            "xhtml-struct-1.mod" >
+%xhtml-struct.mod;
+
+&lt;!-- end of XHTML Basic 1.0 DTD  ........................................... -->
+</pre>
+
+<h3 id="a_customization">B.3.
+<acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+Basic Customizations</h3>
+
+<p>An <acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+Family Document Type (such as
+<acronym title="Extensible HyperText Markup Language">XHTML</acronym> Basic)
+must define the content model that it uses. This is done through a separate
+content model module that is instantiated by the
+<acronym title="Extensible HyperText Markup Language">XHTML</acronym>
+Modular Framework. The content model module and the
+<acronym title="Extensible HyperText Markup Language">XHTML</acronym> Basic
+Driver (above) work together to customize the module implementations to
+the document type's specific requirements. The content model module for
+<acronym title="Extensible HyperText Markup Language">XHTML</acronym> Basic
+is defined below:</p>
+
+<pre class="dtd">
+&lt;!-- ....................................................................... -->
+&lt;!-- XHTML Basic 1.0 Document Model Module  .................................... -->
+&lt;!-- file: xhtml-basic10-model-1.mod
+
+     This is XHTML Basic, a proper subset of XHTML.
+     Copyright 1998-2000 W3C (MIT, INRIA, Keio), All Rights Reserved.
+     Revision: $Id: xhtml-basic.xml,v 1.2 2002/05/20 08:14:17 jstrachan Exp $ SMI
+
+     This DTD module is identified by the PUBLIC and SYSTEM identifiers:
+
+       PUBLIC "-//W3C//ENTITIES XHTML Basic 1.0 Document Model 1.0//EN"
+       SYSTEM "http://www.w3.org/TR/xhtml-basic/xhtml-basic10-model-1.mod"
+
+     Revisions:
+     (none)
+     ....................................................................... -->
+
+&lt;!-- XHTML Basic Document Model
+
+     This module describes the groupings of elements that make up
+     common content models for XHTML elements.
+-->
+
+&lt;!-- Optional Elements in head  .............. -->
+
+&lt;!ENTITY % HeadOpts.mix
+     "( %meta.qname; | %link.qname; | %object.qname; )*" >
+
+&lt;!-- Miscellaneous Elements  ................. -->
+
+&lt;!ENTITY % Misc.class "" >
+
+&lt;!-- Inline Elements  ........................ -->
+
+&lt;!ENTITY % InlStruct.class "%br.qname; | %span.qname;" >
+
+&lt;!ENTITY % InlPhras.class
+     "| %em.qname; | %strong.qname; | %dfn.qname; | %code.qname;
+      | %samp.qname; | %kbd.qname; | %var.qname; | %cite.qname;
+      | %abbr.qname; | %acronym.qname; | %q.qname;" >
+
+&lt;!ENTITY % InlPres.class "" >
+
+&lt;!ENTITY % I18n.class "" >
+
+&lt;!ENTITY % Anchor.class "| %a.qname;" >
+
+&lt;!ENTITY % InlSpecial.class "| %img.qname; | %object.qname;" >
+
+&lt;!ENTITY % InlForm.class
+     "| %input.qname; | %select.qname; | %textarea.qname;
+      | %label.qname;"
+>
+
+&lt;!ENTITY % Inline.extra "" >
+
+&lt;!ENTITY % Inline.class
+     "%InlStruct.class;
+      %InlPhras.class;
+      %Anchor.class;
+      %InlSpecial.class;
+      %InlForm.class;
+      %Inline.extra;"
+>
+
+&lt;!ENTITY % InlNoAnchor.class
+     "%InlStruct.class;
+      %InlPhras.class;
+      %InlSpecial.class;
+      %InlForm.class;
+      %Inline.extra;"
+>
+
+&lt;!ENTITY % InlNoAnchor.mix
+     "%InlNoAnchor.class;
+      %Misc.class;"
+>
+
+&lt;!ENTITY % Inline.mix
+     "%Inline.class;
+      %Misc.class;"
+>
+
+&lt;!-- Block Elements  ......................... -->
+
+&lt;!ENTITY % Heading.class
+     "%h1.qname; | %h2.qname; | %h3.qname;
+      | %h4.qname; | %h5.qname; | %h6.qname;"
+>
+&lt;!ENTITY % List.class  "%ul.qname; | %ol.qname; | %dl.qname;" >
+
+&lt;!ENTITY % Table.class "| %table.qname;" >
+
+&lt;!ENTITY % Form.class  "| %form.qname;" >
+
+&lt;!ENTITY % BlkStruct.class "%p.qname; | %div.qname;" >
+
+&lt;!ENTITY % BlkPhras.class
+     "| %pre.qname; | %blockquote.qname; | %address.qname;"
+>
+
+&lt;!ENTITY % BlkPres.class "" >
+
+&lt;!ENTITY % BlkSpecial.class
+     "%Table.class;
+      %Form.class;"
+>
+
+&lt;!ENTITY % Block.extra "" >
+
+&lt;!ENTITY % Block.class
+     "%BlkStruct.class;
+      %BlkPhras.class;
+      %BlkSpecial.class;
+      %Block.extra;"
+>
+
+&lt;!ENTITY % Block.mix
+     "%Heading.class;
+      | %List.class;
+      | %Block.class;
+      %Misc.class;"
+>
+
+&lt;!-- All Content Elements  ................... -->
+
+&lt;!-- declares all content except tables
+-->
+&lt;!ENTITY % FlowNoTable.mix
+     "%Heading.class;
+      | %List.class;
+      | %BlkStruct.class;
+      %BlkPhras.class;
+      %Form.class;
+      %Block.extra;
+      | %Inline.class;
+      %Misc.class;"
+>
+
+&lt;!ENTITY % Flow.mix
+     "%Heading.class;
+      | %List.class;
+      | %Block.class;
+      | %Inline.class;
+      %Misc.class;"
+>
+
+&lt;!-- end of xhtml-basic10-model-1.mod -->
+</pre>
+</body>
+</html>

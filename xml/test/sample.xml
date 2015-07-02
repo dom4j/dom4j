@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<products>
+  <product id="1">
+    <colour>red</colour>
+  </product>
+  <product id="2">
+    <colour>blue</colour>
+  </product>
+  <product id="3">
+    <colour>green</colour>
+  </product>
+</products>

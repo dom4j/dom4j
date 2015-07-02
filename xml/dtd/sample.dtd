@@ -1,0 +1,9 @@
+<!--
+
+    The declaration in this file MUST agree with the test case, see
+
+    org.dom4j.TestDocType#getExternalDeclarations()
+
+-->
+
+<!ELEMENT another-greeting (#PCDATA)> 

@@ -1,0 +1,745 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:wapforum:devicesheet" xmlns="urn:wapforum:devicesheet">
+  <xsd:element name="DeviceSheet" type="DeviceSheetType">
+    <xsd:annotation>
+        <xsd:documentation>
+            <text xmlns="">
+          A Component within the CC/PP Schema is a class of related properties
+          that describe the capabilities and preferences information.
+            </text>
+        </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+
+  <xsd:complexType name="DeviceSheetType">
+    <xsd:all minOccurs="1" >
+      <xsd:element name="Description" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            Any description or notes about this device
+					</xsd:documentation>
+				</xsd:annotation>
+      </xsd:element>
+
+      <xsd:element name="DefaultValue" type="xsd:boolean" nillable="true" minOccurs="0">
+        <xsd:annotation>
+        	 <xsd:documentation>
+    			  	Specifies if the device is a generic device supporting an acceptable
+              content type.
+           </xsd:documentation>
+    	  </xsd:annotation>
+      </xsd:element>
+
+      <xsd:element name="Hardware" type="HardwareType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            The HardwarePlatform component contains properties of the device's
+            Hardware, such as display size, supported character sets, etc.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+
+      <xsd:element name="Software" type="SoftwareType" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            The SoftwarePlatform component contains properties of the device's
+            application environment, operating system, and installed software.
+					</xsd:documentation>
+				</xsd:annotation>
+      </xsd:element>
+      
+      <xsd:element name="WapCharacteristics" type="WapCharacteristicsType" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            The WapCharacteristics component contains properties of the WAP
+            environment supported by the device.
+					</xsd:documentation>
+                                    </xsd:annotation>
+      </xsd:element>
+      
+      <xsd:element name="BrowserUA" type="BrowserUAType" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            The BrowserUA component contains attributes related to the browser
+            user agent running on the device.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+
+      <xsd:element name="NetworkCharacteristics" type="NetworkCharacteristicsType" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            The NetworkCharacteristics component contains properties describing the
+            network environment including the supported bearers.
+					</xsd:documentation>
+				</xsd:annotation>
+      </xsd:element>
+
+      <xsd:element name="PushCharacteristics" type="PushCharacteristicsType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+            The PushCharacteristics component contains properties of the device's 
+            push capabilities, such as supported content mime types.
+					</xsd:documentation>
+				</xsd:annotation>
+      </xsd:element>
+    </xsd:all>
+  </xsd:complexType>
+
+  <xsd:complexType name="HardwareType">
+		<xsd:all minOccurs="0">
+			<xsd:element name="BitsPerPixel" type="xsd:integer" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						The number of bits of color or grayscale information per
+            pixel, related to the number of colors or shades of gray
+            the device can display.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ColorCapable" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						The number of bits of color or grayscale information per
+            pixel, related to the number of colors or shades of gray
+            the device can display.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CPU" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						Name and model number of the device CPU.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ImageCapable" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						Indicates whether the device supports the display of
+            images. If the value is "Yes", the property CcppAccept
+            may list the types of images supported.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="InputCharSet" type="BagType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						List of character sets supported by the device for text
+            entry. Property's value is a list of character sets,
+            where each item in the list is a character set name, as
+            registered with IANA.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Keyboard" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						Type of keyboard supported by the device, as an indicator
+            of ease of text entry.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Model" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						Model number assigned to the terminal device by the
+            vendor or manufacturer.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="NumberOfSoftKeys" type="xsd:integer" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						Number of soft keys available on the device.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="OutputCharSet" type="BagType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						List of character sets supported by the device for
+            output to the display. Property value is a list of
+            character sets, where each item in the list is a
+            character set name, as registered with IANA.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+
+			<xsd:element name="PixelAspectRatio" type="DimensionType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						Ratio of pixel width to pixel height.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+
+			<xsd:element name="PointingResolution" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						Type of resolution of the pointing accessory supported
+            by the device.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ScreenSize" type="DimensionType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						The size of the device's screen in units of pixels,
+            composed of the screen width and the screen height.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="ScreenSizeChar" type="DimensionType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						Size of the device's screen in units of characters,
+            composed of the screen width and screen height. The
+            device's standard font should be used to determine
+            this property's value. (Number of characters per
+            row)x(Number of rows). In calculating this attribute
+            use the largest character in the device's default font.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="StandardFontProportional" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+            Indicates whether the device's standard font is
+            proportional.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SoundOutputCapable" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						Indicates whether the device supports sound output
+            through an external speaker, headphone jack, or other
+            sound output mechanism.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="TextInputCapable" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						Indicates whether the device supports alpha-numeric text
+            entry. "Yes" means the device supports entry of both
+            letters and digits. "No" means the device supports only
+            entry of digits.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Vendor" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						Name of the vendor manufacturing the terminal device.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="VoiceInputCapable" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						Indicates whether the device supports any form of voice
+            input, including speech recognition. This includes voice-
+            enabled browsers.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:all>
+  </xsd:complexType>
+
+  <xsd:complexType name="SoftwareType">
+		<xsd:all minOccurs="1" maxOccurs="1">
+			<xsd:element name="AcceptDownloadableSoftware" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						Indicates the user's preference on whether to accept
+            downloadable software.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="AudioInputEncoder" type="BagType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+            List of audio input encoders supported by the device.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CcppAccept" type="BagType" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            List of content types the device supports. Property
+            value is a list of MIME types, where each item in the
+            list is a content type descriptor as specified by
+            RFC 2045.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CcppAccept-Charset" type="BagType" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            List of character sets the device supports. Property
+            value is a list of character sets, where each item in
+            the list is a character set name registered with IANA.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CcppAccept-Encoding" type="BagType" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            List of transfer encodings the device supports.
+            Property value is a list of transfer encodings, where
+            each item in the list is a transfer encoding name as
+            specified by RFC 2045 and registered with IANA.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CcppAccept-Language" type="BagType" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            List of preferred document languages. If a resource is
+            available in more than one natural language, the server
+            can use this property to determine which version of the
+            resource to send to the device. The first item in the
+            list should be considered the user's first choice, the
+            second the second choice, and so on. Property value is
+            a list of natural languages, where each item in the list
+            is the name of a language as defined by RFC 3066[RFC3066].
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DownloadableSoftwareSupport" type="BagType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+            List of preferred document languages. If a resource is
+            available in more than one natural language, the server
+            can use this property to determine which version of the
+            resource to send to the device. The first item in the
+            list should be considered the user's first choice, the
+            second the second choice, and so on. Property value is
+            a list of natural languages, where each item in the list
+            is the name of a language as defined by RFC 3066[RFC3066].
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="JavaEnabled" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+            Indicates whether the device supports a Java virtual
+            machine.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="JavaPlatform" type="BagType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+            The list of JAVA platforms and profiles installed in the device. 
+            Each item in the list is a name token describing compatibility 
+            with the name and version of the java platform specification 
+            or the name and version of the profile specification name (if 
+            profile is included in the device).
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="JVMVersion" type="BagType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+            List of the Java virtual machines installed on the
+            device. Each item in the list is a name token describing
+            the vendor and version of the VM.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MexeClassmarks" type="BagType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+            List of MExE classmarks supported by the device. Value "1" 
+            means the MExE device supports WAP, value "2" means that MExE 
+            device supports Personal Java and value "3" means that MExE
+            device supports MIDP applications.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MexeSpec" type="xsd:double" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+            Class mark specialization. Refers to the first two
+            digits of the version of the MExE Stage 2 spec.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MexeSecureDomains" type="xsd:boolean" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+            Indicates whether the device's supports MExE security domains. 
+            "Yes" means that security domains are supported in accordance 
+            with MExE specifications identified by the MexeSpec attribute. 
+            "No" means that security domains are not supported and the 
+            device has only untrusted domain (area).
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="OSName" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+            Name of the device's operating system.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="OSVendor" type="xsd:string" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+            Vendor of the device's operating system.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="OSVersion" type="xsd:double" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+            Vendor of the device's operating system.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="RecipientAppAgent" type="BagType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+            User agent associated with the current request. Value
+            should match the name of one of the components in the
+            profile. 
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SoftwareNumber" type="xsd:double" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+            Version of the device-specific software (firmware) to
+            which the device's low-level software conforms.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="VideoInputEncoder" type="BagType" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+            List of video input encoders supported by the device.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:all>
+  </xsd:complexType>
+
+  <xsd:complexType name="WapCharacteristicsType">
+		<xsd:all minOccurs="0" maxOccurs="1">
+			<xsd:element name="SupportedPictogramSet" type="BagType" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            Pictogram classes supported by the device as 
+            defined in "WAP Pictogram specification".
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="WapDeviceClass" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            Classification of the device based on capabilities as
+            identified in the WAP 1.1 specifications. Current
+            values are "A", "B" and "C".
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="WapVersion" type="xsd:double" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            Version of WAP supported.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="WmlDeckSize" type="xsd:integer" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            Maximum size of a WML deck that can be downloaded to
+            the device. This may be an estimate of the maximum size
+            if the true maximum size is not known. Value is number
+            of bytes.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="WmlScriptLibraries" type="BagType" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            List of mandatory and optional libraries supported in
+            the device's WMLScript VM.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="WmlScriptVersion" type="BagType" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            List of WMLScript versions supported by the device.
+            Property value is a list of version numbers, where
+            each item in the list is a version string conforming
+            to Version.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="WmlVersion" type="BagType" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            List of WML language versions supported by the device.
+            Property value is a list of version numbers, where
+            each item in the list is a version string conforming
+            to Version.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="WtaiLibraries" type="BagType" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            List of WTAI network common and network specific
+            libraries supported by the device.
+            Property value is a list of WTA library names, where each
+            item in the list list is a library name as specified by
+            "WAP WTAI" and its addendums. Any future addendums to "WAP WTAI" should be
+            reflected in the values of this property.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="WtaVersion" type="xsd:double" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+             Version of WTA user agent.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:all>
+  </xsd:complexType>
+  
+  <xsd:complexType name="BrowserUAType">
+		<xsd:all>
+			<xsd:element name="BrowserName" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            Name of the browser user agent associated with the
+            current request.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="BrowserVersion" type="xsd:double" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            Version of the browser.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="DownloadableBrowserApps" type="BagType" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            List of executable content types which the browser
+            supports and which it is willing to accept from the
+            network. The property value is a list of MIME types,
+            where each item in the list is a content type
+            descriptor as specified by RFC 2045.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="FramesCapable" type="xsd:boolean" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            Indicates whether the browser is capable of displaying
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="HtmlVersion" type="xsd:boolean" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            Version of HyperText Markup Language (HTML) supported
+            by the browser.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="JavaAppletEnabled" type="xsd:boolean" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            Indicates whether the browser supports Java applets.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="JavaScriptEnabled" type="xsd:boolean" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            Indicates whether the browser supports JavaScript.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="JavaScriptVersion" type="xsd:double" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            Version of the JavaScript language supported by the
+            browser.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="PreferenceForFrames" type="xsd:boolean" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            Indicates the user's preference for receiving HTML
+            content that contains frames.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="TablesCapable" type="xsd:boolean" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            Indicates whether the browser is capable of displaying
+            tables.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="XhtmlVersion" type="xsd:double" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            Version of XHTML supported by the browser.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="XhtmlModules" type="BagType" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            List of XHTML modules supported by the browser. Property
+            value is a list of module names, where each item in the
+            list is the name of an XHTML module as defined by the
+            W3C document "Modularization of XHTML", Section 4. List
+            items are separated by white space. Note that the
+            referenced document is a work in progress. Any subsequent
+            changes to the module naming conventions should be
+            reflected in the values of this property.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:all>
+  </xsd:complexType>
+  
+  <xsd:complexType name="NetworkCharacteristicsType">
+		<xsd:all minOccurs="1" maxOccurs="1">
+			<xsd:element name="SupportedBluetoothVersion" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            Supported Bluetooth version.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="CurrentBearerService" type="xsd:string" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            The bearer on which the current session was opened.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SecuritySupport" type="BagType" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            List of types of security or encryption mechanisms supported by the device.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SupportedBearers" type="BagType" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            List of bearers supported by the device.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:all>
+  </xsd:complexType>
+
+  <xsd:complexType name="PushCharacteristicsType">
+		<xsd:all minOccurs="1" maxOccurs="1">
+      <xsd:element name="Push-Accept" type="" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            List of content types the device supports, which can be carried
+            inside the message/http entity body when OTA-HTTP is used.
+            Property value is a list of MIME types, where each item in the
+            list is a content type descriptor as specified by RFC 2045.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Push-Accept-Charset" type="BagType" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            List of character sets the device supports. Property
+            value is a list of character sets, where each item in
+            the list is a character set name registered with IANA.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>			
+			<xsd:element name="Push-Accept-Encoding" type="BagType" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            List of transfer encodings the device supports.
+            Property value is a list of transfer encodings, where
+            each item in the list is a transfer encoding name as
+            specified by RFC 2045 and registered with IANA.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Push-Accept-Language" type="BagType" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            List of preferred document languages. If a resource is
+            available in more than one natural language, the server
+            can use this property to determine which version of the
+            resource to send to the device. The first item in the
+            list should be considered the user's first choice, the
+            second the second choice, and so on. Property value is
+            a list of natural languages, where each item in the list
+            is the name of a language as defined by RFC 3066[RFC3066].
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Push-Accept-AppID" type="BagType" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            List of applications the device supports, where each item
+            in the list is an application-id on absoluteURI format
+            as specified in [PushMsg]. A wildcard ("*") may be used
+            to indicate support for any application.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Push-MsgSize" type="xsd:integer" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            Maximum size of a push message that the device can
+            handle. Value is number of bytes.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Push-MaxPushReq" type="xsd:integer" minOccurs="0">
+        <xsd:annotation>
+					<xsd:documentation>
+            Maximum number of outstanding push requests that the device
+            can handle.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:all>
+  </xsd:complexType>
+
+
+  <xsd:complexType name="BagType">
+    <xsd:sequence minOccurs="1">
+      <xsd:element name="Bag">
+        <xsd:complexType>
+          <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="Property" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:simpleType name="DimensionType">
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[0-9]+x[0-9]+"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

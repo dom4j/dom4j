@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope 
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  <SOAP-ENV:Body>
+    <m:BabelFish xmlns:m="urn:xmethodsBabelFish">
+      <translationmode>en_fr</translationmode>      
+      <sourcedata>
+
+        SOAP is quite easy with JSP &amp; dom4j!
+
+      </sourcedata>    
+    </m:BabelFish>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

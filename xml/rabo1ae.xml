@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.0.1 U (http://www.xmlspy.com) by Rabobank International (Rabobank International) -->
+<!-- Internal Version 1.11-->
+<m:Msg id="0000001" version="1" xmlns:m="http://www.rabobank.com/RaboMessage/1.0">
+	<m:MsgHdr>
+		<!--References section enables each destination to entere their own ids to give cross references -->
+		<m:References>
+			<m:Reference>
+				<m:SourceSA version="1.0">RABO.UTR.OMR.SA1</m:SourceSA>
+				<m:Sequence>1</m:Sequence>
+				<m:HostId>RP00100112</m:HostId>
+				<m:ParentId>RP00100112</m:ParentId>
+			</m:Reference>
+			<m:Reference>
+				<m:SourceSA version="1.0">RABO.LDN.LPM.SA1</m:SourceSA>
+				<m:Sequence>1</m:Sequence>
+				<m:HostId>100678954</m:HostId>
+				<m:ParentId>100678954</m:ParentId>
+			</m:Reference>
+			<m:Reference>
+				<m:SourceSA version="1.0">RABO.LDN.AEG.SA2</m:SourceSA>
+				<m:Sequence>1</m:Sequence>
+				<m:HostId>AE4269</m:HostId>
+				<m:ParentId>AE4269</m:ParentId>
+			</m:Reference>
+		</m:References>
+		<m:ContentInfo>
+			<m:MessageType>Trade</m:MessageType>
+			<m:EventType>Capture</m:EventType>
+			<m:ContentType>RepoTrade</m:ContentType>
+			<m:OriginatingTime>07 Aug 2001 14:35:03 GMT</m:OriginatingTime>
+		</m:ContentInfo>
+	</m:MsgHdr>
+	<!-- LifePlan Note that the Expiry is in minutes-->
+	<m:LifePlan expiresAt="07 Aug 2001 16:35:03 GMT" nextStep="3">
+		<m:Definition id="RepoCapt/1.1" journalManager="RABO.LDN.SH.SA1" exceptionManager="RABO.LDN.EH.SA1" status="in" expiryException="True">
+			<!--expiresIn is in minutes -->
+			<m:Step id="1" adapter="RABO.LDN.AEG.SA1" action="Insert" status="in" expiresIn="20"/>
+			<m:Step id="2" adapter="RABO.LDN.MIS.SA1" action="Insert" status="in" expiresIn="20"/>
+			<m:Step id="3" adapter="RABO.LDN.LPM.SA1" action="Final" status="in" expiresIn="10"/>
+		</m:Definition>
+		<!-- This exception would be moved to the StatusMessage as shown above -->
+		<m:ExceptionAction id="Default" name="Resend" edit="False" time="07 Aug 2001 14:35:03 GMT" userName="StovesA">
+			<m:userComment><![CDATA["Database was offline, advised to resubmit by DBA"]]></m:userComment>
+		</m:ExceptionAction>
+	</m:LifePlan>
+	<m:Exception>
+		<m:ExceptionPlan>
+			<m:ExceptionPlanDefinition id="MIS\SA4" version="1.0">
+				<m:Action name="Resend" edit="True" forceComment="True" description="Resend the trade to the MIS system"/>
+				<m:Action name="Cancel" edit="False" forceComment="True" description="Reverses the entries from AEG to allow re-input"/>
+			</m:ExceptionPlanDefinition>
+		</m:ExceptionPlan>
+		<m:StatusMessage step="1" lifePlan="RepoCapt/1.1" timeStamp="07 Aug 2001 14:19:32 GMT" result="Calculate failed">
+			<m:Code>2001</m:Code>
+			<m:Message>Database Timeout</m:Message>
+		</m:StatusMessage>
+	</m:Exception>
+	<!-- Audit trail for the message including static plans used -->
+	<m:History>
+		<m:LifePlans>
+			<m:Definition id="Default/1.1" journalManager="RABO.LDN.SH.SA1" exceptionManager="RABO.LDN.EH.SA1" status="in" expiryException="True">
+				<m:Step id="1" adapter="RABO.LDN.LPM.SA1" action="Assign" status="in" expiresIn="10"/>
+			</m:Definition>
+		</m:LifePlans>
+		<m:ExceptionPlans>
+			<m:ExceptionPlanDefinition id="Default" version="1.0">
+				<m:Action name="Resend" edit="True" forceComment="True" description="Resend the trade to the step that failed"/>
+				<m:Action name="Cancel" edit="False" forceComment="True" description="Log the final message with a step of cancelled"/>
+			</m:ExceptionPlanDefinition>
+		</m:ExceptionPlans>
+		<m:Audit>
+			<m:StatusMessage step="1" lifePlan="Default/1.1" timeStamp="07 Aug 2001 14:17:02 GMT" result="Reassign started"/>
+			<m:StatusMessage step="1" lifePlan="Default/1.1" timeStamp="07 Aug 2001 14:18:13 GMT" result="Reassign completed"/>
+			<m:StatusMessage step="1" lifePlan="RepoCapt/1.1" timeStamp="07 Aug 2001 14:19:02 GMT" result="Calculate started"/>
+			<m:StatusMessage step="1" lifePlan="RepoCapt/1.1" timeStamp="07 Aug 2001 14:19:32 GMT" result="Calculate failed">
+				<m:Code>2001</m:Code>
+				<m:Message>Database Timeout</m:Message>
+			</m:StatusMessage>
+			<m:ExceptionAction id="Default" name="Resend" edit="False" time="07 Aug 2001 14:35:03 GMT" userName="StovesA">
+				<m:userComment><![CDATA["Database was offline, advised to resubmit by DBA"]]></m:userComment>
+			</m:ExceptionAction>
+		</m:Audit>
+	</m:History>
+	<m:Contents>
+		<m:Content xmlns:t="http://www.rabobank.com/Payload/Repo/1.0" xmlns:ab="http://www.rabobank.com/Payload/AccountingBatch/1.0" xmlns:chngd="http://www.rabobank.com/Changes/1.0" xmlns:c="http://www.rabobank.com/Payload/Contract/1.0" xmlns:cpty="http://www.rabobank.com/Payload/Counterparty/1.0" xmlns:set="http://www.rabobank.com/Payload/Settlement/1.0" xmlns:amt="http://www.rabobank.com/Payload/Amount/1.0" xmlns:sec="http://www.rabobank.com/Payload/Security/1.0">
+			<t:RaboPayLoad id="Repo" version="1.1">
+				<c:Contract>
+					<!--Generic contract information -->
+					<c:TransactionId/>
+					<c:VersionNum>2</c:VersionNum>
+					<c:BusinessUnitCode/>
+					<c:PortfolioCode/>
+					<c:ProductCode/>
+					<c:BrokerId/>
+					<c:GuarantorId/>
+					<c:StructureId/>
+					<c:TraderId/>
+					<c:InternalDealFlag/>
+					<c:Ccy/>
+					<c:Dept>0000</c:Dept>
+					<c:TradeDate>08 Aug 2001</c:TradeDate>
+					<c:StartDate>08 Aug 2001</c:StartDate>
+					<c:MaturityDate>08 Aug 2001</c:MaturityDate>
+					<c:RepaymentDate>08 Aug 2001</c:RepaymentDate>
+					<c:ExpirationDate>08 Aug 2001</c:ExpirationDate>
+					<c:AccrualDate>08 Aug 2001</c:AccrualDate>
+					<c:AmortisationDate>08 Aug 2001</c:AmortisationDate>
+					<c:MtmDate>08 Aug 2001</c:MtmDate>
+					<c:ReversalDate>08 Aug 2001</c:ReversalDate>
+					<c:CaptureDate>08 Aug 2001</c:CaptureDate>
+					<c:AmendDate>08 Aug 2001</c:AmendDate>
+					<c:NonPerformFlag/>
+					<c:TradeHedgeInd/>
+					<c:XchgPrincipalInd/>
+					<c:CustodianFlag/>
+					<c:ReversalFlag/>
+					<c:PrincipalExchangeFlag/>
+					<c:SubPortfolioCode/>
+					<c:BookDate>08 Aug 2001</c:BookDate>
+					<c:AccountRepCode/>
+				</c:Contract>
+				<cpty:Counterparty>
+					<cpty:ReferenceSystem/>
+					<cpty:CounterpartyId/>
+					<cpty:CounterpartyBusinessUnitCode/>
+					<cpty:CounterpartyPortfolioCode/>
+					<cpty:CounterpartyCountryCode/>
+					<cpty:CounterpartyFinInstFlag/>
+				</cpty:Counterparty>
+				<set:Settlement>
+					<set:SettlementAccountPayment/>
+					<set:SettlementAccountReceipt/>
+					<set:SettlementDate>08 Aug 2001</set:SettlementDate>
+					<set:ActualSettlementDate>08 Aug 2001</set:ActualSettlementDate>
+					<set:SettlementStatusInd/>
+					<set:PriorSettlementStatusInd/>
+				</set:Settlement>
+				<amt:Amounts>
+					<amt:Type>Test</amt:Type>
+					<amt:Ccy>GBP</amt:Ccy>
+					<amt:PRIndicator>P</amt:PRIndicator>
+					<amt:Amount>12345678.90</amt:Amount>
+				</amt:Amounts>
+				<sec:Security>
+					<sec:IssuerId/>
+					<sec:IssuerBusinessUnitCode/>
+					<sec:IssuerPortfolioCode/>
+					<sec:InstrId/>
+					<sec:UnderlyingInstrId/>
+					<sec:ISINCode/>
+					<sec:IssueDate>08 Aug 2001</sec:IssueDate>
+					<sec:CouponDate>08 Aug 2001</sec:CouponDate>
+					<sec:InstrumentMaturityDate>08 Aug 2001</sec:InstrumentMaturityDate>
+					<sec:BuySellCode/>
+					<sec:IssueFlag/>
+					<sec:ZeroCouponInstrumentFlag/>
+					<sec:FixedFloatInd/>
+					<sec:CouponFreq/>
+				</sec:Security>
+				<!--  Specific parts used to for the different deal types
+				
+			<int:InterestRate>
+				<int:IntRate/>
+				<int:IntBasisCode/>
+				<int:CompoundIntFlag/>
+				<int:Spread/>
+				<int:CapitalisingIntFlag/>
+				<int:FloatRateInd/>		
+			</int:InterestRate>	
+			
+			<ExchangeRate>
+				<CrossCcyExchgRate>	</CrossCcyExchgRate>
+			</ExchangeRate>
+			
+			<LD>
+				<SubLoanFlag></SubLoanFlag>
+			</LD>
+			<Price/>	
+			<FX/>
+			<Option/>
+			<Futures/>
+	
+			<Swap>
+				<RateStartDate>	</RateStartDate>
+			</Swap>
+	
+			<FRA>
+				<FixingDate>	</FixingDate>
+			</FRA>
+	-->
+			</t:RaboPayLoad>
+			<ab:RaboPayLoad id="1234123" version="1.1">
+				<ab:AccountingEntry>
+				<ab:ChartOfAccountNum>123450100</ab:ChartOfAccountNum>
+					<ab:AePortfolioCode>GT715110</ab:AePortfolioCode>
+					<ab:AeSeqNum>OA12345678</ab:AeSeqNum>
+					<ab:AeEventDate>2001-03-03</ab:AeEventDate>
+					<ab:ProjectId>' ' </ab:ProjectId>
+					<ab:TransactionCcy>USD</ab:TransactionCcy>
+					<ab:TransactionAmt>123456.00</ab:TransactionAmt>
+					<ab:JournalLineRef>' '</ab:JournalLineRef>
+					<ab:MovementFlag>N</ab:MovementFlag>
+					<ab:RateType>CRRNT</ab:RateType>
+					<ab:LedgerGroup>ACTUALS</ab:LedgerGroup>
+					<ab:RateMultiplier>1.00000000</ab:RateMultiplier>
+					<ab:RateDivisor>1.00000000</ab:RateDivisor>
+					<ab:MonetaryAmt>0.00</ab:MonetaryAmt>
+					<ab:CurrencyCode>' '</ab:CurrencyCode>
+					<ab:StatisticsCode>' '</ab:StatisticsCode>
+					<ab:Ledger>' '</ab:Ledger>
+					<ab:StatisticsAmt>00000.00 </ab:StatisticsAmt>
+					<ab:AlternateAccount>' '</ab:AlternateAccount>
+					<ab:AegRuleDetail/>
+					<ab:SettlementAccountId/>
+					<ab:OffsetAccountId/>
+					<ab:BusinessDate>2001-01-01</ab:BusinessDate>
+					<ab:AccountCountryCode/>
+					<ab:ForCcyRepCode>10</ab:ForCcyRepCode>
+					<ab:ForCcyRepCountryCode/>
+					<ab:AeBusinessUnitCode>NLRAT</ab:AeBusinessUnitCode>
+					<ab:AeProductCode>BONDCV</ab:AeProductCode>
+					<ab:AeCounterpartyBusinessUnitCode>NLRAT</ab:AeCounterpartyBusinessUnitCode>
+				</ab:AccountingEntry>
+			</ab:RaboPayLoad>
+			<ab:RaboPayLoad id="12312323123" version="1.1">
+				
+			</ab:RaboPayLoad>
+		</m:Content>
+	</m:Contents>
+	<!--	<m:Contents>-->
+	<!-- Example content -->
+	<!-- Version refers to the version of the Payload NOT the version of the contents of the Payload-->
+	<!-- Redeclare the default namespace to be the Repo namespace                                   -->
+	<!-- Note we could use the namespace URI as the version number and retire the version attribute -->
+	<!--		<m:Content xmlns:t="http://www.rabobank.com/Payload/Repo/1.0" xmlns:ab="http://www.rabobank.com/Payload/AccountingBatch/1.0">
+			<t:RaboPayload id="Repo" version="1.1">
+				<t:DealId>RP00100112</t:DealId>
+				<t:DateTrade>Aug 07 2001 14:06:07 GMT</t:DateTrade>
+				<t:DateValue>Aug 10 2001 14:06:07 GMT</t:DateValue>
+				<t:SecurityId>
+					<t:Isin/>
+					<t:Bloomberg/>
+					<t:Cusip/>
+				</t:SecurityId>
+				<t:Counterparty>
+					<t:ShortId>BARLNTRE</t:ShortId>
+					<t:LongId>Barclays Treasury London</t:LongId>
+				</t:Counterparty>
+			</t:RaboPayload>
+			<ab:RaboPayload id="AccountingBatch" version="1">
+				<ab:Description>Generated by AEG</ab:Description>
+				<ab:GeneralLedgerId>OMR</ab:GeneralLedgerId>
+				<ab:LedgerType>Actuals</ab:LedgerType>
+			</ab:RaboPayload>
+		</m:Content>
+	</m:Contents>-->
+</m:Msg>

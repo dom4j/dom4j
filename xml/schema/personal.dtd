@@ -1,0 +1,25 @@
+<?xml encoding="UTF-8"?>
+<!ELEMENT personnel (person)+>
+
+<!ELEMENT person (name,email*,url*,link?)>
+<!ATTLIST person id ID #REQUIRED>
+<!ATTLIST person note CDATA #IMPLIED>
+<!ATTLIST person contr (true|false) 'false'>
+<!ATTLIST person salary CDATA #IMPLIED>
+
+<!ELEMENT name ((family,given)|(given,family))>
+
+<!ELEMENT family (#PCDATA)>
+
+<!ELEMENT given (#PCDATA)>
+
+<!ELEMENT email (#PCDATA)>
+
+<!ELEMENT url EMPTY>
+<!ATTLIST url href CDATA 'http://'>
+
+<!ELEMENT link EMPTY>
+<!ATTLIST link manager IDREF #IMPLIED>
+<!ATTLIST link subordinates IDREFS #IMPLIED>
+
+<!NOTATION gif PUBLIC '-//APP/Photoshop/4.0' 'photoshop.exe'>

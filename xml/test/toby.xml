@@ -1,0 +1,7730 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Message Event="A05">
+
+  <MSH>
+
+
+
+  <SeAp>
+
+
+
+  <Namesp>REGADT</Namesp>
+
+
+  <UnID />
+
+
+  <UnIDTy />
+
+
+
+
+
+    </SeAp>
+
+
+  <SeFa>
+
+
+
+  <Namesp>MCM</Namesp>
+
+
+  <UnID />
+
+
+  <UnIDTy />
+
+
+
+
+
+    </SeFa>
+
+
+  <ReAp>
+
+
+
+  <Namesp>IFENG</Namesp>
+
+
+  <UnID />
+
+
+  <UnIDTy />
+
+
+
+
+
+    </ReAp>
+
+
+  <ReFa>
+
+
+
+  <Namesp />
+
+
+  <UnID />
+
+
+  <UnIDTy />
+
+
+
+
+
+    </ReFa>
+
+
+  <DTofMe>199601061000</DTofMe>
+
+
+  <Secur />
+
+
+  <MeTy>
+
+
+
+  <name>ADT</name>
+
+
+  <TrEv>A05</TrEv>
+
+
+
+
+
+    </MeTy>
+
+
+  <MeCoID />
+
+
+  <PrID>
+
+
+
+  <ProcID />
+
+
+  <PrMo />
+
+
+
+
+
+    </PrID>
+
+
+  <VeID />
+
+
+  <SeNum />
+
+
+  <CoPo />
+
+
+  <AcAcTy />
+
+
+  <ApAcTy />
+
+
+  <ConCo />
+
+
+  <Chse />
+
+
+  <PLofMe>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </PLofMe>
+
+
+
+
+
+  </MSH>
+
+  <EVN>
+
+
+
+  <EvTyCo>A05</EvTyCo>
+
+
+  <ReDT>
+
+
+
+  <date>199601061000</date>
+
+
+  <time />
+
+
+
+
+
+    </ReDT>
+
+
+  <DTPlEv>
+
+
+
+  <date>199601101400</date>
+
+
+  <time />
+
+
+
+
+
+    </DTPlEv>
+
+
+  <EvReCo>01</EvReCo>
+
+
+  <OpID>
+
+
+
+  <IDNum />
+
+
+
+  <SoTa />
+
+
+  <AsAu />
+
+
+  <NaTC />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </OpID>
+
+
+  <EvOc>199601061000 </EvOc>
+
+
+
+
+
+  </EVN>
+
+  <PID SetID="">
+
+
+
+
+  <PaIDEx>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </PaIDEx>
+
+
+  <PaIDIn>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </PaIDIn>
+
+
+  <AltPaID>
+
+
+
+  <IDNum>191919</IDNum>
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu>GENHOSP</AsAu>
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </AltPaID>
+
+
+  <PaNa>
+
+
+
+  <FaNa />
+
+
+  <GiNa />
+
+
+  <MiIn />
+
+
+  <Suff />
+
+
+  <Pref />
+
+
+  <Degr />
+
+
+  <NaTC />
+
+
+  <NaRC />
+
+
+
+
+
+    </PaNa>
+
+
+  <MoMaNa>
+
+
+
+  <FaNa />
+
+
+  <GiNa />
+
+
+  <MiIn />
+
+
+  <Suff />
+
+
+  <Pref />
+
+
+  <Degr />
+
+
+  <NaTC />
+
+
+  <NaRC />
+
+
+
+
+
+    </MoMaNa>
+
+
+  <DTofBi>
+
+
+
+  <date />
+
+
+  <time />
+
+
+
+
+
+    </DTofBi>
+
+
+  <Sex />
+
+
+  <PaAl>
+
+
+
+  <FaNa />
+
+
+  <GiNa />
+
+
+  <MiIn />
+
+
+  <Suff />
+
+
+  <Pref />
+
+
+  <Degr />
+
+
+  <NaTC />
+
+
+  <NaRC />
+
+
+
+
+
+    </PaAl>
+
+
+  <Race />
+
+
+  <PaAd>
+
+
+
+  <StAd />
+
+
+  <OtDe />
+
+
+  <City />
+
+
+  <StPr />
+
+
+  <ZipPC />
+
+
+  <Country />
+
+
+  <AdTy />
+
+
+  <OtGD />
+
+
+  <CoPC />
+
+
+  <CeTr />
+
+
+
+
+
+    </PaAd>
+
+
+  <CountyCo />
+
+
+  <PhNumHo>
+
+
+
+  <TeNum />
+
+
+  <Exten />
+
+
+  <Beeper />
+
+
+  <text />
+
+
+  <TeUC />
+
+
+  <TeET />
+
+
+  <eMail />
+
+
+  <CoCo />
+
+
+  <AcCo />
+
+
+  <PhNum />
+
+
+  <Extension />
+
+
+  <anytext />
+
+
+
+
+
+    </PhNumHo>
+
+
+  <PhNumBu>
+
+
+
+  <TeNum />
+
+
+  <Exten />
+
+
+  <Beeper />
+
+
+  <text />
+
+
+  <TeUC />
+
+
+  <TeET />
+
+
+  <eMail />
+
+
+  <CoCo />
+
+
+  <AcCo />
+
+
+  <PhNum />
+
+
+  <Extension />
+
+
+  <anytext />
+
+
+
+
+
+    </PhNumBu>
+
+
+  <PrLa>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </PrLa>
+
+
+  <MaSt>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </MaSt>
+
+
+  <Relig />
+
+
+  <PaAcNum>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </PaAcNum>
+
+
+  <SSNum />
+
+
+  <DrLiNum>
+
+
+
+  <LiNum />
+
+
+  <IsSPC />
+
+
+  <ExDa />
+
+
+
+
+
+    </DrLiNum>
+
+
+  <MoId>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </MoId>
+
+
+  <EtGr />
+
+
+  <BiPl />
+
+
+  <MuBiIn />
+
+
+  <BiOr />
+
+
+  <Citiz />
+
+
+  <VeMiSt>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </VeMiSt>
+
+
+  <Nation>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </Nation>
+
+
+  <PaDeDT>
+
+
+</PaDeDT>
+
+
+  <PaDeIn />
+
+
+
+
+
+  </PID>
+
+  <NK1 SetID="4">
+
+
+
+
+   <Name> </Name>
+
+
+   <Relat>
+
+
+
+   <Ident>MARYLOU</Ident>
+
+
+   <text />
+
+
+   <CoSy />
+
+
+   <AltIdent />
+
+
+   <AltText />
+
+
+   <AltCoSy />
+
+
+
+
+
+    </Relat>
+
+
+   <Address>
+
+
+
+  <StAd>123 INDUSTRY WAY</StAd>
+
+
+  <OtDe />
+
+
+  <City>ISHPEMING</City>
+
+
+  <StPr>MI</StPr>
+
+
+  <ZipPC>49849</ZipPC>
+
+
+  <Country>""</Country>
+
+
+  <AdTy />
+
+
+  <OtGD />
+
+
+  <CoPC />
+
+
+  <CeTr />
+
+
+
+
+
+    </Address>
+
+
+   <PhoneNum>
+
+
+
+  <TeNum />
+
+
+  <Exten />
+
+
+  <Beeper />
+
+
+  <text />
+
+
+  <TeUC />
+
+
+  <TeET />
+
+
+  <eMail />
+
+
+  <CoCo />
+
+
+  <AcCo />
+
+
+  <PhNum />
+
+
+  <Extension />
+
+
+  <anytext />
+
+
+
+
+
+    </PhoneNum>
+
+
+   <PhNumBu />
+
+
+   <CoRo>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </CoRo>
+
+
+   <StDa />
+
+
+   <EndDa />
+
+
+   <AsPaJT />
+
+
+   <AsPaJC>
+
+
+
+  <JobCo />
+
+
+  <JobCl />
+
+
+
+
+
+    </AsPaJC>
+
+
+   <AsPaEN>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </AsPaEN>
+
+
+   <OrgNa>
+
+
+
+  <OrNa />
+
+
+  <OrNTC />
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </OrgNa>
+
+
+   <MaSt />
+
+
+   <Sex />
+
+
+   <DTofBi />
+
+
+   <LiDe />
+
+
+   <AmSt />
+
+
+   <Citiz />
+
+
+   <PrLa />
+
+
+   <LiAr />
+
+
+   <PuIn />
+
+
+   <PrIn />
+
+
+   <StIn />
+
+
+   <Relig />
+
+
+   <MoMaNa />
+
+
+   <Nation />
+
+
+   <EtGr />
+
+
+   <CoRe>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </CoRe>
+
+
+   <CoPeNa>
+
+
+
+  <FaNa />
+
+
+  <GiNa />
+
+
+  <MiIn />
+
+
+  <Suff />
+
+
+  <Pref />
+
+
+  <Degr />
+
+
+  <NaTC />
+
+
+  <NaRC />
+
+
+
+
+
+    </CoPeNa>
+
+
+   <CoPeTN>
+
+
+
+  <TeNum />
+
+
+  <Exten />
+
+
+  <Beeper />
+
+
+  <text />
+
+
+  <TeUC />
+
+
+  <TeET />
+
+
+  <eMail />
+
+
+  <CoCo />
+
+
+  <AcCo />
+
+
+  <PhNum />
+
+
+  <Extension />
+
+
+  <anytext />
+
+
+
+
+
+    </CoPeTN>
+
+
+   <CoPeAd>
+
+
+
+  <StAd />
+
+
+  <OtDe />
+
+
+  <City />
+
+
+  <StPr />
+
+
+  <ZipPC />
+
+
+  <Country />
+
+
+  <AdTy />
+
+
+  <OtGD />
+
+
+  <CoPC />
+
+
+  <CeTr />
+
+
+
+
+
+    </CoPeAd>
+
+
+   <AsPaId>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </AsPaId>
+
+
+   <JoSt />
+
+
+   <Race />
+
+
+   <Handic />
+
+
+   <CoPeSSN />
+
+
+
+
+
+  </NK1>
+
+  <NK1 SetID="3">
+
+
+
+
+   <Name> </Name>
+
+
+   <Relat>
+
+
+
+   <Ident>MARYLOU</Ident>
+
+
+   <text />
+
+
+   <CoSy />
+
+
+   <AltIdent />
+
+
+   <AltText />
+
+
+   <AltCoSy />
+
+
+
+
+
+    </Relat>
+
+
+   <Address>
+
+
+
+  <StAd />
+
+
+  <OtDe />
+
+
+  <City />
+
+
+  <StPr />
+
+
+  <ZipPC />
+
+
+  <Country />
+
+
+  <AdTy />
+
+
+  <OtGD />
+
+
+  <CoPC />
+
+
+  <CeTr />
+
+
+
+
+
+    </Address>
+
+
+   <PhoneNum>
+
+
+
+  <TeNum />
+
+
+  <Exten />
+
+
+  <Beeper />
+
+
+  <text />
+
+
+  <TeUC />
+
+
+  <TeET />
+
+
+  <eMail />
+
+
+  <CoCo />
+
+
+  <AcCo />
+
+
+  <PhNum />
+
+
+  <Extension />
+
+
+  <anytext />
+
+
+
+
+
+    </PhoneNum>
+
+
+   <PhNumBu />
+
+
+   <CoRo>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </CoRo>
+
+
+   <StDa />
+
+
+   <EndDa />
+
+
+   <AsPaJT />
+
+
+   <AsPaJC>
+
+
+
+  <JobCo />
+
+
+  <JobCl />
+
+
+
+
+
+    </AsPaJC>
+
+
+   <AsPaEN>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </AsPaEN>
+
+
+   <OrgNa>
+
+
+
+  <OrNa />
+
+
+  <OrNTC />
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </OrgNa>
+
+
+   <MaSt />
+
+
+   <Sex />
+
+
+   <DTofBi />
+
+
+   <LiDe />
+
+
+   <AmSt />
+
+
+   <Citiz />
+
+
+   <PrLa />
+
+
+   <LiAr />
+
+
+   <PuIn />
+
+
+   <PrIn />
+
+
+   <StIn />
+
+
+   <Relig />
+
+
+   <MoMaNa />
+
+
+   <Nation />
+
+
+   <EtGr />
+
+
+   <CoRe>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </CoRe>
+
+
+   <CoPeNa>
+
+
+
+  <FaNa />
+
+
+  <GiNa />
+
+
+  <MiIn />
+
+
+  <Suff />
+
+
+  <Pref />
+
+
+  <Degr />
+
+
+  <NaTC />
+
+
+  <NaRC />
+
+
+
+
+
+    </CoPeNa>
+
+
+   <CoPeTN>
+
+
+
+  <TeNum />
+
+
+  <Exten />
+
+
+  <Beeper />
+
+
+  <text />
+
+
+  <TeUC />
+
+
+  <TeET />
+
+
+  <eMail />
+
+
+  <CoCo />
+
+
+  <AcCo />
+
+
+  <PhNum />
+
+
+  <Extension />
+
+
+  <anytext />
+
+
+
+
+
+    </CoPeTN>
+
+
+   <CoPeAd>
+
+
+
+  <StAd />
+
+
+  <OtDe />
+
+
+  <City />
+
+
+  <StPr />
+
+
+  <ZipPC />
+
+
+  <Country />
+
+
+  <AdTy />
+
+
+  <OtGD />
+
+
+  <CoPC />
+
+
+  <CeTr />
+
+
+
+
+
+    </CoPeAd>
+
+
+   <AsPaId>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </AsPaId>
+
+
+   <JoSt />
+
+
+   <Race />
+
+
+   <Handic />
+
+
+   <CoPeSSN />
+
+
+
+
+
+  </NK1>
+  <NK1 SetID="2">
+
+
+
+
+   <Name>
+
+
+
+  <FaNa>MASSIE</FaNa>
+
+
+  <GiNa>ELLEN</GiNa>
+
+
+  <MiIn />
+
+
+  <Suff />
+
+
+  <Pref />
+
+
+  <Degr />
+
+
+  <NaTC />
+
+
+  <NaRC />
+
+
+
+
+
+    </Name>
+
+
+   <Relat>
+
+
+
+   <Ident>MARYLOU</Ident>
+
+
+   <text />
+
+
+   <CoSy />
+
+
+   <AltIdent />
+
+
+   <AltText />
+
+
+   <AltCoSy />
+
+
+
+
+
+    </Relat>
+
+
+   <Address>
+
+
+
+  <StAd />
+
+
+  <OtDe />
+
+
+  <City />
+
+
+  <StPr />
+
+
+  <ZipPC />
+
+
+  <Country />
+
+
+  <AdTy />
+
+
+  <OtGD />
+
+
+  <CoPC />
+
+
+  <CeTr />
+
+
+
+
+
+    </Address>
+
+
+   <PhoneNum>
+
+
+
+  <TeNum />
+
+
+  <Exten />
+
+
+  <Beeper />
+
+
+  <text />
+
+
+  <TeUC />
+
+
+  <TeET />
+
+
+  <eMail />
+
+
+  <CoCo />
+
+
+  <AcCo />
+
+
+  <PhNum />
+
+
+  <Extension />
+
+
+  <anytext />
+
+
+
+
+
+    </PhoneNum>
+
+
+   <PhNumBu />
+
+
+   <CoRo>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </CoRo>
+
+
+   <StDa />
+
+
+   <EndDa />
+
+
+   <AsPaJT />
+
+
+   <AsPaJC>
+
+
+
+  <JobCo />
+
+
+  <JobCl />
+
+
+
+
+
+    </AsPaJC>
+
+
+   <AsPaEN>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </AsPaEN>
+
+
+   <OrgNa>
+
+
+
+  <OrNa />
+
+
+  <OrNTC />
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </OrgNa>
+
+
+   <MaSt />
+
+
+   <Sex />
+
+
+   <DTofBi />
+
+
+   <LiDe />
+
+
+   <AmSt />
+
+
+   <Citiz />
+
+
+   <PrLa />
+
+
+   <LiAr />
+
+
+   <PuIn />
+
+
+   <PrIn />
+
+
+   <StIn />
+
+
+   <Relig />
+
+
+   <MoMaNa />
+
+
+   <Nation />
+
+
+   <EtGr />
+
+
+   <CoRe>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </CoRe>
+
+
+   <CoPeNa>
+
+
+
+  <FaNa />
+
+
+  <GiNa />
+
+
+  <MiIn />
+
+
+  <Suff />
+
+
+  <Pref />
+
+
+  <Degr />
+
+
+  <NaTC />
+
+
+  <NaRC />
+
+
+
+
+
+    </CoPeNa>
+
+
+   <CoPeTN>
+
+
+
+  <TeNum />
+
+
+  <Exten />
+
+
+  <Beeper />
+
+
+  <text />
+
+
+  <TeUC />
+
+
+  <TeET />
+
+
+  <eMail />
+
+
+  <CoCo />
+
+
+  <AcCo />
+
+
+  <PhNum />
+
+
+  <Extension />
+
+
+  <anytext />
+
+
+
+
+
+    </CoPeTN>
+
+
+   <CoPeAd>
+
+
+
+  <StAd />
+
+
+  <OtDe />
+
+
+  <City />
+
+
+  <StPr />
+
+
+  <ZipPC />
+
+
+  <Country />
+
+
+  <AdTy />
+
+
+  <OtGD />
+
+
+  <CoPC />
+
+
+  <CeTr />
+
+
+
+
+
+    </CoPeAd>
+
+
+   <AsPaId>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </AsPaId>
+
+
+   <JoSt />
+
+
+   <Race />
+
+
+   <Handic />
+
+
+   <CoPeSSN />
+
+
+
+
+
+  </NK1>
+  <NK1 SetID="1">
+
+
+
+
+   <Name>
+
+
+
+  <FaNa>MASSIE</FaNa>
+
+
+  <GiNa>ELLEN</GiNa>
+
+
+  <MiIn />
+
+
+  <Suff />
+
+
+  <Pref />
+
+
+  <Degr />
+
+
+  <NaTC />
+
+
+  <NaRC />
+
+
+
+
+
+    </Name>
+
+
+   <Relat>
+
+
+
+   <Ident />
+
+
+   <text />
+
+
+   <CoSy />
+
+
+   <AltIdent />
+
+
+   <AltText />
+
+
+   <AltCoSy />
+
+
+
+
+
+    </Relat>
+
+
+   <Address>
+
+
+
+  <StAd />
+
+
+  <OtDe />
+
+
+  <City />
+
+
+  <StPr />
+
+
+  <ZipPC />
+
+
+  <Country />
+
+
+  <AdTy />
+
+
+  <OtGD />
+
+
+  <CoPC />
+
+
+  <CeTr />
+
+
+
+
+
+    </Address>
+
+
+   <PhoneNum>
+
+
+
+  <TeNum />
+
+
+  <Exten />
+
+
+  <Beeper />
+
+
+  <text />
+
+
+  <TeUC />
+
+
+  <TeET />
+
+
+  <eMail />
+
+
+  <CoCo />
+
+
+  <AcCo />
+
+
+  <PhNum />
+
+
+  <Extension />
+
+
+  <anytext />
+
+
+
+
+
+    </PhoneNum>
+
+
+   <PhNumBu />
+
+
+   <CoRo>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </CoRo>
+
+
+   <StDa />
+
+
+   <EndDa />
+
+
+   <AsPaJT />
+
+
+   <AsPaJC>
+
+
+
+  <JobCo />
+
+
+  <JobCl />
+
+
+
+
+
+    </AsPaJC>
+
+
+   <AsPaEN>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </AsPaEN>
+
+
+   <OrgNa>
+
+
+
+  <OrNa />
+
+
+  <OrNTC />
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </OrgNa>
+
+
+   <MaSt />
+
+
+   <Sex />
+
+
+   <DTofBi />
+
+
+   <LiDe />
+
+
+   <AmSt />
+
+
+   <Citiz />
+
+
+   <PrLa />
+
+
+   <LiAr />
+
+
+   <PuIn />
+
+
+   <PrIn />
+
+
+   <StIn />
+
+
+   <Relig />
+
+
+   <MoMaNa />
+
+
+   <Nation />
+
+
+   <EtGr />
+
+
+   <CoRe>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </CoRe>
+
+
+   <CoPeNa>
+
+
+
+  <FaNa />
+
+
+  <GiNa />
+
+
+  <MiIn />
+
+
+  <Suff />
+
+
+  <Pref />
+
+
+  <Degr />
+
+
+  <NaTC />
+
+
+  <NaRC />
+
+
+
+
+
+    </CoPeNa>
+
+
+   <CoPeTN>
+
+
+
+  <TeNum />
+
+
+  <Exten />
+
+
+  <Beeper />
+
+
+  <text />
+
+
+  <TeUC />
+
+
+  <TeET />
+
+
+  <eMail />
+
+
+  <CoCo />
+
+
+  <AcCo />
+
+
+  <PhNum />
+
+
+  <Extension />
+
+
+  <anytext />
+
+
+
+
+
+    </CoPeTN>
+
+
+   <CoPeAd>
+
+
+
+  <StAd />
+
+
+  <OtDe />
+
+
+  <City />
+
+
+  <StPr />
+
+
+  <ZipPC />
+
+
+  <Country />
+
+
+  <AdTy />
+
+
+  <OtGD />
+
+
+  <CoPC />
+
+
+  <CeTr />
+
+
+
+
+
+    </CoPeAd>
+
+
+   <AsPaId>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </AsPaId>
+
+
+   <JoSt />
+
+
+   <Race />
+
+
+   <Handic />
+
+
+   <CoPeSSN />
+
+
+
+
+
+  </NK1>
+  <PV1 SetID="">
+
+
+
+
+  <PatCl />
+
+
+  <AsPaLo>
+
+
+
+  <PoCa>O</PoCa>
+
+
+  <Room />
+
+
+  <Bed />
+
+
+  <Facil />
+
+
+  <LoSt />
+
+
+  <PeLT />
+
+
+  <Build />
+
+
+  <Floor />
+
+
+  <LoDe />
+
+
+
+
+
+    </AsPaLo>
+
+
+  <AdmTy />
+
+
+  <PrNum>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </PrNum>
+
+
+  <PrPaLo>
+
+
+
+  <PoCa />
+
+
+  <Room />
+
+
+  <Bed />
+
+
+  <Facil />
+
+
+  <LoSt />
+
+
+  <PeLT />
+
+
+  <Build />
+
+
+  <Floor />
+
+
+  <LoDe />
+
+
+
+
+
+    </PrPaLo>
+
+
+  <AtDo>
+
+
+
+  <IDNum />
+
+
+
+  <SoTa />
+
+
+  <AsAu />
+
+
+  <NaTC />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </AtDo>
+
+
+  <ReDo>
+
+
+
+  <IDNum>0148</IDNum>
+
+
+
+  <SoTa>ADDISON,JAMES</SoTa>
+
+
+  <AsAu />
+
+
+  <NaTC />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </ReDo>
+
+
+  <CoDo>
+
+
+
+  <IDNum />
+
+
+
+  <SoTa />
+
+
+  <AsAu />
+
+
+  <NaTC />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </CoDo>
+
+
+  <HoSe />
+
+
+  <TeLo>
+
+
+
+  <PoCa />
+
+
+  <Room />
+
+
+  <Bed />
+
+
+  <Facil />
+
+
+  <LoSt />
+
+
+  <PeLT />
+
+
+  <Build />
+
+
+  <Floor />
+
+
+  <LoDe />
+
+
+
+
+
+    </TeLo>
+
+
+  <PrTeIn />
+
+
+  <ReIn />
+
+
+  <AdSo />
+
+
+  <AmSt />
+
+
+  <VIPIn />
+
+
+  <AdDo>
+
+
+
+  <IDNum />
+
+
+
+  <SoTa />
+
+
+  <AsAu />
+
+
+  <NaTC />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </AdDo>
+
+
+  <PaTy />
+
+
+  <ViNum>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </ViNum>
+
+
+  <FinCl>
+
+
+
+  <FiCl />
+
+
+  <EfDa />
+
+
+
+
+
+    </FinCl>
+
+
+  <ChPrIn />
+
+
+  <CouCo />
+
+
+  <CrRa />
+
+
+  <ContCo />
+
+
+  <CoEfDa />
+
+
+  <CoAm />
+
+
+  <CoPe />
+
+
+  <InCo />
+
+
+  <TrBaDeCo />
+
+
+  <TrBaDeDa />
+
+
+  <BaDeAgCo />
+
+
+  <BaDeTrAm />
+
+
+  <BaDeReAm />
+
+
+  <DeAcIn />
+
+
+  <DeAcDa />
+
+
+  <DiDi />
+
+
+  <DitoLo />
+
+
+  <DiTy />
+
+
+  <SerFa />
+
+
+  <BeSt />
+
+
+  <AcSt />
+
+
+  <PeLo>
+
+
+
+  <PoCa />
+
+
+  <Room />
+
+
+  <Bed />
+
+
+  <Facil />
+
+
+  <LoSt />
+
+
+  <PeLT />
+
+
+  <Build />
+
+
+  <Floor />
+
+
+  <LoDe />
+
+
+
+
+
+    </PeLo>
+
+
+  <PrTeLo>
+
+
+
+  <PoCa />
+
+
+  <Room />
+
+
+  <Bed />
+
+
+  <Facil />
+
+
+  <LoSt />
+
+
+  <PeLT />
+
+
+  <Build />
+
+
+  <Floor />
+
+
+  <LoDe />
+
+
+
+
+
+    </PrTeLo>
+
+
+  <AdDT>
+
+
+
+  <date />
+
+
+  <time />
+
+
+
+
+
+    </AdDT>
+
+
+  <DiDT>
+
+
+
+  <date />
+
+
+  <time />
+
+
+
+
+
+    </DiDT>
+
+
+  <CuPaBa />
+
+
+  <ToCh />
+
+
+  <ToAd />
+
+
+  <ToPa />
+
+
+  <AlViID>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </AlViID>
+
+
+  <ViIn />
+
+
+  <OtHePr>
+
+
+
+  <IDNum />
+
+
+
+  <SoTa />
+
+
+  <AsAu />
+
+
+  <NaTC />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </OtHePr>
+
+
+
+
+
+  </PV1>
+
+  <PV2>
+
+
+
+  <PrPeLo>
+
+
+
+  <PoCa />
+
+
+  <Room />
+
+
+  <Bed />
+
+
+  <Facil />
+
+
+  <LoSt />
+
+
+  <PeLT />
+
+
+  <Build />
+
+
+  <Floor />
+
+
+  <LoDe />
+
+
+
+
+
+    </PrPeLo>
+
+
+  <AccCo>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </AccCo>
+
+
+  <AdRe>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </AdRe>
+
+
+  <TrRe>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </TrRe>
+
+
+  <PatVa />
+
+
+  <PaVaLo />
+
+
+  <ViUsCo />
+
+
+  <ExAdDT>
+
+
+
+  <date>199601101400</date>
+
+
+  <time />
+
+
+
+
+
+    </ExAdDT>
+
+
+  <ExDiDT>
+
+
+
+  <date />
+
+
+  <time />
+
+
+
+
+
+    </ExDiDT>
+
+
+  <ELofIS />
+
+
+  <ALofIS />
+
+
+  <ViDe />
+
+
+  <ReSoCo>
+
+
+
+  <IDNum />
+
+
+
+  <SoTa />
+
+
+  <AsAu />
+
+
+  <NaTC />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </ReSoCo>
+
+
+  <PrSeDa />
+
+
+  <EIRIn />
+
+
+  <PuStCo />
+
+
+  <SpPrCo />
+
+
+  <RetIn />
+
+
+  <ENofIP />
+
+
+  <ViPuCo />
+
+
+  <ViPrIn />
+
+
+  <ClOrNa>
+
+
+
+  <OrNa />
+
+
+  <OrNTC />
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </ClOrNa>
+
+
+  <PaStCo />
+
+
+  <ViPrCo />
+
+
+  <PrTrDa />
+
+
+  <ExDiDi />
+
+
+  <SonFD />
+
+
+  <FSIDa />
+
+
+  <PCACo />
+
+
+  <ReSeCo />
+
+
+  <BiMeCo />
+
+
+  <ExSuDT>
+
+
+
+  <date />
+
+
+  <time />
+
+
+
+
+
+    </ExSuDT>
+
+
+  <MiPaCo />
+
+
+  <MnonAC>199601101400 </MnonAC>
+
+
+  <NeBaIn />
+
+
+  <BaDeIn />
+
+
+
+
+
+  </PV2>
+
+  <OBX>
+
+
+
+  <OBX-T SetID="">
+
+
+
+
+  <VaTy />
+
+
+  <ObId />
+
+
+  <ObSuID />
+
+
+  <ObVaT />
+
+
+
+  <Units />
+
+
+  <ReRa />
+
+
+  <AbFl />
+
+
+
+  <Probab />
+
+
+  <NofAT />
+
+
+  <ObReSt />
+
+
+  <DLONVa />
+
+
+  <UDACh />
+
+
+  <DTofOb />
+
+
+  <ProdID />
+
+
+  <ReOb />
+
+
+  <ObMe />
+
+
+
+
+
+    </OBX-T>
+
+
+  <OBX-TX SetID="">
+
+
+
+
+  <VaTy>ST</VaTy>
+
+
+  <ObId>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+      </ObId>
+
+
+  <ObSuID />
+
+
+  <ObVaTX>
+
+
+
+ <AD>
+
+
+    <StAd />
+
+
+    <OtDe />
+
+
+    <City />
+
+
+    <StPr />
+
+
+    <ZipPC />
+
+
+    <Country />
+
+
+    <AdTy />
+
+
+    <OtGD />
+
+
+
+
+        </AD>
+
+
+<CE>
+
+
+    <Ident />
+
+
+    <text />
+
+
+    <CoSy />
+
+
+    <AltIdent />
+
+
+    <AltText />
+
+
+    <AltCoSy />
+
+
+
+
+        </CE>
+
+
+  <CF>
+
+
+    <Ident />
+
+
+    <text />
+
+
+    <CoSy />
+
+
+    <AltIdent />
+
+
+    <AltText />
+
+
+    <AltCoSy />
+
+
+
+
+        </CF>
+
+
+  <CK>
+
+
+    <IDNum />
+
+
+    <ChDi />
+
+
+    <ChDS />
+
+
+    <AsAu />
+
+
+
+
+        </CK>
+
+
+  <CN>
+
+
+    <IDNum />
+
+
+    <FaNa />
+
+
+    <GiNa />
+
+
+    <MiIn />
+
+
+    <Suff />
+
+
+    <Pref />
+
+
+    <Degr />
+
+
+    <SoTa />
+
+
+    <AsAu />
+
+
+
+
+        </CN>
+
+
+  <CP>
+
+
+    <Quant />
+
+
+    <Denom />
+
+
+
+
+        </CP>
+
+
+  <CX>
+
+
+    <Price />
+
+
+    <PrTy />
+
+
+    <frVa />
+
+
+    <toVa />
+
+
+    <RaUn />
+
+
+    <RaTy />
+
+
+
+
+        </CX>
+
+
+
+  <DT>
+
+
+     <date />
+
+
+     <time />
+
+
+
+
+        </DT>
+
+
+
+
+
+  <ED>
+
+
+    <SoAp />
+
+
+    <TyDa />
+
+
+    <DaSu />
+
+
+    <Encod />
+
+
+    <Data />
+
+
+
+
+        </ED>
+
+
+  <PN>
+
+
+    <FaNa />
+
+
+    <GiNa />
+
+
+    <MiIn />
+
+
+    <Suff />
+
+
+    <Pref />
+
+
+    <Degr />
+
+
+
+
+        </PN>
+
+
+  <RP>
+
+
+    <Point />
+
+
+    <appl />
+
+
+    <TyDa />
+
+
+    <Subt />
+
+
+
+
+        </RP>
+
+
+  <SN>
+
+
+    <Compar />
+
+
+    <num1 />
+
+
+    <Separ />
+
+
+    <num2 />
+
+
+
+
+        </SN>
+
+
+  <ST>
+
+
+    <StrData />
+
+
+
+
+        </ST>
+
+
+  <TN>
+
+
+    <TeNum />
+
+
+    <Exten />
+
+
+    <Beeper />
+
+
+    <text />
+
+
+
+
+        </TN>
+
+
+  <XAD>
+
+
+    <StAd />
+
+
+    <OtDe />
+
+
+    <City />
+
+
+    <StPr />
+
+
+    <ZipPC />
+
+
+    <Country />
+
+
+    <AdTy />
+
+
+    <OtGD />
+
+
+    <CoPC />
+
+
+    <CeTr />
+
+
+
+
+        </XAD>
+
+
+  <XCN>
+
+
+    <IDNum />
+
+
+    <FaNa />
+
+
+    <GiNa />
+
+
+    <MiIn />
+
+
+    <Suff />
+
+
+    <Pref />
+
+
+    <Degr />
+
+
+    <SoTa />
+
+
+    <AsAu />
+
+
+    <NaTC />
+
+
+    <ChDi />
+
+
+    <ChDS />
+
+
+    <IdTC />
+
+
+    <AsFa />
+
+
+
+
+        </XCN>
+
+
+  <XON>
+
+
+    <OrNa />
+
+
+    <OrNTC />
+
+
+    <IDNum />
+
+
+    <ChDi />
+
+
+    <ChDS />
+
+
+    <AsAu />
+
+
+    <IdTC />
+
+
+    <AsFa />
+
+
+
+
+        </XON>
+
+
+  <XPN>
+
+
+    <FaNa />
+
+
+    <GiNa />
+
+
+    <MiIn />
+
+
+    <Suff />
+
+
+    <Pref />
+
+
+    <Degr />
+
+
+    <NaTC />
+
+
+    <NaRC />
+
+
+
+
+        </XPN>
+
+
+  <XTN>
+
+
+    <TeNum />
+
+
+    <Exten />
+
+
+    <Beeper />
+
+
+    <text />
+
+
+    <TeUC />
+
+
+    <TeET />
+
+
+    <eMail />
+
+
+    <CoCo />
+
+
+    <AcCo />
+
+
+    <PhNum />
+
+
+    <Extension />
+
+
+    <anytext />
+
+
+
+
+        </XTN>
+
+
+
+
+
+      </ObVaTX>
+
+
+
+  <Units />
+
+
+  <ReRa />
+
+
+  <AbFl />
+
+
+
+  <Probab />
+
+
+  <NofAT />
+
+
+  <ObReSt />
+
+
+  <DLONVa>
+
+
+
+  <date />
+
+
+  <time />
+
+
+
+
+
+      </DLONVa>
+
+
+  <UDACh />
+
+
+  <DTofOb>
+
+
+
+  <date />
+
+
+  <time />
+
+
+
+
+
+      </DTofOb>
+
+
+  <ProdID>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+      </ProdID>
+
+
+  <ReOb>
+
+
+
+  <IDNum />
+
+
+
+  <SoTa />
+
+
+  <AsAu />
+
+
+  <NaTC />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+      </ReOb>
+
+
+  <ObMe>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+      </ObMe>
+
+
+
+
+
+    </OBX-TX>
+
+
+  <OBX-NM />
+
+
+
+
+
+  </OBX>
+
+  <AL1 SetID="">
+
+
+
+
+  <AlTy />
+
+
+  <AlCo>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </AlCo>
+
+
+  <AlSe />
+
+
+  <AlRe />
+
+
+  <IdDa />
+
+
+
+
+
+  </AL1>
+
+  <DG1 SetID="1">
+
+
+
+
+  <DiaCoMe>19</DiaCoMe>
+
+
+  <DiaCo>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </DiaCo>
+
+
+  <DiaDe>BIOPSY</DiaDe>
+
+
+  <DiaDT>
+
+
+
+  <date />
+
+
+  <time />
+
+
+
+
+
+    </DiaDT>
+
+
+  <DiaTy>00 </DiaTy>
+
+
+  <MaDiaCa>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </MaDiaCa>
+
+
+  <DiaReGr>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </DiaReGr>
+
+
+  <DRGAIn />
+
+
+  <DRGGRCo />
+
+
+  <OutTy>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </OutTy>
+
+
+  <OutDa />
+
+
+  <OutCo>
+
+
+
+  <Price />
+
+
+  <PrTy />
+
+
+  <frVa />
+
+
+  <toVa />
+
+
+  <RaUn />
+
+
+  <RaTy />
+
+
+
+
+
+    </OutCo>
+
+
+  <GVandTy />
+
+
+  <DiaPr />
+
+
+  <DiaCl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</DiaCl>
+
+
+  <DiaClass />
+
+
+  <CoIn />
+
+
+  <AtDT>
+
+
+
+   <date />
+
+
+   <time />
+
+
+
+
+
+    </AtDT>
+
+
+
+
+
+  </DG1>
+
+  <DRG>
+
+
+
+  <DiaReGr />
+
+
+  <DRGAsDT>
+
+
+
+  <date />
+
+
+  <time />
+
+
+
+
+
+    </DRGAsDT>
+
+
+  <DRGAIn />
+
+
+  <DRGGRCo />
+
+
+  <OutTy />
+
+
+  <OutDa />
+
+
+  <OutCo />
+
+
+  <DRGPa />
+
+
+  <OutRe>
+
+
+
+  <Price />
+
+
+  <PrTy />
+
+
+  <frVa />
+
+
+  <toVa />
+
+
+  <RaUn />
+
+
+  <RaTy />
+
+
+
+
+
+    </OutRe>
+
+
+  <CoIn />
+
+
+
+
+
+  </DRG>
+
+  <DRG2>
+
+
+
+  <DiaReGr />
+
+
+  <DRGAsDT>
+
+
+
+  <date />
+
+
+  <time />
+
+
+
+
+
+    </DRGAsDT>
+
+
+  <DRGAIn />
+
+
+  <DRGGRCo />
+
+
+  <OutTy />
+
+
+  <OutDa />
+
+
+  <OutCo />
+
+
+  <DRGPa />
+
+
+  <OutRe>
+
+
+
+  <Price />
+
+
+  <PrTy />
+
+
+  <frVa />
+
+
+  <toVa />
+
+
+  <RaUn />
+
+
+  <RaTy />
+
+
+
+
+
+    </OutRe>
+
+
+  <CoIn />
+
+
+
+
+
+  </DRG2>
+
+  <ROL>
+
+
+
+
+
+
+
+
+
+
+</ROL>
+
+  <GT1 SetID="1">
+
+
+
+
+  <GuNum>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </GuNum>
+
+
+  <GuName>
+
+
+
+  <FaNa>MASSIE</FaNa>
+
+
+  <GiNa>JAMES</GiNa>
+
+
+  <MiIn>""</MiIn>
+
+
+  <Suff>""</Suff>
+
+
+  <Pref>""</Pref>
+
+
+  <Degr>""</Degr>
+
+
+  <NaTC />
+
+
+  <NaRC />
+
+
+
+
+
+    </GuName>
+
+
+  <GuSpNa>
+
+
+
+  <FaNa />
+
+
+  <GiNa />
+
+
+  <MiIn />
+
+
+  <Suff />
+
+
+  <Pref />
+
+
+  <Degr />
+
+
+  <NaTC />
+
+
+  <NaRC />
+
+
+
+
+
+    </GuSpNa>
+
+
+  <GuAddr>
+
+
+
+  <StAd />
+
+
+  <OtDe />
+
+
+  <City />
+
+
+  <StPr />
+
+
+  <ZipPC />
+
+
+  <Country />
+
+
+  <AdTy />
+
+
+  <OtGD />
+
+
+  <CoPC />
+
+
+  <CeTr />
+
+
+
+
+
+    </GuAddr>
+
+
+  <GuPhNuHo>
+
+
+
+  <TeNum />
+
+
+  <Exten />
+
+
+  <Beeper />
+
+
+  <text />
+
+
+  <TeUC />
+
+
+  <TeET />
+
+
+  <eMail />
+
+
+  <CoCo />
+
+
+  <AcCo />
+
+
+  <PhNum />
+
+
+  <Extension />
+
+
+  <anytext />
+
+
+
+
+
+    </GuPhNuHo>
+
+
+  <GuPhNuBu>
+
+
+
+  <TeNum />
+
+
+  <Exten />
+
+
+  <Beeper />
+
+
+  <text />
+
+
+  <TeUC />
+
+
+  <TeET />
+
+
+  <eMail />
+
+
+  <CoCo />
+
+
+  <AcCo />
+
+
+  <PhNum />
+
+
+  <Extension />
+
+
+  <anytext />
+
+
+
+
+
+    </GuPhNuBu>
+
+
+  <GuDTofBi>
+
+
+
+  <date />
+
+
+  <time />
+
+
+
+
+
+    </GuDTofBi>
+
+
+  <GuSex />
+
+
+  <GuTy />
+
+
+  <GuRe />
+
+
+  <GuSSN />
+
+
+  <GuDaBe />
+
+
+  <GuDaEn />
+
+
+  <GuPr />
+
+
+  <GuEmNa>
+
+
+
+  <FaNa />
+
+
+  <GiNa />
+
+
+  <MiIn />
+
+
+  <Suff />
+
+
+  <Pref />
+
+
+  <Degr />
+
+
+  <NaTC />
+
+
+  <NaRC />
+
+
+
+
+
+    </GuEmNa>
+
+
+  <GuEmAd>
+
+
+
+  <StAd />
+
+
+  <OtDe />
+
+
+  <City />
+
+
+  <StPr />
+
+
+  <ZipPC />
+
+
+  <Country />
+
+
+  <AdTy />
+
+
+  <OtGD />
+
+
+  <CoPC />
+
+
+  <CeTr />
+
+
+
+
+
+    </GuEmAd>
+
+
+  <GuEmPhNu>
+
+
+
+  <TeNum />
+
+
+  <Exten />
+
+
+  <Beeper />
+
+
+  <text />
+
+
+  <TeUC />
+
+
+  <TeET />
+
+
+  <eMail />
+
+
+  <CoCo />
+
+
+  <AcCo />
+
+
+  <PhNum />
+
+
+  <Extension />
+
+
+  <anytext />
+
+
+
+
+
+    </GuEmPhNu>
+
+
+  <GuEmIDNu>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </GuEmIDNu>
+
+
+  <GuEmSt />
+
+
+  <GuOrNa>
+
+
+
+  <OrNa />
+
+
+  <OrNTC />
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </GuOrNa>
+
+
+  <GuBiHoFl />
+
+
+  <GuCrRaCo>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </GuCrRaCo>
+
+
+  <GuDeDT>
+
+
+
+  <date />
+
+
+  <time />
+
+
+
+
+
+    </GuDeDT>
+
+
+  <GuDeFl />
+
+
+  <GuChAdCo>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </GuChAdCo>
+
+
+  <GuHoAnIn />
+
+
+  <GuHoSi />
+
+
+  <GuEmplIDNu>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </GuEmplIDNu>
+
+
+  <GuMaStCo />
+
+
+  <GuHiEfDa />
+
+
+  <EmStDa />
+
+
+  <LiDe />
+
+
+  <AmSt />
+
+
+  <Citiz />
+
+
+  <PrLa />
+
+
+  <LiAr />
+
+
+  <PuIn />
+
+
+  <PrIn />
+
+
+  <StIn />
+
+
+  <Relig />
+
+
+  <MoMaNa />
+
+
+  <Nation />
+
+
+  <EtGr />
+
+
+  <CoPeNa />
+
+
+  <CoPeTN />
+
+
+  <CoRe />
+
+
+  <CoRel />
+
+
+  <JoTi />
+
+
+  <JoCoCl />
+
+
+  <GuEmOrNa />
+
+
+  <Handic />
+
+
+  <JoSt />
+
+
+  <GuFiCl />
+
+
+  <GuRa />
+
+
+
+
+
+  </GT1>
+
+  <IN1 SetID="2">
+
+
+
+
+   <InPlID>
+
+
+
+  <Ident>””</Ident>
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </InPlID>
+
+
+   <InCoID>
+
+
+
+  <IDNum>”” </IDNum>
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </InCoID>
+
+
+   <InCoNa>
+
+
+
+  <OrNa>BLUE CROSS</OrNa>
+
+
+  <OrNTC />
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </InCoNa>
+
+
+   <InCoAd>
+
+
+
+  <StAd>171 ZOBERLEIN</StAd>
+
+
+  <OtDe />
+
+
+  <City>ISHPEMING</City>
+
+
+  <StPr>M149849</StPr>
+
+
+  <ZipPC>""</ZipPC>
+
+
+  <Country />
+
+
+  <AdTy />
+
+
+  <OtGD />
+
+
+  <CoPC />
+
+
+  <CeTr />
+
+
+
+
+
+    </InCoAd>
+
+
+   <InCoCoPe>
+
+
+
+  <FaNa />
+
+
+  <GiNa />
+
+
+  <MiIn />
+
+
+  <Suff />
+
+
+  <Pref />
+
+
+  <Degr />
+
+
+  <NaTC />
+
+
+  <NaRC />
+
+
+
+
+
+    </InCoCoPe>
+
+
+   <InCoPhNu>
+
+
+
+  <TeNum />
+
+
+  <Exten />
+
+
+  <Beeper />
+
+
+  <text />
+
+
+  <TeUC />
+
+
+  <TeET />
+
+
+  <eMail />
+
+
+  <CoCo />
+
+
+  <AcCo />
+
+
+  <PhNum />
+
+
+  <Extension />
+
+
+  <anytext />
+
+
+
+
+
+    </InCoPhNu>
+
+
+   <GrNu />
+
+
+   <GrNa>
+
+
+
+  <OrNa />
+
+
+  <OrNTC />
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </GrNa>
+
+
+   <InGrEmID>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </InGrEmID>
+
+
+   <InGrEmNa>
+
+
+
+  <AuNum />
+
+
+  <date />
+
+
+  <Source />
+
+
+
+
+
+    </InGrEmNa>
+
+
+   <PlEfDa />
+
+
+   <PlExDa />
+
+
+   <AuIn />
+
+
+   <PlTy />
+
+
+   <NaofIn>
+
+
+
+  <FaNa />
+
+
+  <GiNa />
+
+
+  <MiIn />
+
+
+  <Suff />
+
+
+  <Pref />
+
+
+  <Degr />
+
+
+  <NaTC />
+
+
+  <NaRC />
+
+
+
+
+
+    </NaofIn>
+
+
+   <InRetoPa />
+
+
+   <InDaofBi />
+
+
+   <InAd>
+
+
+
+  <StAd />
+
+
+  <OtDe />
+
+
+  <City />
+
+
+  <StPr />
+
+
+  <ZipPC />
+
+
+  <Country />
+
+
+  <AdTy />
+
+
+  <OtGD />
+
+
+  <CoPC />
+
+
+  <CeTr />
+
+
+
+
+
+    </InAd>
+
+
+   <AsofBe />
+
+
+   <CoofBe />
+
+
+   <CoofBePr />
+
+
+   <NoofAdFl />
+
+
+   <NoofAdDa />
+
+
+   <ReofElFl />
+
+
+   <ReofElDa />
+
+
+   <ReInCo />
+
+
+   <PrCe />
+
+
+   <VeDT>
+
+
+
+  <date />
+
+
+  <time />
+
+
+
+
+
+    </VeDT>
+
+
+   <Veby>
+
+
+
+  <IDNum />
+
+
+
+  <SoTa />
+
+
+  <AsAu />
+
+
+  <NaTC />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </Veby>
+
+
+   <TyofAgCo />
+
+
+   <BiSt />
+
+
+   <LiReDa />
+
+
+   <DeBeLRDa />
+
+
+   <CoPlCo />
+
+
+   <PoNu />
+
+
+   <PoDe>
+
+
+
+  <Price />
+
+
+  <PrTy />
+
+
+  <frVa />
+
+
+  <toVa />
+
+
+  <RaUn />
+
+
+  <RaTy />
+
+
+
+
+
+    </PoDe>
+
+
+   <PoLiAm>
+
+
+
+  <Price />
+
+
+  <PrTy />
+
+
+  <frVa />
+
+
+  <toVa />
+
+
+  <RaUn />
+
+
+  <RaTy />
+
+
+
+
+
+    </PoLiAm>
+
+
+   <PoLiDa />
+
+
+   <RoRaSePr>
+
+
+
+  <Price />
+
+
+  <PrTy />
+
+
+  <frVa />
+
+
+  <toVa />
+
+
+  <RaUn />
+
+
+  <RaTy />
+
+
+
+
+
+    </RoRaSePr>
+
+
+   <RoRaPr>
+
+
+
+
+
+
+</RoRaPr>
+
+
+   <InEmSt>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </InEmSt>
+
+
+   <InSex />
+
+
+   <InEmAd>
+
+
+
+  <StAd />
+
+
+  <OtDe />
+
+
+  <City />
+
+
+  <StPr />
+
+
+  <ZipPC />
+
+
+  <Country />
+
+
+  <AdTy />
+
+
+  <OtGD />
+
+
+  <CoPC />
+
+
+  <CeTr />
+
+
+
+
+
+    </InEmAd>
+
+
+   <VeSt />
+
+
+   <PrInPlID />
+
+
+   <CoTy />
+
+
+   <Handic />
+
+
+   <InIDNu>
+
+
+
+
+
+
+</InIDNu>
+
+
+
+
+
+  </IN1>
+
+  <IN1 SetID="1">
+
+
+
+
+   <InPlID>
+
+
+
+  <Ident>0</Ident>
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </InPlID>
+
+
+   <InCoID>
+
+
+
+  <IDNum>BC1</IDNum>
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </InCoID>
+
+
+   <InCoNa>
+
+
+
+  <OrNa>BLUE CROSS</OrNa>
+
+
+  <OrNTC />
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </InCoNa>
+
+
+   <InCoAd>
+
+
+
+  <StAd>171 ZOBERLEIN</StAd>
+
+
+  <OtDe />
+
+
+  <City>ISHPEMING</City>
+
+
+  <StPr>M149849</StPr>
+
+
+  <ZipPC>""</ZipPC>
+
+
+  <Country />
+
+
+  <AdTy />
+
+
+  <OtGD />
+
+
+  <CoPC />
+
+
+  <CeTr />
+
+
+
+
+
+    </InCoAd>
+
+
+   <InCoCoPe>
+
+
+
+  <FaNa />
+
+
+  <GiNa />
+
+
+  <MiIn />
+
+
+  <Suff />
+
+
+  <Pref />
+
+
+  <Degr />
+
+
+  <NaTC />
+
+
+  <NaRC />
+
+
+
+
+
+    </InCoCoPe>
+
+
+   <InCoPhNu>
+
+
+
+  <TeNum />
+
+
+  <Exten />
+
+
+  <Beeper />
+
+
+  <text />
+
+
+  <TeUC />
+
+
+  <TeET />
+
+
+  <eMail />
+
+
+  <CoCo />
+
+
+  <AcCo />
+
+
+  <PhNum />
+
+
+  <Extension />
+
+
+  <anytext />
+
+
+
+
+
+    </InCoPhNu>
+
+
+   <GrNu />
+
+
+   <GrNa>
+
+
+
+  <OrNa />
+
+
+  <OrNTC />
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </GrNa>
+
+
+   <InGrEmID>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </InGrEmID>
+
+
+   <InGrEmNa>
+
+
+
+  <AuNum />
+
+
+  <date />
+
+
+  <Source />
+
+
+
+
+
+    </InGrEmNa>
+
+
+   <PlEfDa />
+
+
+   <PlExDa />
+
+
+   <AuIn />
+
+
+   <PlTy />
+
+
+   <NaofIn>
+
+
+
+  <FaNa />
+
+
+  <GiNa />
+
+
+  <MiIn />
+
+
+  <Suff />
+
+
+  <Pref />
+
+
+  <Degr />
+
+
+  <NaTC />
+
+
+  <NaRC />
+
+
+
+
+
+    </NaofIn>
+
+
+   <InRetoPa />
+
+
+   <InDaofBi />
+
+
+   <InAd>
+
+
+
+  <StAd />
+
+
+  <OtDe />
+
+
+  <City />
+
+
+  <StPr />
+
+
+  <ZipPC />
+
+
+  <Country />
+
+
+  <AdTy />
+
+
+  <OtGD />
+
+
+  <CoPC />
+
+
+  <CeTr />
+
+
+
+
+
+    </InAd>
+
+
+   <AsofBe />
+
+
+   <CoofBe />
+
+
+   <CoofBePr />
+
+
+   <NoofAdFl />
+
+
+   <NoofAdDa />
+
+
+   <ReofElFl />
+
+
+   <ReofElDa />
+
+
+   <ReInCo />
+
+
+   <PrCe />
+
+
+   <VeDT>
+
+
+
+  <date />
+
+
+  <time />
+
+
+
+
+
+    </VeDT>
+
+
+   <Veby>
+
+
+
+  <IDNum />
+
+
+
+  <SoTa />
+
+
+  <AsAu />
+
+
+  <NaTC />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </Veby>
+
+
+   <TyofAgCo />
+
+
+   <BiSt />
+
+
+   <LiReDa />
+
+
+   <DeBeLRDa />
+
+
+   <CoPlCo />
+
+
+   <PoNu />
+
+
+   <PoDe>
+
+
+
+  <Price />
+
+
+  <PrTy />
+
+
+  <frVa />
+
+
+  <toVa />
+
+
+  <RaUn />
+
+
+  <RaTy />
+
+
+
+
+
+    </PoDe>
+
+
+   <PoLiAm>
+
+
+
+  <Price />
+
+
+  <PrTy />
+
+
+  <frVa />
+
+
+  <toVa />
+
+
+  <RaUn />
+
+
+  <RaTy />
+
+
+
+
+
+    </PoLiAm>
+
+
+   <PoLiDa />
+
+
+   <RoRaSePr>
+
+
+
+  <Price />
+
+
+  <PrTy />
+
+
+  <frVa />
+
+
+  <toVa />
+
+
+  <RaUn />
+
+
+  <RaTy />
+
+
+
+
+
+    </RoRaSePr>
+
+
+   <RoRaPr>
+
+
+
+
+
+
+</RoRaPr>
+
+
+   <InEmSt>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </InEmSt>
+
+
+   <InSex />
+
+
+   <InEmAd>
+
+
+
+  <StAd />
+
+
+  <OtDe />
+
+
+  <City />
+
+
+  <StPr />
+
+
+  <ZipPC />
+
+
+  <Country />
+
+
+  <AdTy />
+
+
+  <OtGD />
+
+
+  <CoPC />
+
+
+  <CeTr />
+
+
+
+
+
+    </InEmAd>
+
+
+   <VeSt />
+
+
+   <PrInPlID />
+
+
+   <CoTy />
+
+
+   <Handic />
+
+
+   <InIDNu>
+
+
+
+
+
+
+</InIDNu>
+
+
+
+
+
+  </IN1>
+  <IN2>
+
+
+
+  <InEmID>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </InEmID>
+
+
+  <InSSN />
+
+
+  <InEmNa>
+
+
+
+  <IDNum />
+
+
+
+  <SoTa />
+
+
+  <AsAu />
+
+
+  <NaTC />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </InEmNa>
+
+
+  <EmInDa />
+
+
+  <MaClPa />
+
+
+  <MeHeInCaNu />
+
+
+  <MeCaNa />
+
+
+  <MeCaNu />
+
+
+  <ChSpNa>
+
+
+
+  <FaNa />
+
+
+  <GiNa />
+
+
+  <MiIn />
+
+
+  <Suff />
+
+
+  <Pref />
+
+
+  <Degr />
+
+
+  <NaTC />
+
+
+  <NaRC />
+
+
+
+
+
+    </ChSpNa>
+
+
+  <ChIDNu />
+
+
+  <DeofChRe>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </DeofChRe>
+
+
+  <ChOr />
+
+
+  <ChSt />
+
+
+  <ChServ />
+
+
+  <ChRaGr />
+
+
+  <ChStat />
+
+
+  <ChStat />
+
+
+  <ChnonAvCeonFi />
+
+
+  <BaCo />
+
+
+  <CoBaBi />
+
+
+  <BlDe />
+
+
+  <SpCoApNa>
+
+
+
+  <FaNa />
+
+
+  <GiNa />
+
+
+  <MiIn />
+
+
+  <Suff />
+
+
+  <Pref />
+
+
+  <Degr />
+
+
+  <NaTC />
+
+
+  <NaRC />
+
+
+
+
+
+    </SpCoApNa>
+
+
+  <SpCoApTi />
+
+
+  <NonCoInCo />
+
+
+  <PaID>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </PaID>
+
+
+  <PaSuID>
+
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </PaSuID>
+
+
+  <ElSo />
+
+
+  <RoCoTyAm>
+
+
+
+  <RoTy />
+
+
+  <AmTy />
+
+
+  <CovAm />
+
+
+
+
+
+    </RoCoTyAm>
+
+
+  <PoTyAm>
+
+
+
+  <PoTy />
+
+
+  <AmCl />
+
+
+  <Amount />
+
+
+
+
+
+    </PoTyAm>
+
+
+  <DaDe>
+
+
+
+   <DeDa />
+
+
+   <Amount />
+
+
+   <NuofDa />
+
+
+
+
+
+    </DaDe>
+
+
+  <LiDe />
+
+
+  <AmSt />
+
+
+  <Citiz />
+
+
+  <PrLa />
+
+
+  <LiAr />
+
+
+  <PuIn />
+
+
+  <PrIn />
+
+
+  <StIn />
+
+
+  <Relig />
+
+
+  <MoMaNa />
+
+
+  <Nation />
+
+
+  <EtGr />
+
+
+  <MaSt />
+
+
+  <InEmStDa />
+
+
+  <InEmStopDa />
+
+
+  <JoTi />
+
+
+  <JoCoCl />
+
+
+  <JoSt />
+
+
+  <EmCoPeNa>
+
+
+
+  <FaNa />
+
+
+  <GiNa />
+
+
+  <MiIn />
+
+
+  <Suff />
+
+
+  <Pref />
+
+
+  <Degr />
+
+
+  <NaTC />
+
+
+  <NaRC />
+
+
+
+
+
+    </EmCoPeNa>
+
+
+  <EmCoPePhNu>
+
+
+
+  <TeNum />
+
+
+  <Exten />
+
+
+  <Beeper />
+
+
+  <text />
+
+
+  <TeUC />
+
+
+  <TeET />
+
+
+  <eMail />
+
+
+  <CoCo />
+
+
+  <AcCo />
+
+
+  <PhNum />
+
+
+  <Extension />
+
+
+  <anytext />
+
+
+
+
+
+    </EmCoPePhNu>
+
+
+  <EmCoRe />
+
+
+  <InCoPeNa />
+
+
+  <InCoPePhNu />
+
+
+  <InCoPeRe />
+
+
+  <RetoPaStDa />
+
+
+  <RetoPaStopDa />
+
+
+  <InCoCoRe />
+
+
+  <InCoCoPhNu />
+
+
+  <PoSc />
+
+
+  <PoSo />
+
+
+  <PaMeNu />
+
+
+  <GuRetoIn />
+
+
+  <InPhNuHo>
+
+
+
+  <TeNum />
+
+
+  <Exten />
+
+
+  <Beeper />
+
+
+  <text />
+
+
+  <TeUC />
+
+
+  <TeET />
+
+
+  <eMail />
+
+
+  <CoCo />
+
+
+  <AcCo />
+
+
+  <PhNum />
+
+
+  <Extension />
+
+
+  <anytext />
+
+
+
+
+
+    </InPhNuHo>
+
+
+  <InEmPhNu>
+
+
+
+  <TeNum />
+
+
+  <Exten />
+
+
+  <Beeper />
+
+
+  <text />
+
+
+  <TeUC />
+
+
+  <TeET />
+
+
+  <eMail />
+
+
+  <CoCo />
+
+
+  <AcCo />
+
+
+  <PhNum />
+
+
+  <Extension />
+
+
+  <anytext />
+
+
+
+
+
+    </InEmPhNu>
+
+
+  <MiHaPr>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </MiHaPr>
+
+
+  <SuFl />
+
+
+  <CoLiFl />
+
+
+  <StLiFl />
+
+
+  <InOrNaandID>
+
+
+
+  <OrNa />
+
+
+  <OrNTC />
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </InOrNaandID>
+
+
+  <InEmOrNaandID>
+
+
+
+  <OrNa />
+
+
+  <OrNTC />
+
+
+  <IDNum />
+
+
+  <ChDi />
+
+
+  <ChDS />
+
+
+  <AsAu />
+
+
+  <IdTC />
+
+
+  <AsFa />
+
+
+
+
+
+    </InEmOrNaandID>
+
+
+  <Race />
+
+
+  <HCFAPaRetoIn>
+
+
+
+  <Ident />
+
+
+  <text />
+
+
+  <CoSy />
+
+
+  <AltIdent />
+
+
+  <AltText />
+
+
+  <AltCoSy />
+
+
+
+
+
+    </HCFAPaRetoIn>
+
+
+
+
+
+  </IN2>
+
+
+</Message>
+

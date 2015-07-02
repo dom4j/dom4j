@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+
+<cdataTest>
+  test &lt; one <![CDATA[&&<<>>]]> test two
+</cdataTest> 

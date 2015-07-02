@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widgets>
+  <window class="javax.swing.JFrame" title="Frame #1"/>
+  <window class="javax.swing.JFrame" title="Frame #2"/>
+</widgets>

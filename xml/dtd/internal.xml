@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!--
+
+    The declarations in this file MUST agree with the test case, see
+
+    org.dom4j.TestDocType#getInternalDeclarations()
+
+-->
+<!DOCTYPE greeting [ 
+  <!ELEMENT greeting (#PCDATA)> 
+  <!ATTLIST greeting foo ID #IMPLIED>
+  <!ENTITY % boolean "( true | false )">
+]> 
+<greeting>Hello, world!</greeting> 

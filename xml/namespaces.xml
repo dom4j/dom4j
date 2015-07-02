@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<xsl:stylesheet
+        xmlns:JavaXML="http://www.oreilly.com/catalog/javaxml/"
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+        xmlns:foo="http://www.foo.com/bar"
+        version="1.0">
+
+        <xsl:template match="JavaXML:Book">
+                        <head>
+                                <title><xsl:value-of select="JavaXML:Title" /></title>
+                        </head>
+                        <body>
+                                <xsl:apply-templates select="*[not(self::JavaXML:Title)]" />
+                        </body>       
+        </xsl:template>
+
+</xsl:stylesheet>

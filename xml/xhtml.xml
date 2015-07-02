@@ -1,0 +1,48 @@
+<?xml version='1.0'?>
+
+<!DOCTYPE html [
+  <!ELEMENT html (#PCDATA)>
+  <!ENTITY nbsp '&#160;'>
+  <!ENTITY aring '&#229;'>
+  <!ENTITY auml '&#228;'>
+  <!ENTITY ouml '&#246;'>
+  <!ENTITY Aring '&#197;'>
+  <!ENTITY Auml '&#196;'>
+  <!ENTITY Ouml '&#214;'>
+]>
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+    <link rel="stylesheet" type="text/css" href="default.css"/>
+  </head>
+  <body>
+    <h1>This is some HTML &amp; and entites</h1>
+
+    <h2>Here are some entities</h2>
+
+    <a href="http://dom4j.org">home page</a>
+
+    <p>This is some text containing some entities</p>
+    <p>God forts&auml;ttning p&aring; det nya millenniet!</p>
+    <br/>
+
+    <link>http://foo.com/bar?a=123&amp;b=456&amp;d=d9d9d</link>
+
+    <img src="http://foo.com/bar?a=123&amp;b=456&amp;d=d9d9d" alt="something"/>
+
+
+    <h2>Here is some CDATA</h2>
+    <p></p>
+    <p/>
+    <form method="post">
+      <input type="text" value="foo"/>
+      <img src="images/something.gif"/>
+      <textarea></textarea>
+    </form>
+    <hr/>
+
+    <a href="http://dom4j.org/guide.html">quick start guide</a>
+
+  </body>
+</html>

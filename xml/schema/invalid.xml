@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<personnel>
+
+  <person id="Big.Boss" >
+    <!-- missing given name -->
+    <name><family>Boss</family></name>
+    <email>chief@foo.com</email>
+    <link subordinates="one.worker two.worker three.worker four.worker five.worker"/>
+  </person>
+
+  <person id="one.worker">
+    <!-- too many links -->
+    <name><family>Worker</family> <given>One</given></name>
+    <email>one@foo.com</email>
+    <link manager="Big.Boss"/>
+    <link manager="Big.Boss2"/>
+  </person>
+
+  <person id="two.worker">
+    <!-- missing family name -->
+    <name><given>Two</given></name> 
+    <email>two@foo.com</email>
+    <link manager="Big.Boss"/>
+  </person>
+
+  <person id="three.worker">
+    <!-- missing name -->
+    <email>three@foo.com</email>
+    <link manager="Big.Boss"/>
+  </person>
+
+  <person id="four.worker">
+    <!-- missing link -->
+    <name><family>Worker</family> <given>Four</given></name>
+    <email>four@foo.com</email>
+  </person>
+
+  <person id="five.worker">
+    <name><family>Worker</family> <given>Five</given></name>
+    <email>five@foo.com</email>
+    <link manager="Big.Boss"/>
+  </person>
+
+</personnel>

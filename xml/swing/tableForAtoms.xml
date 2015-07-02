@@ -1,0 +1,10 @@
+<?xml version='1.0'?>
+<!-- displays the periodic table in a JTable -->
+<table select="/PERIODIC_TABLE/ATOM">
+  <column select="NAME">Name</column>
+  <column select="SYMBOL">Symbol</column>
+  <column select="ATOMIC_WEIGHT" type="number">Weight</column>
+  <column select="ATOMIC_NUMBER" type="number">Number</column>
+  <column select="OXIDATION_STATES">Oxidation States</column>
+  <column select="BOILING_POINT" columnNameXPath="/PERIODIC_TABLE/ATOM/BOILING_POINT/@UNITS"/>
+</table>

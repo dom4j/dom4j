@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE another-greeting SYSTEM "sample.dtd">
+<another-greeting>Hello, world!</another-greeting> 

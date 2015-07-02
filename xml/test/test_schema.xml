@@ -1,0 +1,18 @@
+<schema
+    xmlns='http://www.w3.org/2001/XMLSchema'
+    targetNamespace='http://www.w3.org/namespace/'
+    xmlns:t='http://www.w3.org/namespace/'>
+
+  <element name='ex1'>
+    <complexType>
+      <sequence>
+        <element ref='t:x'/>
+      </sequence>
+    </complexType>
+  </element>
+
+  <element name='x'>
+    <complexType mixed='true'>
+    </complexType>
+  </element>
+</schema>

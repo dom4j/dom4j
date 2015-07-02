@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<import>
+
+  <stuff name="fourth">
+	fourth text
+  </stuff>
+
+  <stuff name="fifth">
+	fifth text
+  </stuff>
+
+  <stuff name="sixth">
+	sixth text
+  </stuff>
+
+</import>

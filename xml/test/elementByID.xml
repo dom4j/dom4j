@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html>
+  <head>
+  <title>Squeak!</title>
+  </head>
+  <body>
+    <h1>Squeak!</h1>
+    <span ID="message">squeak squeak squeak</span>
+  </body>
+</html>

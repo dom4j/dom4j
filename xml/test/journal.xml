@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<series xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="journal.xsd">
+
+<entry>
+<date>May 19, 2002</date>
+<text>
+Sample text. We should support some markup here.
+</text>
+</entry>
+
+<entry>
+<date>May 19, 2002 10:27</date>
+<text>
+Second batch.
+</text>
+</entry>
+
+
+</series>

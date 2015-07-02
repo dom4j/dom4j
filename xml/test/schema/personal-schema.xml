@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<personnel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:noNamespaceSchemaLocation='personal.xsd'>
+
+  <person id="Big.Boss" age="1" x="4" d="1999-05-03" dt="1999-05-31T13:20:00-05:00">
+    <name><family>Boss</family> <given>Big</given></name>
+    <email>chief@foo.com</email>
+    <link subordinates="one.worker two.worker three.worker four.worker five.worker"/>
+    <note>Some text...</note>
+    <salary>100</salary>
+  </person>
+
+  <person id="one.worker" age="2" x="23" d="1999-05-03" dt="1999-05-31T13:20:00-05:00">
+    <name><family>Worker</family> <given>One</given></name>
+    <email>one@foo.com</email>
+    <link manager="Big.Boss"/>
+    <note>Some text...</note>
+    <salary>200</salary>
+  </person>
+
+  <person id="two.worker" age="3" x="52" d="1999-05-03" dt="1999-05-31T13:20:00-05:00">
+    <name><family>Worker</family> <given>Two</given></name>
+    <email>two@foo.com</email>
+    <link manager="Big.Boss"/>
+    <note>Some text...</note>
+    <salary>300</salary>
+  </person>
+
+  <person id="three.worker" age="4" x="21" d="1999-05-03" dt="1999-05-31T13:20:00-05:00">
+    <name><family>Worker</family> <given>Three</given></name>
+    <email>three@foo.com</email>
+    <link manager="Big.Boss"/>
+    <note>Some text...</note>
+    <salary>400</salary>
+  </person>
+
+  <person id="four.worker" age="5" x="24" dt="1999-05-31T13:20:00-05:00">
+    <name><family>Worker</family> <given>Four</given></name>
+    <email>four@foo.com</email>
+    <link manager="Big.Boss"/>
+    <note>Some text...</note>
+    <salary>500</salary>
+  </person>
+
+  <person id="five.worker" age="6" x="22" dt="1999-05-31T13:20:00-05:00">
+    <name><family>Worker</family> <given>Five</given></name>
+    <email>five@foo.com</email>
+    <link manager="Big.Boss"/>
+    <note>Some text...</note>
+    <salary>600</salary>
+  </person>
+
+</personnel>

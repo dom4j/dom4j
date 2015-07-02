@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!-- THis is a comment -->
+
+<properties>
+  <client>
+    <threadsafe>false</threadsafe>
+    <GUI-type>simple</GUI-type>
+  </client>
+  <server id="jimmy">Server Stuff here
+    <db name="Jim">
+      <connection>
+        <URL>http://www.digitalsymbiosis.net</URL>
+        <name>jdcasey</name>
+        <password>nothing</password>
+      </connection>
+      <connection>
+        <URL>http://www.digitalsymbiosis.net</URL>
+        <name>jdcasey</name>
+        <password>nothing</password>
+      </connection>
+      This is a test. This should be the server/db property...
+Sure.
+    </db>
+    <connections>
+      <limit>5</limit>
+      <initial>1</initial>
+    </connections>
+  </server>
+</properties>

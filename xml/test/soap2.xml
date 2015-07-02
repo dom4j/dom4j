@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope 
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+  <SOAP-ENV:Body>
+    <m:BabelFish xmlns:m="urn:xmethodsBabelFish">
+      <translationmode>en_fr</translationmode>      
+      <sourcedata>SOAP is quite easy with JSP.</sourcedata>    
+
+      <!-- all these <foo> elements should be in the same namespace -->
+      <foo xmlns="fooURI" id="1">
+        <foo id="2"/>
+        <blah:blah xmlns:blah="blah">
+          <whatever xmlns="whatever">
+            <newFoo xmlns="newFooURI">
+              <newFoo/>
+            </newFoo>
+          </whatever>
+          <foo id="3"/>
+        </blah:blah>
+        <foo id="4"/>
+      </foo>
+
+      <!-- all these <bar> elements should be in the same namespace -->
+      <a:bar xmlns:a="barURI" id="1">
+        <blah xmlns="blah">
+          <a:bar id="2"/>
+          <a:whatever xmlns:a="whatever">
+            <a:newBar xmlns:a="newBarURI"/>
+          </a:whatever>
+          <a:bar id="4"/>
+        </blah>
+      </a:bar>
+    </m:BabelFish>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

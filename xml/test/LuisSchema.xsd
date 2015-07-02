@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:element name="root">
+		<xsd:complexType name="rootComplex">
+			<xsd:sequence>
+				<xsd:any/>
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:long" use="required" i18n="false"/>
+			<xsd:attribute name="_creationDate" type="xsd:date" use="optional" i18n="false"/>
+			<xsd:attribute name="_lastUpdate" type="xsd:date" use="optional" i18n="false"/>
+			<xsd:attribute name="_changesCounter" type="xsd:long" use="optional" i18n="false"/>
+			<xsd:attribute name="_urgentImport" type="xsd:boolean" use="optional" i18n="false"/>
+			<xsd:attribute name="_status" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="14"/>
+						<xsd:enumeration value="DIRTY"/>
+						<xsd:enumeration value="VALIDATED"/>
+						<xsd:enumeration value="PUBLISHED"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="_userName" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="32"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="_validatorName" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="32"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="name" use="optional" i18n="true">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="128"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="orphanage">
+		<xsd:complexType name="orphanageComplex">
+			<xsd:sequence>
+				<xsd:any/>
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:long" use="required" i18n="false"/>
+			<xsd:attribute name="_creationDate" type="xsd:date" use="optional" i18n="false"/>
+			<xsd:attribute name="_lastUpdate" type="xsd:date" use="optional" i18n="false"/>
+			<xsd:attribute name="_changesCounter" type="xsd:long" use="optional" i18n="false"/>
+			<xsd:attribute name="_urgentImport" type="xsd:boolean" use="optional" i18n="false"/>
+			<xsd:attribute name="_status" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="14"/>
+						<xsd:enumeration value="DIRTY"/>
+						<xsd:enumeration value="VALIDATED"/>
+						<xsd:enumeration value="PUBLISHED"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="_userName" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="32"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="_validatorName" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="32"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="name" use="optional" i18n="true">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="128"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="users">
+		<xsd:complexType name="userComplex">
+			<xsd:sequence>
+				<xsd:element minOccurs="0" maxOccurs="unbounded" name="user"/>
+			</xsd:sequence>
+			<xsd:attribute name="id" type="xsd:long" use="required" i18n="false"/>
+			<xsd:attribute name="_creationDate" type="xsd:date" use="optional" i18n="false"/>
+			<xsd:attribute name="_lastUpdate" type="xsd:date" use="optional" i18n="false"/>
+			<xsd:attribute name="_changesCounter" type="xsd:long" use="optional" i18n="false"/>
+			<xsd:attribute name="_urgentImport" type="xsd:boolean" use="optional" i18n="false"/>
+			<xsd:attribute name="_status" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="14"/>
+						<xsd:enumeration value="DIRTY"/>
+						<xsd:enumeration value="VALIDATED"/>
+						<xsd:enumeration value="PUBLISHED"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="_userName" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="32"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="_validatorName" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="32"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="user">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element minOccurs="0" maxOccurs="unbounded" name="contract"/>
+				<xsd:element name="name"/>
+				<xsd:element maxOccurs="5" name="home"/>
+			</xsd:sequence>
+			<xsd:attribute name="added" use="required" i18n="false" type="xsd:date"/>
+			<xsd:attribute name="favoritePrime" use="optional" i18n="false">
+				<xsd:simpleType name="tPrimes">
+					<xsd:restriction base="xsd:integer">
+						<xsd:enumeration value="2"/>
+						<xsd:enumeration value="3"/>
+						<xsd:enumeration value="5"/>
+						<xsd:enumeration value="7"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="age" use="optional" i18n="false" type="xsd:integer"/>
+			<xsd:attribute name="IC" use="optional" i18n="false" type="xsd:decimal"/>
+			<xsd:attribute name="nick" use="required" i18n="false">
+				<xsd:simpleType name="tString100">
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="100"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="new" use="optional" i18n="false" type="xsd:boolean"/>
+			<xsd:attribute name="descr" use="optional" i18n="true">
+				<xsd:simpleType name="tString100">
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="100"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="id" type="xsd:long" use="required" i18n="false"/>
+			<xsd:attribute name="_creationDate" type="xsd:date" use="optional" i18n="false"/>
+			<xsd:attribute name="_lastUpdate" type="xsd:date" use="optional" i18n="false"/>
+			<xsd:attribute name="_changesCounter" type="xsd:long" use="optional" i18n="false"/>
+			<xsd:attribute name="_urgentImport" type="xsd:boolean" use="optional" i18n="false"/>
+			<xsd:attribute name="_status" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="14"/>
+						<xsd:enumeration value="DIRTY"/>
+						<xsd:enumeration value="VALIDATED"/>
+						<xsd:enumeration value="PUBLISHED"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="_userName" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="32"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="_validatorName" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="32"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="name">
+		<xsd:complexType>
+			<xsd:attribute name="firstName" i18n="false">
+				<xsd:simpleType name="tString100">
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="100"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="sureName" i18n="false">
+				<xsd:simpleType name="tString100">
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="100"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="personalID" i18n="false" type="xsd:long"/>
+			<xsd:attribute name="id" type="xsd:long" use="required" i18n="false"/>
+			<xsd:attribute name="_creationDate" type="xsd:date" use="optional" i18n="false"/>
+			<xsd:attribute name="_lastUpdate" type="xsd:date" use="optional" i18n="false"/>
+			<xsd:attribute name="_changesCounter" type="xsd:long" use="optional" i18n="false"/>
+			<xsd:attribute name="_urgentImport" type="xsd:boolean" use="optional" i18n="false"/>
+			<xsd:attribute name="_status" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="14"/>
+						<xsd:enumeration value="DIRTY"/>
+						<xsd:enumeration value="VALIDATED"/>
+						<xsd:enumeration value="PUBLISHED"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="_userName" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="32"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="_validatorName" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="32"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="contract">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element minOccurs="0" maxOccurs="3" name="specialNotes"/>
+			</xsd:sequence>
+			<xsd:attribute name="forever" i18n="false" type="xsd:boolean"/>
+			<xsd:attribute name="fee" i18n="false" type="xsd:decimal"/>
+			<xsd:attribute name="total" i18n="false" type="xsd:double"/>
+			<xsd:attribute name="salary" use="optional" i18n="false">
+				<xsd:simpleType name="tSalaries">
+					<xsd:restriction base="xsd:decimal">
+						<xsd:minInclusive value="0"/>
+						<!--xsd:totalDigits value="10"/ NEEDS NEW XERCES-->
+						<!--xsd:fractionDigits value="2"/ NEEDS NEW XERCES-->
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="new" use="optional" i18n="false" type="xsd:boolean"/>
+			<xsd:attribute name="descr" use="optional" i18n="true">
+				<xsd:simpleType name="tString100">
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="100"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="id" type="xsd:long" use="required" i18n="false"/>
+			<xsd:attribute name="_creationDate" type="xsd:date" use="optional" i18n="false"/>
+			<xsd:attribute name="_lastUpdate" type="xsd:date" use="optional" i18n="false"/>
+			<xsd:attribute name="_changesCounter" type="xsd:long" use="optional" i18n="false"/>
+			<xsd:attribute name="_urgentImport" type="xsd:boolean" use="optional" i18n="false"/>
+			<xsd:attribute name="_status" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="14"/>
+						<xsd:enumeration value="DIRTY"/>
+						<xsd:enumeration value="VALIDATED"/>
+						<xsd:enumeration value="PUBLISHED"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="_userName" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="32"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="_validatorName" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="32"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="home">
+		<xsd:complexType>
+			<xsd:attribute name="url" i18n="false" type="xsd:anyURI"/>
+			<xsd:attribute name="ometer" use="required" i18n="false">
+				<xsd:simpleType name="tOnlyO">
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="100"/>
+						<xsd:pattern value="(O)+"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="linuxurl" use="optional" i18n="false">
+				<xsd:simpleType name="tLinuxURI">
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="100"/>
+						<!--xsd:whiteSpace value="collapse"/  NEEDS NEW XERCES-->
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="new" use="optional" i18n="false" type="xsd:boolean"/>
+			<xsd:attribute name="descr" use="optional" i18n="true">
+				<xsd:simpleType name="tString100">
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="100"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="id" type="xsd:long" use="required" i18n="false"/>
+			<xsd:attribute name="_creationDate" type="xsd:date" use="optional" i18n="false"/>
+			<xsd:attribute name="_lastUpdate" type="xsd:date" use="optional" i18n="false"/>
+			<xsd:attribute name="_changesCounter" type="xsd:long" use="optional" i18n="false"/>
+			<xsd:attribute name="_urgentImport" type="xsd:boolean" use="optional" i18n="false"/>
+			<xsd:attribute name="_status" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="14"/>
+						<xsd:enumeration value="DIRTY"/>
+						<xsd:enumeration value="VALIDATED"/>
+						<xsd:enumeration value="PUBLISHED"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="_userName" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="32"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="_validatorName" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="32"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="specialNotes">
+		<xsd:complexType>
+			<xsd:attribute name="new" use="optional" i18n="false" type="xsd:boolean"/>
+			<xsd:attribute name="descr" use="optional" i18n="true">
+				<xsd:simpleType name="tString100">
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="100"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="id" type="xsd:long" use="required" i18n="false"/>
+			<xsd:attribute name="_creationDate" type="xsd:date" use="optional" i18n="false"/>
+			<xsd:attribute name="_lastUpdate" type="xsd:date" use="optional" i18n="false"/>
+			<xsd:attribute name="_changesCounter" type="xsd:long" use="optional" i18n="false"/>
+			<xsd:attribute name="_urgentImport" type="xsd:boolean" use="optional" i18n="false"/>
+			<xsd:attribute name="_status" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="14"/>
+						<xsd:enumeration value="DIRTY"/>
+						<xsd:enumeration value="VALIDATED"/>
+						<xsd:enumeration value="PUBLISHED"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="_userName" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="32"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+			<xsd:attribute name="_validatorName" use="optional" i18n="false">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="32"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

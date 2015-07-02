@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<mergeAdjacentText>
+  test &lt; one <![CDATA[&&<<>>]]> test two
+  	<anElement>
+  		test 
+  		three
+  	</anElement>
+  	test four
+  	<!-- a comment -->
+  	test five
+  	test six
+  	test seven
+</mergeAdjacentText> 
