@@ -7,25 +7,15 @@
 
 package org.dom4j.tree;
 
+import org.dom4j.*;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.dom4j.Comment;
-import org.dom4j.Document;
-import org.dom4j.DocumentType;
-import org.dom4j.Element;
-import org.dom4j.IllegalAddException;
-import org.dom4j.Node;
-import org.dom4j.ProcessingInstruction;
-import org.dom4j.QName;
-import org.dom4j.Text;
-import org.dom4j.Visitor;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.XMLWriter;
 
 /**
  * <p>
@@ -115,20 +105,11 @@ public abstract class AbstractDocument extends AbstractBranch implements
         }
 
         // visit content
-        List content = content();
+        List<Node> content = content();
 
         if (content != null) {
-            for (Iterator iter = content.iterator(); iter.hasNext();) {
-                Object object = iter.next();
-
-                if (object instanceof String) {
-                    Text text = getDocumentFactory()
-                            .createText((String) object);
-                    visitor.visit(text);
-                } else {
-                    Node node = (Node) object;
-                    node.accept(visitor);
-                }
+            for (Node node : content) {
+                node.accept(visitor);
             }
         }
     }

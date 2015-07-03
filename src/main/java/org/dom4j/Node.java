@@ -32,6 +32,7 @@ import java.util.List;
  * @see #supportsParent
  * @see #isReadOnly
  */
+@SuppressWarnings("unused")
 public interface Node extends Cloneable {
     // W3C DOM complient node type codes
 
@@ -381,7 +382,7 @@ public interface Node extends Cloneable {
      * @return the list of <code>Node</code> or <code>String</code>
      *         instances depending on the XPath expression
      */
-    List selectNodes(String xpathExpression);
+    List<Node> selectNodes(String xpathExpression);
 
     /**
      * <p>
@@ -417,7 +418,7 @@ public interface Node extends Cloneable {
      * @return the list of <code>Node</code> instances sorted by the
      *         comparisonXPathExpression
      */
-    List selectNodes(String xpathExpression, String comparisonXPathExpression);
+    List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression);
 
     /**
      * <p>
@@ -438,7 +439,7 @@ public interface Node extends Cloneable {
      * @return the list of <code>Node</code> instances sorted by the
      *         comparisonXPathExpression
      */
-    List selectNodes(String xpathExpression, String comparisonXPathExpression,
+    List<Node> selectNodes(String xpathExpression, String comparisonXPathExpression,
             boolean removeDuplicates);
 
     /**

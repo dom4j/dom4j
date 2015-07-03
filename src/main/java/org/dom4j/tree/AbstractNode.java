@@ -7,18 +7,13 @@
 
 package org.dom4j.tree;
 
+import org.dom4j.*;
+import org.dom4j.rule.Pattern;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
 import java.util.List;
-
-import org.dom4j.Document;
-import org.dom4j.DocumentFactory;
-import org.dom4j.Element;
-import org.dom4j.Node;
-import org.dom4j.NodeFilter;
-import org.dom4j.XPath;
-import org.dom4j.rule.Pattern;
 
 /**
  * <p>
@@ -160,18 +155,18 @@ public abstract class AbstractNode implements Node, Cloneable, Serializable {
         return xpath.evaluate(this);
     }
 
-    public List selectNodes(String xpathExpression) {
+    public List<Node> selectNodes(String xpathExpression) {
         XPath xpath = createXPath(xpathExpression);
 
         return xpath.selectNodes(this);
     }
 
-    public List selectNodes(String xpathExpression,
+    public List<Node> selectNodes(String xpathExpression,
             String comparisonXPathExpression) {
         return selectNodes(xpathExpression, comparisonXPathExpression, false);
     }
 
-    public List selectNodes(String xpathExpression,
+    public List<Node> selectNodes(String xpathExpression,
             String comparisonXPathExpression, boolean removeDuplicates) {
         XPath xpath = createXPath(xpathExpression);
         XPath sortBy = createXPath(comparisonXPathExpression);

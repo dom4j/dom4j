@@ -7,16 +7,15 @@
 
 package org.dom4j.tree;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.StringTokenizer;
-
 import org.dom4j.Element;
 import org.dom4j.ProcessingInstruction;
 import org.dom4j.Visitor;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 /**
  * <p>
@@ -78,7 +77,7 @@ public abstract class AbstractProcessingInstruction extends AbstractNode
                 + "cannot be modified");
     }
 
-    public void setValues(Map data) {
+    public void setValues(Map<String, String> data) {
         throw new UnsupportedOperationException("This PI is read-only and "
                 + "cannot be modified");
     }
@@ -107,13 +106,12 @@ public abstract class AbstractProcessingInstruction extends AbstractNode
      * 
      * @return DOCUMENT ME!
      */
-    protected String toString(Map values) {
-        StringBuffer buffer = new StringBuffer();
+    protected String toString(Map<String, String> values) {
+        StringBuilder buffer = new StringBuilder();
 
-        for (Iterator iter = values.entrySet().iterator(); iter.hasNext();) {
-            Map.Entry entry = (Map.Entry) iter.next();
-            String name = (String) entry.getKey();
-            String value = (String) entry.getValue();
+        for (Map.Entry<String, String> entry : values.entrySet()) {
+            String name = entry.getKey();
+            String value = entry.getValue();
 
             buffer.append(name);
             buffer.append("=\"");
@@ -137,8 +135,8 @@ public abstract class AbstractProcessingInstruction extends AbstractNode
      * 
      * @return DOCUMENT ME!
      */
-    protected Map parseValues(String text) {
-        Map data = new HashMap();
+    protected Map<String, String> parseValues(String text) {
+        Map<String, String> data = new HashMap<String, String>();
 
         StringTokenizer s = new StringTokenizer(text, " =\'\"", true);
 
@@ -156,7 +154,7 @@ public abstract class AbstractProcessingInstruction extends AbstractNode
 
     private String getName(StringTokenizer tokenizer) {
         String token = tokenizer.nextToken();
-        StringBuffer name = new StringBuffer(token);
+        StringBuilder name = new StringBuilder(token);
 
         while (tokenizer.hasMoreTokens()) {
             token = tokenizer.nextToken();
@@ -173,7 +171,7 @@ public abstract class AbstractProcessingInstruction extends AbstractNode
 
     private String getValue(StringTokenizer tokenizer) {
         String token = tokenizer.nextToken();
-        StringBuffer value = new StringBuffer();
+        StringBuilder value = new StringBuilder();
 
         /* get the quote */
         while (tokenizer.hasMoreTokens() && !token.equals("\'")

@@ -8,16 +8,7 @@
 package org.dom4j.io;
 
 import junit.framework.AssertionFailedError;
-
 import junit.textui.TestRunner;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Document;
 import org.dom4j.DocumentType;
@@ -26,10 +17,16 @@ import org.dom4j.dtd.ElementDecl;
 import org.dom4j.dtd.ExternalEntityDecl;
 import org.dom4j.dtd.InternalEntityDecl;
 import org.dom4j.tree.DefaultDocumentType;
-
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Tests the DocType functionality.
@@ -69,10 +66,10 @@ public class DTDTest extends AbstractTestCase {
     private static final String XML_MIXED = "xml/dtd/mixed.xml";
 
     /**
-     * Input XML file to for {@linkEntityResolver}
+     * Input XML file to for {@link EntityResolver}
      * <code>xml/dtd/sample.dtd</code>- the external entity providing the
      * external DTD subset for test cases that need one. The SYSTEM identifier
-     * for this external entity is given by {@link#DTD_SYSTEM_ID}.
+     * for this external entity is given by {@link #DTD_SYSTEM_ID}.
      */
     private static final String DTD_FILE = "xml/dtd/sample.dtd";
 

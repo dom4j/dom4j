@@ -7,19 +7,11 @@
 
 package org.dom4j.tree;
 
-import java.util.Collections;
+import org.dom4j.*;
+import org.xml.sax.EntityResolver;
+
 import java.util.Iterator;
 import java.util.List;
-
-import org.dom4j.Document;
-import org.dom4j.DocumentFactory;
-import org.dom4j.DocumentType;
-import org.dom4j.Element;
-import org.dom4j.IllegalAddException;
-import org.dom4j.Node;
-import org.dom4j.ProcessingInstruction;
-
-import org.xml.sax.EntityResolver;
 
 /**
  * <p>
@@ -31,10 +23,6 @@ import org.xml.sax.EntityResolver;
  * @version $Revision: 1.34 $
  */
 public class DefaultDocument extends AbstractDocument {
-    protected static final List EMPTY_LIST = Collections.EMPTY_LIST;
-
-    protected static final Iterator EMPTY_ITERATOR = EMPTY_LIST.iterator();
-
     /** The name of the document */
     private String name;
 
@@ -44,7 +32,7 @@ public class DefaultDocument extends AbstractDocument {
     /**
      * Store the contents of the document as a lazily created <code>List</code>
      */
-    private List content;
+    private List<Node> content;
 
     /** The document type for this document */
     private DocumentType docType;
@@ -131,32 +119,24 @@ public class DefaultDocument extends AbstractDocument {
         return document;
     }
 
-    public List processingInstructions() {
-        List source = contentList();
-        List answer = createResultList();
-        int size = source.size();
+    public List<ProcessingInstruction> processingInstructions() {
+        List<ProcessingInstruction> answer = createResultList();
 
-        for (int i = 0; i < size; i++) {
-            Object object = source.get(i);
-
-            if (object instanceof ProcessingInstruction) {
-                answer.add(object);
+        for (Node node : contentList()) {
+            if (node instanceof ProcessingInstruction) {
+                answer.add((ProcessingInstruction) node);
             }
         }
 
         return answer;
     }
 
-    public List processingInstructions(String target) {
-        List source = contentList();
-        List answer = createResultList();
-        int size = source.size();
+    public List<ProcessingInstruction> processingInstructions(String target) {
+        List<ProcessingInstruction> answer = createResultList();
 
-        for (int i = 0; i < size; i++) {
-            Object object = source.get(i);
-
-            if (object instanceof ProcessingInstruction) {
-                ProcessingInstruction pi = (ProcessingInstruction) object;
+        for (Node node : contentList()) {
+            if (node instanceof ProcessingInstruction) {
+                ProcessingInstruction pi = (ProcessingInstruction) node;
 
                 if (target.equals(pi.getName())) {
                     answer.add(pi);
@@ -168,14 +148,10 @@ public class DefaultDocument extends AbstractDocument {
     }
 
     public ProcessingInstruction processingInstruction(String target) {
-        List source = contentList();
-        int size = source.size();
+        for (Node node : contentList()) {
 
-        for (int i = 0; i < size; i++) {
-            Object object = source.get(i);
-
-            if (object instanceof ProcessingInstruction) {
-                ProcessingInstruction pi = (ProcessingInstruction) object;
+            if (node instanceof ProcessingInstruction) {
+                ProcessingInstruction pi = (ProcessingInstruction) node;
 
                 if (target.equals(pi.getName())) {
                     return pi;
@@ -187,13 +163,11 @@ public class DefaultDocument extends AbstractDocument {
     }
 
     public boolean removeProcessingInstruction(String target) {
-        List source = contentList();
+        for (Iterator<Node> iter = contentList().iterator(); iter.hasNext();) {
+            Node node = iter.next();
 
-        for (Iterator iter = source.iterator(); iter.hasNext();) {
-            Object object = iter.next();
-
-            if (object instanceof ProcessingInstruction) {
-                ProcessingInstruction pi = (ProcessingInstruction) object;
+            if (node instanceof ProcessingInstruction) {
+                ProcessingInstruction pi = (ProcessingInstruction) node;
 
                 if (target.equals(pi.getName())) {
                     iter.remove();
@@ -206,25 +180,21 @@ public class DefaultDocument extends AbstractDocument {
         return false;
     }
 
-    public void setContent(List content) {
+    public void setContent(List<Node> content) {
         rootElement = null;
         contentRemoved();
 
         if (content instanceof ContentListFacade) {
-            content = ((ContentListFacade) content).getBackingList();
+            content = ((ContentListFacade<Node>) content).getBackingList();
         }
 
         if (content == null) {
             this.content = null;
         } else {
             int size = content.size();
-            List newContent = createContentList(size);
+            List<Node> newContent = createContentList(size);
 
-            for (int i = 0; i < size; i++) {
-                Object object = content.get(i);
-
-                if (object instanceof Node) {
-                    Node node = (Node) object;
+            for (Node node : content) {
                     Document doc = node.getDocument();
 
                     if ((doc != null) && (doc != this)) {
@@ -244,7 +214,6 @@ public class DefaultDocument extends AbstractDocument {
 
                     newContent.add(node);
                     childAdded(node);
-                }
             }
 
             this.content = newContent;
@@ -263,7 +232,7 @@ public class DefaultDocument extends AbstractDocument {
 
     // Implementation methods
     // -------------------------------------------------------------------------
-    protected List contentList() {
+    protected List<Node> contentList() {
         if (content == null) {
             content = createContentList();
 

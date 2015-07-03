@@ -7,11 +7,11 @@
 
 package org.dom4j.tree;
 
-import java.util.Collections;
-import java.util.Map;
-
 import org.dom4j.Element;
 import org.dom4j.Node;
+
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * <p>
@@ -36,7 +36,7 @@ public class FlyweightProcessingInstruction extends
     protected String text;
 
     /** The values for the PI in name/value pairs */
-    protected Map values;
+    protected Map<String, String> values;
 
     /**
      * A default constructor for implementors to use.
@@ -54,7 +54,7 @@ public class FlyweightProcessingInstruction extends
      * @param values
      *            is the <code>Map</code> of the values for the PI
      */
-    public FlyweightProcessingInstruction(String target, Map values) {
+    public FlyweightProcessingInstruction(String target, Map<String, String> values) {
         this.target = target;
         this.values = values;
         this.text = toString(values);
@@ -99,7 +99,7 @@ public class FlyweightProcessingInstruction extends
         return answer;
     }
 
-    public Map getValues() {
+    public Map<String, String> getValues() {
         return Collections.unmodifiableMap(values);
     }
 

@@ -7,14 +7,14 @@
 
 package org.dom4j.tree;
 
+import org.dom4j.DocumentType;
+import org.dom4j.Element;
+import org.dom4j.Visitor;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
-
-import org.dom4j.DocumentType;
-import org.dom4j.Element;
-import org.dom4j.Visitor;
 
 /**
  * <p>
@@ -62,7 +62,7 @@ public abstract class AbstractDocumentType extends AbstractNode implements
         List list = getInternalDeclarations();
 
         if ((list != null) && (list.size() > 0)) {
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
             Iterator iter = list.iterator();
 
             if (iter.hasNext()) {
@@ -87,7 +87,7 @@ public abstract class AbstractDocumentType extends AbstractNode implements
     }
 
     public String asXML() {
-        StringBuffer buffer = new StringBuffer("<!DOCTYPE ");
+        StringBuilder buffer = new StringBuilder("<!DOCTYPE ");
         buffer.append(getElementName());
 
         boolean hasPublicID = false;

@@ -17,6 +17,7 @@ package org.dom4j;
  * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision: 1.9 $
  */
+@SuppressWarnings("unused")
 public interface CharacterData extends Node {
     /**
      * Appends the given text to this nodes text value. Calling this method is

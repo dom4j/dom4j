@@ -17,7 +17,7 @@ import java.io.Writer;
  * <code>AbstractNamespace</code> is an abstract base class for tree
  * implementors to use for implementation inheritence.
  * </p>
- * 
+ *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision: 1.21 $
  */
@@ -95,7 +95,7 @@ public abstract class AbstractAttribute extends AbstractNode implements
     }
 
     public String getPath(Element context) {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
 
         Element parent = getParent();
 
@@ -120,7 +120,7 @@ public abstract class AbstractAttribute extends AbstractNode implements
     }
 
     public String getUniquePath(Element context) {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
 
         Element parent = getParent();
 
