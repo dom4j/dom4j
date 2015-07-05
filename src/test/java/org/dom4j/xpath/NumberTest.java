@@ -32,10 +32,6 @@ public class NumberTest extends AbstractTestCase {
             "10 + count(descendant::author) * 5",
             "10 + (count(descendant::author) * 5)"};
 
-    public static void main(String[] args) {
-        TestRunner.run(NumberTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testXPaths() throws Exception {

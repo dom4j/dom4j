@@ -18,10 +18,6 @@ import org.dom4j.io.SAXReader;
  * @version $Revision: 1.3 $
  */
 public class ValidationTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(ValidationTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testValidation() throws Exception {

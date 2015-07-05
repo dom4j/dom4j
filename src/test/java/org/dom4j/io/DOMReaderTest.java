@@ -23,9 +23,6 @@ import org.dom4j.AbstractTestCase;
  * @author Maarten
  */
 public class DOMReaderTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(DOMReaderTest.class);
-    }
 
     public void testBug972737() throws Exception {
         String xml = "<schema targetNamespace='http://SharedTest.org/xsd' "

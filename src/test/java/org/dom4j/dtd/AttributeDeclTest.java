@@ -39,9 +39,6 @@ import org.dom4j.AbstractTestCase;
  *       isImplied().
  */
 public class AttributeDeclTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(AttributeDeclTest.class);
-    }
 
     // Test case(s)
     // -------------------------------------------------------------------------

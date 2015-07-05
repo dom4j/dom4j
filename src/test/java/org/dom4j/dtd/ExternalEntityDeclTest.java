@@ -30,9 +30,6 @@ import org.dom4j.AbstractTestCase;
  *       at this time.
  */
 public class ExternalEntityDeclTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(ExternalEntityDeclTest.class);
-    }
 
     // Test case(s)
     // -------------------------------------------------------------------------

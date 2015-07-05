@@ -21,10 +21,6 @@ import org.dom4j.Node;
  * @version $Revision: 1.4 $
  */
 public class SelectSingleNodeTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(SelectSingleNodeTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testSelectSingleNode() throws Exception {

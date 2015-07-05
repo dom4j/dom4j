@@ -18,9 +18,6 @@ import org.dom4j.ElementHandler;
  * @author Maarten Coene
  */
 public class DispatchHandlerTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(DispatchHandlerTest.class);
-    }
 
     public void testBug611445() throws Exception {
         MyHandler handler = new MyHandler();

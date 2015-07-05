@@ -14,6 +14,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Node;
 import org.dom4j.xpath.DefaultXPath;
+import org.testng.annotations.BeforeClass;
 
 /**
  * A test harness to test the use of the Stylesheet and the XSLT rule engine.
@@ -36,10 +37,6 @@ public class StylesheetTest extends AbstractTestCase {
     protected String[] templates2 = {"/", "title", "para", "*"};
 
     protected Stylesheet stylesheet;
-
-    public static void main(String[] args) {
-        TestRunner.run(StylesheetTest.class);
-    }
 
     // Test case(s)
     // -------------------------------------------------------------------------
@@ -97,7 +94,8 @@ public class StylesheetTest extends AbstractTestCase {
 
     // Implementation methods
     // -------------------------------------------------------------------------
-    protected void setUp() throws Exception {
+    @BeforeClass
+    public void setUp() throws Exception {
         super.setUp();
 
         stylesheet = new Stylesheet();

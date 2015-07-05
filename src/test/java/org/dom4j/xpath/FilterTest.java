@@ -27,10 +27,6 @@ public class FilterTest extends AbstractTestCase {
     protected static String[] paths = {".[name()='author']",
             ".[name()='XXXX']", ".[.='James Strachan']", ".[.='XXXX']"};
 
-    public static void main(String[] args) {
-        TestRunner.run(FilterTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testXPaths() throws Exception {

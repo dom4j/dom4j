@@ -8,6 +8,7 @@
 package org.dom4j;
 
 import junit.textui.TestRunner;
+import org.testng.annotations.BeforeClass;
 
 import java.util.Iterator;
 import java.util.List;
@@ -23,11 +24,8 @@ public class IteratorTest extends AbstractTestCase {
 
     protected Document iterDocument;
 
-    public static void main(String[] args) {
-        TestRunner.run(IteratorTest.class);
-    }
-
-    protected void setUp() throws Exception {
+    @BeforeClass
+    public void setUp() throws Exception {
         super.setUp();
         iterDocument = DocumentHelper.createDocument();
 

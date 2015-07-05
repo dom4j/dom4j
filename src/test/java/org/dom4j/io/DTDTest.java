@@ -82,10 +82,6 @@ public class DTDTest extends AbstractTestCase {
      */
     protected static final String DTD_SYSTEM_ID = "sample.dtd";
 
-    public static void main(String[] args) {
-        TestRunner.run(DTDTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
 
@@ -359,7 +355,7 @@ public class DTDTest extends AbstractTestCase {
      * @param actual
      *            DOCUMENT ME!
      */
-    public void assertSameDecl(AttributeDecl expected, AttributeDecl actual) {
+    protected void assertSameDecl(AttributeDecl expected, AttributeDecl actual) {
         assertEquals("attributeName is correct", expected.getAttributeName(),
                 actual.getAttributeName());
 

@@ -22,10 +22,6 @@ public class NullAttributesTest extends AbstractTestCase {
 
     protected Element element = document.addElement("root");
 
-    public static void main(String[] args) {
-        TestRunner.run(NullAttributesTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testStringNames() throws Exception {

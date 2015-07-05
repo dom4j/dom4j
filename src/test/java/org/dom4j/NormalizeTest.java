@@ -8,6 +8,7 @@
 package org.dom4j;
 
 import junit.textui.TestRunner;
+import org.testng.annotations.BeforeClass;
 
 /**
  * A test harness for the normalize() method
@@ -16,10 +17,6 @@ import junit.textui.TestRunner;
  * @version $Revision: 1.3 $
  */
 public class NormalizeTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(NormalizeTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testNormalize() throws Exception {
@@ -36,9 +33,8 @@ public class NormalizeTest extends AbstractTestCase {
         assertEquals("Should not trim text", " node ", value);
     }
 
-    // Implementation methods
-    // -------------------------------------------------------------------------
-    protected void setUp() throws Exception {
+    @BeforeClass
+    public void setUp() throws Exception {
         super.setUp();
 
         String xml = "<dummy> <full> node </full> with text "

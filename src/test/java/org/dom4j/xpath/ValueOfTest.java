@@ -33,10 +33,6 @@ public class ValueOfTest extends AbstractTestCase {
             "name(/.)", "name(/child::node())", "name(/*)", ".", "..", "../*",
             "../child::node()", "/.", "/*", "*", "/child::node()"};
 
-    public static void main(String[] args) {
-        TestRunner.run(ValueOfTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testXPaths() throws Exception {

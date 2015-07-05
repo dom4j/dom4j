@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.dom4j.AbstractTestCase;
 import org.dom4j.io.SAXReader;
+import org.testng.annotations.BeforeClass;
 
 /**
  * Test harness for the sorting version of the selectNodes() function
@@ -22,10 +23,6 @@ import org.dom4j.io.SAXReader;
  * @version $Revision: 1.3 $
  */
 public class SortByTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(SortByTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testXPaths() throws Exception {
@@ -40,7 +37,8 @@ public class SortByTest extends AbstractTestCase {
         log("Number of distinct SPEAKER instances: " + noDuplicates.size());
     }
 
-    protected void setUp() throws Exception {
+    @BeforeClass
+    public void setUp() throws Exception {
         super.setUp();
         document = new SAXReader().read(new File("xml/much_ado.xml"));
     }

@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.dom4j.io.SAXReader;
+import org.testng.annotations.BeforeClass;
 
 /**
  * A test harness to test the use of Namespaces.
@@ -32,10 +33,6 @@ public class NamespaceTest extends AbstractTestCase {
 
     private static final QName XSL_TEMPLATE = QName.get("template",
             XSL_NAMESPACE);
-
-    public static void main(String[] args) {
-        TestRunner.run(NamespaceTest.class);
-    }
 
     // Test case(s)
     // -------------------------------------------------------------------------
@@ -119,7 +116,8 @@ public class NamespaceTest extends AbstractTestCase {
 
     // Implementation methods
     // -------------------------------------------------------------------------
-    protected void setUp() throws Exception {
+    @BeforeClass
+    public void setUp() throws Exception {
         super.setUp();
         document = getDocument(INPUT_XML_FILE);
     }

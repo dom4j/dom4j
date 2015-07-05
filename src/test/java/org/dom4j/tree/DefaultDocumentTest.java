@@ -26,10 +26,6 @@ import org.dom4j.io.XMLWriter;
  * @author <a href="mailto:maartenc@users.sourceforge.net">Maarten Coene </a>
  */
 public class DefaultDocumentTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(DefaultDocumentTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testDoubleRootElement() {

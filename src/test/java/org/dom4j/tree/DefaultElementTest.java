@@ -23,10 +23,6 @@ import java.util.List;
  * @author Maarten Coene
  */
 public class DefaultElementTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(DefaultElementTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testParentAfterSetContent() throws Exception {

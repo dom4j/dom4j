@@ -30,10 +30,6 @@ public class NamespaceTest extends AbstractTestCase {
             "/Template/Application1/namespace::*",
             "/Template/Application1/namespace::xplt", "//namespace::*"};
 
-    public static void main(String[] args) {
-        TestRunner.run(NamespaceTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testXPaths() throws Exception {
@@ -75,7 +71,7 @@ public class NamespaceTest extends AbstractTestCase {
         }
     }
 
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         document = new SAXReader().read(new File("xml/testNamespaces.xml"));
     }

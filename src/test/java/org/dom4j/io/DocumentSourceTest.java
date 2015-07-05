@@ -25,9 +25,6 @@ import org.dom4j.DocumentHelper;
  * @author <a href="mailto:maartenc@sourceforge.net">Maarten Coene </a>
  */
 public class DocumentSourceTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(DocumentSourceTest.class);
-    }
 
     // Test case(s)
     // -------------------------------------------------------------------------

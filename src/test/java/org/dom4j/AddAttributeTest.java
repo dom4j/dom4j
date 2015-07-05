@@ -7,18 +7,12 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
-
 /**
  * A test harness to test the addAttribute() methods on attributes
  * 
  * @author <a href="mailto:maartenc@users.sourceforge.net">Maarten Coene </a>
  */
 public class AddAttributeTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(AddAttributeTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testAddAttributeNormalValue() throws Exception {

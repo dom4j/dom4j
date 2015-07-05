@@ -21,10 +21,6 @@ import org.dom4j.Document;
  * @version $Revision: 1.4 $
  */
 public class TableModelTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(TableModelTest.class);
-    }
-
     public void testServletTable() throws Exception {
         Document document = getDocument("/xml/web.xml");
 

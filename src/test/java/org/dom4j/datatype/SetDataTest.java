@@ -27,10 +27,6 @@ import org.dom4j.QName;
 public class SetDataTest extends AbstractTestCase {
     private DatatypeDocumentFactory factory = new DatatypeDocumentFactory();
 
-    public static void main(String[] args) {
-        TestRunner.run(SetDataTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testAttribute() throws Exception {
@@ -151,7 +147,7 @@ public class SetDataTest extends AbstractTestCase {
 
     // Implementation methods
     // -------------------------------------------------------------------------
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
 
         Document schema = getDocument("/xml/test/schema/personal.xsd");

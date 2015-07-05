@@ -19,10 +19,6 @@ import java.util.List;
  * @version $Revision: 1.3 $
  */
 public class AttributeDetachTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(AttributeDetachTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testDetachAttribute() throws Exception {

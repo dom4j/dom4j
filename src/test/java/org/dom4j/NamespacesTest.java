@@ -17,6 +17,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.dom4j.io.DOMReader;
 
+import org.testng.annotations.BeforeClass;
 import org.xml.sax.InputSource;
 
 /**
@@ -26,10 +27,6 @@ import org.xml.sax.InputSource;
  * @version $Revision: 1.4 $
  */
 public class NamespacesTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(NamespacesTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testNamespaces() throws Exception {
@@ -38,7 +35,7 @@ public class NamespacesTest extends AbstractTestCase {
         testNamespaces(domRoundTrip(document));
     }
 
-    public void testNamespaces(Document document) throws Exception {
+    protected void testNamespaces(Document document) throws Exception {
         Document doc2 = (Document) document.clone();
 
         Element root = doc2.getRootElement();
@@ -106,7 +103,7 @@ public class NamespacesTest extends AbstractTestCase {
         testNamespaceForPrefix(domRoundTrip(document));
     }
 
-    public void testNamespaceForPrefix(Document document) throws Exception {
+    protected void testNamespaceForPrefix(Document document) throws Exception {
         Element root = document.getRootElement();
         Namespace ns = root.getNamespaceForPrefix("t");
 
@@ -129,7 +126,7 @@ public class NamespacesTest extends AbstractTestCase {
         testNamespaceForDefaultPrefix(domRoundTrip(document));
     }
 
-    public void testNamespaceForDefaultPrefix(Document document)
+    protected void testNamespaceForDefaultPrefix(Document document)
             throws Exception {
         List<Node> list = document.selectNodes("//*");
 
@@ -151,7 +148,7 @@ public class NamespacesTest extends AbstractTestCase {
         testAttributeDefaultPrefix(domRoundTrip(document));
     }
 
-    public void testAttributeDefaultPrefix(Document document) throws Exception {
+    protected void testAttributeDefaultPrefix(Document document) throws Exception {
         List<Node> list = document.selectNodes("//@*[local-name()='actor']");
 
         assertTrue("Matched at least one 'actor' attribute", list.size() > 0);
@@ -182,7 +179,7 @@ public class NamespacesTest extends AbstractTestCase {
         testNamespaceForURI(domRoundTrip(document));
     }
 
-    public void testNamespaceForURI(Document document) throws Exception {
+    protected void testNamespaceForURI(Document document) throws Exception {
         Element root = document.getRootElement();
 
         Namespace ns = root.getNamespaceForURI("http://www.w3.org/namespace/");
@@ -207,7 +204,7 @@ public class NamespacesTest extends AbstractTestCase {
         testRedeclareNamespaces(domRoundTrip(document));
     }
 
-    public void testRedeclareNamespaces(Document document) throws Exception {
+    protected void testRedeclareNamespaces(Document document) throws Exception {
         String uri = "http://schemas.xmlsoap.org/soap/envelope/";
         assertNamespaces(document.selectNodes("//*[local-name()='Envelope']"),
                 "SOAP-ENV", uri);
@@ -230,7 +227,7 @@ public class NamespacesTest extends AbstractTestCase {
         testDefaultNamespaceIssue(domRoundTrip(document));
     }
 
-    public void testDefaultNamespaceIssue(Document document) throws Exception {
+    protected void testDefaultNamespaceIssue(Document document) throws Exception {
         // When writing documents using a default namespace with XMLWriter
         // a redeclaration of the default namespace to "" was dropped in the
         // output. Test that
@@ -275,7 +272,8 @@ public class NamespacesTest extends AbstractTestCase {
 
     // Implementation methods
     // -------------------------------------------------------------------------
-    protected void setUp() throws Exception {
+    @BeforeClass
+    public void setUp() throws Exception {
         super.setUp();
         document = getDocument("/xml/test/test_schema.xml");
     }

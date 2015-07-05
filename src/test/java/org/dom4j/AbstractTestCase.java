@@ -7,29 +7,51 @@
 
 package org.dom4j;
 
-import junit.framework.TestCase;
 import org.apache.xalan.processor.TransformerFactoryImpl;
 import org.apache.xerces.jaxp.SAXParserFactoryImpl;
 import org.dom4j.io.SAXReader;
 import org.dom4j.util.NodeComparator;
+import org.testng.Assert;
+import org.testng.annotations.*;
 
 import java.io.File;
 
 /**
  * An abstract base class for some DOM4J test cases
- * 
+ *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision: 1.24 $
  */
-public class AbstractTestCase extends TestCase {
+@Test
+public abstract class AbstractTestCase {
     protected Document document;
 
-    protected AbstractTestCase() {
-        super();
+    @BeforeSuite
+    public void init() throws Exception {
+        System.setProperty("javax.xml.parsers.SAXParserFactory",
+                SAXParserFactoryImpl.class.getName());
+        System.setProperty("javax.xml.transform.TransformerFactory",
+                TransformerFactoryImpl.class.getName());
     }
 
-    protected AbstractTestCase(String name) {
-        super(name);
+    @BeforeMethod
+    public void setUp() throws Exception {
+        document = DocumentHelper.createDocument();
+
+        Element root = document.addElement("root");
+
+        Element author1 = root.addElement("author").addAttribute("name",
+                "James").addAttribute("location", "UK").addText(
+                "James Strachan");
+
+        Element url1 = author1.addElement("url");
+        url1.addText("http://sourceforge.net/users/jstrachan/");
+
+        Element author2 = root.addElement("author").addAttribute("name", "Bob")
+                .addAttribute("location", "Canada").addText("Bob McWhirter");
+
+        Element url2 = author2.addElement("url");
+        url2.addText("http://sourceforge.net/users/werken/");
     }
 
     protected void log(String text) {
@@ -49,15 +71,27 @@ public class AbstractTestCase extends TestCase {
         return reader.read(getFile(path));
     }
 
+    /**
+     * DOCUMENT ME!
+     *
+     * @return the root element of the document
+     */
+    protected Element getRootElement() {
+        Element root = document.getRootElement();
+        Assert.assertNotNull(root, "Document has root element");
+
+        return root;
+    }
+
     protected File getFile(String path) {
         return new File(System.getProperty("user.dir"), path);
     }
 
-    public void assertDocumentsEqual(Document doc1, Document doc2)
+    protected void assertDocumentsEqual(Document doc1, Document doc2)
             throws Exception {
         try {
-            assertTrue("Doc1 not null", doc1 != null);
-            assertTrue("Doc2 not null", doc2 != null);
+            Assert.assertNotNull(doc1, "Doc1 not null");
+            Assert.assertNotNull(doc2, "Doc2 not null");
 
             doc1.normalize();
             doc2.normalize();
@@ -65,28 +99,26 @@ public class AbstractTestCase extends TestCase {
             assertNodesEqual(doc1, doc2);
 
             NodeComparator comparator = new NodeComparator();
-            assertTrue("Documents are equal",
-                    comparator.compare(doc1, doc2) == 0);
+            Assert.assertEquals(comparator.compare(doc1, doc2), 0, "Documents are equal");
         } catch (Exception e) {
             log("Failed during comparison of: " + doc1 + " and: " + doc2);
             throw e;
         }
     }
 
-    public void assertNodesEqual(Document n1, Document n2) {
+    protected void assertNodesEqual(Document n1, Document n2) {
         // assertEquals( "Document names", n1.getName(), n2.getName() );
         assertNodesEqual(n1.getDocType(), n2.getDocType());
         assertNodesEqualContent(n1, n2);
     }
 
-    public void assertNodesEqual(Element n1, Element n2) {
+    protected void assertNodesEqual(Element n1, Element n2) {
         assertNodesEqual(n1.getQName(), n2.getQName());
 
         int c1 = n1.attributeCount();
         int c2 = n2.attributeCount();
 
-        assertEquals("Elements have same number of attributes (" + c1 + ", "
-                + c2 + " for: " + n1 + " and " + n2, c1, c2);
+        Assert.assertEquals(c1, c2, String.format("Elements have same number of attributes (%d, %d for: %s and %s", c1, c2, n1, n2));
 
         for (int i = 0; i < c1; i++) {
             Attribute a1 = n1.attribute(i);
@@ -97,60 +129,47 @@ public class AbstractTestCase extends TestCase {
         assertNodesEqualContent(n1, n2);
     }
 
-    public void assertNodesEqual(Attribute n1, Attribute n2) {
+    protected void assertNodesEqual(Attribute n1, Attribute n2) {
         assertNodesEqual(n1.getQName(), n2.getQName());
 
-        assertEquals("Attribute values for: " + n1 + " and " + n2, n1
-                .getValue(), n2.getValue());
+        Assert.assertEquals(n1.getValue(), n2.getValue(), String.format("Attribute values for: %s and %s", n1, n2));
     }
 
-    public void assertNodesEqual(QName n1, QName n2) {
-        assertEquals("URIs equal for: " + n1.getQualifiedName() + " and "
-                + n2.getQualifiedName(), n1.getNamespaceURI(), n2
-                .getNamespaceURI());
-        assertEquals("qualified names equal", n1.getQualifiedName(), n2
-                .getQualifiedName());
+    protected void assertNodesEqual(QName n1, QName n2) {
+        Assert.assertEquals(n1.getNamespaceURI(), n2.getNamespaceURI(), String.format("URIs equal for: %s and %s", n1.getQualifiedName(), n2.getQualifiedName()));
+        Assert.assertEquals(n1.getQualifiedName(), n2.getQualifiedName(), "qualified names equal");
     }
 
-    public void assertNodesEqual(CharacterData t1, CharacterData t2) {
-        assertEquals("Text equal for: " + t1 + " and " + t2, t1.getText(), t2
-                .getText());
+    protected void assertNodesEqual(CharacterData t1, CharacterData t2) {
+        Assert.assertEquals(t1.getText(), t2.getText(), String.format("Text equal for: %s and %s", t1, t2));
     }
 
-    public void assertNodesEqual(DocumentType o1, DocumentType o2) {
+    protected void assertNodesEqual(DocumentType o1, DocumentType o2) {
         if (o1 != o2) {
-            if (o1 == null) {
-                assertTrue("Missing DocType: " + o2, false);
-            } else if (o2 == null) {
-                assertTrue("Missing DocType: " + o1, false);
-            } else {
-                assertEquals("DocType name equal", o1.getName(), o2.getName());
-                assertEquals("DocType publicID equal", o1.getPublicID(), o2
-                        .getPublicID());
-                assertEquals("DocType systemID equal", o1.getSystemID(), o2
-                        .getSystemID());
-            }
+            Assert.assertNotNull(o1, String.format("Missing DocType: %s", o1));
+            Assert.assertNotNull(o2, String.format("Missing DocType: %s", o2));
+            Assert.assertEquals(o1.getName(), o2.getName(), "DocType name equal");
+            Assert.assertEquals(o1.getPublicID(), o2.getPublicID(), "DocType publicID equal");
+            Assert.assertEquals(o1.getSystemID(), o2.getSystemID(), "DocType systemID equal");
         }
     }
 
-    public void assertNodesEqual(Entity o1, Entity o2) {
-        assertEquals("Entity names equal", o1.getName(), o2.getName());
-        assertEquals("Entity values equal", o1.getText(), o2.getText());
+    protected void assertNodesEqual(Entity o1, Entity o2) {
+        Assert.assertEquals(o1.getName(), o2.getName(), "Entity names equal");
+        Assert.assertEquals(o1.getText(), o2.getText(), "Entity values equal");
     }
 
-    public void assertNodesEqual(ProcessingInstruction n1,
-            ProcessingInstruction n2) {
-        assertEquals("PI targets equal", n1.getTarget(), n2.getTarget());
-        assertEquals("PI text equal", n1.getText(), n2.getText());
+    protected void assertNodesEqual(ProcessingInstruction n1, ProcessingInstruction n2) {
+        Assert.assertEquals(n1.getTarget(), n2.getTarget(), "PI targets equal");
+        Assert.assertEquals(n1.getText(), n2.getText(), "PI text equal");
     }
 
-    public void assertNodesEqual(Namespace n1, Namespace n2) {
-        assertEquals("Namespace prefixes not equal", n1.getPrefix(), n2
-                .getPrefix());
-        assertEquals("Namespace URIs not equal", n1.getURI(), n2.getURI());
+    protected void assertNodesEqual(Namespace n1, Namespace n2) {
+        Assert.assertEquals(n1.getPrefix(), n2.getPrefix(), "Namespace prefixes not equal");
+        Assert.assertEquals(n1.getURI(), n2.getURI(), "Namespace URIs not equal");
     }
 
-    public void assertNodesEqualContent(Branch b1, Branch b2) {
+    protected void assertNodesEqualContent(Branch b1, Branch b2) {
         int c1 = b1.nodeCount();
         int c2 = b2.nodeCount();
 
@@ -161,8 +180,7 @@ public class AbstractTestCase extends TestCase {
             log("is: " + b2.content());
         }
 
-        assertEquals("Branches have same number of children (" + c1 + ", " + c2
-                + " for: " + b1 + " and " + b2, c1, c2);
+        Assert.assertEquals(c1, c2, String.format("Branches have same number of children (%d, %d for: %s and %s", c1, c2, b1, b2));
 
         for (int i = 0; i < c1; i++) {
             Node n1 = b1.node(i);
@@ -171,10 +189,10 @@ public class AbstractTestCase extends TestCase {
         }
     }
 
-    public void assertNodesEqual(Node n1, Node n2) {
+    protected void assertNodesEqual(Node n1, Node n2) {
         int nodeType1 = n1.getNodeType();
         int nodeType2 = n2.getNodeType();
-        assertTrue("Nodes are of same type: ", nodeType1 == nodeType2);
+        Assert.assertEquals(nodeType1, nodeType2, "Nodes are of same type");
 
         switch (nodeType1) {
             case Node.ELEMENT_NODE:
@@ -229,47 +247,90 @@ public class AbstractTestCase extends TestCase {
                 break;
 
             default:
-                assertTrue("Invalid node types. node1: " + n1 + " and node2: "
-                        + n2, false);
+                Assert.fail(String.format("Invalid node types. node1: %s and node2: %s", n1, n2));
         }
     }
 
-    // Implementation methods
-    // -------------------------------------------------------------------------
-    protected void setUp() throws Exception {
-        System.setProperty("javax.xml.parsers.SAXParserFactory",
-                SAXParserFactoryImpl.class.getName());
-        System.setProperty("javax.xml.transform.TransformerFactory",
-                TransformerFactoryImpl.class.getName());
-        document = DocumentHelper.createDocument();
-
-        Element root = document.addElement("root");
-
-        Element author1 = root.addElement("author").addAttribute("name",
-                "James").addAttribute("location", "UK").addText(
-                "James Strachan");
-
-        Element url1 = author1.addElement("url");
-        url1.addText("http://sourceforge.net/users/jstrachan/");
-
-        Element author2 = root.addElement("author").addAttribute("name", "Bob")
-                .addAttribute("location", "Canada").addText("Bob McWhirter");
-
-        Element url2 = author2.addElement("url");
-        url2.addText("http://sourceforge.net/users/werken/");
+    protected void assertTrue(boolean condition) {
+        Assert.assertTrue(condition);
     }
 
-    /**
-     * DOCUMENT ME!
-     * 
-     * @return the root element of the document
-     */
-    protected Element getRootElement() {
-        Element root = document.getRootElement();
-        assertTrue("Document has root element", root != null);
-
-        return root;
+    protected void assertTrue(String message, boolean condition) {
+        Assert.assertTrue(condition, message);
     }
+
+    protected void assertFalse(boolean condition) {
+        Assert.assertFalse(condition);
+    }
+
+    protected void assertFalse(String message, boolean condition) {
+        Assert.assertFalse(condition, message);
+    }
+
+    protected void assertNull(Object object) {
+        Assert.assertNull(object);
+    }
+
+    protected void assertNull(String message, Object object) {
+        Assert.assertNull(object, message);
+    }
+
+    protected void assertNotNull(Object object) {
+        Assert.assertNotNull(object);
+    }
+
+    protected void assertNotNull(String message, Object object) {
+        Assert.assertNotNull(object, message);
+    }
+
+    protected void assertEquals(int expected, int actual) {
+        Assert.assertEquals(actual, expected);
+    }
+
+    protected void assertEquals(String message, int expected, int actual) {
+        Assert.assertEquals(actual, expected, message);
+    }
+
+    protected void assertEquals(String expected, String actual) {
+        Assert.assertEquals(actual, expected);
+    }
+
+    protected void assertEquals(String message, String expected, String actual) {
+        Assert.assertEquals(actual, expected, message);
+    }
+
+    protected void assertEquals(Object expected, Object actual) {
+        Assert.assertEquals(actual, expected);
+    }
+
+    protected void assertEquals(String message, Object expected, Object actual) {
+        Assert.assertEquals(actual, expected, message);
+    }
+
+    protected void assertSame(Object expected, Object actual) {
+        Assert.assertSame(actual, expected);
+    }
+
+    protected void assertSame(String message, Object expected, Object actual) {
+        Assert.assertSame(actual, expected, message);
+    }
+
+    protected void assertNotSame(Object expected, Object actual) {
+        Assert.assertNotSame(actual, expected);
+    }
+
+    protected void assertNotSame(String message, Object expected, Object actual) {
+        Assert.assertNotSame(actual, expected, message);
+    }
+
+    protected void fail() {
+        Assert.fail();
+    }
+
+    protected void fail(String message) {
+        Assert.fail(message);
+    }
+
 }
 
 /*

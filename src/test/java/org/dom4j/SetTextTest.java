@@ -15,10 +15,6 @@ import junit.textui.TestRunner;
  * @author <a href="mailto:maartenc@users.sourceforge.net">Maarten Coene </a>
  */
 public class SetTextTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(SetTextTest.class);
-    }
-
     /*
      * The structure of the test document is: [root] [author name="James"
      * location="UK"] James Strachem

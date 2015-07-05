@@ -28,10 +28,6 @@ public class WriteUnmergedTextTest extends AbstractTestCase {
             + "<TestEscapedEntities><TEXT>Test using &lt; "
             + "&amp; &gt;</TEXT></TestEscapedEntities>";
 
-    public static void main(String[] args) {
-        TestRunner.run(WriteUnmergedTextTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public String readwriteText(OutputFormat outFormat,

@@ -24,10 +24,6 @@ import org.dom4j.Element;
  * @author <a href="mailto:maartenc@sourceforge.net">Maarten Coene </a>
  */
 public class XPP3ReaderTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(XPP3ReaderTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testRussian() throws Exception {

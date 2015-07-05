@@ -35,10 +35,6 @@ public class Datatype2Test extends AbstractDataTypeTestCase {
 
     public static final int DATE = 31;
 
-    public static void main(String[] args) {
-        TestRunner.run(Datatype2Test.class);
-    }
-
     public void testSchema() throws Exception {
         Document schema = getSchema();
         validateDocumentWithSchema(schema);

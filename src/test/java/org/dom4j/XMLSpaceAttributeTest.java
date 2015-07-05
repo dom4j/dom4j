@@ -19,10 +19,6 @@ import java.io.IOException;
  * @version $Revision: 1.4 $
  */
 public class XMLSpaceAttributeTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(XMLSpaceAttributeTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testWithTextTrimOn() throws Exception {

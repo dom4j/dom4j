@@ -22,10 +22,6 @@ import org.dom4j.XPath;
 public class ObjectTest extends AbstractTestCase {
     protected static String[] paths = {"name(/.)", "name()"};
 
-    public static void main(String[] args) {
-        TestRunner.run(ObjectTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testXPaths() throws Exception {

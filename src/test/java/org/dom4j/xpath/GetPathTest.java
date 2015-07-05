@@ -29,10 +29,6 @@ import org.dom4j.QName;
  * @version $Revision: 1.4 $
  */
 public class GetPathTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(GetPathTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testGetPath() throws Exception {

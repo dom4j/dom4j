@@ -23,10 +23,6 @@ public class MergeTextTest extends AbstractTestCase {
     /** Input XML file to read */
     private static final String INPUT_XML_FILE = "/xml/test/mergetext.xml";
 
-    public static void main(String[] args) {
-        TestRunner.run(MergeTextTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testNoAdjacentText() throws Exception {

@@ -20,10 +20,6 @@ import org.dom4j.DocumentFactory;
  * @version $Revision: 1.4 $
  */
 public class ManualSchemaPrefixTest extends AutoSchemaTest {
-    public static void main(String[] args) {
-        TestRunner.run(ManualSchemaPrefixTest.class);
-    }
-
     // Implementation methods
     // -------------------------------------------------------------------------
     protected DocumentFactory loadDocumentFactory() throws Exception {

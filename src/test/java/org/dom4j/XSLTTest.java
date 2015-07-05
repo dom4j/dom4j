@@ -18,6 +18,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.dom4j.io.DocumentResult;
 import org.dom4j.io.DocumentSource;
+import org.testng.annotations.BeforeClass;
 
 /**
  * Tests that XSLT works correctly
@@ -26,10 +27,6 @@ import org.dom4j.io.DocumentSource;
  * @version $Revision: 1.4 $
  */
 public class XSLTTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(XSLTTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testTransform() throws Exception {
@@ -49,7 +46,8 @@ public class XSLTTest extends AbstractTestCase {
 
     // Implementation methods
     // -------------------------------------------------------------------------
-    protected void setUp() throws Exception {
+    @BeforeClass
+    public void setUp() throws Exception {
         super.setUp();
         document = getDocument("/xml/nitf/sample.xml");
     }

@@ -17,6 +17,7 @@ import org.dom4j.Node;
 import org.dom4j.XPath;
 
 import org.jaxen.SimpleVariableContext;
+import org.testng.annotations.BeforeClass;
 
 /**
  * Test harness for the valueOf() function
@@ -41,10 +42,6 @@ public class VariableTest extends AbstractTestCase {
     private Node rootNode;
 
     private Node authorNode;
-
-    public static void main(String[] args) {
-        TestRunner.run(VariableTest.class);
-    }
 
     // Test case(s)
     // -------------------------------------------------------------------------
@@ -71,7 +68,8 @@ public class VariableTest extends AbstractTestCase {
         return DocumentHelper.createXPath(xpath, variableContext);
     }
 
-    protected void setUp() throws Exception {
+    @BeforeClass
+    public void setUp() throws Exception {
         super.setUp();
 
         rootNode = document.selectSingleNode("/root");

@@ -21,10 +21,6 @@ import org.dom4j.io.OutputFormat;
  * @version $Revision: 1.4 $
  */
 public class HTMLWriterTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(HTMLWriterTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testWriter() throws Exception {

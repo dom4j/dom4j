@@ -21,9 +21,6 @@ import org.w3c.dom.NamedNodeMap;
  * @author Maarten
  */
 public class DOMWriterTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(DOMWriterTest.class);
-    }
 
     public void testNamespaceBug() throws Exception {
         org.dom4j.Document doc = getDocument("/xml/namespaces.xml");

@@ -20,10 +20,6 @@ import org.dom4j.io.SAXReader;
  * @version $Revision: 1.4 $
  */
 public class SchemaParseTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(SchemaParseTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testParseSchema() throws Exception {

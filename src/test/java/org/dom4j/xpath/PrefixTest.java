@@ -18,6 +18,7 @@ import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
 
 import org.jaxen.SimpleNamespaceContext;
+import org.testng.annotations.BeforeClass;
 
 /**
  * Tests finding items using a namespace prefix
@@ -29,10 +30,6 @@ public class PrefixTest extends AbstractTestCase {
     protected static String[] paths = {"//xplt:anyElement", "//xpl:insertText",
             "/Template/Application1/xpl:insertText",
             "/Template/Application2/xpl:insertText"};
-
-    public static void main(String[] args) {
-        TestRunner.run(PrefixTest.class);
-    }
 
     // Test case(s)
     // -------------------------------------------------------------------------
@@ -62,7 +59,8 @@ public class PrefixTest extends AbstractTestCase {
         assertTrue("Should have found at lest one result", list.size() > 0);
     }
 
-    protected void setUp() throws Exception {
+    @BeforeClass
+    public void setUp() throws Exception {
         super.setUp();
         document = new SAXReader().read(new File("xml/testNamespaces.xml"));
     }

@@ -15,6 +15,7 @@ import java.util.List;
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.testng.annotations.BeforeClass;
 
 /**
  * Test harness for the substring function
@@ -23,10 +24,6 @@ import org.dom4j.io.SAXReader;
  * @version $Revision: 1.3 $
  */
 public class SubstringTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(SubstringTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testSubstring() throws Exception {
@@ -60,7 +57,8 @@ public class SubstringTest extends AbstractTestCase {
         }
     }
 
-    protected void setUp() throws Exception {
+    @BeforeClass
+    public void setUp() throws Exception {
         super.setUp();
         document = new SAXReader().read(new File("xml/test/fields.xml"));
     }

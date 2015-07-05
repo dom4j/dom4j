@@ -20,10 +20,6 @@ import java.util.List;
  * @version $Revision: 1.3 $
  */
 public class ParentTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(ParentTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testDocument() throws Exception {
