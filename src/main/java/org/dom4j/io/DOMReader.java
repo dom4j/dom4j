@@ -10,12 +10,8 @@ package org.dom4j.io;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.dom4j.Branch;
-import org.dom4j.Document;
-import org.dom4j.DocumentFactory;
-import org.dom4j.Element;
-import org.dom4j.Namespace;
-import org.dom4j.QName;
+import org.dom4j.*;
+import org.dom4j.dom.DOMAttribute;
 import org.dom4j.tree.NamespaceStack;
 
 /**
@@ -201,11 +197,10 @@ public class DOMReader {
 
         if (attributeList != null) {
             int size = attributeList.getLength();
-            List attributes = new ArrayList(size);
+            List<org.w3c.dom.Node> attributes = new ArrayList<org.w3c.dom.Node>(size);
 
             for (int i = 0; i < size; i++) {
                 org.w3c.dom.Node attribute = attributeList.item(i);
-
                 // Define all namespaces first then process attributes later
                 String name = attribute.getNodeName();
 

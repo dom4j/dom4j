@@ -78,7 +78,7 @@ public class BeanDocumentFactory extends DocumentFactory {
 
         if (value != null) {
             try {
-                Class beanClass = Class.forName(value, true,
+                Class<?> beanClass = Class.forName(value, true,
                         BeanDocumentFactory.class.getClassLoader());
 
                 return beanClass.newInstance();

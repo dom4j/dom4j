@@ -518,14 +518,14 @@ public class STAXEventReader {
         Element elem = factory.createElement(elemName);
 
         // create attributes
-        for (Iterator i = startEvent.getAttributes(); i.hasNext();) {
-            Attribute attr = (Attribute) i.next();
+        for (Iterator<Attribute> i = startEvent.getAttributes(); i.hasNext();) {
+            Attribute attr = i.next();
             elem.addAttribute(createQName(attr.getName()), attr.getValue());
         }
 
         // create namespaces
-        for (Iterator i = startEvent.getNamespaces(); i.hasNext();) {
-            Namespace ns = (Namespace) i.next();
+        for (Iterator<Namespace> i = startEvent.getNamespaces(); i.hasNext();) {
+            Namespace ns = i.next();
             elem.addNamespace(ns.getPrefix(), ns.getNamespaceURI());
         }
 

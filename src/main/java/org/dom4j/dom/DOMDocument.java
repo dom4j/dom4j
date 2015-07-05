@@ -7,10 +7,16 @@
 
 package org.dom4j.dom;
 
-import org.dom4j.DocumentFactory;
-import org.dom4j.QName;
+import org.dom4j.*;
 import org.dom4j.tree.DefaultDocument;
 import org.w3c.dom.*;
+import org.w3c.dom.Comment;
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.ProcessingInstruction;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -188,14 +194,14 @@ public class DOMDocument extends DefaultDocument implements Document {
     // org.w3c.dom.Document interface
     // -------------------------------------------------------------------------
     public NodeList getElementsByTagName(String name) {
-        ArrayList list = new ArrayList();
+        ArrayList<org.dom4j.Node> list = new ArrayList<org.dom4j.Node>();
         DOMNodeHelper.appendElementsByTagName(list, this, name);
 
         return DOMNodeHelper.createNodeList(list);
     }
 
     public NodeList getElementsByTagNameNS(String namespace, String name) {
-        ArrayList list = new ArrayList();
+        ArrayList<org.dom4j.Node> list = new ArrayList<org.dom4j.Node>();
         DOMNodeHelper.appendElementsByTagNameNS(list, this, namespace, name);
 
         return DOMNodeHelper.createNodeList(list);

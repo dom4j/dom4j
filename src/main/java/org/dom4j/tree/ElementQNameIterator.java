@@ -10,6 +10,7 @@ package org.dom4j.tree;
 import java.util.Iterator;
 
 import org.dom4j.Element;
+import org.dom4j.Node;
 import org.dom4j.QName;
 
 /**
@@ -24,10 +25,10 @@ import org.dom4j.QName;
  * 
  * @deprecated THIS CLASS WILL BE REMOVED IN dom4j-1.6 !!
  */
-public class ElementQNameIterator extends FilterIterator {
+public class ElementQNameIterator extends FilterIterator<Node> {
     private QName qName;
 
-    public ElementQNameIterator(Iterator proxy, QName qName) {
+    public ElementQNameIterator(Iterator<Node> proxy, QName qName) {
         super(proxy);
         this.qName = qName;
     }
@@ -41,7 +42,7 @@ public class ElementQNameIterator extends FilterIterator {
      * @return true if the given element implements the {@link Element}
      *         interface and matches the given {@link QName}
      */
-    protected boolean matches(Object object) {
+    protected boolean matches(Node object) {
         if (object instanceof Element) {
             Element element = (Element) object;
 

@@ -8,6 +8,7 @@
 package org.dom4j.xpath;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.dom4j.InvalidXPathException;
 import org.dom4j.Node;
@@ -62,9 +63,7 @@ public class XPathPattern implements org.dom4j.rule.Pattern {
 
     public boolean matches(Node node) {
         try {
-            ArrayList list = new ArrayList(1);
-            list.add(node);
-            context.setNodeSet(list);
+            context.setNodeSet(Collections.singletonList(node));
 
             return pattern.matches(node, context);
         } catch (JaxenException e) {

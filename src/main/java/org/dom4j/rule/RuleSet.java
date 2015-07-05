@@ -25,7 +25,7 @@ import org.dom4j.Node;
  */
 public class RuleSet {
     /** An unordered list of Rule objects */
-    private ArrayList rules = new ArrayList();
+    private ArrayList<Rule> rules = new ArrayList<Rule>();
 
     /** A lazily evaluated and cached array of rules sorted */
     private Rule[] ruleArray;

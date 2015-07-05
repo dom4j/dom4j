@@ -108,7 +108,7 @@ public abstract class ProxyDocumentFactory {
     }
 
     public ProcessingInstruction createProcessingInstruction(String target,
-            Map data) {
+            Map<String, String> data) {
         return proxy.createProcessingInstruction(target, data);
     }
 

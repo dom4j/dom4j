@@ -19,11 +19,11 @@ package org.dom4j.util;
  * @author <a href="mailto:ddlucas@users.sourceforge.net">David Lucas </a>
  * @version $Revision: 1.2 $
  */
-public interface SingletonStrategy {
+public interface SingletonStrategy<T> {
     /**
      * return a singleton instance of the class specified in setSingletonClass
      */
-    Object instance();
+    T instance();
 
     /**
      * reset the instance to a new instance for the implemented strategy

@@ -18,6 +18,7 @@ import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.QName;
 import org.dom4j.tree.BackedList;
+import org.dom4j.tree.DefaultAttribute;
 import org.dom4j.tree.DefaultElement;
 
 /**
@@ -30,12 +31,26 @@ import org.dom4j.tree.DefaultElement;
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.10 $
  */
+@SuppressWarnings("unused")
 public class IndexedElement extends DefaultElement {
-    /** Lazily constructed index for elements */
-    private Map elementIndex;
+    /**
+     * Lazily constructed index for elements
+     *
+     * Keys are of type QName and String
+     *
+     * Values are of type Element and List<Element>
+     */
 
-    /** Lazily constructed index for attributes */
-    private Map attributeIndex;
+    private Map<Object, Object> elementIndex;
+
+    /**
+     * Lazily constructed index for attributes
+
+     * Keys are of type QName and String
+     *
+     * Values are of type <A>
+     */
+    private Map<Object, Attribute> attributeIndex;
 
     public IndexedElement(String name) {
         super(name);
@@ -50,11 +65,11 @@ public class IndexedElement extends DefaultElement {
     }
 
     public Attribute attribute(String name) {
-        return (Attribute) attributeIndex().get(name);
+        return attributeIndex().get(name);
     }
 
     public Attribute attribute(QName qName) {
-        return (Attribute) attributeIndex().get(qName);
+        return attributeIndex().get(qName);
     }
 
     public Element element(String name) {
@@ -65,11 +80,11 @@ public class IndexedElement extends DefaultElement {
         return asElement(elementIndex().get(qName));
     }
 
-    public List elements(String name) {
+    public List<Element> elements(String name) {
         return asElementList(elementIndex().get(name));
     }
 
-    public List elements(QName qName) {
+    public List<Element> elements(QName qName) {
         return asElementList(elementIndex().get(qName));
     }
 
@@ -79,25 +94,25 @@ public class IndexedElement extends DefaultElement {
         if (object instanceof Element) {
             return (Element) object;
         } else if (object != null) {
-            List list = (List) object;
+            List<Element> list = (List<Element>) object;
 
             if (list.size() >= 1) {
-                return (Element) list.get(0);
+                return list.get(0);
             }
         }
 
         return null;
     }
 
-    protected List asElementList(Object object) {
+    protected List<Element> asElementList(Object object) {
         if (object instanceof Element) {
-            return createSingleResultList(object);
+            return createSingleResultList((Element) object);
         } else if (object != null) {
-            List list = (List) object;
-            BackedList answer = createResultList();
+            List<Element> list = (List<Element>) object;
+            BackedList<Element> answer = createResultList();
 
-            for (int i = 0, size = list.size(); i < size; i++) {
-                answer.addLocal(list.get(i));
+            for (Element aList : list) {
+                answer.addLocal(aList);
             }
 
             return answer;
@@ -116,7 +131,7 @@ public class IndexedElement extends DefaultElement {
      * 
      * @deprecated WILL BE REMOVED IN dom4j-1.6 !!
      */
-    protected Iterator asElementIterator(Object object) {
+    protected Iterator<Element> asElementIterator(Object object) {
         return asElementList(object).iterator();
     }
 
@@ -145,24 +160,24 @@ public class IndexedElement extends DefaultElement {
         return false;
     }
 
-    protected Map attributeIndex() {
+    protected Map<Object, Attribute> attributeIndex() {
         if (attributeIndex == null) {
             attributeIndex = createAttributeIndex();
 
-            for (Iterator iter = attributeIterator(); iter.hasNext();) {
-                addToAttributeIndex((Attribute) iter.next());
+            for (Iterator<Attribute> iter = attributeIterator(); iter.hasNext();) {
+                addToAttributeIndex(iter.next());
             }
         }
 
         return attributeIndex;
     }
 
-    protected Map elementIndex() {
+    protected Map<Object, Object> elementIndex() {
         if (elementIndex == null) {
             elementIndex = createElementIndex();
 
-            for (Iterator iter = elementIterator(); iter.hasNext();) {
-                addToElementIndex((Element) iter.next());
+            for (Iterator<Element> iter = elementIterator(); iter.hasNext();) {
+                addToElementIndex(iter.next());
             }
         }
 
@@ -174,10 +189,9 @@ public class IndexedElement extends DefaultElement {
      * 
      * @return DOCUMENT ME!
      */
-    protected Map createAttributeIndex() {
-        Map answer = createIndex();
+    protected Map<Object, Attribute> createAttributeIndex() {
 
-        return answer;
+        return createIndex();
     }
 
     /**
@@ -185,10 +199,9 @@ public class IndexedElement extends DefaultElement {
      * 
      * @return DOCUMENT ME!
      */
-    protected Map createElementIndex() {
-        Map answer = createIndex();
+    protected Map<Object, Object> createElementIndex() {
 
-        return answer;
+        return createIndex();
     }
 
     protected void addToElementIndex(Element element) {
@@ -205,11 +218,11 @@ public class IndexedElement extends DefaultElement {
             elementIndex.put(key, value);
         } else {
             if (oldValue instanceof List) {
-                List list = (List) oldValue;
+                List<Element> list = (List<Element>) oldValue;
                 list.add(value);
             } else {
-                List list = createList();
-                list.add(oldValue);
+                List<Element> list = createList();
+                list.add((Element) oldValue);
                 list.add(value);
                 elementIndex.put(key, list);
             }
@@ -227,7 +240,7 @@ public class IndexedElement extends DefaultElement {
         Object oldValue = elementIndex.get(key);
 
         if (oldValue instanceof List) {
-            List list = (List) oldValue;
+            List<Element> list = (List<Element>) oldValue;
             list.remove(value);
         } else {
             elementIndex.remove(key);
@@ -269,8 +282,8 @@ public class IndexedElement extends DefaultElement {
      * 
      * @return DOCUMENT ME!
      */
-    protected Map createIndex() {
-        return new HashMap();
+    protected <T> Map<Object, T> createIndex() {
+        return new HashMap<Object, T>();
     }
 
     /**
@@ -278,8 +291,8 @@ public class IndexedElement extends DefaultElement {
      * 
      * @return DOCUMENT ME!
      */
-    protected List createList() {
-        return new ArrayList();
+    protected <T extends Node> List<T> createList() {
+        return new ArrayList<T>();
     }
 }
 

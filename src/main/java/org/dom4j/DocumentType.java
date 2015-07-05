@@ -7,6 +7,8 @@
 
 package org.dom4j;
 
+import org.dom4j.dtd.Decl;
+
 import java.util.List;
 
 /**
@@ -50,7 +52,7 @@ public interface DocumentType extends Node {
      * 
      * @return DOCUMENT ME!
      */
-    List getInternalDeclarations();
+    List<Decl> getInternalDeclarations();
 
     /**
      * Sets the list of internal DTD declaration objects, defined in the
@@ -59,7 +61,7 @@ public interface DocumentType extends Node {
      * @param declarations
      *            DOCUMENT ME!
      */
-    void setInternalDeclarations(List declarations);
+    void setInternalDeclarations(List<Decl> declarations);
 
     /**
      * Returns a list of internal DTD declaration objects, defined in the
@@ -67,7 +69,7 @@ public interface DocumentType extends Node {
      * 
      * @return DOCUMENT ME!
      */
-    List getExternalDeclarations();
+    List<Decl> getExternalDeclarations();
 
     /**
      * Sets the list of internal DTD declaration objects, defined in the
@@ -76,7 +78,7 @@ public interface DocumentType extends Node {
      * @param declarations
      *            DOCUMENT ME!
      */
-    void setExternalDeclarations(List declarations);
+    void setExternalDeclarations(List<Decl> declarations);
 }
 
 /*

@@ -10,7 +10,6 @@ package org.dom4j;
 import junit.textui.TestRunner;
 
 import java.io.StringReader;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -51,11 +50,11 @@ public class NamespacesTest extends AbstractTestCase {
         assertEquals("namespace::*[name()='']", root.getNamespace()
                 .getUniquePath());
 
-        List additionalNS = root.additionalNamespaces();
+        List<Namespace> additionalNS = root.additionalNamespaces();
         assertTrue("at least one additional namespace", (additionalNS != null)
                 && (additionalNS.size() > 0));
 
-        Namespace ns = (Namespace) additionalNS.get(0);
+        Namespace ns = additionalNS.get(0);
         assertNamespace(ns, "t", "http://www.w3.org/namespace/");
         assertEquals("xmlns:t=\"http://www.w3.org/namespace/\"", ns.asXML());
         assertEquals("namespace::t", ns.getPath());
@@ -72,7 +71,7 @@ public class NamespacesTest extends AbstractTestCase {
         assertTrue("at least one additional namespace", (additionalNS != null)
                 && (additionalNS.size() > 0));
 
-        ns = (Namespace) additionalNS.get(0);
+        ns = additionalNS.get(0);
         assertNamespace(ns, "t", "myNewURI");
 
         // lets test the list is backed
@@ -83,7 +82,7 @@ public class NamespacesTest extends AbstractTestCase {
         assertTrue("at least one additional namespace", (additionalNS != null)
                 && (additionalNS.size() > 0));
 
-        ns = (Namespace) additionalNS.get(0);
+        ns = additionalNS.get(0);
         assertNamespace(ns, "t", "myNewURI-2");
 
         additionalNS.clear();
@@ -93,7 +92,7 @@ public class NamespacesTest extends AbstractTestCase {
         assertTrue("at least one additional namespace", (additionalNS != null)
                 && (additionalNS.size() > 0));
 
-        ns = (Namespace) additionalNS.get(0);
+        ns = additionalNS.get(0);
         assertNamespace(ns, "t", "myNewURI");
 
         log("Namespaces: " + additionalNS);
@@ -113,7 +112,7 @@ public class NamespacesTest extends AbstractTestCase {
 
         assertNamespace(ns, "t", "http://www.w3.org/namespace/");
 
-        Element element = (Element) root.elements().get(0);
+        Element element = root.elements().get(0);
         Namespace ns2 = element.getNamespaceForPrefix("t");
 
         assertNamespace(ns2, "t", "http://www.w3.org/namespace/");
@@ -132,10 +131,10 @@ public class NamespacesTest extends AbstractTestCase {
 
     public void testNamespaceForDefaultPrefix(Document document)
             throws Exception {
-        List list = document.selectNodes("//*");
+        List<Node> list = document.selectNodes("//*");
 
-        for (Iterator iter = list.iterator(); iter.hasNext();) {
-            Element element = (Element) iter.next();
+        for (Node node : list) {
+            Element element = (Element) node;
             Namespace ns = element.getNamespaceForPrefix("");
             assertNamespace(ns, "", "dummyNamespace");
             ns = element.getNamespaceForPrefix(null);
@@ -153,12 +152,12 @@ public class NamespacesTest extends AbstractTestCase {
     }
 
     public void testAttributeDefaultPrefix(Document document) throws Exception {
-        List list = document.selectNodes("//@*[local-name()='actor']");
+        List<Node> list = document.selectNodes("//@*[local-name()='actor']");
 
         assertTrue("Matched at least one 'actor' attribute", list.size() > 0);
 
-        for (Iterator iter = list.iterator(); iter.hasNext();) {
-            Attribute attribute = (Attribute) iter.next();
+        for (Node node : list) {
+            Attribute attribute = (Attribute) node;
 
             log("found: " + attribute.asXML());
 
@@ -190,7 +189,7 @@ public class NamespacesTest extends AbstractTestCase {
 
         assertNamespace(ns, "t", "http://www.w3.org/namespace/");
 
-        Element element = (Element) root.elements().get(0);
+        Element element = root.elements().get(0);
         Namespace ns2 = element
                 .getNamespaceForURI("http://www.w3.org/namespace/");
 
@@ -239,19 +238,15 @@ public class NamespacesTest extends AbstractTestCase {
         // is in no namespace.
         String expr 
             = "/xsd:schema/xsd:element/xsd:annotation/xsd:documentation/text";
-        assertNotNull("default namespace redeclaration", (Element) document
+        assertNotNull("default namespace redeclaration", document
                 .selectSingleNode(expr));
 
         // The test document has a default namespace declaration on the root
         // element ("schema"), but the element itself is not in the default
         // namespace. Test that declaredNamespaces on the root element also
         // returns the default namespace declaration.
-        Iterator iter = document.getRootElement().declaredNamespaces()
-                .iterator();
 
-        while (iter.hasNext()) {
-            Namespace ns = (Namespace) iter.next();
-
+        for (Namespace ns : document.getRootElement().declaredNamespaces()) {
             if ("urn:wapforum:devicesheet".equals(ns.getURI())
                     && "".equals(ns.getPrefix())) {
                 return;
@@ -303,10 +298,10 @@ public class NamespacesTest extends AbstractTestCase {
         return domReader.read(domDocument);
     }
 
-    protected void assertNamespaces(List elements, String prefix, String uri)
+    protected void assertNamespaces(List<? extends Node> nodes, String prefix, String uri)
             throws Exception {
-        for (Iterator iter = elements.iterator(); iter.hasNext();) {
-            Element element = (Element) iter.next();
+        for (Node node : nodes) {
+            Element element = (Element) node;
             assertNamespace(element.getNamespace(), prefix, uri);
         }
     }

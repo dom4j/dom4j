@@ -31,13 +31,13 @@ public class BeanMetaData {
     protected static final Object[] NULL_ARGS = {};
 
     /** Singleton cache */
-    private static Map singletonCache = new HashMap();
+    private static Map<Class<?>, BeanMetaData> singletonCache = new HashMap<Class<?>, BeanMetaData>();
 
     private static final DocumentFactory DOCUMENT_FACTORY = BeanDocumentFactory
             .getInstance();
 
     /** The class of the bean */
-    private Class beanClass;
+    private Class<?> beanClass;
 
     /** Property descriptors for the bean */
     private PropertyDescriptor[] propertyDescriptors;
@@ -51,10 +51,12 @@ public class BeanMetaData {
     /** Write methods used for setting properties */
     private Method[] writeMethods;
 
-    /** Index of names and QNames to indices */
-    private Map nameMap = new HashMap();
+    /** Index of names and QNames to indices
+     * Keys are type of QName and String
+     */
+    private Map<Object, Integer> nameMap = new HashMap<Object, Integer>();
 
-    public BeanMetaData(Class beanClass) {
+    public BeanMetaData(Class<?> beanClass) {
         this.beanClass = beanClass;
 
         if (beanClass != null) {
@@ -83,9 +85,8 @@ public class BeanMetaData {
             readMethods[i] = propertyDescriptor.getReadMethod();
             writeMethods[i] = propertyDescriptor.getWriteMethod();
 
-            Integer index = new Integer(i);
-            nameMap.put(name, index);
-            nameMap.put(qName, index);
+            nameMap.put(name, i);
+            nameMap.put(qName, i);
         }
     }
 
@@ -97,8 +98,8 @@ public class BeanMetaData {
      * 
      * @return DOCUMENT ME!
      */
-    public static BeanMetaData get(Class beanClass) {
-        BeanMetaData answer = (BeanMetaData) singletonCache.get(beanClass);
+    public static BeanMetaData get(Class<?> beanClass) {
+        BeanMetaData answer = singletonCache.get(beanClass);
 
         if (answer == null) {
             answer = new BeanMetaData(beanClass);
@@ -126,15 +127,15 @@ public class BeanMetaData {
     }
 
     public int getIndex(String name) {
-        Integer index = (Integer) nameMap.get(name);
+        Integer index = nameMap.get(name);
 
-        return (index != null) ? index.intValue() : (-1);
+        return (index != null) ? index : (-1);
     }
 
     public int getIndex(QName qName) {
-        Integer index = (Integer) nameMap.get(qName);
+        Integer index = nameMap.get(qName);
 
-        return (index != null) ? index.intValue() : (-1);
+        return (index != null) ? index : (-1);
     }
 
     public Object getData(int index, Object bean) {

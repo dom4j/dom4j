@@ -70,11 +70,11 @@ public class BeanElement extends DefaultElement {
         setAttributeList(null);
     }
 
-    public Attribute attribute(String name) {
+    public BeanAttribute attribute(String name) {
         return getBeanAttributeList().attribute(name);
     }
 
-    public Attribute attribute(QName qname) {
+    public BeanAttribute attribute(QName qname) {
         return getBeanAttributeList().attribute(qname);
     }
 
@@ -98,7 +98,7 @@ public class BeanElement extends DefaultElement {
         return this;
     }
 
-    public void setAttributes(List attributes) {
+    public void setAttributes(List<Attribute> attributes) {
         throw new UnsupportedOperationException("Not implemented yet.");
     }
 
@@ -109,7 +109,7 @@ public class BeanElement extends DefaultElement {
 
         if (className != null) {
             try {
-                Class beanClass = Class.forName(className, true,
+                Class<?> beanClass = Class.forName(className, true,
                         BeanElement.class.getClassLoader());
                 this.setData(beanClass.newInstance());
 
@@ -147,11 +147,11 @@ public class BeanElement extends DefaultElement {
      * 
      * @return DOCUMENT ME!
      */
-    protected List createAttributeList() {
+    protected List<Attribute> createAttributeList() {
         return new BeanAttributeList(this);
     }
 
-    protected List createAttributeList(int size) {
+    protected List<Attribute> createAttributeList(int size) {
         return new BeanAttributeList(this);
     }
 }

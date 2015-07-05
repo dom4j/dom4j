@@ -141,7 +141,7 @@ public abstract class AbstractDocument extends AbstractBranch implements
         return this;
     }
 
-    public Document addProcessingInstruction(String target, Map data) {
+    public Document addProcessingInstruction(String target, Map<String, String> data) {
         ProcessingInstruction node = getDocumentFactory()
                 .createProcessingInstruction(target, data);
         add(node);

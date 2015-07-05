@@ -76,7 +76,7 @@ public class SchemaParser {
      * Cache of <code>XSDatatype</code> instances loaded or created during
      * this build
      */
-    private Map dataTypeCache = new HashMap();
+    private Map<String, XSDatatype> dataTypeCache = new HashMap<String, XSDatatype>();
 
     /** NamedTypeResolver */
     private NamedTypeResolver namedTypeResolver;
@@ -113,11 +113,7 @@ public class SchemaParser {
         Element root = schemaDocument.getRootElement();
 
         if (root != null) {
-            // handle schema includes
-            Iterator includeIter = root.elementIterator(XSD_INCLUDE);
-
-            while (includeIter.hasNext()) {
-                Element includeElement = (Element) includeIter.next();
+            for (Element includeElement : root.elements(XSD_INCLUDE)) {
                 String inclSchemaInstanceURI = includeElement
                         .attributeValue("schemaLocation");
                 EntityResolver resolver = schemaDocument.getEntityResolver();
@@ -151,24 +147,18 @@ public class SchemaParser {
             }
 
             // handle elements
-            Iterator iter = root.elementIterator(XSD_ELEMENT);
-
-            while (iter.hasNext()) {
-                onDatatypeElement((Element) iter.next(), documentFactory);
+            for (Element element : root.elements(XSD_ELEMENT)) {
+                onDatatypeElement(element, documentFactory);
             }
 
             // handle named simple types
-            iter = root.elementIterator(XSD_SIMPLETYPE);
-
-            while (iter.hasNext()) {
-                onNamedSchemaSimpleType((Element) iter.next());
+            for (Element element : root.elements(XSD_SIMPLETYPE)) {
+                onNamedSchemaSimpleType(element);
             }
 
             // hanlde named complex types
-            iter = root.elementIterator(XSD_COMPLEXTYPE);
-
-            while (iter.hasNext()) {
-                onNamedSchemaComplexType((Element) iter.next());
+            for (Element element : root.elements(XSD_COMPLEXTYPE)) {
+                onNamedSchemaComplexType(element);
             }
 
             namedTypeResolver.resolveNamedTypes();
@@ -226,11 +216,11 @@ public class SchemaParser {
             onSchemaComplexType(schemaComplexType, factory);
         }
 
-        Iterator iter = xsdElement.elementIterator(XSD_ATTRIBUTE);
+        Iterator<Element> iter = xsdElement.elementIterator(XSD_ATTRIBUTE);
 
         if (iter.hasNext()) {
             do {
-                onDatatypeAttribute(xsdElement, factory, (Element) iter
+                onDatatypeAttribute(xsdElement, factory, iter
                         .next());
             } while (iter.hasNext());
         }
@@ -268,10 +258,10 @@ public class SchemaParser {
      */
     private void onSchemaComplexType(Element schemaComplexType,
             DatatypeElementFactory elementFactory) {
-        Iterator iter = schemaComplexType.elementIterator(XSD_ATTRIBUTE);
+        Iterator<Element> iter = schemaComplexType.elementIterator(XSD_ATTRIBUTE);
 
         while (iter.hasNext()) {
-            Element xsdAttribute = (Element) iter.next();
+            Element xsdAttribute = iter.next();
             String name = xsdAttribute.attributeValue("name");
             QName qname = getQName(name);
 
@@ -308,10 +298,10 @@ public class SchemaParser {
     }
 
     private void onChildElements(Element element, DatatypeElementFactory fact) {
-        Iterator iter = element.elementIterator(XSD_ELEMENT);
+        Iterator<Element> iter = element.elementIterator(XSD_ELEMENT);
 
         while (iter.hasNext()) {
-            Element xsdElement = (Element) iter.next();
+            Element xsdElement = iter.next();
             onDatatypeElement(xsdElement, fact);
         }
     }
@@ -355,7 +345,7 @@ public class SchemaParser {
      */
     private XSDatatype dataTypeForXsdAttribute(Element xsdAttribute) {
         String type = xsdAttribute.attributeValue("type");
-        XSDatatype dataType = null;
+        XSDatatype dataType;
 
         if (type != null) {
             dataType = getTypeByName(type);
@@ -459,9 +449,9 @@ public class SchemaParser {
         ValidationContext context = null;
 
         try {
-            for (Iterator iter = xsdRestriction.elementIterator(); iter
+            for (Iterator<Element> iter = xsdRestriction.elementIterator(); iter
                     .hasNext();) {
-                Element element = (Element) iter.next();
+                Element element = iter.next();
                 String name = element.getName();
                 String value = element.attributeValue("value");
                 boolean fixed = AttributeHelper.booleanValue(element, "fixed");
@@ -504,7 +494,7 @@ public class SchemaParser {
     }
 
     private XSDatatype getTypeByName(String type) {
-        XSDatatype dataType = (XSDatatype) dataTypeCache.get(type);
+        XSDatatype dataType = dataTypeCache.get(type);
 
         if (dataType == null) {
             // first check to see if it is a built-in type
@@ -530,7 +520,7 @@ public class SchemaParser {
             if (dataType == null) {
                 // it's no built-in type, maybe it's a type we defined ourself
                 QName typeQName = getQName(type);
-                dataType = (XSDatatype) namedTypeResolver.simpleTypeMap
+                dataType = namedTypeResolver.simpleTypeMap
                         .get(typeQName);
             }
 

@@ -7,13 +7,9 @@
 
 package org.dom4j.rule;
 
-import java.util.Iterator;
 import java.util.List;
 
-import org.dom4j.Document;
-import org.dom4j.Element;
-import org.dom4j.Node;
-import org.dom4j.XPath;
+import org.dom4j.*;
 
 /**
  * <p>
@@ -57,39 +53,13 @@ public class Stylesheet {
         ruleManager.removeRule(rule);
     }
 
-    /**
-     * Runs this stylesheet on the given input which should be either a Node or
-     * a List of Node objects.
-     * 
-     * @param input
-     *            the input to run this stylesheet on
-     * 
-     * @throws Exception
-     *             if something goes wrong
-     */
-    public void run(Object input) throws Exception {
-        run(input, this.modeName);
-    }
-
-    public void run(Object input, String mode) throws Exception {
-        if (input instanceof Node) {
-            run((Node) input, mode);
-        } else if (input instanceof List) {
-            run((List) input, mode);
-        }
-    }
-
-    public void run(List list) throws Exception {
+    public void run(List<Node> list) throws Exception {
         run(list, this.modeName);
     }
 
-    public void run(List list, String mode) throws Exception {
-        for (int i = 0, size = list.size(); i < size; i++) {
-            Object object = list.get(i);
-
-            if (object instanceof Node) {
-                run((Node) object, mode);
-            }
+    public void run(List<Node> list, String mode) throws Exception {
+        for (Node node : list) {
+            run(node, mode);
         }
     }
 
@@ -134,54 +104,8 @@ public class Stylesheet {
             throws Exception {
         Mode mod = ruleManager.getMode(mode);
 
-        List list = xpath.selectNodes(input);
-        Iterator it = list.iterator();
-        while (it.hasNext()) {
-            Node current = (Node) it.next();
-            mod.fireRule(current);
-        }
-    }
-
-    /**
-     * Processes the result of the xpath expression. The xpath expression is
-     * evaluated against the provided input object.
-     * 
-     * @param input
-     *            the input object
-     * @param xpath
-     *            the xpath expression
-     * @throws Exception
-     *             if something goes wrong
-     * @deprecated Use {@link Stylesheet#applyTemplates(Object, XPath)}instead.
-     */
-    public void applyTemplates(Object input, org.jaxen.XPath xpath)
-            throws Exception {
-        applyTemplates(input, xpath, this.modeName);
-    }
-
-    /**
-     * Processes the result of the xpath expression in the given mode. The xpath
-     * expression is evaluated against the provided input object.
-     * 
-     * @param input
-     *            the input object
-     * @param xpath
-     *            the xpath expression
-     * @param mode
-     *            the mode
-     * @throws Exception
-     *             if something goes wrong
-     * @deprecated Use {@link Stylesheet#applyTemplates(Object, XPath, String)}
-     *             instead.
-     */
-    public void applyTemplates(Object input, org.jaxen.XPath xpath, String mode)
-            throws Exception {
-        Mode mod = ruleManager.getMode(mode);
-
-        List list = xpath.selectNodes(input);
-        Iterator it = list.iterator();
-        while (it.hasNext()) {
-            Node current = (Node) it.next();
+        List<Node> list = xpath.selectNodes(input);
+        for (Node current : list) {
             mod.fireRule(current);
         }
     }
@@ -192,14 +116,54 @@ public class Stylesheet {
      * <code>Nodes</code>s, these nodes will be iterated and all children of
      * each node will be processed.
      * 
-     * @param input
-     *            the input object, this can either be a <code>Node</code> or
-     *            a <code>List</code>
+     * @param node the input object
      * @throws Exception
      *             if something goes wrong
      */
-    public void applyTemplates(Object input) throws Exception {
-        applyTemplates(input, this.modeName);
+    public void applyTemplates(Node node) throws Exception {
+        applyTemplates(node, this.modeName);
+    }
+
+    /**
+     * If input is a <code>Node</code>, this will processes all of the
+     * children of that node. If input is a <code>List</code> of
+     * <code>Nodes</code>s, these nodes will be iterated and all children of
+     * each node will be processed.
+     *
+     * @param element the input object
+     * @throws Exception
+     *             if something goes wrong
+     */
+    public void applyTemplates(Element element) throws Exception {
+        applyTemplates(element, this.modeName);
+    }
+
+    /**
+     * If input is a <code>Node</code>, this will processes all of the
+     * children of that node. If input is a <code>List</code> of
+     * <code>Nodes</code>s, these nodes will be iterated and all children of
+     * each node will be processed.
+     *
+     * @param document the input object
+     * @throws Exception
+     *             if something goes wrong
+     */
+    public void applyTemplates(Document document) throws Exception {
+        applyTemplates(document, this.modeName);
+    }
+
+    /**
+     * If input is a <code>Node</code>, this will processes all of the
+     * children of that node. If input is a <code>List</code> of
+     * <code>Nodes</code>s, these nodes will be iterated and all children of
+     * each node will be processed.
+     *
+     * @param list the input object
+     * @throws Exception
+     *             if something goes wrong
+     */
+    public void applyTemplates(List<Node> list) throws Exception {
+        applyTemplates(list, this.modeName);
     }
 
     /**
@@ -208,42 +172,82 @@ public class Stylesheet {
      * node. If input is a <code>List</code> of <code>Nodes</code>s, these
      * nodes will be iterated and all children of each node will be processed.
      * 
-     * @param input
-     *            the input object, this can either be a <code>Node</code> or
-     *            a <code>List</code>
+     * @param node the input object
      * @param mode
      *            the mode
      * @throws Exception
      *             if something goes wrong
      */
-    public void applyTemplates(Object input, String mode) throws Exception {
+    public void applyTemplates(Node node, String mode) throws Exception {
+        if (node instanceof Element) {
+            applyTemplates((Element) node, mode);
+        } else if (node instanceof Document) {
+            applyTemplates((Document) node, mode);
+        }
+    }
+
+    /**
+     * Processes the input object in the given mode. If input is a
+     * <code>Node</code>, this will processes all of the children of that
+     * node. If input is a <code>List</code> of <code>Nodes</code>s, these
+     * nodes will be iterated and all children of each node will be processed.
+     *
+     * @param element the input object
+     * @param mode
+     *            the mode
+     * @throws Exception
+     *             if something goes wrong
+     */
+    public void applyTemplates(Element element, String mode) throws Exception {
         Mode mod = ruleManager.getMode(mode);
 
-        if (input instanceof Element) {
-            // iterate through all children
-            Element element = (Element) input;
-            for (int i = 0, size = element.nodeCount(); i < size; i++) {
-                Node node = element.node(i);
-                mod.fireRule(node);
-            }
-        } else if (input instanceof Document) {
-            // iterate through all children
-            Document document = (Document) input;
-            for (int i = 0, size = document.nodeCount(); i < size; i++) {
-                Node node = document.node(i);
-                mod.fireRule(node);
-            }
-        } else if (input instanceof List) {
-            List list = (List) input;
+        // iterate through all children
+        for (int i = 0, size = element.nodeCount(); i < size; i++) {
+            Node node = element.node(i);
+            mod.fireRule(node);
+        }
+    }
 
-            for (int i = 0, size = list.size(); i < size; i++) {
-                Object object = list.get(i);
+    /**
+     * Processes the input object in the given mode. If input is a
+     * <code>Node</code>, this will processes all of the children of that
+     * node. If input is a <code>List</code> of <code>Nodes</code>s, these
+     * nodes will be iterated and all children of each node will be processed.
+     *
+     * @param document the input object
+     * @param mode
+     *            the mode
+     * @throws Exception
+     *             if something goes wrong
+     */
+    public void applyTemplates(Document document, String mode) throws Exception {
+        Mode mod = ruleManager.getMode(mode);
 
-                if (object instanceof Element) {
-                    applyTemplates((Element) object, mode);
-                } else if (object instanceof Document) {
-                    applyTemplates((Document) object, mode);
-                }
+        // iterate through all children
+        for (int i = 0, size = document.nodeCount(); i < size; i++) {
+            Node node = document.node(i);
+            mod.fireRule(node);
+        }
+    }
+
+    /**
+     * Processes the input object in the given mode. If input is a
+     * <code>Node</code>, this will processes all of the children of that
+     * node. If input is a <code>List</code> of <code>Nodes</code>s, these
+     * nodes will be iterated and all children of each node will be processed.
+     *
+     * @param list list of Elements or Documents
+     * @param mode
+     *            the mode
+     * @throws Exception
+     *             if something goes wrong
+     */
+    public void applyTemplates(List<? extends Node> list, String mode) throws Exception {
+        for (Node node : list) {
+            if (node instanceof Element) {
+                applyTemplates((Element) node, mode);
+            } else if (node instanceof Document) {
+                applyTemplates((Document) node, mode);
             }
         }
     }

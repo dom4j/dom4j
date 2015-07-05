@@ -201,8 +201,6 @@ public class DefaultElement extends AbstractElement {
             if (contentShadow instanceof List) {
                 List<Node> list = (List<Node>) contentShadow;
 
-                int size = list.size();
-
                 for (Node node : list) {
                     if (node instanceof Namespace) {
                         Namespace namespace = (Namespace) node;
@@ -308,8 +306,6 @@ public class DefaultElement extends AbstractElement {
 
         if (contentShadow instanceof List) {
             List<Node> list = (List<Node>) contentShadow;
-
-            int size = list.size();
 
             BackedList<Namespace> answer = createResultList();
 
@@ -658,9 +654,9 @@ public class DefaultElement extends AbstractElement {
         return new ContentListFacade<Attribute>(this, attributeList());
     }
 
-    public void setAttributes(List attributes) {
+    public void setAttributes(List<Attribute> attributes) {
         if (attributes instanceof ContentListFacade) {
-            attributes = ((ContentListFacade) attributes).getBackingList();
+            attributes = ((ContentListFacade<Attribute>) attributes).getBackingList();
         }
 
         this.attributes = attributes;
@@ -684,7 +680,7 @@ public class DefaultElement extends AbstractElement {
         final Object attributesShadow = this.attributes;
 
         if (attributesShadow instanceof List) {
-            List list = (List) attributesShadow;
+            List<Attribute> list = (List<Attribute>) attributesShadow;
 
             return (Attribute) list.get(index);
         } else if ((attributesShadow != null) && (index == 0)) {
@@ -698,7 +694,7 @@ public class DefaultElement extends AbstractElement {
         final Object attributesShadow = this.attributes;
 
         if (attributesShadow instanceof List) {
-            List list = (List) attributesShadow;
+            List<Attribute> list = (List<Attribute>) attributesShadow;
 
             return list.size();
         } else {
@@ -787,7 +783,7 @@ public class DefaultElement extends AbstractElement {
         final Object attributesShadow = this.attributes;
 
         if (attributesShadow instanceof List) {
-            List list = (List) attributesShadow;
+            List<Attribute> list = (List<Attribute>) attributesShadow;
 
             answer = list.remove(attribute);
 
@@ -861,7 +857,7 @@ public class DefaultElement extends AbstractElement {
 
                 answer = true;
             } else if (contentShadow instanceof List) {
-                List list = (List) contentShadow;
+                List<Node> list = (List<Node>) contentShadow;
 
                 answer = list.remove(node);
             }

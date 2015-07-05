@@ -18,7 +18,7 @@ import org.dom4j.Node;
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.7 $
  */
-public class Rule implements Comparable {
+public class Rule implements Comparable<Rule> {
     /** Holds value of property mode. */
     private String mode;
 
@@ -79,14 +79,6 @@ public class Rule implements Comparable {
 
     public int hashCode() {
         return importPrecedence + appearenceCount;
-    }
-
-    public int compareTo(Object that) {
-        if (that instanceof Rule) {
-            return compareTo((Rule) that);
-        }
-
-        return getClass().getName().compareTo(that.getClass().getName());
     }
 
     /**

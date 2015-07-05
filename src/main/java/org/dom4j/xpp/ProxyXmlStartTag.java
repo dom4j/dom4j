@@ -118,8 +118,8 @@ public class ProxyXmlStartTag implements XmlStartTag {
 
     public String getAttributeValueFromRawName(String rawName) {
         if (element != null) {
-            for (Iterator iter = element.attributeIterator(); iter.hasNext();) {
-                Attribute attribute = (Attribute) iter.next();
+            for (Iterator<Attribute> iter = element.attributeIterator(); iter.hasNext();) {
+                Attribute attribute = iter.next();
 
                 if (rawName.equals(attribute.getQualifiedName())) {
                     return attribute.getValue();
@@ -133,8 +133,8 @@ public class ProxyXmlStartTag implements XmlStartTag {
     public String getAttributeValueFromName(String namespaceURI,
             String localName) {
         if (element != null) {
-            for (Iterator iter = element.attributeIterator(); iter.hasNext();) {
-                Attribute attribute = (Attribute) iter.next();
+            for (Iterator<Attribute> iter = element.attributeIterator(); iter.hasNext();) {
+                Attribute attribute = iter.next();
 
                 if (namespaceURI.equals(attribute.getNamespaceURI())
                         && localName.equals(attribute.getName())) {

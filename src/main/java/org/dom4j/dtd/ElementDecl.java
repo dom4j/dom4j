@@ -15,7 +15,7 @@ package org.dom4j.dtd;
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.6 $
  */
-public class ElementDecl {
+public class ElementDecl implements Decl {
     /** Holds value of property name. */
     private String name;
 

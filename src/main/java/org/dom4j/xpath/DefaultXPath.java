@@ -86,7 +86,7 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
         return namespaceContext;
     }
 
-    public void setNamespaceURIs(Map map) {
+    public void setNamespaceURIs(Map<String, String> map) {
         setNamespaceContext(new SimpleNamespaceContext(map));
     }
 
@@ -107,7 +107,7 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
         try {
             setNSContext(context);
 
-            List answer = xpath.selectNodes(context);
+            List<Object> answer = xpath.selectNodes(context);
 
             if ((answer != null) && (answer.size() == 1)) {
                 return answer.get(0);
@@ -125,28 +125,28 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
         return evaluate(context);
     }
 
-    public List selectNodes(Object context) {
+    public List<Node> selectNodes(Object context) {
         try {
             setNSContext(context);
 
-            return xpath.selectNodes(context);
+            return (List<Node>) xpath.selectNodes(context);
         } catch (JaxenException e) {
             handleJaxenException(e);
 
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
     }
 
-    public List selectNodes(Object context, org.dom4j.XPath sortXPath) {
-        List answer = selectNodes(context);
+    public List<Node> selectNodes(Object context, org.dom4j.XPath sortXPath) {
+        List<Node> answer = selectNodes(context);
         sortXPath.sort(answer);
 
         return answer;
     }
 
-    public List selectNodes(Object context, org.dom4j.XPath sortXPath,
+    public List<Node> selectNodes(Object context, org.dom4j.XPath sortXPath,
             boolean distinct) {
-        List answer = selectNodes(context);
+        List<Node> answer = selectNodes(context);
         sortXPath.sort(answer, distinct);
 
         return answer;
@@ -221,7 +221,7 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
      * @param list
      *            is the list of Nodes to sort
      */
-    public void sort(List list) {
+    public void sort(List<Node> list) {
         sort(list, false);
     }
 
@@ -237,19 +237,14 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
      *            if true then duplicate values (using the sortXPath for
      *            comparisions) will be removed from the List
      */
-    public void sort(List list, boolean distinct) {
+    public void sort(List<Node> list, boolean distinct) {
         if ((list != null) && !list.isEmpty()) {
             int size = list.size();
-            HashMap sortValues = new HashMap(size);
+            HashMap<Node, Object> sortValues = new HashMap<Node, Object>(size);
 
-            for (int i = 0; i < size; i++) {
-                Object object = list.get(i);
-
-                if (object instanceof Node) {
-                    Node node = (Node) object;
-                    Object expression = getCompareValue(node);
-                    sortValues.put(node, expression);
-                }
+            for (Node node : list) {
+                Object expression = getCompareValue(node);
+                sortValues.put(node, expression);
             }
 
             sort(list, sortValues);
@@ -264,7 +259,7 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
         try {
             setNSContext(node);
 
-            List answer = xpath.selectNodes(node);
+            List<Object> answer = xpath.selectNodes(node);
 
             if ((answer != null) && (answer.size() > 0)) {
                 Object item = answer.get(0);
@@ -292,16 +287,16 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
      * @param sortValues
      *            DOCUMENT ME!
      */
-    protected void sort(List list, final Map sortValues) {
-        Collections.sort(list, new Comparator() {
-            public int compare(Object o1, Object o2) {
-                o1 = sortValues.get(o1);
-                o2 = sortValues.get(o2);
+    protected void sort(List<Node> list, final Map<Node, Object> sortValues) {
+        Collections.sort(list, new Comparator<Node>() {
+            public int compare(Node n1, Node n2) {
+                Object o1 = sortValues.get(n1);
+                Object o2 = sortValues.get(n2);
 
                 if (o1 == o2) {
                     return 0;
                 } else if (o1 instanceof Comparable) {
-                    Comparable c1 = (Comparable) o1;
+                    Comparable<Object> c1 = (Comparable<Object>) o1;
 
                     return c1.compareTo(o2);
                 } else if (o1 == null) {
@@ -325,12 +320,12 @@ public class DefaultXPath implements org.dom4j.XPath, NodeFilter, Serializable {
      * @param sortValues
      *            DOCUMENT ME!
      */
-    protected void removeDuplicates(List list, Map sortValues) {
+    protected void removeDuplicates(List<Node> list, Map<Node, Object> sortValues) {
         // remove distinct
-        HashSet distinctValues = new HashSet();
+        HashSet<Object> distinctValues = new HashSet<Object>();
 
-        for (Iterator iter = list.iterator(); iter.hasNext();) {
-            Object node = iter.next();
+        for (Iterator<Node> iter = list.iterator(); iter.hasNext();) {
+            Node node = iter.next();
             Object value = sortValues.get(node);
 
             if (distinctValues.contains(value)) {

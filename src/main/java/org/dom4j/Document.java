@@ -71,7 +71,7 @@ public interface Document extends Branch {
      * 
      * @return this <code>Document</code> instance.
      */
-    Document addProcessingInstruction(String target, Map data);
+    Document addProcessingInstruction(String target, Map<String, String> data);
 
     /**
      * Adds a DOCTYPE declaration to this document

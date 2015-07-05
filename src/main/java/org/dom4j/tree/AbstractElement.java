@@ -26,6 +26,7 @@ import java.util.*;
  * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision: 1.80 $
  */
+@SuppressWarnings("unused")
 public abstract class AbstractElement extends AbstractBranch implements
 				org.dom4j.Element {
 	/**
@@ -246,20 +247,16 @@ public abstract class AbstractElement extends AbstractBranch implements
 	// -------------------------------------------------------------------------
 	public Node node(int index) {
 		if (index >= 0) {
-			List list = contentList();
+			List<Node> list = contentList();
 
 			if (index >= list.size()) {
 				return null;
 			}
 
-			Object node = list.get(index);
+			Node node = list.get(index);
 
 			if (node != null) {
-				if (node instanceof Node) {
-					return (Node) node;
-				} else {
-					return getDocumentFactory().createText(node.toString());
-				}
+				return node;
 			}
 		}
 
@@ -480,10 +477,10 @@ public abstract class AbstractElement extends AbstractBranch implements
 
 						QName attributeQName = namespaceStack
 										.getAttributeQName(attributeURI,
-														attributeLocalName, attributeName);
+												attributeLocalName, attributeName);
 
 						Attribute attribute = factory.createAttribute(this,
-										attributeQName, attributeValue);
+								attributeQName, attributeValue);
 
 						list.add(attribute);
 
@@ -797,7 +794,7 @@ public abstract class AbstractElement extends AbstractBranch implements
 		return this;
 	}
 
-	public Element addProcessingInstruction(String target, Map data) {
+	public Element addProcessingInstruction(String target, Map<String, String> data) {
 		ProcessingInstruction node = getDocumentFactory()
 						.createProcessingInstruction(target, data);
 
@@ -966,10 +963,10 @@ public abstract class AbstractElement extends AbstractBranch implements
 			return false;
 		}
 
-		Class prevClass = null;
+		Class<? extends Node> prevClass = null;
 
 		for (Node node : content) {
-			Class newClass = node.getClass();
+			Class<? extends Node> newClass = node.getClass();
 
 			if (newClass != prevClass) {
 				if (prevClass != null) {
@@ -1077,14 +1074,14 @@ public abstract class AbstractElement extends AbstractBranch implements
 	 * @since DOM Level 2
 	 */
 	public void normalize() {
-		List content = contentList();
+		List<Node> content = contentList();
 
 		Text previousText = null;
 
 		int i = 0;
 
 		while (i < content.size()) {
-			Node node = (Node) content.get(i);
+			Node node = content.get(i);
 
 			if (node instanceof Text) {
 				Text text = (Text) node;
@@ -1490,11 +1487,11 @@ public abstract class AbstractElement extends AbstractBranch implements
 	 * @return DOCUMENT ME!
 	 */
 	protected List<Attribute> createAttributeList(int size) {
-		return new ArrayList(size);
+		return new ArrayList<Attribute>(size);
 	}
 
 	protected <T> Iterator<T> createSingleIterator(T result) {
-		return new SingleIterator(result);
+		return new SingleIterator<T>(result);
 	}
 }
 

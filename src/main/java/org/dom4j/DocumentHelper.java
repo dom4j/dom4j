@@ -28,6 +28,7 @@ import org.xml.sax.InputSource;
  * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision: 1.26 $
  */
+@SuppressWarnings("unused")
 public final class DocumentHelper {
     private DocumentHelper() {
     }
@@ -89,7 +90,7 @@ public final class DocumentHelper {
     }
 
     public static ProcessingInstruction createProcessingInstruction(String pi,
-            Map data) {
+            Map<String, String> data) {
         return getDocumentFactory().createProcessingInstruction(pi, data);
     }
 
@@ -190,7 +191,7 @@ public final class DocumentHelper {
      * 
      * @return the results of all the XPath evaluations as a single list
      */
-    public static List selectNodes(String xpathFilterExpression, List nodes) {
+    public static List<Node> selectNodes(String xpathFilterExpression, List<Node> nodes) {
         XPath xpath = createXPath(xpathFilterExpression);
 
         return xpath.selectNodes(nodes);
@@ -210,7 +211,7 @@ public final class DocumentHelper {
      * 
      * @return the results of all the XPath evaluations as a single list
      */
-    public static List selectNodes(String xpathFilterExpression, Node node) {
+    public static List<Node> selectNodes(String xpathFilterExpression, Node node) {
         XPath xpath = createXPath(xpathFilterExpression);
 
         return xpath.selectNodes(node);
@@ -227,7 +228,7 @@ public final class DocumentHelper {
      * @param xpathExpression
      *            is the XPath expression used for comparison
      */
-    public static void sort(List list, String xpathExpression) {
+    public static void sort(List<Node> list, String xpathExpression) {
         XPath xpath = createXPath(xpathExpression);
         xpath.sort(list);
     }
@@ -247,7 +248,7 @@ public final class DocumentHelper {
      *            if true then duplicate values (using the sortXPath for
      *            comparisions) will be removed from the List
      */
-    public static void sort(List list, String expression, boolean distinct) {
+    public static void sort(List<Node> list, String expression, boolean distinct) {
         XPath xpath = createXPath(expression);
         xpath.sort(list, distinct);
     }
@@ -267,15 +268,13 @@ public final class DocumentHelper {
      *             if the document could not be parsed
      */
     public static Document parseText(String text) throws DocumentException {
-        Document result = null;
-
         SAXReader reader = new SAXReader();
         String encoding = getEncoding(text);
 
         InputSource source = new InputSource(new StringReader(text));
         source.setEncoding(encoding);
 
-        result = reader.read(source);
+        Document result = reader.read(source);
 
         // if the XML parser doesn't provide a way to retrieve the encoding,
         // specify it manually

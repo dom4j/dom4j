@@ -21,14 +21,14 @@ import java.util.NoSuchElementException;
  * 
  * @deprecated THIS CLASS WILL BE REMOVED IN dom4j-1.6 !!
  */
-public abstract class FilterIterator implements Iterator {
-    protected Iterator proxy;
+public abstract class FilterIterator<T> implements Iterator<T> {
+    protected Iterator<T> proxy;
 
-    private Object next;
+    private T next;
 
     private boolean first = true;
 
-    public FilterIterator(Iterator proxy) {
+    public FilterIterator(Iterator<T> proxy) {
         this.proxy = proxy;
     }
 
@@ -41,12 +41,12 @@ public abstract class FilterIterator implements Iterator {
         return next != null;
     }
 
-    public Object next() throws NoSuchElementException {
+    public T next() throws NoSuchElementException {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
 
-        Object answer = this.next;
+        T answer = this.next;
         this.next = findNext();
 
         return answer;
@@ -72,12 +72,12 @@ public abstract class FilterIterator implements Iterator {
      * @return true if the given element matches the filter and should be appear
      *         in the iteration
      */
-    protected abstract boolean matches(Object element);
+    protected abstract boolean matches(T element);
 
-    protected Object findNext() {
+    protected T findNext() {
         if (proxy != null) {
             while (proxy.hasNext()) {
-                Object nextObject = proxy.next();
+                T nextObject = proxy.next();
 
                 if ((nextObject != null) && matches(nextObject)) {
                     return nextObject;

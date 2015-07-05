@@ -34,13 +34,13 @@ public class DatatypeElementFactory extends DocumentFactory {
      * Cache of <code>XSDatatype</code> instances per Attribute
      * <code>QName</code>
      */
-    private Map attributeXSDatatypes = new HashMap();
+    private Map<QName, XSDatatype> attributeXSDatatypes = new HashMap<QName, XSDatatype>();
 
     /**
      * Cache of <code>XSDatatype</code> instances per child Element
      * <code>QName</code>
      */
-    private Map childrenXSDatatypes = new HashMap();
+    private Map<QName, XSDatatype> childrenXSDatatypes = new HashMap<QName, XSDatatype>();
 
     public DatatypeElementFactory(QName elementQName) {
         this.elementQName = elementQName;
@@ -65,7 +65,7 @@ public class DatatypeElementFactory extends DocumentFactory {
      *         QName
      */
     public XSDatatype getAttributeXSDatatype(QName attributeQName) {
-        return (XSDatatype) attributeXSDatatypes.get(attributeQName);
+        return attributeXSDatatypes.get(attributeQName);
     }
 
     /**
@@ -91,7 +91,7 @@ public class DatatypeElementFactory extends DocumentFactory {
      *         Element QName
      */
     public XSDatatype getChildElementXSDatatype(QName qname) {
-        return (XSDatatype) childrenXSDatatypes.get(qname);
+        return childrenXSDatatypes.get(qname);
     }
 
     public void setChildElementXSDatatype(QName qname, XSDatatype dataType) {

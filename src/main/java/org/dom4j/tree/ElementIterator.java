@@ -10,6 +10,7 @@ package org.dom4j.tree;
 import java.util.Iterator;
 
 import org.dom4j.Element;
+import org.dom4j.Node;
 
 /**
  * <p>
@@ -22,8 +23,8 @@ import org.dom4j.Element;
  * 
  * @deprecated THIS CLASS WILL BE REMOVED IN dom4j-1.6 !!
  */
-public class ElementIterator extends FilterIterator {
-    public ElementIterator(Iterator proxy) {
+public class ElementIterator extends FilterIterator<Node> {
+    public ElementIterator(Iterator<Node> proxy) {
         super(proxy);
     }
 
@@ -36,7 +37,7 @@ public class ElementIterator extends FilterIterator {
      * @return true if the given element implements the {@link Element}
      *         interface
      */
-    protected boolean matches(Object element) {
+    protected boolean matches(Node element) {
         return element instanceof Element;
     }
 }

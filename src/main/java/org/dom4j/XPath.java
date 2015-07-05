@@ -290,7 +290,7 @@ public interface XPath extends NodeFilter {
      * @param map
      *            the map containing the namespace mappings
      */
-    void setNamespaceURIs(Map map);
+    void setNamespaceURIs(Map<String, String> map);
 
     /**
      * DOCUMENT ME!

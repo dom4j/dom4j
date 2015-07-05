@@ -79,10 +79,10 @@ public class SAXWriter implements XMLReader {
     private AttributesImpl attributes = new AttributesImpl();
 
     /** Stores the features */
-    private Map features = new HashMap();
+    private Map<String, Boolean> features = new HashMap();
 
     /** Stores the properties */
-    private Map properties = new HashMap();
+    private Map<String, Object> properties = new HashMap();
 
     /** Whether namespace declarations are exported as attributes or not */
     private boolean declareNamespaceAttributes;
@@ -493,9 +493,9 @@ public class SAXWriter implements XMLReader {
      */
     public boolean getFeature(String name) throws SAXNotRecognizedException,
             SAXNotSupportedException {
-        Boolean answer = (Boolean) features.get(name);
+        Boolean answer = features.get(name);
 
-        return (answer != null) && answer.booleanValue();
+        return (answer != null) && answer;
     }
 
     /**
@@ -535,8 +535,8 @@ public class SAXWriter implements XMLReader {
      *            DOCUMENT ME!
      */
     public void setProperty(String name, Object value) {
-        for (int i = 0; i < LEXICAL_HANDLER_NAMES.length; i++) {
-            if (LEXICAL_HANDLER_NAMES[i].equals(name)) {
+        for (String lexicalHandlerName : LEXICAL_HANDLER_NAMES) {
+            if (lexicalHandlerName.equals(name)) {
                 setLexicalHandler((LexicalHandler) value);
 
                 return;
@@ -561,8 +561,8 @@ public class SAXWriter implements XMLReader {
      */
     public Object getProperty(String name) throws SAXNotRecognizedException,
             SAXNotSupportedException {
-        for (int i = 0; i < LEXICAL_HANDLER_NAMES.length; i++) {
-            if (LEXICAL_HANDLER_NAMES[i].equals(name)) {
+        for (String lexicalHandlerName : LEXICAL_HANDLER_NAMES) {
+            if (lexicalHandlerName.equals(name)) {
                 return getLexicalHandler();
             }
         }
@@ -612,34 +612,32 @@ public class SAXWriter implements XMLReader {
     // -------------------------------------------------------------------------
     protected void writeContent(Branch branch, NamespaceStack namespaceStack)
             throws SAXException {
-        for (Iterator iter = branch.nodeIterator(); iter.hasNext();) {
-            Object object = iter.next();
+        for (Iterator<Node> iter = branch.nodeIterator(); iter.hasNext();) {
+            Node node = iter.next();
 
-            if (object instanceof Element) {
-                write((Element) object, namespaceStack);
-            } else if (object instanceof CharacterData) {
-                if (object instanceof Text) {
-                    Text text = (Text) object;
+            if (node instanceof Element) {
+                write((Element) node, namespaceStack);
+            } else if (node instanceof CharacterData) {
+                if (node instanceof Text) {
+                    Text text = (Text) node;
                     write(text.getText());
-                } else if (object instanceof CDATA) {
-                    write((CDATA) object);
-                } else if (object instanceof Comment) {
-                    write((Comment) object);
+                } else if (node instanceof CDATA) {
+                    write((CDATA) node);
+                } else if (node instanceof Comment) {
+                    write((Comment) node);
                 } else {
                     throw new SAXException("Invalid Node in DOM4J content: "
-                            + object + " of type: " + object.getClass());
+                            + node + " of type: " + node.getClass());
                 }
-            } else if (object instanceof String) {
-                write((String) object);
-            } else if (object instanceof Entity) {
-                write((Entity) object);
-            } else if (object instanceof ProcessingInstruction) {
-                write((ProcessingInstruction) object);
-            } else if (object instanceof Namespace) {
-                write((Namespace) object);
+            } else if (node instanceof Entity) {
+                write((Entity) node);
+            } else if (node instanceof ProcessingInstruction) {
+                write((ProcessingInstruction) node);
+            } else if (node instanceof Namespace) {
+                write((Namespace) node);
             } else {
                 throw new SAXException("Invalid Node in DOM4J content: "
-                        + object);
+                        + node);
             }
         }
     }
@@ -765,11 +763,9 @@ public class SAXWriter implements XMLReader {
                     elementNamespace);
         }
 
-        List declaredNamespaces = element.declaredNamespaces();
+        List<Namespace> declaredNamespaces = element.declaredNamespaces();
 
-        for (int i = 0, size = declaredNamespaces.size(); i < size; i++) {
-            Namespace namespace = (Namespace) declaredNamespaces.get(i);
-
+        for (Namespace namespace : declaredNamespaces) {
             if (!isIgnoreableNamespace(namespace, namespaceStack)) {
                 namespaceStack.push(namespace);
                 contentHandler.startPrefixMapping(namespace.getPrefix(),
@@ -825,8 +821,8 @@ public class SAXWriter implements XMLReader {
             attributes.setAttributes(namespaceAttributes);
         }
 
-        for (Iterator iter = element.attributeIterator(); iter.hasNext();) {
-            Attribute attribute = (Attribute) iter.next();
+        for (Iterator<Attribute> iter = element.attributeIterator(); iter.hasNext();) {
+            Attribute attribute = iter.next();
             attributes.addAttribute(attribute.getNamespaceURI(), attribute
                     .getName(), attribute.getQualifiedName(), "CDATA",
                     attribute.getValue());

@@ -139,7 +139,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     private boolean inDTD;
 
     /** The namespaces used for the current element when consuming SAX events */
-    private Map namespacesMap;
+    private Map<String, String> namespacesMap;
 
     /**
      * what is the maximum allowed character code such as 127 in US-ASCII (7
@@ -546,10 +546,10 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         } else if (object instanceof String) {
             write((String) object);
         } else if (object instanceof List) {
-            List list = (List) object;
+            List<?> list = (List<?>) object;
 
-            for (int i = 0, size = list.size(); i < size; i++) {
-                write(list.get(i));
+            for (Object aList : list) {
+                write(aList);
             }
         } else if (object != null) {
             throw new IOException("Invalid object: " + object);
@@ -599,8 +599,8 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     public void setProperty(String name, Object value)
             throws SAXNotRecognizedException, SAXNotSupportedException {
-        for (int i = 0; i < LEXICAL_HANDLER_NAMES.length; i++) {
-            if (LEXICAL_HANDLER_NAMES[i].equals(name)) {
+        for (String lexicalHandlerName : LEXICAL_HANDLER_NAMES) {
+            if (lexicalHandlerName.equals(name)) {
                 setLexicalHandler((LexicalHandler) value);
 
                 return;
@@ -612,8 +612,8 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
     public Object getProperty(String name) throws SAXNotRecognizedException,
             SAXNotSupportedException {
-        for (int i = 0; i < LEXICAL_HANDLER_NAMES.length; i++) {
-            if (LEXICAL_HANDLER_NAMES[i].equals(name)) {
+        for (String lexicalHandlerName : LEXICAL_HANDLER_NAMES) {
+            if (lexicalHandlerName.equals(name)) {
                 return getLexicalHandler();
             }
         }
@@ -662,7 +662,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     public void startPrefixMapping(String prefix, String uri)
             throws SAXException {
         if (namespacesMap == null) {
-            namespacesMap = new HashMap();
+            namespacesMap = new HashMap<String, String>();
         }
 
         namespacesMap.put(prefix, uri);
@@ -986,12 +986,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         boolean preserveFound = preserve; // default to global state
 
         if (attr != null) {
-            if ("xml".equals(attr.getNamespacePrefix())
-                    && "preserve".equals(attr.getText())) {
-                preserveFound = true;
-            } else {
-                preserveFound = false;
-            }
+            preserveFound = "xml".equals(attr.getNamespacePrefix()) && "preserve".equals(attr.getText());
         }
 
         return preserveFound;
@@ -1023,21 +1018,19 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
             // concatenate adjacent text nodes together
             // so that whitespace trimming works properly
             Text lastTextNode = null;
-            StringBuffer buff = null;
+            StringBuilder buff = null;
             boolean textOnly = true;
 
-            for (int i = 0, size = element.nodeCount(); i < size; i++) {
-                Node node = element.node(i);
-
+            for (Node node : element.content()) {
                 if (node instanceof Text) {
                     if (lastTextNode == null) {
                         lastTextNode = (Text) node;
                     } else {
                         if (buff == null) {
-                            buff = new StringBuffer(lastTextNode.getText());
+                            buff = new StringBuilder(lastTextNode.getText());
                         }
 
-                        buff.append(((Text) node).getText());
+                        buff.append((node).getText());
                     }
                 } else {
                     if (!textOnly && format.isPadText()) {
@@ -1115,9 +1108,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         } else {
             Node lastTextNode = null;
 
-            for (int i = 0, size = element.nodeCount(); i < size; i++) {
-                Node node = element.node(i);
-
+            for (Node node : element.content()) {
                 if (node instanceof Text) {
                     writeNode(node);
                     lastTextNode = node;
@@ -1180,11 +1171,9 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
      */
     protected void writeNamespaces() throws IOException {
         if (namespacesMap != null) {
-            for (Iterator iter = namespacesMap.entrySet().iterator(); iter
-                    .hasNext();) {
-                Map.Entry entry = (Map.Entry) iter.next();
-                String prefix = (String) entry.getKey();
-                String uri = (String) entry.getValue();
+            for (Map.Entry<String, String> entry : namespacesMap.entrySet()) {
+                String prefix = entry.getKey();
+                String uri = entry.getValue();
                 writeNamespace(prefix, uri);
             }
 
@@ -1359,9 +1348,9 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
         }
 
         // try to register for lexical events
-        for (int i = 0; i < LEXICAL_HANDLER_NAMES.length; i++) {
+        for (String lexicalHandlerName : LEXICAL_HANDLER_NAMES) {
             try {
-                parent.setProperty(LEXICAL_HANDLER_NAMES[i], this);
+                parent.setProperty(lexicalHandlerName, this);
 
                 break;
             } catch (SAXNotRecognizedException ex) {

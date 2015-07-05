@@ -270,8 +270,8 @@ public class STAXEventWriter {
         QName tagName = createQName(elem.getQName());
 
         // create attribute & namespace iterators
-        Iterator attrIter = new AttributeIterator(elem.attributeIterator());
-        Iterator nsIter = new NamespaceIterator(elem.declaredNamespaces()
+        Iterator<javax.xml.stream.events.Attribute> attrIter = new AttributeIterator(elem.attributeIterator());
+        Iterator<javax.xml.stream.events.Namespace> nsIter = new NamespaceIterator(elem.declaredNamespaces()
                 .iterator());
 
         // create start event
@@ -288,7 +288,7 @@ public class STAXEventWriter {
      */
     public EndElement createEndElement(Element elem) {
         QName tagName = createQName(elem.getQName());
-        Iterator nsIter = new NamespaceIterator(elem.declaredNamespaces()
+        Iterator<javax.xml.stream.events.Namespace> nsIter = new NamespaceIterator(elem.declaredNamespaces()
                 .iterator());
 
         return factory.createEndElement(tagName, nsIter);
@@ -593,11 +593,11 @@ public class STAXEventWriter {
      * Internal {@link Iterator}implementation used to pass DOM4J {@link
      * Attribute}s to the stream.
      */
-    private class AttributeIterator implements Iterator {
+    private class AttributeIterator implements Iterator<javax.xml.stream.events.Attribute> {
         /** The underlying DOm4J attribute iterator. */
-        private Iterator iter;
+        private Iterator<Attribute> iter;
 
-        public AttributeIterator(Iterator iter) {
+        public AttributeIterator(Iterator<Attribute> iter) {
             this.iter = iter;
         }
 
@@ -605,8 +605,8 @@ public class STAXEventWriter {
             return iter.hasNext();
         }
 
-        public Object next() {
-            Attribute attr = (Attribute) iter.next();
+        public javax.xml.stream.events.Attribute next() {
+            Attribute attr = iter.next();
             QName attrName = createQName(attr.getQName());
             String value = attr.getValue();
 
@@ -622,10 +622,10 @@ public class STAXEventWriter {
      * Internal {@link Iterator}implementation used to pass DOM4J {@link
      * Namespace}s to the stream.
      */
-    private class NamespaceIterator implements Iterator {
-        private Iterator iter;
+    private class NamespaceIterator implements Iterator<javax.xml.stream.events.Namespace> {
+        private Iterator<Namespace> iter;
 
-        public NamespaceIterator(Iterator iter) {
+        public NamespaceIterator(Iterator<Namespace> iter) {
             this.iter = iter;
         }
 
@@ -633,8 +633,8 @@ public class STAXEventWriter {
             return iter.hasNext();
         }
 
-        public Object next() {
-            Namespace ns = (Namespace) iter.next();
+        public javax.xml.stream.events.Namespace next() {
+            Namespace ns = iter.next();
             String prefix = ns.getPrefix();
             String nsURI = ns.getURI();
 

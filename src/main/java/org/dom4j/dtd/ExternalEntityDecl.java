@@ -16,7 +16,7 @@ package org.dom4j.dtd;
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.9 $
  */
-public class ExternalEntityDecl {
+public class ExternalEntityDecl implements Decl {
     /** Holds value of property name. */
     private String name;
 

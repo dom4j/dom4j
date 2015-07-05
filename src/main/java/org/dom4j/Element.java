@@ -20,7 +20,7 @@ import java.util.Map;
  * <p>
  * Some of this interface is optional. Some implementations may be read-only and
  * not support being modified. Some implementations may not support the parent
- * relationship and methods such as {@link #getParent}or {@link#getDocument}.
+ * relationship and methods such as {@link #getParent}or {@link #getDocument}.
  * </p>
  * 
  * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
@@ -294,7 +294,7 @@ public interface Element extends Branch {
      * 
      * @return this <code>Element</code> instance.
      */
-    Element addProcessingInstruction(String target, Map data);
+    Element addProcessingInstruction(String target, Map<String, String> data);
 
     /**
      * Adds a new <code>Text</code> node with the given text to this element.
@@ -558,7 +558,7 @@ public interface Element extends Branch {
      * </p>
      * 
      * @param name
-     *            is the name of the attribute value to be returnd
+     *            is the name of the attribute value to be returned
      * 
      * @return the value of the attribute, null if the attribute does not exist
      *         or the empty string
@@ -573,7 +573,7 @@ public interface Element extends Branch {
      * </p>
      * 
      * @param name
-     *            is the name of the attribute value to be returnd
+     *            is the name of the attribute value to be returned
      * @param defaultValue
      *            is the default value to be returned if the attribute has no
      *            value defined.

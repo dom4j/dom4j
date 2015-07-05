@@ -412,12 +412,10 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
      * have its parent and document relationships cleared
      */
     protected void contentRemoved() {
-        List content = contentList();
+        List<Node> content = contentList();
 
-        for (Object object : content) {
-            if (object instanceof Node) {
-                childRemoved((Node) object);
-            }
+        for (Node node : content) {
+            childRemoved(node);
         }
     }
 

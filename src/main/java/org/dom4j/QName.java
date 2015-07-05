@@ -26,25 +26,25 @@ import org.dom4j.util.SingletonStrategy;
  */
 public class QName implements Serializable {
     /** The Singleton instance */
-    private static SingletonStrategy singleton = null;
+    private static SingletonStrategy<QNameCache> singleton = null;
 
     static {
         try {
             String defaultSingletonClass = "org.dom4j.util.SimpleSingleton";
-            Class clazz = null;
+            Class<SingletonStrategy> clazz = null;
             try {
                 String singletonClass = defaultSingletonClass;
                 singletonClass = System.getProperty(
                         "org.dom4j.QName.singleton.strategy", singletonClass);
-                clazz = Class.forName(singletonClass);
+                clazz = (Class<SingletonStrategy>) Class.forName(singletonClass);
             } catch (Exception exc1) {
                 try {
                     String singletonClass = defaultSingletonClass;
-                    clazz = Class.forName(singletonClass);
+                    clazz = (Class<SingletonStrategy>) Class.forName(singletonClass);
                 } catch (Exception exc2) {
                 }
             }
-            singleton = (SingletonStrategy) clazz.newInstance();
+            singleton = clazz.newInstance();
             singleton.setSingletonClassName(QNameCache.class.getName());
         } catch (Exception exc3) {
         }
@@ -250,7 +250,7 @@ public class QName implements Serializable {
     }
 
     private static QNameCache getCache() {
-        QNameCache cache = (QNameCache) singleton.instance();
+        QNameCache cache = singleton.instance();
         return cache;
     }
 }

@@ -21,38 +21,38 @@ import java.lang.ref.WeakReference;
  * @version $Revision: 1.3 $
  */
 
-public class PerThreadSingleton implements SingletonStrategy {
+public class PerThreadSingleton<T> implements SingletonStrategy<T> {
     private String singletonClassName = null;
 
-    private ThreadLocal perThreadCache = new ThreadLocal();
+    private ThreadLocal<WeakReference<T>> perThreadCache = new ThreadLocal<WeakReference<T>>();
 
     public PerThreadSingleton() {
     }
 
     public void reset() {
-        perThreadCache = new ThreadLocal();
+        perThreadCache = new ThreadLocal<WeakReference<T>>();
     }
 
-    public Object instance() {
-        Object singletonInstancePerThread = null;
+    public T instance() {
+        T singletonInstancePerThread = null;
         // use weak reference to prevent cyclic reference during GC
-        WeakReference ref = (WeakReference) perThreadCache.get();
+        WeakReference<T> ref = (WeakReference<T>) perThreadCache.get();
         // singletonInstancePerThread=perThreadCache.get();
         // if (singletonInstancePerThread==null) {
         if (ref == null || ref.get() == null) {
-            Class clazz = null;
+            Class<T> clazz = null;
             try {
-                clazz = Thread.currentThread().getContextClassLoader().loadClass(
+                clazz = (Class<T>) Thread.currentThread().getContextClassLoader().loadClass(
                         singletonClassName);
                 singletonInstancePerThread = clazz.newInstance();
             } catch (Exception ignore) {
                 try {
-                    clazz = Class.forName(singletonClassName);
+                    clazz = (Class<T>) Class.forName(singletonClassName);
                     singletonInstancePerThread = clazz.newInstance();
                 } catch (Exception ignore2) {
                 }
             }
-            perThreadCache.set(new WeakReference(singletonInstancePerThread));
+            perThreadCache.set(new WeakReference<T>(singletonInstancePerThread));
         } else {
             singletonInstancePerThread = ref.get();
         }

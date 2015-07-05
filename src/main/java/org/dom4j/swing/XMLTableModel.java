@@ -13,6 +13,7 @@ import javax.swing.table.AbstractTableModel;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
+import org.dom4j.Node;
 import org.dom4j.XPath;
 
 /**
@@ -31,7 +32,7 @@ public class XMLTableModel extends AbstractTableModel {
     private Object source;
 
     /** The rows evaluated from the row XPath expression */
-    private List rows;
+    private List<Node> rows;
 
     /**
      * Creates a TableModel from an XML table definition document and an XML
@@ -68,7 +69,7 @@ public class XMLTableModel extends AbstractTableModel {
         return getRows().get(rowIndex);
     }
 
-    public List getRows() {
+    public List<Node> getRows() {
         if (rows == null) {
             rows = definition.getRowXPath().selectNodes(source);
         }
@@ -78,7 +79,7 @@ public class XMLTableModel extends AbstractTableModel {
 
     // TableModel interface
     // -------------------------------------------------------------------------
-    public Class getColumnClass(int columnIndex) {
+    public Class<?> getColumnClass(int columnIndex) {
         return definition.getColumnClass(columnIndex);
     }
 

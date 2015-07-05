@@ -7,12 +7,12 @@
 
 package org.dom4j.dom;
 
-import org.dom4j.Attribute;
-import org.dom4j.DocumentFactory;
-import org.dom4j.Namespace;
-import org.dom4j.QName;
+import org.dom4j.*;
 import org.dom4j.tree.DefaultElement;
 import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -302,14 +302,14 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     }
 
     public NodeList getElementsByTagName(String name) {
-        ArrayList list = new ArrayList();
+        ArrayList<org.dom4j.Node> list = new ArrayList<org.dom4j.Node>();
         DOMNodeHelper.appendElementsByTagName(list, this, name);
 
         return DOMNodeHelper.createNodeList(list);
     }
 
     public NodeList getElementsByTagNameNS(String namespace, String lName) {
-        ArrayList list = new ArrayList();
+        ArrayList<org.dom4j.Node> list = new ArrayList<org.dom4j.Node>();
         DOMNodeHelper.appendElementsByTagNameNS(list, this, namespace, lName);
 
         return DOMNodeHelper.createNodeList(list);
@@ -337,18 +337,16 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
     }
 
     protected Attribute attribute(String namespaceURI, String localName) {
-        List attributes = attributeList();
+        List<Attribute> attributes = attributeList();
         int size = attributes.size();
 
-        for (int i = 0; i < size; i++) {
-            Attribute attribute = (Attribute) attributes.get(i);
-
+        for (Attribute attribute : attributes) {
             if (localName.equals(attribute.getName())
                     && (((namespaceURI == null || namespaceURI.length() == 0)
-                          && ((attribute.getNamespaceURI() == null) 
-                              || (attribute.getNamespaceURI().length() == 0)))
-                              || ((namespaceURI != null) && namespaceURI
-                                      .equals(attribute.getNamespaceURI())))) {
+                    && ((attribute.getNamespaceURI() == null)
+                    || (attribute.getNamespaceURI().length() == 0)))
+                    || ((namespaceURI != null) && namespaceURI
+                    .equals(attribute.getNamespaceURI())))) {
                 return attribute;
             }
         }

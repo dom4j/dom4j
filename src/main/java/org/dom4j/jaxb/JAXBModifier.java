@@ -51,7 +51,7 @@ public class JAXBModifier extends JAXBSupport {
 
     private OutputFormat outputFormat;
 
-    private HashMap modifiers = new HashMap();
+    private HashMap<String, JAXBObjectModifier> modifiers = new HashMap<String, JAXBObjectModifier>();
 
     /**
      * Creates a new JAXBModifier for the given JAXB context path. This is the
@@ -105,7 +105,7 @@ public class JAXBModifier extends JAXBSupport {
 
     /**
      * Creates a new JAXBModifier for the given JAXB context path, using the
-     * specified {@link java.lang.Classloader}. The specified {@link
+     * specified {@link java.lang.ClassLoader}. The specified {@link
      * org.dom4j.io.OutputFormat} will be used while writing the XML stream.
      * 
      * @param contextPath
@@ -441,13 +441,13 @@ public class JAXBModifier extends JAXBSupport {
 
         modifier.resetModifiers();
 
-        Iterator modifierIt = modifiers.entrySet().iterator();
+        Iterator<Map.Entry<String, JAXBObjectModifier>> modifierIt = modifiers.entrySet().iterator();
 
         while (modifierIt.hasNext()) {
-            Map.Entry entry = (Map.Entry) modifierIt.next();
+            Map.Entry<String, JAXBObjectModifier> entry = modifierIt.next();
             ElementModifier mod = new JAXBElementModifier(this,
-                    (JAXBObjectModifier) entry.getValue());
-            getModifier().addModifier((String) entry.getKey(), mod);
+                    entry.getValue());
+            getModifier().addModifier(entry.getKey(), mod);
         }
 
         modifier.setXMLWriter(getXMLWriter());

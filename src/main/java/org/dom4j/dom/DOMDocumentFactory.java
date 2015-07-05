@@ -26,26 +26,26 @@ public class DOMDocumentFactory extends DocumentFactory implements
         org.w3c.dom.DOMImplementation {
 
     /** The Singleton instance */
-    private static SingletonStrategy singleton = null;
+    private static SingletonStrategy<DOMDocumentFactory> singleton = null;
 
     static {
         try {
             String defaultSingletonClass = "org.dom4j.util.SimpleSingleton";
-            Class clazz = null;
+            Class<SingletonStrategy> clazz = null;
             try {
                 String singletonClass = defaultSingletonClass;
                 singletonClass = System.getProperty(
                         "org.dom4j.dom.DOMDocumentFactory.singleton.strategy",
                         singletonClass);
-                clazz = Class.forName(singletonClass);
+                clazz = (Class<SingletonStrategy>) Class.forName(singletonClass);
             } catch (Exception exc1) {
                 try {
                     String singletonClass = defaultSingletonClass;
-                    clazz = Class.forName(singletonClass);
+                    clazz = (Class<SingletonStrategy>) Class.forName(singletonClass);
                 } catch (Exception exc2) {
                 }
             }
-            singleton = (SingletonStrategy) clazz.newInstance();
+            singleton = clazz.newInstance();
             singleton.setSingletonClassName(DOMDocumentFactory.class.getName());
         } catch (Exception exc3) {
         }
@@ -59,8 +59,7 @@ public class DOMDocumentFactory extends DocumentFactory implements
      * @return the default singleon instance
      */
     public static DocumentFactory getInstance() {
-        DOMDocumentFactory fact = (DOMDocumentFactory) singleton.instance();
-        return fact;
+        return singleton.instance();
     }
 
     // Factory methods
@@ -118,7 +117,7 @@ public class DOMDocumentFactory extends DocumentFactory implements
     }
 
     public ProcessingInstruction createProcessingInstruction(String target,
-            Map data) {
+            Map<String, String> data) {
         return new DOMProcessingInstruction(target, data);
     }
 
