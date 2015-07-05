@@ -14,7 +14,7 @@ import org.dom4j.Document;
 import org.dom4j.io.SAXReader;
 
 /**
- * Tests the SchemaParser based on a test case provided by Luis Peña Sánchez
+ * Tests the SchemaParser based on a test case provided by Luis PeÃ±a SÃ¡nchez
  * 
  * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision: 1.4 $
