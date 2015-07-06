@@ -91,13 +91,13 @@ public class Rule implements Comparable<Rule> {
      * @return DOCUMENT ME!
      */
     public int compareTo(Rule that) {
-        int answer = this.importPrecedence - that.importPrecedence;
+        int answer = Integer.compare(this.importPrecedence, that.importPrecedence);
 
         if (answer == 0) {
-            answer = (int) Math.round(this.priority - that.priority);
+            answer = Double.compare(this.priority, that.priority);
 
             if (answer == 0) {
-                answer = this.appearenceCount - that.appearenceCount;
+                answer = Integer.compare(this.appearenceCount, that.appearenceCount);
             }
         }
 
