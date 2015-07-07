@@ -15,6 +15,7 @@ import java.util.Calendar;
 
 import org.dom4j.DocumentFactory;
 import org.dom4j.io.SAXReader;
+import org.testng.annotations.BeforeClass;
 
 /**
  * Test harness to test the various data types supported in the XML Schema Data
@@ -24,10 +25,6 @@ import org.dom4j.io.SAXReader;
  * @version $Revision: 1.4 $
  */
 public class DataTypesTest extends AbstractDataTypeTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(DataTypesTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testgMonthDay() throws Exception {
@@ -141,7 +138,8 @@ public class DataTypesTest extends AbstractDataTypeTestCase {
 
     // Implementation methods
     // -------------------------------------------------------------------------
-    protected void setUp() throws Exception {
+    @BeforeClass
+    public void setUp() throws Exception {
         super.setUp();
 
         DocumentFactory factory = DatatypeDocumentFactory.getInstance();

@@ -36,10 +36,6 @@ public class ThreadingTest extends AbstractTestCase {
 
     private static final FieldPosition FIELD_ZERO = new FieldPosition(0);
 
-    public ThreadingTest(String name) {
-        super(name);
-    }
-
     private static void preformat(StringBuffer strBuf, String context) {
         long now = System.currentTimeMillis();
         Date currentTime = new Date(now);
@@ -271,6 +267,7 @@ public class ThreadingTest extends AbstractTestCase {
      * 
      * @return The suite
      */
+/*
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTest(makeRepeatedLoadTest(5, 10, "testCombo"));
@@ -278,6 +275,7 @@ public class ThreadingTest extends AbstractTestCase {
 
         return suite;
     }
+*/
 
     /**
      * JUnit method to exercise test via threads and loops
@@ -291,11 +289,11 @@ public class ThreadingTest extends AbstractTestCase {
      * 
      * @return A Junit test
      */
-    protected static Test makeRepeatedLoadTest(int users, int iterations,
-            String testMethod) {
+/*
+    protected static Test makeRepeatedLoadTest(int users, int iterations, String testMethod) {
         long maxElapsedTime = 120000 + (1000 * users * iterations);
 
-        Test testCase = new ThreadingTest(testMethod);
+        Test testCase = new ThreadingTest();
 
         Test repeatedTest = new RepeatedTest(testCase, iterations);
         Test loadTest = new LoadTest(repeatedTest, users);
@@ -303,10 +301,8 @@ public class ThreadingTest extends AbstractTestCase {
 
         return timedTest;
     }
+*/
 
-    public static void main(String[] args) {
-        TestRunner.run(ThreadingTest.class);
-    }
 }
 
 /*

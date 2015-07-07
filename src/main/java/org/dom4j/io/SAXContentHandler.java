@@ -21,10 +21,7 @@ import org.dom4j.Element;
 import org.dom4j.ElementHandler;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
-import org.dom4j.dtd.AttributeDecl;
-import org.dom4j.dtd.ElementDecl;
-import org.dom4j.dtd.ExternalEntityDecl;
-import org.dom4j.dtd.InternalEntityDecl;
+import org.dom4j.dtd.*;
 import org.dom4j.tree.AbstractElement;
 import org.dom4j.tree.NamespaceStack;
 
@@ -37,6 +34,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.ext.DeclHandler;
 import org.xml.sax.ext.LexicalHandler;
+import org.xml.sax.ext.Locator2;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -82,17 +80,11 @@ public class SAXContentHandler extends DefaultHandler implements
      */
     private StringBuffer cdataText;
 
-    /** namespaces that are available for use */
-    private Map availableNamespaceMap = new HashMap();
-
-    /** declared namespaces that are not yet available for use */
-    private List declaredNamespaceList = new ArrayList();
-
     /** internal DTD declarations */
-    private List internalDTDDeclarations;
+    private List<Decl> internalDTDDeclarations;
 
     /** external DTD declarations */
-    private List externalDTDDeclarations;
+    private List<Decl> externalDTDDeclarations;
 
     /** The number of namespaces that are declared in the current scope */
     private int declaredNamespaceIndex;
@@ -844,17 +836,8 @@ public class SAXContentHandler extends DefaultHandler implements
             return null;
         }
 
-        // use reflection to avoid dependency on Locator2
-        // or other locator implemenations.
-        try {
-            Method m = locator.getClass().getMethod("getEncoding",
-                    new Class[] {});
-
-            if (m != null) {
-                return (String) m.invoke(locator, null);
-            }
-        } catch (Exception e) {
-            // do nothing
+        if (locator instanceof Locator2) {
+            return ((Locator2) locator).getEncoding();
         }
 
         // couldn't determine encoding, returning null...
@@ -941,9 +924,9 @@ public class SAXContentHandler extends DefaultHandler implements
      * @param declaration
      *            DOCUMENT ME!
      */
-    protected void addDTDDeclaration(Object declaration) {
+    protected void addDTDDeclaration(Decl declaration) {
         if (internalDTDDeclarations == null) {
-            internalDTDDeclarations = new ArrayList();
+            internalDTDDeclarations = new ArrayList<Decl>();
         }
 
         internalDTDDeclarations.add(declaration);
@@ -955,9 +938,9 @@ public class SAXContentHandler extends DefaultHandler implements
      * @param declaration
      *            DOCUMENT ME!
      */
-    protected void addExternalDTDDeclaration(Object declaration) {
+    protected void addExternalDTDDeclaration(Decl declaration) {
         if (externalDTDDeclarations == null) {
-            externalDTDDeclarations = new ArrayList();
+            externalDTDDeclarations = new ArrayList<Decl>();
         }
 
         externalDTDDeclarations.add(declaration);

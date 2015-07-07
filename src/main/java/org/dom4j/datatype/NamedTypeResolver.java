@@ -26,13 +26,13 @@ import org.dom4j.QName;
  * @version $Revision: 1.8 $
  */
 class NamedTypeResolver {
-    protected Map complexTypeMap = new HashMap();
+    protected Map<QName, DocumentFactory> complexTypeMap = new HashMap<QName, DocumentFactory>();
 
-    protected Map simpleTypeMap = new HashMap();
+    protected Map<QName, XSDatatype> simpleTypeMap = new HashMap<QName, XSDatatype>();
 
-    protected Map typedElementMap = new HashMap();
+    protected Map<Element, QName> typedElementMap = new HashMap<Element, QName>();
 
-    protected Map elementFactoryMap = new HashMap();
+    protected Map<Element, DocumentFactory> elementFactoryMap = new HashMap<Element, DocumentFactory>();
 
     protected DocumentFactory documentFactory;
 
@@ -55,10 +55,7 @@ class NamedTypeResolver {
     }
 
     void resolveElementTypes() {
-        Iterator iterator = typedElementMap.keySet().iterator();
-
-        while (iterator.hasNext()) {
-            Element element = (Element) iterator.next();
+        for (Element element : typedElementMap.keySet()) {
             QName elementQName = getQNameOfSchemaElement(element);
             QName type = (QName) typedElementMap.get(element);
 

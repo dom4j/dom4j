@@ -7,9 +7,9 @@
 
 package org.dom4j;
 
-import java.util.Map;
-
 import org.xml.sax.EntityResolver;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -19,6 +19,7 @@ import org.xml.sax.EntityResolver;
  * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision: 1.14 $
  */
+@SuppressWarnings("unused")
 public interface Document extends Branch {
     /**
      * Returns the root {@link Element}for this document.
@@ -70,7 +71,7 @@ public interface Document extends Branch {
      * 
      * @return this <code>Document</code> instance.
      */
-    Document addProcessingInstruction(String target, Map data);
+    Document addProcessingInstruction(String target, Map<String, String> data);
 
     /**
      * Adds a DOCTYPE declaration to this document

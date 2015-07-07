@@ -19,10 +19,6 @@ import org.dom4j.DocumentFactory;
  * @version $Revision: 1.3 $
  */
 public class PriorityTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(PriorityTest.class);
-    }
-
     public void testNameNode() throws Exception {
         testPriority("foo", 0);
     }

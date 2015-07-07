@@ -24,10 +24,6 @@ import org.dom4j.Text;
 public class TextTest extends AbstractTestCase {
     protected static String[] paths = {"text()", "//author/text()"};
 
-    public static void main(String[] args) {
-        TestRunner.run(TextTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testXPaths() throws Exception {

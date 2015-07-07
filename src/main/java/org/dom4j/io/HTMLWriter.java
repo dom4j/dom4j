@@ -181,12 +181,12 @@ import org.xml.sax.SAXException;
 public class HTMLWriter extends XMLWriter {
     private static String lineSeparator = System.getProperty("line.separator");
 
-    protected static final HashSet DEFAULT_PREFORMATTED_TAGS;
+    protected static final HashSet<String> DEFAULT_PREFORMATTED_TAGS;
 
     static {
         // If you change this list, update the javadoc examples, above in the
         // class javadoc, in writeElement, and in setPreformattedTags().
-        DEFAULT_PREFORMATTED_TAGS = new HashSet();
+        DEFAULT_PREFORMATTED_TAGS = new HashSet<String>();
         DEFAULT_PREFORMATTED_TAGS.add("PRE");
         DEFAULT_PREFORMATTED_TAGS.add("SCRIPT");
         DEFAULT_PREFORMATTED_TAGS.add("STYLE");
@@ -201,7 +201,7 @@ public class HTMLWriter extends XMLWriter {
         DEFAULT_HTML_FORMAT.setSuppressDeclaration(true);
     }
 
-    private Stack formatStack = new Stack();
+    private Stack<FormatState> formatStack = new Stack<FormatState>();
 
     private String lastText = "";
 
@@ -210,13 +210,13 @@ public class HTMLWriter extends XMLWriter {
     // legal values are 0+, but -1 signifies lazy initialization.
     private int newLineAfterNTags = -1;
 
-    private HashSet preformattedTags = DEFAULT_PREFORMATTED_TAGS;
+    private HashSet<String> preformattedTags = DEFAULT_PREFORMATTED_TAGS;
 
     /**
      * Used to store the qualified element names which should have no close
      * element tag
      */
-    private HashSet omitElementCloseSet;
+    private HashSet<String> omitElementCloseSet;
 
     public HTMLWriter(Writer writer) {
         super(writer, DEFAULT_HTML_FORMAT);
@@ -349,9 +349,9 @@ public class HTMLWriter extends XMLWriter {
                 qualifiedName.toUpperCase());
     }
 
-    private HashSet internalGetOmitElementCloseSet() {
+    private HashSet<String> internalGetOmitElementCloseSet() {
         if (omitElementCloseSet == null) {
-            omitElementCloseSet = new HashSet();
+            omitElementCloseSet = new HashSet<String>();
             loadOmitElementCloseSet(omitElementCloseSet);
         }
 
@@ -359,7 +359,7 @@ public class HTMLWriter extends XMLWriter {
     }
 
     // If you change this, change the javadoc for getOmitElementCloseSet.
-    protected void loadOmitElementCloseSet(Set set) {
+    protected void loadOmitElementCloseSet(Set<String> set) {
         set.add("AREA");
         set.add("BASE");
         set.add("BR");
@@ -382,8 +382,8 @@ public class HTMLWriter extends XMLWriter {
      * 
      * @return A clone of the Set.
      */
-    public Set getOmitElementCloseSet() {
-        return (Set) (internalGetOmitElementCloseSet().clone());
+    public Set<String> getOmitElementCloseSet() {
+        return (Set<String>) (internalGetOmitElementCloseSet().clone());
     }
 
     /**
@@ -402,21 +402,17 @@ public class HTMLWriter extends XMLWriter {
      * @param newSet
      *            DOCUMENT ME!
      */
-    public void setOmitElementCloseSet(Set newSet) {
+    public void setOmitElementCloseSet(Set<String> newSet) {
         // resets, and safely empties it out if newSet is null.
-        omitElementCloseSet = new HashSet();
+        omitElementCloseSet = new HashSet<String>();
 
         if (newSet != null) {
-            omitElementCloseSet = new HashSet();
+            omitElementCloseSet = new HashSet<String>();
 
-            Object aTag;
-            Iterator iter = newSet.iterator();
-
-            while (iter.hasNext()) {
-                aTag = iter.next();
+            for (String aTag : newSet) {
 
                 if (aTag != null) {
-                    omitElementCloseSet.add(aTag.toString().toUpperCase());
+                    omitElementCloseSet.add(aTag.toUpperCase());
                 }
             }
         }
@@ -425,8 +421,8 @@ public class HTMLWriter extends XMLWriter {
     /**
      * @see #setPreformattedTags(java.util.Set) setPreformattedTags
      */
-    public Set getPreformattedTags() {
-        return (Set) (preformattedTags.clone());
+    public Set<String> getPreformattedTags() {
+        return (Set<String>) (preformattedTags.clone());
     }
 
     /**
@@ -526,22 +522,17 @@ public class HTMLWriter extends XMLWriter {
      * @param newSet
      *            DOCUMENT ME!
      */
-    public void setPreformattedTags(Set newSet) {
+    public void setPreformattedTags(Set<String> newSet) {
         // no fancy merging, just set it, assuming they did a
         // getExcludeTrimTags() first if they wanted to preserve the default
         // set.
         // resets, and safely empties it out if newSet is null.
-        preformattedTags = new HashSet();
+        preformattedTags = new HashSet<String>();
 
         if (newSet != null) {
-            Object aTag;
-            Iterator iter = newSet.iterator();
-
-            while (iter.hasNext()) {
-                aTag = iter.next();
-
+            for (String aTag : newSet) {
                 if (aTag != null) {
-                    preformattedTags.add(aTag.toString().toUpperCase());
+                    preformattedTags.add(aTag.toUpperCase());
                 }
             }
         }

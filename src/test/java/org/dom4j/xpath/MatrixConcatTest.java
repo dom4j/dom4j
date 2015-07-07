@@ -14,6 +14,8 @@ import java.util.List;
 
 import org.dom4j.AbstractTestCase;
 import org.dom4j.io.SAXReader;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 /**
  * Test harness for the matrix-concat extension function
@@ -21,11 +23,8 @@ import org.dom4j.io.SAXReader;
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.3 $
  */
+@Test(enabled = false)
 public class MatrixConcatTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(MatrixConcatTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testMatrixConcat() throws Exception {
@@ -59,7 +58,8 @@ public class MatrixConcatTest extends AbstractTestCase {
         }
     }
 
-    protected void setUp() throws Exception {
+    @BeforeClass
+    public void setUp() throws Exception {
         super.setUp();
         document = new SAXReader().read(new File("xml/test/product.xml"));
     }

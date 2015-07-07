@@ -20,10 +20,6 @@ import org.dom4j.io.SAXReader;
  * @version $Revision: 1.4 $
  */
 public class GetQNamesTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(GetQNamesTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testQNames() throws Exception {

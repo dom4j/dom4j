@@ -18,10 +18,6 @@ import java.util.Map;
  * @author Maarten Coene
  */
 public class ProcessingInstructionTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(ProcessingInstructionTest.class);
-    }
-
     public void testParseValues() {
         String data = " abc='123' def=\"2!=3\" ghi=' 4 = '";
         ProcessingInstruction pi = DocumentHelper.createProcessingInstruction(

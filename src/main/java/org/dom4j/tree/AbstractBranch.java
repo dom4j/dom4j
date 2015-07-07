@@ -7,19 +7,12 @@
 
 package org.dom4j.tree;
 
+import org.dom4j.*;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
-
-import org.dom4j.Branch;
-import org.dom4j.Comment;
-import org.dom4j.Element;
-import org.dom4j.IllegalAddException;
-import org.dom4j.Namespace;
-import org.dom4j.Node;
-import org.dom4j.ProcessingInstruction;
-import org.dom4j.QName;
 
 /**
  * <p>
@@ -36,22 +29,24 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     public AbstractBranch() {
     }
 
+    @Override
     public boolean isReadOnly() {
         return false;
     }
 
+    @Override
     public boolean hasContent() {
         return nodeCount() > 0;
     }
 
-    public List content() {
-        List backingList = contentList();
+    public List<Node> content() {
+        List<Node> backingList = contentList();
 
-        return new ContentListFacade(this, backingList);
+        return new ContentListFacade<Node>(this, backingList);
     }
 
     public String getText() {
-        List content = contentList();
+        List<Node> content = contentList();
 
         if (content != null) {
             int size = content.size();
@@ -64,7 +59,7 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
                     // optimised to avoid StringBuffer creation
                     return firstText;
                 } else {
-                    StringBuffer buffer = new StringBuffer(firstText);
+                    StringBuilder buffer = new StringBuilder(firstText);
 
                     for (int i = 1; i < size; i++) {
                         Object node = content.get(i);
@@ -144,7 +139,7 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     public String getTextTrim() {
         String text = getText();
 
-        StringBuffer textContent = new StringBuffer();
+        StringBuilder textContent = new StringBuilder();
         StringTokenizer tokenizer = new StringTokenizer(text);
 
         while (tokenizer.hasMoreTokens()) {
@@ -159,9 +154,8 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
         return textContent.toString();
     }
 
-    public void setProcessingInstructions(List listOfPIs) {
-        for (Iterator iter = listOfPIs.iterator(); iter.hasNext();) {
-            ProcessingInstruction pi = (ProcessingInstruction) iter.next();
+    public void setProcessingInstructions(List<ProcessingInstruction> listOfPIs) {
+        for (ProcessingInstruction pi : listOfPIs) {
             addNode(pi);
         }
     }
@@ -292,17 +286,7 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     }
 
     public Node node(int index) {
-        Object object = contentList().get(index);
-
-        if (object instanceof Node) {
-            return (Node) object;
-        }
-
-        if (object instanceof String) {
-            return getDocumentFactory().createText(object.toString());
-        }
-
-        return null;
+        return contentList().get(index);
     }
 
     public int nodeCount() {
@@ -313,7 +297,7 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
         return contentList().indexOf(node);
     }
 
-    public Iterator nodeIterator() {
+    public Iterator<Node> nodeIterator() {
         return contentList().iterator();
     }
 
@@ -338,7 +322,7 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
      * 
      * @return the internal List used to manage the content
      */
-    protected abstract List contentList();
+    protected abstract List<Node> contentList();
 
     /**
      * A Factory Method pattern which creates a List implementation used to
@@ -346,8 +330,8 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
      * 
      * @return DOCUMENT ME!
      */
-    protected List createContentList() {
-        return new ArrayList(DEFAULT_CONTENT_LIST_SIZE);
+    protected List<Node> createContentList() {
+        return new ArrayList<Node>(DEFAULT_CONTENT_LIST_SIZE);
     }
 
     /**
@@ -359,8 +343,8 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
      * 
      * @return DOCUMENT ME!
      */
-    protected List createContentList(int size) {
-        return new ArrayList(size);
+    protected List<Node> createContentList(int size) {
+        return new ArrayList<Node>(size);
     }
 
     /**
@@ -369,8 +353,8 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
      * 
      * @return DOCUMENT ME!
      */
-    protected BackedList createResultList() {
-        return new BackedList(this, contentList());
+    protected <T extends Node> BackedList<T> createResultList() {
+        return new BackedList<T>(this, contentList());
     }
 
     /**
@@ -382,8 +366,8 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
      * 
      * @return DOCUMENT ME!
      */
-    protected List createSingleResultList(Object result) {
-        BackedList list = new BackedList(this, contentList(), 1);
+    protected <T extends Node> List<T> createSingleResultList(T result) {
+        BackedList<T> list = new BackedList<T>(this, contentList(), 1);
         list.addLocal(result);
 
         return list;
@@ -395,8 +379,8 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
      * 
      * @return DOCUMENT ME!
      */
-    protected List createEmptyList() {
-        return new BackedList(this, contentList(), 0);
+    protected <T extends Node> List<T> createEmptyList() {
+        return new BackedList<T>(this, contentList(), 0);
     }
 
     protected abstract void addNode(Node node);
@@ -428,14 +412,10 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
      * have its parent and document relationships cleared
      */
     protected void contentRemoved() {
-        List content = contentList();
+        List<Node> content = contentList();
 
-        for (int i = 0, size = content.size(); i < size; i++) {
-            Object object = content.get(i);
-
-            if (object instanceof Node) {
-                childRemoved((Node) object);
-            }
+        for (Node node : content) {
+            childRemoved(node);
         }
     }
 

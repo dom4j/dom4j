@@ -15,10 +15,6 @@ import junit.textui.TestRunner;
  * @author Philippe Ombredanne
  */
 public class AddNodeTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(AddNodeTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testDom4jAddNodeClone() {

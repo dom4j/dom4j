@@ -26,10 +26,6 @@ import org.dom4j.DocumentFactory;
 public class RuleTest extends AbstractTestCase {
     protected DocumentFactory factory = new DocumentFactory();
 
-    public static void main(String[] args) {
-        TestRunner.run(RuleTest.class);
-    }
-
     public void testOrder() throws Exception {
         testGreater("foo", "*");
     }

@@ -25,10 +25,6 @@ import org.dom4j.io.SAXReader;
  * @version $Revision: 1.4 $
  */
 public class SerializeTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(SerializeTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testSerializePeriodicTable() throws Exception {

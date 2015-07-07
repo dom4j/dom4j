@@ -14,6 +14,7 @@ import java.util.Calendar;
 
 import org.dom4j.DocumentFactory;
 import org.dom4j.io.SAXReader;
+import org.testng.annotations.BeforeClass;
 
 /**
  * Test harness for the XML Schema Data Type integration. These tests use
@@ -23,10 +24,6 @@ import org.dom4j.io.SAXReader;
  * @version $Revision: 1.4 $
  */
 public class AutoSchemaTest extends AbstractDataTypeTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(AutoSchemaTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testIntAttribute() throws Exception {
@@ -55,7 +52,8 @@ public class AutoSchemaTest extends AbstractDataTypeTestCase {
 
     // Implementation methods
     // -------------------------------------------------------------------------
-    protected void setUp() throws Exception {
+    @BeforeClass
+    public void setUp() throws Exception {
         super.setUp();
 
         DocumentFactory factory = loadDocumentFactory();

@@ -33,6 +33,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.ext.LexicalHandler;
+import org.xml.sax.ext.Locator2;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -69,12 +70,6 @@ public class DOMSAXContentHandler extends DefaultHandler implements LexicalHandl
      * events
      */
     private StringBuffer cdataText;
-
-    /** namespaces that are available for use */
-    private Map availableNamespaceMap = new HashMap();
-
-    /** declared namespaces that are not yet available for use */
-    private List declaredNamespaceList = new ArrayList();
 
     /** The number of namespaces that are declared in the current scope */
     private int declaredNamespaceIndex;
@@ -464,17 +459,8 @@ public class DOMSAXContentHandler extends DefaultHandler implements LexicalHandl
             return null;
         }
 
-        // use reflection to avoid dependency on Locator2
-        // or other locator implemenations.
-        try {
-            Method m = locator.getClass().getMethod("getEncoding",
-                    new Class[] {});
-
-            if (m != null) {
-                return (String) m.invoke(locator, null);
-            }
-        } catch (Exception e) {
-            // do nothing
+        if (locator instanceof Locator2) {
+            return ((Locator2) locator).getEncoding();
         }
 
         // couldn't determine encoding, returning null...

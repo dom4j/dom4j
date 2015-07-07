@@ -15,6 +15,7 @@ package org.dom4j;
  * @author <a href="mailto:dwhite@equipecom.com">Dave White </a>
  * @version $Revision: 1.6 $
  */
+@SuppressWarnings("unused")
 public interface ElementPath {
     /**
      * DOCUMENT ME!

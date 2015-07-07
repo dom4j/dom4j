@@ -30,10 +30,10 @@ public class Mode {
     private RuleSet[] ruleSets = new RuleSet[Pattern.NUMBER_OF_TYPES];
 
     /** Map of exact (local) element names to RuleSet instances */
-    private Map elementNameRuleSets;
+    private Map<String, RuleSet> elementNameRuleSets;
 
     /** Map of exact (local) attribute names to RuleSet instances */
-    private Map attributeNameRuleSets;
+    private Map<String, RuleSet> attributeNameRuleSets;
 
     public Mode() {
     }
@@ -240,12 +240,12 @@ public class Mode {
      * 
      * @return the Map (which will be created if the given map was null
      */
-    protected Map addToNameMap(Map map, String name, Rule rule) {
+    protected Map<String, RuleSet> addToNameMap(Map<String, RuleSet> map, String name, Rule rule) {
         if (map == null) {
-            map = new HashMap();
+            map = new HashMap<String, RuleSet>();
         }
 
-        RuleSet ruleSet = (RuleSet) map.get(name);
+        RuleSet ruleSet = map.get(name);
 
         if (ruleSet == null) {
             ruleSet = new RuleSet();
@@ -257,9 +257,9 @@ public class Mode {
         return map;
     }
 
-    protected void removeFromNameMap(Map map, String name, Rule rule) {
+    protected void removeFromNameMap(Map<String, RuleSet> map, String name, Rule rule) {
         if (map != null) {
-            RuleSet ruleSet = (RuleSet) map.get(name);
+            RuleSet ruleSet = map.get(name);
 
             if (ruleSet != null) {
                 ruleSet.removeRule(rule);

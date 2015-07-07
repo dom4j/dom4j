@@ -9,16 +9,8 @@ package org.dom4j.io;
 
 import java.util.List;
 
-import org.dom4j.Attribute;
-import org.dom4j.CDATA;
-import org.dom4j.Comment;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.Entity;
-import org.dom4j.Namespace;
-import org.dom4j.ProcessingInstruction;
-import org.dom4j.Text;
+import org.dom4j.*;
+import org.dom4j.dtd.Decl;
 import org.dom4j.tree.NamespaceStack;
 
 import org.w3c.dom.DOMImplementation;
@@ -46,7 +38,7 @@ public class DOMWriter {
     };
 
     // the Class used to create new DOM Document instances
-    private Class domDocumentClass;
+    private Class<?> domDocumentClass;
 
     /** stack of <code>Namespace</code> objects */
     private NamespaceStack namespaceStack = new NamespaceStack();
@@ -54,20 +46,19 @@ public class DOMWriter {
     public DOMWriter() {
     }
 
-    public DOMWriter(Class domDocumentClass) {
+    public DOMWriter(Class<?> domDocumentClass) {
         this.domDocumentClass = domDocumentClass;
     }
 
-    public Class getDomDocumentClass() throws DocumentException {
-        Class result = domDocumentClass;
+    public Class<?> getDomDocumentClass() throws DocumentException {
+        Class<?> result = domDocumentClass;
 
         if (result == null) {
             // lets try and find one in the classpath
             int size = DEFAULT_DOM_DOCUMENT_CLASSES.length;
 
-            for (int i = 0; i < size; i++) {
+            for (String name : DEFAULT_DOM_DOCUMENT_CLASSES) {
                 try {
-                    String name = DEFAULT_DOM_DOCUMENT_CLASSES[i];
                     result = Class.forName(name, true, DOMWriter.class
                             .getClassLoader());
 
@@ -92,7 +83,7 @@ public class DOMWriter {
      *            is the Class implementing the {@linkorg.w3c.dom.Document}
      *            interface
      */
-    public void setDomDocumentClass(Class domDocumentClass) {
+    public void setDomDocumentClass(Class<?> domDocumentClass) {
         this.domDocumentClass = domDocumentClass;
     }
 
@@ -148,28 +139,22 @@ public class DOMWriter {
     }
 
     protected void appendDOMTree(org.w3c.dom.Document domDocument,
-            org.w3c.dom.Node domCurrent, List content) {
-        int size = content.size();
-
-        for (int i = 0; i < size; i++) {
-            Object object = content.get(i);
-
-            if (object instanceof Element) {
-                appendDOMTree(domDocument, domCurrent, (Element) object);
-            } else if (object instanceof String) {
-                appendDOMTree(domDocument, domCurrent, (String) object);
-            } else if (object instanceof Text) {
-                Text text = (Text) object;
+            org.w3c.dom.Node domCurrent, List<Node> content) {
+        for (Node node : content) {
+            if (node instanceof Element) {
+                appendDOMTree(domDocument, domCurrent, (Element) node);
+            } else if (node instanceof Text) {
+                Text text = (Text) node;
                 appendDOMTree(domDocument, domCurrent, text.getText());
-            } else if (object instanceof CDATA) {
-                appendDOMTree(domDocument, domCurrent, (CDATA) object);
-            } else if (object instanceof Comment) {
-                appendDOMTree(domDocument, domCurrent, (Comment) object);
-            } else if (object instanceof Entity) {
-                appendDOMTree(domDocument, domCurrent, (Entity) object);
-            } else if (object instanceof ProcessingInstruction) {
+            } else if (node instanceof CDATA) {
+                appendDOMTree(domDocument, domCurrent, (CDATA) node);
+            } else if (node instanceof Comment) {
+                appendDOMTree(domDocument, domCurrent, (Comment) node);
+            } else if (node instanceof Entity) {
+                appendDOMTree(domDocument, domCurrent, (Entity) node);
+            } else if (node instanceof ProcessingInstruction) {
                 appendDOMTree(domDocument, domCurrent,
-                        (ProcessingInstruction) object);
+                        (ProcessingInstruction) node);
             }
         }
     }
@@ -192,7 +177,7 @@ public class DOMWriter {
         }
 
         // add the additional declared namespaces
-        List declaredNamespaces = element.declaredNamespaces();
+        List<Namespace> declaredNamespaces = element.declaredNamespaces();
 
         for (int i = 0, size = declaredNamespaces.size(); i < size; i++) {
             Namespace namespace = (Namespace) declaredNamespaces.get(i);
@@ -204,8 +189,7 @@ public class DOMWriter {
         }
 
         // add the attributes
-        for (int i = 0, size = element.attributeCount(); i < size; i++) {
-            Attribute attribute = (Attribute) element.attribute(i);
+        for (Attribute attribute : element.attributes()) {
             String attUri = attribute.getNamespaceURI();
             String attName = attribute.getQualifiedName();
             String value = attribute.getValue();
@@ -294,7 +278,7 @@ public class DOMWriter {
             result = createDomDocumentViaJAXP();
 
             if (result == null) {
-                Class theClass = getDomDocumentClass();
+                Class<?> theClass = getDomDocumentClass();
 
                 try {
                     result = (org.w3c.dom.Document) theClass.newInstance();

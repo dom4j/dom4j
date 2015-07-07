@@ -18,12 +18,12 @@ import java.util.Iterator;
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.9 $
  */
-public class SingleIterator implements Iterator {
+public class SingleIterator<T> implements Iterator<T> {
     private boolean first = true;
 
-    private Object object;
+    private T object;
 
-    public SingleIterator(Object object) {
+    public SingleIterator(T object) {
         this.object = object;
     }
 
@@ -31,8 +31,8 @@ public class SingleIterator implements Iterator {
         return first;
     }
 
-    public Object next() {
-        Object answer = object;
+    public T next() {
+        T answer = object;
         object = null;
         first = false;
 

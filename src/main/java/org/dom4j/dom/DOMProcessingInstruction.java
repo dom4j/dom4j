@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public class DOMProcessingInstruction extends DefaultProcessingInstruction
         implements org.w3c.dom.ProcessingInstruction {
-    public DOMProcessingInstruction(String target, Map values) {
+    public DOMProcessingInstruction(String target, Map<String, String> values) {
         super(target, values);
     }
 

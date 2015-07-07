@@ -18,7 +18,7 @@ import org.dom4j.Node;
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.7 $
  */
-public class Rule implements Comparable {
+public class Rule implements Comparable<Rule> {
     /** Holds value of property mode. */
     private String mode;
 
@@ -81,14 +81,6 @@ public class Rule implements Comparable {
         return importPrecedence + appearenceCount;
     }
 
-    public int compareTo(Object that) {
-        if (that instanceof Rule) {
-            return compareTo((Rule) that);
-        }
-
-        return getClass().getName().compareTo(that.getClass().getName());
-    }
-
     /**
      * Compares two rules in XSLT processing model order assuming that the modes
      * are equal.
@@ -99,13 +91,13 @@ public class Rule implements Comparable {
      * @return DOCUMENT ME!
      */
     public int compareTo(Rule that) {
-        int answer = this.importPrecedence - that.importPrecedence;
+        int answer = Integer.compare(this.importPrecedence, that.importPrecedence);
 
         if (answer == 0) {
-            answer = (int) Math.round(this.priority - that.priority);
+            answer = Double.compare(this.priority, that.priority);
 
             if (answer == 0) {
-                answer = this.appearenceCount - that.appearenceCount;
+                answer = Integer.compare(this.appearenceCount, that.appearenceCount);
             }
         }
 

@@ -7,12 +7,12 @@
 
 package org.dom4j;
 
-import java.util.List;
-import java.util.Map;
-
 import org.jaxen.FunctionContext;
 import org.jaxen.NamespaceContext;
 import org.jaxen.VariableContext;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -23,6 +23,7 @@ import org.jaxen.VariableContext;
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.20 $
  */
+@SuppressWarnings("unused")
 public interface XPath extends NodeFilter {
     /**
      * <p>
@@ -100,7 +101,7 @@ public interface XPath extends NodeFilter {
      * 
      * @return the results of all the XPath evaluations as a single list
      */
-    List selectNodes(Object context);
+    List<Node> selectNodes(Object context);
 
     /**
      * <p>
@@ -118,7 +119,7 @@ public interface XPath extends NodeFilter {
      * 
      * @return a list of <code>Node</code> instances
      */
-    List selectNodes(Object context, XPath sortXPath);
+    List<Node> selectNodes(Object context, XPath sortXPath);
 
     /**
      * <p>
@@ -140,7 +141,7 @@ public interface XPath extends NodeFilter {
      * 
      * @return a list of <code>Node</code> instances
      */
-    List selectNodes(Object context, XPath sortXPath, boolean distinct);
+    List<Node> selectNodes(Object context, XPath sortXPath, boolean distinct);
 
     /**
      * <p>
@@ -218,7 +219,7 @@ public interface XPath extends NodeFilter {
      * @param list
      *            is the list of Nodes to sort
      */
-    void sort(List list);
+    void sort(List<Node> list);
 
     /**
      * <p>
@@ -233,7 +234,7 @@ public interface XPath extends NodeFilter {
      *            if true then duplicate values (using the sortXPath for
      *            comparisions) will be removed from the List
      */
-    void sort(List list, boolean distinct);
+    void sort(List<Node> list, boolean distinct);
 
     /**
      * DOCUMENT ME!
@@ -289,7 +290,7 @@ public interface XPath extends NodeFilter {
      * @param map
      *            the map containing the namespace mappings
      */
-    void setNamespaceURIs(Map map);
+    void setNamespaceURIs(Map<String, String> map);
 
     /**
      * DOCUMENT ME!

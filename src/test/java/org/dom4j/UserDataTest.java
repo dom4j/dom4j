@@ -13,6 +13,7 @@ import org.dom4j.io.SAXReader;
 import org.dom4j.util.UserDataAttribute;
 import org.dom4j.util.UserDataDocumentFactory;
 import org.dom4j.util.UserDataElement;
+import org.testng.annotations.BeforeClass;
 
 /**
  * Tests the UserDataDocumentFactory
@@ -25,10 +26,6 @@ public class UserDataTest extends AbstractTestCase {
     private static final String INPUT_XML_FILE = "/xml/web.xml";
 
     private Object userData = new Double(1.23456);
-
-    public static void main(String[] args) {
-        TestRunner.run(UserDataTest.class);
-    }
 
     // Test case(s)
     // -------------------------------------------------------------------------
@@ -111,7 +108,8 @@ public class UserDataTest extends AbstractTestCase {
         assertTrue("Stored user data correctly", data.equals(result));
     }
 
-    protected void setUp() throws Exception {
+    @BeforeClass
+    public void setUp() throws Exception {
         super.setUp();
 
         SAXReader reader = new SAXReader();

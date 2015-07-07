@@ -21,7 +21,7 @@ import org.dom4j.QName;
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.9 $
  */
-public class BeanAttributeList extends AbstractList {
+public class BeanAttributeList extends AbstractList<Attribute> {
     /** The BeanElement that this */
     private BeanElement parent;
 
@@ -41,18 +41,18 @@ public class BeanAttributeList extends AbstractList {
         this.parent = parent;
 
         Object data = parent.getData();
-        Class beanClass = (data != null) ? data.getClass() : null;
+        Class<?> beanClass = (data != null) ? data.getClass() : null;
         this.beanMetaData = BeanMetaData.get(beanClass);
         this.attributes = new BeanAttribute[beanMetaData.attributeCount()];
     }
 
-    public Attribute attribute(String name) {
+    public BeanAttribute attribute(String name) {
         int index = beanMetaData.getIndex(name);
 
         return attribute(index);
     }
 
-    public Attribute attribute(QName qname) {
+    public BeanAttribute attribute(QName qname) {
         int index = beanMetaData.getIndex(qname);
 
         return attribute(index);
@@ -91,11 +91,12 @@ public class BeanAttributeList extends AbstractList {
 
     // List interface
     // -------------------------------------------------------------------------
+    @Override
     public int size() {
         return attributes.length;
     }
 
-    public Object get(int index) {
+    public BeanAttribute get(int index) {
         BeanAttribute attribute = attributes[index];
 
         if (attribute == null) {
@@ -106,15 +107,15 @@ public class BeanAttributeList extends AbstractList {
         return attribute;
     }
 
-    public boolean add(Object object) {
+    public boolean add(BeanAttribute object) {
         throw new UnsupportedOperationException("add(Object) unsupported");
     }
 
-    public void add(int index, Object object) {
+    public void add(int index, BeanAttribute object) {
         throw new UnsupportedOperationException("add(int,Object) unsupported");
     }
 
-    public Object set(int index, Object object) {
+    public BeanAttribute set(int index, BeanAttribute object) {
         throw new UnsupportedOperationException("set(int,Object) unsupported");
     }
 
@@ -122,18 +123,15 @@ public class BeanAttributeList extends AbstractList {
         return false;
     }
 
-    public Object remove(int index) {
-        BeanAttribute attribute = (BeanAttribute) get(index);
-        Object oldValue = attribute.getValue();
+    public BeanAttribute remove(int index) {
+        BeanAttribute attribute = get(index);
         attribute.setValue(null);
 
-        return oldValue;
+        return attribute;
     }
 
     public void clear() {
-        for (int i = 0, size = attributes.length; i < size; i++) {
-            BeanAttribute attribute = attributes[i];
-
+        for (BeanAttribute attribute : attributes) {
             if (attribute != null) {
                 attribute.setValue(null);
             }

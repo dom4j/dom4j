@@ -30,10 +30,6 @@ import org.dom4j.io.XMLWriter;
 public class XMLResultTest extends AbstractTestCase {
     protected static final boolean VERBOSE = false;
 
-    public static void main(String[] args) {
-        TestRunner.run(XMLResultTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testWriter() throws Exception {

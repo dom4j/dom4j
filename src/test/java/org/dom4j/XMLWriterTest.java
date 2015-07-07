@@ -33,10 +33,6 @@ import org.xml.sax.helpers.AttributesImpl;
 public class XMLWriterTest extends AbstractTestCase {
     protected static final boolean VERBOSE = false;
 
-    public static void main(String[] args) {
-        TestRunner.run(XMLWriterTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testBug1119733() throws Exception {

@@ -20,10 +20,6 @@ import org.dom4j.DocumentFactory;
  * @version $Revision: 1.4 $
  */
 public class ManualSchemaTest extends AutoSchemaTest {
-    public static void main(String[] args) {
-        TestRunner.run(ManualSchemaTest.class);
-    }
-
     // Implementation methods
     // -------------------------------------------------------------------------
     protected String getDocumentURI() {

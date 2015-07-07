@@ -16,10 +16,6 @@ import junit.textui.TestRunner;
  * @version $Revision: 1.3 $
  */
 public class SetContentTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(SetContentTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testDocument() throws Exception {

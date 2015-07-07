@@ -24,10 +24,6 @@ import org.dom4j.util.NodeComparator;
 public class CloneTest extends AbstractTestCase {
     private Comparator comparator = new NodeComparator();
 
-    public static void main(String[] args) {
-        TestRunner.run(CloneTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testBug1148333() {

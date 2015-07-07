@@ -9,11 +9,8 @@ package org.dom4j.util;
 
 import com.clarkware.junitperf.LoadTest;
 import com.clarkware.junitperf.TimedTest;
-import junit.extensions.RepeatedTest;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import org.junit.Ignore;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,18 +27,15 @@ import java.util.Map;
  * 
  * @version 1.0
  */
-@Ignore
-public class PerThreadSingletonTest extends TestCase {
-    public PerThreadSingletonTest(String name) {
-        super(name);
-    }
+@Test(enabled = false)
+public class PerThreadSingletonTest {
 
     private static SingletonStrategy singleton;
 
     private static ThreadLocal reference = new ThreadLocal();
 
+    @BeforeClass
     public void setUp() throws Exception {
-        super.setUp();
         synchronized (PerThreadSingletonTest.class) {
             if (singleton == null) {
                 singleton = new PerThreadSingleton();
@@ -49,11 +43,7 @@ public class PerThreadSingletonTest extends TestCase {
             }
         }
     }
-
-    public void tearDown() throws Exception {
-        super.tearDown();
-    }
-
+/*
     public void testInstance() throws Exception {
         String tid = Thread.currentThread().getName();
         Map map = (Map) singleton.instance();
@@ -83,17 +73,19 @@ public class PerThreadSingletonTest extends TestCase {
         assertEquals("testInstance reference", reference.get(), map);
 
     }
-
+*/
     /**
      * Assembles and returns a test suite.
      * 
      * @return The suite
      */
+/*
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTest(makeRepeatedLoadTest(5, 100, "testInstance"));
         return suite;
     }
+*/
 
     /**
      * JUnit method to exercise test via threads and loops
@@ -107,6 +99,7 @@ public class PerThreadSingletonTest extends TestCase {
      * 
      * @return A Junit test
      */
+/*
     protected static Test makeRepeatedLoadTest(int users, int iterations,
             String testMethod) {
         long maxElapsedTime = 1200 + (1000 * users * iterations);
@@ -119,6 +112,7 @@ public class PerThreadSingletonTest extends TestCase {
 
         return timedTest;
     }
+*/
 }
 
 /*

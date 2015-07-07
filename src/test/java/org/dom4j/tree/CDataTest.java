@@ -17,10 +17,6 @@ import org.dom4j.AbstractTestCase;
  * @author Maarten Coene
  */
 public class CDataTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(CDataTest.class);
-    }
-
     public void testNullTest() {
         DefaultCDATA cdata = new DefaultCDATA(null);
         assertEquals("CData not correct", "<![CDATA[]]>", cdata.asXML());

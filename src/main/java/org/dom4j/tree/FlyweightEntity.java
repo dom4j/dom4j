@@ -23,7 +23,7 @@ import org.dom4j.Node;
  * 
  * <p>
  * Often this node needs to be created and then the text content added later
- * (for example in SAX) so this implementation allows a call to {@link#setText}
+ * (for example in SAX) so this implementation allows a call to {@link #setText}
  * providing the entity has no text already.
  * </p>
  * 

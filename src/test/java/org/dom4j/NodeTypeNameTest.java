@@ -18,10 +18,6 @@ import java.util.Iterator;
  * @version $Revision: 1.4 $
  */
 public class NodeTypeNameTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(NodeTypeNameTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testDocument() throws Exception {

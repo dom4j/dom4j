@@ -1,6 +1,8 @@
 apply plugin: 'java'
+apply plugin: 'maven'
 
-version = '2.0.0'
+group = 'org.dom4j'
+version = '2.0.0-RC1'
 
 sourceCompatibility = 1.5
 
@@ -29,6 +31,10 @@ dependencies {
 					'xerces:xercesImpl:2.11.0',
 					'xalan:xalan:2.7.2',
 	)
+}
+
+test {
+	useTestNG()
 }
 
 task wrapper(type: Wrapper) {

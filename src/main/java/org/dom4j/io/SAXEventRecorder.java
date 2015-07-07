@@ -67,9 +67,9 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
 
     private static final byte NULL = 2;
 
-    private List events = new ArrayList();
+    private List<SAXEvent> events = new ArrayList<SAXEvent>();
 
-    private Map prefixMappings = new HashMap();
+    private Map<QName, List<String>> prefixMappings = new HashMap<QName, List<String>>();
 
     private static final String XMLNS = "xmlns";
 
@@ -79,11 +79,7 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
     }
 
     public void replay(ContentHandler handler) throws SAXException {
-        SAXEvent saxEvent;
-        Iterator itr = events.iterator();
-
-        while (itr.hasNext()) {
-            saxEvent = (SAXEvent) itr.next();
+        for (SAXEvent saxEvent : events) {
 
             switch (saxEvent.event) {
                 // replay to ContentHandler
@@ -117,13 +113,10 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
                 case SAXEvent.START_ELEMENT:
 
                     AttributesImpl attributes = new AttributesImpl();
-                    List attParmList = (List) saxEvent.getParm(3);
+                    List<String[]> attParmList = (List<String[]>) saxEvent.getParm(3);
 
                     if (attParmList != null) {
-                        Iterator attsItr = attParmList.iterator();
-
-                        while (attsItr.hasNext()) {
-                            String[] attParms = (String[]) attsItr.next();
+                        for (String[] attParms : attParmList) {
                             attributes.addAttribute(attParms[0], attParms[1],
                                     attParms[2], attParms[3], attParms[4]);
                         }
@@ -145,8 +138,8 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
                 case SAXEvent.CHARACTERS:
 
                     char[] chars = (char[]) saxEvent.getParm(0);
-                    int start = ((Integer) saxEvent.getParm(1)).intValue();
-                    int end = ((Integer) saxEvent.getParm(2)).intValue();
+                    int start = (Integer) saxEvent.getParm(1);
+                    int end = (Integer) saxEvent.getParm(2);
                     handler.characters(chars, start, end);
 
                     break;
@@ -154,7 +147,7 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
                 // replay to LexicalHandler
                 case SAXEvent.START_DTD:
                     ((LexicalHandler) handler).startDTD((String) saxEvent
-                            .getParm(0), (String) saxEvent.getParm(1),
+                                    .getParm(0), (String) saxEvent.getParm(1),
                             (String) saxEvent.getParm(2));
 
                     break;
@@ -189,8 +182,8 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
                 case SAXEvent.COMMENT:
 
                     char[] cchars = (char[]) saxEvent.getParm(0);
-                    int cstart = ((Integer) saxEvent.getParm(1)).intValue();
-                    int cend = ((Integer) saxEvent.getParm(2)).intValue();
+                    int cstart = (Integer) saxEvent.getParm(1);
+                    int cend = (Integer) saxEvent.getParm(2);
                     ((LexicalHandler) handler).comment(cchars, cstart, cend);
 
                     break;
@@ -204,7 +197,7 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
 
                 case SAXEvent.ATTRIBUTE_DECL:
                     ((DeclHandler) handler).attributeDecl((String) saxEvent
-                            .getParm(0), (String) saxEvent.getParm(1),
+                                    .getParm(0), (String) saxEvent.getParm(1),
                             (String) saxEvent.getParm(2), (String) saxEvent
                                     .getParm(3), (String) saxEvent.getParm(4));
 
@@ -272,7 +265,7 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
         saxEvent.addParm(localName);
         saxEvent.addParm(qualifiedName);
 
-        QName qName = null;
+        QName qName;
         if (namespaceURI != null) {
             qName = new QName(localName, Namespace.get(namespaceURI));
         } else {
@@ -280,8 +273,8 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
         }
 
         if ((attributes != null) && (attributes.getLength() > 0)) {
-            List attParmList = new ArrayList(attributes.getLength());
-            String[] attParms = null;
+            List<String[]> attParmList = new ArrayList<String[]>(attributes.getLength());
+            String[] attParms;
 
             for (int i = 0; i < attributes.getLength(); i++) {
 
@@ -292,7 +285,7 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
                     // if SAXWriter is writing a DOMDocument, namespace
                     // decls are treated as attributes. record a start
                     // prefix mapping event
-                    String prefix = null;
+                    String prefix;
                     if (attLocalName.length() > 5) {
                         prefix = attLocalName.substring(6);
                     } else {
@@ -307,9 +300,9 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
 
                     // 'register' the prefix so that we can generate
                     // an end prefix mapping event within endElement
-                    List prefixes = (List) prefixMappings.get(qName);
+                    List<String> prefixes = prefixMappings.get(qName);
                     if (prefixes == null) {
-                        prefixes = new ArrayList();
+                        prefixes = new ArrayList<String>();
                         prefixMappings.put(qName, prefixes);
                     }
                     prefixes.add(prefix);
@@ -346,20 +339,19 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
         // check to see if a we issued a start prefix mapping event
         // for DOMDocument namespace decls
 
-        QName elementName = null;
+        QName elementName;
         if (namespaceURI != null) {
             elementName = new QName(localName, Namespace.get(namespaceURI));
         } else {
             elementName = new QName(localName);
         }
 
-        List prefixes = (List) prefixMappings.get(elementName);
+        List<String> prefixes = prefixMappings.get(elementName);
         if (prefixes != null) {
-            Iterator itr = prefixes.iterator();
-            while (itr.hasNext()) {
-                SAXEvent prefixEvent = 
+            for (String prefixe : prefixes) {
+                SAXEvent prefixEvent =
                         new SAXEvent(SAXEvent.END_PREFIX_MAPPING);
-                prefixEvent.addParm(itr.next());
+                prefixEvent.addParm(prefixe);
                 events.add(prefixEvent);
             }
         }
@@ -369,8 +361,8 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
     public void characters(char[] ch, int start, int end) throws SAXException {
         SAXEvent saxEvent = new SAXEvent(SAXEvent.CHARACTERS);
         saxEvent.addParm(ch);
-        saxEvent.addParm(new Integer(start));
-        saxEvent.addParm(new Integer(end));
+        saxEvent.addParm(start);
+        saxEvent.addParm(end);
         events.add(saxEvent);
     }
 
@@ -415,8 +407,8 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
     public void comment(char[] ch, int start, int end) throws SAXException {
         SAXEvent saxEvent = new SAXEvent(SAXEvent.COMMENT);
         saxEvent.addParm(ch);
-        saxEvent.addParm(new Integer(start));
-        saxEvent.addParm(new Integer(end));
+        saxEvent.addParm(start);
+        saxEvent.addParm(end);
         events.add(saxEvent);
     }
 
@@ -469,7 +461,7 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
     public void readExternal(ObjectInput in) throws ClassNotFoundException,
             IOException {
         if (in.readByte() != NULL) {
-            events = (List) in.readObject();
+            events = (List<SAXEvent>) in.readObject();
         }
     }
 
@@ -518,7 +510,7 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
 
         protected byte event;
 
-        protected List parms;
+        protected List<Object> parms;
 
         public SAXEvent() {
         }
@@ -529,7 +521,7 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
 
         void addParm(Object parm) {
             if (parms == null) {
-                parms = new ArrayList(3);
+                parms = new ArrayList<Object>(3);
             }
 
             parms.add(parm);
@@ -559,7 +551,7 @@ public class SAXEventRecorder extends DefaultHandler implements LexicalHandler,
             event = in.readByte();
 
             if (in.readByte() != NULL) {
-                parms = (List) in.readObject();
+                parms = (List<Object>) in.readObject();
             }
         }
     }

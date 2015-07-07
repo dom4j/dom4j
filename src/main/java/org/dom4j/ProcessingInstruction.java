@@ -20,6 +20,7 @@ import java.util.Map;
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.10 $
  */
+@SuppressWarnings("unused")
 public interface ProcessingInstruction extends Node {
     /**
      * This method is the equivalent to the {@link #getName}method. It is added
@@ -63,11 +64,11 @@ public interface ProcessingInstruction extends Node {
      * 
      * @return the values for this processing instruction as a Map
      */
-    Map getValues();
+    Map<String, String> getValues();
 
     void setValue(String name, String value);
 
-    void setValues(Map data);
+    void setValues(Map<String, String> data);
 
     boolean removeValue(String name);
 }

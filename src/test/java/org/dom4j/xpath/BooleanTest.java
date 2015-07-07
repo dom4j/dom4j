@@ -29,10 +29,6 @@ public class BooleanTest extends AbstractTestCase {
             "name()='author'", "name()='XXXX'", ".='James Strachan'",
             ".='XXXX'"};
 
-    public static void main(String[] args) {
-        TestRunner.run(BooleanTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testXPaths() throws Exception {

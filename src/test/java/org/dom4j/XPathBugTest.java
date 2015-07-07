@@ -18,10 +18,6 @@ import java.util.List;
  * @version $Revision: 1.4 $
  */
 public class XPathBugTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(XPathBugTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testXPaths() throws Exception {

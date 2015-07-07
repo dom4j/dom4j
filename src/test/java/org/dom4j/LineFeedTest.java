@@ -23,10 +23,6 @@ public class LineFeedTest extends AbstractTestCase {
 
     private static final String EXPECTED_ATT_TEXT = "Hello There <>&";
 
-    public static void main(String[] args) {
-        TestRunner.run(LineFeedTest.class);
-    }
-
     public void testElement() throws Exception {
         Document doc = DocumentHelper.parseText("<elem>" + TEXT + "</elem>");
         Element elem = doc.getRootElement();

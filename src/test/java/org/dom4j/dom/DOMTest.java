@@ -15,6 +15,7 @@ import org.dom4j.AbstractTestCase;
 import org.dom4j.io.DOMWriter;
 import org.dom4j.io.SAXReader;
 
+import org.testng.annotations.BeforeClass;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -35,10 +36,6 @@ public class DOMTest extends AbstractTestCase {
 
     /** Characters. */
     private long characters;
-
-    public static void main(String[] args) {
-        TestRunner.run(DOMTest.class);
-    }
 
     // Test case(s)
     // -------------------------------------------------------------------------
@@ -127,7 +124,8 @@ public class DOMTest extends AbstractTestCase {
 
     // Implementation methods
     // -------------------------------------------------------------------------
-    protected void setUp() throws Exception {
+    @BeforeClass
+    public void setUp() throws Exception {
         super.setUp();
 
         SAXReader reader = new SAXReader(DOMDocumentFactory.getInstance());

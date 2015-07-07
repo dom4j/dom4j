@@ -29,10 +29,6 @@ public class EmbeddedHandlerTest extends AbstractTestCase {
 
     protected int test;
 
-    public static void main(String[] args) {
-        TestRunner.run(EmbeddedHandlerTest.class);
-    }
-
     // ---------------------------------------------
     // Test case(s)
     // ---------------------------------------------

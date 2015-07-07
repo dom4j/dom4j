@@ -21,10 +21,6 @@ import java.util.List;
 public class ContentTest extends AbstractTestCase {
     protected DocumentFactory factory = new DocumentFactory();
 
-    public static void main(String[] args) {
-        TestRunner.run(ContentTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testRoot() throws Exception {

@@ -35,13 +35,13 @@ public class XMLTableDefinition implements Serializable, VariableContext {
     private XPath rowXPath;
 
     /** The columns to display in this table */
-    private List columns = new ArrayList();
+    private List<XMLTableColumnDefinition> columns = new ArrayList<XMLTableColumnDefinition>();
 
     /** integer index array cache */
     private XMLTableColumnDefinition[] columnArray;
 
     /** name index cache */
-    private Map columnNameIndex;
+    private Map<String, XMLTableColumnDefinition> columnNameIndex;
 
     /** for cross-row variables */
     private VariableContext variableContext;
@@ -76,9 +76,9 @@ public class XMLTableDefinition implements Serializable, VariableContext {
         XMLTableDefinition answer = new XMLTableDefinition();
         answer.setRowExpression(definition.attributeValue("select"));
 
-        for (Iterator iter = definition.elementIterator("column"); iter
+        for (Iterator<Element> iter = definition.elementIterator("column"); iter
                 .hasNext();) {
-            Element element = (Element) iter.next();
+            Element element = iter.next();
             String expression = element.attributeValue("select");
             String name = element.getText();
             String typeName = element.attributeValue("type", "string");
@@ -95,7 +95,7 @@ public class XMLTableDefinition implements Serializable, VariableContext {
         return answer;
     }
 
-    public Class getColumnClass(int columnIndex) {
+    public Class<?> getColumnClass(int columnIndex) {
         return getColumn(columnIndex).getColumnClass();
     }
 
@@ -205,11 +205,9 @@ public class XMLTableDefinition implements Serializable, VariableContext {
 
     public XMLTableColumnDefinition getColumn(String columnName) {
         if (columnNameIndex == null) {
-            columnNameIndex = new HashMap();
+            columnNameIndex = new HashMap<String, XMLTableColumnDefinition>();
 
-            for (Iterator it = columns.iterator(); it.hasNext();) {
-                XMLTableColumnDefinition column = (XMLTableColumnDefinition) it
-                        .next();
+            for (XMLTableColumnDefinition column : columns) {
                 columnNameIndex.put(column.getName(), column);
             }
         }

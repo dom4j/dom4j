@@ -30,7 +30,7 @@ import org.dom4j.Node;
  */
 public class BranchTreeNode extends LeafTreeNode {
     /** Stores the child tree nodes */
-    protected List children;
+    protected List<TreeNode> children;
 
     public BranchTreeNode() {
     }
@@ -45,15 +45,15 @@ public class BranchTreeNode extends LeafTreeNode {
 
     // TreeNode methods
     // -------------------------------------------------------------------------
-    public Enumeration children() {
-        return new Enumeration() {
+    public Enumeration<TreeNode> children() {
+        return new Enumeration<TreeNode>() {
             private int index = -1;
 
             public boolean hasMoreElements() {
                 return (index + 1) < getChildCount();
             }
 
-            public Object nextElement() {
+            public TreeNode nextElement() {
                 return getChildAt(++index);
             }
         };
@@ -91,7 +91,7 @@ public class BranchTreeNode extends LeafTreeNode {
      * 
      * @return DOCUMENT ME!
      */
-    protected List getChildList() {
+    protected List<TreeNode> getChildList() {
         // for now lets just create the children once, the first time they
         // are asked for.
         // XXXX - we may wish to detect inconsistencies here....
@@ -107,11 +107,11 @@ public class BranchTreeNode extends LeafTreeNode {
      * 
      * @return DOCUMENT ME!
      */
-    protected List createChildList() {
+    protected List<TreeNode> createChildList() {
         // add attributes and content as children?
         Branch branch = getXmlBranch();
         int size = branch.nodeCount();
-        List childList = new ArrayList(size);
+        List<TreeNode> childList = new ArrayList<TreeNode>(size);
 
         for (int i = 0; i < size; i++) {
             Node node = branch.node(i);

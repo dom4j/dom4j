@@ -7,14 +7,15 @@
 
 package org.dom4j.tree;
 
+import org.dom4j.DocumentType;
+import org.dom4j.Element;
+import org.dom4j.Visitor;
+import org.dom4j.dtd.Decl;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
-
-import org.dom4j.DocumentType;
-import org.dom4j.Element;
-import org.dom4j.Visitor;
 
 /**
  * <p>
@@ -59,14 +60,14 @@ public abstract class AbstractDocumentType extends AbstractNode implements
      * @return DOCUMENT ME!
      */
     public String getText() {
-        List list = getInternalDeclarations();
+        List<Decl> list = getInternalDeclarations();
 
         if ((list != null) && (list.size() > 0)) {
-            StringBuffer buffer = new StringBuffer();
-            Iterator iter = list.iterator();
+            StringBuilder buffer = new StringBuilder();
+            Iterator<Decl> iter = list.iterator();
 
             if (iter.hasNext()) {
-                Object decl = iter.next();
+                Decl decl = iter.next();
                 buffer.append(decl.toString());
 
                 while (iter.hasNext()) {
@@ -87,7 +88,7 @@ public abstract class AbstractDocumentType extends AbstractNode implements
     }
 
     public String asXML() {
-        StringBuffer buffer = new StringBuffer("<!DOCTYPE ");
+        StringBuilder buffer = new StringBuilder("<!DOCTYPE ");
         buffer.append(getElementName());
 
         boolean hasPublicID = false;
@@ -143,13 +144,12 @@ public abstract class AbstractDocumentType extends AbstractNode implements
             writer.write("\"");
         }
 
-        List list = getInternalDeclarations();
+        List<Decl> list = getInternalDeclarations();
 
         if ((list != null) && (list.size() > 0)) {
             writer.write(" [");
 
-            for (Iterator iter = list.iterator(); iter.hasNext();) {
-                Object decl = iter.next();
+            for (Decl decl : list) {
                 writer.write("\n  ");
                 writer.write(decl.toString());
             }

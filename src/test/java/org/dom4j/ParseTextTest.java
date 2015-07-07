@@ -8,6 +8,7 @@
 package org.dom4j;
 
 import junit.textui.TestRunner;
+import org.testng.annotations.BeforeClass;
 
 /**
  * Tests the {@link DocumentHelper#parseText(String)}method.
@@ -18,10 +19,6 @@ import junit.textui.TestRunner;
 public class ParseTextTest extends AbstractTestCase {
     protected String xmlText = 
         "<root><author name='James'><location>Paris</location></author></root>";
-
-    public static void main(String[] args) {
-        TestRunner.run(ParseTextTest.class);
-    }
 
     // Test case(s)
     // -------------------------------------------------------------------------
@@ -47,7 +44,8 @@ public class ParseTextTest extends AbstractTestCase {
 
     // Implementation methods
     // -------------------------------------------------------------------------
-    protected void setUp() throws Exception {
+    @BeforeClass
+    public void setUp() throws Exception {
         super.setUp();
         document = DocumentHelper.parseText(xmlText);
     }

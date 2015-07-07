@@ -23,10 +23,6 @@ import org.xml.sax.InputSource;
  * @version $Revision: 1.4 $
  */
 public class GetXMLEncodingTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(GetXMLEncodingTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testXMLEncodingFromString() throws Exception {

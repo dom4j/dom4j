@@ -51,10 +51,6 @@ public class XPathTest extends AbstractTestCase {
             "//root/author[2]",
             "//root/author[3]"};
 
-    public static void main(String[] args) {
-        TestRunner.run(XPathTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testBug1116471() throws Exception {

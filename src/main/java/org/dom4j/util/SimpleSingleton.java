@@ -19,28 +19,28 @@ package org.dom4j.util;
  * @version $Revision: 1.3 $
  */
 
-public class SimpleSingleton implements SingletonStrategy {
+public class SimpleSingleton<T> implements SingletonStrategy<T> {
     private String singletonClassName = null;
 
-    private Object singletonInstance = null;
+    private T singletonInstance = null;
 
     public SimpleSingleton() {
     }
 
-    public Object instance() {
+    public T instance() {
         return singletonInstance;
     }
 
     public void reset() {
         if (singletonClassName != null) {
-            Class clazz = null;
+            Class<T> clazz;
             try {
-                clazz = Thread.currentThread().getContextClassLoader().loadClass(
+                clazz = (Class<T>) Thread.currentThread().getContextClassLoader().loadClass(
                         singletonClassName);
                 singletonInstance = clazz.newInstance();
             } catch (Exception ignore) {
                 try {
-                    clazz = Class.forName(singletonClassName);
+                    clazz = (Class<T>) Class.forName(singletonClassName);
                     singletonInstance = clazz.newInstance();
                 } catch (Exception ignore2) {
                 }

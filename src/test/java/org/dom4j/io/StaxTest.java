@@ -25,9 +25,6 @@ import org.dom4j.Document;
  * @author Christian Niles
  */
 public class StaxTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(StaxTest.class);
-    }
 
     // Test case(s)
     // -------------------------------------------------------------------------

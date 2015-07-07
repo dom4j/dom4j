@@ -24,10 +24,6 @@ public class DocTypeTest extends AbstractTestCase {
     /** Input XML file to read */
     protected static final String INPUT_XML_FILE = "/xml/dtd/internal.xml";
 
-    public static void main(String[] args) {
-        TestRunner.run(DocTypeTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testDocType() throws Exception {

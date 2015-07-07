@@ -25,7 +25,7 @@ import org.dom4j.rule.pattern.NodeTypePattern;
  */
 public class RuleManager {
     /** Map of modes indexed by mode */
-    private HashMap modes = new HashMap();
+    private HashMap<String, Mode> modes = new HashMap<String, Mode>();
 
     /**
      * A counter so that rules can be ordered by the order in which they were
@@ -49,7 +49,7 @@ public class RuleManager {
      *         then it will be created.
      */
     public Mode getMode(String modeName) {
-        Mode mode = (Mode) modes.get(modeName);
+        Mode mode = modes.get(modeName);
 
         if (mode == null) {
             mode = createMode();
@@ -66,8 +66,8 @@ public class RuleManager {
         Rule[] childRules = rule.getUnionRules();
 
         if (childRules != null) {
-            for (int i = 0, size = childRules.length; i < size; i++) {
-                mode.addRule(childRules[i]);
+            for (Rule childRule : childRules) {
+                mode.addRule(childRule);
             }
         } else {
             mode.addRule(rule);
@@ -79,8 +79,8 @@ public class RuleManager {
         Rule[] childRules = rule.getUnionRules();
 
         if (childRules != null) {
-            for (int i = 0, size = childRules.length; i < size; i++) {
-                mode.removeRule(childRules[i]);
+            for (Rule childRule : childRules) {
+                mode.removeRule(childRule);
             }
         } else {
             mode.removeRule(rule);
@@ -99,7 +99,7 @@ public class RuleManager {
      * @return the matching Rule or no rule if none matched
      */
     public Rule getMatchingRule(String modeName, Node node) {
-        Mode mode = (Mode) modes.get(modeName);
+        Mode mode = modes.get(modeName);
 
         if (mode != null) {
             return mode.getMatchingRule(node);

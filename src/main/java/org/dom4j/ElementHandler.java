@@ -18,6 +18,7 @@ package org.dom4j;
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.8 $
  */
+@SuppressWarnings("unused")
 public interface ElementHandler {
     /**
      * Called by an event based processor when an elements openning tag is

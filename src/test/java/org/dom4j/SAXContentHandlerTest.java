@@ -16,6 +16,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.dom4j.io.SAXContentHandler;
 
+import org.testng.annotations.BeforeClass;
 import org.xml.sax.XMLReader;
 
 public class SAXContentHandlerTest extends AbstractTestCase {
@@ -25,11 +26,8 @@ public class SAXContentHandlerTest extends AbstractTestCase {
             "/xml/test/encode.xml", "/xml/fibo.xml",
             "/xml/test/schema/personal-prefix.xsd", "/xml/test/soap2.xml"};
 
-    public static void main(String[] args) {
-        TestRunner.run(SAXContentHandlerTest.class);
-    }
-
-    protected void setUp() throws Exception {
+    @BeforeClass
+    public void setUp() throws Exception {
         super.setUp();
 
         SAXParserFactory spf = SAXParserFactory.newInstance();

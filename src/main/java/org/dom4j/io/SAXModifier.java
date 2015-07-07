@@ -50,7 +50,7 @@ public class SAXModifier {
 
     private SAXModifyReader modifyReader;
 
-    private HashMap modifiers = new HashMap();
+    private HashMap<String, ElementModifier> modifiers = new HashMap<String, ElementModifier>();
 
     /**
      * Creates a new modifier. <br>
@@ -102,7 +102,7 @@ public class SAXModifier {
 
     /**
      * Reads a Document from the given {@link java.io.File}and writes it to the
-     * specified {@link XMLWriter}using SAX. Registered {@linkElementModifier}
+     * specified {@link XMLWriter}using SAX. Registered {@link ElementModifier}
      * objects are invoked on the fly.
      * 
      * @param source
@@ -246,7 +246,7 @@ public class SAXModifier {
 
     /**
      * Reads a Document from the given {@link java.net.URL}and writes it to the
-     * specified {@link XMLWriter}using SAX. Registered {@linkElementModifier}
+     * specified {@link XMLWriter}using SAX. Registered {@link ElementModifier}
      * objects are invoked on the fly.
      * 
      * @param source
@@ -269,7 +269,7 @@ public class SAXModifier {
 
     /**
      * Reads a Document from the given URL or filename and writes it to the
-     * specified {@link XMLWriter}using SAX. Registered {@linkElementModifier}
+     * specified {@link XMLWriter}using SAX. Registered {@link ElementModifier}
      * objects are invoked on the fly.
      * 
      * @param source
@@ -385,14 +385,10 @@ public class SAXModifier {
 
             reader.resetHandlers();
 
-            Iterator modifierIt = this.modifiers.entrySet().iterator();
-
-            while (modifierIt.hasNext()) {
-                Map.Entry entry = (Map.Entry) modifierIt.next();
-
+            for (Map.Entry<String, ElementModifier> entry : this.modifiers.entrySet()) {
                 SAXModifyElementHandler handler = new SAXModifyElementHandler(
-                        (ElementModifier) entry.getValue());
-                reader.addHandler((String) entry.getKey(), handler);
+                        entry.getValue());
+                reader.addHandler(entry.getKey(), handler);
             }
 
             reader.setXMLWriter(getXMLWriter());

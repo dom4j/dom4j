@@ -16,10 +16,6 @@ import junit.textui.TestRunner;
  * @version $Revision: 1.3 $
  */
 public class MakeElementTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(MakeElementTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testMakeElement() throws Exception {

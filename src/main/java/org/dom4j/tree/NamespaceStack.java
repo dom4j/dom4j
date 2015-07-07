@@ -7,13 +7,13 @@
 
 package org.dom4j.tree;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.dom4j.DocumentFactory;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * NamespaceStack implements a stack of namespaces and optionally maintains a
@@ -28,22 +28,22 @@ public class NamespaceStack {
     private DocumentFactory documentFactory;
 
     /** The Stack of namespaces */
-    private ArrayList namespaceStack = new ArrayList();
+    private ArrayList<Namespace> namespaceStack = new ArrayList<Namespace>();
 
     /** The cache of qualifiedNames to QNames per namespace context */
-    private ArrayList namespaceCacheList = new ArrayList();
+    private ArrayList<Map<String, QName>> namespaceCacheList = new ArrayList<Map<String, QName>>();
 
     /**
      * A cache of current namespace context cache of mapping from qualifiedName
      * to QName
      */
-    private Map currentNamespaceCache;
+    private Map<String, QName> currentNamespaceCache;
 
     /**
      * A cache of mapping from qualifiedName to QName before any namespaces are
      * declared
      */
-    private Map rootNamespaceCache = new HashMap();
+    private Map<String, QName> rootNamespaceCache = new HashMap<String, QName>();
 
     /** Caches the default namespace defined via xmlns="" */
     private Namespace defaultNamespace;
@@ -112,7 +112,7 @@ public class NamespaceStack {
      * @return the namespace at the specified index on the stack
      */
     public Namespace getNamespace(int index) {
-        return (Namespace) namespaceStack.get(index);
+        return namespaceStack.get(index);
     }
 
     /**
@@ -130,7 +130,7 @@ public class NamespaceStack {
         }
 
         for (int i = namespaceStack.size() - 1; i >= 0; i--) {
-            Namespace namespace = (Namespace) namespaceStack.get(i);
+            Namespace namespace = namespaceStack.get(i);
 
             if (prefix.equals(namespace.getPrefix())) {
                 return namespace;
@@ -164,7 +164,7 @@ public class NamespaceStack {
      */
     public boolean contains(Namespace namespace) {
         String prefix = namespace.getPrefix();
-        Namespace current = null;
+        Namespace current;
 
         if ((prefix == null) || (prefix.length() == 0)) {
             current = getDefaultNamespace();
@@ -219,8 +219,8 @@ public class NamespaceStack {
             qualifiedName = localName;
         }
 
-        Map map = getNamespaceCache();
-        QName answer = (QName) map.get(qualifiedName);
+        Map<String, QName> map = getNamespaceCache();
+        QName answer = map.get(qualifiedName);
 
         if (answer != null) {
             return answer;
@@ -234,7 +234,7 @@ public class NamespaceStack {
             namespaceURI = "";
         }
 
-        Namespace namespace = null;
+        Namespace namespace;
         String prefix = "";
         int index = qualifiedName.indexOf(":");
 
@@ -310,7 +310,7 @@ public class NamespaceStack {
         Namespace namespace = null;
 
         for (int i = namespaceStack.size() - 1; i >= 0; i--) {
-            Namespace ns = (Namespace) namespaceStack.get(i);
+            Namespace ns = namespaceStack.get(i);
 
             if (prefix.equals(ns.getPrefix())) {
                 remove(i);
@@ -415,7 +415,7 @@ public class NamespaceStack {
      */
     protected Namespace findDefaultNamespace() {
         for (int i = namespaceStack.size() - 1; i >= 0; i--) {
-            Namespace namespace = (Namespace) namespaceStack.get(i);
+            Namespace namespace = namespaceStack.get(i);
 
             if (namespace != null) {
                 String prefix = namespace.getPrefix();
@@ -438,7 +438,7 @@ public class NamespaceStack {
      * @return DOCUMENT ME!
      */
     protected Namespace remove(int index) {
-        Namespace namespace = (Namespace) namespaceStack.remove(index);
+        Namespace namespace = namespaceStack.remove(index);
         namespaceCacheList.remove(index);
         defaultNamespace = null;
         currentNamespaceCache = null;
@@ -446,17 +446,17 @@ public class NamespaceStack {
         return namespace;
     }
 
-    protected Map getNamespaceCache() {
+    protected Map<String, QName> getNamespaceCache() {
         if (currentNamespaceCache == null) {
             int index = namespaceStack.size() - 1;
 
             if (index < 0) {
                 currentNamespaceCache = rootNamespaceCache;
             } else {
-                currentNamespaceCache = (Map) namespaceCacheList.get(index);
+                currentNamespaceCache = namespaceCacheList.get(index);
 
                 if (currentNamespaceCache == null) {
-                    currentNamespaceCache = new HashMap();
+                    currentNamespaceCache = new HashMap<String, QName>();
                     namespaceCacheList.set(index, currentNamespaceCache);
                 }
             }

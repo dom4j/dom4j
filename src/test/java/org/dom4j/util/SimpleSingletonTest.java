@@ -7,77 +7,56 @@
 
 package org.dom4j.util;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import junit.framework.TestCase;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * PerThreadSingleton Tester.
- * 
+ *
  * @author ddlucas
- * @since
- * 
- * <pre>
+ * @version 1.0
+ * @since <pre>
  * 01 / 05 / 2005
  * </pre>
- * 
- * @version 1.0
  */
-public class SimpleSingletonTest extends TestCase {
-    public SimpleSingletonTest(String name) {
-        super(name);
-    }
+@Test
+public class SimpleSingletonTest {
 
-    private static SingletonStrategy singleton;
+    private static SingletonStrategy<Map<String, String>> singleton;
 
-    private static Object reference;
+    private static Map<String, String> reference;
 
+    @BeforeClass
     public void setUp() throws Exception {
-        super.setUp();
         if (singleton == null) {
-            singleton = new PerThreadSingleton();
+            singleton = new PerThreadSingleton<Map<String, String>>();
             singleton.setSingletonClassName(HashMap.class.getName());
         }
     }
 
-    public void tearDown() throws Exception {
-        super.tearDown();
-    }
-
     public void testFirstInstance() throws Exception {
-        Map map = (Map) singleton.instance();
-        String expected = null;
-        String actual = (String) map.get("Test");
-        assertEquals("testInstance", expected, actual);
+        Map<String, String> map = singleton.instance();
+        Assert.assertNull(map.get("Test"), "testInstance");
 
-        expected = "new value";
+        String expected = "new value";
         map.put("Test", expected);
 
-        map = (Map) singleton.instance();
+        map = singleton.instance();
         reference = map;
-        actual = (String) map.get("Test");
-        assertEquals("testFirstInstance", expected, actual);
+        Assert.assertEquals(map.get("Test"), expected, "testFirstInstance");
     }
 
+    @Test(dependsOnMethods = "testFirstInstance")
     public void testSecondInstance() throws Exception {
-        Map map = (Map) singleton.instance();
-        assertEquals("testSecondInstance reference", reference, map);
-        String actual = (String) map.get("Test");
-        String expected = "new value";
-        assertEquals("testInstance", expected, actual);
+        Map<String, String> map = singleton.instance();
+        Assert.assertEquals(map, reference, "testSecondInstance reference");
+        Assert.assertEquals(map.get("Test"), "new value", "testInstance");
     }
 
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        suite.addTest(TestSuite.createTest(SimpleSingletonTest.class,
-                "testFirstInstance"));
-        suite.addTest(TestSuite.createTest(SimpleSingletonTest.class,
-                "testSecondInstance"));
-        return suite;
-    }
 }
 
 /*

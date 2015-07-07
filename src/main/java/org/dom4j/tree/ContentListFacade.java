@@ -7,13 +7,13 @@
 
 package org.dom4j.tree;
 
+import org.dom4j.IllegalAddException;
+import org.dom4j.Node;
+
 import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
-import org.dom4j.IllegalAddException;
-import org.dom4j.Node;
 
 /**
  * <p>
@@ -28,121 +28,137 @@ import org.dom4j.Node;
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.11 $
  */
-public class ContentListFacade extends AbstractList {
+public class ContentListFacade<T extends Node> extends AbstractList<T> {
     /** The content of the Branch which is modified if I am modified */
-    private List branchContent;
+    private List<T> branchContent;
 
     /** The <code>AbstractBranch</code> instance which owns the content */
     private AbstractBranch branch;
 
-    public ContentListFacade(AbstractBranch branch, List branchContent) {
+    public ContentListFacade(AbstractBranch branch, List<T> branchContent) {
         this.branch = branch;
         this.branchContent = branchContent;
     }
 
-    public boolean add(Object object) {
-        branch.childAdded(asNode(object));
+    @Override
+    public boolean add(T node) {
+        branch.childAdded(node);
 
-        return branchContent.add(object);
+        return branchContent.add(node);
     }
 
-    public void add(int index, Object object) {
-        branch.childAdded(asNode(object));
-        branchContent.add(index, object);
+    @Override
+    public void add(int index, T node) {
+        branch.childAdded(node);
+        branchContent.add(index, node);
     }
 
-    public Object set(int index, Object object) {
-        branch.childAdded(asNode(object));
+    @Override
+    public T set(int index, T node) {
+        branch.childAdded(node);
 
-        return branchContent.set(index, object);
+        return branchContent.set(index, node);
     }
 
+    @Override
     public boolean remove(Object object) {
         branch.childRemoved(asNode(object));
 
         return branchContent.remove(object);
     }
 
-    public Object remove(int index) {
-        Object object = branchContent.remove(index);
+    @Override
+    public T remove(int index) {
+        T node = branchContent.remove(index);
 
-        if (object != null) {
-            branch.childRemoved(asNode(object));
+        if (node != null) {
+            branch.childRemoved(node);
         }
 
-        return object;
+        return node;
     }
 
-    public boolean addAll(Collection collection) {
+    @Override
+    public boolean addAll(Collection<? extends T> collection) {
         int count = branchContent.size();
 
-        for (Iterator iter = collection.iterator(); iter.hasNext(); count++) {
+        for (Iterator<? extends T> iter = collection.iterator(); iter.hasNext(); count++) {
             add(iter.next());
         }
 
         return count == branchContent.size();
     }
 
-    public boolean addAll(int index, Collection collection) {
+    @Override
+    public boolean addAll(int index, Collection<? extends T> collection) {
         int count = branchContent.size();
 
-        for (Iterator iter = collection.iterator(); iter.hasNext(); count--) {
+        for (Iterator<? extends T> iter = collection.iterator(); iter.hasNext(); count--) {
             add(index++, iter.next());
         }
 
         return count == branchContent.size();
     }
 
+    @Override
     public void clear() {
-        for (Iterator iter = iterator(); iter.hasNext();) {
-            Object object = iter.next();
-            branch.childRemoved(asNode(object));
+        for (Node node : this) {
+            branch.childRemoved(node);
         }
 
         branchContent.clear();
     }
 
-    public boolean removeAll(Collection c) {
-        for (Iterator iter = c.iterator(); iter.hasNext();) {
-            Object object = iter.next();
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        for (Object object : c) {
             branch.childRemoved(asNode(object));
         }
 
         return branchContent.removeAll(c);
     }
 
+    @Override
     public int size() {
         return branchContent.size();
     }
 
+    @Override
     public boolean isEmpty() {
         return branchContent.isEmpty();
     }
 
+    @Override
     public boolean contains(Object o) {
         return branchContent.contains(o);
     }
 
+    @Override
     public Object[] toArray() {
         return branchContent.toArray();
     }
 
+    @Override
     public Object[] toArray(Object[] a) {
         return branchContent.toArray(a);
     }
 
-    public boolean containsAll(Collection c) {
+    @Override
+    public boolean containsAll(Collection<?> c) {
         return branchContent.containsAll(c);
     }
 
-    public Object get(int index) {
+    @Override
+    public T get(int index) {
         return branchContent.get(index);
     }
 
+    @Override
     public int indexOf(Object o) {
         return branchContent.indexOf(o);
     }
 
+    @Override
     public int lastIndexOf(Object o) {
         return branchContent.lastIndexOf(o);
     }
@@ -157,7 +173,7 @@ public class ContentListFacade extends AbstractList {
         }
     }
 
-    protected List getBackingList() {
+    protected List<T> getBackingList() {
         return branchContent;
     }
 }

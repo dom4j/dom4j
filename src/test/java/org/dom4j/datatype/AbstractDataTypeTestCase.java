@@ -26,13 +26,11 @@ public class AbstractDataTypeTestCase extends AbstractTestCase {
     // Implementation methods
     // -------------------------------------------------------------------------
     protected void testNodes(String xpath, Class type) {
-        List list = document.selectNodes(xpath);
+        List<Node> list = document.selectNodes(xpath);
 
         assertTrue("Results are not empty", !list.isEmpty());
 
-        for (Iterator iter = list.iterator(); iter.hasNext();) {
-            Node node = (Node) iter.next();
-
+        for (Node node : list) {
             if (node instanceof Element) {
                 Element element = (Element) node;
                 testDataType(element, element.getData(), type);

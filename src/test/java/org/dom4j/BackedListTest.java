@@ -20,10 +20,6 @@ import org.dom4j.io.XMLWriter;
  * @version $Revision: 1.3 $
  */
 public class BackedListTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(BackedListTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testXPaths() throws Exception {

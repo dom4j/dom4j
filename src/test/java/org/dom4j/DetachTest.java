@@ -16,10 +16,6 @@ import junit.textui.TestRunner;
  * @version $Revision: 1.3 $
  */
 public class DetachTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(DetachTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testRoot() throws Exception {

@@ -44,16 +44,17 @@ import org.jaxen.VariableContext;
  * 
  * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  */
+@SuppressWarnings("unused")
 public class DocumentFactory implements Serializable {
-    private static SingletonStrategy singleton = null;
+    private static SingletonStrategy<DocumentFactory> singleton = null;
 
     protected transient QNameCache cache;
 
     /** Default namespace prefix -> URI mappings for XPath expressions to use */
-    private Map xpathNamespaceURIs;
+    private Map<String, String> xpathNamespaceURIs;
 
-    private static SingletonStrategy createSingleton() {
-        SingletonStrategy result = null;
+    private static SingletonStrategy<DocumentFactory> createSingleton() {
+        SingletonStrategy<DocumentFactory> result;
         
         String documentFactoryClassName;
         try {
@@ -67,10 +68,10 @@ public class DocumentFactory implements Serializable {
             String singletonClass = System.getProperty(
                     "org.dom4j.DocumentFactory.singleton.strategy",
                     "org.dom4j.util.SimpleSingleton");
-            Class clazz = Class.forName(singletonClass);
-            result = (SingletonStrategy) clazz.newInstance();
+            Class<SingletonStrategy> clazz = (Class<SingletonStrategy>) Class.forName(singletonClass);
+            result = clazz.newInstance();
         } catch (Exception e) {
-            result = new SimpleSingleton();
+            result = new SimpleSingleton<DocumentFactory>();
         }
 
         result.setSingletonClassName(documentFactoryClassName);
@@ -94,7 +95,7 @@ public class DocumentFactory implements Serializable {
         if (singleton == null) {
             singleton = createSingleton();
         }
-        return (DocumentFactory) singleton.instance();
+        return singleton.instance();
     }
 
     // Factory methods
@@ -121,10 +122,7 @@ public class DocumentFactory implements Serializable {
         // createDocument() method.
         Document answer = createDocument();
 
-        if (answer instanceof AbstractDocument) {
-            ((AbstractDocument) answer).setXMLEncoding(encoding);
-        }
-
+        answer.setXMLEncoding(encoding);
         return answer;
     }
 
@@ -191,7 +189,7 @@ public class DocumentFactory implements Serializable {
     }
 
     public ProcessingInstruction createProcessingInstruction(String target,
-            Map data) {
+            Map<String, String> data) {
         return new DefaultProcessingInstruction(target, data);
     }
 
@@ -324,7 +322,7 @@ public class DocumentFactory implements Serializable {
      * 
      * @return DOCUMENT ME!
      */
-    public List getQNames() {
+    public List<QName> getQNames() {
         return cache.getQNames();
     }
 
@@ -337,7 +335,7 @@ public class DocumentFactory implements Serializable {
      *         namespace URI. This value could well be null to indicate no
      *         namespace URIs are being mapped.
      */
-    public Map getXPathNamespaceURIs() {
+    public Map<String, String> getXPathNamespaceURIs() {
         return xpathNamespaceURIs;
     }
 
@@ -349,7 +347,7 @@ public class DocumentFactory implements Serializable {
      * @param namespaceURIs
      *            DOCUMENT ME!
      */
-    public void setXPathNamespaceURIs(Map namespaceURIs) {
+    public void setXPathNamespaceURIs(Map<String, String> namespaceURIs) {
         this.xpathNamespaceURIs = namespaceURIs;
     }
 
@@ -372,10 +370,10 @@ public class DocumentFactory implements Serializable {
         try {
             // I'll use the current class loader
             // that loaded me to avoid problems in J2EE and web apps
-            Class theClass = Class.forName(className, true,
+            Class<DocumentFactory> theClass = (Class<DocumentFactory>) Class.forName(className, true,
                     DocumentFactory.class.getClassLoader());
 
-            return (DocumentFactory) theClass.newInstance();
+            return theClass.newInstance();
         } catch (Throwable e) {
             System.out.println("WARNING: Cannot load DocumentFactory: "
                     + className);

@@ -22,10 +22,6 @@ public class NamespaceCacheTest extends AbstractTestCase {
 
     private static final int ITERATIONCOUNT = 10000;
 
-    public static void main(String[] args) {
-        TestRunner.run(NamespaceCacheTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testGetSameNamespaceSingleThread() {

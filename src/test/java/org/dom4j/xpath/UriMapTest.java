@@ -25,10 +25,6 @@ import org.dom4j.io.SAXReader;
  * @version $Revision: 1.3 $
  */
 public class UriMapTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(UriMapTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testURIMap() throws Exception {
@@ -46,7 +42,7 @@ public class UriMapTest extends AbstractTestCase {
         assertTrue("Found valid node", babelfish != null);
     }
 
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         document = new SAXReader().read(new File("xml/soap.xml"));
     }

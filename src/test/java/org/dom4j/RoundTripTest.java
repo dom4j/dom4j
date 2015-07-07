@@ -37,10 +37,6 @@ public class RoundTripTest extends AbstractTestCase {
             "/xml/fibo.xml", "/xml/test/schema/personal-prefix.xsd",
             "/xml/test/soap2.xml", "/xml/test/test_schema.xml"};
 
-    public static void main(String[] args) {
-        TestRunner.run(RoundTripTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testTextRoundTrip() throws Exception {

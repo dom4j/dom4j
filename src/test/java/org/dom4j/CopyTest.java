@@ -18,10 +18,6 @@ import java.util.List;
  * @version $Revision: 1.3 $
  */
 public class CopyTest extends AbstractTestCase {
-    public static void main(String[] args) {
-        TestRunner.run(CopyTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testRoot() throws Exception {

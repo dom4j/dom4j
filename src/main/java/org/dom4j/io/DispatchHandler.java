@@ -37,16 +37,16 @@ class DispatchHandler implements ElementHandler {
     private String path;
 
     /** maintains a stack of previously encountered paths */
-    private ArrayList pathStack;
+    private ArrayList<String> pathStack;
 
     /** maintains a stack of previously encountered handlers */
-    private ArrayList handlerStack;
+    private ArrayList<ElementHandler> handlerStack;
 
     /**
      * <code>HashMap</code> maintains the mapping between element paths and
      * handlers
      */
-    private HashMap handlers;
+    private HashMap<String, ElementHandler> handlers;
 
     /**
      * <code>ElementHandler</code> to use by default for element paths with no
@@ -57,9 +57,9 @@ class DispatchHandler implements ElementHandler {
     public DispatchHandler() {
         atRoot = true;
         path = "/";
-        pathStack = new ArrayList();
-        handlerStack = new ArrayList();
-        handlers = new HashMap();
+        pathStack = new ArrayList<String>();
+        handlerStack = new ArrayList<ElementHandler>();
+        handlers = new HashMap<String, ElementHandler>();
     }
 
     /**
@@ -86,7 +86,7 @@ class DispatchHandler implements ElementHandler {
      * @return DOCUMENT ME!
      */
     public ElementHandler removeHandler(String handlerPath) {
-        return (ElementHandler) handlers.remove(handlerPath);
+        return handlers.remove(handlerPath);
     }
 
     /**
@@ -111,7 +111,7 @@ class DispatchHandler implements ElementHandler {
      * @return the registered handler
      */
     public ElementHandler getHandler(String handlerPath) {
-        return (ElementHandler) handlers.get(handlerPath);
+        return handlers.get(handlerPath);
     }
 
     /**
@@ -177,7 +177,7 @@ class DispatchHandler implements ElementHandler {
         if ((handlers != null) && (handlers.containsKey(path))) {
             // The current node has a handler associated with it.
             // Find the handler and save it on the handler stack.
-            ElementHandler handler = (ElementHandler) handlers.get(path);
+            ElementHandler handler = handlers.get(path);
             handlerStack.add(handler);
 
             // Call the handlers onStart method.
@@ -195,7 +195,7 @@ class DispatchHandler implements ElementHandler {
         if ((handlers != null) && (handlers.containsKey(path))) {
             // This node has a handler associated with it.
             // Find the handler and pop it from the handler stack.
-            ElementHandler handler = (ElementHandler) handlers.get(path);
+            ElementHandler handler = handlers.get(path);
             handlerStack.remove(handlerStack.size() - 1);
 
             // Call the handlers onEnd method
@@ -209,7 +209,7 @@ class DispatchHandler implements ElementHandler {
         }
 
         // Set path back to its parent
-        path = (String) pathStack.remove(pathStack.size() - 1);
+        path = pathStack.remove(pathStack.size() - 1);
 
         if (pathStack.size() == 0) {
             atRoot = true;

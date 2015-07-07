@@ -77,7 +77,7 @@ public class XMLTableColumnDefinition implements Serializable {
         return OBJECT_TYPE;
     }
 
-    public Class getColumnClass() {
+    public Class<?> getColumnClass() {
         switch (type) {
             case STRING_TYPE:
                 return String.class;

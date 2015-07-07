@@ -33,10 +33,6 @@ public class XPathExamplesTest extends AbstractTestCase {
     /** factory for XPath, Patterns and nodes */
     protected DocumentFactory factory = DocumentFactory.getInstance();
 
-    public static void main(String[] args) {
-        TestRunner.run(XPathExamplesTest.class);
-    }
-
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testXPaths() throws Exception {

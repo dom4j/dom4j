@@ -7,6 +7,8 @@
 
 package org.dom4j;
 
+import org.dom4j.dtd.Decl;
+
 import java.util.List;
 
 /**
@@ -17,6 +19,7 @@ import java.util.List;
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.10 $
  */
+@SuppressWarnings("unused")
 public interface DocumentType extends Node {
     /**
      * This method is the equivalent to the {@link #getName}method. It is added
@@ -49,7 +52,7 @@ public interface DocumentType extends Node {
      * 
      * @return DOCUMENT ME!
      */
-    List getInternalDeclarations();
+    List<Decl> getInternalDeclarations();
 
     /**
      * Sets the list of internal DTD declaration objects, defined in the
@@ -58,7 +61,7 @@ public interface DocumentType extends Node {
      * @param declarations
      *            DOCUMENT ME!
      */
-    void setInternalDeclarations(List declarations);
+    void setInternalDeclarations(List<Decl> declarations);
 
     /**
      * Returns a list of internal DTD declaration objects, defined in the
@@ -66,7 +69,7 @@ public interface DocumentType extends Node {
      * 
      * @return DOCUMENT ME!
      */
-    List getExternalDeclarations();
+    List<Decl> getExternalDeclarations();
 
     /**
      * Sets the list of internal DTD declaration objects, defined in the
@@ -75,7 +78,7 @@ public interface DocumentType extends Node {
      * @param declarations
      *            DOCUMENT ME!
      */
-    void setExternalDeclarations(List declarations);
+    void setExternalDeclarations(List<Decl> declarations);
 }
 
 /*
