@@ -28,6 +28,8 @@
     <orderEntry type="library" scope="TEST" name="Gradle: xalan:xalan:2.7.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: xalan:serializer:2.7.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: xerces:xercesImpl:2.11.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: javax.xml.bind:jaxb-api:2.2.12" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: javax.xml.stream:stax-api:1.0-2" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: xml-apis:xml-apis:1.4.01" level="project" />
   </component>
 </module>
