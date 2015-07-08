@@ -7,109 +7,64 @@
 
 package org.dom4j.util;
 
-import org.testng.annotations.BeforeClass;
+import org.dom4j.AbstractTestCase;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * PerThreadSingleton Tester.
- * 
+ *
  * @author ddlucas
- * @since
- * 
- * <pre>
+ * @version 1.0
+ * @since <pre>
  * 01 / 05 / 2005
  * </pre>
- * 
- * @version 1.0
  */
-@Test(enabled = false)
-public class PerThreadSingletonTest {
+@Test
+public class PerThreadSingletonTest extends AbstractTestCase {
 
-    private static SingletonStrategy singleton;
+	private static SingletonStrategy<Map<String, String>> singleton;
 
-    private static ThreadLocal reference = new ThreadLocal();
+	private static ThreadLocal<Map<String, String>> reference = new ThreadLocal<Map<String, String>>();
 
-    @BeforeClass
-    public void setUp() throws Exception {
-        synchronized (PerThreadSingletonTest.class) {
-            if (singleton == null) {
-                singleton = new PerThreadSingleton();
-                singleton.setSingletonClassName(HashMap.class.getName());
-            }
-        }
-    }
-/*
-    public void testInstance() throws Exception {
-        String tid = Thread.currentThread().getName();
-        Map map = (Map) singleton.instance();
+	static {
+		singleton = new PerThreadSingleton<Map<String, String>>();
+		singleton.setSingletonClassName(HashMap.class.getName());
+	}
 
-        String expected = "new value";
-        if (!map.containsKey(tid) && reference.get() != null) {
-            System.out.println("tid=" + tid + " map=" + map);
-            System.out.println("reference=" + reference);
-            System.out.println("singleton=" + singleton);
-            fail("created singleton more than once");
-        } else {
-            map.put(tid, expected);
-            reference.set(map);
-        }
+	@Test(threadPoolSize = 5, invocationCount = 1000, timeOut = 100000L)
+	public void testPerThreadSingleton() throws Exception {
+		String tid = Thread.currentThread().getName();
+		Map<String, String> map = singleton.instance();
 
-        String actual = (String) map.get(tid);
-        // System.out.println("tid="+tid+ " map="+map);
-        assertEquals("testInstance", expected, actual);
+		String expected = "new value";
+		if (!map.containsKey(tid) && reference.get() != null) {
+			System.out.println("tid=" + tid + " map=" + map);
+			System.out.println("reference=" + reference);
+			System.out.println("singleton=" + singleton);
+			fail("created singleton more than once");
+		} else {
+			map.put(tid, expected);
+			reference.set(map);
+		}
 
-        map = (Map) singleton.instance();
-        expected = "new value";
-        actual = (String) map.get(tid);
-        // System.out.println("tid="+tid+ " map="+map);
-        // System.out.println("reference="+reference);
-        // System.out.println("singleton="+singleton);
-        assertEquals("testInstance", expected, actual);
-        assertEquals("testInstance reference", reference.get(), map);
+		String actual = map.get(tid);
+		// System.out.println("tid="+tid+ " map="+map);
+		assertEquals("testInstance", expected, actual);
 
-    }
-*/
-    /**
-     * Assembles and returns a test suite.
-     * 
-     * @return The suite
-     */
-/*
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        suite.addTest(makeRepeatedLoadTest(5, 100, "testInstance"));
-        return suite;
-    }
-*/
+		map = singleton.instance();
+		expected = "new value";
+		actual = map.get(tid);
+		// System.out.println("tid="+tid+ " map="+map);
+		// System.out.println("reference="+reference);
+		// System.out.println("singleton="+singleton);
+		assertEquals("testInstance", expected, actual);
+		assertEquals("testInstance reference", reference.get(), map);
 
-    /**
-     * JUnit method to exercise test via threads and loops
-     * 
-     * @param users
-     *            Number of users to simulate (i.e. Threads).
-     * @param iterations
-     *            Number of iterations per user ( repeat the test x times).
-     * @param testMethod
-     *            method to execute (testXXX).
-     * 
-     * @return A Junit test
-     */
-/*
-    protected static Test makeRepeatedLoadTest(int users, int iterations,
-            String testMethod) {
-        long maxElapsedTime = 1200 + (1000 * users * iterations);
+	}
 
-        Test testCase = new PerThreadSingletonTest(testMethod);
-
-        Test repeatedTest = new RepeatedTest(testCase, iterations);
-        Test loadTest = new LoadTest(repeatedTest, users);
-        Test timedTest = new TimedTest(loadTest, maxElapsedTime);
-
-        return timedTest;
-    }
-*/
 }
 
 /*
