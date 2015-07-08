@@ -8,147 +8,141 @@
 package org.dom4j.datatype;
 
 import org.dom4j.*;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.math.BigInteger;
 
 /**
  * Tests setting the value of datatype aware element or attribute value
- * 
+ *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision: 1.4 $
  */
 public class SetDataTest extends AbstractTestCase {
-    private DatatypeDocumentFactory factory = new DatatypeDocumentFactory();
+	private DatatypeDocumentFactory factory = new DatatypeDocumentFactory();
 
-    // Test case(s)
-    // -------------------------------------------------------------------------
-    public void testAttribute() throws Exception {
-        QName personName = factory.createQName("person");
-        QName ageName = factory.createQName("age");
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void testAttribute() throws Exception {
+		QName personName = factory.createQName("person");
+		QName ageName = factory.createQName("age");
 
-        Element person = factory.createElement(personName);
+		Element person = factory.createElement(personName);
 
-        person.addAttribute(ageName, "10");
+		person.addAttribute(ageName, "10");
 
-        Attribute age = person.attribute(ageName);
+		Attribute age = person.attribute(ageName);
 
-        assertTrue("Created DatatypeAttribute not correct",
-                age instanceof DatatypeAttribute);
+		assertTrue("Created DatatypeAttribute not correct", age instanceof DatatypeAttribute);
 
-        log("Found attribute: " + age);
+		log("Found attribute: " + age);
 
-        Object data = age.getData();
-        Object expected = new BigInteger("10");
+		Object data = age.getData();
+		Object expected = new BigInteger("10");
 
-        assertEquals("Data is correct type", BigInteger.class, data.getClass());
+		assertEquals("Data is correct type", BigInteger.class, data.getClass());
 
-        assertEquals("Set age correctly", expected, data);
+		assertEquals("Set age correctly", expected, data);
 
-        age.setValue("32");
-        data = age.getData();
-        expected = new BigInteger("32");
+		age.setValue("32");
+		data = age.getData();
+		expected = new BigInteger("32");
 
-        assertEquals("Set age correctly", expected, data);
+		assertEquals("Set age correctly", expected, data);
 
-        /**
-         * not sure if numeric types should be round tripped back to BigDecimal
-         * (say) age.setData( new Long( 21 ) ); data = age.getData(); expected =
-         * new BigInteger( "21" ); assertEquals( "Set age correctly", expected,
-         * data );
-         */
+		/**
+		 * not sure if numeric types should be round tripped back to BigDecimal
+		 * (say) age.setData( new Long( 21 ) ); data = age.getData(); expected =
+		 * new BigInteger( "21" ); assertEquals( "Set age correctly", expected,
+		 * data );
+		 */
 
-        // now lets set an invalid value
-        try {
-            age.setValue("abc");
-            fail("Appeared to set an invalid value");
-        } catch (IllegalArgumentException e) {
-        }
-    }
+		// now lets set an invalid value
+		age.setValue("abc");
+		fail("Appeared to set an invalid value");
+	}
 
-    public void testAttributeWithNamespace() throws Exception {
-        QName personName = factory.createQName("person", "t", "urn://testing");
-        QName ageName = factory.createQName("age", "t", "urn://testing");
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void testAttributeWithNamespace() throws Exception {
+		QName personName = factory.createQName("person", "t", "urn://testing");
+		QName ageName = factory.createQName("age", "t", "urn://testing");
 
-        Element person = factory.createElement(personName);
+		Element person = factory.createElement(personName);
 
-        person.addAttribute(ageName, "10");
+		person.addAttribute(ageName, "10");
 
-        Attribute age = person.attribute(ageName);
+		Attribute age = person.attribute(ageName);
 
-        assertTrue("Created DatatypeAttribute not correct",
-                age instanceof DatatypeAttribute);
+		assertTrue("Created DatatypeAttribute not correct",
+						age instanceof DatatypeAttribute);
 
-        log("Found attribute: " + age);
+		log("Found attribute: " + age);
 
-        Object data = age.getData();
-        Object expected = new BigInteger("10");
+		Object data = age.getData();
+		Object expected = new BigInteger("10");
 
-        assertEquals("Data is correct type", BigInteger.class, data.getClass());
+		assertEquals("Data is correct type", BigInteger.class, data.getClass());
 
-        assertEquals("Set age correctly", expected, data);
+		assertEquals("Set age correctly", expected, data);
 
-        age.setValue("32");
-        data = age.getData();
-        expected = new BigInteger("32");
+		age.setValue("32");
+		data = age.getData();
+		expected = new BigInteger("32");
 
-        assertEquals("Set age correctly", expected, data);
+		assertEquals("Set age correctly", expected, data);
 
-        try {
-            age.setValue("abc");
-            fail("Appeared to set an invalid value");
-        } catch (IllegalArgumentException e) {
-        }
-    }
+		age.setValue("abc");
+		fail("Appeared to set an invalid value");
+	}
 
-    public void testElement() throws Exception {
-        QName personName = factory.createQName("person");
-        QName numberOfCarsName = factory.createQName("numberOfCars");
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void testElement() throws Exception {
+		QName personName = factory.createQName("person");
+		QName numberOfCarsName = factory.createQName("numberOfCars");
 
-        Element person = factory.createElement(personName);
+		Element person = factory.createElement(personName);
 
-        Element cars = person.addElement(numberOfCarsName);
+		Element cars = person.addElement(numberOfCarsName);
 
-        log("Found element: " + cars);
+		log("Found element: " + cars);
 
-        Object expected = new Short((short) 10);
-        cars.setData(expected);
+		short expected = 10;
+		cars.setData(expected);
 
-        Object data = cars.getData();
+		Object data = cars.getData();
 
-        assertEquals("Data is correct type", Short.class, data.getClass());
-        assertEquals("Set cars correctly", expected, data);
+		assertEquals("Data is correct type", Short.class, data.getClass());
+		assertEquals("Set cars correctly", expected, data);
 
-        cars.setData(new Short((short) 32));
-        data = cars.getData();
-        expected = new Short((short) 32);
+		cars.setData((short) 32);
+		data = cars.getData();
+		expected = 32;
 
-        assertEquals("Set cars correctly", expected, data);
+		assertEquals("Set cars correctly", expected, data);
 
-        cars.setText("34");
-        data = cars.getData();
-        expected = new Short((short) 34);
+		cars.setText("34");
+		data = cars.getData();
+		expected = 34;
 
-        assertEquals("Set cars correctly", expected, data);
+		assertEquals("Set cars correctly", expected, data);
 
-        // now lets set an invalid value
-        try {
-            cars.setText("abc");
-            fail("Appeared to set an invalid value");
-        } catch (IllegalArgumentException e) {
-        }
-    }
+		// now lets set an invalid value
+		cars.setText("abc");
+		fail("Appeared to set an invalid value");
+	}
 
-    // Implementation methods
-    // -------------------------------------------------------------------------
-    public void setUp() throws Exception {
-        super.setUp();
+	// Implementation methods
+	// -------------------------------------------------------------------------
+	@BeforeMethod
+	public void setUp() throws Exception {
+		super.setUp();
 
-        Document schema = getDocument("/xml/test/schema/personal.xsd");
-        factory.loadSchema(schema);
+		Document schema = getDocument("/xml/test/schema/personal.xsd");
+		factory.loadSchema(schema);
 
-        Namespace ns = new Namespace("t", "urn://testing");
-        factory.loadSchema(schema, ns);
-    }
+		Namespace ns = new Namespace("t", "urn://testing");
+		factory.loadSchema(schema, ns);
+	}
 }
 
 /*
