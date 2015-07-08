@@ -7,14 +7,11 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
+import org.dom4j.io.SAXReader;
+import org.xml.sax.InputSource;
 
 import java.io.ByteArrayInputStream;
 import java.io.StringReader;
-
-import org.dom4j.io.SAXReader;
-
-import org.xml.sax.InputSource;
 
 /**
  * DOCUMENT ME!

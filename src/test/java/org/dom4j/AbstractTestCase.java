@@ -12,7 +12,9 @@ import org.apache.xerces.jaxp.SAXParserFactoryImpl;
 import org.dom4j.io.SAXReader;
 import org.dom4j.util.NodeComparator;
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Test;
 
 import java.io.File;
 
@@ -301,6 +303,14 @@ public abstract class AbstractTestCase {
 
     protected void assertEquals(Object expected, Object actual) {
         Assert.assertEquals(actual, expected);
+    }
+
+    protected void assertNotEquals(Object expected, Object actual) {
+        Assert.assertNotEquals(actual, expected);
+    }
+
+    protected void assertNotEquals(String message, Object expected, Object actual) {
+        Assert.assertNotEquals(actual, expected, message);
     }
 
     protected void assertEquals(String message, Object expected, Object actual) {

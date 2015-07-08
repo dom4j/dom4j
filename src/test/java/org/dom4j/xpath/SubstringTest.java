@@ -7,15 +7,13 @@
 
 package org.dom4j.xpath;
 
-import junit.textui.TestRunner;
-
-import java.io.File;
-import java.util.List;
-
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeTest;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * Test harness for the substring function
@@ -57,7 +55,7 @@ public class SubstringTest extends AbstractTestCase {
         }
     }
 
-    @BeforeClass
+    @BeforeTest
     public void setUp() throws Exception {
         super.setUp();
         document = new SAXReader().read(new File("xml/test/fields.xml"));

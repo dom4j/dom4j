@@ -7,14 +7,12 @@
 
 package org.dom4j.xpath;
 
-import junit.textui.TestRunner;
-
-import java.util.List;
-
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.XPath;
+
+import java.util.List;
 
 /**
  * Test harness for the valueOf() function

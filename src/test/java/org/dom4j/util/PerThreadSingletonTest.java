@@ -7,13 +7,10 @@
 
 package org.dom4j.util;
 
-import com.clarkware.junitperf.LoadTest;
-import com.clarkware.junitperf.TimedTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * PerThreadSingleton Tester.

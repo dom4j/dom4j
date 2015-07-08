@@ -7,8 +7,6 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
-
 import java.util.Iterator;
 import java.util.List;
 

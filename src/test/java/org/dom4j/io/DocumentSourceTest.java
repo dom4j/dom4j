@@ -7,17 +7,14 @@
 
 package org.dom4j.io;
 
-import junit.textui.TestRunner;
-
-import java.io.StringWriter;
+import org.dom4j.AbstractTestCase;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
-
-import org.dom4j.AbstractTestCase;
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
+import java.io.StringWriter;
 
 /**
  * DOCUMENT ME!

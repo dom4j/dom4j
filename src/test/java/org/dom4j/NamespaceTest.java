@@ -7,15 +7,13 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
+import org.dom4j.io.SAXReader;
+import org.testng.annotations.BeforeClass;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.dom4j.io.SAXReader;
-import org.testng.annotations.BeforeClass;
 
 /**
  * A test harness to test the use of Namespaces.
@@ -92,7 +90,7 @@ public class NamespaceTest extends AbstractTestCase {
      */
     public void testNamespaceUriMap() throws Exception {
         // register namespace prefix->uri mappings with factory
-        Map uris = new HashMap();
+        Map<String, String> uris = new HashMap<String, String>();
         uris.put("x", "fooNamespace");
         uris.put("y", "barNamespace");
 
@@ -129,7 +127,7 @@ public class NamespaceTest extends AbstractTestCase {
      */
     protected Element getRootElement() {
         Element root = document.getRootElement();
-        assertTrue("Document has root element", root != null);
+        assertNotNull("Document has root element", root);
 
         return root;
     }

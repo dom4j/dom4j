@@ -7,16 +7,9 @@
 
 package org.dom4j.datatype;
 
-import junit.textui.TestRunner;
+import org.dom4j.*;
 
 import java.math.BigInteger;
-
-import org.dom4j.AbstractTestCase;
-import org.dom4j.Attribute;
-import org.dom4j.Document;
-import org.dom4j.Element;
-import org.dom4j.Namespace;
-import org.dom4j.QName;
 
 /**
  * Tests setting the value of datatype aware element or attribute value

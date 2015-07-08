@@ -7,8 +7,6 @@
 
 package org.dom4j.datatype;
 
-import junit.textui.TestRunner;
-
 import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
 

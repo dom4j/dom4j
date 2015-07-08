@@ -7,19 +7,16 @@
 
 package org.dom4j.dom;
 
-import junit.textui.TestRunner;
-
-import java.io.StringReader;
-
 import org.dom4j.AbstractTestCase;
 import org.dom4j.io.DOMWriter;
 import org.dom4j.io.SAXReader;
-
 import org.testng.annotations.BeforeClass;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.io.StringReader;
 
 /**
  * A test harness to test the native DOM implementation of dom4j

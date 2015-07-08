@@ -7,18 +7,15 @@
 
 package org.dom4j.xpath;
 
-import junit.textui.TestRunner;
-
-import java.io.File;
-import java.util.List;
-
 import org.dom4j.AbstractTestCase;
 import org.dom4j.DocumentHelper;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
-
 import org.jaxen.SimpleNamespaceContext;
 import org.testng.annotations.BeforeClass;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * Tests finding items using a namespace prefix

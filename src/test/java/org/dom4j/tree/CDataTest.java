@@ -7,8 +7,6 @@
 
 package org.dom4j.tree;
 
-import junit.textui.TestRunner;
-
 import org.dom4j.AbstractTestCase;
 
 /**

@@ -7,24 +7,14 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
-
-import java.io.StringReader;
-import java.io.StringWriter;
+import org.dom4j.io.*;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
-import org.dom4j.io.DOMReader;
-import org.dom4j.io.DOMWriter;
-import org.dom4j.io.DocumentResult;
-import org.dom4j.io.DocumentSource;
-import org.dom4j.io.SAXContentHandler;
-import org.dom4j.io.SAXReader;
-import org.dom4j.io.SAXWriter;
-import org.dom4j.io.XMLWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
 
 /**
  * A test harness to test the the round trips of Documents.
@@ -40,36 +30,36 @@ public class RoundTripTest extends AbstractTestCase {
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testTextRoundTrip() throws Exception {
-        for (int i = 0, size = testDocuments.length; i < size; i++) {
-            Document doc = getDocument(testDocuments[i]);
+        for (String testDocument : testDocuments) {
+            Document doc = getDocument(testDocument);
             roundTripText(doc);
         }
     }
 
     public void testSAXRoundTrip() throws Exception {
-        for (int i = 0, size = testDocuments.length; i < size; i++) {
-            Document doc = getDocument(testDocuments[i]);
+        for (String testDocument : testDocuments) {
+            Document doc = getDocument(testDocument);
             roundTripSAX(doc);
         }
     }
 
     public void testDOMRoundTrip() throws Exception {
-        for (int i = 0, size = testDocuments.length; i < size; i++) {
-            Document doc = getDocument(testDocuments[i]);
+        for (String testDocument : testDocuments) {
+            Document doc = getDocument(testDocument);
             roundTripDOM(doc);
         }
     }
 
     public void testJAXPRoundTrip() throws Exception {
-        for (int i = 0, size = testDocuments.length; i < size; i++) {
-            Document doc = getDocument(testDocuments[i]);
+        for (String testDocument : testDocuments) {
+            Document doc = getDocument(testDocument);
             roundTripJAXP(doc);
         }
     }
 
     public void testFullRoundTrip() throws Exception {
-        for (int i = 0, size = testDocuments.length; i < size; i++) {
-            Document doc = getDocument(testDocuments[i]);
+        for (String testDocument : testDocuments) {
+            Document doc = getDocument(testDocument);
             roundTripFull(doc);
         }
     }

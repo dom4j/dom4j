@@ -7,16 +7,13 @@
 
 package org.dom4j.io;
 
-import junit.textui.TestRunner;
+import org.dom4j.AbstractTestCase;
+import org.dom4j.Document;
 
+import javax.xml.stream.XMLInputFactory;
 import java.io.File;
 import java.io.FileReader;
 import java.io.StringWriter;
-
-import javax.xml.stream.XMLInputFactory;
-
-import org.dom4j.AbstractTestCase;
-import org.dom4j.Document;
 
 /**
  * Tests STAX->DOM4J functionality.

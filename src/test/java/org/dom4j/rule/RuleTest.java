@@ -7,15 +7,13 @@
 
 package org.dom4j.rule;
 
-import junit.textui.TestRunner;
-
-import java.util.ArrayList;
-import java.util.Collections;
-
 import org.dom4j.AbstractTestCase;
 import org.dom4j.CDATA;
 import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Tests the ordering of Rules
@@ -44,7 +42,7 @@ public class RuleTest extends AbstractTestCase {
 
         assertTrue("r1 > r2", value > 0);
 
-        ArrayList list = new ArrayList();
+        ArrayList<Rule> list = new ArrayList<Rule>();
         list.add(r1);
         list.add(r2);
 
@@ -53,7 +51,7 @@ public class RuleTest extends AbstractTestCase {
         assertTrue("r2 should be first", list.get(0) == r2);
         assertTrue("r1 should be next", list.get(1) == r1);
 
-        list = new ArrayList();
+        list = new ArrayList<Rule>();
         list.add(r2);
         list.add(r1);
 

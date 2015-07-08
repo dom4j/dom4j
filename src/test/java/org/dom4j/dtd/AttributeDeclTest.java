@@ -7,9 +7,9 @@
 
 package org.dom4j.dtd;
 
-import junit.textui.TestRunner;
-
 import org.dom4j.AbstractTestCase;
+import org.dom4j.DocTypeTest;
+import org.dom4j.DocumentType;
 
 /**
  * Tests the {@link AttributeDecl}functionality. Tests each of the property

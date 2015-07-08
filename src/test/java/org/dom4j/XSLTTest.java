@@ -7,18 +7,15 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
-
-import java.util.List;
+import org.dom4j.io.DocumentResult;
+import org.dom4j.io.DocumentSource;
+import org.testng.annotations.BeforeClass;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
-
-import org.dom4j.io.DocumentResult;
-import org.dom4j.io.DocumentSource;
-import org.testng.annotations.BeforeClass;
+import java.util.List;
 
 /**
  * Tests that XSLT works correctly

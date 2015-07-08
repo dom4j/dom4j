@@ -7,13 +7,10 @@
 
 package org.dom4j.io;
 
-import junit.textui.TestRunner;
+import org.dom4j.AbstractTestCase;
+import org.w3c.dom.NamedNodeMap;
 
 import java.io.StringWriter;
-
-import org.dom4j.AbstractTestCase;
-
-import org.w3c.dom.NamedNodeMap;
 
 /**
  * DOCUMENT ME!

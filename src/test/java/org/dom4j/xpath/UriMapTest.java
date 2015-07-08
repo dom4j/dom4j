@@ -7,16 +7,15 @@
 
 package org.dom4j.xpath;
 
-import junit.textui.TestRunner;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Node;
 import org.dom4j.XPath;
 import org.dom4j.io.SAXReader;
+import org.testng.annotations.BeforeMethod;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Tests the use of a Map for defining namespace URIs
@@ -28,7 +27,7 @@ public class UriMapTest extends AbstractTestCase {
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testURIMap() throws Exception {
-        Map uris = new HashMap();
+        Map<String, String> uris = new HashMap<String, String>();
         uris.put("SOAP-ENV", "http://schemas.xmlsoap.org/soap/envelope/");
         uris.put("m", "urn:xmethodsBabelFish");
 
@@ -39,9 +38,10 @@ public class UriMapTest extends AbstractTestCase {
         Node babelfish = xpath.selectSingleNode(document);
 
         // log( "Found: " + babelfish );
-        assertTrue("Found valid node", babelfish != null);
+        assertNotNull("Found valid node", babelfish);
     }
 
+    @BeforeMethod
     public void setUp() throws Exception {
         super.setUp();
         document = new SAXReader().read(new File("xml/soap.xml"));

@@ -20,16 +20,13 @@
     <orderEntry type="library" scope="TEST" name="Gradle: com.beust:jcommander:1.27" level="project" />
     <orderEntry type="library" exported="" name="Gradle: net.java.dev.msv:xsdlib:2013.6.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: relaxngDatatype:relaxngDatatype:20020414" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: org.ogce:xpp5:1.2.8" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: junit:junit:4.7" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: jakarta-regexp:jakarta-regexp:1.4" level="project" />
     <orderEntry type="library" exported="" name="Gradle: pull-parser:pull-parser:2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: junitperf:junitperf:1.8" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: xalan:xalan:2.7.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: xalan:serializer:2.7.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: xerces:xercesImpl:2.11.0" level="project" />
     <orderEntry type="library" exported="" name="Gradle: javax.xml.bind:jaxb-api:2.2.12" level="project" />
     <orderEntry type="library" exported="" name="Gradle: javax.xml.stream:stax-api:1.0-2" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: xml-apis:xml-apis:1.4.01" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: xpp3:xpp3:1.1.4c" level="project" />
   </component>
 </module>

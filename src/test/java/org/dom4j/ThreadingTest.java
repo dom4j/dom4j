@@ -7,16 +7,7 @@
 
 package org.dom4j;
 
-import com.clarkware.junitperf.LoadTest;
-import com.clarkware.junitperf.TimedTest;
-
-import junit.extensions.RepeatedTest;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-import junit.textui.TestRunner;
-import org.junit.Ignore;
+import org.testng.annotations.Test;
 
 import java.text.FieldPosition;
 import java.text.SimpleDateFormat;
@@ -28,7 +19,7 @@ import java.util.Date;
  * @author <a href="mailto:ddlucas@lse.com">David Lucas </a>
  * @version $Revision: 1.3 $
  */
-@Ignore
+@Test(enabled = false)
 public class ThreadingTest extends AbstractTestCase {
     private static final ThreadLocal FORMATTER_CACHE = new ThreadLocal();
 

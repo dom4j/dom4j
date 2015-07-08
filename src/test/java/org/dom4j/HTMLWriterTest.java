@@ -7,12 +7,10 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
-
-import java.io.StringWriter;
-
 import org.dom4j.io.HTMLWriter;
 import org.dom4j.io.OutputFormat;
+
+import java.io.StringWriter;
 
 /**
  * Test harness for the HTMLWriter

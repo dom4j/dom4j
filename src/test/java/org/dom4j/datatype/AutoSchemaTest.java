@@ -7,14 +7,12 @@
 
 package org.dom4j.datatype;
 
-import junit.textui.TestRunner;
-
-import java.math.BigInteger;
-import java.util.Calendar;
-
 import org.dom4j.DocumentFactory;
 import org.dom4j.io.SAXReader;
 import org.testng.annotations.BeforeClass;
+
+import java.math.BigInteger;
+import java.util.Calendar;
 
 /**
  * Test harness for the XML Schema Data Type integration. These tests use

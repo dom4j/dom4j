@@ -7,8 +7,6 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
-
 /**
  * Tests the setText method
  * 

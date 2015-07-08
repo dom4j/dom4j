@@ -7,8 +7,6 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
-
 import org.dom4j.io.SAXReader;
 import org.dom4j.util.UserDataAttribute;
 import org.dom4j.util.UserDataDocumentFactory;

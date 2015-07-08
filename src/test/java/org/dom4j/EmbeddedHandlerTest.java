@@ -7,11 +7,9 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
+import org.dom4j.io.SAXReader;
 
 import java.io.File;
-
-import org.dom4j.io.SAXReader;
 
 /**
  * TestEmbeddedHandler

@@ -7,17 +7,13 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
-
-import java.util.List;
+import org.dom4j.io.SAXContentHandler;
+import org.testng.annotations.BeforeClass;
+import org.xml.sax.XMLReader;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
-import org.dom4j.io.SAXContentHandler;
-
-import org.testng.annotations.BeforeClass;
-import org.xml.sax.XMLReader;
+import java.util.List;
 
 public class SAXContentHandlerTest extends AbstractTestCase {
     private XMLReader xmlReader;

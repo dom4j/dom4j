@@ -7,8 +7,6 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
-
 /**
  * A test harness to test the DocumentHelper.makeElement() methodt
  * 
@@ -22,11 +20,11 @@ public class MakeElementTest extends AbstractTestCase {
         Document doc = DocumentHelper.createDocument();
 
         Element c = DocumentHelper.makeElement(doc, "a/b/c");
-        assertTrue("Should return a valid element", c != null);
+        assertNotNull("Should return a valid element", c);
 
         Element c2 = DocumentHelper.makeElement(doc, "a/b/c");
 
-        assertTrue("Found same element again", c == c2);
+        assertSame("Found same element again", c, c2);
 
         c.addAttribute("x", "123");
 
@@ -38,11 +36,11 @@ public class MakeElementTest extends AbstractTestCase {
 
         Element e = DocumentHelper.makeElement(b, "c/d/e");
 
-        assertTrue("Should return a valid element", e != null);
+        assertNotNull("Should return a valid element", e);
 
         Element e2 = DocumentHelper.makeElement(b, "c/d/e");
 
-        assertTrue("Found same element again", e == e2);
+        assertSame("Found same element again", e, e2);
 
         e.addAttribute("y", "456");
 
@@ -59,7 +57,7 @@ public class MakeElementTest extends AbstractTestCase {
         root.addNamespace("bar", "barURI");
 
         Element c = DocumentHelper.makeElement(doc, "root/foo:b/bar:c");
-        assertTrue("Should return a valid element", c != null);
+        assertNotNull("Should return a valid element", c);
 
         assertEquals("c has a valid namespace", "barURI", c.getNamespaceURI());
 
@@ -70,7 +68,7 @@ public class MakeElementTest extends AbstractTestCase {
         log("Created: " + c);
 
         Element c2 = DocumentHelper.makeElement(doc, "root/foo:b/bar:c");
-        assertTrue("Found same element again", c == c2);
+        assertSame("Found same element again", c, c2);
     }
 }
 

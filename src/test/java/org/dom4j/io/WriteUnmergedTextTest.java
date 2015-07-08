@@ -7,13 +7,11 @@
 
 package org.dom4j.io;
 
-import junit.textui.TestRunner;
+import org.dom4j.AbstractTestCase;
+import org.dom4j.Document;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-
-import org.dom4j.AbstractTestCase;
-import org.dom4j.Document;
 
 /**
  * A simple test harness to check that the XML Writer works

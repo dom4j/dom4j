@@ -7,17 +7,12 @@
 
 package org.dom4j.xpath;
 
-import junit.textui.TestRunner;
+import org.dom4j.*;
+import org.dom4j.io.SAXReader;
+import org.testng.annotations.BeforeTest;
 
 import java.io.File;
-import java.util.Iterator;
 import java.util.List;
-
-import org.dom4j.AbstractTestCase;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Namespace;
-import org.dom4j.XPath;
-import org.dom4j.io.SAXReader;
 
 /**
  * Test harness for the namespace axis
@@ -33,44 +28,41 @@ public class NamespaceTest extends AbstractTestCase {
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testXPaths() throws Exception {
-        int size = paths.length;
-
-        for (int i = 0; i < size; i++) {
-            testXPath(paths[i]);
-        }
+      for (String path : paths) {
+        testXPath(path);
+      }
     }
 
     // Implementation methods
     // -------------------------------------------------------------------------
     protected void testXPath(String xpathText) {
         XPath xpath = DocumentHelper.createXPath(xpathText);
-        List list = xpath.selectNodes(document);
+        List<Node> list = xpath.selectNodes(document);
 
         log("Searched path: " + xpathText + " found: " + list.size()
                 + " result(s)");
 
-        for (Iterator iter = list.iterator(); iter.hasNext();) {
-            Object object = iter.next();
+      for (Node node : list) {
+        log("Found Result: " + node);
 
-            log("Found Result: " + object);
+        assertTrue("Results should be Namespace objects",
+                node instanceof Namespace);
 
-            assertTrue("Results should be Namespace objects",
-                    object instanceof Namespace);
+        Namespace namespace = (Namespace) node;
 
-            Namespace namespace = (Namespace) object;
+        log("Parent node: " + namespace.getParent());
 
-            log("Parent node: " + namespace.getParent());
-
-            assertTrue("Results should support the parent relationship",
-                    namespace.supportsParent());
-            assertTrue(
-                    "Results should contain reference to the parent element",
-                    namespace.getParent() != null);
-            assertTrue("Results should contain reference to the document",
-                    namespace.getDocument() != null);
-        }
+        assertTrue("Results should support the parent relationship",
+                namespace.supportsParent());
+        assertTrue(
+                "Results should contain reference to the parent element",
+                namespace.getParent() != null);
+        assertTrue("Results should contain reference to the document",
+                namespace.getDocument() != null);
+      }
     }
 
+  @BeforeTest
     public void setUp() throws Exception {
         super.setUp();
         document = new SAXReader().read(new File("xml/testNamespaces.xml"));

@@ -7,9 +7,8 @@
 
 package org.dom4j.dtd;
 
-import junit.textui.TestRunner;
-
 import org.dom4j.AbstractTestCase;
+import org.dom4j.DocTypeTest;
 
 /**
  * Tests the {@link ExternalEntityDecl}functionality. Tests each of the

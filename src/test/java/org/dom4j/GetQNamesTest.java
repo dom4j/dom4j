@@ -7,11 +7,9 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
+import org.dom4j.io.SAXReader;
 
 import java.util.List;
-
-import org.dom4j.io.SAXReader;
 
 /**
  * A test harness to test the DocumentFactory.getQNames() method

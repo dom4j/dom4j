@@ -7,7 +7,7 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
+import org.dom4j.io.SAXReader;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -15,8 +15,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.dom4j.io.SAXReader;
 
 /**
  * Tests that a dom4j document is Serializable

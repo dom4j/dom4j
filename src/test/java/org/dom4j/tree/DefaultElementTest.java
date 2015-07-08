@@ -7,13 +7,7 @@
 
 package org.dom4j.tree;
 
-import junit.textui.TestRunner;
-import org.dom4j.AbstractTestCase;
-import org.dom4j.Document;
-import org.dom4j.DocumentFactory;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.Node;
+import org.dom4j.*;
 
 import java.util.List;
 

@@ -7,11 +7,9 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
+import org.dom4j.util.IndexedDocumentFactory;
 
 import java.util.List;
-
-import org.dom4j.util.IndexedDocumentFactory;
 
 /**
  * A test harness for the IndexedElement implementation

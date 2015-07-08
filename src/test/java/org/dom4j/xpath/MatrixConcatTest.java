@@ -7,15 +7,13 @@
 
 package org.dom4j.xpath;
 
-import junit.textui.TestRunner;
-
-import java.io.File;
-import java.util.List;
-
 import org.dom4j.AbstractTestCase;
 import org.dom4j.io.SAXReader;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * Test harness for the matrix-concat extension function

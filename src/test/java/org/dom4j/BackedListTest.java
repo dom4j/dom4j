@@ -7,11 +7,9 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
+import org.dom4j.io.XMLWriter;
 
 import java.util.List;
-
-import org.dom4j.io.XMLWriter;
 
 /**
  * A test harness to test the backed list feature of DOM4J

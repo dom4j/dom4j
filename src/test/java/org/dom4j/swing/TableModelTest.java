@@ -7,12 +7,10 @@
 
 package org.dom4j.swing;
 
-import junit.textui.TestRunner;
-
-import javax.swing.table.TableModel;
-
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Document;
+
+import javax.swing.table.TableModel;
 
 /**
  * Tests the Swing TableModel using a dom4j document.

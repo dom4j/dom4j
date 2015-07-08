@@ -7,15 +7,9 @@
 
 package org.dom4j.xpath;
 
-import junit.textui.TestRunner;
+import org.dom4j.*;
 
-import java.util.Iterator;
 import java.util.List;
-
-import org.dom4j.AbstractTestCase;
-import org.dom4j.Attribute;
-import org.dom4j.DocumentHelper;
-import org.dom4j.XPath;
 
 /**
  * Test harness for the attribute axis
@@ -30,40 +24,31 @@ public class AttributeTest extends AbstractTestCase {
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testXPaths() throws Exception {
-        int size = paths.length;
-
-        for (int i = 0; i < size; i++) {
-            testXPath(paths[i]);
-        }
+      for (String path : paths) {
+        testXPath(path);
+      }
     }
 
     // Implementation methods
     // -------------------------------------------------------------------------
     protected void testXPath(String xpathText) {
         XPath xpath = DocumentHelper.createXPath(xpathText);
-        List list = xpath.selectNodes(document);
+        List<Node> list = xpath.selectNodes(document);
 
         log("Searched path: " + xpathText + " found: " + list.size()
                 + " result(s)");
 
-        for (Iterator iter = list.iterator(); iter.hasNext();) {
-            Object object = iter.next();
+      for (Node node : list) {
+        log("Found Result: " + node);
 
-            log("Found Result: " + object);
+        assertTrue("Results should be Attribute objects", node instanceof Attribute);
 
-            assertTrue("Results should be Attribute objects",
-                    object instanceof Attribute);
+        Attribute attribute = (Attribute) node;
 
-            Attribute attribute = (Attribute) object;
-
-            assertTrue("Results should support the parent relationship",
-                    attribute.supportsParent());
-            assertTrue(
-                    "Results should contain reference to the parent element",
-                    attribute.getParent() != null);
-            assertTrue("Resulting document not correct", attribute
-                    .getDocument() != null);
-        }
+        assertTrue("Results should support the parent relationship", attribute.supportsParent());
+        assertTrue("Results should contain reference to the parent element", attribute.getParent() != null);
+        assertTrue("Resulting document not correct", attribute.getDocument() != null);
+      }
     }
 }
 

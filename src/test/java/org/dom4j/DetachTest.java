@@ -7,8 +7,6 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
-
 /**
  * A test harness to test the detach() method on root elements
  * 

@@ -7,17 +7,14 @@
 
 package org.dom4j.xpath;
 
-import junit.textui.TestRunner;
-
-import java.util.List;
-
 import org.dom4j.AbstractTestCase;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Node;
 import org.dom4j.XPath;
-
 import org.jaxen.SimpleVariableContext;
 import org.testng.annotations.BeforeClass;
+
+import java.util.List;
 
 /**
  * Test harness for the valueOf() function
@@ -46,16 +43,14 @@ public class VariableTest extends AbstractTestCase {
     // Test case(s)
     // -------------------------------------------------------------------------
     public void testXPaths() throws Exception {
-        int size = paths.length;
-
-        for (int i = 0; i < size; i++) {
-            testXPath(paths[i]);
+        for (String path : paths) {
+            testXPath(path);
         }
     }
 
     protected void testXPath(String xpathText) {
         XPath xpath = createXPath(xpathText);
-        List list = xpath.selectNodes(document);
+        List<Node> list = xpath.selectNodes(document);
 
         log("Searched path: " + xpathText + " found: " + list.size()
                 + " result(s)");

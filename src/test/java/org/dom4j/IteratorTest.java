@@ -7,7 +7,6 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
 import org.testng.annotations.BeforeClass;
 
 import java.util.Iterator;

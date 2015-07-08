@@ -7,13 +7,11 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
+import org.dom4j.io.SAXReader;
+import org.dom4j.rule.Pattern;
 
 import java.util.Iterator;
 import java.util.List;
-
-import org.dom4j.io.SAXReader;
-import org.dom4j.rule.Pattern;
 
 /**
  * Performs a number of unit test cases on the XPath engine

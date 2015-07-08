@@ -7,13 +7,11 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
-
-import java.util.Comparator;
-
 import org.dom4j.dom.DOMDocument;
 import org.dom4j.dom.DOMDocumentFactory;
 import org.dom4j.util.NodeComparator;
+
+import java.util.Comparator;
 
 /**
  * A test harness to test the clone() methods on Nodes

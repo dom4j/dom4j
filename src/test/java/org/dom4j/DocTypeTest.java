@@ -7,12 +7,10 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
-
-import java.util.List;
-
 import org.dom4j.dtd.ElementDecl;
 import org.dom4j.io.SAXReader;
+
+import java.util.List;
 
 /**
  * Tests the DocType functionality

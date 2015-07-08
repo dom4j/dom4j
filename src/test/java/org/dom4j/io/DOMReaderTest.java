@@ -7,15 +7,12 @@
 
 package org.dom4j.io;
 
-import junit.textui.TestRunner;
-
-import java.io.ByteArrayInputStream;
-import java.util.List;
+import org.dom4j.AbstractTestCase;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.dom4j.AbstractTestCase;
+import java.io.ByteArrayInputStream;
+import java.util.List;
 
 /**
  * DOCUMENT ME!

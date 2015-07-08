@@ -7,8 +7,6 @@
 
 package org.dom4j.io;
 
-import junit.framework.AssertionFailedError;
-import junit.textui.TestRunner;
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Document;
 import org.dom4j.DocumentType;
@@ -112,21 +110,14 @@ public class DTDTest extends AbstractTestCase {
          * Parse the test XML document and compare the expected and actual
          * DOCTYPEs.
          */
-        try {
-            assertSameDocumentType(expected, readDocument(
-                    XML_INTERNAL_FILE, true, false).getDocType());
-        } catch (AssertionFailedError ex) {
-            throw ex;
-        } catch (Throwable t) {
-            fail("Not expecting: " + t);
-        }
+         assertSameDocumentType(expected, readDocument(XML_INTERNAL_FILE, true, false).getDocType());
     }
 
     /**
      * Test verifies correct identification of the external DTD subset and
      * correct non-presence of the internal DTD subset.
      */
-    public void testExternalDTDSubset() {
+    public void testExternalDTDSubset() throws Exception {
         /*
          * Setup the expected DocumentType.
          */
@@ -139,21 +130,14 @@ public class DTDTest extends AbstractTestCase {
          * Parse the test XML document and compare the expected and actual
          * DOCTYPEs.
          */
-        try {
-            assertSameDocumentType(expected, readDocument(
-                    XML_EXTERNAL_FILE, false, true).getDocType());
-        } catch (AssertionFailedError ex) {
-            throw ex;
-        } catch (Throwable t) {
-            fail("Not expecting: " + t);
-        }
+         assertSameDocumentType(expected, readDocument(XML_EXTERNAL_FILE, false, true).getDocType());
     }
 
     /**
      * Test verifies correct identification of the internal and external DTD
      * subsets.
      */
-    public void testMixedDTDSubset() {
+    public void testMixedDTDSubset() throws Exception {
         /*
          * Setup the expected DocumentType.
          */
@@ -168,14 +152,7 @@ public class DTDTest extends AbstractTestCase {
          * Parse the test XML document and compare the expected and actual
          * DOCTYPEs.
          */
-        try {
-            assertSameDocumentType(expected, readDocument(XML_MIXED,
-                    true, true).getDocType());
-        } catch (AssertionFailedError ex) {
-            throw ex;
-        } catch (Throwable t) {
-            fail("Not expecting: " + t);
-        }
+        assertSameDocumentType(expected, readDocument(XML_MIXED, true, true).getDocType());
     }
 
     // Implementation methods

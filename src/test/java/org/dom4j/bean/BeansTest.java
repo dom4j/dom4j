@@ -7,8 +7,6 @@
 
 package org.dom4j.bean;
 
-import junit.textui.TestRunner;
-
 import org.dom4j.AbstractTestCase;
 import org.dom4j.io.SAXReader;
 

@@ -7,13 +7,11 @@
 
 package org.dom4j.xpath;
 
-import junit.textui.TestRunner;
+import org.dom4j.AbstractTestCase;
+import org.dom4j.Text;
 
 import java.util.Iterator;
 import java.util.List;
-
-import org.dom4j.AbstractTestCase;
-import org.dom4j.Text;
 
 /**
  * Test harness for the text() function

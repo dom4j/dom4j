@@ -7,12 +7,10 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
-
-import java.io.StringWriter;
-
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
+
+import java.io.StringWriter;
 
 public class LineFeedTest extends AbstractTestCase {
     private static final String ATT_TEXT = "Hello&#xa;There&#xa;&lt;&gt;&amp;";

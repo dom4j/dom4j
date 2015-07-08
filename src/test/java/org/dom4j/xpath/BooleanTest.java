@@ -7,15 +7,13 @@
 
 package org.dom4j.xpath;
 
-import junit.textui.TestRunner;
-
-import java.util.Iterator;
-import java.util.List;
-
 import org.dom4j.AbstractTestCase;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Node;
 import org.dom4j.XPath;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Test harness for the boolean expressions

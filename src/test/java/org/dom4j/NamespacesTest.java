@@ -7,18 +7,14 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
-
-import java.io.StringReader;
-import java.util.List;
+import org.dom4j.io.DOMReader;
+import org.testng.annotations.BeforeClass;
+import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.dom4j.io.DOMReader;
-
-import org.testng.annotations.BeforeClass;
-import org.xml.sax.InputSource;
+import java.io.StringReader;
+import java.util.List;
 
 /**
  * Test the use of namespaces

@@ -7,12 +7,10 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
-
-import java.util.List;
-
 import org.dom4j.tree.DefaultElement;
 import org.dom4j.xpath.DefaultXPath;
+
+import java.util.List;
 
 /**
  * A test harness to test XPath expression evaluation in DOM4J

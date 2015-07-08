@@ -7,15 +7,13 @@
 
 package org.dom4j.io;
 
-import junit.textui.TestRunner;
+import org.dom4j.AbstractTestCase;
+import org.dom4j.Document;
+import org.dom4j.Element;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.StringWriter;
-
-import org.dom4j.AbstractTestCase;
-import org.dom4j.Document;
-import org.dom4j.Element;
 
 /**
  * Test class for the XPP3Reader. This is based on the TestSaxReader class.

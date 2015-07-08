@@ -7,8 +7,6 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
-
 /**
  * A test harness to test the parent relationship and use of the {@link
  * Node#asXPathResult} method.

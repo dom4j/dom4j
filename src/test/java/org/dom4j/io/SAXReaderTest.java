@@ -7,18 +7,13 @@
 
 package org.dom4j.io;
 
-import junit.textui.TestRunner;
+import org.dom4j.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.List;
-
-import org.dom4j.AbstractTestCase;
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
 
 /**
  * A test harness to test the content API in DOM4J
@@ -84,11 +79,11 @@ public class SAXReaderTest extends AbstractTestCase {
 
     public void testBug527062() throws Exception {
         Document doc = getDocument("/xml/test/test.xml");
-        List l = doc.selectNodes("//broked/junk");
+        List<Node> l = doc.selectNodes("//broked/junk");
 
-        for (int i = 0; i < l.size(); i++) {
+        for (Node aL : l) {
             System.out.println("Found node: "
-                    + ((Element) l.get(i)).getStringValue());
+                    + ((Element) aL).getStringValue());
         }
 
         assertEquals("hi there", ((Element) l.get(0)).getStringValue());

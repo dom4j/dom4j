@@ -7,19 +7,16 @@
 
 package org.dom4j;
 
-import junit.textui.TestRunner;
-
-import java.io.StringWriter;
+import org.dom4j.io.DocumentSource;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLResult;
+import org.dom4j.io.XMLWriter;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
-
-import org.dom4j.io.DocumentSource;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.XMLResult;
-import org.dom4j.io.XMLWriter;
+import java.io.StringWriter;
 
 /**
  * Test harness for the XMLResult which acts as a JAXP Result
