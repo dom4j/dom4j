@@ -1,7 +1,9 @@
 apply plugin: 'java'
 apply plugin: 'maven'
+apply plugin: 'signing'
 
 group = 'org.dom4j'
+archivesBaseName = 'dom4j'
 version = '2.0.0-RC1'
 
 sourceCompatibility = 1.5
@@ -34,6 +36,65 @@ dependencies {
 	)
 }
 
+javadoc {
+	options.encoding = 'UTF-8'
+	options.charSet = options.encoding
+}
+
+artifacts {
+	archives sourcesJar
+	archives javadocJar
+}
+
+signing {
+	sign configurations.archives
+}
+
+test {
+	useTestNG()
+}
+
+uploadArchives {
+	repositories {
+		mavenDeployer {
+			beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+			repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+				authentication(userName: ossrhUsername, password: ossrhPassword)
+			}
+
+			snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+				authentication(userName: ossrhUsername, password: ossrhPassword)
+			}
+
+			pom.project {
+				name 'dom4j'
+				packaging 'jar'
+				description 'flexible XML framework for Java'
+				url 'http://dom4j.github.io/'
+				licenses {
+					license {
+						name 'BSD 3-clause New License'
+						url 'https://github.com/dom4j/dom4j/blob/master/LICENSE'
+					}
+				}
+				developers {
+					developer {
+						name 'Filip Jirsák'
+						email 'filip@jirsak.org'
+						url 'https://github.com/FilipJirsak'
+					}
+				}
+				scm {
+					connection 'scm:git:git@github.com:dom4j/dom4j.git'
+					developerConnection 'scm:git:git@github.com:dom4j/dom4j.git'
+					url 'git@github.com:dom4j/dom4j.git'
+				}
+			}
+		}
+	}
+}
+
 task sourcesJar(type: Jar, dependsOn: classes) {
 	classifier = 'sources'
 	from sourceSets.main.allSource
@@ -42,20 +103,6 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 task javadocJar(type: Jar, dependsOn: javadoc) {
 	classifier = 'javadoc'
 	from javadoc.destinationDir
-}
-
-artifacts {
-	archives sourcesJar
-	archives javadocJar
-}
-
-javadoc {
-	options.encoding = 'UTF-8'
-	options.charSet = options.encoding
-}
-
-test {
-	useTestNG()
 }
 
 task wrapper(type: Wrapper) {
