@@ -6,11 +6,11 @@ group = 'org.dom4j'
 archivesBaseName = 'dom4j'
 version = '2.0.0-RC1'
 
-sourceCompatibility = 1.5
+sourceCompatibility = 1.6
 
-compileJava {
+tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
-};
+}
 
 repositories {
 	mavenCentral()
@@ -108,5 +108,5 @@ uploadArchives {
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '2.5'
+	gradleVersion = '2.12'
 }
