@@ -8,11 +8,9 @@
 package org.dom4j;
 
 /**
- * <p>
  * <code>IllegalAddException</code> is thrown when a node is added incorrectly
  * to an <code>{@link Element}</code>
- * </p>
- * 
+ *
  * @version $Revision: 1.6 $
  */
 public class IllegalAddException extends IllegalArgumentException {

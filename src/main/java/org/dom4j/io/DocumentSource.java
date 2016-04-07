@@ -17,11 +17,9 @@ import org.xml.sax.XMLFilter;
 import org.xml.sax.XMLReader;
 
 /**
- * <p>
  * <code>DocumentSource</code> implements a JAXP {@link SAXSource}for a
- * {@linkDocument}.
- * </p>
- * 
+ * {@link Document}.
+ *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.10 $
  */
@@ -93,7 +91,7 @@ public class DocumentSource extends SAXSource {
     }
 
     /**
-     * This method is not supported as this source is always a {@linkDocument}
+     * This method is not supported as this source is always a {@link Document}
      * instance.
      * 
      * @param inputSource

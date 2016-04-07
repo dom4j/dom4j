@@ -8,11 +8,9 @@
 package org.dom4j.io;
 
 /**
- * <p>
  * <code>OutputFormat</code> represents the format configuration used by
- * {@linkXMLWriter}and its base classes to format the XML output
- * </p>
- * 
+ * {@link XMLWriter}and its base classes to format the XML output
+ *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.17 $
  */
@@ -279,21 +277,14 @@ public class OutputFormat implements Cloneable {
     }
 
     /**
-     * <p>
      * This will set whether the text is output verbatim (false) or with
      * whitespace stripped as per <code>{@link
      * org.dom4j.Element#getTextTrim()}</code>.
-     * </p>
-     * 
-     * <p>
-     * </p>
-     * 
-     * <p>
+     *
      * Default: false
-     * </p>
-     * 
+     *
      * @param trimText
-     *            <code>boolean</code> true=>trim the whitespace, false=>use
+     *            <code>boolean</code> true → trim the whitespace, false → use
      *            text verbatim
      */
     public void setTrimText(boolean trimText) {
@@ -305,7 +296,6 @@ public class OutputFormat implements Cloneable {
     }
 
     /**
-     * <p>
      * Ensure that text immediately preceded by or followed by an element will
      * be "padded" with a single space. This is used to allow make
      * browser-friendly HTML, avoiding trimText's transformation of, e.g.,
@@ -314,17 +304,12 @@ public class OutputFormat implements Cloneable {
      * (the latter will run the three separate words together into a single
      * word). This setting is not too useful if you haven't also called
      * {@link #setTrimText}.
-     * </p>
-     * 
-     * <p>
+     *
      * The padding string will only be added if the text itself starts or ends
      * with some whitespace characters.
-     * </p>
-     * 
-     * <p>
+     *
      * Default: false
-     * </p>
-     * 
+     *
      * @param padText
      *            <code>boolean</code> if true, pad string-element boundaries
      */
@@ -337,11 +322,10 @@ public class OutputFormat implements Cloneable {
     }
 
     /**
-     * <p>
      * This will set the indent <code>String</code> to use; this is usually a
      * <code>String</code> of empty spaces. If you pass null, or the empty
      * string (""), then no indentation will happen.
-     * </p>
+     *
      * Default: none (null)
      * 
      * @param indent
@@ -372,12 +356,10 @@ public class OutputFormat implements Cloneable {
     }
 
     /**
-     * <p>
      * This will set the indent <code>String</code>'s size; an indentSize of
      * 4 would result in the indention being equivalent to the
      * <code>String</code> "&nbsp;&nbsp;&nbsp;&nbsp;" (four space characters).
-     * </p>
-     * 
+     *
      * @param indentSize
      *            <code>int</code> number of spaces in indentation.
      */
@@ -392,18 +374,14 @@ public class OutputFormat implements Cloneable {
     }
 
     /**
-     * <p>
      * Whether or not to use the XHTML standard: like HTML but passes an XML
      * parser with real, closed tags. Also, XHTML CDATA sections will be output
      * with the CDATA delimiters: ( &quot; <b>&lt;![CDATA[ </b>&quot; and &quot;
      * <b>]]&gt; </b>&quot; ) otherwise, the class HTMLWriter will output the
      * CDATA text, but not the delimiters.
-     * </p>
-     * 
-     * <p>
+     *
      * Default is <code>false</code>
-     * </p>
-     * 
+     *
      * @return DOCUMENT ME!
      */
     public boolean isXHTML() {
@@ -411,20 +389,16 @@ public class OutputFormat implements Cloneable {
     }
 
     /**
-     * <p>
      * This will set whether or not to use the XHTML standard: like HTML but
      * passes an XML parser with real, closed tags. Also, XHTML CDATA sections
      * will be output with the CDATA delimiters: ( &quot; <b>&lt;[CDATA[
      * </b>&quot; and &quot; <b>]]&lt; </b>) otherwise, the class HTMLWriter
      * will output the CDATA text, but not the delimiters.
-     * </p>
-     * 
-     * <p>
+     *
      * Default: false
-     * </p>
-     * 
+     *
      * @param xhtml
-     *            <code>boolean</code> true=>conform to XHTML, false=>conform
+     *            <code>boolean</code> true → conform to XHTML, false → conform
      *            to HTML, can have unclosed tags, etc.
      */
     public void setXHTML(boolean xhtml) {

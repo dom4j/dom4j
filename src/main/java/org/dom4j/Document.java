@@ -12,10 +12,8 @@ import org.xml.sax.EntityResolver;
 import java.util.Map;
 
 /**
- * <p>
  * <code>Document</code> defines an XML Document.
- * </p>
- * 
+ *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision: 1.14 $
  */
@@ -125,15 +123,13 @@ public interface Document extends Branch {
      * when the Document was created in memory) or when the implementation does
      * not support this operation.
      * 
-     * <p>
      * The way this encoding is retrieved also depends on the way the XML source
      * is parsed. For instance, if the SAXReader is used and if the underlying
      * XMLReader implementation support the
      * <code>org.xml.sax.ext.Locator2</code> interface, the result returned by
      * this method is specified by the <code>getEncoding()</code> method of
      * that interface.
-     * </p>
-     * 
+     *
      * @return The encoding of this document, as stated in the XML declaration,
      *         or <code>null</code> if unknown.
      * 

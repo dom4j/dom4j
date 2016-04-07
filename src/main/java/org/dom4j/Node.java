@@ -12,20 +12,14 @@ import java.io.Writer;
 import java.util.List;
 
 /**
- * <p>
  * <code>Node</code> defines the polymorphic behavior for all XML nodes in a
  * dom4j tree.
- * </p>
- * 
- * <p>
+ *
  * A node can be output as its XML format, can be detached from its position in
  * a document and can have XPath expressions evaluated on itself.
- * </p>
- * 
- * <p>
+ *
  * A node may optionally support the parent relationship and may be read only.
- * </p>
- * 
+ *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision: 1.31 $
  * 

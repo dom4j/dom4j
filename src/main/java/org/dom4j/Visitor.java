@@ -8,21 +8,17 @@
 package org.dom4j;
 
 /**
- * <p>
  * <code>Visitor</code> is used to implement the <code>Visitor</code>
  * pattern in DOM4J. An object of this interface can be passed to a
  * <code>Node</code> which will then call its typesafe methods. Please refer
  * to the <i>Gang of Four </i> book of Design Patterns for more details on the
  * <code>Visitor</code> pattern.
- * </p>
- * 
- * <p>
+ *
  * This <a href="http://www.patterndepot.com/put/8/JavaPatterns.htm">site </a>
  * has further discussion on design patterns and links to the GOF book. This <a
  * href="http://www.patterndepot.com/put/8/visitor.pdf">link </a> describes the
  * Visitor pattern in detail.
- * </p>
- * 
+ *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.8 $
  */

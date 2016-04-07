@@ -1189,7 +1189,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
      * @param uri
      *            the namespace uri
      * 
-     * @throws IOException
+     * @throws IOException DOCUMENT ME!
      */
     protected void writeNamespace(String prefix, String uri) 
             throws IOException {

@@ -31,48 +31,34 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
- * <p>
  * <code>SAXReader</code> creates a DOM4J tree from SAX parsing events.
- * </p>
- * 
- * <p>
+ *
  * The actual SAX parser that is used by this class is configurable so you can
  * use your favourite SAX parser if you wish. DOM4J comes configured with its
  * own SAX parser so you do not need to worry about configuring the SAX parser.
- * </p>
- * 
- * <p>
+ *
  * To explicitly configure the SAX parser that is used via Java code you can use
  * a constructor or use the {@link #setXMLReader(XMLReader)}or {@link
  * #setXMLReaderClassName(String)} methods.
- * </p>
- * 
- * <p>
+ *
  * If the parser is not specified explicitly then the standard SAX policy of
  * using the <code>org.xml.sax.driver</code> system property is used to
  * determine the implementation class of {@link XMLReader}.
- * </p>
- * 
- * <p>
+ *
  * If the <code>org.xml.sax.driver</code> system property is not defined then
  * JAXP is used via reflection (so that DOM4J is not explicitly dependent on the
  * JAXP classes) to load the JAXP configured SAXParser. If there is any error
  * creating a JAXP SAXParser an informational message is output and then the
  * default (Aelfred) SAX parser is used instead.
- * </p>
- * 
- * <p>
+ *
  * If you are trying to use JAXP to explicitly set your SAX parser and are
  * experiencing problems, you can turn on verbose error reporting by defining
  * the system property <code>org.dom4j.verbose</code> to be "true" which will
  * output a more detailed description of why JAXP could not find a SAX parser
- * </p>
- * 
- * <p>
+ *
  * For more information on JAXP please go to <a
  * href="http://java.sun.com/xml/">Sun's Java &amp; XML site </a>
- * </p>
- * 
+ *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.58 $
  */
@@ -344,10 +330,8 @@ public class SAXReader {
     }
 
     /**
-     * <p>
      * Reads a Document from the given <code>Reader</code> using SAX
-     * </p>
-     * 
+     *
      * @param reader
      *            is the reader for the input
      * 
@@ -554,7 +538,7 @@ public class SAXReader {
     }
 
     /**
-     * Sets whether String interning is enabled or disabled for element &
+     * Sets whether String interning is enabled or disabled for element &amp;
      * attribute names and namespace URIs. This proprety is enabled by default.
      * 
      * @return DOCUMENT ME!
@@ -564,7 +548,7 @@ public class SAXReader {
     }
 
     /**
-     * Sets whether String interning is enabled or disabled for element &
+     * Sets whether String interning is enabled or disabled for element &amp;
      * attribute names and namespace URIs
      * 
      * @param stringInternEnabled

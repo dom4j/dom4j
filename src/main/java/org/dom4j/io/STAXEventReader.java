@@ -293,7 +293,7 @@ public class STAXEventReader {
      * 
      * @throws XMLStreamException
      *             If an error occured reading events from the stream, or the
-     *             stream was not positioned before a {@linkStartElement}event.
+     *             stream was not positioned before a {@link StartElement}event.
      */
     public Element readElement(XMLEventReader eventReader)
             throws XMLStreamException {
@@ -348,7 +348,7 @@ public class STAXEventReader {
      * 
      * @throws XMLStreamException
      *             If an error occured reading events from the stream, or the
-     *             stream was not positioned before an {@linkAttribute}event.
+     *             stream was not positioned before an {@link Attribute}event.
      */
     public org.dom4j.Attribute readAttribute(XMLEventReader reader)
             throws XMLStreamException {
@@ -375,7 +375,7 @@ public class STAXEventReader {
      * 
      * @throws XMLStreamException
      *             If an error occured reading events from the stream, or the
-     *             stream was not positioned before a {@linkNamespace}event.
+     *             stream was not positioned before a {@link Namespace}event.
      */
     public org.dom4j.Namespace readNamespace(XMLEventReader reader)
             throws XMLStreamException {
@@ -402,7 +402,7 @@ public class STAXEventReader {
      * 
      * @throws XMLStreamException
      *             If an error occured reading events from the stream, or the
-     *             stream was not positioned before a {@linkCharacters}event.
+     *             stream was not positioned before a {@link Characters}event.
      */
     public CharacterData readCharacters(XMLEventReader reader)
             throws XMLStreamException {
@@ -429,7 +429,7 @@ public class STAXEventReader {
      * 
      * @throws XMLStreamException
      *             If an error occured reading events from the stream, or the
-     *             stream was not positioned before a {@linkComment}event.
+     *             stream was not positioned before a {@link Comment}event.
      */
     public org.dom4j.Comment readComment(XMLEventReader reader)
             throws XMLStreamException {
@@ -455,7 +455,7 @@ public class STAXEventReader {
      * 
      * @throws XMLStreamException
      *             If an error occured reading events from the stream, or the
-     *             stream was not positioned before an {@linkEntityReference}
+     *             stream was not positioned before an {@link EntityReference}
      *             event.
      */
     public Entity readEntityReference(XMLEventReader reader)

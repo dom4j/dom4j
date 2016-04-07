@@ -8,12 +8,10 @@
 package org.dom4j;
 
 /**
- * <p>
  * <code>XPathException</code> is thrown when an exception occurs while
  * evaluating an XPath expression, usually due to some function throwing an
  * exception.
- * </p>
- * 
+ *
  * @version $Revision: 1.6 $
  */
 public class XPathException extends RuntimeException {

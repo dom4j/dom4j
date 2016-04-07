@@ -8,11 +8,9 @@
 package org.dom4j;
 
 /**
- * <p>
  * <code>InvalidXPathException</code> is thrown when an invalid XPath
  * expression is used to traverse an XML document
- * </p>
- * 
+ *
  * @version $Revision: 1.6 $
  */
 public class InvalidXPathException extends IllegalArgumentException {

@@ -10,13 +10,11 @@ package org.dom4j;
 import java.util.Map;
 
 /**
- * <p>
  * <code>ProcessingInstruction</code> defines an XML processing instruction.
  * The {@link Node#getName}method will return the target of the PI and the
  * {@link Node#getText}method will return the data from all of the
  * instructions.
- * </p>
- * 
+ *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.10 $
  */

@@ -16,11 +16,9 @@ import org.dom4j.tree.NamespaceStack;
 import org.w3c.dom.DOMImplementation;
 
 /**
- * <p>
  * <code>DOMWriter</code> takes a DOM4J tree and outputs it as a W3C DOM
  * object
- * </p>
- * 
+ *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.17 $
  */
@@ -80,7 +78,7 @@ public class DOMWriter {
      * the writer when creating DOM documents.
      * 
      * @param domDocumentClass
-     *            is the Class implementing the {@linkorg.w3c.dom.Document}
+     *            is the Class implementing the {@link org.w3c.dom.Document}
      *            interface
      */
     public void setDomDocumentClass(Class<?> domDocumentClass) {

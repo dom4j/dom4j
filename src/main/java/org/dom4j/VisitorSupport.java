@@ -8,12 +8,10 @@
 package org.dom4j;
 
 /**
- * <p>
  * <code>VisitorSupport</code> is an abstract base class which is useful for
  * implementation inheritence or when using anonymous inner classes to create
  * simple <code>Visitor</code> implementations.
- * </p>
- * 
+ *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.6 $
  */
