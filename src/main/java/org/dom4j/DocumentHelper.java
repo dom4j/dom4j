@@ -20,11 +20,9 @@ import org.jaxen.VariableContext;
 import org.xml.sax.InputSource;
 
 /**
- * <p>
  * <code>DocumentHelper</code> is a collection of helper methods for using
  * DOM4J.
- * </p>
- * 
+ *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision: 1.26 $
  */

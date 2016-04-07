@@ -22,12 +22,10 @@ import org.dom4j.tree.DefaultAttribute;
 import org.dom4j.tree.DefaultElement;
 
 /**
- * <p>
  * <code>IndexedElement</code> is an implementation of {@link Element}which
  * maintains an index of the attributes and elements it contains to optimise
  * lookups via name.
- * </p>
- * 
+ *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.10 $
  */
@@ -38,7 +36,7 @@ public class IndexedElement extends DefaultElement {
      *
      * Keys are of type QName and String
      *
-     * Values are of type Element and List<Element>
+     * Values are of type Element and List&lt;Element&gt;
      */
 
     private Map<Object, Object> elementIndex;
@@ -48,7 +46,7 @@ public class IndexedElement extends DefaultElement {
 
      * Keys are of type QName and String
      *
-     * Values are of type <A>
+     * Values are of type &lt;A&gt;
      */
     private Map<Object, Attribute> attributeIndex;
 
@@ -279,7 +277,8 @@ public class IndexedElement extends DefaultElement {
 
     /**
      * Factory method to return a new map implementation for indices
-     * 
+     *
+     * @param <T> DOCUMENT ME!
      * @return DOCUMENT ME!
      */
     protected <T> Map<Object, T> createIndex() {
@@ -288,7 +287,8 @@ public class IndexedElement extends DefaultElement {
 
     /**
      * Factory method to return a list implementation for indices
-     * 
+     *
+     * @param <T> DOCUMENT ME!
      * @return DOCUMENT ME!
      */
     protected <T extends Node> List<T> createList() {

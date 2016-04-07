@@ -12,10 +12,8 @@ import org.dom4j.dtd.Decl;
 import java.util.List;
 
 /**
- * <p>
  * <code>DocumentType</code> defines an XML DOCTYPE declaration.
- * </p>
- * 
+ *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.10 $
  */

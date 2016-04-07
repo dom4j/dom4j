@@ -11,11 +11,9 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 
 /**
- * <p>
  * <code>DocumentException</code> is a nested Exception which may be thrown
  * during the processing of a DOM4J document.
- * </p>
- * 
+ *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.7 $
  */

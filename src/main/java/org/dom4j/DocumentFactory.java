@@ -32,16 +32,12 @@ import org.dom4j.xpath.XPathPattern;
 import org.jaxen.VariableContext;
 
 /**
- * <p>
  * <code>DocumentFactory</code> is a collection of factory methods to allow
  * easy custom building of DOM4J trees. The default tree that is built uses a
  * doubly linked tree.
- * </p>
- * 
- * <p>
+ *
  * The tree built allows full XPath expressions from anywhere on the tree.
- * </p>
- * 
+ *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  */
 @SuppressWarnings("unused")
@@ -50,7 +46,7 @@ public class DocumentFactory implements Serializable {
 
     protected transient QNameCache cache;
 
-    /** Default namespace prefix -> URI mappings for XPath expressions to use */
+    /** Default namespace prefix → URI mappings for XPath expressions to use */
     private Map<String, String> xpathNamespaceURIs;
 
     private static SingletonStrategy<DocumentFactory> createSingleton() {
@@ -84,11 +80,9 @@ public class DocumentFactory implements Serializable {
     }
 
     /**
-     * <p>
      * Access to singleton implementation of DocumentFactory which is used if no
      * DocumentFactory is specified when building using the standard builders.
-     * </p>
-     * 
+     *
      * @return the default singleon instance
      */
     public static synchronized DocumentFactory getInstance() {

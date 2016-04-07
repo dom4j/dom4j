@@ -15,11 +15,9 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 /**
- * <p>
  * <code>AbstractBranch</code> is an abstract base class for tree implementors
  * to use for implementation inheritence.
- * </p>
- * 
+ *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @version $Revision: 1.44 $
  */
@@ -350,7 +348,8 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     /**
      * A Factory Method pattern which creates a BackedList implementation used
      * to store results of a filtered content query.
-     * 
+     *
+     * @param <T> DOCUMENT ME!
      * @return DOCUMENT ME!
      */
     protected <T extends Node> BackedList<T> createResultList() {
@@ -361,6 +360,7 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
      * A Factory Method pattern which creates a BackedList implementation which
      * contains a single result
      * 
+     * @param <T> DOCUMENT ME!
      * @param result
      *            DOCUMENT ME!
      * 
@@ -376,7 +376,8 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     /**
      * A Factory Method pattern which creates an empty a BackedList
      * implementation
-     * 
+     *
+     * @param <T> DOCUMENT ME!
      * @return DOCUMENT ME!
      */
     protected <T extends Node> List<T> createEmptyList() {

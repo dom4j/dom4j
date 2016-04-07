@@ -16,12 +16,10 @@ import org.dom4j.tree.QNameCache;
 import org.dom4j.util.SingletonStrategy;
 
 /**
- * <p>
  * <code>QName</code> represents a qualified name value of an XML element or
  * attribute. It consists of a local name and a {@link Namespace}instance. This
  * object is immutable.
- * </p>
- * 
+ *
  * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  */
 public class QName implements Serializable {
