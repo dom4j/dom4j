@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/dom4j.iml" filepath="$PROJECT_DIR$/dom4j.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dom4j.iml" filepath="$PROJECT_DIR$/.idea/modules/dom4j.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dom4j_main.iml" filepath="$PROJECT_DIR$/.idea/modules/dom4j_main.iml" group="dom4j" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dom4j_test.iml" filepath="$PROJECT_DIR$/.idea/modules/dom4j_test.iml" group="dom4j" />
     </modules>
   </component>
 </project>

@@ -8,8 +8,9 @@ version = '2.0.0-RC1'
 
 sourceCompatibility = 1.6
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile) + tasks.withType(Javadoc){
 	options.encoding = 'UTF-8'
+	options.charSet = options.encoding
 }
 
 repositories {
@@ -36,11 +37,6 @@ dependencies {
 	)
 }
 
-javadoc {
-	options.encoding = 'UTF-8'
-	options.charSet = options.encoding
-}
-
 task sourcesJar(type: Jar, dependsOn: classes) {
 	classifier = 'sources'
 	from sourceSets.main.allSource
@@ -56,15 +52,15 @@ artifacts {
 	archives javadocJar
 }
 
-signing {
-	sign configurations.archives
-}
-
 test {
 	useTestNG()
 }
 
 if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')) {
+	signing {
+		sign configurations.archives
+	}
+
 	uploadArchives {
 		repositories {
 			mavenDeployer {
