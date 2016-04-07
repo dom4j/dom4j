@@ -6,11 +6,12 @@ group = 'org.dom4j'
 archivesBaseName = 'dom4j'
 version = '2.0.0-RC1'
 
-sourceCompatibility = 1.5
+sourceCompatibility = 1.6
 
-compileJava {
+tasks.withType(JavaCompile) + tasks.withType(Javadoc){
 	options.encoding = 'UTF-8'
-};
+	options.charSet = options.encoding
+}
 
 repositories {
 	mavenCentral()
@@ -36,11 +37,6 @@ dependencies {
 	)
 }
 
-javadoc {
-	options.encoding = 'UTF-8'
-	options.charSet = options.encoding
-}
-
 task sourcesJar(type: Jar, dependsOn: classes) {
 	classifier = 'sources'
 	from sourceSets.main.allSource
@@ -56,51 +52,53 @@ artifacts {
 	archives javadocJar
 }
 
-signing {
-	sign configurations.archives
-}
-
 test {
 	useTestNG()
 }
 
-uploadArchives {
-	repositories {
-		mavenDeployer {
-			beforeDeployment {
-				deployment -> signing.signPom(deployment)
-			}
+if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')) {
+	signing {
+		sign configurations.archives
+	}
 
-			repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-				authentication(userName: ossrhUsername, password: ossrhPassword)
-			}
-
-			snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-				authentication(userName: ossrhUsername, password: ossrhPassword)
-			}
-
-			pom.project {
-				name 'dom4j'
-				packaging 'jar'
-				description 'flexible XML framework for Java'
-				url 'http://dom4j.github.io/'
-				licenses {
-					license {
-						name 'BSD 3-clause New License'
-						url 'https://github.com/dom4j/dom4j/blob/master/LICENSE'
-					}
+	uploadArchives {
+		repositories {
+			mavenDeployer {
+				beforeDeployment {
+					deployment -> signing.signPom(deployment)
 				}
-				developers {
-					developer {
-						name 'Filip Jirsák'
-						email 'filip@jirsak.org'
-						url 'https://github.com/FilipJirsak'
-					}
+
+				repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+					authentication(userName: ossrhUsername, password: ossrhPassword)
 				}
-				scm {
-					connection 'scm:git:git@github.com:dom4j/dom4j.git'
-					developerConnection 'scm:git:git@github.com:dom4j/dom4j.git'
-					url 'git@github.com:dom4j/dom4j.git'
+
+				snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+					authentication(userName: ossrhUsername, password: ossrhPassword)
+				}
+
+				pom.project {
+					name 'dom4j'
+					packaging 'jar'
+					description 'flexible XML framework for Java'
+					url 'http://dom4j.github.io/'
+					licenses {
+						license {
+							name 'BSD 3-clause New License'
+							url 'https://github.com/dom4j/dom4j/blob/master/LICENSE'
+						}
+					}
+					developers {
+						developer {
+							name 'Filip Jirsák'
+							email 'filip@jirsak.org'
+							url 'https://github.com/FilipJirsak'
+						}
+					}
+					scm {
+						connection 'scm:git:git@github.com:dom4j/dom4j.git'
+						developerConnection 'scm:git:git@github.com:dom4j/dom4j.git'
+						url 'git@github.com:dom4j/dom4j.git'
+					}
 				}
 			}
 		}
@@ -108,5 +106,5 @@ uploadArchives {
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '2.5'
+	gradleVersion = '2.12'
 }
