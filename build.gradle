@@ -57,6 +57,12 @@ test {
 	useTestNG()
 }
 
+jacocoTestReport {
+	reports {
+		xml.enabled true
+	}
+}
+
 check.dependsOn 'jacocoTestReport'
 
 if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')) {
