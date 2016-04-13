@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/dom4j/dom4j.svg?branch=master)](https://travis-ci.org/dom4j/dom4j)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.dom4j/dom4j/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.dom4j/dom4j)
 
 # DOM4J
 
