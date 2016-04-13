@@ -21,21 +21,31 @@ repositories {
 dependencies {
 
 	compile(
-					'jaxen:jaxen:1.1.6',
-
-					'javax.xml.stream:stax-api:1.0-2',
-					'net.java.dev.msv:xsdlib:2013.6.1',
-					'xpp3:xpp3:1.1.4c',
-					'pull-parser:pull-parser:2',
-					'javax.xml.bind:jaxb-api:2.2.12',
+			'jaxen:jaxen:1.1.6',
 	)
+
+	compileOnly(
+			'javax.xml.stream:stax-api:1.0-2',
+			'net.java.dev.msv:xsdlib:2013.6.1',
+			'xpp3:xpp3:1.1.4c',
+			'pull-parser:pull-parser:2',
+			'javax.xml.bind:jaxb-api:2.2.12',
+	)
+
 
 	testCompile(
-					'org.testng:testng:6.8.21',
+			'org.testng:testng:6.8.21',
 
-					'xerces:xercesImpl:2.11.0',
-					'xalan:xalan:2.7.2',
+			'xerces:xercesImpl:2.11.0',
+			'xalan:xalan:2.7.2',
 	)
+}
+
+sourceSets {
+	test {
+		compileClasspath += configurations.compileOnly
+		runtimeClasspath += configurations.compileOnly
+	}
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
