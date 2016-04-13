@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'jacoco'
 apply plugin: 'maven'
 apply plugin: 'signing'
 
@@ -55,6 +56,8 @@ artifacts {
 test {
 	useTestNG()
 }
+
+check.dependsOn 'jacocoTestReport'
 
 if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')) {
 	signing {
