@@ -19,8 +19,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="dom4j_main" target="1.6" />
-      <module name="dom4j_test" target="1.6" />
+      <module name="dom4j_main" target="1.5" />
+      <module name="dom4j_test" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
