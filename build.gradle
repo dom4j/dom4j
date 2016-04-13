@@ -7,9 +7,9 @@ group = 'org.dom4j'
 archivesBaseName = 'dom4j'
 version = '2.0.0-RC1'
 
-sourceCompatibility = 1.6
+sourceCompatibility = 1.5
 
-tasks.withType(JavaCompile) + tasks.withType(Javadoc){
+tasks.withType(JavaCompile) + tasks.withType(Javadoc) {
 	options.encoding = 'UTF-8'
 	options.charSet = options.encoding
 }
