@@ -235,6 +235,19 @@ public class ProxyXmlStartTag implements XmlStartTag {
         return false;
     }
 
+    public boolean removeAttributeByRawName(String rawName) throws XmlPullParserException {
+        if (element != null) {
+            for (Iterator<Attribute> iter = element.attributeIterator(); iter.hasNext();) {
+                Attribute attribute = iter.next();
+
+                if (rawName.equals(attribute.getQualifiedName())) {
+                    return element.remove(attribute);
+                }
+            }
+        }
+        return false;
+    }
+
     public String getLocalName() {
         return element.getName();
     }
