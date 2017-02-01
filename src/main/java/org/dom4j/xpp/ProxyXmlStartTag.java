@@ -211,7 +211,7 @@ public class ProxyXmlStartTag implements XmlStartTag {
      * @throws XmlPullParserException
      *             DOCUMENT ME!
      */
-    public void removeAtttributes() throws XmlPullParserException {
+    public void removeAttributes() throws XmlPullParserException {
         if (element != null) {
             element.setAttributes(new ArrayList());
 
