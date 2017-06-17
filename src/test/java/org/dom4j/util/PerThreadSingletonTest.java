@@ -7,8 +7,8 @@
 
 package org.dom4j.util;
 
-import org.dom4j.AbstractTestCase;
 import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +23,7 @@ import java.util.Map;
  * </pre>
  */
 @Test
-public class PerThreadSingletonTest extends AbstractTestCase {
+public class PerThreadSingletonTest {
 
 	private static SingletonStrategy<Map<String, String>> singleton;
 
