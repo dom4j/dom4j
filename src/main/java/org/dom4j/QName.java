@@ -229,20 +229,20 @@ public class QName implements Serializable {
     }
 
     private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+        
         // We use writeObject() and not writeUTF() to minimize space
         // This allows for writing pointers to already written strings
         out.writeObject(namespace.getPrefix());
         out.writeObject(namespace.getURI());
-
-        out.defaultWriteObject();
     }
 
     private void readObject(ObjectInputStream in) throws IOException,
             ClassNotFoundException {
+        in.defaultReadObject();
+        
         String prefix = (String) in.readObject();
         String uri = (String) in.readObject();
-
-        in.defaultReadObject();
 
         namespace = Namespace.get(prefix, uri);
     }
