@@ -124,5 +124,6 @@ if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '4.0'
+	//Gradle 2.14.1 is latest version compatible with Java 1.6. Gradle 3.0 needs Java 7.
+	gradleVersion = '2.14.1'
 }
