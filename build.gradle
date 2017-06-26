@@ -5,7 +5,6 @@ apply plugin: 'signing'
 
 group = 'org.dom4j'
 archivesBaseName = 'dom4j'
-version = '2.0.1'
 
 sourceCompatibility = 1.5
 
