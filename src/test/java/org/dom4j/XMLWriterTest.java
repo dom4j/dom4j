@@ -563,6 +563,20 @@ public class XMLWriterTest extends AbstractTestCase {
         new XMLWriter(new CharArrayWriter(128), format).write(element);
     }
 
+    public void testGitHubIssue26_case7() throws IOException {
+        final Element element = new DOMElement("foo");
+        element.add(new DOMText(""));
+        element.add(new DOMElement("elem"));
+
+        final OutputFormat format = new OutputFormat("    ", true);
+        format.setSuppressDeclaration(false);
+        format.setTrimText(false);
+        format.setPadText(true);
+        format.setNewlines(true);
+
+        new XMLWriter(new CharArrayWriter(128), format).write(element);
+    }
+
     protected void generateXML(ContentHandler handler) throws SAXException {
         handler.startDocument();
 

@@ -1120,10 +1120,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                     if ((lastTextNode != null) && format.isPadText()) {
                         // only add the PAD_TEXT if the text itself ends with
                         // whitespace
-                        String txt = lastTextNode.getText();
-                        char lastTextChar = txt.charAt(txt.length() - 1);
-
-                        if (Character.isWhitespace(lastTextChar)) {
+                        if (endsWithWhitespace(lastTextNode.getText())) {
                             writer.write(PAD_TEXT);
                         }
                     }
