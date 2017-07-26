@@ -20,6 +20,8 @@ import org.xml.sax.helpers.AttributesImpl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.CharArrayWriter;
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
