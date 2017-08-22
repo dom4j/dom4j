@@ -24,7 +24,7 @@ import org.dom4j.Node;
  * @version $Revision: 1.7 $
  */
 public class LeafTreeNode implements TreeNode {
-    protected static final Enumeration<?> EMPTY_ENUMERATION = new Enumeration() {
+    protected static final Enumeration<? extends TreeNode> EMPTY_ENUMERATION = new Enumeration() {
         public boolean hasMoreElements() {
             return false;
         }
@@ -54,7 +54,7 @@ public class LeafTreeNode implements TreeNode {
 
     // TreeNode methods
     // -------------------------------------------------------------------------
-    public Enumeration<?> children() {
+    public Enumeration<? extends TreeNode> children() {
         return EMPTY_ENUMERATION;
     }
 
