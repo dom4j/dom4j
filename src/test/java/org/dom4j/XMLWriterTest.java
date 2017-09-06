@@ -7,6 +7,8 @@
 
 package org.dom4j;
 
+import org.dom4j.dom.DOMElement;
+import org.dom4j.dom.DOMText;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
@@ -18,6 +20,8 @@ import org.xml.sax.helpers.AttributesImpl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.CharArrayWriter;
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
@@ -500,6 +504,77 @@ public class XMLWriterTest extends AbstractTestCase {
 
         System.out.println(e.asXML());
         System.out.println(doc.asXML());
+    }
+
+    public void testGitHubIssue26_case1() throws IOException {
+        final Element element = new DOMElement("foo");
+        element.add(new DOMElement("elem1"));
+        element.add(new DOMText(""));
+        element.add(new DOMText(""));
+        element.add(new DOMElement("elem2"));
+        testGitHubIssue26(element);
+    }
+
+    public void testGitHubIssue26_case2() throws IOException {
+        final Element element = new DOMElement("foo");
+        element.add(new DOMElement("elem1"));
+        element.add(new DOMText(""));
+        element.add(new DOMElement("elem2"));
+        testGitHubIssue26(element);
+    }
+
+    public void testGitHubIssue26_case3() throws IOException {
+        final Element element = new DOMElement("foo");
+        element.add(new DOMText(""));
+        element.add(new DOMText(""));
+        element.add(new DOMElement("elem"));
+        testGitHubIssue26(element);
+    }
+
+    public void testGitHubIssue26_case4() throws IOException {
+        final Element element = new DOMElement("foo");
+        element.add(new DOMText(""));
+        element.add(new DOMElement("elem"));
+        testGitHubIssue26(element);
+    }
+
+    public void testGitHubIssue26_case5() throws IOException {
+        final Element element = new DOMElement("foo");
+        element.add(new DOMElement("elem"));
+        element.add(new DOMText(""));
+        element.add(new DOMText(""));
+        testGitHubIssue26(element);
+    }
+
+    public void testGitHubIssue26_case6() throws IOException {
+        final Element element = new DOMElement("foo");
+        element.add(new DOMElement("elem"));
+        element.add(new DOMText(""));
+        testGitHubIssue26(element);
+    }
+
+    private void testGitHubIssue26(final Element element) throws IOException {
+        final OutputFormat format = new OutputFormat("    ", true);
+        format.setSuppressDeclaration(false);
+        format.setTrimText(true);
+        format.setPadText(true);
+        format.setNewlines(true);
+
+        new XMLWriter(new CharArrayWriter(128), format).write(element);
+    }
+
+    public void testGitHubIssue26_case7() throws IOException {
+        final Element element = new DOMElement("foo");
+        element.add(new DOMText(""));
+        element.add(new DOMElement("elem"));
+
+        final OutputFormat format = new OutputFormat("    ", true);
+        format.setSuppressDeclaration(false);
+        format.setTrimText(false);
+        format.setPadText(true);
+        format.setNewlines(true);
+
+        new XMLWriter(new CharArrayWriter(128), format).write(element);
     }
 
     protected void generateXML(ContentHandler handler) throws SAXException {

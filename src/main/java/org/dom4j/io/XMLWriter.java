@@ -42,6 +42,9 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.XMLFilterImpl;
 
+import static org.dom4j.util.StringUtils.endsWithWhitespace;
+import static org.dom4j.util.StringUtils.startsWithWhitespace;
+
 /**
  * <p>
  * <code>XMLWriter</code> takes a DOM4J tree and formats it to a stream as
@@ -1036,14 +1039,16 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                     if (!textOnly && format.isPadText()) {
                         // only add the PAD_TEXT if the text itself starts with
                         // whitespace
-                        char firstChar = 'a';
+                        final boolean startsWithWhitespace;
                         if (buff != null) {
-                            firstChar = buff.charAt(0);
+                            startsWithWhitespace = startsWithWhitespace(buff);
                         } else if (lastTextNode != null) {
-                            firstChar = lastTextNode.getText().charAt(0);
+                            startsWithWhitespace = startsWithWhitespace(lastTextNode.getText());
+                        } else {
+                            startsWithWhitespace = false;
                         }
 
-                        if (Character.isWhitespace(firstChar)) {
+                        if (startsWithWhitespace) {
                             writer.write(PAD_TEXT);
                         }
                     }
@@ -1059,15 +1064,14 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                         if (format.isPadText()) {
                             // only add the PAD_TEXT if the text itself ends
                             // with whitespace
-                            char lastTextChar = 'a';
+                            final boolean endsWithWhitespace;
                             if (buff != null) {
-                                lastTextChar = buff.charAt(buff.length() - 1);
-                            } else if (lastTextNode != null) {
-                                String txt = lastTextNode.getText();
-                                lastTextChar = txt.charAt(txt.length() - 1);
+                                endsWithWhitespace = endsWithWhitespace(buff);
+                            } else {
+                                endsWithWhitespace = endsWithWhitespace(lastTextNode.getText());
                             }
 
-                            if (Character.isWhitespace(lastTextChar)) {
+                            if (endsWithWhitespace) {
                                 writer.write(PAD_TEXT);
                             }
                         }
@@ -1084,14 +1088,14 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                 if (!textOnly && format.isPadText()) {
                     // only add the PAD_TEXT if the text itself starts with
                     // whitespace
-                    char firstChar = 'a';
+                    final boolean startsWithWhitespace;
                     if (buff != null) {
-                        firstChar = buff.charAt(0);
+                        startsWithWhitespace = startsWithWhitespace(buff);
                     } else {
-                        firstChar = lastTextNode.getText().charAt(0);
+                        startsWithWhitespace = startsWithWhitespace(lastTextNode.getText());
                     }
 
-                    if (Character.isWhitespace(firstChar)) {
+                    if (startsWithWhitespace) {
                         writer.write(PAD_TEXT);
                     }
                 }
@@ -1116,10 +1120,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                     if ((lastTextNode != null) && format.isPadText()) {
                         // only add the PAD_TEXT if the text itself ends with
                         // whitespace
-                        String txt = lastTextNode.getText();
-                        char lastTextChar = txt.charAt(txt.length() - 1);
-
-                        if (Character.isWhitespace(lastTextChar)) {
+                        if (endsWithWhitespace(lastTextNode.getText())) {
                             writer.write(PAD_TEXT);
                         }
                     }
