@@ -6,7 +6,7 @@ apply plugin: 'signing'
 group = 'org.dom4j'
 archivesBaseName = 'dom4j'
 
-sourceCompatibility = 1.5
+sourceCompatibility = 1.6
 
 tasks.withType(JavaCompile) + tasks.withType(Javadoc) {
 	options.encoding = 'UTF-8'
@@ -124,8 +124,5 @@ if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')
 }
 
 task wrapper(type: Wrapper) {
-	//Gradle 2.14.1 is latest version compatible with Java 1.6. Gradle 3.0 needs Java 7.
-	gradleVersion = '2.14.1'
-	//Use HTTP instead of HTTPS - OpenJDK 7 doesn't trust Gradle HTTPS server certificate by default.
-	distributionUrl = "http://services.gradle.org/distributions/gradle-${gradleVersion}-bin.zip"
+  gradleVersion = '4.1'
 }
