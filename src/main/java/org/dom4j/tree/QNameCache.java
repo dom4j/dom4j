@@ -11,6 +11,7 @@ import org.dom4j.DocumentFactory;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
 
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 /**
@@ -24,13 +25,13 @@ import java.util.*;
  */
 public class QNameCache {
     /** Cache of {@link QName}instances with no namespace */
-    protected Map<String, QName> noNamespaceCache = Collections.synchronizedMap(new WeakHashMap<String, QName>());
+    protected Map<String, WeakReference<QName>> noNamespaceCache = Collections.synchronizedMap(new WeakHashMap<String, WeakReference<QName>>());
 
     /**
      * Cache of {@link Map}instances indexed by namespace which contain caches
      * of {@link QName}for each name
      */
-    protected Map<Namespace, Map<String, QName>> namespaceCache = Collections.synchronizedMap(new WeakHashMap<Namespace, Map<String, QName>>());
+    protected Map<Namespace, Map<String, WeakReference<QName>>> namespaceCache = Collections.synchronizedMap(new WeakHashMap<Namespace, Map<String, WeakReference<QName>>>());
 
     /**
      * The document factory associated with new QNames instances in this cache
@@ -52,10 +53,20 @@ public class QNameCache {
      */
     public List<QName> getQNames() {
         List<QName> answer = new ArrayList<QName>();
-        answer.addAll(noNamespaceCache.values());
+        for (WeakReference<QName> ref : noNamespaceCache.values()) {
+            QName qName = ref.get();
+            if (qName != null) {
+                answer.add(qName);
+            }
+        }
 
-        for (Map<String, QName> map : namespaceCache.values()) {
-            answer.addAll(map.values());
+        for (Map<String, WeakReference<QName>> map : namespaceCache.values()) {
+            for (WeakReference<QName> ref : map.values()) {
+                QName qName = ref.get();
+                if (qName != null) {
+                    answer.add(qName);
+                }
+            }
         }
 
         return answer;
@@ -73,7 +84,8 @@ public class QNameCache {
         QName answer = null;
 
         if (name != null) {
-            answer = noNamespaceCache.get(name);
+            WeakReference<QName> ref = noNamespaceCache.get(name);
+            answer = ref == null ? null : ref.get();
         } else {
             name = "";
         }
@@ -81,7 +93,7 @@ public class QNameCache {
         if (answer == null) {
             answer = createQName(name);
             answer.setDocumentFactory(documentFactory);
-            noNamespaceCache.put(name, answer);
+            noNamespaceCache.put(name, new WeakReference<QName>(answer));
         }
 
         return answer;
@@ -98,11 +110,12 @@ public class QNameCache {
      * @return the QName for the given local name and namepsace
      */
     public QName get(String name, Namespace namespace) {
-        Map<String, QName> cache = getNamespaceCache(namespace);
+        Map<String, WeakReference<QName>> cache = getNamespaceCache(namespace);
         QName answer = null;
 
         if (name != null) {
-            answer = cache.get(name);
+            WeakReference<QName> ref = cache.get(name);
+            answer = ref == null ? null : ref.get();
         } else {
             name = "";
         }
@@ -110,7 +123,7 @@ public class QNameCache {
         if (answer == null) {
             answer = createQName(name, namespace);
             answer.setDocumentFactory(documentFactory);
-            cache.put(name, answer);
+            cache.put(name, new WeakReference<QName>(answer));
         }
 
         return answer;
@@ -129,11 +142,12 @@ public class QNameCache {
      * @return the QName for the given local name, qualified name and namepsace
      */
     public QName get(String localName, Namespace namespace, String qName) {
-        Map<String, QName> cache = getNamespaceCache(namespace);
+        Map<String, WeakReference<QName>> cache = getNamespaceCache(namespace);
         QName answer = null;
 
         if (localName != null) {
-            answer = cache.get(localName);
+            WeakReference<QName> ref = cache.get(localName);
+            answer = ref == null ? null : ref.get();
         } else {
             localName = "";
         }
@@ -141,7 +155,7 @@ public class QNameCache {
         if (answer == null) {
             answer = createQName(localName, namespace, qName);
             answer.setDocumentFactory(documentFactory);
-            cache.put(localName, answer);
+            cache.put(localName, new WeakReference<QName>(answer));
         }
 
         return answer;
@@ -183,12 +197,12 @@ public class QNameCache {
      * @return the cache for the given namespace. If one does not currently
      *         exist it is created.
      */
-    protected Map<String, QName> getNamespaceCache(Namespace namespace) {
+    protected Map<String, WeakReference<QName>> getNamespaceCache(Namespace namespace) {
         if (namespace == Namespace.NO_NAMESPACE) {
             return noNamespaceCache;
         }
 
-        Map<String, QName> answer = null;
+        Map<String, WeakReference<QName>> answer = null;
 
         if (namespace != null) {
             answer = namespaceCache.get(namespace);
@@ -207,8 +221,8 @@ public class QNameCache {
      * 
      * @return a newly created {@link Map}instance.
      */
-    protected Map<String, QName> createMap() {
-        return Collections.synchronizedMap(new HashMap<String, QName>());
+    protected Map<String, WeakReference<QName>> createMap() {
+        return Collections.synchronizedMap(new HashMap<String, WeakReference<QName>>());
     }
 
     /**
