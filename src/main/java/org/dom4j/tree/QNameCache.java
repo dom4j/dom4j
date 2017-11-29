@@ -81,7 +81,7 @@ public class QNameCache {
         if (answer == null) {
             answer = createQName(name);
             answer.setDocumentFactory(documentFactory);
-            noNamespaceCache.put(name, answer);
+            noNamespaceCache.put(new String(name), answer);
         }
 
         return answer;
@@ -110,7 +110,7 @@ public class QNameCache {
         if (answer == null) {
             answer = createQName(name, namespace);
             answer.setDocumentFactory(documentFactory);
-            cache.put(name, answer);
+            cache.put(new String(name), answer);
         }
 
         return answer;
@@ -141,7 +141,7 @@ public class QNameCache {
         if (answer == null) {
             answer = createQName(localName, namespace, qName);
             answer.setDocumentFactory(documentFactory);
-            cache.put(localName, answer);
+            cache.put(new String(localName), answer);
         }
 
         return answer;
