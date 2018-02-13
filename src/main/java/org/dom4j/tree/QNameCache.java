@@ -52,11 +52,15 @@ public class QNameCache {
      */
     public List<QName> getQNames() {
         List<QName> answer = new ArrayList<QName>();
-        answer.addAll(noNamespaceCache.values());
+	synchronized(noNamespaceCache) {
+            answer.addAll(noNamespaceCache.values());
+	}
 
-        for (Map<String, QName> map : namespaceCache.values()) {
-            answer.addAll(map.values());
-        }
+	synchronized(namespaceCache) {
+            for (Map<String, QName> map : namespaceCache.values()) {
+                answer.addAll(map.values());
+            }
+	}
 
         return answer;
     }
