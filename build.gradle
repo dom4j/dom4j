@@ -122,7 +122,3 @@ if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')
 		}
 	}
 }
-
-task wrapper(type: Wrapper) {
-  gradleVersion = '4.1'
-}
