@@ -574,6 +574,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
     public void writeOpen(Element element) throws IOException {
         writer.write("<");
         writer.write(element.getQualifiedName());
+        writeNamespaces(element);
         writeAttributes(element);
         writer.write(">");
     }
@@ -1204,6 +1205,19 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
         writer.write(uri);
         writer.write("\"");
+    }
+
+    /**
+     * Writes all namespaces declared directly on element.
+     *
+     * @throws IOException
+     */
+    protected void writeNamespaces(Element element) throws IOException {
+        assert element != null;
+        for (Namespace ns : element.declaredNamespaces()) {
+            writeNamespace(ns);
+            namespaceStack.push(ns);
+        }
     }
 
     protected void writeProcessingInstruction(ProcessingInstruction pi)

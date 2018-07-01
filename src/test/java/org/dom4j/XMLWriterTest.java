@@ -14,6 +14,7 @@ import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 import org.dom4j.tree.BaseElement;
 import org.dom4j.tree.DefaultDocument;
+import org.testng.Assert;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
@@ -575,6 +576,59 @@ public class XMLWriterTest extends AbstractTestCase {
         format.setNewlines(true);
 
         new XMLWriter(new CharArrayWriter(128), format).write(element);
+    }
+
+    public void testElementNamespaceWriteDocument() throws IOException {
+        Document document = DocumentHelper.createDocument();
+        Element root = document.addElement("rss")
+                .addNamespace("g", "http://base.google.com/ns/1.0")
+                .addNamespace("c", "http://base.google.com/cns/1.0");
+
+        OutputFormat outputFormat = OutputFormat.createCompactFormat();
+        outputFormat.setSuppressDeclaration(true);
+
+        StringWriter stringWriter = new StringWriter();
+        XMLWriter writer = new XMLWriter(stringWriter, outputFormat);
+        writer.write(document);
+        writer.close();
+
+        Assert.assertEquals(stringWriter.toString(), "<rss xmlns:g=\"http://base.google.com/ns/1.0\" xmlns:c=\"http://base.google.com/cns/1.0\"></rss>");
+    }
+
+    public void testElementNamespaceWriteOpen() throws IOException {
+        Document document = DocumentHelper.createDocument();
+        Element root = document.addElement("rss")
+                .addNamespace("g", "http://base.google.com/ns/1.0")
+                .addNamespace("c", "http://base.google.com/cns/1.0");
+
+        OutputFormat outputFormat = OutputFormat.createCompactFormat();
+        outputFormat.setSuppressDeclaration(true);
+
+        StringWriter stringWriter = new StringWriter();
+        XMLWriter writer = new XMLWriter(stringWriter, outputFormat);
+        writer.writeOpen(root);
+        writer.close();
+
+        Assert.assertEquals(stringWriter.toString(), "<rss xmlns:g=\"http://base.google.com/ns/1.0\" xmlns:c=\"http://base.google.com/cns/1.0\">");
+    }
+
+    public void testElementNamespaceAttributesWriteOpen() throws IOException {
+        Document document = DocumentHelper.createDocument();
+        Element root = document.addElement("rss")
+                .addNamespace("g", "http://base.google.com/ns/1.0")
+                .addNamespace("c", "http://base.google.com/cns/1.0");
+        root.addAttribute("nons", "value");
+        root.addAttribute(QName.get("g:ns"), "value");
+
+        OutputFormat outputFormat = OutputFormat.createCompactFormat();
+        outputFormat.setSuppressDeclaration(true);
+
+        StringWriter stringWriter = new StringWriter();
+        XMLWriter writer = new XMLWriter(stringWriter, outputFormat);
+        writer.writeOpen(root);
+        writer.close();
+
+        Assert.assertEquals(stringWriter.toString(), "<rss xmlns:g=\"http://base.google.com/ns/1.0\" xmlns:c=\"http://base.google.com/cns/1.0\" nons=\"value\" g:ns=\"value\">");
     }
 
     protected void generateXML(ContentHandler handler) throws SAXException {
