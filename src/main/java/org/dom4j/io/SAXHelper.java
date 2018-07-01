@@ -108,8 +108,8 @@ class SAXHelper {
         SAXHelper.setParserFeature(reader, "http://xml.org/sax/features/namespace-prefixes", false);
 
         // external entites
-//        SAXHelper.setParserFeature(reader, "http://xml.org/sax/properties/external-general-entities", false);
-//        SAXHelper.setParserFeature(reader, "http://xml.org/sax/properties/external-parameter-entities", false);
+        SAXHelper.setParserFeature(reader, "http://xml.org/sax/properties/external-general-entities", false);
+        SAXHelper.setParserFeature(reader, "http://xml.org/sax/properties/external-parameter-entities", false);
 
         // external DTD
         SAXHelper.setParserFeature(reader,"http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
