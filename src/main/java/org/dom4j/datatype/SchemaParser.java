@@ -180,15 +180,19 @@ public class SchemaParser {
             DocumentFactory parentFactory) {
         String name = xsdElement.attributeValue("name");
         String type = xsdElement.attributeValue("type");
-        QName qname = getQName(name);
 
-        DatatypeElementFactory factory = getDatatypeElementFactory(qname);
+        QName qname = null;
+        DatatypeElementFactory factory = null;
+        if (name != null) {
+            qname = getQName(name);
+            factory = getDatatypeElementFactory(qname);
+        }
 
         if (type != null) {
             // register type with this element name
             XSDatatype dataType = getTypeByName(type);
 
-            if (dataType != null) {
+            if (dataType != null && factory != null) {
                 factory.setChildElementXSDatatype(qname, dataType);
             } else {
                 QName typeQName = getQName(type);
@@ -205,24 +209,25 @@ public class SchemaParser {
         if (xsdSimpleType != null) {
             XSDatatype dataType = loadXSDatatypeFromSimpleType(xsdSimpleType);
 
-            if (dataType != null) {
+            if (dataType != null && factory != null) {
                 factory.setChildElementXSDatatype(qname, dataType);
             }
         }
 
         Element schemaComplexType = xsdElement.element(XSD_COMPLEXTYPE);
 
-        if (schemaComplexType != null) {
+        if (schemaComplexType != null && factory != null) {
             onSchemaComplexType(schemaComplexType, factory);
         }
 
-        Iterator<Element> iter = xsdElement.elementIterator(XSD_ATTRIBUTE);
-
-        if (iter.hasNext()) {
-            do {
-                onDatatypeAttribute(xsdElement, factory, iter
-                        .next());
-            } while (iter.hasNext());
+        if (factory != null) {
+            Iterator<Element> iter = xsdElement.elementIterator(XSD_ATTRIBUTE);
+            if (iter.hasNext()) {
+                do {
+                    onDatatypeAttribute(xsdElement, factory, iter
+                            .next());
+                } while (iter.hasNext());
+            }
         }
     }
 
