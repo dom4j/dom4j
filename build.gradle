@@ -19,17 +19,14 @@ repositories {
 
 dependencies {
 
-	compile(
-			'jaxen:jaxen:1.1.6',
-	)
-
-	compileOnly(
-			'javax.xml.stream:stax-api:1.0-2',
-			'net.java.dev.msv:xsdlib:2013.6.1',
-			'xpp3:xpp3:1.1.4c',
-			'pull-parser:pull-parser:2',
-			'javax.xml.bind:jaxb-api:2.2.12',
-	)
+    compileOnly(
+            'jaxen:jaxen:1.1.6',
+            'javax.xml.stream:stax-api:1.0-2',
+            'net.java.dev.msv:xsdlib:2013.6.1',
+            'xpp3:xpp3:1.1.4c',
+            'pull-parser:pull-parser:2',
+            'javax.xml.bind:jaxb-api:2.2.12',
+    )
 
 
 	testCompile(
