@@ -8,12 +8,12 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: jaxen:jaxen:1.1.6" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: net.java.dev.msv:xsdlib:2013.6.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: javax.xml.bind:jaxb-api:2.2.12" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: xpp3:xpp3:1.1.4c" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: pull-parser:pull-parser:2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: javax.xml.stream:stax-api:1.0-2" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: net.java.dev.msv:xsdlib:2013.6.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: javax.xml.bind:jaxb-api:2.2.12" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: relaxngDatatype:relaxngDatatype:20020414" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: jaxen:jaxen:1.1.6" level="project" />
   </component>
 </module>

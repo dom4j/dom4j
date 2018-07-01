@@ -9,7 +9,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="dom4j_main" />
-    <orderEntry type="library" name="Gradle: jaxen:jaxen:1.1.6" level="project" />
     <orderEntry type="library" name="Gradle: org.testng:testng:6.8.21" level="project" />
     <orderEntry type="library" name="Gradle: xerces:xercesImpl:2.11.0" level="project" />
     <orderEntry type="library" name="Gradle: xalan:xalan:2.7.2" level="project" />
@@ -17,6 +16,7 @@
     <orderEntry type="library" name="Gradle: com.beust:jcommander:1.27" level="project" />
     <orderEntry type="library" name="Gradle: xalan:serializer:2.7.2" level="project" />
     <orderEntry type="library" name="Gradle: xml-apis:xml-apis:1.4.01" level="project" />
+    <orderEntry type="library" name="Gradle: jaxen:jaxen:1.1.6" level="project" />
     <orderEntry type="library" name="Gradle: javax.xml.stream:stax-api:1.0-2" level="project" />
     <orderEntry type="library" name="Gradle: net.java.dev.msv:xsdlib:2013.6.1" level="project" />
     <orderEntry type="library" name="Gradle: xpp3:xpp3:1.1.4c" level="project" />

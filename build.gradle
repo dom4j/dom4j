@@ -1,6 +1,6 @@
-apply plugin: 'java'
+apply plugin: 'java-library'
 apply plugin: 'jacoco'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 group = 'org.dom4j'
@@ -9,12 +9,12 @@ archivesBaseName = 'dom4j'
 sourceCompatibility = 1.8
 
 tasks.withType(JavaCompile) + tasks.withType(Javadoc) {
-	options.encoding = 'UTF-8'
-	options.charSet = options.encoding
+    options.encoding = 'UTF-8'
+    options.charSet = options.encoding
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
@@ -32,93 +32,104 @@ dependencies {
 	)
 
 
-	testCompile(
-			'org.testng:testng:6.8.21',
+    testCompile(
+            'org.testng:testng:6.8.21',
 
-			'xerces:xercesImpl:2.11.0',
-			'xalan:xalan:2.7.2',
-	)
+            'xerces:xercesImpl:2.11.0',
+            'xalan:xalan:2.7.2',
+    )
 }
 
 sourceSets {
-	test {
-		compileClasspath += configurations.compileOnly
-		runtimeClasspath += configurations.compileOnly
-	}
+    test {
+        compileClasspath += configurations.compileOnly
+        runtimeClasspath += configurations.compileOnly
+    }
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-	classifier = 'sources'
-	from sourceSets.main.allSource
+    classifier = 'sources'
+    from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-	classifier = 'javadoc'
-	from javadoc.destinationDir
+    classifier = 'javadoc'
+    from javadoc.destinationDir
 }
 
-artifacts {
-	archives sourcesJar
-	archives javadocJar
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            artifact sourcesJar {
+                classifier "sources"
+            }
+
+            artifact javadocJar {
+                classifier "javadoc"
+            }
+
+            pom {
+                name = 'dom4j'
+                description = 'flexible XML framework for Java'
+                url = 'http://dom4j.github.io/'
+                licenses {
+                    license {
+                        name = 'BSD 3-clause New License'
+                        url = 'https://github.com/dom4j/dom4j/blob/master/LICENSE'
+                    }
+                }
+                developers {
+                    developer {
+                        name = 'Filip Jirsák'
+                        email = 'filip@jirsak.org'
+                        url = 'https://github.com/FilipJirsak'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git@github.com:dom4j/dom4j.git'
+                    developerConnection = 'scm:git:git@github.com:dom4j/dom4j.git'
+                    url = 'git@github.com:dom4j/dom4j.git'
+                }
+            }
+        }
+    }
 }
 
 test {
-	useTestNG()
+    useTestNG()
 }
 
 jacocoTestReport {
-	reports {
-		xml.enabled true
-	}
+    reports {
+        xml.enabled true
+    }
 }
 
 check.dependsOn 'jacocoTestReport'
 
 if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')) {
-	signing {
-		sign configurations.archives
-	}
+    publishing {
+        repositories {
+            maven {
+                url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+                credentials {
+                    username = ossrhUsername
+                    password = ossrhPassword
+                }
+            }
 
-	uploadArchives {
-		repositories {
-			mavenDeployer {
-				beforeDeployment {
-					deployment -> signing.signPom(deployment)
-				}
+//		mavenSnapshot{
+//		url "https://oss.sonatype.org/content/repositories/snapshots/"
+//			authentication(userName: ossrhUsername, password: ossrhPassword)
+//		}
+        }
+    }
+}
 
-				repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-					authentication(userName: ossrhUsername, password: ossrhPassword)
-				}
-
-				snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-					authentication(userName: ossrhUsername, password: ossrhPassword)
-				}
-
-				pom.project {
-					name 'dom4j'
-					packaging 'jar'
-					description 'flexible XML framework for Java'
-					url 'http://dom4j.github.io/'
-					licenses {
-						license {
-							name 'BSD 3-clause New License'
-							url 'https://github.com/dom4j/dom4j/blob/master/LICENSE'
-						}
-					}
-					developers {
-						developer {
-							name 'Filip Jirsák'
-							email 'filip@jirsak.org'
-							url 'https://github.com/FilipJirsak'
-						}
-					}
-					scm {
-						connection 'scm:git:git@github.com:dom4j/dom4j.git'
-						developerConnection 'scm:git:git@github.com:dom4j/dom4j.git'
-						url 'git@github.com:dom4j/dom4j.git'
-					}
-				}
-			}
-		}
-	}
+if (project.hasProperty('signing.keyId')) {
+    signing {
+        sign configurations.archives
+    }
 }
