@@ -1645,43 +1645,36 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
         for (i = 0; i < size; i++) {
             String entity = null;
-            char c = text.charAt(i);
 
+            int c = text.codePointAt(i);
             switch (c) {
                 case '<':
                     entity = "&lt;";
-
                     break;
-
                 case '>':
                     entity = "&gt;";
-
                     break;
-
                 case '&':
                     entity = "&amp;";
-
                     break;
-
                 case '\t':
                 case '\n':
                 case '\r':
-
                     // don't encode standard whitespace characters
                     if (preserve) {
                         entity = String.valueOf(c);
                     }
-
                     break;
 
                 default:
 
                     if ((c < 32) || shouldEncodeChar(c)) {
-                        entity = "&#" + (int) c + ";";
+                        entity = "&#" + c + ";";
                     }
 
                     break;
             }
+
 
             if (entity != null) {
                 if (block == null) {
@@ -1691,6 +1684,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                 buffer.append(block, last, i - last);
                 buffer.append(entity);
                 last = i + 1;
+                if (Character.isSupplementaryCodePoint(c)) {
+                    last++;
+                }
+            }
+            if (Character.isSupplementaryCodePoint(c)) {
+                i++;
             }
         }
 
@@ -1739,53 +1738,37 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
 
         for (i = 0; i < size; i++) {
             String entity = null;
-            char c = text.charAt(i);
+            int c = text.codePointAt(i);
 
             switch (c) {
                 case '<':
                     entity = "&lt;";
-
                     break;
-
                 case '>':
                     entity = "&gt;";
-
                     break;
-
                 case '\'':
-
                     if (quote == '\'') {
                         entity = "&apos;";
                     }
-
                     break;
-
                 case '\"':
-
                     if (quote == '\"') {
                         entity = "&quot;";
                     }
-
                     break;
-
                 case '&':
                     entity = "&amp;";
-
                     break;
-
                 case '\t':
                 case '\n':
                 case '\r':
-
                     // don't encode standard whitespace characters
                     break;
-
                 default:
-
                     if ((c < 32) || shouldEncodeChar(c)) {
-                        entity = "&#" + (int) c + ";";
+                        entity = "&#" + c + ";";
                     }
-
                     break;
             }
 
@@ -1797,6 +1780,12 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                 buffer.append(block, last, i - last);
                 buffer.append(entity);
                 last = i + 1;
+                if(Character.isSupplementaryCodePoint(c)) {
+                    last++;
+                }
+            }
+            if(Character.isSupplementaryCodePoint(c)) {
+                i++;
             }
         }
 
@@ -1822,15 +1811,15 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
      * Should the given character be escaped. This depends on the encoding of
      * the document.
      * 
-     * @param c
+     * @param codepoint Unicode codepoint.
      *            DOCUMENT ME!
      * 
      * @return boolean
      */
-    protected boolean shouldEncodeChar(char c) {
+    protected boolean shouldEncodeChar(int codepoint) {
         int max = getMaximumAllowedCharacter();
 
-        return (max > 0) && (c > max);
+        return (max > 0) && (codepoint > max);
     }
 
     /**

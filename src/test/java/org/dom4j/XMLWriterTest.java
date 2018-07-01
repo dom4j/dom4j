@@ -631,6 +631,62 @@ public class XMLWriterTest extends AbstractTestCase {
         Assert.assertEquals(stringWriter.toString(), "<rss xmlns:g=\"http://base.google.com/ns/1.0\" xmlns:c=\"http://base.google.com/cns/1.0\" nons=\"value\" g:ns=\"value\">");
     }
 
+    public void testPenguin() throws IOException {
+        // U+1F427 PENGUIN
+        final String penguin = "\ud83d\udc27";
+
+        Document document = DocumentHelper.createDocument();
+        document.addElement("doc").setText(penguin);
+
+        OutputFormat outputFormat = OutputFormat.createCompactFormat();
+        outputFormat.setSuppressDeclaration(true);
+
+        StringWriter stringWriter = new StringWriter();
+        XMLWriter writer = new XMLWriter(stringWriter, outputFormat);
+        writer.write(document);
+        writer.close();
+
+        Assert.assertEquals(stringWriter.toString(), "<doc>"+penguin+"</doc>");
+    }
+
+    public void testSurrogatePairElement() throws IOException {
+        // U+1F427 PENGUIN
+        final String penguin = "\ud83d\udc27";
+
+        Document document = DocumentHelper.createDocument();
+        document.addElement("doc").setText(penguin);
+
+        OutputFormat outputFormat = OutputFormat.createCompactFormat();
+        outputFormat.setSuppressDeclaration(true);
+        outputFormat.setEncoding("US-ASCII");
+
+        StringWriter stringWriter = new StringWriter();
+        XMLWriter writer = new XMLWriter(stringWriter, outputFormat);
+        writer.write(document);
+        writer.close();
+
+        Assert.assertEquals(stringWriter.toString(), "<doc>&#128039;</doc>");
+    }
+
+    public void testSurrogatePairAttribute() throws IOException {
+        // U+1F427 PENGUIN
+        final String penguin = "\ud83d\udc27";
+
+        Document document = DocumentHelper.createDocument();
+        document.addElement("doc").addAttribute("penguin", penguin);
+
+        OutputFormat outputFormat = OutputFormat.createCompactFormat();
+        outputFormat.setSuppressDeclaration(true);
+        outputFormat.setEncoding("US-ASCII");
+
+        StringWriter stringWriter = new StringWriter();
+        XMLWriter writer = new XMLWriter(stringWriter, outputFormat);
+        writer.write(document);
+        writer.close();
+
+        Assert.assertEquals(stringWriter.toString(), "<doc penguin=\"&#128039;\"/>");
+    }
+
     protected void generateXML(ContentHandler handler) throws SAXException {
         handler.startDocument();
 
