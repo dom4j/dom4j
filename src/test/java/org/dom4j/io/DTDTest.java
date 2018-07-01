@@ -445,6 +445,8 @@ public class DTDTest extends AbstractTestCase {
         reader.setEntityResolver(new MyEntityResolver(DTD_FILE,
                 DTD_PUBLICID, DTD_SYSTEM_ID));
 
+        reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", true);
+
         return getDocument(resourceName, reader);
     }
 

@@ -65,11 +65,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 public class SAXReader {
     private static final String SAX_STRING_INTERNING = 
             "http://xml.org/sax/features/string-interning";
-    private static final String SAX_NAMESPACE_PREFIXES = 
-            "http://xml.org/sax/features/namespace-prefixes";
-    private static final String SAX_NAMESPACES = 
-            "http://xml.org/sax/features/namespaces";
-    private static final String SAX_DECL_HANDLER = 
+    private static final String SAX_DECL_HANDLER =
             "http://xml.org/sax/properties/declaration-handler";
     private static final String SAX_LEXICAL_HANDLER = 
             "http://xml.org/sax/properties/lexical-handler";
@@ -902,26 +898,9 @@ public class SAXReader {
             SAXHelper.setParserProperty(reader, SAX_DECL_HANDLER, handler);
         }
 
-        // configure namespace support
-        SAXHelper.setParserFeature(reader, SAX_NAMESPACES, true);
-
-        SAXHelper.setParserFeature(reader, SAX_NAMESPACE_PREFIXES, false);
-
         // string interning
         SAXHelper.setParserFeature(reader, SAX_STRING_INTERNING,
                 isStringInternEnabled());
-
-        // external entites
-        /*
-         * SAXHelper.setParserFeature( reader,
-         * "http://xml.org/sax/properties/external-general-entities",
-         * includeExternalGeneralEntities ); SAXHelper.setParserFeature( reader,
-         * "http://xml.org/sax/properties/external-parameter-entities",
-         * includeExternalParameterEntities );
-         */
-        // use Locator2 if possible
-        SAXHelper.setParserFeature(reader,
-                "http://xml.org/sax/features/use-locator2", true);
 
         try {
             // configure validation support

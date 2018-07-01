@@ -103,6 +103,21 @@ class SAXHelper {
             throw new SAXException("Couldn't create SAX reader");
         }
 
+        // configure namespace support
+        SAXHelper.setParserFeature(reader, "http://xml.org/sax/features/namespaces", true);
+        SAXHelper.setParserFeature(reader, "http://xml.org/sax/features/namespace-prefixes", false);
+
+        // external entites
+//        SAXHelper.setParserFeature(reader, "http://xml.org/sax/properties/external-general-entities", false);
+//        SAXHelper.setParserFeature(reader, "http://xml.org/sax/properties/external-parameter-entities", false);
+
+        // external DTD
+        SAXHelper.setParserFeature(reader,"http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+
+
+        // use Locator2 if possible
+        SAXHelper.setParserFeature(reader,"http://xml.org/sax/features/use-locator2", true);
+
         return reader;
     }
 
