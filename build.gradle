@@ -19,17 +19,16 @@ repositories {
 
 dependencies {
 
-    compileOnly(
+    implementation(
             'jaxen:jaxen:1.1.6',
             'javax.xml.stream:stax-api:1.0-2',
             'net.java.dev.msv:xsdlib:2013.6.1',
-            'xpp3:xpp3:1.1.4c',
-            'pull-parser:pull-parser:2',
             'javax.xml.bind:jaxb-api:2.2.12',
+            'pull-parser:pull-parser:2',
+            'xpp3:xpp3:1.1.4c',
     )
 
-
-    testCompile(
+    testImplementation(
             'org.testng:testng:6.8.21',
 
             'xerces:xercesImpl:2.11.0',
@@ -88,6 +87,12 @@ publishing {
                     connection = 'scm:git:git@github.com:dom4j/dom4j.git'
                     developerConnection = 'scm:git:git@github.com:dom4j/dom4j.git'
                     url = 'git@github.com:dom4j/dom4j.git'
+                }
+
+                withXml {
+                    asNode().dependencies.dependency.findAll { xmlDep ->
+                        xmlDep.appendNode('optional').value = 'true'
+                    }
                 }
             }
         }
