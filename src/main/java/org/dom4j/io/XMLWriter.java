@@ -1662,7 +1662,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                 case '\r':
                     // don't encode standard whitespace characters
                     if (preserve) {
-                        entity = String.valueOf(c);
+                        entity = String.valueOf((char) c);
                     }
                     break;
 
