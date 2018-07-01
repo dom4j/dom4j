@@ -18,6 +18,7 @@ import org.dom4j.rule.Pattern;
 import org.jaxen.VariableContext;
 
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * <code>DocumentHelper</code> is a collection of helper methods for using
@@ -256,6 +257,8 @@ public final class DocumentHelper {
      * <code>parseText</code> parses the given text as an XML document and
      * returns the newly created Document.
      * </p>
+     *
+     * Loading external DTD and entities is disabled (if it is possible) for security reasons.
      * 
      * @param text
      *            the XML text to be parsed
