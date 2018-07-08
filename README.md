@@ -1,7 +1,7 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.dom4j/dom4j/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.dom4j/dom4j)
 [![codecov.io](https://codecov.io/github/dom4j/dom4j/coverage.svg?branch=master)](https://codecov.io/github/dom4j/dom4j?branch=master)
 [![Build Status](https://travis-ci.org/dom4j/dom4j.svg?branch=master)](https://travis-ci.org/dom4j/dom4j)
-[![Javadocs](http://javadoc.io/badge/org.dom4j/dom4j.svg)](http://javadoc.io/doc/org.dom4j/dom4j)
+[![Javadocs](https://javadoc.io/badge/org.dom4j/dom4j.svg)](https://javadoc.io/doc/org.dom4j/dom4j)
 
 # dom4j
 
