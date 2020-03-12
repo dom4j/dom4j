@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module external.linked.project.id="dom4j" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$" external.system.id="GRADLE" external.system.module.group="org.dom4j" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+  <component name="ExternalSystem" externalSystem="GRADLE" externalSystemModuleGroup="org.dom4j" externalSystemModuleVersion="unspecified" linkedProjectId="dom4j" linkedProjectPath="$MODULE_DIR$" rootProjectPath="$MODULE_DIR$" />
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
