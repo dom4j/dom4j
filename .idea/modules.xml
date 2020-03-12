@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/dom4j.iml" filepath="$PROJECT_DIR$/.idea/dom4j.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dom4j_main.iml" filepath="$PROJECT_DIR$/.idea/modules/dom4j_main.iml" group="dom4j" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dom4j_test.iml" filepath="$PROJECT_DIR$/.idea/modules/dom4j_test.iml" group="dom4j" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dom4j.main.iml" filepath="$PROJECT_DIR$/.idea/modules/dom4j.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dom4j.test.iml" filepath="$PROJECT_DIR$/.idea/modules/dom4j.test.iml" />
     </modules>
   </component>
 </project>

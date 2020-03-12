@@ -124,11 +124,6 @@ if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')
                     password = ossrhPassword
                 }
             }
-
-//		mavenSnapshot{
-//		url "https://oss.sonatype.org/content/repositories/snapshots/"
-//			authentication(userName: ossrhUsername, password: ossrhPassword)
-//		}
         }
     }
 }

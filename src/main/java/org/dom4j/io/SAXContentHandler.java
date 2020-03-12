@@ -413,7 +413,7 @@ public class SAXContentHandler extends DefaultHandler implements
 
             String text = new String(ch, start, end);
 
-            if (!insideDTDSection && (text.length() > 0)) {
+            if (!insideDTDSection) {
                 if (currentElement != null) {
                     currentElement.addComment(text);
                 } else {
