@@ -270,6 +270,14 @@ public final class DocumentHelper {
      */
     public static Document parseText(String text) throws DocumentException {
         SAXReader reader = new SAXReader();
+        try {
+            reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            reader.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            reader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+        } catch (SAXException e) {
+            //Parse with external resources downloading allowed.
+        }
+
         String encoding = getEncoding(text);
 
         InputSource source = new InputSource(new StringReader(text));
