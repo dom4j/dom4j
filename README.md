@@ -9,7 +9,9 @@
 
 # News
 
-## Version 2.0.3 and 2.1.2 released
+## Version 2.0.3 and 2.1.3 released
+
+(Version 2.1.2 has been skipped.)
 
 ### Improvements
 * Added new factory method `org.dom4j.io.SAXReader.createDefault()`. It hase more secure defaults than `new SAXReader()`, which uses system
