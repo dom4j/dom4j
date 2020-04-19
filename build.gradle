@@ -113,6 +113,12 @@ publishing {
     }
 }
 
+jar {
+    manifest {
+      attributes('Automatic-Module-Name': 'org.dom4j')
+    }
+}
+
 test {
     useTestNG()
 }
