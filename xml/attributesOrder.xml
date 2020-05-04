@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ###ANY COMMENT HERE### -->
+<rootElement xmlns="http://www.icongmbh.de" version="1.0">
+   <!-- asdf asdf qwer qwer ölkj lökj poiu poiu -->
+   <firstElem b="1" a="5" d="7" c="2">
+      <nestedElem b="1" a="5" d="7" c="2">some Text</nestedElem>
+   </firstElem>
+   <secondElem b="1" a="5" d="7" c="2" />
+   <noChildren b="1" a="5" d="7" c="2" />
+</rootElement>
