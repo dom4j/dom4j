@@ -2,9 +2,11 @@ apply plugin: 'java-library'
 apply plugin: 'jacoco'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
+apply plugin: 'maven'
 
 group = 'org.dom4j'
 archivesBaseName = 'dom4j'
+version = '2.1.4'
 
 sourceCompatibility = 1.8
 
@@ -137,4 +139,23 @@ if (project.hasProperty('signing.keyId')) {
     signing {
         sign publishing.publications.mavenJava
     }
+}
+
+task createPom  {
+    pom {
+        project {
+            version 
+            properties{
+                "project.build.sourceEncoding" "UTF-8"
+                "project.reporting.outputEncoding" "UTF-8"
+                "maven.compiler.encoding" "UTF-8"
+                "maven.compiler.source" "1.5"
+                "maven.compiler.target" "1.5"
+            }
+        }
+    }.writeTo("pom.xml")
+    def pom = "pom.xml" as File;
+    def fileText = pom.getText("UTF-8");
+    fileText = (fileText =~ /<scope>runtime<\/scope>/).replaceAll("<scope>provided</scope>");
+    pom.write(fileText)
 }
