@@ -50,7 +50,7 @@ public class Namespace extends AbstractNode {
         this.prefix = (prefix != null) ? prefix : "";
         this.uri = (uri != null) ? uri : "";
 
-        if (!this.prefix.isEmpty()) {
+        if (this.prefix.length() > 0) {
             QName.validateNCName(this.prefix);
         }
     }
