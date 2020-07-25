@@ -3,3 +3,8 @@
 /.gradle
 /gradle.properties
 /*.gpg
+.classpath
+.project
+.settings/
+*.log
+target
