@@ -92,7 +92,7 @@ publishing {
                 url = 'http://dom4j.github.io/'
                 licenses {
                     license {
-                        name = 'BSD 3-clause New License'
+                        name = 'Plexus'
                         url = 'https://github.com/dom4j/dom4j/blob/master/LICENSE'
                     }
                 }
