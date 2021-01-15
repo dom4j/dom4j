@@ -24,6 +24,17 @@ Bug fix release.
 ### Potential breaking changes
 * If you use some optional dependency of dom4j (for example Jaxen, xsdlib etc.), you need to specify an explicit dependency on it in your project. They are no longer marked as a mandatory transitive dependency by dom4j.
 
+  If you are using Gradle 6+ then you may declare a dependency on these features like this:
+
+   ```
+   // Current feature names: jaxen,stax,xsdlib,jaxb,pullParser,xpp
+   implementation("org.dom4j:dom4j:${dom4jVersion}")) {
+      capabilities {
+         requireCapability('org.dom4j:dom4j-jaxen-support')
+      }
+   }
+   ```
+
 ### Fixed issues
 * #28 Possible vulnerability of `DocumentHelper.parseText()` to XML injection (reported by @s0m30ne)
 * #34 CVS directories left in the source tree (reported by @ebourg)

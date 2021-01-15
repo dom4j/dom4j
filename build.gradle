@@ -17,16 +17,25 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
+// Split optional dependencies into Gradle "features", which can be requested individually
+// by Gradle users, and are converted into plain optional dependencies in the Maven POM.
+def featureNames = ["jaxen","stax","xsdlib","jaxb","pullParser","xpp"]
 
-    implementation(
-            'jaxen:jaxen:1.1.6',
-            'javax.xml.stream:stax-api:1.0-2',
-            'net.java.dev.msv:xsdlib:2013.6.1',
-            'javax.xml.bind:jaxb-api:2.2.12',
-            'pull-parser:pull-parser:2',
-            'xpp3:xpp3:1.1.4c',
-    )
+java {
+    featureNames.forEach { f ->
+        registerFeature("${f}Support") {
+            usingSourceSet(sourceSets["main"])
+        }
+    }
+}
+
+dependencies {
+    jaxenSupportApi 'jaxen:jaxen:1.1.6'
+    staxSupportApi 'javax.xml.stream:stax-api:1.0-2'
+    xsdlibSupportApi 'net.java.dev.msv:xsdlib:2013.6.1'
+    jaxbSupportApi 'javax.xml.bind:jaxb-api:2.2.12'
+    pullParserSupportApi 'pull-parser:pull-parser:2'
+    xppSupportApi 'xpp3:xpp3:1.1.4c'
 
     testImplementation(
             'org.testng:testng:6.8.21',
@@ -66,6 +75,13 @@ publishing {
                 classifier "javadoc"
             }
 
+            featureNames.forEach { f ->
+                // Gradle variants get converted into plain "optional" POM dependencies,
+                // which is losing information but it's what we want to happen, so be quiet please
+                suppressPomMetadataWarningsFor("${f}SupportApiElements")
+                suppressPomMetadataWarningsFor("${f}SupportRuntimeElements")
+            }
+
             pom {
                 name = 'dom4j'
                 description = 'flexible XML framework for Java'
@@ -87,12 +103,6 @@ publishing {
                     connection = 'scm:git:git@github.com:dom4j/dom4j.git'
                     developerConnection = 'scm:git:git@github.com:dom4j/dom4j.git'
                     url = 'git@github.com:dom4j/dom4j.git'
-                }
-
-                withXml {
-                    asNode().dependencies.dependency.findAll { xmlDep ->
-                        xmlDep.appendNode('optional').value = 'true'
-                    }
                 }
             }
         }
