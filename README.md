@@ -8,7 +8,7 @@
 
 See https://dom4j.github.io for details.
 
-### Optional dependencies
+## Optional dependencies
 If you use some optional dependency of dom4j (for example, Jaxen, xsdlib etc.), you need to specify an explicit dependency on it in your project. They are no longer marked as a mandatory transitive dependency by dom4j.
 
 If you are using Gradle 6+ then you may declare a dependency on these features like this:
