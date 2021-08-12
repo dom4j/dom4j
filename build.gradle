@@ -24,7 +24,7 @@ dependencies {
             'javax.xml.stream:stax-api:1.0-2',
             'net.java.dev.msv:xsdlib:2013.6.1',
             'javax.xml.bind:jaxb-api:2.2.12',
-            'pull-parser:pull-parser:2',
+            'pull-parser:pull-parser:2.1.10',
             'xpp3:xpp3:1.1.4c',
     )
 
