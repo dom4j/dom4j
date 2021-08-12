@@ -34,7 +34,7 @@ dependencies {
     staxSupportApi 'javax.xml.stream:stax-api:1.0-2'
     xsdlibSupportApi 'net.java.dev.msv:xsdlib:2013.6.1'
     jaxbSupportApi 'javax.xml.bind:jaxb-api:2.2.12'
-    pullParserSupportApi 'pull-parser:pull-parser:2'
+    pullParserSupportApi 'pull-parser:pull-parser:2.1.10'
     xppSupportApi 'xpp3:xpp3:1.1.4c'
 
     testImplementation(
