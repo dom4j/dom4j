@@ -1482,13 +1482,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
                     writeNamespace(null, uri);
                 }
             } else {
-                char quote = format.getAttributeQuoteCharacter();
-                writer.write(" ");
-                writer.write(attribute.getQualifiedName());
-                writer.write("=");
-                writer.write(quote);
-                writeEscapeAttributeEntities(attribute.getValue());
-                writer.write(quote);
+                writeAttribute(attribute);
             }
         }
     }
