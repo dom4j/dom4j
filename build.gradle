@@ -23,7 +23,7 @@ dependencies {
             'jaxen:jaxen:1.1.6',
             'javax.xml.stream:stax-api:1.0-2',
             'net.java.dev.msv:xsdlib:2013.6.1',
-            'javax.xml.bind:jaxb-api:2.2.12',
+            'javax.xml.bind:jaxb-api:2.3.1',
             'pull-parser:pull-parser:2',
             'xpp3:xpp3:1.1.4c',
     )
