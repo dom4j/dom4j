@@ -1,5 +1,7 @@
 /build
+/target
 /out
 /.gradle
-/gradle.properties
-/*.gpg
+/.classpath
+/.project
+/.settings/
