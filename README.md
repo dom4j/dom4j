@@ -9,6 +9,9 @@
 
 # News
 
+## Version 2.1.4 released
+See https://github.com/dom4j/dom4j/releases/tag/version-2.1.4
+
 ## Version 2.0.3 and 2.1.3 released
 
 (Version 2.1.2 has been skipped.)
