@@ -8,7 +8,11 @@ archivesBaseName = 'dom4j'
 
 sourceCompatibility = 1.8
 
-tasks.withType(JavaCompile) + tasks.withType(Javadoc) {
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Javadoc) {
     options.encoding = 'UTF-8'
     options.charSet = options.encoding
 }
