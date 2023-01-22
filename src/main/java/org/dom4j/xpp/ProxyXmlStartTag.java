@@ -211,7 +211,7 @@ public class ProxyXmlStartTag implements XmlStartTag {
      * @throws XmlPullParserException
      *             DOCUMENT ME!
      */
-    public void removeAtttributes() throws XmlPullParserException {
+    public void removeAttributes() throws XmlPullParserException {
         if (element != null) {
             element.setAttributes(new ArrayList());
 
@@ -219,6 +219,33 @@ public class ProxyXmlStartTag implements XmlStartTag {
             // adding this method would be nice...
             // element.clearAttributes();
         }
+    }
+
+    public boolean removeAttributeByName(String namespaceURI, String localName) throws XmlPullParserException {
+        if (element != null) {
+            for (Iterator<Attribute> iter = element.attributeIterator(); iter.hasNext();) {
+                Attribute attribute = iter.next();
+
+                if (namespaceURI.equals(attribute.getNamespaceURI())
+                        && localName.equals(attribute.getName())) {
+                    return element.remove(attribute);
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean removeAttributeByRawName(String rawName) throws XmlPullParserException {
+        if (element != null) {
+            for (Iterator<Attribute> iter = element.attributeIterator(); iter.hasNext();) {
+                Attribute attribute = iter.next();
+
+                if (rawName.equals(attribute.getQualifiedName())) {
+                    return element.remove(attribute);
+                }
+            }
+        }
+        return false;
     }
 
     public String getLocalName() {
