@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * <p>
@@ -120,6 +121,19 @@ public class BackedList<T extends Node> extends ArrayList<T> {
         }
 
         return node;
+    }
+
+    @Override
+    public boolean removeIf(Predicate<? super T> filter) {
+        boolean modified = false;
+        for (Iterator<T> iter = iterator(); iter.hasNext(); ) {
+            T node = iter.next();
+            if (filter.test(node)) {
+                iter.remove();
+                modified = true;
+            }
+        }
+        return modified;
     }
 
     @Override
