@@ -83,11 +83,8 @@ class SAXHelper {
      */
     public static XMLReader createXMLReader(boolean validating)
             throws SAXException {
-        XMLReader reader = null;
-
-        if (reader == null) {
-            reader = createXMLReaderViaJAXP(validating, true);
-        }
+    
+        XMLReader reader = createXMLReaderViaJAXP(validating, true);
 
         if (reader == null) {
             try {
