@@ -64,14 +64,14 @@ public class Datatype2Test extends AbstractDataTypeTestCase {
     private void validateLongAttribute(Element root) throws Exception {
         Attribute attr = root.attribute("longAttribute");
         Object attrData = attr.getData();
-        validateData("testLongAttribute", attrData, new Long(123));
+        validateData("testLongAttribute", attrData, Long.valueOf(123));
         System.out.println("retrieved attribute " + attrData);
     }
 
     private void validateFloatElement(Element root) throws Exception {
         Element elem = root.element("floatElement");
         Object elemData = elem.getData();
-        validateData("testFloatElement", elemData, new Float(1.23));
+        validateData("testFloatElement", elemData, Float.valueOf((float)1.23));
         System.out.println("retrieved element:" + elemData);
     }
 
@@ -101,8 +101,8 @@ public class Datatype2Test extends AbstractDataTypeTestCase {
 
     private void validateData(String test, Object retrieved, Object expected)
             throws Exception {
-        Class retrievedClass = retrieved.getClass();
-        Class expectedClass = expected.getClass();
+        Class<?> retrievedClass = retrieved.getClass();
+        Class<?> expectedClass = expected.getClass();
 
         // compare class
         if (!expectedClass.equals(retrievedClass)) {

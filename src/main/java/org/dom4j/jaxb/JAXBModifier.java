@@ -61,7 +61,7 @@ public class JAXBModifier extends JAXBSupport {
      * @param contextPath
      *            JAXB context path to be used
      * 
-     * @see javax.xml.bind.JAXBContext
+     * @see jakarta.xml.bind.JAXBContext
      */
     public JAXBModifier(String contextPath) {
         super(contextPath);
@@ -79,7 +79,7 @@ public class JAXBModifier extends JAXBSupport {
      * @param classloader
      *            the classloader to use
      * 
-     * @see javax.xml.bind.JAXBContext
+     * @see jakarta.xml.bind.JAXBContext
      */
     public JAXBModifier(String contextPath, ClassLoader classloader) {
         super(contextPath, classloader);
@@ -96,7 +96,7 @@ public class JAXBModifier extends JAXBSupport {
      * @param outputFormat
      *            the DOM4J {@link org.dom4j.io.OutputFormat}to be used
      * 
-     * @see javax.xml.bind.JAXBContext
+     * @see jakarta.xml.bind.JAXBContext
      */
     public JAXBModifier(String contextPath, OutputFormat outputFormat) {
         super(contextPath);
@@ -115,7 +115,7 @@ public class JAXBModifier extends JAXBSupport {
      * @param outputFormat
      *            the DOM4J {@link org.dom4j.io.OutputFormat}to be used
      * 
-     * @see javax.xml.bind.JAXBContext
+     * @see jakarta.xml.bind.JAXBContext
      */
     public JAXBModifier(String contextPath, ClassLoader classloader,
             OutputFormat outputFormat) {
@@ -488,9 +488,9 @@ public class JAXBModifier extends JAXBSupport {
 
         public org.dom4j.Element modifyElement(org.dom4j.Element element)
                 throws Exception {
-            javax.xml.bind.Element originalObject = jaxbModifier
+            jakarta.xml.bind.Element originalObject = jaxbModifier
                     .unmarshal(element);
-            javax.xml.bind.Element modifiedObject = objectModifier
+            jakarta.xml.bind.Element modifiedObject = objectModifier
                     .modifyObject(originalObject);
 
             return jaxbModifier.marshal(modifiedObject);

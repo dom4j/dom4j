@@ -4,9 +4,14 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 group = 'org.dom4j'
-archivesBaseName = 'dom4j'
 
-sourceCompatibility = 1.8
+base {
+	archivesName = 'dom4j'
+}
+
+java {
+	sourceCompatibility = 1.8
+}
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
@@ -25,35 +30,36 @@ dependencies {
 
     implementation(
             'jaxen:jaxen:1.1.6',
-            'javax.xml.stream:stax-api:1.0-2',
-            'net.java.dev.msv:xsdlib:2013.6.1',
-            'javax.xml.bind:jaxb-api:2.2.12',
+            'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2',
+            'net.java.dev.msv:xsdlib:2022.7',
             'pull-parser:pull-parser:2.1.10',
             'xpp3:xpp3:1.1.4c',
     )
 
     testImplementation(
-            'org.testng:testng:6.8.21',
+            'org.testng:testng:7.5.1',
 
-            'xerces:xercesImpl:2.11.0',
-            'xalan:xalan:2.7.2',
+            'xerces:xercesImpl:2.12.2',
+            'xalan:xalan:2.7.3',
+            'xalan:serializer:2.7.3'
     )
 }
 
 sourceSets {
     test {
+    	configurations.compileOnly.canBeResolved = true
         compileClasspath += configurations.compileOnly
         runtimeClasspath += configurations.compileOnly
     }
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
+    archiveClassifier.set('sources')
     from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    archiveClassifier.set('javadoc')
     from javadoc.destinationDir
 }
 
@@ -63,11 +69,11 @@ publishing {
             from components.java
 
             artifact sourcesJar {
-                classifier "sources"
+                archiveClassifier.set("sources")
             }
 
             artifact javadocJar {
-                classifier "javadoc"
+                archiveClassifier.set("javadoc")
             }
 
             pom {
@@ -115,7 +121,7 @@ test {
 
 jacocoTestReport {
     reports {
-        xml.enabled true
+        xml.required = true
     }
 }
 

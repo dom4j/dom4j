@@ -11,7 +11,7 @@ package org.dom4j.samples.jaxb;
 
 import java.util.Calendar;
 
-import javax.xml.bind.Element;
+import jakarta.xml.bind.Element;
 
 import org.dom4j.jaxb.JAXBObjectModifier;
 import org.dom4j.test.primer.PurchaseOrder;
