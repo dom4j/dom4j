@@ -34,7 +34,7 @@ import org.xml.sax.InputSource;
  * @author Wonne Keysers (Realsoftware.be)
  * 
  * @see org.dom4j.io.SAXReader
- * @see javax.xml.bind.JAXBContext
+ * @see jakarta.xml.bind.JAXBContext
  */
 public class JAXBReader extends JAXBSupport {
     private SAXReader reader;
@@ -49,7 +49,7 @@ public class JAXBReader extends JAXBSupport {
      * @param contextPath
      *            context path to be used
      * 
-     * @see javax.xml.bind.JAXBContext
+     * @see jakarta.xml.bind.JAXBContext
      */
     public JAXBReader(String contextPath) {
         super(contextPath);
@@ -66,7 +66,7 @@ public class JAXBReader extends JAXBSupport {
      * @param classloader
      *            to be used
      * 
-     * @see javax.xml.bind.JAXBContext
+     * @see jakarta.xml.bind.JAXBContext
      */
     public JAXBReader(String contextPath, ClassLoader classloader) {
         super(contextPath, classloader);
@@ -369,8 +369,8 @@ public class JAXBReader extends JAXBSupport {
             try {
                 org.dom4j.Element elem = elementPath.getCurrent();
 
-                javax.xml.bind.Element jaxbObject 
-                        = (javax.xml.bind.Element) jaxbReader.unmarshal(elem);
+                jakarta.xml.bind.Element jaxbObject 
+                        = (jakarta.xml.bind.Element) jaxbReader.unmarshal(elem);
 
                 if (jaxbReader.isPruneElements()) {
                     elem.detach();

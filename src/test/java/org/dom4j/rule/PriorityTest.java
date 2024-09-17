@@ -42,7 +42,7 @@ public class PriorityTest extends AbstractTestCase {
         System.out.println("expr: " + expr + " has priority: " + d);
         System.out.println("pattern: " + pattern);
 
-        assertEquals("expr: " + expr, new Double(priority), new Double(d));
+        assertEquals("expr: " + expr, Double.valueOf(priority), Double.valueOf(d));
     }
 }
 

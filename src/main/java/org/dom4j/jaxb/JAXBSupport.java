@@ -9,10 +9,10 @@ package org.dom4j.jaxb;
 
 import java.io.StringReader;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
+import jakarta.xml.bind.Unmarshaller;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
@@ -44,7 +44,7 @@ abstract class JAXBSupport {
     }
 
     /**
-     * Marshals the given {@link javax.xml.bind.Element}in to its DOM4J
+     * Marshals the given {@link jakarta.xml.bind.Element}in to its DOM4J
      * counterpart.
      * 
      * @param element
@@ -55,7 +55,7 @@ abstract class JAXBSupport {
      * @throws JAXBException
      *             when an error occurs
      */
-    protected org.dom4j.Element marshal(javax.xml.bind.Element element)
+    protected org.dom4j.Element marshal(jakarta.xml.bind.Element element)
             throws JAXBException {
         DOMDocument doc = new DOMDocument();
         getMarshaller().marshal(element, doc);
@@ -65,7 +65,7 @@ abstract class JAXBSupport {
 
     /**
      * Unmarshalls the specified DOM4J {@link org.dom4j.Element}into a {@link
-     * javax.xml.bind.Element}
+     * jakarta.xml.bind.Element}
      * 
      * @param element
      *            the DOM4J element to unmarshall
@@ -75,11 +75,11 @@ abstract class JAXBSupport {
      * @throws JAXBException
      *             when an error occurs
      */
-    protected javax.xml.bind.Element unmarshal(org.dom4j.Element element)
+    protected jakarta.xml.bind.Element unmarshal(org.dom4j.Element element)
             throws JAXBException {
         Source source = new StreamSource(new StringReader(element.asXML()));
 
-        return (javax.xml.bind.Element) getUnmarshaller().unmarshal(source);
+        return (jakarta.xml.bind.Element) getUnmarshaller().unmarshal(source);
     }
 
     private Marshaller getMarshaller() throws JAXBException {
