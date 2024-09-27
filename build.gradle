@@ -4,9 +4,6 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 group = 'org.dom4j'
-archivesBaseName = 'dom4j'
-
-sourceCompatibility = 1.8
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
@@ -40,35 +37,17 @@ dependencies {
     )
 }
 
-sourceSets {
-    test {
-        compileClasspath += configurations.compileOnly
-        runtimeClasspath += configurations.compileOnly
-    }
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    withJavadocJar()
+    withSourcesJar()
 }
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-
-            artifact sourcesJar {
-                classifier "sources"
-            }
-
-            artifact javadocJar {
-                classifier "javadoc"
-            }
 
             pom {
                 name = 'dom4j'
@@ -115,7 +94,7 @@ test {
 
 jacocoTestReport {
     reports {
-        xml.enabled true
+        xml.required = true
     }
 }
 
@@ -125,7 +104,7 @@ if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')
     publishing {
         repositories {
             maven {
-                url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+                url = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
                 authentication {
                     basic(BasicAuthentication)
                 }
