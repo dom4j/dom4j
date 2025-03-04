@@ -14,7 +14,6 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -71,7 +70,7 @@ import static org.dom4j.util.StringUtils.startsWithWhitespace;
  * @author Joseph Bowbeer
  * @version $Revision: 1.83 $
  */
-public class XMLWriter extends XMLFilterImpl implements LexicalHandler {
+public class XMLWriter extends XMLFilterImpl implements LexicalHandler, AutoCloseable {
     private static final String PAD_TEXT = " ";
 
     protected static final String[] LEXICAL_HANDLER_NAMES = {
