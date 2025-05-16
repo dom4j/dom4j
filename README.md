@@ -9,6 +9,18 @@
 
 # News
 
+## Version 2.1.4 released
+See https://github.com/dom4j/dom4j/releases/tag/version-2.1.4
+
+## Version 2.0.3 and 2.1.3 released
+
+(Version 2.1.2 has been skipped.)
+
+### Improvements
+* Added new factory method `org.dom4j.io.SAXReader.createDefault()`. It hase more secure defaults than `new SAXReader()`, which uses system
+ `XMLReaderFactory.createXMLReader()` or `SAXParserFactory.newInstance().newSAXParser()`. `SAXReader.createDefault()` disable parsing of external entities
+  in the SAX parser.
+
 ## Version 2.1.1 released
 Bug fix release.
 
@@ -24,5 +36,3 @@ Bug fix release.
 * #43 and #46 all dependencies are optional (reported by @Zardoz89 and @vmassol)
 * #44 SAXReader: hardcoded namespace features (reported by @philippeu)
 * #48 validate `QName`s (reported by @mario-areias)
-
-Version 2.0.3 (for Java 5–7) is on the way.

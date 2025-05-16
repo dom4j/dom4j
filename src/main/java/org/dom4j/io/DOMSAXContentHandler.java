@@ -37,13 +37,10 @@ import org.xml.sax.ext.Locator2;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * <p>
  * <code>SAXContentHandler</code> builds W3C DOM object via SAX events.
  * 
  * @author <a href="mailto:jstrachan@apache.org">James Strachan </a>
  * @author Todd Wolff
- * 
- * </p>
  */
 public class DOMSAXContentHandler extends DefaultHandler implements LexicalHandler {
 	
