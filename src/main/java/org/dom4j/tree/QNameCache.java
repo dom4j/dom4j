@@ -7,11 +7,15 @@
 
 package org.dom4j.tree;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
+
 import org.dom4j.DocumentFactory;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
-
-import java.util.*;
 
 /**
  * <p>
@@ -23,14 +27,17 @@ import java.util.*;
  * 
  */
 public class QNameCache {
+
     /** Cache of {@link QName}instances with no namespace */
-    protected Map<String, QName> noNamespaceCache = Collections.synchronizedMap(new WeakHashMap<String, QName>());
+    protected ThreadLocal<Map<String, QName>> noNamespaceCache =
+        ThreadLocal.withInitial(WeakHashMap::new);
 
     /**
      * Cache of {@link Map}instances indexed by namespace which contain caches
      * of {@link QName}for each name
      */
-    protected Map<Namespace, Map<String, QName>> namespaceCache = Collections.synchronizedMap(new WeakHashMap<Namespace, Map<String, QName>>());
+    protected ThreadLocal<Map<Namespace, Map<String, QName>>> namespaceCache =
+        ThreadLocal.withInitial(WeakHashMap::new);
 
     /**
      * The document factory associated with new QNames instances in this cache
@@ -51,16 +58,12 @@ public class QNameCache {
      * @return DOCUMENT ME!
      */
     public List<QName> getQNames() {
-        List<QName> answer = new ArrayList<QName>();
-	synchronized(noNamespaceCache) {
-            answer.addAll(noNamespaceCache.values());
-	}
+        List<QName> answer = new ArrayList();
+        answer.addAll((this.noNamespaceCache.get()).values());
 
-	synchronized(namespaceCache) {
-            for (Map<String, QName> map : namespaceCache.values()) {
-                answer.addAll(map.values());
-            }
-	}
+        for (Map<String, QName> map : (this.namespaceCache.get()).values()){
+            answer.addAll(map.values());
+        }
 
         return answer;
     }
@@ -77,15 +80,15 @@ public class QNameCache {
         QName answer = null;
 
         if (name != null) {
-            answer = noNamespaceCache.get(name);
+            answer = (this.noNamespaceCache.get()).get(name);
         } else {
             name = "";
         }
 
         if (answer == null) {
             answer = createQName(name);
-            answer.setDocumentFactory(documentFactory);
-            noNamespaceCache.put(name, answer);
+            answer.setDocumentFactory(this.documentFactory);
+            (this.noNamespaceCache.get()).put(name, answer);
         }
 
         return answer;
@@ -113,7 +116,7 @@ public class QNameCache {
 
         if (answer == null) {
             answer = createQName(name, namespace);
-            answer.setDocumentFactory(documentFactory);
+            answer.setDocumentFactory(this.documentFactory);
             cache.put(name, answer);
         }
 
@@ -144,7 +147,7 @@ public class QNameCache {
 
         if (answer == null) {
             answer = createQName(localName, namespace, qName);
-            answer.setDocumentFactory(documentFactory);
+            answer.setDocumentFactory(this.documentFactory);
             cache.put(localName, answer);
         }
 
@@ -156,7 +159,7 @@ public class QNameCache {
 
         if (index < 0) {
             return get(qualifiedName, Namespace.get(uri));
-        } else if (index == 0){
+        } else if (index == 0) {
             throw new IllegalArgumentException("Qualified name cannot start with ':'.");
         } else {
             String name = qualifiedName.substring(index + 1);
@@ -176,8 +179,7 @@ public class QNameCache {
      *         to the cache if not
      */
     public QName intern(QName qname) {
-        return get(qname.getName(), qname.getNamespace(), qname
-                .getQualifiedName());
+        return get(qname.getName(), qname.getNamespace(), qname.getQualifiedName());
     }
 
     /**
@@ -191,18 +193,18 @@ public class QNameCache {
      */
     protected Map<String, QName> getNamespaceCache(Namespace namespace) {
         if (namespace == Namespace.NO_NAMESPACE) {
-            return noNamespaceCache;
+            return this.noNamespaceCache.get();
         }
 
         Map<String, QName> answer = null;
 
         if (namespace != null) {
-            answer = namespaceCache.get(namespace);
+            answer = (this.namespaceCache.get()).get(namespace);
         }
 
         if (answer == null) {
             answer = createMap();
-            namespaceCache.put(namespace, answer);
+            (this.namespaceCache.get()).put(namespace, answer);
         }
 
         return answer;
@@ -214,7 +216,7 @@ public class QNameCache {
      * @return a newly created {@link Map}instance.
      */
     protected Map<String, QName> createMap() {
-        return Collections.synchronizedMap(new HashMap<String, QName>());
+        return new HashMap<String, QName>();
     }
 
     /**
@@ -258,8 +260,7 @@ public class QNameCache {
      * 
      * @return DOCUMENT ME!
      */
-    protected QName createQName(String name, Namespace namespace,
-            String qualifiedName) {
+    protected QName createQName(String name, Namespace namespace, String qualifiedName) {
         return new QName(name, namespace, qualifiedName);
     }
 }
