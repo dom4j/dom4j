@@ -7,6 +7,10 @@
 
 package org.dom4j.io;
 
+import java.util.Comparator;
+
+import org.dom4j.Attribute;
+
 /**
  * <code>OutputFormat</code> represents the format configuration used by
  * {@link XMLWriter}and its base classes to format the XML output
@@ -17,6 +21,12 @@ package org.dom4j.io;
 public class OutputFormat implements Cloneable {
     /** standard value to indent by, if we are indenting */
     protected static final String STANDARD_INDENT = "  ";
+
+    /**
+     * Orders the XML element attributes alphabetically by their names.
+     */
+    public static final Comparator<Attribute> ALPHABETICALLY_ORDERED_ATTRIBUTES_COMPARATOR =
+        (o1, o2) -> o1.getName().compareTo(o2.getName());
 
     /**
      * Whether or not to suppress the XML declaration - default is
@@ -74,6 +84,12 @@ public class OutputFormat implements Cloneable {
 
     /** Quote character to use when writing attributes. */
     private char attributeQuoteChar = '\"';
+
+    /**
+     * Allows to influence the order of tag element attributes. Default behavior: Keep original
+     * order.
+     */
+    private  Comparator<Attribute> attributesOrderComparator;
 
     /**
      * Creates an <code>OutputFormat</code> with no additional whitespace
@@ -448,6 +464,27 @@ public class OutputFormat implements Cloneable {
             throw new IllegalArgumentException("Invalid attribute quote "
                     + "character (" + quoteChar + ")");
         }
+    }
+
+    /**
+     * Allows to influence the order of tag element attributes. Default behavior: Keep original
+     * order.
+     *
+     * @return The used comparator for this purpose. {@code null} if the order won't be modified.
+     */
+    public Comparator<Attribute> getAttributesOrderComparator() {
+      return attributesOrderComparator;
+    }
+
+    /**
+     * Allows to influence the order of tag element attributes. Default behavior: Keep original
+     * order.
+     *
+     * @param comparator Either your custom {@link Comparator} or {@code null} in order to switch to
+     *          the default behavior.
+     */
+    public void setAttributesOrderComparator(final Comparator<Attribute> comparator) {
+      this.attributesOrderComparator = comparator;
     }
 
     /**

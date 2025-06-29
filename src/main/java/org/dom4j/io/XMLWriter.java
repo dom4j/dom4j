@@ -13,6 +13,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1442,6 +1443,11 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler, AutoClos
      *             DOCUMENT ME!
      */
     protected void writeAttributes(Element element) throws IOException {
+        // influence order of attributes if this is configured
+        if (format.getAttributesOrderComparator() != null) {
+          Collections.sort(element.attributes(), format.getAttributesOrderComparator());
+        }
+
         // I do not yet handle the case where the same prefix maps to
         // two different URIs. For attributes on the same element
         // this is illegal; but as yet we don't throw an exception

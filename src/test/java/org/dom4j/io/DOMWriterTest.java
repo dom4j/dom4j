@@ -7,10 +7,15 @@
 
 package org.dom4j.io;
 
-import org.dom4j.AbstractTestCase;
-import org.w3c.dom.NamedNodeMap;
+import static org.dom4j.io.OutputFormat.ALPHABETICALLY_ORDERED_ATTRIBUTES_COMPARATOR;
 
 import java.io.StringWriter;
+import java.util.List;
+
+import org.dom4j.AbstractTestCase;
+import org.dom4j.Attribute;
+import org.dom4j.Element;
+import org.w3c.dom.NamedNodeMap;
 
 /**
  * DOCUMENT ME!
@@ -62,6 +67,122 @@ public class DOMWriterTest extends AbstractTestCase {
         wr.write((org.dom4j.Document) result);
         assertEquals("<a xmlns=\"dummyNamespace\"><b><c>Hello</c></b></a>",
                 strWriter.toString());
+    }
+
+    public void testUntouchedAttributesOrderAsDefault() throws Exception {
+        final StringWriter stringWriter = new StringWriter();
+        final OutputFormat format = new OutputFormat();
+        final XMLWriter writer = new XMLWriter(stringWriter, format);
+        writer.write(getDocument("/xml/attributesOrder.xml"));
+        writer.close();
+        org.dom4j.Document doc = getDocument(stringWriter);
+
+        assertNull(writer.getOutputFormat().getAttributesOrderComparator());
+
+        final org.dom4j.Element rootElement = doc.getRootElement();
+        assertEquals("rootElement", rootElement.getName());
+
+        List<Attribute> atts = rootElement.attributes();
+        assertEquals(1, atts.size());
+        assertEquals("version", atts.get(0).getName());
+
+        // top-level children
+        List<Element> childElems = rootElement.elements();
+        assertEquals(3, childElems.size());
+
+        assertEquals("firstElem", childElems.get(0).getName());
+        atts = childElems.get(0).attributes();
+        assertEquals(4, atts.size());
+        assertEquals("b", atts.get(0).getName());
+        assertEquals("a", atts.get(1).getName());
+        assertEquals("d", atts.get(2).getName());
+        assertEquals("c", atts.get(3).getName());
+
+        assertEquals("secondElem", childElems.get(1).getName());
+        atts = childElems.get(1).attributes();
+        assertEquals(4, atts.size());
+        assertEquals("b", atts.get(0).getName());
+        assertEquals("a", atts.get(1).getName());
+        assertEquals("d", atts.get(2).getName());
+        assertEquals("c", atts.get(3).getName());
+
+        assertEquals("noChildren", childElems.get(2).getName());
+        atts = childElems.get(2).attributes();
+        assertEquals(4, atts.size());
+        assertEquals("b", atts.get(0).getName());
+        assertEquals("a", atts.get(1).getName());
+        assertEquals("d", atts.get(2).getName());
+        assertEquals("c", atts.get(3).getName());
+
+        // sub children
+        childElems = rootElement.elements().get(0).elements();
+        assertEquals(1, childElems.size());
+        assertEquals("nestedElem", childElems.get(0).getName());
+        atts = childElems.get(0).attributes();
+        assertEquals(4, atts.size());
+        assertEquals("b", atts.get(0).getName());
+        assertEquals("a", atts.get(1).getName());
+        assertEquals("d", atts.get(2).getName());
+        assertEquals("c", atts.get(3).getName());
+    }
+
+    public void testOrderingSettingForAttributes() throws Exception {
+        final StringWriter stringWriter = new StringWriter();
+        final OutputFormat format = new OutputFormat();
+        format.setAttributesOrderComparator(ALPHABETICALLY_ORDERED_ATTRIBUTES_COMPARATOR);
+        final XMLWriter writer = new XMLWriter(stringWriter, format);
+        writer.write(getDocument("/xml/attributesOrder.xml"));
+        writer.close();
+        org.dom4j.Document doc = getDocument(stringWriter);
+
+        assertEquals(ALPHABETICALLY_ORDERED_ATTRIBUTES_COMPARATOR,
+                     writer.getOutputFormat().getAttributesOrderComparator());
+
+        final org.dom4j.Element rootElement = doc.getRootElement();
+        assertEquals("rootElement", rootElement.getName());
+
+        List<Attribute> atts = rootElement.attributes();
+        assertEquals(1, atts.size());
+        assertEquals("version", atts.get(0).getName());
+
+        // top-level children
+        List<Element> childElems = rootElement.elements();
+        assertEquals(3, childElems.size());
+
+        assertEquals("firstElem", childElems.get(0).getName());
+        atts = childElems.get(0).attributes();
+        assertEquals(4, atts.size());
+        assertEquals("a", atts.get(0).getName());
+        assertEquals("b", atts.get(1).getName());
+        assertEquals("c", atts.get(2).getName());
+        assertEquals("d", atts.get(3).getName());
+
+        assertEquals("secondElem", childElems.get(1).getName());
+        atts = childElems.get(1).attributes();
+        assertEquals(4, atts.size());
+        assertEquals("a", atts.get(0).getName());
+        assertEquals("b", atts.get(1).getName());
+        assertEquals("c", atts.get(2).getName());
+        assertEquals("d", atts.get(3).getName());
+
+        assertEquals("noChildren", childElems.get(2).getName());
+        atts = childElems.get(2).attributes();
+        assertEquals(4, atts.size());
+        assertEquals("a", atts.get(0).getName());
+        assertEquals("b", atts.get(1).getName());
+        assertEquals("c", atts.get(2).getName());
+        assertEquals("d", atts.get(3).getName());
+
+        // sub children
+        childElems = rootElement.elements().get(0).elements();
+        assertEquals(1, childElems.size());
+        assertEquals("nestedElem", childElems.get(0).getName());
+        atts = childElems.get(0).attributes();
+        assertEquals(4, atts.size());
+        assertEquals("a", atts.get(0).getName());
+        assertEquals("b", atts.get(1).getName());
+        assertEquals("c", atts.get(2).getName());
+        assertEquals("d", atts.get(3).getName());
     }
 }
 

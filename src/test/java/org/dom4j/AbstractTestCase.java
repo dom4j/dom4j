@@ -16,7 +16,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 
 /**
  * An abstract base class for some DOM4J test cases
@@ -71,6 +74,14 @@ public abstract class AbstractTestCase {
     protected Document getDocument(String path, SAXReader reader)
             throws Exception {
         return reader.read(getFile(path));
+    }
+
+    protected Document getDocument(StringWriter writer)
+            throws Exception {
+        final byte[] rawXml = writer.toString().getBytes(StandardCharsets.UTF_8);
+        try (final ByteArrayInputStream bais = new ByteArrayInputStream(rawXml)) {
+          return new SAXReader().read(bais);
+        }
     }
 
     /**
