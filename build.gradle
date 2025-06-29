@@ -4,7 +4,6 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 group = 'org.dom4j'
-archivesBaseName = 'dom4j'
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
