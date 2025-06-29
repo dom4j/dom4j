@@ -28,7 +28,7 @@ Bug fix release.
 
    ```
    // Current feature names: jaxen,stax,xsdlib,jaxb,pullParser,xpp
-   implementation("org.dom4j:dom4j:${dom4jVersion}")) {
+   implementation("org.dom4j:dom4j:${dom4jVersion}") {
       capabilities {
          requireCapability('org.dom4j:dom4j-jaxen-support')
       }
