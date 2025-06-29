@@ -4,25 +4,21 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 group = 'org.dom4j'
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-}
-
-tasks.withType(Javadoc).configureEach {
-    options.encoding = 'UTF-8'
-    options.charSet = options.encoding
-}
-
-repositories {
-    mavenCentral()
+base {
+    archivesName = 'dom4j'
 }
 
 // Split optional dependencies into Gradle "features", which can be requested individually
 // by Gradle users, and are converted into plain optional dependencies in the Maven POM.
-def featureNames = ["jaxen","stax","xsdlib","jaxb","pullParser","xpp"]
+def featureNames = ["jaxen","xsdlib","jaxb","pullParser","xpp"]
 
 java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+    withJavadocJar()
+    withSourcesJar()
+
     featureNames.forEach { f ->
         registerFeature("${f}Support") {
             usingSourceSet(sourceSets["main"])
@@ -30,27 +26,27 @@ java {
     }
 }
 
+compileJava {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     jaxenSupportApi 'jaxen:jaxen:1.1.6'
-    staxSupportApi 'javax.xml.stream:stax-api:1.0-2'
-    xsdlibSupportApi 'net.java.dev.msv:xsdlib:2013.6.1'
-    jaxbSupportApi 'javax.xml.bind:jaxb-api:2.2.12'
+    xsdlibSupportApi 'net.java.dev.msv:xsdlib:2022.7'
+    jaxbSupportApi 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
     pullParserSupportApi 'pull-parser:pull-parser:2.1.10'
     xppSupportApi 'xpp3:xpp3:1.1.4c'
 
     testImplementation(
-            'org.testng:testng:6.14.3',
+            'org.testng:testng:7.10.2',
 
             'xerces:xercesImpl:2.12.2',
             'xalan:xalan:2.7.2',
     )
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-    withJavadocJar()
-    withSourcesJar()
 }
 
 publishing {
@@ -59,11 +55,11 @@ publishing {
             from components.java
 
             artifact sourcesJar {
-                classifier "sources"
+                archiveClassifier.set('sources')
             }
 
             artifact javadocJar {
-                classifier "javadoc"
+                archiveClassifier.set('javadoc')
             }
 
             featureNames.forEach { f ->

@@ -9,10 +9,10 @@ package org.dom4j.jaxb;
 
 import java.io.StringReader;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
+import jakarta.xml.bind.Unmarshaller;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
@@ -20,7 +20,7 @@ import org.dom4j.dom.DOMDocument;
 
 /**
  * DOCUMENT ME!
- * 
+ *
  * @author Wonne Keysers (Realsoftware.be)
  */
 abstract class JAXBSupport {
@@ -44,18 +44,18 @@ abstract class JAXBSupport {
     }
 
     /**
-     * Marshals the given {@link javax.xml.bind.Element}in to its DOM4J
+     * Marshals the given {@link jakarta.xml.bind.Element}in to its DOM4J
      * counterpart.
-     * 
+     *
      * @param element
      *            JAXB Element to be marshalled
-     * 
+     *
      * @return the marshalled DOM4J {@link org.dom4j.Element}
-     * 
+     *
      * @throws JAXBException
      *             when an error occurs
      */
-    protected org.dom4j.Element marshal(javax.xml.bind.Element element)
+    protected org.dom4j.Element marshal(jakarta.xml.bind.Element element)
             throws JAXBException {
         DOMDocument doc = new DOMDocument();
         getMarshaller().marshal(element, doc);
@@ -65,21 +65,21 @@ abstract class JAXBSupport {
 
     /**
      * Unmarshalls the specified DOM4J {@link org.dom4j.Element}into a {@link
-     * javax.xml.bind.Element}
-     * 
+     * jakarta.xml.bind.Element}
+     *
      * @param element
      *            the DOM4J element to unmarshall
-     * 
+     *
      * @return the unmarshalled JAXB object
-     * 
+     *
      * @throws JAXBException
      *             when an error occurs
      */
-    protected javax.xml.bind.Element unmarshal(org.dom4j.Element element)
+    protected jakarta.xml.bind.Element unmarshal(org.dom4j.Element element)
             throws JAXBException {
         Source source = new StreamSource(new StringReader(element.asXML()));
 
-        return (javax.xml.bind.Element) getUnmarshaller().unmarshal(source);
+        return (jakarta.xml.bind.Element) getUnmarshaller().unmarshal(source);
     }
 
     private Marshaller getMarshaller() throws JAXBException {
@@ -115,24 +115,24 @@ abstract class JAXBSupport {
  * Redistribution and use of this software and associated documentation
  * ("Software"), with or without modification, are permitted provided that the
  * following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain copyright statements and
  * notices. Redistributions must also contain a copy of this document.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  * this list of conditions and the following disclaimer in the documentation
  * and/or other materials provided with the distribution.
- * 
+ *
  * 3. The name "DOM4J" must not be used to endorse or promote products derived
  * from this Software without prior written permission of MetaStuff, Ltd. For
  * written permission, please contact dom4j-info@metastuff.com.
- * 
+ *
  * 4. Products derived from this Software may not be called "DOM4J" nor may
  * "DOM4J" appear in their names without prior written permission of MetaStuff,
  * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
- * 
+ *
  * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
  * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -144,6 +144,6 @@ abstract class JAXBSupport {
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
  */
