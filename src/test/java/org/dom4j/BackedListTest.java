@@ -94,6 +94,24 @@ public class BackedListTest extends AbstractTestCase {
         log("Element content is now: " + element.content());
         writer.write(element);
     }
+
+    public void testRemoveIf() {
+        Element rootElement = document.getRootElement();
+        Element parentElement = rootElement.addElement("element");
+        parentElement.addElement("node1");
+        parentElement.addElement("node2");
+
+        assertTrue("`removeIf()` should return true after removing at least one element",
+                   parentElement.elements().removeIf(it -> it.getName().equals("node1")));
+
+        assertEquals("Size should have been reduced to 1",
+                     1, parentElement.elements().size());
+        assertEquals("The remaining item should be \"node2\"",
+                     "node2", parentElement.elements().get(0).getName());
+
+        assertFalse("Removing an Element that does not exist should make `removeIf()` return `false`",
+                    parentElement.elements().removeIf(it -> it.getName().equals("node1")));
+    }
 }
 
 /*
