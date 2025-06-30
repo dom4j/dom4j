@@ -14,7 +14,7 @@ If you use some optional dependency of dom4j (for example, Jaxen, xsdlib etc.), 
 If you are using Gradle 6+ then you may declare a dependency on these features like this:
 
 ```
-// Current feature names: jaxen, stax, xsdlib, jaxb, pullParser, xpp
+// Current feature names: jaxen, xsdlib, jaxb, pullParser, xpp
 implementation("org.dom4j:dom4j:${dom4jVersion}") {
   capabilities {
      requireCapability('org.dom4j:dom4j-jaxen-support')
