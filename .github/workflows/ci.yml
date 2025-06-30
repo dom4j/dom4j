@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Cache Gradle dependencies
-        uses: actions/cache@c5f0d8b1e2a3f4b6c7d9e8f9a0b1c2d3e4f5a6b7 # v4.2.0
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # 4.2.3
         with:
           path: |
             ~/.gradle/caches
