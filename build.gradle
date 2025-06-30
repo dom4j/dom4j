@@ -1,7 +1,9 @@
-apply plugin: 'java-library'
-apply plugin: 'jacoco'
-apply plugin: 'maven-publish'
-apply plugin: 'signing'
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+    id 'jacoco'
+}
 
 group = 'org.dom4j'
 base {
@@ -10,7 +12,7 @@ base {
 
 // Split optional dependencies into Gradle "features", which can be requested individually
 // by Gradle users, and are converted into plain optional dependencies in the Maven POM.
-def featureNames = ["jaxen","xsdlib","jaxb","pullParser","xpp"]
+def featureNames = ["jaxen", "xsdlib", "jaxb", "pullParser", "xpp"]
 
 java {
     toolchain {
@@ -29,6 +31,24 @@ java {
 compileJava {
     options.encoding = 'UTF-8'
 }
+
+jar {
+    manifest {
+        attributes('Automatic-Module-Name': 'org.dom4j')
+    }
+}
+
+test {
+    useTestNG()
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+    }
+}
+
+check.dependsOn 'jacocoTestReport'
 
 repositories {
     mavenCentral()
@@ -53,14 +73,6 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-
-            artifact sourcesJar {
-                archiveClassifier.set('sources')
-            }
-
-            artifact javadocJar {
-                archiveClassifier.set('javadoc')
-            }
 
             featureNames.forEach { f ->
                 // Gradle variants get converted into plain "optional" POM dependencies,
@@ -95,24 +107,6 @@ publishing {
         }
     }
 }
-
-jar {
-    manifest {
-      attributes('Automatic-Module-Name': 'org.dom4j')
-    }
-}
-
-test {
-    useTestNG()
-}
-
-jacocoTestReport {
-    reports {
-        xml.required = true
-    }
-}
-
-check.dependsOn 'jacocoTestReport'
 
 if (project.hasProperty('ossrhUsername') && project.hasProperty('ossrhPassword')) {
     publishing {
