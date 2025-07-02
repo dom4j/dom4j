@@ -1,5 +1,5 @@
-![Maven Central Version](https://img.shields.io/maven-central/v/org.dom4j/dom4j)
-![GitHub Release](https://img.shields.io/github/v/release/dom4j/dom4j)
+[![Maven Central Version](https://img.shields.io/maven-central/v/org.dom4j/dom4j)](https://central.sonatype.com/artifact/org.dom4j/dom4j)
+[![GitHub Release](https://img.shields.io/github/v/release/dom4j/dom4j)](https://github.com/dom4j/dom4j/releases)
 [![Javadocs](https://javadoc.io/badge/org.dom4j/dom4j.svg)](https://javadoc.io/doc/org.dom4j/dom4j)
 
 # dom4j
