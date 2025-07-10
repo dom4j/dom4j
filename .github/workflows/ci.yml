@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest ]
-        java: [ 8, 11, 17, 22 ]
+        java: [ 8, 11, 17, 21, 24 ]
       fail-fast: false
       max-parallel: 16
     name: Build and test in JDK ${{ matrix.java }}, ${{ matrix.os }}
@@ -43,5 +43,3 @@ jobs:
 
       - name: Test
         run: ./gradlew test
-
-  
