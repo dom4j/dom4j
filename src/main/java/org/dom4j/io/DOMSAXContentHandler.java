@@ -484,7 +484,8 @@ public class DOMSAXContentHandler extends DefaultHandler implements LexicalHandl
                 String attributeValue = attributes.getValue(i);
                 QName qName = namespaceStack.getAttributeQName(
                         attributeURI, attributeLocalName, attributeQName);
-				DOMAttribute domAttribute = new DOMAttribute(qName, attributeValue);
+                DOMAttribute domAttribute = (DOMAttribute)documentFactory
+                        .createAttribute(element, qName, attributeValue);
                 ((DOMElement)element).setAttributeNode(domAttribute);
             }
         }
