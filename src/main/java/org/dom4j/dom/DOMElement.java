@@ -358,16 +358,18 @@ public class DOMElement extends DefaultElement implements org.w3c.dom.Element {
         QName qname = null;
         String name = newAttr.getLocalName();
 
+        DocumentFactory df = getDocumentFactory();
+
         if (name != null) {
             String prefix = newAttr.getPrefix();
             String uri = newAttr.getNamespaceURI();
-            qname = getDocumentFactory().createQName(name, prefix, uri);
+            qname = df.createQName(name, prefix, uri);
         } else {
             name = newAttr.getName();
-            qname = getDocumentFactory().createQName(name);
+            qname = df.createQName(name);
         }
 
-        return new DOMAttribute(qname, newAttr.getValue());
+        return df.createAttribute(this, qname, newAttr.getValue());
     }
 
     protected QName getQName(String namespace, String qualifiedName) {
