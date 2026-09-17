@@ -17,6 +17,12 @@ import org.dom4j.io.SAXReader;
 
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.ext.EntityResolver2;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * <p>
@@ -128,35 +134,26 @@ public class DatatypeDocumentFactory extends DocumentFactory {
     // Implementation methods
     // -------------------------------------------------------------------------
     protected void loadSchema(Document document, String schemaInstanceURI) {
-        try {
-            EntityResolver resolver = document.getEntityResolver();
-
-            if (resolver == null) {
-                String msg = "No EntityResolver available for resolving URI: ";
-                throw new InvalidSchemaException(msg + schemaInstanceURI);
-            }
-
-            InputSource inputSource = resolver.resolveEntity(null,
-                    schemaInstanceURI);
-
-            if (resolver == null) {
-                throw new InvalidSchemaException("Could not resolve the URI: "
-                        + schemaInstanceURI);
-            }
-
-            Document schemaDocument = xmlSchemaReader.read(inputSource);
-            loadSchema(schemaDocument);
-        } catch (Exception e) {
-            System.out.println("Failed to load schema: " + schemaInstanceURI);
-            System.out.println("Caught: " + e);
-            e.printStackTrace();
-            throw new InvalidSchemaException("Failed to load schema: "
-                    + schemaInstanceURI);
-        }
+        loadSchema(readSchema(document, schemaInstanceURI));
     }
 
     protected void loadSchema(Document document, String schemaInstanceURI,
             Namespace namespace) {
+        loadSchema(readSchema(document, schemaInstanceURI), namespace);
+    }
+
+    /**
+     * Reads the schema referenced by a document.
+     * <p>
+     * The schema is obtained through the {@link EntityResolver} of the
+     * document, which must provide it.
+     *
+     * @param document the document that references the schema
+     * @param schemaInstanceURI the schema location as written in the document
+     * @return the schema document
+     * @throws InvalidSchemaException if the schema cannot be read
+     */
+    private Document readSchema(Document document, String schemaInstanceURI) {
         try {
             EntityResolver resolver = document.getEntityResolver();
 
@@ -165,23 +162,64 @@ public class DatatypeDocumentFactory extends DocumentFactory {
                 throw new InvalidSchemaException(msg + schemaInstanceURI);
             }
 
-            InputSource inputSource = resolver.resolveEntity(null,
-                    schemaInstanceURI);
+            InputSource inputSource = resolveSchema(resolver,
+                    document.getName(), schemaInstanceURI);
 
-            if (resolver == null) {
+            if (inputSource == null) {
                 throw new InvalidSchemaException("Could not resolve the URI: "
                         + schemaInstanceURI);
             }
 
-            Document schemaDocument = xmlSchemaReader.read(inputSource);
-            loadSchema(schemaDocument, namespace);
+            return xmlSchemaReader.read(inputSource);
         } catch (Exception e) {
             System.out.println("Failed to load schema: " + schemaInstanceURI);
             System.out.println("Caught: " + e);
             e.printStackTrace();
-            throw new InvalidSchemaException("Failed to load schema: "
-                    + schemaInstanceURI);
+
+            InvalidSchemaException exception = new InvalidSchemaException(
+                    "Failed to load schema: " + schemaInstanceURI
+                    + " (the EntityResolver of the document must provide"
+                    + " it, see SAXReader.setEntityResolutionStrategy)");
+            exception.initCause(e);
+            throw exception;
         }
+    }
+
+    /**
+     * Resolves a schema location through an entity resolver.
+     * <p>
+     * An {@link EntityResolver2} receives the location as written, together
+     * with the location of the document as base URI. A plain
+     * {@link EntityResolver} receives the location resolved against the
+     * document, since it expects an absolute system identifier.
+     *
+     * @param resolver the resolver of the document
+     * @param baseURI the location of the document, or null if unknown. The
+     *                name of a document read by {@link SAXReader} is its
+     *                system identifier, which the parser has made absolute.
+     * @param schemaInstanceURI the schema location as written in the document
+     * @return the resolved schema, or null if the resolver does not provide it
+     * @throws SAXException if the resolver fails
+     * @throws IOException if the resolver fails to open the schema
+     */
+    private static InputSource resolveSchema(EntityResolver resolver,
+            String baseURI, String schemaInstanceURI) throws SAXException,
+            IOException {
+        if (resolver instanceof EntityResolver2) {
+            return ((EntityResolver2) resolver).resolveEntity(null, null,
+                    baseURI, schemaInstanceURI);
+        }
+
+        String systemId = schemaInstanceURI;
+        if (baseURI != null && !baseURI.isEmpty()) {
+            try {
+                systemId = new URI(baseURI).resolve(schemaInstanceURI).toString();
+            } catch (URISyntaxException | IllegalArgumentException e) {
+                // fall through
+            }
+        }
+
+        return resolver.resolveEntity(null, systemId);
     }
 }
 

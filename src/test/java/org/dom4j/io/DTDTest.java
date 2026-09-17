@@ -445,8 +445,6 @@ public class DTDTest extends AbstractTestCase {
         reader.setEntityResolver(new MyEntityResolver(DTD_FILE,
                 DTD_PUBLICID, DTD_SYSTEM_ID));
 
-        reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", true);
-
         return getDocument(resourceName, reader);
     }
 
@@ -464,6 +462,8 @@ public class DTDTest extends AbstractTestCase {
                 String systemId) {
             resourceName = localResourceName;
 
+            pubId = publicId;
+
             sysId = systemId;
         }
 
@@ -475,7 +475,9 @@ public class DTDTest extends AbstractTestCase {
                 }
             }
 
-            if (sysId.equals(systemId)) {
+            // the parser passes the absolute system id
+            if (sysId.equals(systemId)
+                    || ((systemId != null) && systemId.endsWith("/" + sysId))) {
                 return new InputSource(getInputStream(resourceName));
             } else {
                 return null;

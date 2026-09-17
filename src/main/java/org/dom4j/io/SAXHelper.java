@@ -7,13 +7,11 @@
 
 package org.dom4j.io;
 
+import org.apache.commons.xml.secure.SecureSAXParserFactory;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
-
-import javax.xml.parsers.SAXParserFactory;
 
 /**
  * <p>
@@ -25,8 +23,6 @@ import javax.xml.parsers.SAXParserFactory;
  * @version $Revision: 1.18 $
  */
 class SAXHelper {
-    private static boolean loggedWarning = true;
-
     protected SAXHelper() {
     }
 
@@ -61,103 +57,43 @@ class SAXHelper {
     }
 
     /**
-     * Creats a default XMLReader via the org.xml.sax.driver system property or
-     * JAXP if the system property is not set.
+     * Creates a default XMLReader via JAXP.
      *
-     * This method internally calls {@link SAXParserFactory}{@code .newInstance().newSAXParser().getXMLReader()} or {@link XMLReaderFactory#createXMLReader()}.
-     * Be sure to configure returned reader if the default configuration does not suit you. Consider setting the following properties:
+     * <p>This method internally calls {@link SecureSAXParserFactory}{@code .newInstance().newSAXParser().getXMLReader()},
+     * with the requested validation and with namespace support.</p>
      *
-     * <pre>
-     * reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-     * reader.setFeature("http://xml.org/sax/features/external-general-entities", false);
-     * reader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-     * </pre>
+     * <p>The returned reader is namespace-aware, reports no namespace prefixes
+     * as attributes and uses a {@code Locator2} if available. Be sure to
+     * configure the returned reader if this does not suit you.</p>
+     *
+     * <p>The reader remains secure, as long as you don't loosen any of the
+     * <a href="https://commons.apache.org/proper/commons-secure-xml/threat_model.html#Reserved_Settings">reserved settings</a>
+     * or install an allow-all resolver, such as the one
+     * {@link EntityResolutionStrategy#ALLOW} installs.</p>
      *
      * @param validating
-     *            DOCUMENT ME!
+     *            whether the reader validates against the DTD
      *
-     * @return DOCUMENT ME!
+     * @return a new reader
      *
-     * @throws SAXException
-     *             DOCUMENT ME!
+     * @throws IllegalStateException
+     *             if a required secure setting cannot be applied to the
+     *             implementation, or the implementation cannot provide a
+     *             reader
+     * @throws javax.xml.parsers.FactoryConfigurationError
+     *             if no implementation is available or it cannot be
+     *             instantiated
      */
-    public static XMLReader createXMLReader(boolean validating)
-            throws SAXException {
-    
-        XMLReader reader = createXMLReaderViaJAXP(validating, true);
-
-        if (reader == null) {
-            try {
-                reader = XMLReaderFactory.createXMLReader();
-            } catch (Exception e) {
-                if (isVerboseErrorReporting()) {
-                    // log all exceptions as warnings and carry
-                    // on as we have a default SAX parser we can use
-                    System.out.println("Warning: Caught exception attempting "
-                            + "to use SAX to load a SAX XMLReader ");
-                    System.out.println("Warning: Exception was: " + e);
-                    System.out
-                            .println("Warning: I will print the stack trace "
-                                    + "then carry on using the default "
-                                    + "SAX parser");
-                    e.printStackTrace();
-                }
-
-                throw new SAXException(e);
-            }
-        }
-
-        if (reader == null) {
-            throw new SAXException("Couldn't create SAX reader");
-        }
+    public static XMLReader createXMLReader(boolean validating) {
+        XMLReader reader = JAXPHelper.createXMLReader(validating, true);
 
         // configure namespace support
-        SAXHelper.setParserFeature(reader, "http://xml.org/sax/features/namespaces", true);
         SAXHelper.setParserFeature(reader, "http://xml.org/sax/features/namespace-prefixes", false);
-
-        // external DTD
-        SAXHelper.setParserFeature(reader,"http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-
 
         // use Locator2 if possible
         SAXHelper.setParserFeature(reader,"http://xml.org/sax/features/use-locator2", true);
 
         return reader;
-    }
-
-    /**
-     * This method attempts to use JAXP to locate the SAX2 XMLReader
-     * implementation. This method uses reflection to avoid being dependent
-     * directly on the JAXP classes.
-     *
-     * @param validating
-     *            DOCUMENT ME!
-     * @param namespaceAware
-     *            DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    protected static XMLReader createXMLReaderViaJAXP(boolean validating,
-            boolean namespaceAware) {
-        // try use JAXP to load the XMLReader...
-        try {
-            return JAXPHelper.createXMLReader(validating, namespaceAware);
-        } catch (Throwable e) {
-            if (!loggedWarning) {
-                loggedWarning = true;
-
-                if (isVerboseErrorReporting()) {
-                    // log all exceptions as warnings and carry
-                    // on as we have a default SAX parser we can use
-                    System.out.println("Warning: Caught exception attempting "
-                            + "to use JAXP to load a SAX XMLReader");
-                    System.out.println("Warning: Exception was: " + e);
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return null;
     }
 
     protected static boolean isVerboseErrorReporting() {

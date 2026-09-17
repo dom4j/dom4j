@@ -78,7 +78,11 @@ public class SAXReaderTest extends AbstractTestCase {
     }
 
     public void testBug527062() throws Exception {
-        Document doc = getDocument("/xml/test/test.xml");
+        // the document includes an external entity stored next to it
+        SAXReader reader = new SAXReader();
+        reader.setEntityResolver(createLocalFileResolver());
+
+        Document doc = getDocument("/xml/test/test.xml", reader);
         List<Node> l = doc.selectNodes("//broked/junk");
 
         for (Node aL : l) {

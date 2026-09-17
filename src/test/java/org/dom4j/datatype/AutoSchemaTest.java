@@ -56,6 +56,9 @@ public class AutoSchemaTest extends AbstractDataTypeTestCase {
 
         DocumentFactory factory = loadDocumentFactory();
         SAXReader reader = new SAXReader(factory);
+        // the schema is loaded from the xsi:schemaLocation hint, resolved by
+        // an EntityResolver2 (DataTypesTest covers the plain EntityResolver)
+        reader.setEntityResolver(createLocalFileResolver2());
         document = getDocument(getDocumentURI(), reader);
     }
 

@@ -15,6 +15,11 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.ext.EntityResolver2;
+import org.xmlresolver.ResolverFeature;
+import org.xmlresolver.XMLResolver;
+import org.xmlresolver.XMLResolverConfiguration;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -69,6 +74,34 @@ public abstract class AbstractTestCase {
 
     protected Document getDocument(String path) throws Exception {
         return getDocument(path, new SAXReader());
+    }
+
+    /**
+     * Creates a SAX 1 resolver that only allows local files.
+     * <p>
+     * External resources with a {@code file:} system identifier are
+     * fetched, any other protocol is rejected.
+     */
+    protected static EntityResolver createLocalFileResolver() {
+        return createLocalFileXMLResolver().getEntityResolver();
+    }
+
+    /**
+     * Creates a SAX 2 resolver that only allows local files.
+     * <p>
+     * Same as {@link #createLocalFileResolver()}, but the resolver also
+     * implements {@link EntityResolver2} and resolves relative identifiers
+     * against the base URI it is given.
+     */
+    protected static EntityResolver2 createLocalFileResolver2() {
+        return createLocalFileXMLResolver().getEntityResolver2();
+    }
+
+    private static XMLResolver createLocalFileXMLResolver() {
+        XMLResolverConfiguration config = new XMLResolverConfiguration();
+        config.setFeature(ResolverFeature.ACCESS_EXTERNAL_ENTITY, "file");
+
+        return new XMLResolver(config);
     }
 
     protected Document getDocument(String path, SAXReader reader)

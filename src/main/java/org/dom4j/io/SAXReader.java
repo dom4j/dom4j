@@ -13,8 +13,10 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.Serializable;
+import java.io.StringReader;
 import java.net.URL;
 
+import org.apache.commons.xml.secure.SecureSAXParserFactory;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentFactory;
@@ -30,8 +32,6 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import javax.xml.parsers.SAXParserFactory;
-
 /**
  * <code>SAXReader</code> creates a DOM4J tree from SAX parsing events.
  * <p>
@@ -43,23 +43,22 @@ import javax.xml.parsers.SAXParserFactory;
  * a constructor or use the {@link #setXMLReader(XMLReader)}or {@link
  * #setXMLReaderClassName(String)} methods.
  * <p>
- * If the parser is not specified explicitly then the standard SAX policy of
- * using the <code>org.xml.sax.driver</code> system property is used to
- * determine the implementation class of {@link XMLReader}.
+ * If the parser is not specified explicitly, it is obtained through JAXP from
+ * the {@link SecureSAXParserFactory} of Apache Commons Secure XML. That
+ * factory follows the standard JAXP lookup (the
+ * <code>javax.xml.parsers.SAXParserFactory</code> system property, the service
+ * loader, then the platform parser) and guarantees, whichever implementation
+ * is found, that the parser never fetches an external DTD or entity on its own
+ * and that entity expansion is bounded.
  * <p>
- * If the <code>org.xml.sax.driver</code> system property is not defined then
- * JAXP is used via reflection (so that DOM4J is not explicitly dependent on the
- * JAXP classes) to load the JAXP configured SAXParser. If there is any error
- * creating a JAXP SAXParser an informational message is output and then the
- * default (Aelfred) SAX parser is used instead.
- * <p>
- * If you are trying to use JAXP to explicitly set your SAX parser and are
- * experiencing problems, you can turn on verbose error reporting by defining
- * the system property <code>org.dom4j.verbose</code> to be "true" which will
- * output a more detailed description of why JAXP could not find a SAX parser
- * <p>
- * For more information on JAXP please go to <a
- * href="http://java.sun.com/xml/">Sun's Java &amp; XML site </a>
+ * How references to external resources (the external DTD subset, external
+ * general and parameter entities) are handled is controlled by the
+ * {@link EntityResolutionStrategy} of the reader, see
+ * {@link #setEntityResolutionStrategy(EntityResolutionStrategy)}. By default,
+ * a non-validating reader resolves them to empty content, while a validating
+ * reader fails with a parse error. When an {@link EntityResolver} is set with
+ * {@link #setEntityResolver(EntityResolver)}, that resolver alone decides
+ * which resources are loaded.
  *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.58 $
@@ -103,6 +102,12 @@ public class SAXReader {
    * The entity resolver
    */
   private EntityResolver entityResolver;
+
+  /**
+   * How external resources are resolved when no entity resolver is set, or
+   * null for the default of this reader
+   */
+  private EntityResolutionStrategy entityResolutionStrategy;
 
   /**
    * Should element & attribute names and namespace URIs be interned?
@@ -149,90 +154,119 @@ public class SAXReader {
    */
   private XMLFilter xmlFilter;
 
+  /**
+   * Creates a new <code>SAXReader</code>.
+   * <p>
+   * Since 2.3.0 every <code>SAXReader</code> is secure by default, so this
+   * method is equivalent to {@link #SAXReader()}.
+   *
+   * @return a new reader
+   */
   public static SAXReader createDefault() {
-    SAXReader reader = new SAXReader();
-    try {
-      reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-      reader.setFeature("http://xml.org/sax/features/external-general-entities", false);
-      reader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-    } catch (SAXException e) {
-      // nothing to do, incompatible reader
-    }
-    return reader;
+    return new SAXReader();
   }
 
   /**
-   * This method internally calls {@link SAXParserFactory}{@code .newInstance().newSAXParser().getXMLReader()} or {@link XMLReaderFactory#createXMLReader()}.
-   * Be sure to configure returned reader if the default configuration does not suit you. Consider setting the following properties:
-   *
-   * <pre>
-   * reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-   * reader.setFeature("http://xml.org/sax/features/external-general-entities", false);
-   * reader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-   * </pre>
+   * Creates a non-validating reader.
+   * <p>
+   * The SAX parser is obtained through JAXP when first needed. See the class
+   * documentation for the guarantees it provides.
    */
   public SAXReader() {
   }
 
   /**
-   * This method internally calls {@link SAXParserFactory}{@code .newInstance().newSAXParser().getXMLReader()} or {@link XMLReaderFactory#createXMLReader()}.
-   * Be sure to configure returned reader if the default configuration does not suit you. Consider setting the following properties:
+   * Creates a reader.
+   * <p>
+   * The SAX parser is obtained through JAXP when first needed. See the class
+   * documentation for the guarantees it provides.
+   * <p>
+   * When validating, the DTD must be provided by the {@link EntityResolver}
+   * or allowed by the {@link EntityResolutionStrategy} of this reader.
    *
-   * <pre>
-   * reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-   * reader.setFeature("http://xml.org/sax/features/external-general-entities", false);
-   * reader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-   * </pre>
-   *
-   * @param validating
+   * @param validating whether the parser validates documents against their
+   *                   DTD
    */
   public SAXReader(boolean validating) {
     this.validating = validating;
   }
 
   /**
-   * This method internally calls {@link SAXParserFactory}{@code .newInstance().newSAXParser().getXMLReader()} or {@link XMLReaderFactory#createXMLReader()}.
-   * Be sure to configure returned reader if the default configuration does not suit you. Consider setting the following properties:
+   * Creates a non-validating reader.
+   * <p>
+   * The SAX parser is obtained through JAXP when first needed. See the class
+   * documentation for the guarantees it provides.
    *
-   * <pre>
-   * reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-   * reader.setFeature("http://xml.org/sax/features/external-general-entities", false);
-   * reader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-   * </pre>
-   *
-   * @param factory
+   * @param factory the factory used to create the nodes of the documents
+   *                read, or null for the default one
    */
   public SAXReader(DocumentFactory factory) {
     this.factory = factory;
   }
 
   /**
-   * This method internally calls {@link SAXParserFactory}{@code .newInstance().newSAXParser().getXMLReader()} or {@link XMLReaderFactory#createXMLReader()}.
-   * Be sure to configure returned reader if the default configuration does not suit you. Consider setting the following properties:
+   * Creates a reader.
+   * <p>
+   * The SAX parser is obtained through JAXP when first needed. See the class
+   * documentation for the guarantees it provides.
+   * <p>
+   * When validating, the DTD must be provided by the {@link EntityResolver}
+   * or allowed by the {@link EntityResolutionStrategy} of this reader.
    *
-   * <pre>
-   * reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-   * reader.setFeature("http://xml.org/sax/features/external-general-entities", false);
-   * reader.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-   * </pre>
-   *
-   * @param factory
-   * @param validating
+   * @param factory    the factory used to create the nodes of the documents
+   *                   read, or null for the default one
+   * @param validating whether the parser validates documents against their
+   *                   DTD
    */
   public SAXReader(DocumentFactory factory, boolean validating) {
     this.factory = factory;
     this.validating = validating;
   }
 
+  /**
+   * Creates a non-validating reader using the given SAX parser.
+   * <p>
+   * The parser is used as is: the guarantees described in the class
+   * documentation do not apply to it, but the {@link EntityResolver} or
+   * {@link EntityResolutionStrategy} of this reader is still installed on it.
+   *
+   * @param xmlReader the parser to use, or null to obtain one through JAXP
+   *                  when first needed
+   */
   public SAXReader(XMLReader xmlReader) {
     this.xmlReader = xmlReader;
   }
 
+  /**
+   * Creates a reader using the given SAX parser.
+   * <p>
+   * The parser is used as is: the guarantees described in the class
+   * documentation do not apply to it, but the {@link EntityResolver} or
+   * {@link EntityResolutionStrategy} of this reader is still installed on it.
+   * <p>
+   * When validating, the DTD must be provided by the {@link EntityResolver}
+   * or allowed by the {@link EntityResolutionStrategy} of this reader.
+   *
+   * @param xmlReader  the parser to use, or null to obtain one through JAXP
+   *                   when first needed
+   * @param validating whether the parser validates documents against their
+   *                   DTD
+   */
   public SAXReader(XMLReader xmlReader, boolean validating) {
     this.xmlReader = xmlReader;
     this.validating = validating;
   }
 
+  /**
+   * Creates a non-validating reader using the SAX parser of the given class.
+   * <p>
+   * The parser is instantiated with {@link XMLReaderFactory} and used as is,
+   * see {@link #SAXReader(XMLReader)}.
+   *
+   * @param xmlReaderClassName the class name of the parser, or null to obtain
+   *                           one through JAXP when first needed
+   * @throws SAXException if the class cannot be loaded or instantiated
+   */
   public SAXReader(String xmlReaderClassName) throws SAXException {
     if (xmlReaderClassName != null) {
       this.xmlReader = XMLReaderFactory
@@ -240,6 +274,21 @@ public class SAXReader {
     }
   }
 
+  /**
+   * Creates a reader using the SAX parser of the given class.
+   * <p>
+   * The parser is instantiated with {@link XMLReaderFactory} and used as is,
+   * see {@link #SAXReader(XMLReader)}.
+   * <p>
+   * When validating, the DTD must be provided by the {@link EntityResolver}
+   * or allowed by the {@link EntityResolutionStrategy} of this reader.
+   *
+   * @param xmlReaderClassName the class name of the parser, or null to obtain
+   *                           one through JAXP when first needed
+   * @param validating         whether the parser validates documents against
+   *                           their DTD
+   * @throws SAXException if the class cannot be loaded or instantiated
+   */
   public SAXReader(String xmlReaderClassName, boolean validating)
           throws SAXException {
     if (xmlReaderClassName != null) {
@@ -470,7 +519,6 @@ public class SAXReader {
       if (thatEntityResolver == null) {
         thatEntityResolver = createDefaultEntityResolver(in
                 .getSystemId());
-        this.entityResolver = thatEntityResolver;
       }
 
       reader.setEntityResolver(thatEntityResolver);
@@ -715,10 +763,50 @@ public class SAXReader {
   /**
    * Sets the entity resolver used to resolve entities.
    *
-   * @param entityResolver DOCUMENT ME!
+   * <p>
+   * When a resolver is
+   * set, the {@link EntityResolutionStrategy} of this reader no longer
+   * applies: the resolver alone decides which external resources are loaded.
+   *
+   * @param entityResolver the resolver, or null to fall back to the
+   *                       {@link EntityResolutionStrategy}
    */
   public void setEntityResolver(EntityResolver entityResolver) {
     this.entityResolver = entityResolver;
+  }
+
+  /**
+   * Returns the strategy used to resolve external resources when no
+   * {@link EntityResolver} has been set.
+   *
+   * @return the strategy set on this reader, or the default given by
+   *         {@link EntityResolutionStrategy#getDefault(boolean)}, never null
+   * @since 2.3.0
+   */
+  public EntityResolutionStrategy getEntityResolutionStrategy() {
+    if (entityResolutionStrategy == null) {
+      return EntityResolutionStrategy.getDefault(validating);
+    }
+
+    return entityResolutionStrategy;
+  }
+
+  /**
+   * Sets the strategy used to resolve external resources.
+   * <p>
+   * The strategy applies to the external DTD subset and to external general
+   * and parameter entities, as long as no {@link EntityResolver} has been set
+   * with {@link #setEntityResolver(EntityResolver)}. The default is given by
+   * {@link EntityResolutionStrategy#getDefault(boolean)}.
+   *
+   * @param strategy the strategy, must not be null
+   * @since 2.3.0
+   */
+  public void setEntityResolutionStrategy(EntityResolutionStrategy strategy) {
+    if (strategy == null) {
+      throw new NullPointerException("strategy");
+    }
+    this.entityResolutionStrategy = strategy;
   }
 
   /**
@@ -948,18 +1036,57 @@ public class SAXReader {
     return new SAXContentHandler(getDocumentFactory(), dispatchHandler);
   }
 
+  /**
+   * Creates the entity resolver used when none has been set.
+   * <p>
+   * The resolver depends on the {@link EntityResolutionStrategy} of this
+   * reader:
+   * <ul>
+   * <li>{@link EntityResolutionStrategy#IGNORE}: every resource resolves to
+   * empty content.</li>
+   * <li>{@link EntityResolutionStrategy#ALLOW}: every resource is fetched,
+   * relative identifiers being resolved against the location of the
+   * document.</li>
+   * <li>{@link EntityResolutionStrategy#DENY}: every resource is
+   * rejected.</li>
+   * </ul>
+   *
+   * @param systemId the system identifier of the document being read, or
+   *                 null
+   * @return the resolver, never null
+   */
   protected EntityResolver createDefaultEntityResolver(String systemId) {
-    String prefix = null;
+    switch (getEntityResolutionStrategy()) {
+      case ALLOW:
+        String prefix = null;
 
-    if ((systemId != null) && (systemId.length() > 0)) {
-      int idx = systemId.lastIndexOf('/');
+        if ((systemId != null) && (systemId.length() > 0)) {
+          int idx = systemId.lastIndexOf('/');
 
-      if (idx > 0) {
-        prefix = systemId.substring(0, idx + 1);
-      }
+          if (idx > 0) {
+            prefix = systemId.substring(0, idx + 1);
+          }
+        }
+
+        return new SAXEntityResolver(prefix);
+      case DENY:
+        return (publicId, sysId) -> {
+          throw new SAXException("Access to the external resource with public id "
+                  + publicId + " and system id " + sysId + " is denied by "
+                  + EntityResolutionStrategy.DENY
+                  + ". Set an EntityResolver or another"
+                  + " EntityResolutionStrategy on the SAXReader to allow it");
+        };
+      case IGNORE:
+      default:
+        return (publicId, sysId) -> {
+          InputSource source = new InputSource(new StringReader(""));
+          source.setPublicId(publicId);
+          source.setSystemId(sysId);
+
+          return source;
+        };
     }
-
-    return new SAXEntityResolver(prefix);
   }
 
   protected static class SAXEntityResolver implements EntityResolver,

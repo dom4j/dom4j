@@ -1,0 +1,2 @@
+<!ELEMENT greeting (#PCDATA)>
+<!ENTITY name "world">

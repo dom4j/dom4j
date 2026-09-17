@@ -27,6 +27,7 @@ import javax.xml.stream.events.StartDocument;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.apache.commons.xml.secure.SecureXMLInputFactory;
 import org.dom4j.CharacterData;
 import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
@@ -45,7 +46,7 @@ public class STAXEventReader {
     private DocumentFactory factory;
 
     /** A StAX input factory, used to construct streams from IO streams. */
-    private XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+    private XMLInputFactory inputFactory = SecureXMLInputFactory.newInstance();
 
     /**
      * Constructs a default <code>STAXEventReader</code> instance with a

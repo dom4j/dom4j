@@ -142,6 +142,10 @@ public class DataTypesTest extends AbstractDataTypeTestCase {
 
         DocumentFactory factory = DatatypeDocumentFactory.getInstance();
         SAXReader reader = new SAXReader(factory);
+        // the schema is loaded from the xsi:noNamespaceSchemaLocation hint,
+        // resolved by a plain EntityResolver (AutoSchemaTest covers
+        // EntityResolver2)
+        reader.setEntityResolver(createLocalFileResolver());
         document = getDocument("/xml/test/schema/test.xml", reader);
     }
 }

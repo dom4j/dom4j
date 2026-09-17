@@ -10,15 +10,26 @@ package org.dom4j.io;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.xml.secure.SecureDocumentBuilderFactory;
+import org.apache.commons.xml.secure.SecureSAXParserFactory;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 
 /**
  * <code>JAXPHelper</code> contains some helper methods for working with JAXP.
- * These methods are kept in a seperate class to avoid class loading issues,
- * such that dom4j can work without JAXP on the CLASSPATH
- * 
+ *
+ * <p>Every factory comes from
+ * <a href="https://commons.apache.org/proper/commons-secure-xml/">Apache Commons Secure XML</a>:
+ * the parsers it creates never fetch an external resource unless an
+ * {@link EntityResolver} opts it in, and they bound entity expansion.
+ * Its
+ * <a href="https://commons.apache.org/proper/commons-secure-xml/threat_model.html">threat model</a>
+ * lists the settings a caller may still change.</p>
+ *
  * @author <a href="mailto:james.strachan@metastuff.com">James Strachan </a>
  * @version $Revision: 1.7 $
  */
@@ -27,40 +38,75 @@ class JAXPHelper {
     }
 
     /**
-     * This method attempts to use JAXP to locate the SAX2 XMLReader
-     * implementation. This method uses reflection to avoid being dependent
-     * directly on the JAXP classes.
-     * 
+     * Creates a SAX2 {@link XMLReader} through {@link SecureSAXParserFactory}.
+     *
      * @param validating
-     *            DOCUMENT ME!
+     *            whether the reader validates against the DTD, which an
+     *            {@link EntityResolver} must then provide
      * @param namespaceAware
-     *            DOCUMENT ME!
-     * 
-     * @return DOCUMENT ME!
-     * 
-     * @throws Exception
-     *             DOCUMENT ME!
+     *            whether the reader reports namespaces
+     *
+     * @return a new reader
+     *
+     * @throws IllegalStateException
+     *             if a required secure setting cannot be applied to the
+     *             implementation, or the implementation cannot provide a
+     *             reader
+     * @throws javax.xml.parsers.FactoryConfigurationError
+     *             if no implementation is available or it cannot be
+     *             instantiated
      */
     public static XMLReader createXMLReader(boolean validating,
-            boolean namespaceAware) throws Exception {
-        SAXParserFactory factory = SAXParserFactory.newInstance();
+            boolean namespaceAware) {
+        SAXParserFactory factory = SecureSAXParserFactory.newInstance();
         factory.setValidating(validating);
         factory.setNamespaceAware(namespaceAware);
 
-        SAXParser parser = factory.newSAXParser();
+        try {
+            SAXParser parser = factory.newSAXParser();
 
-        return parser.getXMLReader();
+            return parser.getXMLReader();
+        } catch (ParserConfigurationException | SAXException e) {
+            // Current JAXP implementations fail eagerly while the factory is configured, so these
+            // checked exceptions are not thrown in practice.
+            throw new IllegalStateException("Couldn't create SAX reader", e);
+        }
     }
 
+    /**
+     * Creates an empty W3C DOM document through
+     * {@link SecureDocumentBuilderFactory}.
+     *
+     * @param validating
+     *            whether the builder validates against the DTD
+     * @param namespaceAware
+     *            whether the builder supports namespaces
+     *
+     * @return a new, empty document
+     *
+     * @throws IllegalStateException
+     *             if a required secure setting cannot be applied to the
+     *             implementation, or the implementation cannot provide a
+     *             document builder
+     * @throws javax.xml.parsers.FactoryConfigurationError
+     *             if no implementation is available or it cannot be
+     *             instantiated
+     */
     public static org.w3c.dom.Document createDocument(boolean validating,
-            boolean namespaceAware) throws Exception {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            boolean namespaceAware) {
+        DocumentBuilderFactory factory = SecureDocumentBuilderFactory.newInstance();
         factory.setValidating(validating);
         factory.setNamespaceAware(namespaceAware);
 
-        DocumentBuilder builder = factory.newDocumentBuilder();
+        try {
+            DocumentBuilder builder = factory.newDocumentBuilder();
 
-        return builder.newDocument();
+            return builder.newDocument();
+        } catch (ParserConfigurationException e) {
+            // Current JAXP implementations fail eagerly while the factory is configured, so this
+            // checked exception is not thrown in practice.
+            throw new IllegalStateException("Couldn't create DOM document", e);
+        }
     }
 }
 

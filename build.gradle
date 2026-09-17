@@ -55,6 +55,8 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.apache.commons:commons-secure-xml:1.0.0'
+
     jaxenSupportApi 'jaxen:jaxen:1.1.6'
     xsdlibSupportApi 'net.java.dev.msv:xsdlib:2022.7'
     jaxbSupportApi 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
@@ -66,6 +68,7 @@ dependencies {
 
             'xerces:xercesImpl:2.12.2',
             'xalan:xalan:2.7.2',
+            'org.xmlresolver:xmlresolver:6.1.0',
     )
 }
 
