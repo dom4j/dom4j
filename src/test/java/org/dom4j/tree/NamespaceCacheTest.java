@@ -10,9 +10,13 @@ package org.dom4j.tree;
 import org.dom4j.AbstractTestCase;
 import org.dom4j.Namespace;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * A test harness to test the performance of the NamespaceCache
- * 
+ *
  * @author <a href="mailto:bfinnell@users.sourceforge.net">Brett Finnell </a>
  */
 public class NamespaceCacheTest extends AbstractTestCase {
@@ -36,7 +40,7 @@ public class NamespaceCacheTest extends AbstractTestCase {
         runMultiThreadedTest(new SameNSTest());
 
         long end = System.currentTimeMillis();
-        System.out.println("Different NS Single took " + (end - start) + " ms");
+        System.out.println("Same NS Multi took " + (end - start) + " ms");
     }
 
     public void testGetNewNamespaceSingleThread() {
@@ -45,7 +49,7 @@ public class NamespaceCacheTest extends AbstractTestCase {
         test.run();
 
         long end = System.currentTimeMillis();
-        System.out.println("Same NS Multi took " + (end - start) + " ms");
+        System.out.println("Different NS Single took " + (end - start) + " ms");
     }
 
     public void testGetNewNamespaceMultiThread() throws Exception {
@@ -57,11 +61,15 @@ public class NamespaceCacheTest extends AbstractTestCase {
     }
 
     private void runMultiThreadedTest(Runnable test) throws Exception {
+        // Exceptions thrown in worker threads do not fail the test by themselves, so collect them and rethrow after joining.
+        List<Throwable> failures = Collections.synchronizedList(new ArrayList<>());
+
         // Make the threads
         Thread[] threads = new Thread[THREADCOUNT];
 
         for (int i = 0; i < THREADCOUNT; i++) {
-            threads[i] = new Thread(new SameNSTest());
+            threads[i] = new Thread(test);
+            threads[i].setUncaughtExceptionHandler((t, e) -> failures.add(e));
         }
 
         // Start the threads
@@ -73,14 +81,26 @@ public class NamespaceCacheTest extends AbstractTestCase {
         for (int k = 0; k < THREADCOUNT; k++) {
             threads[k].join();
         }
+
+        if (!failures.isEmpty()) {
+            throw new AssertionError(failures.size() + " of " + THREADCOUNT + " threads failed", failures.get(0));
+        }
+    }
+
+    private void assertCached(NamespaceCache cache, String expectedPrefix, String expectedUri, Namespace result) {
+        // The cache holds namespaces by weak reference, so it is only guaranteed to return the same instance while the caller still references it.
+        assertEquals("unexpected prefix", expectedPrefix, result.getPrefix());
+        assertEquals("unexpected uri", expectedUri, result.getURI());
+        assertSame("unexpected cached instance", result, cache.get(expectedPrefix, expectedUri));
     }
 
     private class SameNSTest implements Runnable {
         public void run() {
             NamespaceCache cache = new NamespaceCache();
+            Namespace cachedResult = cache.get("prefix", "uri");
 
             for (int i = 0; i < ITERATIONCOUNT; i++) {
-                Namespace ns = cache.get("prefix", "uri");
+                assertCached(cache, "prefix", "uri", cachedResult);
             }
         }
     }
@@ -90,7 +110,9 @@ public class NamespaceCacheTest extends AbstractTestCase {
             NamespaceCache cache = new NamespaceCache();
 
             for (int i = 0; i < ITERATIONCOUNT; i++) {
-                Namespace ns = cache.get("prefix", Integer.toString(i));
+                String uri = Integer.toString(i);
+                Namespace cachedResult = cache.get("prefix", uri);
+                assertCached(cache, "prefix", uri, cachedResult);
             }
         }
     }
