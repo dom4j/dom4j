@@ -1,7 +1,0 @@
-language: java
-sudo: false
-jdk:
-  - oraclejdk9
-  - oraclejdk8
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
