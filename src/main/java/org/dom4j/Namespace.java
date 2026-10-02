@@ -221,7 +221,7 @@ public class Namespace extends AbstractNode {
             asxml.append("xmlns=\"");
         }
 
-        asxml.append(getURI());
+        asxml.append(escapeAttributeEntities(getURI()));
         asxml.append("\"");
 
         return asxml.toString();
@@ -233,6 +233,44 @@ public class Namespace extends AbstractNode {
 
     protected Node createXPathResult(Element parent) {
         return new DefaultNamespace(parent, getPrefix(), getURI());
+    }
+
+    /**
+     * This will take the pre-defined entities in XML 1.0 and convert their
+     * character representation to the appropriate entity reference, suitable
+     * for a double-quoted XML attribute.
+     * 
+     * @param text
+     *            the text to escape
+     * 
+     * @return the escaped text
+     */
+    private String escapeAttributeEntities(String text) {
+        StringBuffer result = new StringBuffer(text.length());
+
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+
+            switch (c) {
+                case '<':
+                    result.append("&lt;");
+                    break;
+                case '>':
+                    result.append("&gt;");
+                    break;
+                case '\"':
+                    result.append("&quot;");
+                    break;
+                case '&':
+                    result.append("&amp;");
+                    break;
+                default:
+                    result.append(c);
+                    break;
+            }
+        }
+
+        return result.toString();
     }
 }
 

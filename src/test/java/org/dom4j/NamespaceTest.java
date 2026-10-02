@@ -47,6 +47,19 @@ public class NamespaceTest extends AbstractTestCase {
         }
     }
 
+    public void testAsXMLEscapesURI() throws Exception {
+        String uri = "urn:example\"/><injected foo=\"bar\">&";
+
+        assertEquals("xmlns=\"urn:example&quot;/&gt;&lt;injected foo=&quot;bar&quot;&gt;&amp;\"",
+                Namespace.get("", uri).asXML());
+        assertEquals("xmlns:p=\"urn:example&quot;/&gt;&lt;injected foo=&quot;bar&quot;&gt;&amp;\"",
+                Namespace.get("p", uri).asXML());
+
+        // The escaped declaration must round-trip to the original URI.
+        Document doc = DocumentHelper.parseText("<message " + Namespace.get("", uri).asXML() + "/>");
+        assertEquals(uri, doc.getRootElement().getNamespaceURI());
+    }
+
     public void testGetElement() throws Exception {
         Element root = getRootElement();
 

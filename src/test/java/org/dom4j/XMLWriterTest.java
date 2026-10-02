@@ -687,6 +687,48 @@ public class XMLWriterTest extends AbstractTestCase {
         Assert.assertEquals(stringWriter.toString(), "<doc penguin=\"&#128039;\"/>");
     }
 
+    public void testGitHubIssue107_defaultNamespace() throws Exception {
+        final String uri = "urn:example\"/><injected foo=\"bar\">&";
+
+        final Element element = DocumentHelper.createElement("message");
+        element.addNamespace("", uri);
+
+        final String xml = element.asXML();
+        Assert.assertEquals(xml, "<message xmlns=\"urn:example&quot;/&gt;&lt;injected foo=&quot;bar&quot;&gt;&amp;\"></message>");
+        Assert.assertEquals(DocumentHelper.parseText(xml).getRootElement().getNamespaceURI(), uri);
+    }
+
+    public void testGitHubIssue107_prefixedNamespace() throws Exception {
+        final String uri = "urn:example\"/><injected foo=\"bar\">&";
+
+        final Element element = DocumentHelper.createElement("message");
+        element.addNamespace("p", uri);
+
+        final String xml = element.asXML();
+        Assert.assertEquals(xml, "<message xmlns:p=\"urn:example&quot;/&gt;&lt;injected foo=&quot;bar&quot;&gt;&amp;\"></message>");
+        Assert.assertEquals(DocumentHelper.parseText(xml).getRootElement().getNamespaceForPrefix("p").getURI(), uri);
+    }
+
+    public void testGitHubIssue107_singleQuotes() throws Exception {
+        final String uri = "urn:example'/><injected foo='bar'>";
+
+        Document document = DocumentHelper.createDocument();
+        document.addElement("message", uri);
+
+        OutputFormat outputFormat = OutputFormat.createCompactFormat();
+        outputFormat.setSuppressDeclaration(true);
+        outputFormat.setAttributeQuoteCharacter('\'');
+
+        StringWriter stringWriter = new StringWriter();
+        XMLWriter writer = new XMLWriter(stringWriter, outputFormat);
+        writer.write(document);
+        writer.close();
+
+        final String xml = stringWriter.toString();
+        Assert.assertEquals(xml, "<message xmlns='urn:example&apos;/&gt;&lt;injected foo=&apos;bar&apos;&gt;'/>");
+        Assert.assertEquals(DocumentHelper.parseText(xml).getRootElement().getNamespaceURI(), uri);
+    }
+
     protected void generateXML(ContentHandler handler) throws SAXException {
         handler.startDocument();
 

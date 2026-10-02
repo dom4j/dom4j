@@ -1198,13 +1198,15 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler, AutoClos
         if ((prefix != null) && (prefix.length() > 0)) {
             writer.write(" xmlns:");
             writer.write(prefix);
-            writer.write("=\"");
+            writer.write("=");
         } else {
-            writer.write(" xmlns=\"");
+            writer.write(" xmlns=");
         }
 
-        writer.write(uri);
-        writer.write("\"");
+        char quote = format.getAttributeQuoteCharacter();
+        writer.write(quote);
+        writeEscapeAttributeEntities(uri);
+        writer.write(quote);
     }
 
     /**
