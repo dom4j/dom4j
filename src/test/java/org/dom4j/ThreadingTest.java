@@ -13,6 +13,9 @@ import java.text.FieldPosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
+
 /**
  * A test harness to test the dom4j package in a threaded environment
  *
@@ -20,7 +23,7 @@ import java.util.Date;
  * @version $Revision: 1.3 $
  */
 @Test
-public class ThreadingTest extends AbstractTestCase {
+public class ThreadingTest {
 	private static final ThreadLocal FORMATTER_CACHE = new ThreadLocal();
 
 	private static final String SEPERATOR = " - ";
