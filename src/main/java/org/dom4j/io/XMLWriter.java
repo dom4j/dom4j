@@ -920,11 +920,13 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler, AutoClos
 
         // Print out additional namespace declarations
         boolean textOnly = true;
+        int contentSize = size;
 
         for (int i = 0; i < size; i++) {
             Node node = element.node(i);
 
             if (node instanceof Namespace) {
+                contentSize--;
                 Namespace additional = (Namespace) node;
 
                 if (isNamespaceDeclaration(additional)) {
@@ -942,7 +944,7 @@ public class XMLWriter extends XMLFilterImpl implements LexicalHandler, AutoClos
 
         lastOutputNodeType = Node.ELEMENT_NODE;
 
-        if (size <= 0) {
+        if (contentSize <= 0) {
             writeEmptyElementClose(qualifiedName);
         } else {
             writer.write(">");

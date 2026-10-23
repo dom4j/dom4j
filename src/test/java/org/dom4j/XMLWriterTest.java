@@ -137,6 +137,54 @@ public class XMLWriterTest extends AbstractTestCase {
         log("Wrote to encoding: " + encoding);
     }
 
+    public void testNamespaceOnlyElementAsXML() {
+        Element root = DocumentHelper.createElement("root");
+        root.addNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+        root.addAttribute(QName.get("nil", "xsi", "http://www.w3.org/2001/XMLSchema-instance"), "true");
+
+        Assert.assertEquals(root.asXML(), "<root xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:nil=\"true\"/>");
+    }
+
+    public void testNamespaceOnlyElementExpanded() throws IOException {
+        Element root = DocumentHelper.createElement("root");
+        root.addNamespace("p", "urn:test");
+        OutputFormat format = new OutputFormat();
+        format.setExpandEmptyElements(true);
+        StringWriter out = new StringWriter();
+        XMLWriter writer = new XMLWriter(out, format);
+        writer.write(root);
+        writer.close();
+
+        Assert.assertEquals(out.toString(), "<root xmlns:p=\"urn:test\"></root>");
+    }
+
+    public void testNamespaceOnlySiblings() {
+        Element root = DocumentHelper.createElement("root");
+        root.addElement("first").addNamespace("p", "urn:test");
+        root.addElement("second").addNamespace("p", "urn:test");
+
+        Assert.assertEquals(root.asXML(), "<root><first xmlns:p=\"urn:test\"/><second xmlns:p=\"urn:test\"/></root>");
+    }
+
+    public void testNamespaceWithContent() {
+        Element root = DocumentHelper.createElement("root");
+        root.addNamespace("p", "urn:test");
+        root.addText("text");
+        root.addComment("comment");
+        root.addProcessingInstruction("target", "data");
+        root.addElement("child");
+
+        Assert.assertEquals(root.asXML(), "<root xmlns:p=\"urn:test\">text<!--comment--><?target data?><child/></root>");
+    }
+
+    public void testNamespaceWithEmptyText() {
+        Element root = DocumentHelper.createElement("root");
+        root.addNamespace("p", "urn:test");
+        root.addText("");
+
+        Assert.assertEquals(root.asXML(), "<root xmlns:p=\"urn:test\"></root>");
+    }
+
     public void testWriterBug() throws Exception {
         Element project = new BaseElement("project");
         Document doc = new DefaultDocument(project);
@@ -592,7 +640,7 @@ public class XMLWriterTest extends AbstractTestCase {
         writer.write(document);
         writer.close();
 
-        Assert.assertEquals(stringWriter.toString(), "<rss xmlns:g=\"http://base.google.com/ns/1.0\" xmlns:c=\"http://base.google.com/cns/1.0\"></rss>");
+        Assert.assertEquals(stringWriter.toString(), "<rss xmlns:g=\"http://base.google.com/ns/1.0\" xmlns:c=\"http://base.google.com/cns/1.0\"/>");
     }
 
     public void testElementNamespaceWriteOpen() throws IOException {
