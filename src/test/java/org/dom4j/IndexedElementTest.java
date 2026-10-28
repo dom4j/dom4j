@@ -8,7 +8,9 @@
 package org.dom4j;
 
 import org.dom4j.util.IndexedDocumentFactory;
+import org.dom4j.util.IndexedElement;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -22,6 +24,64 @@ public class IndexedElementTest extends AbstractTestCase {
     // -------------------------------------------------------------------------
     public void testXPaths() throws Exception {
         testXPath("//author");
+    }
+
+    public void testSortAllElementsRefreshesNameAndQNameIndexes() {
+        assertSortRefreshesIndexes(false);
+    }
+
+    public void testSortQNameSelectionRefreshesNameAndQNameIndexes() {
+        assertSortRefreshesIndexes(true);
+    }
+
+    private void assertSortRefreshesIndexes(boolean qnameOnly) {
+        IndexedElement root = new IndexedElement("root");
+        QName name = QName.get("item", "a", "urn:selected");
+        QName otherName = QName.get("item", "b", "urn:other");
+        root.addAttribute("keep", "value");
+        Attribute attribute = root.attributes().get(0);
+        Element third = root.addElement(name).addAttribute("rank", "3");
+        Comment comment = DocumentHelper.createComment("keep");
+        root.add(comment);
+        Element other = root.addElement("different").addAttribute("rank", "0");
+        Element first = root.addElement(name).addAttribute("rank", "1");
+        Element second = root.addElement(otherName).addAttribute("rank", "2");
+        // Populate both lookup paths before the backed list changes order.
+        assertSame(third, root.element("item"));
+        assertSame(third, root.element(name));
+        assertElementOrder(root.elements("item"), third, first, second);
+        assertElementOrder(root.elements(name), third, first);
+        assertSame(attribute, root.attributes().get(0));
+        List<Element> selected = qnameOnly ? root.elements(name) : root.elements();
+
+        selected.sort(Comparator.comparingInt(element -> Integer.parseInt(element.attributeValue("rank"))));
+
+        assertSame(first, root.element("item"));
+        assertSame(first, root.element(name));
+        if (qnameOnly) {
+            assertElementOrder(root.elements(), first, other, third, second);
+            assertElementOrder(root.elements("item"), first, third, second);
+            assertSame(comment, root.node(1));
+        } else {
+            assertElementOrder(root.elements(), other, first, second, third);
+            assertElementOrder(root.elements("item"), first, second, third);
+            assertSame(comment, root.node(1));
+        }
+        assertElementOrder(root.elements(name), first, third);
+        assertElementOrder(root.elements(otherName), second);
+        assertSame(attribute, root.attributes().get(0));
+        assertSame(root, first.getParent());
+        assertSame(root, second.getParent());
+        assertSame(root, third.getParent());
+        assertSame(root, other.getParent());
+        assertSame(root, comment.getParent());
+    }
+
+    private void assertElementOrder(List<Element> actual, Element... expected) {
+        assertEquals(expected.length, actual.size());
+        for (int i = 0; i < expected.length; i++) {
+            assertSame(expected[i], actual.get(i));
+        }
     }
 
     // Implementation methods

@@ -409,6 +409,13 @@ public abstract class AbstractBranch extends AbstractNode implements Branch {
     protected abstract void childRemoved(Node node);
 
     /**
+     * Called after existing child nodes are reordered without being added or
+     * removed.
+     */
+    protected void contentReordered() {
+    }
+
+    /**
      * Called when the given List content has been removed so each node should
      * have its parent and document relationships cleared
      */

@@ -11,8 +11,11 @@ import org.dom4j.Node;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -100,6 +103,56 @@ public class BackedList<T extends Node> extends ArrayList<T> {
         branch.childAdded(node);
 
         return super.set(index, node);
+    }
+
+    /**
+     * Sorts this list and reorders its nodes in their existing branch positions.
+     * Other branch content stays in place. Nodes that have left the branch
+     * remain in this list but are not added back to the branch.
+     */
+    @Override
+    public void sort(Comparator<? super T> comparator) {
+        super.sort(comparator);
+
+        if (size() < 2) {
+            return;
+        }
+
+        Map<Node, Integer> selectedCounts = new IdentityHashMap<Node, Integer>();
+        for (T node : this) {
+            selectedCounts.merge(node, 1, Integer::sum);
+        }
+
+        List<Node> content = branch.contentList();
+        List<Integer> positions = new ArrayList<Integer>();
+        Map<Node, Integer> liveCounts = new IdentityHashMap<Node, Integer>();
+        for (int i = 0; i < content.size(); i++) {
+            Node node = content.get(i);
+            Integer count = selectedCounts.get(node);
+            if (count != null && count > 0) {
+                positions.add(i);
+                selectedCounts.put(node, count - 1);
+                liveCounts.merge(node, 1, Integer::sum);
+            }
+        }
+
+        int position = 0;
+        boolean reordered = false;
+        for (T node : this) {
+            Integer count = liveCounts.get(node);
+            if (count != null && count > 0) {
+                int index = positions.get(position++);
+                if (content.get(index) != node) {
+                    content.set(index, node);
+                    reordered = true;
+                }
+                liveCounts.put(node, count - 1);
+            }
+        }
+
+        if (reordered) {
+            branch.contentReordered();
+        }
     }
 
     @Override
