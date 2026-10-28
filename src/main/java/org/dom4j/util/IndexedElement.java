@@ -88,6 +88,12 @@ public class IndexedElement extends DefaultElement {
 
     // Implementation methods
     // -------------------------------------------------------------------------
+    @Override
+    protected void contentReordered() {
+        super.contentReordered();
+        elementIndex = null;
+    }
+
     protected Element asElement(Object object) {
         if (object instanceof Element) {
             return (Element) object;
